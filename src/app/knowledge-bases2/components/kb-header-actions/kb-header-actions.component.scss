@@ -20,3 +20,13 @@
   display: none;
 }
 
+.kb-preview-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-weight: 500;
+
+  svg { flex-shrink: 0; }
+}
+

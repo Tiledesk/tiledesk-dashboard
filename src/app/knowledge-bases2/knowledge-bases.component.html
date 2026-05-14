@@ -69,11 +69,13 @@
                       [permissionToAddContents]="PERMISSION_TO_ADD_CONTENTS"
                       [permissionToDelete]="PERMISSION_TO_DELETE"
                       [permissionToSyncLinkedResources]="PERMISSION_TO_ADD_FLOWS"
+                      [permissionToPreview]="true"
                       [selectedNamespaceIsDefault]="selectedNamespace?.default"
                       (exportContents)="presentDialogExportContents()"
                       (importContents)="presentDialogImportContents()"
                       (deleteNamespace)="onOpenDeleteNamespaceModal()"
                       (syncLinkedResources)="onSyncKbLinkedResources()"
+                      (openPreview)="onOpenBaseModalPreview()"
                     ></appdashboard-kb-header-actions>
                   </div>
       

@@ -1,0 +1,986 @@
+// Design tokens (scoped to the modal)
+$bg: #ffffff;
+$bg-soft: #f7f8fa;
+$bg-side: #fafbfc;
+$ink: #11131a;
+$ink-2: #2a2f3a;
+$ink-3: #6b7280;
+$ink-4: #9ca3af;
+$line: #e5e7eb;
+$line-2: #d1d5db;
+$accent: #1e88ff;
+$accent-soft: #e8f1ff;
+$accent-ink: #0b66cc;
+$radius: 10px;
+$radius-sm: 7px;
+
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: $ink;
+}
+
+// Inset modal: 50px from every viewport edge, rounded, with shadow
+::ng-deep .pm-fullscreen-dialog .mat-dialog-container,
+::ng-deep .pm-fullscreen-dialog .mat-mdc-dialog-container {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border-radius: 16px !important;
+  box-shadow: 0 24px 60px -12px rgba(10, 14, 30, .35),
+              0 8px 22px -8px rgba(10, 14, 30, .15) !important;
+  background: #fff !important;
+}
+
+// Opaque-ish backdrop to indicate modal mode
+::ng-deep .pm-fullscreen-backdrop {
+  background: rgba(15, 23, 42, .55) !important;
+  backdrop-filter: blur(2px);
+}
+
+.pm-shell {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  display: grid;
+  grid-template-rows: 60px 1fr;
+  overflow: hidden;
+  border-radius: 16px;
+
+  // Minimalist scrollbar (Firefox)
+  *, & {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(15, 23, 42, .18) transparent;
+  }
+
+  // Minimalist scrollbar (WebKit/Blink)
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+    transition: background-color .15s;
+  }
+  // Thumb appears on hover over the scrolling container
+  *:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(15, 23, 42, .18);
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-thumb:hover,
+  *::-webkit-scrollbar-thumb:active {
+    background-color: rgba(15, 23, 42, .35);
+    background-clip: content-box;
+  }
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+// ============ HEADER ============
+.pm-header {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  border-bottom: 1px solid $line;
+  min-width: 0;
+
+  .pm-head-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+  }
+  .pm-title-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: $ink;
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pm-title-text {
+    display: flex; flex-direction: column;
+    min-width: 0;
+  }
+  .pm-title-h {
+    font-size: 14px; font-weight: 600; color: $ink;
+    line-height: 1.2; white-space: nowrap;
+  }
+  .pm-title-sub {
+    font-size: 12px; color: $ink-3;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .pm-kb-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px 5px 6px;
+    border: 1px solid $line;
+    border-radius: 999px;
+    font-size: 12.5px; color: $ink-2;
+    background: #fff;
+    white-space: nowrap;
+    flex-shrink: 0;
+    cursor: pointer;
+    font-family: inherit;
+    &:hover { background: $bg-soft; }
+  }
+  .pm-kb-caret { color: $ink-3; }
+  .pm-kb-dot {
+    width: 18px; height: 18px; border-radius: 5px;
+    background: #e0e7ff; color: #3730a3;
+    font-size: 10px; font-weight: 700;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .pm-kb-name { font-weight: 500; }
+  .pm-header-right {
+    margin-left: auto;
+    display: flex; align-items: center; gap: 8px;
+    flex-shrink: 0;
+  }
+  .pm-model-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px;
+    background: $accent-soft; color: $accent-ink;
+    border-radius: 999px;
+    font-size: 12px; font-weight: 500;
+    white-space: nowrap;
+  }
+  .pm-icon-btn-ghost {
+    width: 34px; height: 34px; border-radius: 8px;
+    border: none; background: transparent; color: $ink-3;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    &:hover { background: $bg-soft; color: $ink-2; }
+  }
+}
+
+// ============ BODY ============
+.pm-body {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  min-height: 0;
+  height: 100%;
+}
+
+// ============ SIDEBAR ============
+.pm-side {
+  background: $bg-side;
+  border-right: 1px solid $line;
+  display: flex; flex-direction: column;
+  min-height: 0;
+}
+
+.pm-side-head {
+  padding: 18px 22px 12px;
+
+  .pm-side-title {
+    font-size: 13.5px; font-weight: 600; color: $ink;
+    display: flex; align-items: center; gap: 8px;
+    white-space: nowrap; line-height: 1.3;
+  }
+  .pm-side-sub {
+    font-size: 12px; color: $ink-3;
+    margin-top: 4px; line-height: 1.4;
+  }
+}
+
+.pm-icon-accent { color: $accent; }
+.pm-icon-mute { color: $ink-3; }
+
+.pm-side-tabs {
+  display: flex;
+  padding: 0 22px;
+  gap: 18px;
+  border-bottom: 1px solid $line;
+  margin-top: 6px;
+
+  .pm-side-tab {
+    padding: 10px 0;
+    font-size: 12.5px; font-weight: 500;
+    color: $ink-3;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    margin-bottom: -1px;
+
+    &.active {
+      font-weight: 600;
+      color: $ink;
+      border-bottom-color: $accent;
+    }
+  }
+}
+
+.pm-side-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 18px 22px 14px;
+  display: flex; flex-direction: column; gap: 18px;
+}
+
+.pm-field {
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.pm-f-label {
+  font-size: 12.5px; font-weight: 600; color: $ink;
+  white-space: nowrap;
+}
+.pm-f-label-row {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  .pm-f-label { @extend .pm-f-label; }
+}
+.pm-f-val {
+  font-size: 12.5px; color: $ink-3;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500; white-space: nowrap; flex-shrink: 0;
+}
+
+// Select
+.pm-select-wrap {
+  position: relative;
+  display: flex; align-items: center;
+}
+.pm-select {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 1;
+  border: 1.5px solid $accent;
+  padding: 8px 36px 8px 12px;
+  border-radius: 8px;
+  background: #fff;
+  font-size: 13px; color: $ink;
+  cursor: pointer;
+  font-family: inherit;
+  outline: none;
+}
+.pm-select-caret {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  color: $ink-3; pointer-events: none;
+}
+
+// Range slider — pill container holds the bg and centerline; the input is inset by 14px
+// so the thumb's full travel matches the visible line bounds.
+.pm-slider {
+  position: relative;
+  height: 24px;
+  border-radius: 999px;
+  background:
+    linear-gradient(#c7cbd4, #c7cbd4) center / calc(100% - 28px) 2px no-repeat,
+    #eef2f7;
+  padding: 0 14px;
+  display: flex;
+  align-items: center;
+}
+
+.pm-range {
+  width: 100%;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 14px;
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+
+  &::-webkit-slider-runnable-track {
+    height: 14px;
+    background: transparent;
+    border: none;
+  }
+  &::-moz-range-track {
+    height: 14px;
+    background: transparent;
+    border: none;
+  }
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px; height: 14px;
+    background: $ink;
+    border-radius: 50%;
+    border: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    cursor: grab;
+  }
+  &::-moz-range-thumb {
+    width: 14px; height: 14px;
+    background: $ink;
+    border-radius: 50%;
+    border: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    cursor: grab;
+  }
+}
+.pm-range-ends, .pm-range-labels {
+  display: flex; justify-content: space-between;
+  font-size: 11.5px; color: $ink-3;
+  font-variant-numeric: tabular-nums;
+  margin-top: -2px;
+}
+
+// Textarea
+.pm-textarea {
+  width: 100%;
+  min-height: 70px;
+  padding: 10px 12px;
+  border: 1px solid $line-2;
+  border-radius: 8px;
+  background: #fff;
+  resize: vertical;
+  font-size: 13px;
+  color: $ink;
+  outline: none;
+  line-height: 1.5;
+  font-family: inherit;
+
+  &:focus { border-color: #94a3b8; }
+}
+
+.pm-help {
+  font-size: 11.5px; color: $ink-3;
+}
+
+// KB picker (header + Fonti tab)
+.pm-kb-picker {
+  position: relative;
+  display: inline-flex;
+}
+.pm-kb-picker--inline { width: 100%; }
+.pm-kb-badge--block {
+  display: flex !important;
+  width: 100%;
+  justify-content: flex-start;
+  padding: 8px 12px 8px 6px !important;
+}
+.pm-kb-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 220px;
+  max-width: 320px;
+  max-height: 320px;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid $line;
+  border-radius: 10px;
+  box-shadow: 0 16px 32px -12px rgba(10, 14, 30, .25);
+  padding: 6px;
+  z-index: 30;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.pm-kb-menu-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 8px;
+  border: none; background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  color: $ink;
+  text-align: left;
+
+  &:hover { background: $bg-soft; }
+  &.active { background: $accent-soft; color: $accent-ink; }
+
+  .pm-kb-menu-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pm-kb-menu-count {
+    font-size: 11.5px; color: $ink-3;
+    font-variant-numeric: tabular-nums;
+  }
+}
+.pm-kb-picker-scrim {
+  position: fixed; inset: 0;
+  z-index: 25;
+  background: transparent;
+}
+
+// Sources summary list (accordion groups)
+.pm-sources-list {
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+.pm-source-group {
+  background: #fff;
+  border: 1px solid $line;
+  border-radius: 10px;
+  overflow: hidden;
+
+  &.expanded {
+    .pm-source-row-caret { transform: rotate(180deg); }
+    .pm-source-row { border-bottom: 1px solid $line; border-radius: 10px 10px 0 0; }
+  }
+}
+
+.pm-source-row {
+  width: 100%;
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px;
+  background: transparent;
+  border: none;
+  font-size: 13px;
+  color: $ink-2;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+
+  &:hover { background: $bg-soft; }
+
+  .pm-source-row-icon { display: inline-flex; color: $ink-3; }
+  .pm-source-row-label {
+    flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .pm-source-row-count {
+    font-size: 12px; color: $ink-3;
+    font-variant-numeric: tabular-nums;
+  }
+  .pm-source-row-caret {
+    color: $ink-3;
+    transition: transform .15s;
+  }
+}
+
+.pm-source-items {
+  max-height: 220px;
+  overflow: auto;
+  background: $bg-side;
+  padding: 6px 0;
+}
+
+.pm-source-item-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  font-size: 12.5px;
+  color: $ink-2;
+  text-decoration: none;
+  min-width: 0;
+
+  &:hover { background: rgba(0,0,0,.03); }
+  &.no-link { cursor: default; }
+
+  .pm-source-item-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: $ink-4;
+    flex-shrink: 0;
+  }
+  .pm-source-item-name {
+    flex: 1; min-width: 0;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+}
+
+// Helper: label + info icon group inside a label-row
+.pm-f-label-group {
+  display: inline-flex; align-items: center; gap: 6px;
+  min-width: 0;
+}
+
+// Row for a checkbox followed by an info icon aligned to the right
+.pm-check-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  .pm-check { flex: 1; min-width: 0; }
+}
+
+// Info icon (anchor for sat-popover)
+.pm-info {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  color: $ink-2;
+  background: transparent;
+  cursor: help;
+  line-height: 0;
+  transition: background .15s, color .15s;
+
+  &:hover { color: $accent-ink; background: $accent-soft; }
+  .pm-info-icon { display: inline-block; }
+}
+
+// sat-popover panel content (rendered in the CDK overlay, outside the modal)
+::ng-deep .pm-info-popover {
+  margin-left: 10px; // gap between icon and popover
+
+  .pm-info-pop {
+    position: relative;
+    width: 240px;
+    padding: 12px 14px;
+    background: #1f2330;
+    color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 12px 32px -8px rgba(10, 14, 30, .45);
+    font-size: 12.5px;
+    line-height: 1.5;
+    display: flex; flex-direction: column; gap: 10px;
+    text-align: left;
+  }
+
+  .pm-info-text { color: #e5e7eb; white-space: normal; }
+
+  .pm-info-link {
+    display: block;
+    width: 100%;
+    padding: 8px 14px;
+    background: #2d3242;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 12.5px; font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: border-box;
+    &:hover { background: #3a4054; }
+  }
+
+  // Left-pointing arrow (popover sits to the right of the icon)
+  .pm-info-pop::before {
+    content: '';
+    position: absolute;
+    left: -5px; top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 10px; height: 10px;
+    background: #1f2330;
+    border-bottom-left-radius: 2px;
+  }
+}
+
+// Variant: popover sits to the LEFT of the icon (arrow points right)
+::ng-deep .pm-info-popover--left {
+  margin-left: 0 !important;
+  margin-right: 10px;
+
+  .pm-info-pop::before {
+    left: auto;
+    right: -5px;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 2px;
+  }
+}
+
+// Variant: popover sits ABOVE the icon (arrow points down)
+::ng-deep .pm-info-popover--above {
+  margin-left: 0 !important;
+  margin-bottom: 10px;
+
+  .pm-info-pop::before {
+    left: 14px;
+    top: auto; right: auto;
+    bottom: -5px;
+    transform: rotate(45deg);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 2px;
+  }
+}
+
+// Checkboxes
+.pm-checks {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.pm-check {
+  display: flex; align-items: center; gap: 10px;
+  cursor: pointer; user-select: none;
+
+  input { position: absolute; opacity: 0; pointer-events: none; }
+  .pm-check-box {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1.5px solid #cbd5e1;
+    background: #fff;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: background .15s, border-color .15s;
+    position: relative;
+  }
+  .pm-check-box::after {
+    content: '';
+    width: 5px; height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) scale(0);
+    transition: transform .15s;
+  }
+  input:checked + .pm-check-box {
+    background: $accent;
+    border-color: $accent;
+    &::after { transform: rotate(45deg) scale(1); }
+  }
+  .pm-check-label {
+    font-size: 13px; color: $ink-2;
+  }
+}
+
+// Sidebar footer
+.pm-side-foot {
+  padding: 12px 22px;
+  border-top: 1px solid $line;
+  display: flex; gap: 8px; justify-content: flex-end;
+  background: #fff;
+
+  .pm-ghost-btn,
+  .pm-primary-btn {
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.3;
+    white-space: nowrap;
+    cursor: pointer;
+    border: none;
+    transition: background .15s, color .15s;
+  }
+
+  .pm-ghost-btn {
+    background: #eef0f4;
+    color: $ink;
+    &:hover { background: #e3e6ec; }
+  }
+  .pm-primary-btn {
+    background: $accent;
+    color: #fff;
+    transition: background .15s;
+    &:hover { background: $accent-ink; }
+
+    &.is-saving { background: $accent-ink; cursor: progress; }
+    &.is-success { background: #16a34a; }
+    &.is-error { background: #dc2626; }
+    &:disabled { opacity: .8; }
+
+    .pm-save-content {
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .pm-save-spinner {
+      display: inline-block;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, .35);
+      border-top-color: #fff;
+      animation: pmSaveSpin .8s linear infinite;
+    }
+  }
+}
+
+@keyframes pmSaveSpin {
+  to { transform: rotate(360deg); }
+}
+
+// ============ CHAT AREA ============
+.pm-chat {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  min-height: 0;
+  background: #fff;
+  position: relative;
+}
+
+.pm-chat-topbar {
+  position: absolute; top: 12px; right: 16px; z-index: 2;
+  display: flex; gap: 6px;
+
+  .pm-pill-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 10px;
+    border: 1px solid $line;
+    border-radius: 999px;
+    background: #fff; color: $ink-3;
+    font-size: 12px; font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+    &:hover { color: $ink-2; }
+  }
+}
+
+.pm-chat-stream {
+  overflow: auto;
+  min-height: 0;
+  display: flex; flex-direction: column;
+}
+
+.pm-chat-inner {
+  max-width: 760px; width: 100%;
+  margin: 0 auto;
+  padding: 32px 32px 12px;
+  display: flex; flex-direction: column; gap: 24px;
+}
+
+// Empty hero
+.pm-empty-hero {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 64px 32px 40px;
+  text-align: center;
+  gap: 14px;
+}
+.pm-hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: $accent-soft; color: $accent-ink;
+  padding: 5px 10px; border-radius: 999px;
+  font-size: 12px; font-weight: 500;
+  white-space: nowrap;
+}
+.pm-hero-h {
+  font-size: 28px; font-weight: 700; color: $ink;
+  margin: 0; letter-spacing: -0.01em;
+}
+.pm-hero-sub {
+  font-size: 14px; color: $ink-3;
+  max-width: 480px; line-height: 1.5; margin: 0;
+}
+.pm-suggest-grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  gap: 10px; max-width: 600px; width: 100%;
+  margin-top: 18px;
+}
+.pm-suggest {
+  text-align: left; padding: 14px;
+  border-radius: 12px; border: 1px solid $line; background: #fff;
+  font-size: 13.5px; color: $ink-2; line-height: 1.4;
+  display: flex; align-items: flex-start; gap: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  &:hover { border-color: $line-2; }
+  span { flex: 1; }
+}
+
+// Messages
+.pm-msg-user {
+  display: flex; justify-content: flex-end;
+}
+.pm-msg-bubble {
+  background: #f1f5f9; color: $ink;
+  padding: 11px 16px; border-radius: 18px;
+  max-width: 85%; font-size: 14.5px; line-height: 1.5;
+  white-space: pre-wrap;
+}
+.pm-msg-bot {
+  display: flex; gap: 12px;
+}
+.pm-bot-avatar {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: $ink; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pm-bot-body { flex: 1; min-width: 0; }
+.pm-bot-text {
+  font-size: 14.5px; color: $ink; line-height: 1.65;
+  white-space: pre-wrap;
+  &.pm-error { color: #b91c1c; }
+}
+
+.pm-typing {
+  display: flex; gap: 4px; padding: 8px 0;
+  span {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #cbd5e1;
+    animation: pmDot 1.2s ease-in-out infinite;
+  }
+  span:nth-child(2) { animation-delay: .15s; }
+  span:nth-child(3) { animation-delay: .3s; }
+}
+@keyframes pmDot {
+  0%, 60%, 100% { transform: translateY(0); opacity: .45; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.pm-source-box {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid $line;
+  border-radius: 12px;
+  background: #fafbfc;
+}
+.pm-source-head {
+  font-size: 11px; font-weight: 600; color: $ink-3;
+  letter-spacing: .06em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.pm-source-list {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.pm-source-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 10px;
+  background: #fff;
+  border: 1px solid $line;
+  border-radius: 8px;
+  font-size: 13px; color: $ink-2;
+}
+.pm-source-num {
+  width: 22px; height: 22px; border-radius: 6px;
+  background: $accent-soft; color: $accent-ink;
+  font-size: 11px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.pm-source-name {
+  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: $ink-2; text-decoration: none;
+  &:hover { color: $accent-ink; }
+}
+
+.pm-chunks {
+  margin-top: 12px;
+  details {
+    border: 1px solid $line;
+    border-radius: 8px;
+    background: $bg-side;
+    summary {
+      padding: 10px 12px;
+      cursor: pointer;
+      font-size: 12.5px; color: $ink-2;
+      list-style: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .pm-chunk {
+      padding: 10px 12px;
+      border-top: 1px solid $line;
+      font-size: 12px; color: $ink-3;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+// Last row: model · duration · tokens — emphasized as a small stats panel
+.pm-msg-stats {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-top: 14px;
+  padding: 8px 12px;
+  background: $bg-side;
+  border: 1px solid $line;
+  border-radius: 10px;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+
+  .pm-msg-stat {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #fff;
+    color: $ink-2;
+    border: 1px solid $line;
+    font-weight: 500;
+    white-space: nowrap;
+
+    svg { color: $ink-3; flex-shrink: 0; }
+  }
+  .pm-msg-stat-val { color: $ink; }
+}
+
+.pm-msg-actions {
+  display: flex; gap: 4px; margin-top: 6px; color: $ink-3;
+}
+.pm-action-btn {
+  width: 28px; height: 28px; border-radius: 6px;
+  background: transparent; border: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: $ink-3; cursor: pointer;
+  &:hover { background: $bg-soft; color: $ink-2; }
+}
+
+// Tag bar (chips + input) sits right above the composer
+.pm-tagbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  margin-bottom: 8px;
+  padding: 4px 0;
+  min-height: 28px;
+}
+
+.pm-tag-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 4px 3px 10px;
+  background: $accent-soft;
+  color: $accent-ink;
+  border-radius: 999px;
+  font-size: 12px; font-weight: 500;
+  max-width: 220px;
+
+  .pm-tag-chip-text {
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    min-width: 0;
+  }
+  .pm-tag-chip-remove {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    border: none; background: transparent; color: inherit;
+    cursor: pointer;
+    &:hover { background: rgba(11, 102, 204, .12); }
+  }
+}
+
+.pm-tag-input {
+  flex: 1; min-width: 140px;
+  border: none; outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 12.5px;
+  color: $ink-2;
+  padding: 4px 6px;
+  &::placeholder { color: $ink-4; }
+}
+
+// Composer
+.pm-composer { padding: 14px 32px 22px; }
+.pm-composer-inner { max-width: 760px; margin: 0 auto; }
+
+.pm-input-shell {
+  display: flex; align-items: flex-end; gap: 6px;
+  padding: 8px 8px 8px 14px;
+  border: 1px solid $line-2;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15,23,42,.04);
+  transition: border-color .15s;
+
+  &:focus-within { border-color: #94a3b8; }
+}
+
+.pm-text-input {
+  flex: 1; border: none; outline: none; background: transparent;
+  font-size: 14.5px; color: $ink;
+  resize: none;
+  min-height: 38px;
+  padding: 10px 4px;
+  font-family: inherit; line-height: 1.5;
+  overflow-y: hidden; // toggled by autosizeComposer() once max height is reached
+}
+
+.pm-send-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: $accent; color: #fff; border: none;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  &:disabled { background: #cbd5e1; cursor: not-allowed; }
+}
+
+.pm-composer-meta {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 10px;
+  font-size: 11.5px; color: $ink-3;
+
+  kbd {
+    background: #cbd5e1;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 11px;
+    font-family: inherit;
+  }
+}
+
+// Responsive
+@media (max-width: 900px) {
+  .pm-body { grid-template-columns: 280px 1fr; }
+}
+@media (max-width: 720px) {
+  .pm-body { grid-template-columns: 1fr; }
+  .pm-side { display: none; }
+}

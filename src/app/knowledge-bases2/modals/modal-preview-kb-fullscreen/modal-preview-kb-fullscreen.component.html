@@ -1,0 +1,450 @@
+<div class="pm-shell">
+
+  <!-- HEADER -->
+  <header class="pm-header">
+    <div class="pm-head-title">
+      <div class="pm-title-icon">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div class="pm-title-text">
+        <div class="pm-title-h">{{ 'KbPage.Preview2.Title' | translate }}</div>
+        <div class="pm-title-sub">{{ 'KbPage.Preview2.Subtitle' | translate }}</div>
+      </div>
+    </div>
+
+    <div class="pm-kb-picker" *ngIf="selectedNamespace">
+      <button class="pm-kb-badge" (click)="toggleKbPicker()" type="button">
+        <span class="pm-kb-dot">{{ initialOf(selectedNamespace?.name) }}</span>
+        <span class="pm-kb-name">{{ selectedNamespace?.name || ('KbPage.Preview2.DefaultKbName' | translate) }}</span>
+        <svg class="pm-kb-caret" viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <div class="pm-kb-menu" *ngIf="showKbPicker">
+        <button class="pm-kb-menu-item"
+                *ngFor="let ns of namespaces"
+                [class.active]="ns?.id === namespaceId"
+                (click)="selectNamespace(ns)" type="button">
+          <span class="pm-kb-dot">{{ initialOf(ns?.name) }}</span>
+          <span class="pm-kb-menu-name">{{ ns?.name }}</span>
+          <span class="pm-kb-menu-count" *ngIf="ns?.count != null">{{ ns.count }}</span>
+        </button>
+      </div>
+    </div>
+    <div class="pm-kb-picker-scrim" *ngIf="showKbPicker" (click)="toggleKbPicker(false)"></div>
+
+    <div class="pm-header-right">
+      <div class="pm-model-tag" *ngIf="selectedModel">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 2l2.39 6.91L21 9.27l-5 4.87L17.18 21 12 17.77 6.82 21 8 14.14 3 9.27l6.61-.36L12 2z"/></svg>
+        {{ selectedModel }}
+      </div>
+      <button class="pm-icon-btn-ghost" (click)="close()" [matTooltip]="'KbPage.Preview2.Close' | translate">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="pm-body">
+
+    <!-- LEFT: SETTINGS SIDEBAR -->
+    <aside class="pm-side">
+
+      <div class="pm-side-head">
+        <div class="pm-side-title">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" class="pm-icon-accent">
+            <path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5L12 2z"/>
+          </svg>
+          {{ 'KbPage.Preview2.SidebarTitle' | translate }}
+        </div>
+        <div class="pm-side-sub">{{ 'KbPage.Preview2.SidebarSub' | translate }}</div>
+      </div>
+
+      <div class="pm-side-tabs">
+        <div class="pm-side-tab" [class.active]="tab === 'ai'" (click)="setTab('ai')">{{ 'KbPage.Preview2.TabModel' | translate }}</div>
+        <div class="pm-side-tab" [class.active]="tab === 'sys'" (click)="setTab('sys')">{{ 'KbPage.Preview2.TabSystem' | translate }}</div>
+        <div class="pm-side-tab" [class.active]="tab === 'srcs'" (click)="setTab('srcs')">{{ 'KbPage.Preview2.TabSources' | translate }}</div>
+      </div>
+
+      <div class="pm-side-body">
+
+        <!-- TAB: MODELLO -->
+        <ng-container *ngIf="tab === 'ai'">
+
+          <div class="pm-field">
+            <div class="pm-f-label-row">
+              <span class="pm-f-label">{{ 'KbPage.Preview2.SelectEngine' | translate }}</span>
+              <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popModel }"></ng-container>
+            </div>
+            <div class="pm-select-wrap">
+              <select [(ngModel)]="selectedModel" class="pm-select">
+                <option *ngFor="let m of modelsList" [value]="m.value">{{ m.name }}</option>
+              </select>
+              <svg class="pm-select-caret" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+            </div>
+          </div>
+
+          <div class="pm-field">
+            <div class="pm-f-label-row">
+              <span class="pm-f-label-group">
+                <span class="pm-f-label">{{ 'KbPage.Preview2.MaxTokens' | translate }}</span>
+                <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popTokens }"></ng-container>
+              </span>
+              <span class="pm-f-val">{{ maxTokens | number:'1.0-0':numberLocale }}</span>
+            </div>
+            <div class="pm-slider"><input type="range" min="1000" max="128000" step="1000" [(ngModel)]="maxTokens" class="pm-range"></div>
+            <div class="pm-range-ends"><span>1k</span><span>128k</span></div>
+          </div>
+
+          <div class="pm-field">
+            <div class="pm-f-label-row">
+              <span class="pm-f-label-group">
+                <span class="pm-f-label">{{ 'KbPage.Preview2.Temperature' | translate }}</span>
+                <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popTemperature }"></ng-container>
+              </span>
+              <span class="pm-f-val">{{ temperature | number:'1.2-2':numberLocale }}</span>
+            </div>
+            <div class="pm-slider"><input type="range" min="0" max="1" step="0.05" [(ngModel)]="temperature" class="pm-range"></div>
+            <div class="pm-range-labels">
+              <span>{{ 'KbPage.Preview2.Deterministic' | translate }}</span>
+              <span>{{ 'KbPage.Preview2.Random' | translate }}</span>
+            </div>
+          </div>
+
+          <div class="pm-field">
+            <div class="pm-f-label-row">
+              <span class="pm-f-label-group">
+                <span class="pm-f-label">{{ 'KbPage.Preview2.ChunksLimit' | translate }}</span>
+                <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popChunks }"></ng-container>
+              </span>
+              <span class="pm-f-val">{{ topK }}</span>
+            </div>
+            <div class="pm-slider"><input type="range" min="1" max="40" step="1" [(ngModel)]="topK" class="pm-range"></div>
+            <div class="pm-range-ends"><span>1</span><span>40</span></div>
+          </div>
+
+          <div class="pm-check-row">
+            <label class="pm-check">
+              <input type="checkbox" [(ngModel)]="streaming">
+              <span class="pm-check-box"></span>
+              <span class="pm-check-label">{{ 'KbPage.Preview2.Streaming' | translate }}</span>
+            </label>
+            <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popStreaming }"></ng-container>
+          </div>
+
+        </ng-container>
+
+        <!-- TAB: SISTEMA -->
+        <ng-container *ngIf="tab === 'sys'">
+
+          <div class="pm-field">
+            <div class="pm-f-label-row">
+              <span class="pm-f-label">{{ 'KbPage.Preview2.SystemContext' | translate }}</span>
+              <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popSystem }"></ng-container>
+            </div>
+            <textarea class="pm-textarea" rows="4" [(ngModel)]="context"></textarea>
+            <div class="pm-help">{{ 'KbPage.Preview2.SystemContextHelp' | translate }}</div>
+          </div>
+
+          <div class="pm-checks">
+            <div class="pm-check-row">
+              <label class="pm-check">
+                <input type="checkbox" [(ngModel)]="advancedPrompt">
+                <span class="pm-check-box"></span>
+                <span class="pm-check-label">{{ 'KbPage.Preview2.AdvancedContext' | translate }}</span>
+              </label>
+              <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popAdvCtx }"></ng-container>
+            </div>
+            <div class="pm-check-row">
+              <label class="pm-check">
+                <input type="checkbox" [(ngModel)]="citations">
+                <span class="pm-check-box"></span>
+                <span class="pm-check-label">{{ 'KbPage.Preview2.GetSources' | translate }}</span>
+              </label>
+              <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popSources }"></ng-container>
+            </div>
+            <div class="pm-check-row">
+              <label class="pm-check">
+                <input type="checkbox" [(ngModel)]="chunkOnly">
+                <span class="pm-check-box"></span>
+                <span class="pm-check-label">{{ 'KbPage.Preview2.ChunksOnly' | translate }}</span>
+              </label>
+              <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popChunksOnly }"></ng-container>
+            </div>
+          </div>
+
+        </ng-container>
+
+        <!-- TAB: FONTI -->
+        <ng-container *ngIf="tab === 'srcs'">
+
+          <div class="pm-field">
+            <div class="pm-f-label-row">
+              <span class="pm-f-label">{{ 'KbPage.Preview2.IndexedSources' | translate }}</span>
+              <span class="pm-f-val">{{ sourcesTotal | number:'1.0-0':numberLocale }}</span>
+            </div>
+
+            <div class="pm-help" *ngIf="sourcesLoading">{{ 'KbPage.Preview2.Loading' | translate }}</div>
+
+            <div class="pm-help" *ngIf="!sourcesLoading && sourcesByType.length === 0">
+              {{ 'KbPage.Preview2.NoContents' | translate }}
+            </div>
+
+            <div class="pm-sources-list" *ngIf="!sourcesLoading && sourcesByType.length > 0">
+              <div class="pm-source-group" *ngFor="let s of sourcesByType" [class.expanded]="s.expanded">
+                <button class="pm-source-row" type="button" (click)="toggleSourceGroup(s)">
+                  <span class="pm-source-row-icon">
+                    <svg *ngIf="s.icon === 'link'" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M3.9 12a3.1 3.1 0 0 1 3.1-3.1h4V7H7a5 5 0 0 0 0 10h4v-1.9H7A3.1 3.1 0 0 1 3.9 12zM8 13h8v-2H8v2zm9-6h-4v1.9h4A3.1 3.1 0 0 1 17 13H13V15h4a5 5 0 0 0 0-10z"/></svg>
+                    <svg *ngIf="s.icon === 'pdf'" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zm-1 7V3.5L18.5 9z"/></svg>
+                    <svg *ngIf="s.icon === 'faq'" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M11 18h2v-2h-2zm1-16a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16zm0-14a4 4 0 0 0-4 4h2a2 2 0 1 1 4 0c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5a4 4 0 0 0-4-4z"/></svg>
+                    <svg *ngIf="s.icon === 'book'" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M18 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/></svg>
+                    <svg *ngIf="s.icon === 'doc'" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+                  </span>
+                  <span class="pm-source-row-label">{{ s.labelKey | translate }}</span>
+                  <span class="pm-source-row-count">{{ s.count | number:'1.0-0':numberLocale }}</span>
+                  <svg class="pm-source-row-caret" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+                </button>
+                <div class="pm-source-items" *ngIf="s.expanded">
+                  <a class="pm-source-item-row"
+                     *ngFor="let item of s.items"
+                     [attr.href]="item.url || null"
+                     [attr.target]="item.url ? '_blank' : null"
+                     [attr.rel]="item.url ? 'noopener' : null"
+                     [class.no-link]="!item.url"
+                     [matTooltip]="item.name">
+                    <span class="pm-source-item-dot"></span>
+                    <span class="pm-source-item-name">{{ item.name }}</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+
+      </div>
+
+      <div class="pm-side-foot">
+        <button class="pm-ghost-btn"
+                [disabled]="saveStatus === 'saving'"
+                (click)="resetSettings()">{{ 'KbPage.Preview2.ResetDefaults' | translate }}</button>
+        <button class="pm-primary-btn"
+                [class.is-saving]="saveStatus === 'saving'"
+                [class.is-success]="saveStatus === 'success'"
+                [class.is-error]="saveStatus === 'error'"
+                [disabled]="saveStatus === 'saving'"
+                (click)="saveSettings()">
+          <ng-container [ngSwitch]="saveStatus">
+            <span *ngSwitchCase="'saving'" class="pm-save-content">
+              <span class="pm-save-spinner" aria-hidden="true"></span>
+              {{ 'KbPage.Preview2.Saving' | translate }}
+            </span>
+            <span *ngSwitchCase="'success'" class="pm-save-content">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              {{ 'KbPage.Preview2.Saved' | translate }}
+            </span>
+            <span *ngSwitchCase="'error'" class="pm-save-content">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M11 15h2v2h-2zm0-8h2v6h-2zm.99-5C6.47 2 2 6.48 2 12s4.47 10 9.99 10S22 17.52 22 12 17.52 2 11.99 2z"/></svg>
+              {{ 'KbPage.Preview2.SaveError' | translate }}
+            </span>
+            <span *ngSwitchDefault>{{ 'Save' | translate }}</span>
+          </ng-container>
+        </button>
+      </div>
+    </aside>
+
+    <!-- RIGHT: CHAT AREA -->
+    <section class="pm-chat">
+      <div class="pm-chat-topbar">
+        <button class="pm-pill-btn" (click)="resetSession()">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.75 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4z"/></svg>
+          {{ 'KbPage.Preview2.NewSession' | translate }}
+        </button>
+      </div>
+
+      <div class="pm-chat-stream" #streamEl>
+
+        <!-- EMPTY STATE -->
+        <div class="pm-empty-hero" *ngIf="messages.length === 0">
+          <div class="pm-hero-badge">
+            <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8z"/></svg>
+            {{ 'KbPage.Preview2.PreviewBadge' | translate }} · {{ selectedNamespace?.name || ('KbPage.Preview2.DefaultKbName' | translate) }} <span *ngIf="selectedModel">· {{ selectedModel }}</span>
+          </div>
+          <h2 class="pm-hero-h">{{ 'KbPage.Preview2.HeroTitle' | translate }}</h2>
+          <p class="pm-hero-sub">{{ 'KbPage.Preview2.HeroSub' | translate }}</p>
+          <div class="pm-suggest-grid">
+            <button class="pm-suggest" *ngFor="let s of suggestions" (click)="pickSuggestion(s)">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" class="pm-icon-accent"><path d="M15.5 14h-.79l-.28-.27A6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zM9.5 14A4.5 4.5 0 1 1 14 9.5 4.5 4.5 0 0 1 9.5 14z"/></svg>
+              <span>{{ s | translate }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- MESSAGES -->
+        <div class="pm-chat-inner" *ngIf="messages.length > 0">
+          <ng-container *ngFor="let m of messages; let i = index">
+
+            <div class="pm-msg-user" *ngIf="m.role === 'user'">
+              <div class="pm-msg-bubble">{{ m.text }}</div>
+            </div>
+
+            <div class="pm-msg-bot" *ngIf="m.role === 'bot'">
+              <div class="pm-bot-avatar">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M20 9V7a2 2 0 0 0-2-2h-3a3 3 0 0 0-6 0H6a2 2 0 0 0-2 2v2a3 3 0 0 0 0 6v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4a3 3 0 0 0 0-6zM9 13a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 9 13zm6 0a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 15 13zM8 15h8v2H8z"/></svg>
+              </div>
+              <div class="pm-bot-body">
+
+                <div class="pm-typing" *ngIf="m.busy">
+                  <span></span><span></span><span></span>
+                </div>
+
+                <div class="pm-bot-text" [class.pm-error]="m.error" *ngIf="!m.busy">{{ m.text }}</div>
+
+                <div class="pm-msg-actions" *ngIf="!m.busy">
+                  <button class="pm-action-btn" (click)="copyToClipboard(m.text)" [matTooltip]="'Copy' | translate">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"/></svg>
+                  </button>
+                </div>
+
+                <div class="pm-source-box" *ngIf="!m.busy && m.source">
+                  <div class="pm-source-head">{{ 'KbPage.Source' | translate }}</div>
+                  <div class="pm-source-list">
+                    <div class="pm-source-item">
+                      <span class="pm-source-num">1</span>
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" class="pm-icon-mute"><path d="M10.59 13.41a1 1 0 0 0 1.41 0l4-4a1 1 0 0 0-1.41-1.41l-4 4a1 1 0 0 0 0 1.41z"/></svg>
+                      <a *ngIf="m.source_url" [href]="m.source_url" target="_blank" class="pm-source-name">{{ m.source_url }}</a>
+                      <span *ngIf="!m.source_url" class="pm-source-name">{{ m.source }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="pm-chunks" *ngIf="!m.busy && m.chunks?.length">
+                  <details>
+                    <summary>{{ 'KbPage.ChunksUsedForTheAnswer' | translate }} ({{ m.chunks.length }})</summary>
+                    <article class="pm-chunk" *ngFor="let c of m.chunks">{{ c }}</article>
+                  </details>
+                </div>
+
+                <div class="pm-msg-stats" *ngIf="!m.busy && !m.error && (m.durationSec !== undefined || m.promptTokens !== undefined || m.ai_model)">
+                  <span class="pm-msg-stat" *ngIf="m.ai_model">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2 9 9l-7 1 5 5-1 7 6-3 6 3-1-7 5-5-7-1z"/></svg>
+                    <span class="pm-msg-stat-val">{{ m.ai_model }}</span>
+                  </span>
+                  <span class="pm-msg-stat" *ngIf="m.durationSec !== undefined">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm1 11h-2V7h2z"/></svg>
+                    <span class="pm-msg-stat-val">{{ 'KbPage.Preview2.Approximately' | translate }} {{ m.durationSec | number:'1.2-2':numberLocale }} {{ 'KbPage.Preview2.SecondsShort' | translate }}</span>
+                  </span>
+                  <span class="pm-msg-stat" *ngIf="m.promptTokens !== undefined">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M4 4h16v4H4zm0 6h10v4H4zm0 6h16v4H4z"/></svg>
+                    <span class="pm-msg-stat-val">{{ m.promptTokens | number:'1.0-0':numberLocale }} {{ 'KbPage.Preview2.TokensUnit' | translate }}</span>
+                  </span>
+                </div>
+
+              </div>
+            </div>
+
+          </ng-container>
+        </div>
+
+      </div>
+
+      <!-- COMPOSER -->
+      <div class="pm-composer">
+        <div class="pm-composer-inner">
+
+          <!-- Tag filter (chips + input) -->
+          <div class="pm-tagbar">
+            <ng-container *ngTemplateOutlet="infoTpl; context: { ref: popChatTags }"></ng-container>
+            <span class="pm-tag-chip" *ngFor="let t of tags; let i = index">
+              <span class="pm-tag-chip-text">{{ t }}</span>
+              <button class="pm-tag-chip-remove" type="button" (click)="removeTag(i)" [attr.aria-label]="('KbPage.Preview2.RemoveTag' | translate) + ' ' + t">
+                <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </span>
+            <input class="pm-tag-input"
+                   type="text"
+                   [(ngModel)]="tagInput"
+                   (keydown)="onTagKeydown($event)"
+                   (blur)="addTagFromInput()"
+                   [placeholder]="tags.length === 0 ? ('KbPage.Preview2.AddTagPlaceholder' | translate) : ('KbPage.Preview2.AddTagPlaceholderShort' | translate)">
+          </div>
+
+          <div class="pm-input-shell">
+            <textarea
+              #inputEl
+              class="pm-text-input"
+              [placeholder]="'KbPage.AskQuestionPlaceholder' | translate"
+              [(ngModel)]="composerText"
+              (keydown)="onInputKeydown($event)"
+              (input)="autosizeComposer(inputEl)"
+              rows="1"></textarea>
+            <button class="pm-send-btn"
+                    [disabled]="!composerText.trim() || busy"
+                    (click)="send()">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </button>
+          </div>
+          <div class="pm-composer-meta">
+            <span>{{ 'KbPage.Preview2.PreviewDisclaimer' | translate }}</span>
+            <span>
+              <kbd>↵</kbd> {{ 'KbPage.Preview2.KeyToSend' | translate }} · <kbd>⇧↵</kbd> {{ 'KbPage.Preview2.KeyNewLine' | translate }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Reusable info icon: anchored to a sat-popover passed via context -->
+<ng-template #infoTpl let-ref="ref">
+  <span class="pm-info"
+        [satPopoverAnchor]="ref"
+        (mouseenter)="openInfo(ref)"
+        (mouseleave)="scheduleCloseInfo(ref)">
+    <svg class="pm-info-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+      <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm1-13h-2v2h2zm0 4h-2v7h2z"/>
+    </svg>
+  </span>
+</ng-template>
+
+<!-- Reusable popover content. `info.text` is a translation key. -->
+<ng-template #popContent let-info="info" let-ref="ref">
+  <div class="pm-info-pop"
+       (mouseenter)="cancelCloseInfo(ref)"
+       (mouseleave)="scheduleCloseInfo(ref)">
+    <div class="pm-info-text">{{ info.text | translate }}</div>
+    <a class="pm-info-link" *ngIf="info.url" [href]="info.url" target="_blank" rel="noopener">{{ 'KbPage.Preview2.LearnMore' | translate }}</a>
+  </div>
+</ng-template>
+
+<!-- One sat-popover per field, anchored "after" the icon so it opens to the right of the sidebar -->
+<sat-popover #popModel horizontalAlign="after" verticalAlign="center" panelClass="pm-info-popover" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.model, ref: popModel }"></ng-container>
+</sat-popover>
+<sat-popover #popTokens horizontalAlign="after" verticalAlign="center" panelClass="pm-info-popover" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.tokens, ref: popTokens }"></ng-container>
+</sat-popover>
+<sat-popover #popTemperature horizontalAlign="after" verticalAlign="center" panelClass="pm-info-popover" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.temperature, ref: popTemperature }"></ng-container>
+</sat-popover>
+<sat-popover #popChunks horizontalAlign="after" verticalAlign="center" panelClass="pm-info-popover" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.chunks, ref: popChunks }"></ng-container>
+</sat-popover>
+<sat-popover #popSystem horizontalAlign="after" verticalAlign="center" panelClass="pm-info-popover" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.system, ref: popSystem }"></ng-container>
+</sat-popover>
+<sat-popover #popAdvCtx horizontalAlign="after" verticalAlign="center" panelClass="pm-info-popover" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.advCtx, ref: popAdvCtx }"></ng-container>
+</sat-popover>
+<sat-popover #popSources horizontalAlign="after" verticalAlign="center" panelClass="pm-info-popover" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.sources, ref: popSources }"></ng-container>
+</sat-popover>
+<sat-popover #popChunksOnly horizontalAlign="after" verticalAlign="center" panelClass="pm-info-popover" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.chunksOnly, ref: popChunksOnly }"></ng-container>
+</sat-popover>
+<sat-popover #popStreaming horizontalAlign="after" verticalAlign="center" panelClass="pm-info-popover" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.streaming, ref: popStreaming }"></ng-container>
+</sat-popover>
+<sat-popover #popChatTags horizontalAlign="before" verticalAlign="center" [panelClass]="['pm-info-popover', 'pm-info-popover--left']" [hasBackdrop]="false" openTransition="120ms ease-out" closeTransition="80ms ease-in">
+  <ng-container *ngTemplateOutlet="popContent; context: { info: infos.chatTags, ref: popChatTags }"></ng-container>
+</sat-popover>
