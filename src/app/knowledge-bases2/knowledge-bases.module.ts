@@ -58,6 +58,7 @@ import { KbUnansweredTabComponent } from './components/kb-unanswered-tab/kb-unan
 import { KbChatbotActionsPanelComponent } from './components/kb-chatbot-actions-panel/kb-chatbot-actions-panel.component';
 import { KbHeaderActionsComponent } from './components/kb-header-actions/kb-header-actions.component';
 import { ModalInstallOnWebsiteComponent } from './modals/modal-install-on-website/modal-install-on-website.component';
+import { ModalPreviewKbFullscreenComponent } from './modals/modal-preview-kb-fullscreen/modal-preview-kb-fullscreen.component';
 import { CodeInstallationModule } from 'app/components/widget-installations/code-installation/code-installation.module';
 
 const routes: Routes = [
@@ -97,7 +98,8 @@ const routes: Routes = [
     ModalAddContentComponent,
     ModalUnansweredQuestionsComponent,
     ModalConfirmActionComponent,
-    ModalInstallOnWebsiteComponent
+    ModalInstallOnWebsiteComponent,
+    ModalPreviewKbFullscreenComponent
   ],
   imports: [
     ClipboardModule,

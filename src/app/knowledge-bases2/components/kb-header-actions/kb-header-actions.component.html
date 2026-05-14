@@ -1,4 +1,19 @@
 <div class="buttons-div">
+
+  <!-- Knowledge Base Preview (primary) -->
+  <button
+    *ngIf="permissionToPreview"
+    id="kb-preview-header"
+    class="btn btn-tdblu-no-boxshadow kb-preview-btn"
+    aria-label="Knowledge Base Preview"
+    (click)="openPreview.emit()"
+  >
+    <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor">
+      <path d="M320-200v-560l440 280-440 280Z" />
+    </svg>
+    <span>{{ 'KbPage.Preview2.Title' | translate }}</span>
+  </button>
+
   <!-- Export Button -->
   <button
     *ngIf="permissionToExportContents && hasContents"

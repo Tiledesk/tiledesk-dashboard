@@ -12,6 +12,7 @@ export class KbHeaderActionsComponent {
   @Input() permissionToAddContents = false;
   @Input() permissionToDelete = false;
   @Input() permissionToSyncLinkedResources = false;
+  @Input() permissionToPreview = true;
 
   @Input() selectedNamespaceIsDefault = false;
 
@@ -19,5 +20,6 @@ export class KbHeaderActionsComponent {
   @Output() importContents = new EventEmitter<void>();
   @Output() deleteNamespace = new EventEmitter<void>();
   @Output() syncLinkedResources = new EventEmitter<void>();
+  @Output() openPreview = new EventEmitter<void>();
 }
 

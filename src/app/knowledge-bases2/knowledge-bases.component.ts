@@ -24,7 +24,7 @@ import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-a
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ModalUploadFileComponent } from './modals/modal-upload-file/modal-upload-file.component';
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
-import { ModalPreviewKnowledgeBaseComponent } from './modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
+import { ModalPreviewKbFullscreenComponent } from './modals/modal-preview-kb-fullscreen/modal-preview-kb-fullscreen.component';
 import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/modal-delete-namespace.component';
 import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
@@ -1698,14 +1698,20 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
   }
 
   onOpenBaseModalPreview(previedata?: any) {
-    const dialogRef = this.dialog.open(ModalPreviewKnowledgeBaseComponent, {
-      backdropClass: 'cdk-overlay-transparent-backdrop',
+    const dialogRef = this.dialog.open(ModalPreviewKbFullscreenComponent, {
       hasBackdrop: true,
-      disableClose: true,
-      width: '400px',
+      backdropClass: 'pm-fullscreen-backdrop',
+      disableClose: false,
+      panelClass: 'pm-fullscreen-dialog',
+      position: { left: '120px', top: '50px' },
+      maxWidth: 'calc(100vw - 170px)',
+      maxHeight: 'calc(100vh - 100px)',
+      width: 'calc(100vw - 170px)',
+      height: 'calc(100vh - 100px)',
       id: 'kb-test',
       data: {
         selectedNamespace: this.selectedNamespace,
+        namespaces: this.namespaces,
         askBody: previedata
       },
     });
