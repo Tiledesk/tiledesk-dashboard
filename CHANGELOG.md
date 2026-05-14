@@ -1,4 +1,9 @@
 # tiledesk-dashboard
+
+### 2.7.214-stage
+- Implements ElevenLabs integration
+- Adds a setting in the widget's advanced settings to show/hide the voice streaming button
+
  
 ### 2.7.212-stage
 - Implement multi-project availability
