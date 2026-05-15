@@ -1,5 +1,10 @@
 # tiledesk-dashboard
  
+
+
+### 2.7.176-minimal
+- added component "preview kb"
+
 ### 2.7.176 (not published)
 - Implements multi-project availability
 
