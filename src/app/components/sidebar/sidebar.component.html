@@ -82,7 +82,7 @@
     <!-- ------------------------------------------- -->
     <!-- CHAT old no iframe   -->
     <!-- ------------------------------------------- -->
-    <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
+    <div *ngIf="isItemEnabled('CHA')" matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100">
       <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
         (click)="openChat()">
@@ -110,7 +110,7 @@
     <!-- HOME   (click)="goToHome()"" -->
     <!-- ------------------------------------------- -->
      <!-- *ngIf="PERMISSION_TO_VIEW_HOME" -->
-    <div  matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
+    <div *ngIf="isItemEnabled('HOM')" matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" matTooltipClass="custom-mat-tooltip">
       <a target="_self" routerLink="project/{{ project?._id }}/home" class="customAncor">
         <span>
