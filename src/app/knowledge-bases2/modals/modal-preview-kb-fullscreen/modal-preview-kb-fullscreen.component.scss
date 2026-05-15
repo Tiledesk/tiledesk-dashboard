@@ -624,6 +624,9 @@ $radius-sm: 7px;
 
   .pm-ghost-btn,
   .pm-primary-btn {
+    // Fixed width so the label/spinner swap does not jitter the layout.
+    flex: 1 1 0;
+    min-width: 140px;
     padding: 8px 18px;
     border-radius: 999px;
     font-size: 13px;
@@ -633,23 +636,7 @@ $radius-sm: 7px;
     cursor: pointer;
     border: none;
     transition: background .15s, color .15s;
-  }
-
-  .pm-ghost-btn {
-    background: #eef0f4;
-    color: $ink;
-    &:hover { background: #e3e6ec; }
-  }
-  .pm-primary-btn {
-    background: $accent;
-    color: #fff;
-    transition: background .15s;
-    &:hover { background: $accent-ink; }
-
-    &.is-saving { background: $accent-ink; cursor: progress; }
-    &.is-success { background: #16a34a; }
-    &.is-error { background: #dc2626; }
-    &:disabled { opacity: .8; }
+    display: inline-flex; align-items: center; justify-content: center;
 
     .pm-save-content {
       display: inline-flex; align-items: center; gap: 6px;
@@ -662,6 +649,28 @@ $radius-sm: 7px;
       border-top-color: #fff;
       animation: pmSaveSpin .8s linear infinite;
     }
+    .pm-save-spinner--dark {
+      border: 2px solid rgba(15, 23, 42, .25);
+      border-top-color: $ink;
+    }
+    &:disabled { opacity: .85; cursor: not-allowed; }
+  }
+
+  .pm-ghost-btn {
+    background: #eef0f4;
+    color: $ink;
+    &:hover:not(:disabled) { background: #e3e6ec; }
+    &.is-saving { cursor: progress; }
+    &.is-success { background: #dcfce7; color: #166534; }
+    &.is-error { background: #fee2e2; color: #991b1b; }
+  }
+  .pm-primary-btn {
+    background: $accent;
+    color: #fff;
+    &:hover:not(:disabled) { background: $accent-ink; }
+    &.is-saving { background: $accent-ink; cursor: progress; }
+    &.is-success { background: #16a34a; }
+    &.is-error { background: #dc2626; }
   }
 }
 
@@ -744,8 +753,16 @@ $radius-sm: 7px;
   display: flex; align-items: flex-start; gap: 10px;
   cursor: pointer;
   font-family: inherit;
+  // Stagger fade+slide-up entrance, delay driven per-button via --pm-anim-delay style
+  opacity: 0;
+  animation: pmSuggestIn .25s ease-out forwards;
+  animation-delay: var(--pm-anim-delay, 0ms);
   &:hover { border-color: $line-2; }
   span { flex: 1; }
+}
+@keyframes pmSuggestIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 // Messages

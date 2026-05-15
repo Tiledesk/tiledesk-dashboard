@@ -1731,6 +1731,8 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
       hasBackdrop: true,
       backdropClass: 'pm-fullscreen-backdrop',
       disableClose: false,
+      autoFocus: false,
+      restoreFocus: false,
       panelClass: 'pm-fullscreen-dialog',
       position: { left: '120px', top: '50px' },
       maxWidth: 'calc(100vw - 170px)',
