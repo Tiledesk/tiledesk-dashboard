@@ -241,8 +241,28 @@ export class KnowledgeBaseTableComponent implements OnInit {
       "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
       "direction": KB_DEFAULT_PARAMS.DIRECTION,
       "status": '',
+      "type": '',
       "search": '',
     }
+  }
+
+  /** After deleting a sitemap while a type filter is active, reset to All types and reload. */
+  resetTypeFilterAndReload(): void {
+    if (!this.filterType) {
+      return;
+    }
+    this.filterType = '';
+    if (!this.searchParams) {
+      this.resetFilter();
+    } else {
+      this.searchParams.type = '';
+      this.searchParams.page = 0;
+    }
+    this.numberPage = 0;
+    this.hasFiltered = true;
+    this.isLoading = true;
+    this.loadByFilter.next({ ...this.searchParams });
+    this.cdr.markForCheck();
   }
 
  

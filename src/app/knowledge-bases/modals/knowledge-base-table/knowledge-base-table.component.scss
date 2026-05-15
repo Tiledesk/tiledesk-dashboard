@@ -247,6 +247,21 @@ td.mat-footer-cell:last-of-type {
     color: gray;
 }
 
+.material-icons-outlined.status-deleting {
+    color: #adadad;
+    animation: kb-status-deleting-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes kb-status-deleting-pulse {
+    0%,
+    100% {
+        color: #adadad;
+    }
+    50% {
+        color: #f8bb86;
+    }
+}
+
 
 table {
     max-width: 100%;
