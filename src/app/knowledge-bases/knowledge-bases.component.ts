@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, isDevMode } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
@@ -43,6 +43,7 @@ import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/mo
 // import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { KnowledgeBaseTableComponent } from './modals/knowledge-base-table/knowledge-base-table.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
 import { QuotesService } from 'app/services/quotes.service';
 import { RoleService } from 'app/services/role.service';
@@ -61,6 +62,8 @@ const Swal = require('sweetalert2')
 })
 
 export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(KnowledgeBaseTableComponent) kbTableComponent: KnowledgeBaseTableComponent;
+
   PLAN_NAME = PLAN_NAME;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
@@ -2593,7 +2596,7 @@ _presentDialogImportContents() {
      kb.deleting = false;
      Swal.fire({
       title: this.translate.instant('Warning'),
-      text: this.translate.instant('KbPage.DeletingTheSitemapNotDeleteTheContents'),
+      html: this.translate.instant('KbPage.DeletingTheSitemapDeleteTheContentsStrong'),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: true,
@@ -3749,8 +3752,12 @@ _presentDialogImportContents() {
         this.kbsListCount = this.kbsListCount - 1;
         this.kbsContentTotalCount = Math.max(0, (Number(this.kbsContentTotalCount) || 0) - 1);
         this.syncNamespaceContentCount(this.kbsContentTotalCount);
-        this.refreshKbsList = !this.refreshKbsList;
         this.hasRemovedKb = true;
+        if (kb.type === 'sitemap' && this.kbTableComponent?.filterType) {
+          this.kbTableComponent.resetTypeFilterAndReload();
+        } else {
+          this.refreshKbsList = !this.refreshKbsList;
+        }
         // let searchParams = {
         //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
         //   "direction": KB_DEFAULT_PARAMS.DIRECTION,

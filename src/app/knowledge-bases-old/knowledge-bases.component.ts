@@ -2547,7 +2547,7 @@ _presentDialogImportContents() {
      kb.deleting = false;
      Swal.fire({
       title: this.translate.instant('Warning'),
-      text: this.translate.instant('KbPage.DeletingTheSitemapNotDeleteTheContents'),
+      html: this.translate.instant('KbPage.DeletingTheSitemapDeleteTheContentsStrong'),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: true,
