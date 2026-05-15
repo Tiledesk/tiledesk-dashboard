@@ -10,8 +10,8 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
 import { TranslateService } from '@ngx-translate/core';
-import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
+import { take, takeUntil, tap } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -671,8 +671,14 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
         if (this.isAgentsPage && this.id_project && createdNamespace?.id) {
           this.kbLinkedResources.ensureOnCreate({ projectId: this.id_project, namespace: createdNamespace }).subscribe({
             next: () => {
-              this.getChatbotUsingNamespace(createdNamespace.id);
-              this.loadDepartmentsAllStatusOnce();
+              // After provisioning, departmentsAllStatus and chatbotsUsingNamespace are both stale.
+              // Force-refresh departments FIRST so that getChatbotUsingNamespace -> resolveInstallParamsFromDepartments
+              // can find the freshly created department and populate selectedNamespaceInstallParams,
+              // otherwise "Installa sul tuo sito web" opens without departmentId/participants until a page reload.
+              this.refreshDepartmentsAllStatus().subscribe({
+                next: () => this.getChatbotUsingNamespace(createdNamespace.id),
+                error: () => this.getChatbotUsingNamespace(createdNamespace.id),
+              });
               // Notify navbar "simulate visitor" dropdown to refresh chatbots list immediately.
               if (typeof window !== 'undefined') {
                 window.dispatchEvent(
@@ -1079,6 +1085,29 @@ export class KnowledgeBases2Component extends PricingBaseComponent implements On
           this.isLoadingDepartmentsAllStatus = false;
         },
       });
+  }
+
+  /**
+   * Force-refresh the departments cache and return an Observable that emits the fresh list.
+   * Use after provisioning a new linked resource (e.g. agent creation) so that
+   * resolveInstallParamsFromDepartments() can immediately find the freshly created department.
+   */
+  private refreshDepartmentsAllStatus(): Observable<Department[]> {
+    this.isLoadingDepartmentsAllStatus = true;
+    return this.departmentService.getDeptsByProjectId().pipe(
+      take(1),
+      takeUntil(this.unsubscribe$),
+      tap({
+        next: (departments: Department[]) => {
+          this.departmentsAllStatus = Array.isArray(departments) ? departments : [];
+          this.isLoadingDepartmentsAllStatus = false;
+        },
+        error: (err) => {
+          this.logger.error('[KNOWLEDGE-BASES-COMP] refreshDepartmentsAllStatus ERROR', err);
+          this.isLoadingDepartmentsAllStatus = false;
+        },
+      }),
+    );
   }
 
   getChatbotUsingNamespace(selectedNamespaceid: string) {

@@ -62,11 +62,10 @@
     <!-- ------------------------------------------- -->
     <!-- CHAT  -->
     <!-- ------------------------------------------- -->
-    <div *ngIf="isItemEnabled('CHT')" matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
+    <!-- <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" routerLinkActive="item-active" 
       [class.item-active]="CONVERSATION_DETAIL_ROUTE_IS_ACTIVE">
 
-      <!-- <i class="material-icons sidebar-icons">chat</i> -->
       <a id="openchat-a" #openchatbtn class="customAncor" 
         [routerLink]="project ? ['/project', project._id, 'conversation-detail'] : ['/conversation-detail']"
         (click)="openChat()">
@@ -78,12 +77,40 @@
         <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
           class="new-messages-count">{{new_messages_count}} </span>
       </a>
+    </div> -->
+
+    <!-- ------------------------------------------- -->
+    <!-- CHAT old no iframe   -->
+    <!-- ------------------------------------------- -->
+    <div *ngIf="isItemEnabled('CHA')" matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
+      matTooltipHideDelay="100">
+      <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
+        (click)="openChat()">
+        <span id="openchat-span">
+         
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="none">
+            <style type="text/css">
+              .openchat-st0 {
+                fill: none !important;
+               
+              }
+            </style>
+            <path class="openchat-st0" d="M0 0h24v24H0V0z" fill="none" />
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+          </svg>
+
+        </span>
+        <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
+          class="new-messages-count">{{new_messages_count}} </span>
+      </a>
     </div>
 
     <!-- ------------------------------------------- -->
     <!-- HOME   (click)="goToHome()"" -->
     <!-- ------------------------------------------- -->
-    <div *ngIf="PERMISSION_TO_VIEW_HOME && isItemEnabled('HOM')" matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
+     <!-- *ngIf="PERMISSION_TO_VIEW_HOME" -->
+    <div *ngIf="isItemEnabled('HOM')" matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" matTooltipClass="custom-mat-tooltip">
       <a target="_self" routerLink="project/{{ project?._id }}/home" class="customAncor">
         <span>
@@ -97,7 +124,7 @@
     </div>
 
     <!-- -------------------------------------------------------- -->
-    <!--  @ Knowledge Bases  && ARE_NEW_KB == true  && isVisibleKNB-->
+    <!--  @ Knowledge Bases -->
     <!-- -------------------------------------------------------- -->
     <ng-container *ngIf="PERMISSION_TO_VIEW_KB"> 
       <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB && isItemEnabled('KNB')">
