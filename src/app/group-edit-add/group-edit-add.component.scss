@@ -289,7 +289,7 @@ button.close {
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 1px solid #eee;
+    // border: 1px solid #eee;
     margin-right: 15px;
     object-fit: cover;
 }
@@ -313,6 +313,56 @@ button.close {
     font-size: 12px;
     text-transform: uppercase;
     line-height: 1;
+}
+
+// Teammate availability dot (same semantics as sidebar; sized for 32px avatar)
+.group-member-status-icon {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    right: -2px;
+    bottom: 0px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    box-sizing: border-box;
+    pointer-events: none;
+    background-color: #4caf50;
+}
+
+.group-member-status-icon.is-user-online {
+    background-color: #4caf50;
+}
+
+.group-member-status-icon.is-user-offline {
+    background-color: #f44336;
+}
+
+.group-member-status-icon.is-user-inactive {
+    background-color: #697482;
+}
+
+.group-member-status-icon-in-modal {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    right: -2px;
+    bottom: 0px;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    box-sizing: border-box;
+    pointer-events: none;
+    background-color: #4caf50;
+}
+.group-member-status-icon-in-modal.is-user-online {
+    background-color: #4caf50;
+}
+
+.group-member-status-icon-in-modal.is-user-offline {
+    background-color: #f44336;
+}
+
+.group-member-status-icon-in-modal.is-user-inactive {
+    background-color: #697482;
 }
 
 

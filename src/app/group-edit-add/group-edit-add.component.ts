@@ -15,7 +15,7 @@ import { DepartmentService } from 'app/services/department.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { Subject } from 'rxjs';
-import { avatarPlaceholder, getColorBck } from 'app/utils/util';
+import { avatarPlaceholder, getColorBck, getUserStatusFromProjectUser } from 'app/utils/util';
 @Component({
   selector: 'app-group-edit-add',
   templateUrl: './group-edit-add.component.html',
@@ -772,6 +772,28 @@ goToDeptDetail(dept_id){
     this.router.navigate(['project/' + this.project_id + '/user/edit/' + member_id]);
   }
 
-
+  /**
+   * Availability dot classes aligned with sidebar (user_available + profileStatus on project user JSON).
+   */
+  projectUserStatusIconNgClass(projectUser: any): Record<string, boolean> {
+    const status = getUserStatusFromProjectUser(projectUser);
+    const classes: Record<string, boolean> = {
+      'is-user-online': false,
+      'is-user-offline': false,
+      'is-user-inactive': false,
+    };
+    if (!status) {
+      classes['is-user-offline'] = true;
+      return classes;
+    }
+    if (status.name === 'Inactive') {
+      classes['is-user-inactive'] = true;
+    } else if (status.name === 'Unavailable') {
+      classes['is-user-offline'] = true;
+    } else {
+      classes['is-user-online'] = true;
+    }
+    return classes;
+  }
 
 }

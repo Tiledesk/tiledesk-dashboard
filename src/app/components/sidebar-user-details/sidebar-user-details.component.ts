@@ -429,15 +429,15 @@ export class SidebarUserDetailsComponent implements OnInit {
   getProjects() {
     this.logger.log('[SIDEBAR-USER-DETAILS] calling getProjects ... ');
     this.projectService.getProjects().subscribe((projects: ProjectUser[]) => {
-      console.log('[SIDEBAR-USER-DETAILS] getProjects PROJECTS ', projects);
+      this.logger.log('[SIDEBAR-USER-DETAILS] getProjects PROJECTS ', projects);
       if (projects) {
         this.projects = projects.filter((prj: ProjectUser) => prj?.id_project?.status === 100);
         this.projects.forEach((prj: ProjectUser) => {
           prj.teammateStatus = getUserStatusFromProjectUser(prj as any);
         });
-        console.log('[SIDEBAR-USER-DETAILS] getProjects this.project ', this.project);
+        this.logger.log('[SIDEBAR-USER-DETAILS] getProjects this.project ', this.project);
         this.syncCurrentProjectTeammateStatusFromProjectsList();
-        console.log('[SIDEBAR-USER-DETAILS] getProjects this.project after ', this.project);
+        this.logger.log('[SIDEBAR-USER-DETAILS] getProjects this.project after ', this.project);
       }
     }, (error) => {
       this.logger.error('[SIDEBAR-USER-DETAILS] getProjects - ERROR ', error);
