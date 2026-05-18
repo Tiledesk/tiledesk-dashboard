@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.216-stage
+- Implements integrations with Cerebras and OpenRouter
+
 ### 2.7.215-stage
 - Deletes all content associated with a sitemap when the sitemap is deleted
 
