@@ -3229,6 +3229,8 @@ _presentDialogImportContents() {
   }
 
   onLoadByFilter(searchParams, calledby?: string) {
+    // Avoid stale delete flag: empty list during filter reload must not flip KB table to "no content" empty state
+    this.hasRemovedKb = false;
     // Store last used search params so we can re-apply them after an update
     this.lastKbSearchParams = { ...searchParams };
     // Update current sort params to sync with table component
@@ -3753,8 +3755,8 @@ _presentDialogImportContents() {
         this.kbsContentTotalCount = Math.max(0, (Number(this.kbsContentTotalCount) || 0) - 1);
         this.syncNamespaceContentCount(this.kbsContentTotalCount);
         this.hasRemovedKb = true;
-        if (kb.type === 'sitemap' && this.kbTableComponent?.filterType) {
-          this.kbTableComponent.resetTypeFilterAndReload();
+        if (kb.type === 'sitemap' && this.kbTableComponent) {
+          this.kbTableComponent.resetFiltersAfterSitemapDelete();
         } else {
           this.refreshKbsList = !this.refreshKbsList;
         }
