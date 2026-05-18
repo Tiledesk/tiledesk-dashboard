@@ -225,6 +225,12 @@
                                 </span>
                                 {{ 'KbPage.StatusError' | translate }}
                             </ng-option>
+                            <ng-option value="500"> 
+                                <span class="material-icons-outlined status-icon status--deleting" style="vertical-align: middle;font-size: 18px;">
+                                    delete_sweep
+                                </span>
+                                {{ 'KbPage.Deleting' | translate }}
+                            </ng-option>
                         </ng-select>
                     </div>
 
@@ -305,13 +311,13 @@
                     <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
                         (click)="$event.stopPropagation(); onOpenAddContent()"
                         matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
-                        #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                        <span>
+                        #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                        <!-- <span>
                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                 width="24px" fill="#fff" style="vertical-align: middle;">
                                 <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
                             </svg>
-                        </span>
+                        </span> -->
                         <span> {{ 'Add' | translate }} </span>
                     </button>
                 </div>
@@ -327,7 +333,7 @@
                         <button id="ai-settings" class="btn custom--button preview-settings" style="padding: 7px 8px !important"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreviewSettings()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="AI settings" #tooltip="matTooltip"
-                            matTooltipPosition='below' matTooltipHideDelay="100">
+                            matTooltipPosition='above' matTooltipHideDelay="100">
                             <span>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
                                     width="24px" fill="#fff" style="vertical-align: middle;">
@@ -345,7 +351,7 @@
                         <button id="kb-preview" class="btn custom--button preview" aria-label="Preview"
                             (click)="$event.stopPropagation(); onOpenBaseModalPreview()"
                             matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.KBpreview' | translate}}"
-                            #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                             <!-- <span class="material-icons-round">play_arrow</span> -->
                             <span class="preview-icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
@@ -545,6 +551,16 @@
                                     matTooltipPosition='above' 
                                     matTooltipHideDelay="100">
                                     error
+                                </span>
+                                <span *ngIf="kb.status == 500" id="deleting"
+                                    class="material-icons-outlined status-icon status-deleting"
+                                    style="vertical-align: middle;"
+                                    matTooltipClass="kb-custom-mat-tooltip" 
+                                    matTooltip="{{'KbPage.Deleting' | translate}}" 
+                                    #tooltip="matTooltip"
+                                    matTooltipPosition='above' 
+                                    matTooltipHideDelay="100">
+                                    delete_sweep
                                 </span>
                             </ng-container>
                             <ng-container *ngIf="kb.type === 'sitemap'"> 

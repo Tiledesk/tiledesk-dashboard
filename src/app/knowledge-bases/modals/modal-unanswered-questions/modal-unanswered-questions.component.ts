@@ -286,4 +286,61 @@ export class ModalUnansweredQuestionsComponent implements OnInit, OnChanges, OnD
       }
     });
   }
+
+
+  downloadUnansweredQuestions(format: 'csv' | 'json'): void {
+    if (!this.id_project || !this.namespace?.id) {
+      this.logger.error('[ModalUnansweredQuestions] downloadUnansweredQuestions: missing project or namespace');
+      return;
+    }
+    this.unansweredQuestionsService
+      .downloadUnansweredQuestions(this.id_project, this.namespace.id, format)
+      .subscribe({
+        next: (text: string) => {
+          const ext = format === 'json' ? 'json' : 'csv';
+          const mime = format === 'json' ? 'application/json' : 'text/csv;charset=utf-8';
+          const base = String(this.namespace?.name || 'namespace').replace(/[^\w\-\s]+/g, '_').replace(/\s+/g, '_');
+          const blob = new Blob([text], { type: mime });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `unanswered_questions_${base}.${ext}`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+          this.logger.error('[ModalUnansweredQuestions] downloadUnansweredQuestions error', error);
+        }
+      });
+  }
+
+  downloadAnsweredQuestions(format: 'csv' | 'json'): void {
+    if (!this.id_project || !this.namespace?.id) {
+      this.logger.error('[ModalUnansweredQuestions] downloadAnsweredQuestions: missing project or namespace');
+      return;
+    }
+    this.unansweredQuestionsService
+      .downloadAnsweredQuestions(this.id_project, this.namespace.id, format)
+      .subscribe({
+        next: (text: string) => {
+          const ext = format === 'json' ? 'json' : 'csv';
+          const mime = format === 'json' ? 'application/json' : 'text/csv;charset=utf-8';
+          const base = String(this.namespace?.name || 'namespace').replace(/[^\w\-\s]+/g, '_').replace(/\s+/g, '_');
+          const blob = new Blob([text], { type: mime });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `answered_questions_${base}.${ext}`;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          window.URL.revokeObjectURL(url);
+        },
+        error: (error) => {
+          this.logger.error('[ModalUnansweredQuestions] downloadAnsweredQuestions error', error);
+        }
+      });
+  }
 } 
