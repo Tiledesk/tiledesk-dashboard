@@ -1,9 +1,11 @@
 .analytics-new-page {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 64px);
+  // height: calc(100vh - 64px);
+  height: 100vh;
   min-height: 400px;
   position: relative;
+  margin-top: 40px;
 }
 
 .analytics-new-iframe {
