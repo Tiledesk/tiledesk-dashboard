@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.215-stage
+- Deletes all content associated with a sitemap when the sitemap is deleted
+
 ### 2.7.214-stage
 - Implements ElevenLabs integration
 - Adds a setting in the widget's advanced settings to show/hide the voice streaming button
