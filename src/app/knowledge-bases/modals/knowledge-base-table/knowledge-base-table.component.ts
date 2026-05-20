@@ -261,19 +261,6 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.cdr.markForCheck();
   }
 
- 
-  /** After deleting a sitemap KB: clear all list filters and reload (child URLs may still be removing). */
-  resetFiltersAfterSitemapDelete(): void {
-    this.resetFilter();
-    this.numberPage = 0;
-    this.hasFiltered = true;
-    if (this.timeoutId) {
-      clearTimeout(this.timeoutId);
-    }
-    this.isLoading = true;
-    this.loadByFilter.next({ ...this.searchParams });
-    this.cdr.markForCheck();
-  }
 
  
 
