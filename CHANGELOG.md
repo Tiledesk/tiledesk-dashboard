@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.7.174-AR
+- Disables the stream option if the Chunks only option is enabled
+- Deletes all content associated with a sitemap when the sitemap is deleted (ITDELSDAM-5226)
+- Resolves filter/reset inconsistencies and empty state issues
+- Adds the ability to export unanswered and answered questions in CSV or JSON format (ITDELSDAM-5225)
+- Gets the fonts from the metadata object returned in the response if the Chunks only option is enabled.
+- Displays a specific message in the response field of the Knowledge Base Preview dialog if the Chunks only option is enabled
+- Fixes the bug : Ollama and Vllm models not displayed in preview
+
 ### 2.7.173-AR
 - Improves the Knowledge Bases page with KPI cards (contents, answered, unanswered, answer rate)
 - Adds the ability to view questions asked to AI agents and to search by text (ITDELSDAM-5099)
