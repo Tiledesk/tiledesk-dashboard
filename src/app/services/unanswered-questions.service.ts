@@ -145,7 +145,39 @@ export class UnansweredQuestionsService {
     return this._httpClient.get<UnansweredQuestion[]>(url, httpOptions);
   }
 
- 
+  downloadUnansweredQuestions(
+    id_project: string,
+    namespace_id: string,
+    format: 'csv' | 'json' = 'csv'
+  ): Observable<string> {
+    const mode = format === 'json' ? 'json' : 'csv';
+    const url = `${this.SERVER_BASE_PATH}${id_project}/kb/unanswered/${namespace_id}/export?mode=${mode}`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      }),
+      responseType: 'text' as const
+    };
+    return this._httpClient.get(url, httpOptions);
+  }
+
+  downloadAnsweredQuestions(  
+    id_project: string,
+    namespace_id: string,
+    format: 'csv' | 'json' = 'csv'
+  ): Observable<string> {
+    const mode = format === 'json' ? 'json' : 'csv';
+    const url = `${this.SERVER_BASE_PATH}${id_project}/kb/answered/${namespace_id}/export?mode=${mode}`;
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      }),
+      responseType: 'text' as const
+    };
+    return this._httpClient.get(url, httpOptions);
+  }
 
   mock_getUnansweredQuestions(): Observable<UnansweredQuestion[]> {
     return of([

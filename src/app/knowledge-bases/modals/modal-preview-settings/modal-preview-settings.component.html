@@ -667,7 +667,7 @@
         <!-- ------------------- -->
         <!-- Advanced Context -->
         <!-- ------------------- -->
-        <div class="checkbox" id="advanced-context"  [ngStyle]="{'margin-bottom': !wasOpenedFromThePreviewKBModal ? '3px' : '3px'}">
+        <div class="checkbox" id="advanced-context"  style="margin-top: 8px;">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
             [satPopoverAnchor]="advancedContext"
@@ -742,7 +742,7 @@
         <!-- --------------------- -->
         <!-- Get Contents Sources -->
         <!-- --------------------- -->
-        <div  class="checkbox" id="contents-sources" [ngStyle]="{'margin-bottom': !wasOpenedFromThePreviewKBModal ? '3px' : '3px',  'margin-top': !wasOpenedFromThePreviewKBModal ? '0px' : '3px'}">
+        <div  class="checkbox" id="contents-sources">
          
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
@@ -818,7 +818,7 @@
         <!-- ----------------------------- -->
         <!-- Chunk only -->
         <!-- ----------------------------- -->
-        <div id="chunk-only" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal  ? '0px' : '0px' }">
+        <div id="chunk-only" class="checkbox">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [satPopoverAnchor]="chunkonly"
             (mouseenter)="openHelpPopover(chunkonly)"
@@ -879,7 +879,7 @@
         <!-- ----------------------------- -->
         <!-- HyDE -->
         <!-- ----------------------------- -->
-        <div id="use-hyde" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal ? '3px' : '3px' }">
+        <div id="use-hyde" class="checkbox">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                 [satPopoverAnchor]="hydePopover"
                 (mouseenter)="openHelpPopover(hydePopover)"
@@ -945,7 +945,7 @@
         <!-- ----------------------------- -->
         <!-- Use cache -->
         <!-- ----------------------------- -->
-        <div id="use-cache" class="checkbox" [ngStyle]="{'margin-top': !wasOpenedFromThePreviewKBModal ? '3px' : '3px' }">
+        <div id="use-cache" class="checkbox">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
                 [satPopoverAnchor]="useCachePopover"
                 (mouseenter)="openHelpPopover(useCachePopover)"

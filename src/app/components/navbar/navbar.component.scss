@@ -15,7 +15,36 @@
   right: 0;
   z-index: 1029;
   background-color: #fff; // Ensure navbar has background
+  //  width: 100%;
 }
+
+// @media (min-width: 2000px) {
+
+//     .navbar-absolute .container-fluid {
+//         max-width: 100% !important;
+//         margin: 0 !important;
+//         display: flex !important;
+//         align-items: center;
+//     }
+
+//     /* FIX CRITICO */
+//     .navbar-collapse {
+//         display: flex !important;
+//         flex-basis: auto !important;
+//         flex-grow: 1 !important;
+//         justify-content: flex-end !important;
+//         min-width: 0 !important; /* evita overflow */
+//     }
+
+//     /* FIX CRITICO 2 */
+//     .navbar-nav {
+//         display: flex !important;
+//         flex-direction: row !important;
+//         align-items: center;
+//         margin-left: auto !important;
+//         white-space: nowrap; /* evita rotture strane */
+//     }
+// }
 
 .navbar .container-fluid {
   display: flex;

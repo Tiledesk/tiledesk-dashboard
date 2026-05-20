@@ -31,13 +31,13 @@
 
     <div class="input-field">
         <label>URL</label>
-        <input id="vLLM-url" class="custom-input" type="text" name="vLLM-url"
+        <!-- <input id="vLLM-url" class="custom-input" type="text" name="vLLM-url"
             placeholder="URL of the external vLLM server" 
             [(ngModel)]="integration.value.url" autocomplete="off" 
-            autocorrect="off" autocapitalize="off" spellcheck="false">
+            autocorrect="off" autocapitalize="off" spellcheck="false"> -->
             
         <input id="vLLM-url" class="custom-input" type="url" name="vLLM-url"
-            placeholder="URL of the external vLLM server" (input)="handleInput($event)"
+            placeholder="URL of the external vLLM server"
             [(ngModel)]="integration.value.url" autocomplete="off" style="font-size: 14px;">
     </div>
 
@@ -71,7 +71,7 @@
             [value]="getDisplayValue()"
             (input)="handleInput($event)"
             (keydown.backspace)="handleBackspace()"
-            autocomplete="off" #maskedInput>
+            autocomplete="off" #maskedInput style="font-size: 14px;">
             <div class="show-hide-button">
                 <button type="button" class="eye-btn" (click)="toggleMask(maskedInput)">
                     <span *ngIf="isMasked === true" class="material-icons-outlined">visibility_off</span>

@@ -368,6 +368,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     // this.listenToAiSettingsChanges()
     this.listenToOnClickedBackdrop()
     this.listenToHasClickedInsideModalPreviewKb()
+    this.getVllmModels()
+    this.getOllamaModels()
     this.loadModelGroups();
   }
 
@@ -383,6 +385,68 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   //     }
   //   })
   // }
+
+  getVllmModels() {
+    const integrationName = 'vllm';
+    this.integrationService.getIntegrationByName(integrationName).subscribe({
+      next: (res: any) => {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+
+        const vllmProvider = LLM_MODEL.find(p => p.value === 'vllm');
+        if (vllmProvider && res?.value?.models?.length) {
+          vllmProvider.models = res.value.models.map((item: string) => ({
+            name: item,
+            value: item,
+            status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
+          }));
+
+          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI vllmProvider:', vllmProvider.models);
+        } else {
+          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+        }
+
+        // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
+        this.loadModelGroups();
+      },
+      error: (err) => {
+         this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+      },
+      complete: () => {
+         this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+      }
+    });
+  }
+
+  getOllamaModels() {
+    const integrationName = 'ollama';
+    this.integrationService.getIntegrationByName(integrationName).subscribe({
+      next: (res: any) => {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+
+        const ollamaProvider = LLM_MODEL.find(p => p.value === 'ollama');
+        if (ollamaProvider && res?.value?.models?.length) {
+          ollamaProvider.models = res.value.models.map((item: string) => ({
+            name: item,
+            value: item,
+            status: 'active' // aggiungi sempre lo status, altrimenti il filtro lo scarta
+          }));
+
+          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI ollama:', ollamaProvider.models);
+        } else {
+          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Ollama');
+        }
+
+        // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
+        this.loadModelGroups();
+      },
+      error: (err) => {
+        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getOllamaModels:', err);
+      },
+      complete: () => {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+      }
+    });
+  }
 
    loadModelGroups() {
     const ai_models = loadTokenMultiplier(this.appConfigService.getConfig().aiModels)

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, isDevMode } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild, isDevMode } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
@@ -43,6 +43,7 @@ import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/mo
 // import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
+import { KnowledgeBaseTableComponent } from './modals/knowledge-base-table/knowledge-base-table.component';
 import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
 import { QuotesService } from 'app/services/quotes.service';
 import { RoleService } from 'app/services/role.service';
@@ -61,6 +62,8 @@ const Swal = require('sweetalert2')
 })
 
 export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild(KnowledgeBaseTableComponent) kbTableComponent: KnowledgeBaseTableComponent;
+
   PLAN_NAME = PLAN_NAME;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
   public isChromeVerGreaterThan100: boolean;
@@ -1220,7 +1223,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
         this.selectedNamespaceName = namespace['name']
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+        if (this.selectedTab === 'unanswered') {
+          this.switchTab('contents');
+        }
+        this.router.navigate(
+          ['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id],
+          { queryParams: { tab: null, questionsSub: null }, queryParamsHandling: 'merge', replaceUrl: true }
+        );
 
         // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
         // this.selectedNamespaceID = namespace['id'];
@@ -2593,7 +2602,8 @@ _presentDialogImportContents() {
      kb.deleting = false;
      Swal.fire({
       title: this.translate.instant('Warning'),
-      text: this.translate.instant('KbPage.DeletingTheSitemapNotDeleteTheContents'),
+      // text: this.translate.instant('KbPage.DeletingTheSitemapNotDeleteTheContents'),
+      html: this.translate.instant('KbPage.DeletingTheSitemapDeleteTheContentsStrong'),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: true,
@@ -3226,6 +3236,8 @@ _presentDialogImportContents() {
   }
 
   onLoadByFilter(searchParams, calledby?: string) {
+    // Avoid stale delete flag: empty list during filter reload must not flip KB table to "no content" empty state
+    this.hasRemovedKb = false;
     // Store last used search params so we can re-apply them after an update
     this.lastKbSearchParams = { ...searchParams };
     // Update current sort params to sync with table component
@@ -3749,8 +3761,13 @@ _presentDialogImportContents() {
         this.kbsListCount = this.kbsListCount - 1;
         this.kbsContentTotalCount = Math.max(0, (Number(this.kbsContentTotalCount) || 0) - 1);
         this.syncNamespaceContentCount(this.kbsContentTotalCount);
-        this.refreshKbsList = !this.refreshKbsList;
+        // this.refreshKbsList = !this.refreshKbsList;
         this.hasRemovedKb = true;
+        if (kb.type === 'sitemap' && this.kbTableComponent) {
+          this.kbTableComponent.resetFiltersAfterSitemapDelete();
+        } else {
+          this.refreshKbsList = !this.refreshKbsList;
+        }
         // let searchParams = {
         //   "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
         //   "direction": KB_DEFAULT_PARAMS.DIRECTION,

@@ -82,15 +82,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
   question: string = "";
   /** Preview: risposta in streaming (default) vs risposta completa in un’unica richiesta. */
   previewUseStream = true;
-   /**
-   * Snapshot of `previewUseStream` taken right before `useCache` is turned on,
-   * so we can restore it when the user turns cache off again. Cache and
-   * streaming are mutually exclusive at the API level, so we force stream off
-   * while cache is on; without this snapshot the stream toggle would stay off
-   * after disabling cache, even though the UI re-enables it.
-   * `null` means "no pending restore".
+  /**
+   * Snapshot of `previewUseStream` before cache or chunks-only forces stream off,
+   * restored when both are disabled again.
    */
-  private previewUseStreamBeforeCache: boolean | null = null;
+  private previewUseStreamBeforeExclusiveMode: boolean | null = null;
   answer: string = "";
   source_url: any;
   responseTime: number | null = null;
@@ -222,10 +218,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       //  this.previewUseStream = false;
       // }
 
-      // Cache and streaming are mutually exclusive: cached responses cannot be
-      // streamed. The helper forces stream off when cache is on and restores
-      // the previous stream value when cache is turned off.
-      this.syncStreamWithCache();
+     
+      this.syncPreviewStreamWithSettings();
 
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace', this.selectedNamespace)
       this.logger.log('[MODAL-PREVIEW-KB] selectedNamespace preview_settings', this.selectedNamespace.preview_settings)
@@ -309,22 +303,25 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
   }
 
-   /**
-   * Keep `previewUseStream` in sync with `useCache`. Cache and streaming are
-   * mutually exclusive at the API level: when cache turns ON we snapshot the
-   * current stream value and force stream OFF; when cache turns OFF we restore
-   * the snapshotted value so the UI reflects what the user previously had.
-   * Idempotent on repeated calls with the same `useCache` state.
+
+  /** Stream toggle disabled when cache or chunks-only is on (mutually exclusive with streaming). */
+  get isPreviewStreamToggleDisabled(): boolean {
+    return this.useCache === true || this.chunkOnly === true;
+  }
+
+  /**
+   * Keep `previewUseStream` in sync with `useCache` and `chunkOnly`.
+   * When either is on: snapshot stream value and force stream off; when both off: restore.
    */
-  private syncStreamWithCache(): void {
-    if (this.useCache === true) {
-      if (this.previewUseStreamBeforeCache === null) {
-        this.previewUseStreamBeforeCache = this.previewUseStream;
+  private syncPreviewStreamWithSettings(): void {
+    if (this.isPreviewStreamToggleDisabled) {
+      if (this.previewUseStreamBeforeExclusiveMode === null) {
+        this.previewUseStreamBeforeExclusiveMode = this.previewUseStream;
       }
       this.previewUseStream = false;
-    } else if (this.previewUseStreamBeforeCache !== null) {
-      this.previewUseStream = this.previewUseStreamBeforeCache;
-      this.previewUseStreamBeforeCache = null;
+    } else if (this.previewUseStreamBeforeExclusiveMode !== null) {
+      this.previewUseStream = this.previewUseStreamBeforeExclusiveMode;
+      this.previewUseStreamBeforeExclusiveMode = null;
     }
   }
 
@@ -602,10 +599,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         //  this.previewUseStream = false;
         // }
 
-        // Cache and streaming are mutually exclusive: cached responses cannot
-        // be streamed. The helper forces stream off when cache is on and
-        // restores the previous stream value when cache is turned off again.
-        this.syncStreamWithCache();
+       
+       this.syncPreviewStreamWithSettings();
       } else {
         this.logger.log('[MODAL-PREVIEW-KB] editedAiSettings are empty')
       }
@@ -709,13 +704,15 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
       this.logger.log("ask gpt preview this.qa?.content_chunks: ", this.qa?.content_chunks);
       this.logger.log("ask gpt preview this.qa?.chunks: ", this.qa?.chunks);
-      if (this.qa?.content_chunks) {
-        this.contentChunks = this.qa?.content_chunks 
-      } else if (this.qa?.chunks)  {
-        this.contentChunks = this.qa?.chunks
-      }
+     // if (this.qa?.content_chunks) {
+     //   this.contentChunks = this.qa?.content_chunks 
+     // } else if (this.qa?.chunks)  {
+     //   this.contentChunks = this.qa?.chunks
+     // }
      
-      this.contentSources = this.extractAllSources(response);
+     // this.contentSources = this.extractAllSources(response);
+      this.contentChunks = this.extractContentChunks(response);
+      this.contentSources = this.extractSourcesForPreview(response);
       this.logger.log("ask gpt preview contentChunks: ", this.contentChunks);
       this.logger.log("ask gpt preview contentSources: ", this.contentSources);
       // this.logger.log("ask gpt preview response: ", response, startTime, endTime, this.responseTime);
@@ -976,13 +973,40 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
   }
 
+  /** Chunk list: `content_chunks` (default) or `chunks` when chunks-only mode. */
+  private extractContentChunks(response: any): string[] {
+    if (!response) {
+      return [];
+    }
+    if (Array.isArray(response.chunks) && response.chunks.length) {
+      return response.chunks;
+    }
+    if (Array.isArray(response.content_chunks) && response.content_chunks.length) {
+      return response.content_chunks;
+    }
+    return [];
+  }
+
+  /** Fonti per risposta non-stream (include metadata quando chunks-only). */
+  private extractSourcesForPreview(response: any): { value: string; isUrl: boolean }[] {
+    if (!response) {
+      return [];
+    }
+    if (this.chunkOnly && Array.isArray(response.metadata)) {
+      return this.extractSourcesFromMetadata(response.metadata);
+    }
+    return this.extractAllSources(response);
+  }
+
   /**
    * Estrae tutte le fonti da response.sources (array) o response.source (stringa).
    * Supporta items come stringa o oggetto con .url, .href, .source.
    */
   private extractAllSources(response: any): { value: string; isUrl: boolean }[] {
     const out: { value: string; isUrl: boolean }[] = [];
-    if (!response) return out;
+    if (!response) {
+      return out;
+    }
     if (response.sources && Array.isArray(response.sources)) {
       for (const item of response.sources) {
         const value = typeof item === 'string' ? item : String(item?.url ?? item?.href ?? item?.source ?? item ?? '');
@@ -995,6 +1019,35 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       if (value && value.trim()) {
         out.push({ value: value.trim(), isUrl: this.isValidURL(value.trim()) });
       }
+    }
+    return out;
+  }
+
+    private extractSourcesFromMetadata(metadata: any[]): { value: string; isUrl: boolean }[] {
+    const out: { value: string; isUrl: boolean }[] = [];
+    const seen = new Set<string>();
+    for (const item of metadata) {
+      if (!item) {
+        continue;
+      }
+      const source = String(item.source ?? '').trim();
+      const fileName = String(item.file_name ?? '').trim();
+      const type = String(item.type ?? '').toLowerCase();
+      let value = '';
+      let isUrl = false;
+      if (source && (type === 'url' || this.isValidURL(source))) {
+        value = source;
+        isUrl = true;
+      } else if (fileName) {
+        value = fileName;
+      } else if (source) {
+        value = source;
+      }
+      if (!value || seen.has(value)) {
+        continue;
+      }
+      seen.add(value);
+      out.push({ value, isUrl });
     }
     return out;
   }

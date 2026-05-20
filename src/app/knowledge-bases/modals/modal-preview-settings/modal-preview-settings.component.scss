@@ -328,6 +328,78 @@
     color: var(--blue-20);
 }
 
+// AI settings checkboxes: compact hit-area so a click never falls onto the next row.
+// `bootstrap-material-design/material.min.js` auto-injects `<span class="checkbox-material">`
+// after each `<input type="checkbox">` inside `.checkbox`, so we must NOT add it in the template.
+// The injected `.checkbox-material:before` is a 46x46px invisible ripple circle (`transform: scale3d(2.3, 2.3, 1)`)
+// that, with `opacity: 0`, still intercepts pointer events and reaches the row above/below.
+:host ::ng-deep {
+    .checkbox-container .checkbox,
+    #re-ranking.checkbox {
+        position: relative;
+        display: block;
+        margin: 0 0 8px 0;
+        padding: 0;
+        overflow: visible;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        > label.setting-label {
+            display: inline-flex !important;
+            align-items: center;
+            gap: 8px;
+            min-height: 0 !important;
+            height: auto;
+            margin: 0 !important;
+            padding: 0 !important;
+            width: fit-content;
+            max-width: 100%;
+            cursor: pointer;
+            line-height: 20px;
+
+            > span.setting-label {
+                line-height: 20px;
+                margin-left: 0;
+            }
+
+            .checkbox-material {
+                top: 0 !important;
+                margin-right: 0;
+                padding-right: 0;
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+
+                // Kill ripple circle hit-area that extends well outside the visible square
+                // (causes clicks in the gap between rows to toggle the row below/above).
+                &:before {
+                    pointer-events: none !important;
+                    transform: none !important;
+                    width: 20px !important;
+                    height: 20px !important;
+                }
+
+                .check {
+                    pointer-events: none;
+
+                    &:before,
+                    &:after {
+                        pointer-events: none;
+                    }
+                }
+            }
+        }
+
+        &.disabled-label > label.setting-label,
+        > label.setting-label.disabled-label {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    }
+}
+
 
 
 

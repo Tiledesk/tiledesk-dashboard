@@ -29,6 +29,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refresh: boolean;
   @Input() kbsList: KB[];
   @Input() kbsListCount: number;
+  /** Total KB count for the namespace (synced on unfiltered loads); avoids clearing filters when only the filtered page is empty. */
+  @Input() kbNamespaceTotalCount: number | null = null;
   @Input() selectedNamespaceName: any
   @Input() hasRemovedKb: boolean;
   @Input() hasUpdatedKb: boolean;
@@ -241,8 +243,23 @@ export class KnowledgeBaseTableComponent implements OnInit {
       "sortField": KB_DEFAULT_PARAMS.SORT_FIELD,
       "direction": KB_DEFAULT_PARAMS.DIRECTION,
       "status": '',
+      "type": '',
       "search": '',
     }
+  }
+
+ 
+  /** After deleting a sitemap KB: clear all list filters and reload (child URLs may still be removing). */
+  resetFiltersAfterSitemapDelete(): void {
+    this.resetFilter();
+    this.numberPage = 0;
+    this.hasFiltered = true;
+    if (this.timeoutId) {
+      clearTimeout(this.timeoutId);
+    }
+    this.isLoading = true;
+    this.loadByFilter.next({ ...this.searchParams });
+    this.cdr.markForCheck();
   }
 
  
@@ -341,7 +358,12 @@ export class KnowledgeBaseTableComponent implements OnInit {
       // this.onLoadByFilter()
     }
 
-    if (this.hasRemovedKb && this.kbsList.length === 0)  {
+    //if (this.hasRemovedKb && this.kbsList.length === 0)  {
+    //  this.SHOW_TABLE = false;
+    //}
+
+    // Only show "add content" empty state after a delete when not loading (transient [] during filter used to stick here)
+    if (this.hasRemovedKb && this.kbsList.length === 0 && !this.showKBTableSpinner) {
       this.SHOW_TABLE = false;
     }
     
@@ -432,7 +454,46 @@ export class KnowledgeBaseTableComponent implements OnInit {
       this.SHOW_MORE_BTN = false;
     }
 
+    // Namespace truly empty but filters still applied (e.g. after deleting last sitemap + URLs): clear filters and reload.
+    // Do not clear when the namespace still has contents — only the current filter has no rows ("No match" must stay).
+    if (
+      this.SHOW_TABLE &&
+      !this.showKBTableSpinner &&
+      (!this.kbsList || this.kbsList.length === 0) &&
+      (Number(this.kbsListCount) || 0) === 0
+    ) {
+      const nsTotal = this.kbNamespaceTotalCount != null ? Number(this.kbNamespaceTotalCount) : NaN;
+      const namespaceKnownEmpty = !Number.isNaN(nsTotal) && nsTotal === 0;
+
+      if (this.hasActiveListFilters() && namespaceKnownEmpty) {
+        this.resetFilter();
+        if (this.timeoutId) {
+          clearTimeout(this.timeoutId);
+        }
+        this.timeoutId = setTimeout(() => {
+          this.isLoading = true;
+          this.loadByFilter.next({ ...this.searchParams });
+        }, 0);
+      } else if (!this.hasActiveListFilters()) {
+        this.SHOW_TABLE = false;
+      }
+      this.cdr.markForCheck();
+    }
+
     // this.logger.log('ngOnChanges end -------> ', this.kbsListCount, this.kbsList.length);
+  }
+
+  /** True when status, type, or name filter narrows the KB list (not "all"). */
+  private hasActiveListFilters(): boolean {
+    if (!this.searchParams) {
+      return false;
+    }
+    const status = this.searchParams.status;
+    const type = this.searchParams.type;
+    const search = (this.searchParams.search != null ? String(this.searchParams.search) : '').trim();
+    return (status != null && String(status).trim() !== '') ||
+      (type != null && String(type).trim() !== '') ||
+      search !== '';
   }
 
   
