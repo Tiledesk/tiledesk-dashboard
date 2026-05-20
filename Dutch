@@ -2151,6 +2151,7 @@
         "SearchingAnswer": "Searching a suitable answer...",
         "Answer": "Answer",
         "NoAnswerFound": "Unable to find a relevant answer",
+        "NoResponseGeneratedBecauseChunkOnlyEnabled": "No response generated (Chunk-only mode is enabled)",
         "Sources": "Sources",
         "Source": "Source",
         "TypeKbNamePlaceholder": "Name of Knowledge Base",
