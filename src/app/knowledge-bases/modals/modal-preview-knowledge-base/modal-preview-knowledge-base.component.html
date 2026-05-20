@@ -37,7 +37,7 @@
         #tooltip="matTooltip"
         matTooltipPosition='left' 
         matTooltipHideDelay="100"
-        [disabled]="useCache">
+        [disabled]="isPreviewStreamToggleDisabled">
         {{ 'KbPage.PreviewStream' | translate }}
       </mat-slide-toggle>
       </div>
@@ -140,7 +140,12 @@
        -> {{ answer }}
        </span> -->
       <span *ngIf="!searching && (!answer || answer === '') && (!qa?.answer || qa.answer === '')">
-        {{ 'KbPage.NoAnswerFound' | translate }}
+        <ng-container *ngIf="chunkOnly; else noAnswerDefault">
+          {{ 'KbPage.NoResponseGeneratedBecauseChunkOnlyEnabled' | translate }}
+        </ng-container>
+        <ng-template #noAnswerDefault>
+          {{ 'KbPage.NoAnswerFound' | translate }}
+        </ng-template>
       </span>
       </ng-template>
       <!-- <hr *ngIf="qa && qa.source">

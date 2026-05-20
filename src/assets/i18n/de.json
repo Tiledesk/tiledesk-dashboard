@@ -2089,6 +2089,7 @@
 		"SearchingAnswer": "Suche nach einer passenden Antwort...",
 		"Answer": "Antwort",
 		"NoAnswerFound": "Es konnte keine relevante Antwort gefunden werden",
+		"NoResponseGeneratedBecauseChunkOnlyEnabled": "Keine Antwort generiert (Chunk-only-Modus ist aktiviert)",
 		"Sources": "Quellen",
 		"Source": "Quelle",
 		"TypeKbNamePlaceholder": "Name der Wissensdatenbank",

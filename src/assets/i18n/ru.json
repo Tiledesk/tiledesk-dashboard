@@ -2089,6 +2089,7 @@
         "SearchingAnswer": "Ищем подходящий ответ...",
         "Answer": "Отвечать",
         "NoAnswerFound": "He удалось найти соответствующий ответ",
+        "NoResponseGeneratedBecauseChunkOnlyEnabled": "Ответ не сгенерирован (Режим Chunk-only включен)",
         "Sources": "Источники",
         "Source": "Источник",
         "TypeKbNamePlaceholder": "Название базы знаний",

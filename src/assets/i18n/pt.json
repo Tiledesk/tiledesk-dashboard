@@ -2088,6 +2088,7 @@
         "SearchingAnswer": "Procurando uma resposta adequada...",
         "Answer": "Responder",
         "NoAnswerFound": "Não foi possível encontrar uma resposta relevante",
+        "NoResponseGeneratedBecauseChunkOnlyEnabled": "Nenhuma resposta gerada (O modo Chunk-only está ativado)",
         "Sources": "Fontes",
         "Source": "Fonte",
         "TypeKbNamePlaceholder": "Nome da Base de Conhecimento",

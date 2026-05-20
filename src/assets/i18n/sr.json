@@ -2089,6 +2089,7 @@
         "SearchingAnswer": "Тражење одговарајућег одговора...",
         "Answer": "Одговор",
         "NoAnswerFound": "Није могуће пронаћи релевантан одговор",
+        "NoResponseGeneratedBecauseChunkOnlyEnabled": "Није генерисан одговор (Chunk-only режим је омогућен)",
         "Sources": "Извори",
         "Source": "Извор",
         "TypeKbNamePlaceholder": "Назив базе знања",

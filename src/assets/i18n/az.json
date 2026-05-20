@@ -2089,6 +2089,7 @@
         "SearchingAnswer": "Uyğun cavab axtarılır...",
         "Answer": "Cavab verin",
         "NoAnswerFound": "Müvafiq cavab tapmaq mümkün deyil",
+        "NoResponseGeneratedBecauseChunkOnlyEnabled": "Cavab yaradılmadı (Chunk-only rejimi aktivdir)",
         "Sources": "Mənbələr",
         "Source": "Mənbə",
         "TypeKbNamePlaceholder": "Bilik bazasının adı",

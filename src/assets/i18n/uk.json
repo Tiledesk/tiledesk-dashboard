@@ -2105,6 +2105,7 @@
         "SearchingAnswer": "Пошук відповідної відповіді...",
         "Answer": "Відповідь",
         "NoAnswerFound": "Неможливо знайти відповідну відповідь",
+        "NoResponseGeneratedBecauseChunkOnlyEnabled": "Відповідь не згенеровано (Режим Chunk-only увімкнено)",
         "Sources": "Джерела",
         "Source": "Джерело",
         "TypeKbNamePlaceholder": "Назва бази знань",

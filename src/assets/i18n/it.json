@@ -2091,6 +2091,7 @@
         "SearchingAnswer": "Cerco una risposta appropriata...",
         "Answer": "Risposta",
         "NoAnswerFound": "Non è stato possibile trovare una risposta pertinente",
+        "NoResponseGeneratedBecauseChunkOnlyEnabled": "Nessuna risposta generata (La modalità Chunk-only è abilitata)",
         "Sources": "Fonti",
         "Source": "Sorgente",
         "TypeKbNamePlaceholder": "Nome della Knowledge Base",
