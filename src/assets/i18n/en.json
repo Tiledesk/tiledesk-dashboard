@@ -2519,7 +2519,8 @@
             "InfoUseCache": "Caches identical questions and returns the cached answer when available, reducing latency and cost.",
             "Resetting": "Resetting…",
             "ResetDone": "Reset",
-            "ResetError": "Reset failed"
+            "ResetError": "Reset failed",
+            "TestYourAgent": "Test your Agent"
         }
     },
     "Never": "Never",
