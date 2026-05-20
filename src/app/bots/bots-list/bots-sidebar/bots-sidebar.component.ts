@@ -251,6 +251,8 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     }
   }
 
+  
+
   getKnbValue() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     // Defensive: when the OSCODE string is missing or doesn't contain a "KNB:*" segment
