@@ -1,16 +1,10 @@
 # tiledesk-dashboard
 
-### 2.7.177
+### 2.7.218-stage
 - Disables the stream option if the Chunks only option is enabled
-- Gets the fonts from the metadata object returned in the response if the Chunks only option is enabled.
+- Gets the sources from the metadata object returned in the response if the Chunks only option is enabled.
 - Displays a specific message in the response field of the Knowledge Base Preview dialog if the Chunks only option is enabled
-- Fixes the bug: Ollama and Vllm models not displayed in Knowledge base preview dialog
-
-### 2.7.176
-- Implements multi-project availability
-- Deletes all content associated with a sitemap when the sitemap is deleted
-- Resolves filter/reset inconsistencies and empty state issues
-- Adds the ability to export unanswered and answered questions in CSV or JSON format
+- Fixes the bug : Ollama and Vllm models not displayed in preview
 
 ### 2.7.216-stage
 - Implements integrations with Cerebras and OpenRouter
@@ -28,7 +22,7 @@
 - Adds the ability to export unanswered and answered questions in CSV or JSON format
 - Enables the message retention tab in the project settings
 
-### 2.7.176 (not published)
+### 2.7.176
 - Implements multi-project availability
 - Deletes all content associated with a sitemap when the sitemap is deleted
 - Resolves filter/reset inconsistencies and empty state issues
