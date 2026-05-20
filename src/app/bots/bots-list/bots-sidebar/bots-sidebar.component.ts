@@ -251,27 +251,27 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     }
   }
 
+  
+
   getKnbValue() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-    // this.logger.log('[BOTS-SIDEBAR] getAppConfig  public_Key', this.public_Key);
-    // this.logger.log('[BOTS-SIDEBAR] getAppConfig  public_Key type of', typeof this.public_Key);
-    // this.logger.log('[BOTS-SIDEBAR] getAppConfig  this.public_Key.includes("KNB") ', this.public_Key.includes("KNB"));
-    // let substring = this.public_Key.substring(this.public_Key.indexOf('KNB'));
-    let parts = this.public_Key.split('-');
-    // this.logger.log('[BOTS-SIDEBAR] getAppConfig  parts ', parts);
-
-    let kbn = parts.find((part) => part.startsWith('KNB'));
-    this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  kbn ', kbn);
-    let kbnParts = kbn.split(':');
-    this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  kbnParts ', kbnParts);
-    let kbnValue = kbnParts[1]
-    this.logger.log('[BOTS-SIDEBAR] manageknowledgeBasesVisibility  kbnValue ', kbnValue);
-    if (kbnValue === 'T') {
-      return true
-    } else if (kbnValue === 'F') {
-      return false
+    // Defensive: when the OSCODE string is missing or doesn't contain a "KNB:*" segment
+    // (e.g. agents-only flag set), we shouldn't crash with "Cannot read properties of undefined".
+    if (!this.public_Key || typeof this.public_Key !== 'string') {
+      return false;
     }
-
+    const parts = this.public_Key.split('-');
+    const kbn = parts.find((part) => part.startsWith('KNB'));
+    if (!kbn) {
+      // No KNB flag in the OSCODE → treat the legacy Knowledge Bases item as hidden.
+      this.logger.log('[BOTS-SIDEBAR] getKnbValue: no KNB segment in OSCODE, returning false');
+      return false;
+    }
+    const kbnParts = kbn.split(':');
+    const kbnValue = kbnParts[1];
+    if (kbnValue === 'T') return true;
+    if (kbnValue === 'F') return false;
+    return false;
   }
 
   // getOSCODE() {
