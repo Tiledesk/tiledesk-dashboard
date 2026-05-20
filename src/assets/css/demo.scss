@@ -708,18 +708,17 @@ th {
   box-shadow: unset !important;
   text-transform: none !important;
   padding: 9px 20px !important;
-  // background: var(--primary-btn-background) !important;
   background: var(--blue-20) !important;
   font-size: 14px;
   border-radius: var(--btn-border-radius) !important;
   font-family: var(--header-font-family) !important;
   color: var(--primary-btn-color) !important;
-  // border: unset;
   height: 40px;
   display: flex;
   gap: 6px;
   align-items: center;
   justify-content: center;
+  margin-left: 16px;
 }
 
 .btn-tdblu-no-boxshadow.h45 {

@@ -322,37 +322,36 @@
                             <mat-icon>refresh</mat-icon>
                         </button>
                     </div>
-                    <div class="contents-count" style="font-size: 14px;"> {{ 'KbPage.TotalContents' | translate }}: 
+                    <div class="contents-count" style="font-size: 14px;"> {{ 'KbPage.TotalContents' | translate }}:
                         <span class="contents-count-num">
                             {{ kbsListCount }}
                         </span>
                     </div>
+
+                    <!-- Add Content (moved next to total count, without "+") -->
+                    <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
+                        [disabled]="!PERMISSION_TO_ADD_CONTENTS"
+                        (click)="$event.stopPropagation(); onOpenAddContent()"
+                        matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
+                        #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                        <span> {{ 'Add' | translate }} </span>
+                    </button>
                 </div>
 
                 <div class="preview-settings">
                     <div class="btn-preview">
-
-
-                        <!-- AI Settings and KB Preview buttons removed:
-                             the "Anteprima Knowledge Base" primary button now lives in the page header
-                             (appdashboard-kb-header-actions). -->
-
-                        <!-- ---------------------------------------- -->
-                        <!-- Add Content -->
-                        <!-- ---------------------------------------- -->
-                        <!-- custom--button add-content -->
-                        <button id="kb-add-content" class="btn btn-tdblu-no-boxshadow"
-                            [disabled]="!PERMISSION_TO_ADD_CONTENTS"
-                            (click)="$event.stopPropagation(); onOpenAddContent()"
-                            matTooltipClass="kb-custom-mat-tooltip" matTooltip="{{'KbPage.Add' | translate}}"
+                        <!-- Testa il tuo Agente (moved here from the page header) -->
+                        <button id="kb-test-agent" class="btn btn-tdblu-no-boxshadow"
+                            (click)="$event.stopPropagation(); onOpenBaseModalPreview()"
+                            matTooltipClass="kb-custom-mat-tooltip"
+                            matTooltip="{{ 'KbPage.Preview2.TestYourAgent' | translate }}"
                             #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                             <span>
-                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                    width="24px" fill="#fff" style="vertical-align: middle;">
-                                    <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z" />
+                                <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="currentColor" style="vertical-align: middle;">
+                                    <path d="M320-200v-560l440 280-440 280Z" />
                                 </svg>
                             </span>
-                            <span> {{ 'Add' | translate }} </span> 
+                            <span>{{ 'KbPage.Preview2.TestYourAgent' | translate }}</span>
                         </button>
                     </div>
                 </div>

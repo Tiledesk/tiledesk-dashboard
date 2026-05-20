@@ -80,7 +80,7 @@ export class ModalPreviewKbFullscreenComponent implements OnInit, OnDestroy, Aft
   // Tag filter (sopra il composer) e streaming (tab Sistema)
   tags: string[] = [];
   tagInput = '';
-  streaming = false;
+  streaming = true;
 
   // Save / reset UX state — tracked separately so each button shows its own spinner / result.
   saveStatus: 'idle' | 'saving' | 'success' | 'error' = 'idle';
@@ -549,7 +549,7 @@ export class ModalPreviewKbFullscreenComponent implements OnInit, OnDestroy, Aft
     this.reRankingMultipler = 2;
     this.hyde = false;
     this.useCache = false;
-    this.streaming = false;
+    this.streaming = true;
     this.ensureCurrentModelInList();
     if (!this.namespaceId) { this.flagReset('error'); return; }
     this.flagReset('saving');
