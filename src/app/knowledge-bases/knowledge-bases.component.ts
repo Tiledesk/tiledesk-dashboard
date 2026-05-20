@@ -1222,7 +1222,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
         this.selectedNamespaceName = namespace['name']
-        this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+       // this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+
+        if (this.selectedTab === 'unanswered') {
+          this.switchTab('contents');
+        }
+        this.router.navigate(
+          ['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id],
+          { queryParams: { tab: null, questionsSub: null }, queryParamsHandling: 'merge', replaceUrl: true }
+        );
 
         // this.logger.log('[KNOWLEDGE-BASES-COMP] CREATE NEW NAMESPACE  selectedNamespaceName', this.selectedNamespaceName)
         // this.selectedNamespaceID = namespace['id'];
