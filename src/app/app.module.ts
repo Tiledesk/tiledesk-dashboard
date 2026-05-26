@@ -260,8 +260,6 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 // import { ColorPickerModule } from 'ngx-color-picker';
-import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
-
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -721,7 +719,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     CreditCardDirectivesModule,
     NgImageSliderModule,
     MomentModule,
-    NgxMatTimepickerModule,
     // ColorPickerModule, // moved in WidgetSetUpModule
     MatTooltipModule,
     MatDatepickerModule,
