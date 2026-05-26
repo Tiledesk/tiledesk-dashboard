@@ -379,6 +379,17 @@
     margin-top: -6px;
 }
 
+::ng-deep.ng-select.scrape-types-select .ng-select-container {
+    margin-top: 4px;
+    border-radius: 5px;
+    border: solid 1px #e4e4e4 !important;
+    box-shadow: none;
+}
+
+::ng-deep.ng-select.scrape-types-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
+    box-shadow: none;
+}
+
 .refresh-rate-wpr {
     display: flex;
     flex-direction: row;

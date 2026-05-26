@@ -4,6 +4,9 @@ import { TranslateModule } from '@ngx-translate/core';
 
 import { LoadingSpinnerComponent } from '../ui/loading-spinner/loading-spinner.component';
 import { DirectivesModule } from '../_directives/directives';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { RequestPreviewTooltipComponent } from '../components/request-preview-tooltip/request-preview-tooltip.component';
+import { RequestPreviewTooltipDirective } from '../components/request-preview-tooltip/request-preview-tooltip.directive';
 import { MarkedPipe } from 'app/marked.pipe';
 import { HtmlEntitiesEncodePipe } from 'app/html-entities-encode.pipe';
 import { SanitizeHtmlPipe } from 'app/sanitize-html.pipe';
@@ -24,9 +27,12 @@ import { CleanEmailBodyPipe } from 'app/clean-email-body.pipe';
     CommonModule,
     TranslateModule,
     DirectivesModule,
-    ColorPickerModule
+    ColorPickerModule,
+    OverlayModule,
   ],
   declarations: [
+    RequestPreviewTooltipComponent,
+    RequestPreviewTooltipDirective,
     LoadingSpinnerComponent,
     MarkedPipe,
     HtmlEntitiesEncodePipe,
@@ -41,6 +47,7 @@ import { CleanEmailBodyPipe } from 'app/clean-email-body.pipe';
     CleanEmailBodyPipe
          ],
   exports: [
+    RequestPreviewTooltipDirective,
     LoadingSpinnerComponent,
     TranslateModule,
     DirectivesModule,

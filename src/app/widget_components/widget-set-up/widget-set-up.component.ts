@@ -28,7 +28,6 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 
-const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
 import { AbstractControl, FormControl } from '@angular/forms';
@@ -634,29 +633,20 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   uploadLauncherButtonLogo(event) {
     if (this.hasOwnLauncherBtn) {
-      swal({
+      Swal.fire({
         title: this.warningMsg,
         text: this.noDefaultLanguageIsSetUpMsg + '. ' + this.setDefaultLangInMultilanguageSection,
-        // content: el,
-        icon: "warning",
-        buttons: {
-          cancel: `${this.cancelMsg}`,
-          catch: {
-            text: `${this.goToMultilanguageSectionMsg}`,
-            value: "catch",
-          },
-        },
-
-        // `"Cancel", ${this.goToMultilanguagePageMsg}`],
-        dangerMode: false,
-      })
-        .then((value) => {
-          //  this.logger.log('[WIDGET-SET-UP] - uploadLauncherButtonLogo value', value)
-
-          if (value === 'catch') {
-
-          }
-        })
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: this.goToMultilanguageSectionMsg,
+        cancelButtonText: this.cancelMsg,
+        focusConfirm: true,
+        reverseButtons: true,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.scrollToMultilanguageSection();
+        }
+      });
     }
   }
 
@@ -1809,32 +1799,22 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   displayModalNoDefaultLangIsSetUp() {
-    // const el = document.createElement('div');
-    // const url = '#/project/' + this.id_project + '/widget-set-up'
-    // el.innerHTML = `${this.noDefaultLanguageIsSetUpMsg} <a href="${url}"> ${this.goToMultilanguagePageMsg}</a>  ${this.toAddLanguagesToYourProjectMsg}</a>`
-    swal({
+    Swal.fire({
       title: this.warningMsg,
       text: this.noDefaultLanguageIsSetUpMsg + '. ' + this.setDefaultLangInMultilanguageSection,
-      // content: el,
-      icon: "warning",
-      buttons: {
-        cancel: `${this.cancelMsg}`,
-        catch: {
-          text: `${this.goToMultilanguageSectionMsg}`,
-          value: "catch",
-        },
-      },
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: this.goToMultilanguageSectionMsg,
+      cancelButtonText: this.cancelMsg,
+      focusConfirm: true,
+      reverseButtons: true,
+    }).then((result) => {
+      this.logger.log('[WIDGET-SET-UP] - displayModalNoDefaultLangAreSetUp', result);
 
-      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
-      dangerMode: false,
-    })
-      .then((value) => {
-        this.logger.log('[WIDGET-SET-UP] - displayModalNoDefaultLangAreSetUp value', value)
-
-        if (value === 'catch') {
-          this.scrollToMultilanguageSection()
-        }
-      })
+      if (result.isConfirmed) {
+        this.scrollToMultilanguageSection();
+      }
+    });
   }
 
 
@@ -1879,32 +1859,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   displayModalNoLangAreSetUp() {
-    // const el = document.createElement('div');
-    // const url = '#/project/' + this.id_project + '/widget-set-up'
-    // el.innerHTML = `${this.noDefaultLanguageIsSetUpMsg} <a href="${url}"> ${this.goToMultilanguagePageMsg}</a>  ${this.toAddLanguagesToYourProjectMsg}</a>`
-    swal({
+    Swal.fire({
       title: this.warningMsg,
-      text: this.noLanguagesAreSetUpMsg + '. ' + this.goToMultilanguagePageMsg + ' ' + this.toAddLanguagesToYourProjectMsg + '.',
-      // content: el,
-      icon: "warning",
-      buttons: {
-        cancel: `${this.cancelMsg}`,
-        catch: {
-          text: `${this.goToMultilanguagePageMsg}`,
-          value: "catch",
-        },
-      },
+      text:
+        this.noLanguagesAreSetUpMsg +
+        '. ' +
+        this.goToMultilanguagePageMsg +
+        ' ' +
+        this.toAddLanguagesToYourProjectMsg +
+        '.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: this.goToMultilanguagePageMsg,
+      cancelButtonText: this.cancelMsg,
+      focusConfirm: true,
+      reverseButtons: true,
+    }).then((result) => {
+      this.logger.log('displayModalNoLangAreSetUp', result);
 
-      // `"Cancel", ${this.goToMultilanguagePageMsg}`],
-      dangerMode: false,
-    })
-      .then((value) => {
-        this.logger.log('displayModalNoLangAreSetUp value', value)
-
-        if (value === 'catch') {
-          this.goToWidgetMultilanguage()
-        }
-      })
+      if (result.isConfirmed) {
+        this.goToWidgetMultilanguage();
+      }
+    });
   }
 
   getCurrentTranslation(selectedLangCode: string) {
@@ -4517,34 +4493,23 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   displayModalNoFieldInCustomPrechatForm() {
-
-    swal({
+    Swal.fire({
       title: this.warning_translated,
       text: this.custom_prechat_form_is_empty_and_will_be_disabled_msg,
-      icon: "warning",
-      buttons: 'Ok',
-      dangerMode: false,
-    })
-      .then((value) => {
-        // this.logger.log('[WIDGET-SET-UP] - displayModalNoFieldInCustomPrechatForm value', value)
-
-        if (value === true) {
-          // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON The custom prechat form contains no fields')
-          // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
-
-          if (this.widgetObj.hasOwnProperty('preChatFormJson')) {
-            // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON widgetObj HAS TEH KEY preChatFormJson')
-            delete this.widgetObj['preChatFormJson']
-          }
-          if (this.widgetObj.hasOwnProperty('preChatFormCustomFieldsEnabled')) {
-            this.preChatFormCustomFieldsEnabled = false;
-            delete this.widgetObj['preChatFormCustomFieldsEnabled'];
-            // this.logger.log('[WIDGET-SET-UP] - SAVE PRE-CHAT-FORM-JSON this.preChatFormCustomFieldsEnabled ', this.preChatFormCustomFieldsEnabled)
-
-          }
-          this.widgetService.updateWidgetProject(this.widgetObj)
+      icon: 'warning',
+      confirmButtonText: 'OK',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (this.widgetObj.hasOwnProperty('preChatFormJson')) {
+          delete this.widgetObj['preChatFormJson'];
         }
-      })
+        if (this.widgetObj.hasOwnProperty('preChatFormCustomFieldsEnabled')) {
+          this.preChatFormCustomFieldsEnabled = false;
+          delete this.widgetObj['preChatFormCustomFieldsEnabled'];
+        }
+        this.widgetService.updateWidgetProject(this.widgetObj);
+      }
+    });
   }
 
   // -----------------------------------------------------------------------

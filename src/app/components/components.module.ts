@@ -7,8 +7,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
-import { NavbarForPanelComponent } from './navbar-for-panel/navbar-for-panel.component';
-import { NavbarForPanelService } from './navbar-for-panel/navbar-for-panel.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -51,7 +49,6 @@ import { MomentModule } from 'ngx-moment';
     NavbarComponent,
     SidebarComponent,
     SmallSidebarComponent,
-    NavbarForPanelComponent,
     SidebarUserDetailsComponent,
   ],
   exports: [
@@ -60,11 +57,9 @@ import { MomentModule } from 'ngx-moment';
     SidebarComponent,
     SidebarUserDetailsComponent,
     SmallSidebarComponent,
-    NavbarForPanelComponent,
     TranslateModule
   ],
   providers: [
-    NavbarForPanelService
 
   ]
 })

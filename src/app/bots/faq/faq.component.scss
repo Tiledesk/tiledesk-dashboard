@@ -844,7 +844,7 @@ input[type="text"]:disabled::placeholder {
 
 // text-decoration: underline;
 .custom-link {
-  color: #0f62ff;
+  color:  var(--accent-text-color);
   cursor: pointer;
 }
 
@@ -855,7 +855,7 @@ input[type="text"]:disabled::placeholder {
 .link-to-dialogflow-connector-doc {
   margin-left: 8px;
   vertical-align: middle;
-  color: #0f62ff;
+  color:  var(--accent-text-color);
   font-size: 14px;
   font-weight: 400;
   cursor: pointer;

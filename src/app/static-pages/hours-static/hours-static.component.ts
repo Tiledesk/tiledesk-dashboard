@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { RoleService } from 'app/services/role.service';
-const swal = require('sweetalert');
+
 
 @Component({
   selector: 'appdashboard-hours-static',

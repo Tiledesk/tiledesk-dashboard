@@ -36,7 +36,6 @@ import moment from 'moment';
 
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
-import { TooltipOptions } from 'ng2-tooltip-directive';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UpgradePlanModalComponent } from 'app/components/modals/upgrade-plan-modal/upgrade-plan-modal.component';
@@ -53,7 +52,6 @@ import { RoleService } from 'app/services/role.service';
 import { isOnlyEmoji, removeEmojis } from 'app/utils/utils-message';
 import { NavigationService } from 'app/services/navigation.service';
 
-const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 // './ws-requests-msgs.component.html',
 @Component({
@@ -375,17 +373,6 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   disableReopeRequest: boolean = false;
 
   isOpenEditContactFullnameDropdown: boolean = false;
-  serveByTooltipOption: TooltipOptions = {
-    'show-delay': 0,
-    'tooltip-class': 'served-by-ng2-tooltip',
-    'theme': 'light',
-    'shadow': true,
-    'hide-delay-mobile': 0,
-    'hideDelayAfterClick': 3000,
-    'hide-delay': 22222222220,
-    'placement': 'left',
-  }
-
   isOpenChatbotAttributesAccordion: boolean
   profile_name: string;
   subscription_is_active: any;
@@ -4763,10 +4750,11 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
   }
 
   trackReassignToBot(botid, botname) {
+    console.log('[WS-REQUESTS-MSGS] - TRACK REASSIGN TO BOT - BOT ID ', botid, 'BOT NAME ', botname);
     let userFullname = ''
-    if (this.user.firstname && this.user.lastname) {
+    if (this.user?.firstname && this.user?.lastname) {
       userFullname = this.user.firstname + ' ' + this.user.lastname
-    } else if (this.user.firstname && !this.user.lastname) {
+    } else if (this.user?.firstname && !this.user?.lastname) {
       userFullname = this.user.firstname
     }
     if (!isDevMode()) {

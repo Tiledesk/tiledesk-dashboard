@@ -12,6 +12,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "allowedCommonJsDependencies": [
+              "uuid",
               "lodash",
               "rxjs-compat",
               "moment",
@@ -52,9 +53,9 @@
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "src/assets/sass/material-dashboard.scss",
               "src/assets/css/cards-table.scss",
+              "node_modules/ngx-toastr/toastr.css",
               "src/assets/css/demo.scss",
               "src/assets/sass/cds/styles.scss",
               "src/variables.scss",
@@ -67,15 +68,8 @@
               "node_modules/shepherd.js/dist/css/shepherd.css"
             ],
             "scripts": [
-              "node_modules/jquery/dist/jquery.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/bootstrap-material-design/dist/js/ripples.min.js",
-              "node_modules/bootstrap-material-design/dist/js/material.min.js",
-              "node_modules/arrive/src/arrive.js",
               "node_modules/moment/moment.js",
-              "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
-              "node_modules/bootstrap-notify/bootstrap-notify.js",
-              "node_modules/chartist/dist/chartist.js",
               "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
@@ -156,21 +150,14 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
-              "node_modules/jquery/dist/jquery.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/bootstrap-material-design/dist/js/ripples.min.js",
-              "node_modules/bootstrap-material-design/dist/js/material.min.js",
-              "node_modules/arrive/src/arrive.js",
-              "node_modules/moment/moment.js",
-              "node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js",
-              "node_modules/bootstrap-notify/bootstrap-notify.js",
-              "node_modules/chartist/dist/chartist.js"
+              "node_modules/moment/moment.js"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",
-              "node_modules/perfect-scrollbar/css/perfect-scrollbar.css",
               "src/assets/sass/material-dashboard.scss",
               "src/assets/css/cards-table.scss",
+              "node_modules/ngx-toastr/toastr.css",
               "src/assets/css/demo.scss",
               "src/assets/sass/cds/styles.scss",
               "node_modules/@ng-select/ng-select/themes/default.theme.css",

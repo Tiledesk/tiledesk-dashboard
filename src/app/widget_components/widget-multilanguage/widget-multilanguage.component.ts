@@ -469,7 +469,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
       }, error => {
         this.logger.error('Multilanguage (widget-multilanguage)) - editLang - ERROR ', error);
 
-        this.notify.showNotification(this.errorNoticationMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.errorNoticationMsg, 4, 'report_problem');
       }, () => {
 
         this.translateAndShowUpdateWidgetNotification();
@@ -576,7 +576,7 @@ export class WidgetMultilanguageComponent extends BaseTranslationComponent imple
         this.logger.log('Multilanguage (widget-mtl) - deleteLang RES ', labels);
       }, error => {
         this.logger.error('Multilanguage (widget-mtl) - deleteLang - ERROR ', error)
-        this.notify.showNotification(this.errorNoticationMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.errorNoticationMsg, 4, 'report_problem');
 
         this.selectedTranslationCode = 'add'
       }, () => {

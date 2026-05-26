@@ -19,10 +19,11 @@ button:hover span {
     margin-top: 0px !important;
     padding-bottom: 0px !important;
     background: var(--card-background-color);
-    position: relative; // requirements for perfect scrollbar
-    height: 400px; // requirements for perfect scrollbar
-
-    // height: 100vh;
+    position: relative;
+    height: 400px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .container-projects-for-panel {

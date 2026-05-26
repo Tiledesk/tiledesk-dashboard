@@ -23,9 +23,9 @@ import { CHANNELS_NAME, goToCDSVersion } from 'app/utils/util';
 import { MatMenuTrigger } from '@angular/material/menu';
 // import { Location, PopStateEvent } from '@angular/common';
 
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
-import scrollToWithAnimation from 'scrollto-with-animation';
+import { scrollElementWithAnimation } from 'app/utils/scroll-element.util';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
@@ -239,14 +239,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     }
 
     setTimeout(() => {
-      scrollToWithAnimation(
-        el,
-        'scrollTop',
-        y,
-        500,
-        'easeInOutCirc',
-        finish
-      );
+      scrollElementWithAnimation(el, 'scrollTop', y, 500, finish);
     }, 100);
   }
 
@@ -394,6 +387,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   onContextMenuAction2(item) {
     alert(`Click on Action 2 for ${item.name}`);
   }
+
+  /** Bound callback for tdRequestPreviewLoad (preserves `this`). */
+  onRequestPreviewLoad = (request: any): void => {
+    this.overfirstTextGetRequestMsg(request);
+  };
 
   overfirstTextGetRequestMsg(request) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] overfirstText request_id', request);
@@ -1167,6 +1165,11 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
   archiveSelected() {
     if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      const totalToArchive = this.requests_selected.length;
+      const archivingPrefix = this.archivingRequestNoticationMsg || '';
+      if (totalToArchive > 0) {
+        this.notify.showArchivingRequestProgress(archivingPrefix, 1, totalToArchive);
+      }
       let count = 0;
       this.requests_selected.forEach((requestid, index) => {
         this.wsRequestsService.closeSupportGroup(requestid)
@@ -1207,7 +1210,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
               this.requests_selected.splice(index, 1);
 
             }
-            this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
+            this.notify.showArchivingRequestProgress(archivingPrefix, count, totalToArchive);
 
             this.logger.log('[WS-REQUESTS-LIST][SERVED] - this.requests_selected.length ', this.requests_selected.length);
             this.logger.log('[WS-REQUESTS-LIST][SERVED] - requests_selected array ', this.requests_selected);

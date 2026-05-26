@@ -21,7 +21,6 @@ import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { browserRefresh } from 'app/app.component';
 
-const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
 @Component({
@@ -637,26 +636,6 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         })
       } else {
         this.logger.log('[INTEGRATION-COMP] operation aborted')
-      }
-    });
-  }
-
-  presentUpgradePlanModal() {
-    this.logger.log("[INTEGRATION-COMP] apro la modale");
-    swal({
-      title: "Upgrade plan",
-      text: "Upgrade your plan to get this feature",
-      icon: "warning",
-      buttons: ["Cancel", "Upgrade!"],
-      dangerMode: true,
-    }).then((WillUpgrade) => {
-      if (WillUpgrade) {
-
-        this.logger.log("[INTEGRATION-COMP] route vs plan management");
-        this.goToPricing();
-
-      } else {
-        this.logger.log('[INTEGRATION-COMP]  operation aborted')
       }
     });
   }

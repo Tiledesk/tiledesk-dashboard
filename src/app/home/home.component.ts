@@ -43,7 +43,7 @@ import { QuotesService } from 'app/services/quotes.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 @Component({
@@ -1937,57 +1937,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
-
-  // No more used - replaced by presentModalFeautureAvailableFromTier2Plan
-  presentModalFeautureAvailableFromBPlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.featureAvailableFromBPlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      buttons: {
-        cancel: this.cancel,
-        catch: {
-          text: this.upgradePlan,
-          value: "catch",
-        },
-      },
-      dangerMode: false,
-    }).then((value) => {
-      if (value === 'catch') {
-        // this.logger.log('featureAvailableFromPlanC value', value)
-        // this.logger.log('[HOME] prjct_profile_type', this.prjct_profile_type)
-        // this.logger.log('[HOME] subscription_is_active', this.subscription_is_active)
-        // this.logger.log('[HOME] prjct_profile_type', this.prjct_profile_type)
-        // this.logger.log('[HOME] trial_expired', this.trial_expired)
-        // this.logger.log('[HOME] isVisiblePAY', this.isVisiblePAY)
-        if (this.isVisiblePay) {
-          // this.logger.log('[HOME] HERE 1')
-          if (this.USER_ROLE === 'owner') {
-            // this.logger.log('[HOME] HERE 2')
-            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
-              // this.logger.log('[HOME] HERE 3')
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
-              this.notify._displayContactUsModal(true, 'upgrade_plan');
-            } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
-              // this.logger.log('[HOME] HERE 4')
-              this.router.navigate(['project/' + this.projectId + '/pricing']);
-            }
-          } else {
-            // this.logger.log('[HOME] HERE 5')
-            this.presentModalAgentCannotManageAvancedSettings();
-          }
-        } else {
-          // this.logger.log('[HOME] HERE 6')
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
-        }
-      }
-    });
-  }
-
 
   presentModalAppSumoFeautureAvailableFromBPlan() {
     // const el = document.createElement('div')

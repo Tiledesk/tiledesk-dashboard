@@ -22,7 +22,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
 import { NavigationService } from 'app/services/navigation.service';
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 
@@ -804,7 +804,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       const error_body = JSON.parse(error._body);
       this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
       if (error_body['success'] === false) {
-        this.notify.showNotification(this.translationsMap.get('AnErrorHasOccurredSendingVerificationLink'), 4, 'report_problem')
+        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('AnErrorHasOccurredSendingVerificationLink'), 4, 'report_problem')
       }
     }, () => {
       this.logger.log('[USER-PROFILE] - RESEND VERIFY EMAIL * COMPLETE *');

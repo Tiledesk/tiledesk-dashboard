@@ -7,7 +7,6 @@ import { environment } from '../../environments/environment';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
 
-// const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
 @Injectable()

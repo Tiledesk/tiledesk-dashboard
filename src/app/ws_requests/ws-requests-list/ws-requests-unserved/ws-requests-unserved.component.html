@@ -478,68 +478,12 @@
               #{{request?.ticket_id }}
             </span>
 
-            <p class="column-td request-first-text" rel="tooltip" title="{{ request?._id }}"
+            <p class="column-td request-first-text" title="{{ request?._id }}"
               style="max-width: 215px;white-space: nowrap; overflow: hidden;text-overflow: ellipsis;"
-              [tooltip]="HtmlContent" contentType="template" (mouseover)='overfirstTextGetRequestMsg(request)'>
+              [tdRequestPreviewTooltip]="request"
+              [tdRequestPreviewLoad]="onRequestPreviewLoad">
               {{ request?.first_text }}
             </p>
-
-            <ng-template #HtmlContent>
-              <div class="ng2-tooltip-header">
-                <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && !request?.subject">
-                  {{ 'RequestMsgsPage.RequestUnserved' | translate }}
-                </span>
-                <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 100 && request?.subject">
-                  {{ 'RequestMsgsPage.InternalRequestUnserved' | translate }}
-                </span>
-                <span class="ng2-tooltip-badge--unassigned" *ngIf="request?.status === 150">
-                  {{ 'RequestMsgsPage.RequestAbandoned' | translate }}
-                </span>
-
-
-                <span class="ng2-tooltip-ticket-id">#{{request?.ticket_id}}</span>
-                <span class="ng2-tooltip-priority">
-                  <span style="color: #68737d; font-weight:300"> {{'Priority' | translate }}:</span>
-                  {{request?.priority | translate}}
-                </span>
-                <span class="ng2-tooltip-channel">
-                  <span style="color: #68737d; font-weight:300"> {{'MessageChannel' | translate }}:</span>
-                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.CHAT21"> Chat </span>
-                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.EMAIL"> Email </span>
-                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.FORM"> Form </span>
-                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.TELEGRAM"> Telegram </span>
-                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.MESSANGER">Facebook Messenger </span>
-                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.WHATSAPP"> WhatsApp </span>
-                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_VXML"> Voice </span>
-                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.VOICE_TWILIO"> Voice </span>
-                  <span *ngIf="request?.channel?.name === CHANNELS_NAME.SMS_TWILIO"> SMS </span>
-                </span>
-              </div>
-              <p class='ng2-tooltip-subject' *ngIf='request?.subject'>
-                <span style="color: #68737d; font-weight:300"> {{'Subject' | translate }}:</span> {{request?.subject}}
-              </p>
-              <div class='ng2-tooltip-firt-text' [innerHTML]="request?.first_text  | htmlEntitiesEncode | marked">
-              </div>
-              <span>
-                <p class='ng2-most-recent-comment-section-title'>{{'MostRecentComment' | translate}}</p>
-                <hr class='ng2-tooltip-divider-line'>
-                <div *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment-sender-and-date-wpr'>
-                  <p class='ng2-comment-sender'> 
-                   <!-- {{ request?.msgsArray[0]?.senderFullname}} -->  
-                   {{ request?.msgsArray[0]?.senderFullname?.length > 40 ? (request?.msgsArray[0]?.senderFullname | slice:0:37) + '...' : request?.msgsArray[0]?.senderFullname }}
-                  </p>
-                  <p class='ng2-comment-date'> {{ request?.msgsArray[0]?.createdAt | date: 'dd/MM/yyyy'}} </p>
-                </div>
-
-                <p *ngIf="request?.msgsArray?.length > 0" class='ng2-latest-comment'
-                  [innerHTML]="request?.msgsArray[0]?.text  | htmlEntitiesEncode | marked">
-                </p>
-
-                <div *ngIf="!request?.msgsArray?.length">
-                  <span class="ng2-latest-comment-loading">{{'ProcessingNoDot' | translate}} </span>
-                </div>
-              </span>
-            </ng-template>
 
             <!-- --------------------------------------- -->
             <!-- Request Tag -->

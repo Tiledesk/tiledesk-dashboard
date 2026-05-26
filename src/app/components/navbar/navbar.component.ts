@@ -8,8 +8,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from '../../core/auth.guard';
 import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router';
 
-declare var $: any;
-
 import { Project } from '../../models/project-model';
 import { UsersService } from '../../services/users.service';
 
@@ -52,7 +50,7 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RolesService } from 'app/services/roles.service';
 import { NavigationService } from 'app/services/navigation.service';
 
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 @Component({
@@ -2281,9 +2279,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
     if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false && !this.hasPlayed) {
-      // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
-      // if (this.hasPlayed === false) {
-      // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
+
       this.audio = new Audio();
 
       this.audio.src = 'assets/pling.mp3';

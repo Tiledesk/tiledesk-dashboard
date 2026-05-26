@@ -35,7 +35,6 @@ import { WidgetService } from 'app/services/widget.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UrlsWhitelistComponent } from './urls-whitelist/urls-whitelist.component';
 
-const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
 type UserFields = 'creditCard' | 'expirationDate' | 'cvc';
@@ -2797,39 +2796,31 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   changeAppSumoProduct() {
-    const el = document.createElement('div')
-    el.innerHTML = "Hi Sumo-ling! After managing your subscription in AppSumo, refresh the page to see plan updates",
+    const el = document.createElement('div');
+    el.innerHTML =
+      'Hi Sumo-ling! After managing your subscription in AppSumo, refresh the page to see plan updates';
 
-      swal({
-
-        content: el,
-        icon: "info",
-        // buttons: true,
-        buttons: {
-          cancel: this.cancel,
-          catch: {
-            text: "Change Plan",
-            value: "catch",
-          },
-        },
-        dangerMode: false,
-      }).then((value) => {
-        if (value === 'catch') {
-          // this.logger.log('featureAvailableFromPlanC value', value, 'this.profile_name', this.profile_name)
-
-          if (this.USER_ROLE === 'owner') {
-            const url = `https://appsumo.com/account/redemption/${this.appSumoInvoiceUUID}#change-plan`
-            window.open(url, '_blank');
-
-          } else {
-            this.presentModalOnlyOwnerCanManageTheAccountPlan();
-          }
+    Swal.fire({
+      html: el,
+      icon: 'info',
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: 'Change Plan',
+      cancelButtonText: this.cancel,
+      focusConfirm: true,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (this.USER_ROLE === 'owner') {
+          const url = `https://appsumo.com/account/redemption/${this.appSumoInvoiceUUID}#change-plan`;
+          window.open(url, '_blank');
         } else {
-          this.notify._displayContactUsModal(true, 'upgrade_plan');
+          this.presentModalOnlyOwnerCanManageTheAccountPlan();
         }
-
-      });
-
+      } else {
+        this.notify._displayContactUsModal(true, 'upgrade_plan');
+      }
+    });
   }
 
 
@@ -4024,48 +4015,37 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
 
 
     if (this.ip_restrictions_on && allowedIPsArray.length > 0) {
-      swal({
-        title: "Are you sure?",
-        text: "Adding IP-based access restrictions can break Tiledesk access!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      })
-        .then((willAddIpRanges) => {
-          if (willAddIpRanges) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Adding IP-based access restrictions can break Tiledesk access!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.logger.log('[PRJCT-EDIT-ADD] willAddIpRanges', result.isConfirmed);
 
-            this.logger.log('[PRJCT-EDIT-ADD] swal willAddIpRanges', willAddIpRanges)
-            // this.id_project,
+          this.projectService.addAllowedIPranges(this.id_project, this.ip_restrictions_on, allowedIPsArray).subscribe((res: any) => {
+            this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges res ', res);
 
-            this.projectService.addAllowedIPranges(this.id_project, this.ip_restrictions_on, allowedIPsArray).subscribe((res: any) => {
-              this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges res ', res)
+          }, (error) => {
+            this.logger.error('[PRJCT-EDIT-ADD] addAllowedIPranges - ERROR ', error);
 
-            }, (error) => {
-              this.logger.error('[PRJCT-EDIT-ADD] addAllowedIPranges - ERROR ', error);
-
-              swal("Sorry, an error occurred saving IPs addresses", {
-                icon: "error",
-              });
-
-            }, () => {
-              this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges * COMPLETE *');
-
-              swal("IP addresses successfully added", {
-                icon: "success",
-              }).then((okpressed) => {
-
-              });
-
+            Swal.fire({
+              title: 'Sorry, an error occurred saving IPs addresses',
+              icon: 'error',
             });
 
+          }, () => {
+            this.logger.log('[PRJCT-EDIT-ADD] addAllowedIPranges * COMPLETE *');
 
-            // swal("Poof! Your imaginary file has been deleted!", {
-            //   icon: "success",
-            // });
-          } else {
-            // swal("Your imaginary file is safe!");
-          }
-        });
+            Swal.fire({
+              title: 'IP addresses successfully added',
+              icon: 'success',
+            });
+          });
+        }
+      });
     } else if (this.ip_restrictions_on === false || allowedIPsArray.length === 0) {
 
       this.projectService.addAllowedIPranges(this.id_project, this.ip_restrictions_on, allowedIPsArray).subscribe((res: any) => {

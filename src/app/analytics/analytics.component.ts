@@ -4,8 +4,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from '../core/auth.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs'
-// import * as Chartist from 'chartist';
-// import * as moment from 'moment';
 import moment from "moment"
 
 

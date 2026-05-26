@@ -14,7 +14,7 @@ import { takeUntil } from 'rxjs/operators'
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Location } from '@angular/common';
 import { RoleService } from 'app/services/role.service';
-const swal = require('sweetalert');
+
 
 @Component({
   selector: 'appdashboard-groups-static',

@@ -70,10 +70,7 @@ import { FaqKbService } from './services/faq-kb.service';
 // import { BotListComponent } from './bots/bots-list/bots-list.component'; // // now lazy
 import { BotTypeSelectComponent } from './bots/bot-create/bot-type-select/bot-type-select.component';
 import { BotCreateComponent } from './bots/bot-create/bot-create.component';
-import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component';
 import { FaqComponent } from './bots/faq/faq.component';
-import { FaqTestComponent } from './bots/faq-test/faq-test.component';
-import { FaqTestTrainBotComponent } from './bots/faq-test/faq-test-train-bot/faq-test-train-bot.component';
 import { FaqSidebarComponent } from './bots/faq/faq-sidebar/faq-sidebar.component'; // fake comp used for a demo
 
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -214,7 +211,6 @@ import { AppStoreService } from './services/app-store.service';
 import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
 
-// import { PerfectScrollbarTdDirective } from './_directives/td-perfect-scrollbar/perfect-scrollbar-td.directive';
 import { DocsUrlRowComponent } from './components/docs-url-row/docs-url-row.component';
 import { VisitorsComponent } from './visitors/visitors.component';
 import { EventsComponent } from './events/events.component';
@@ -250,25 +246,14 @@ import { UnauthorizedForProjectComponent } from './auth/unauthorized-for-project
 // import { SettingsSidebarComponent } from './components/settings-sidebar/settings-sidebar.component';
 
 import { OnlynumberDirective } from './_directives/onlynumber.directive';
-import { NativeBotSidebarComponent } from './bots/native-bot-sidebar/native-bot-sidebar.component';
-import { NativeBotComponent } from './bots/native-bot/native-bot.component';
-import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
-
-import { TilebotSelectTypeComponent } from './bots/tilebot-select-type/tilebot-select-type.component';
-import { TilebotSidebarComponent } from './bots/tilebot-sidebar/tilebot-sidebar.component';
-import { TilebotComponent } from './bots/tilebot/tilebot.component';
-import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 // import { TemplatesComponent } from './bots/templates/templates.component'; // now lazy
 
 // import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component'; // now lazy
 
-import { CutomTooltipOptions } from './utils/util';
 // import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component'; // now lazy
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
 // import { WidgetInstallationComponent } from './widget-installation/widget-installation.component'; // now lazy
 import { AutofocusDirective } from './_directives/autofocus.directive';
-
-import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -307,13 +292,8 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 // import { PrestashopInstallationComponent } from './components/widget-installations/prestashop-installation/prestashop-installation.component'; //no lazy
 // import { JoomlaInstallationComponent } from './components/widget-installations/joomla-installation/joomla-installation.component'; //no lazy
 import { SatPopoverModule } from '@ncstate/sat-popover';
-import { TilebotFormComponent } from './bots/tilebot/tilebot-form/tilebot-form.component';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-
 
 import { ModalDeleteComponent } from './components/modals/modal-delete/modal-delete.component';
-import { TilebotAddEditFormComponent } from './bots/tilebot/tilebot-add-edit-form/tilebot-add-edit-form.component';
-import { TilebotListFieldsFormComponent } from './bots/tilebot/tilebot-list-fields-form/tilebot-list-fields-form.component';
 import { ChatbotSetupComponent } from './create-project-wizard/onboarding/chatbot-setup/chatbot-setup.component';
 
 import { SidebarClaimsComponent } from './create-project-wizard/onboarding/sidebar-claims/sidebar-claims.component';
@@ -412,6 +392,7 @@ import { RolesService } from './services/roles.service';
 import { HttpStatsService } from './services/http-stats.service';
 import { HttpStatsDashboardComponent } from './http-stats-dashboard/http-stats-dashboard.component';
 import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -514,14 +495,13 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // UsersComponent, // now lazy
     // BotListComponent, // now lazy
     BotCreateComponent,
-    FaqEditAddComponent,
     // DepartmentEditAddComponent, // now lazy
     // ProjectEditAddComponent, // now lazy
     // RequestsListHistoryComponent,
     // SigninComponent, // now lazy
     // SignupComponent, // now lazy
     UnauthorizedComponent,
-    FaqTestComponent,
+
     // UserEditAddComponent, // now lazy
     VerifyEmailComponent,
     // GroupsComponent, // now lazy
@@ -542,7 +522,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     ActivitiesComponent,
     // AnalyticsStaticComponent, // now lazy
     // ActivitiesStaticComponent, // now lazy
-    FaqTestTrainBotComponent,
     // AnalyticsComponent, // now lazy
     // ConvsDurationComponent,  // now lazy
     // EventsAnalyticsComponent, // now lazy
@@ -595,7 +574,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // AppStoreComponent, // now lazy
     // AppStoreInstallComponent, // now lazy
     // AppCreateComponent, // now lazy
-    // PerfectScrollbarTdDirective,
     DocsUrlRowComponent,
     VisitorsComponent,
     EventsComponent,
@@ -619,18 +597,11 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // SmtpSettingsComponent, // now lazy
     // SettingsSidebarComponent,
     // WidgetPrechatFormComponent, // now lazy
-    NativeBotSidebarComponent,
-    NativeBotComponent,
-    NativeBotSelectTypeComponent,
     // EmailTicketingComponent, // now lazy
     // WsSidebarAppsComponent, // now lazy
-    RasaBotComponent,
     ImageViewerComponent,
     // WidgetInstallationComponent,  // now lazy
     AutofocusDirective,
-    TilebotSelectTypeComponent,
-    TilebotSidebarComponent,
-    TilebotComponent,
     OnboardingComponent,
     WelcomeMessageConfigurationComponent,
     ChatbotConfigurationComponent,
@@ -643,10 +614,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // WordpressInstallationComponent, // now lazy
     // PrestashopInstallationComponent, // now lazy
     // JoomlaInstallationComponent, // now lazy
-    TilebotFormComponent, 
     ModalDeleteComponent, 
-    TilebotAddEditFormComponent, 
-    TilebotListFieldsFormComponent, 
     ChatbotSetupComponent, 
     SidebarClaimsComponent, 
     NetworkOfflineComponent, 
@@ -741,7 +709,13 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // ModalChatbotNameComponent
   ],
   imports: [
-    TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center',
+      newestOnTop: false,
+      easeTime: 350,
+      easing: 'ease-out',
+      preventDuplicates: false,
+    }),
     NgApexchartsModule,
     DragDropModule,
     CreditCardDirectivesModule,
@@ -784,7 +758,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     RouterModule,
     HttpClientModule,
     SatPopoverModule,
-    NgxSkeletonLoaderModule,
     // CreditCardDirectivesModule,
     // MomentModule,
     // AmazingTimePickerModule,

@@ -2806,7 +2806,7 @@
     "Activate": "التنشيط",
     "ActivateBotsForNewConversations": "تنشيط الروبوتات للمحادثات الجديدة",
     "DoYouWantToActivateTheBotForNewConversations": "هل تريد تفعيل الروبوت <b>{{ bot_name }}</b> للمحادثات الجديدة؟",
-    "DoYouWantToActivateBotForOneOfTheFollowingDepts": "هل تريد تفعيل وكيل الذكاء الاصطناعي <b>{{bot_name}</b> لأحد الأقسام التالية؟",
+    "DoYouWantToActivateBotForOneOfTheFollowingDepts": "هل تريد تفعيل وكيل الذكاء الاصطناعي <b>{{bot_name}}</b> لأحد الأقسام التالية؟",
     "DoYouWantToActivateExtBotForOneOfTheFollowingDepts": "هل تريد تفعيل البوت <b>{{bot_name}</b> لأحد الأقسام التالية؟",
     "ActivateBot": "تفعيل البوت",
     "BotSuccessfullyActivated": "تم تفعيل وكيل الذكاء الاصطناعي بنجاح",

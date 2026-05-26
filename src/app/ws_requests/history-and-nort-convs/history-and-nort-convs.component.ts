@@ -50,11 +50,6 @@ export const MY_DATE_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY'
   },
 };
-// import swal from 'sweetalert';
-// https://github.com/t4t5/sweetalert/issues/890 <- issue ERROR in node_modules/sweetalert/typings/sweetalert.d.ts(4,9): error TS2403
-
-// https://www.npmjs.com/package/sweetalert
-const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
 @Component({
@@ -1806,6 +1801,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   //       this.logger.log('[WS-REQUESTS-MSGS] - getWsMsgs$ * COMPLETE * ')
   //     });
   // }
+
+  /** Bound callback for tdRequestPreviewLoad (preserves `this`). */
+  onRequestPreviewLoad = (request: any): void => {
+    this.overfirstTextGetRequestMsg(request);
+  };
 
   overfirstTextGetRequestMsg(request) {
     this.logger.log('[HISTORY & NORT-CONVS] overfirstText request_id', request);
@@ -3829,6 +3829,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
       this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED: ", this.request_selected);
       this.logger.log("[HISTORY & NORT-CONVS] - ARRAY OF ARCHIVE SELECTED INITILA LENGHT : ", this.request_selected.length);
+      const totalToArchive = this.request_selected.length;
+      const archivingPrefix = this.archivingRequestNoticationMsg || '';
+      if (totalToArchive > 0) {
+        this.notify.showArchivingRequestProgress(archivingPrefix, 1, totalToArchive);
+      }
       let count = 0;
       const promises = [];
 
@@ -3842,7 +3847,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             count = index + 1;
             this.logger.log("[HISTORY & NORT-CONVS] - count Of ARCHIVE SELECTED : ", count)
-            this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.request_selected.length);
+            this.notify.showArchivingRequestProgress(archivingPrefix, count, totalToArchive);
 
           }).catch((error) => {
 
@@ -3868,15 +3873,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     let nRequestsBefore = this.requestList.length;
     //let correctnessCheck = (this.requestList.length - this.request_selected.length);
 
-    swal({
-      title: this.areYouSure + "?",
+    Swal.fire({
+      title: this.areYouSure + '?',
       text: this.selectedRequestWillBePermanentDeleted,
-      icon: "warning",
-      buttons: true,
-      dangerMode: true
-    }).then((willDelete) => {
-      if (willDelete) {
-        this.logger.log("swal willDelete", willDelete);
+      icon: 'warning',
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: false,
+      showDenyButton: true,
+      denyButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      focusConfirm: false,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isDenied) {
+        this.logger.log('[HISTORY & NORT-CONVS] Swal willDelete', result);
         // loop to delete the selected request
 
         const promises = [];
@@ -3896,12 +3907,17 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               this.selectedRequestsWasSuccessfullyDeleted = text;
             })
 
-            swal(this.done_msg, this.selectedRequestsWasSuccessfullyDeleted, {
-              icon: "success",
-            }).then((okpressed) => {
+            Swal.fire({
+              title: this.done_msg + '!',
+              text: this.selectedRequestsWasSuccessfullyDeleted,
+              icon: 'success',
+              showCloseButton: false,
+              showCancelButton: false,
+              confirmButtonText: this.translate.instant('Ok'),
+            }).then(() => {
               this.allChecked = false;
               this.getRequests();
-            })
+            });
           }
 
         }).catch((err) => {
@@ -3912,8 +3928,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
             // if no requests have been deleted
             if (this.requestList.length == nRequestsBefore) {
-              swal(this.errorDeleting, this.pleaseTryAgain, {
-                icon: "error",
+              Swal.fire({
+                title: this.errorDeleting,
+                text: this.pleaseTryAgain,
+                icon: 'error',
+                showCloseButton: false,
+                showCancelButton: false,
+                confirmButtonText: this.translate.instant('Ok'),
               });
             } else if (this.requestList.length < nRequestsBefore) {
 
@@ -3922,13 +3943,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               this.translate.get('DeleteRequestForever.SelectedRequestsWasPartiallyDeleted', { num_conv: deleted, num_conv_exc: remaining }).subscribe((text: string) => {
                 this.selectedRequestsWasSuccessfullyDeleted = text;
 
-                swal(this.done_msg, this.selectedRequestsWasSuccessfullyDeleted, {
-                  icon: "warning",
-                }).then((okpressed) => {
+                Swal.fire({
+                  title: this.done_msg + '!',
+                  text: this.selectedRequestsWasSuccessfullyDeleted,
+                  icon: 'warning',
+                  showCloseButton: false,
+                  showCancelButton: false,
+                  confirmButtonText: this.translate.instant('Ok'),
+                });
 
-                })
-
-              })
+              });
             }
 
           }).catch((err) => {
@@ -3936,9 +3960,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           })
         })
       } else {
-        this.logger.log('[HISTORY & NORT-CONVS] swal willDelete', willDelete)
+        this.logger.log('[HISTORY & NORT-CONVS] Swal delete cancelled', result);
       }
-    })
+    });
   }
 
 

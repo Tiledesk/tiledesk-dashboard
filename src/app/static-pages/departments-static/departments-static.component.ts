@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators'
 import { Location } from '@angular/common';
 import { RoleService } from 'app/services/role.service';
 
-const swal = require('sweetalert');
+
 // node_modules/ng-simple-slideshow/src/app/modules/slideshow/IImage.d.ts
 // src/app/static-pages/departments-static/departments-static.component.ts
 @Component({

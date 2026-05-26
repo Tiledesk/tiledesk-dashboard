@@ -1,11 +1,10 @@
 @import "./src/assets/sass/md/_variables.scss";
 
-
-// :host {
-//   --sidebar-icon-color: #647491;
-//   --sidebar-hover-icon-color: #a9afbb;
-//   --sidebar-active-icon: #fff
-// }
+:host {
+  display: block;
+  background-color: var(--sidebar-background-color, #1e2129);
+  overflow: hidden;
+}
 .nav-container {
   height: 100%;
 }
@@ -23,7 +22,9 @@
   position: relative;
   // height: calc(100vh - 44px);
   height: calc(100vh - 60px);
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: none;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -33,8 +34,24 @@
   transition-duration: 0.2s, 0.2s, 0.35s;
   transition-timing-function: linear, linear, ease;
   background-color: var(--sidebar-bckgrnd-bottom-section-drk) !important;
+  background-attachment: local;
   // background-color: var(--sidebar-bckgrnd-bottom-section-lgt) !important;
   // border-right: 1px solid rgb(226, 232, 239); // for light sidebar
+  scrollbar-width: thin;
+  scrollbar-color: #3c485b transparent;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #3c485b;
+    border-radius: 3px;
+  }
 }
 
 
@@ -691,18 +708,6 @@ button.close {
 //   /* width: 10px !important; */
 // }
 
-#sidebar_wrapper::-webkit-scrollbar {
-  width: 3px;
-}
-
-#sidebar_wrapper::-webkit-scrollbar-track {
-  background-color: #1c2b45;
-}
-
-#sidebar_wrapper::-webkit-scrollbar-thumb {
-  background-color: #3c485b;
-  border-radius: 3px;
-}
 
 // #user-details.active {
 //   transform: translate(0);

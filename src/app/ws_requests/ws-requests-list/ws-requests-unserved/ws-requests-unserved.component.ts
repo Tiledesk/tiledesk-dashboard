@@ -17,11 +17,11 @@ import { NotifyService } from '../../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
-import scrollToWithAnimation from 'scrollto-with-animation';
+import { scrollElementWithAnimation } from 'app/utils/scroll-element.util';
 import { CHANNELS_NAME } from 'app/utils/util';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 @Component({
@@ -242,14 +242,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
     }
 
     setTimeout(() => {
-      scrollToWithAnimation(
-        el,
-        'scrollTop',
-        y,
-        500,
-        'easeInOutCirc',
-        finish
-      );
+      scrollElementWithAnimation(el, 'scrollTop', y, 500, finish);
     }, 100);
   }
 
@@ -305,6 +298,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   //     }
   //   })
   // }
+
+  /** Bound callback for tdRequestPreviewLoad (preserves `this`). */
+  onRequestPreviewLoad = (request: any): void => {
+    this.overfirstTextGetRequestMsg(request);
+  };
 
   overfirstTextGetRequestMsg(request) {
     this.logger.log('[WS-REQUESTS-LIST][UNSERVED]] overfirstText request_id', request);
@@ -388,6 +386,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   getTranslations() {
     this.translateArchivingRequestErrorMsg();
     this.translateArchivingRequestMsg();
+    this.translateAllConversationsHaveBeenArchived();
     this.translateRequestHasBeenArchivedNoticationMsg_part1();
     this.translateRequestHasBeenArchivedNoticationMsg_part2();
     this.translateAreYouSure();
@@ -539,6 +538,11 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
 
   archiveSelected() {
     if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
+      const totalToArchive = this.requests_selected.length;
+      const archivingPrefix = this.archivingRequestNoticationMsg || '';
+      if (totalToArchive > 0) {
+        this.notify.showArchivingRequestProgress(archivingPrefix, 1, totalToArchive);
+      }
       let count = 0;
       this.requests_selected.forEach((requestid, index) => {
         this.wsRequestsService.closeSupportGroup(requestid)
@@ -577,7 +581,7 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
               this.requests_selected.splice(index, 1);
 
             }
-            this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
+            this.notify.showArchivingRequestProgress(archivingPrefix, count, totalToArchive);
 
             this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - this.requests_selected.length ', this.requests_selected.length);
             this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - requests_selected array ', this.requests_selected);

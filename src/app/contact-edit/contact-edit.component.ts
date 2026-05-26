@@ -231,14 +231,10 @@ export class ContactEditComponent implements OnInit {
 
         this.logger.error('[CONTACT-EDIT] - UPDATE CONTACT - ERROR ', error);
         // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
         this.notify.showWidgetStyleUpdateNotification(this.editContactErrorNoticationMsg, 4, 'report_problem')
 
       }, () => {
         this.logger.log('[CONTACT-EDIT] - UPDATE CONTACT * COMPLETE *');
-
-        // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('Contact successfully updated', 2, 'done');
         this.notify.showWidgetStyleUpdateNotification(this.editContactSuccessNoticationMsg, 2, 'done');
 
       });

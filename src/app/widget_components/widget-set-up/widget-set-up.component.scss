@@ -3547,20 +3547,58 @@ pre {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  max-width: 300px;
+  max-width: 420px;
   margin-right: 6px;
+}
+
+.extensions-option-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.extensions-option-row--custom {
+  flex-wrap: wrap;
+
+  .add-extensions-input {
+    flex: 1 1 160px;
+    min-width: 140px;
+  }
+}
+
+.extensions-container .extensions-material-radio {
+  margin: 0;
+  flex-shrink: 0;
+
+  label {
+    color: #566787 !important;
+    margin-bottom: 0;
+    padding-left: 12px;
+  }
+
+  .extensions-radio-caption {
+    position: static;
+    display: inline;
+    left: auto;
+    top: auto;
+    padding-left: 6px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #3c4858;
+    line-height: 18px;
+    white-space: nowrap;
+  }
+}
+
+.extensions-material-radio--compact label {
+  min-width: 30px;
+  min-height: 20px;
 }
 
 .option-row {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.fixed-input {
-  width: 100px;
-  text-align: center;
-  background-color: #f3f3f3;
 }
 
 .extensions-box {
@@ -3641,56 +3679,6 @@ pre {
   vertical-align: middle;
   color: #fff;
 }
-
-/* Nasconde il radio nativo */
-input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid var(--blue-20);
-  border-radius: 50%;
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  outline: none;
-  margin: 0 6px 0 0;
-  vertical-align: middle;
-  transition: all 0.2s ease-in-out;
-}
-
-/* Cerchio riempito quando selezionato */
-input[type="radio"]:checked {
-  border-color: var(--blue-20);
-  background-color: var(--blue-20);
-}
-
-/* Puntino bianco dentro */
-input[type="radio"]:checked::after {
-  content: "";
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: white;
-}
-
-/* Hover effect */
-input[type="radio"]:hover {
-  border-color: var(--blue-20);
-}
-
-/* Disabilitato */
-input[type="radio"]:disabled {
-  border-color: #ccc;
-  background: #f2f2f2;
-  cursor: not-allowed;
-}
-
-
 
 // .delete-custom-launcher-logo:hover {
 //   background: #8d021f;

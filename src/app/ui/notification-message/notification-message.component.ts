@@ -14,7 +14,7 @@ import { UsersService } from '../../services/users.service';
 import { takeUntil } from 'rxjs/operators';
 import { PLAN_NAME } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
-const swal = require('sweetalert');
+
 @Component({
   selector: 'notification-message',
   templateUrl: './notification-message.component.html',
@@ -251,7 +251,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
       }
     }, error => {
       this.logger.error('[NOTIFICATION-MSG] - cancelSubscription - ERROR: ', error);
-      this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.subscriptionCanceledError, 4, 'report_problem');
 
       this.notify.cancelSubscriptionCompleted(true)
     }, () => {

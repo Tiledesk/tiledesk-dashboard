@@ -2817,7 +2817,7 @@
     "Activate": "Attiva",
     "ActivateBotsForNewConversations": "Attiva il bot per le nuove conversazioni",
     "DoYouWantToActivateTheBotForNewConversations": "Vuoi attivare il bot <b>{{ bot_name }}</b> per le nuove conversazioni?",
-    "DoYouWantToActivateBotForOneOfTheFollowingDepts": "Vuoi attivare l'agente AI <b>{{bot_name}</b> per uno dei seguenti dipartimenti?",
+    "DoYouWantToActivateBotForOneOfTheFollowingDepts": "Vuoi attivare l'agente AI <b>{{bot_name}}</b> per uno dei seguenti dipartimenti?",
     "DoYouWantToActivateExtBotForOneOfTheFollowingDepts": "Vuoi attivare il bot <b>{{bot_name}}</b> per uno dei seguenti dipartimenti?",
     "ActivateBot": "Attiva il bot",
     "BotSuccessfullyActivated": "Agente AI attivato con successo",

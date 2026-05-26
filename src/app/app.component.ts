@@ -5,11 +5,9 @@ import { filter } from 'rxjs/operators';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { Router, NavigationEnd, NavigationStart, Event as NavigationEvent, UrlTree } from '@angular/router';
 import { Subscription } from 'rxjs'
-import PerfectScrollbar from 'perfect-scrollbar'; // https://github.com/mdbootstrap/perfect-scrollbar
 
 import { AuthService } from './core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
-declare const $: any;
 
 import { environment } from '../environments/environment';
 export const firebaseConfig = environment.firebase;
@@ -32,6 +30,7 @@ import { BrandService } from './services/brand.service';
 import { ScriptService } from './services/script/script.service';
 import { LoggerService } from './services/logger/logger.service';
 import { NotifyService } from './core/notify.service';
+import { MaterialDesignInitService } from './core/material-design-init.service';
 import { avatarPlaceholder, freePlanLimitDate, getColorBck } from './utils/util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
@@ -111,7 +110,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private sleekplanService: SleekplanService,
         private sleekplanApiService: SleekplanApiService,
         // private keycloakService: KeycloakService,
-        private localDbService: LocalDbService
+        private localDbService: LocalDbService,
+        private materialDesignInit: MaterialDesignInitService
         // public usersService: UsersService,
         // private faqKbService: FaqKbService,
         
@@ -314,7 +314,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
      ngAfterViewInit() {
-        this.runOnRouteChange();
+        this.materialDesignInit.init();
         // this.hideFooter();
     }
 
@@ -523,8 +523,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         const _elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
         // this.logger.log('APP COMP - MAIN PANEL ', _elemMainPanel)
         _elemMainPanel.setAttribute('style', 'overflow-x: hidden !important;');
-        // _elemMainPanel.setAttribute('style', 'overflow-x: auto !important;');
-        $.material.init();
 
         // HIDE ELEMENT IF THE USER IN ONE OF THE 'AUTH' PAGES: SIGNIN, SIGUP, WELCOME
         this.hideElementsInAuthPage()
@@ -562,12 +560,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 elemSidebar.scrollTop = 0;
             }
             )
-
-        if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-            let ps = new PerfectScrollbar(elemMainPanel);
-            ps = new PerfectScrollbar(elemSidebar);
-        }
-
 
         this.unsetNavbarBoxShadow();
         this.hideWidgetAndForegroundNotificationInComponentDisplayedInChat()
@@ -1463,21 +1455,6 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     //         return true;
     //     }
     // }
-    runOnRouteChange(): void {
-        if (window.matchMedia(`(min-width: 960px)`).matches && !this.isMac()) {
-            const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-            const ps = new PerfectScrollbar(elemMainPanel);
-            ps.update();
-        }
-    }
-    isMac(): boolean {
-        let bool = false;
-        if (navigator.platform.toUpperCase().indexOf('MAC') >= 0 || navigator.platform.toUpperCase().indexOf('IPAD') >= 0) {
-            bool = true;
-        }
-        return bool;
-    }
-
     isMobile() {
         let bool = false;
         if (/Android|iPhone/i.test(window.navigator.userAgent)) {

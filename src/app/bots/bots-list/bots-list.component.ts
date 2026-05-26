@@ -38,7 +38,6 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
-const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 @Component({
   selector: 'bots-list',

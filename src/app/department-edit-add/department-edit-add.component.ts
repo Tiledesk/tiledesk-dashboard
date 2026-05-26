@@ -30,8 +30,7 @@ import { EditGroupsLoadDistributionModalComponent } from './edit-groups-load-dis
 import { ProjectService } from 'app/services/project.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-declare const $: any;
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 @Component({

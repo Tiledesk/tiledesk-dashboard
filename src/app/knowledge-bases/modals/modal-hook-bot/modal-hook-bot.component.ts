@@ -30,19 +30,17 @@ export class ModalHookBotComponent implements OnInit {
     private auth: AuthService,
     private ngZone: NgZone
   ) { 
-    // console.log('MODAL-HOOK-BOT data ', data) 
+    console.log('MODAL-HOOK-BOT data ', data) 
 
     if (data && data.deptsWithoutBotArray)  {
       this.depts_without_bot_array = data.deptsWithoutBotArray
-      // console.log('[MODAL-HOOK-BOT] data > depts_without_bot_array',  this.depts_without_bot_array) 
+      console.log('[MODAL-HOOK-BOT] data > depts_without_bot_array',  this.depts_without_bot_array) 
     } 
-    if (data && data.chatbot)  {
-      this.chatbot = data.chatbot
-      // console.log('[MODAL-HOOK-BOT] data > chatbot',  this.chatbot) 
-
-      this.chatbotName = this.chatbot.name
-      // console.log('[MODAL-HOOK-BOT] data > chatbotName',  this.chatbotName) 
-    } 
+    if (data && data.chatbot) {
+      this.chatbot = data.chatbot;
+      this.chatbotName = this.resolveChatbotName(this.chatbot);
+      this.logger.log('[MODAL-HOOK-BOT] chatbotName', this.chatbotName);
+    }
   }
 
   onSelectDeptId() {
@@ -95,6 +93,19 @@ export class ModalHookBotComponent implements OnInit {
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  /** API/import may expose the label on different fields. */
+  private resolveChatbotName(chatbot: any): string {
+    if (!chatbot || typeof chatbot === 'string') {
+      return '';
+    }
+    return (
+      chatbot.name ??
+      chatbot.bot_name ??
+      chatbot.title ??
+      ''
+    ).trim();
   }
 
 }

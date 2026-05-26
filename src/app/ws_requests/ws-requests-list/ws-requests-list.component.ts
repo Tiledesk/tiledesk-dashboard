@@ -19,7 +19,7 @@ import { DepartmentService } from '../../services/department.service';
 import { Subject } from 'rxjs';
 import { filter, skip, switchMap, take, takeUntil, throttleTime } from 'rxjs/operators'
 import { browserRefresh } from '../../app.component';
-import * as uuid from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import { ContactsService } from '../../services/contacts.service';
 import { Observable } from 'rxjs';
 import { ProjectUser } from '../../models/project-user';
@@ -33,7 +33,6 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
-const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
 @Component({
@@ -1194,18 +1193,13 @@ getProjectUserRole() {
   }
 
   presentModalFeautureAvailableOnlyWithEnterprisePlan() {
-    const el = document.createElement('div')
-    el.innerHTML = this.onlyAvailableWithEnterprisePlan
-    swal({
-      // title: this.onlyOwnerCanManageTheAccountPlanMsg,
-      content: el,
-      icon: "info",
-      // buttons: true,
-      button: {
-        text: "OK",
-      },
-      dangerMode: false,
-    })
+    const el = document.createElement('div');
+    el.innerHTML = this.onlyAvailableWithEnterprisePlan;
+    Swal.fire({
+      html: el,
+      icon: 'info',
+      confirmButtonText: 'OK',
+    });
   }
 
   presentModalFeautureAvailableOnlyWithPlanC() {
@@ -1276,23 +1270,23 @@ getProjectUserRole() {
     })
   }
 
-  // NOT USED 
+  // NOT USED
   presentModalFeatureAvailableWithProPlanUserRoleOwner() {
-    swal({
+    Swal.fire({
       text: this.featureIsAvailableWithTheProPlan,
-      icon: "info",
-      buttons: ["Cancel", "Upgrade Plan"],
-      dangerMode: false,
-    })
-      .then((upgradePlan) => {
-        if (upgradePlan) {
-          this.logger.log('[WS-REQUESTS-LIST] swal upgradePlan', upgradePlan)
-          this.router.navigate(['project/' + this.projectId + '/pricing']);
-
-        } else {
-          this.logger.log('[WS-REQUESTS-LIST] swal upgradePlan (else)', upgradePlan)
-        }
-      });
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan,
+      cancelButtonText: this.cancelLbl,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.logger.log('[WS-REQUESTS-LIST] upgrade plan confirmed');
+        this.router.navigate(['project/' + this.projectId + '/pricing']);
+      } else {
+        this.logger.log('[WS-REQUESTS-LIST] upgrade plan cancelled');
+      }
+    });
   }
 
   seeIamAgentRequests(seeIamAgentReq) {
@@ -2298,7 +2292,7 @@ getProjectUserRole() {
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - assignee_participants_id ', this.assignee_participants_id);
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - internalRequest_subject', this.internalRequest_subject);
 
-    const uiid = uuid.v4();
+    const uiid = uuidv4();
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - uiid', uiid);
     this.logger.log('[WS-REQUESTS-LIST] create internalRequest - uiid typeof', typeof uiid);
     const uiid_no_dashes = uiid.replace(/-/g, "");;

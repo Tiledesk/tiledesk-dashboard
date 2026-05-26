@@ -207,7 +207,7 @@ export class ProjectPlanService {
 
       if (error.status === 404) {
         this.router.navigate(['/projects']);
-        this.notify.showNotificationChangeProject(this.project_deleted_notification, 2, 'report_problem');
+        this.notify.showNotificationChangeProject(this.project_deleted_notification, 4, 'report_problem');
         this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - hey i redirect to projects');
       }
 

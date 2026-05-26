@@ -11,7 +11,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PasswordValidation } from 'app/reset-psw/password-validation';
 import { NavigationService } from 'app/services/navigation.service';
 import { Subscription } from 'rxjs';
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 type UserFields = 'email' | 'password' | 'firstName' | 'lastName' | 'terms';
 type FormErrors = { [u in UserFields]: string };

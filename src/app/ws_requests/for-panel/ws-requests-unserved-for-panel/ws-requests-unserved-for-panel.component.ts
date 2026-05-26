@@ -15,7 +15,6 @@ import { UAParser } from 'ua-parser-js'
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { AppConfigService } from '../../../services/app-config.service';
 import { Subscription } from 'rxjs'
-import PerfectScrollbar from 'perfect-scrollbar';
 import { DepartmentService } from '../../../services/department.service';
 
 import { Subject } from 'rxjs';
@@ -24,7 +23,7 @@ import { skip, takeUntil } from 'rxjs/operators'
 import { browserRefresh } from '../../../app.component';
 import { Location } from '@angular/common';
 // import { fadeInAnimation } from '../../../_animations/index';
-const swal = require('sweetalert');
+
 import { ContactsService } from '../../../services/contacts.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WebSocketJs } from 'app/services/websocket/websocket-js';
@@ -178,8 +177,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
     this.getCurrentProject();
     this.getLoggedUser();
     this.getTranslations();
-    this.setPerfectScrollbar();
-
     this.getUserRole();
     this.listenToProjectUser()
     this.checkPermissions()
@@ -438,14 +435,6 @@ export class WsRequestsUnservedForPanelComponent extends WsSharedComponent imple
 
   unsuscribeRequesterPresence(requester_id) {
     this.wsRequestsService.unsubscribeToWS_RequesterPresence(requester_id);
-  }
-
-  setPerfectScrollbar() {
-    const container_projects_for_panel = <HTMLElement>document.querySelector('.main-content-projects-for-panel');
-    this.logger.log('[WS-REQUESTS-UNSERVED-X-PANEL] setPerfectScrollbar main-content-projects-for-panel', container_projects_for_panel);
-    let ps = new PerfectScrollbar(container_projects_for_panel, {
-      suppressScrollX: true
-    });
   }
 
   displayDetails(request) {

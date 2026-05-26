@@ -5,7 +5,7 @@ import { Location } from '@angular/common';
 import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../services/logger/logger.service';
-const swal = require('sweetalert');
+
 import Swal from 'sweetalert2';
 
 @Component({
@@ -217,14 +217,6 @@ export class SmtpSettingsComponent implements OnInit {
   }
 
   presentModalWithInputSendToAndTestEmailButton() {
-    // swal(this.sendToMsg, {
-    //   content: "input",
-    //   buttons: [this.cancelMsg, this.sendMsg],
-    // })
-    //   .then((recipientemail) => {
-    //     this.logger.log('[SMTP-SETTINGS] - HAS CLICKED SEND RECIPIENT EMAIL', recipientemail)
-    //     this.sendTestEmail(recipientemail)
-    //   });
     Swal.fire({
         title: this.sendToMsg,
         text: this.translate.instant('TheSenderEmailAddressWillNotBeUsedInTheTestEmail'),
@@ -279,39 +271,6 @@ export class SmtpSettingsComponent implements OnInit {
 
   // ------------
   presentModalResetToDefault() {
-    // swal({
-    //   title: this.areYouSureMsg + '?',
-    //   text: this.thisActionIsNotReversibleMsg,
-    //   icon: "warning",
-    //   buttons: true,
-    //   dangerMode: true,
-    // })
-    //   .then((willResetToDefault) => {
-    //     if (willResetToDefault) {
-    //       this.logger.log('[SMTP-SETTINGS] swal willResetToDefault', willResetToDefault)
-
-    //       this.projectService.resetToDefaultSMPTSettings()
-    //         .subscribe((res: any) => {
-    //           console.log('[SMTP-SETTINGS] in swal willResetToDefault res ', res)
-
-    //         }, (error) => {
-    //           this.logger.error('[SMTP-SETTINGS] in swal willResetToDefault - ERROR ', error);
-
-    //         }, () => {
-    //           this.logger.log('[CONTACTS-DTLS] in swal willResetToDefault * COMPLETE *');
-    //           this.smtp_host_name = null;
-    //           this.smtp_port = null;
-    //           this.sender_email_address = null;
-    //           this.smtp_usermame = null;
-    //           this.smtp_pswd = null;
-    //           this.smtp_connetion_security = null
-
-    //         });
-    //     } else {
-    //       this.logger.log('[CONTACTS-DTLS] swal willDelete', willResetToDefault)
-
-    //     }
-    //   });
     Swal.fire({
       title: this.areYouSureMsg + '?',
       text: this.thisActionIsNotReversibleMsg,
@@ -321,7 +280,7 @@ export class SmtpSettingsComponent implements OnInit {
       cancelButtonText: this.cancelMsg,
       reverseButtons: true,  
     }).then((result) => {  // ← INIZIO .then()
-      this.logger.log('[SMTP-SETTINGS] swal result', result);
+      this.logger.log('[SMTP-SETTINGS] Swal result', result);
       
       if (result.isConfirmed) {
         this.logger.log('[SMTP-SETTINGS] User confirmed reset');

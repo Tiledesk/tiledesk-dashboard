@@ -1845,23 +1845,91 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
 
 
 
+// Sidebar column: opaque background (overscroll must not reveal white body).
+.wrapper > .sidebar {
+  background-color: var(--sidebar-background-color, #1e2129);
+  overflow: hidden;
+}
+
+// Native scroll (replaces perfect-scrollbar). Sidebar: thin bar in component SCSS.
+.main-panel,
+.main-content-projects-for-panel,
+.chat-messages-container,
+#chat-wpr {
+  scrollbar-width: thin;
+  scrollbar-color: #b9b9b9 transparent;
+}
+
+.main-panel::-webkit-scrollbar,
+.main-content-projects-for-panel::-webkit-scrollbar,
+.chat-messages-container::-webkit-scrollbar,
+#chat-wpr::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+.main-panel::-webkit-scrollbar-track,
+.main-content-projects-for-panel::-webkit-scrollbar-track,
+.chat-messages-container::-webkit-scrollbar-track,
+#chat-wpr::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main-panel::-webkit-scrollbar-thumb,
+.main-content-projects-for-panel::-webkit-scrollbar-thumb,
+.chat-messages-container::-webkit-scrollbar-thumb,
+#chat-wpr::-webkit-scrollbar-thumb {
+  background-color: #b9b9b9;
+  border-radius: 3px;
+}
+
+.main-panel::-webkit-scrollbar-thumb:hover,
+.main-content-projects-for-panel::-webkit-scrollbar-thumb:hover,
+.chat-messages-container::-webkit-scrollbar-thumb:hover,
+#chat-wpr::-webkit-scrollbar-thumb:hover,
+.main-panel::-webkit-scrollbar-thumb:active,
+.main-content-projects-for-panel::-webkit-scrollbar-thumb:active,
+.chat-messages-container::-webkit-scrollbar-thumb:active,
+#chat-wpr::-webkit-scrollbar-thumb:active {
+  background-color: #727272;
+}
+
+.main-panel:hover::-webkit-scrollbar,
+.main-panel:focus-within::-webkit-scrollbar,
+.main-content-projects-for-panel:hover::-webkit-scrollbar,
+.main-content-projects-for-panel:focus-within::-webkit-scrollbar,
+.chat-messages-container:hover::-webkit-scrollbar,
+.chat-messages-container:focus-within::-webkit-scrollbar,
+#chat-wpr:hover::-webkit-scrollbar,
+#chat-wpr:focus-within::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
 // -----
 .main-panel-chat-panel-mode::-webkit-scrollbar {
-  width: 6px;
-  height: 8px;
+  width: 6px !important;
+  height: 6px !important;
 }
 
 .main-panel-chat-panel-mode::-webkit-scrollbar-track {
-  background: #f9f9f9;
+  background: transparent;
 }
 
 .main-panel-chat-panel-mode::-webkit-scrollbar-thumb {
   background-color: #b9b9b9;
-  border-radius: 0px;
+  border-radius: 3px;
 }
 
-.main-panel-chat-panel-mode::-webkit-scrollbar-thumb:hover {
+.main-panel-chat-panel-mode::-webkit-scrollbar-thumb:hover,
+.main-panel-chat-panel-mode::-webkit-scrollbar-thumb:active {
   background-color: #727272;
+}
+
+.main-panel-chat-panel-mode:hover::-webkit-scrollbar,
+.main-panel-chat-panel-mode:focus-within::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
 }
 
 // --------------------------------------
@@ -2050,9 +2118,18 @@ span.navbar-brand-title {
 //     top: 0px;
 // }
 
+// Stacking layer for all Material/CDK overlays (dialogs, menus, tooltips).
+// Keep at 1050 (Bootstrap modal tier, in prod since 2022). Do not raise globally:
+// ng-select with appendTo="body" uses ~1050 and would disappear behind a higher container.
 .cdk-overlay-container {
   position: fixed;
   z-index: 1050 !important;
+}
+
+// Order panes inside the overlay container only (not vs sidebar 1052).
+.cdk-overlay-pane.td-request-preview-overlay,
+.cdk-overlay-pane.custom-ng2-tooltip {
+  z-index: 1061 !important;
 }
 
 .disable-dropdown-menu-btn {
@@ -2061,7 +2138,19 @@ span.navbar-brand-title {
   cursor: not-allowed;
 }
 
-.custom-ng2-tooltip {
+/* CDK pane: positioning only — do not override position (CDK uses absolute + transform) */
+.cdk-overlay-pane.custom-ng2-tooltip,
+.cdk-overlay-pane.td-request-preview-overlay {
+  pointer-events: none !important;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  padding: 0 !important;
+}
+
+.td-request-preview-tooltip {
+  position: relative;
+  pointer-events: none;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 14px;
   font-style: normal;
@@ -2071,9 +2160,35 @@ span.navbar-brand-title {
   font-weight: 400;
   text-align: left !important;
   min-width: 470px;
-  padding: 16px !important;
-  // margin-left: 60px;
-  z-index: 1052 !important;
+  padding: 16px;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+
+  /* Tooltip tail on the white container (points to first_text below) */
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    pointer-events: none;
+  }
+
+  &::before {
+    bottom: -11px;
+    border-width: 11px 11px 0 11px;
+    border-color: rgba(0, 0, 0, 0.12) transparent transparent transparent;
+  }
+
+  &::after {
+    bottom: -10px;
+    border-width: 10px 10px 0 10px;
+    border-color: #fff transparent transparent transparent;
+  }
 }
 
 .ng2-tooltip-header {
@@ -4821,3 +4936,284 @@ li.li-active a {
 //   border-bottom: 3px solid rgba(30, 136, 229, 1) !important;
 //   color:black !important;
 // }
+
+
+/* ngx-toastr styles */
+/* ********************************** */
+
+/* positionClass is on #toast-container, not on each toast */
+/* come bootstrap-notify: offset 20, spacing 10 */
+#toast-container.toast-top-center {
+  top: 20px !important;
+  right: 0;
+  width: 100%;
+}
+
+#toast-container.toast-top-center .ngx-toastr.td-notify-toast {
+  width: 100% !important;
+  max-width: 300px;
+  margin: 0 auto 10px !important;
+  padding: 0 !important;
+  background-image: none !important;
+  background-position: initial;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4) !important;
+  z-index: 1051 !important;
+  border-radius: 3px;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+  position: relative !important;
+  display: block !important;
+}
+
+#toast-container.toast-top-center .ngx-toastr.td-notify-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+/* contenuto interno (stile alert-minimalist-pooled) */
+.td-notify-container {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.td-notify-header {
+  height: 25px;
+  font-size: 14px;
+  font-weight: 400;
+  background-color: #ffc107;
+  color: #fff;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  padding: 3px 16px;
+  max-width: 100% !important;
+}
+
+.td-notify-title {
+  color: rgb(51, 51, 51);
+  display: block;
+  font-weight: bold;
+  font-size: 14px;
+  margin: 5px 6px;
+  padding: 0 10px;
+}
+
+.td-notify-message {
+  font-size: 14px;
+  color: rgb(51, 51, 51);
+  margin: 0 6px 10px;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.td-notify-foreground-header {
+  height: 25px;
+  font-size: 14px;
+  font-weight: 400;
+  background-color: #0d6efd !important;
+  color: #fff;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+  padding: 3px 16px;
+  max-width: 100% !important;
+}
+
+/* banner basso centro (showToast): fadeInUp / fadeOutDown */
+#toast-container.toast-bottom-center {
+  bottom: 20px !important;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast {
+  width: auto !important;
+  max-width: min(90vw, 640px);
+  margin: 0 auto 10px !important;
+  padding: 10px 50px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25) !important;
+  z-index: 1051 !important;
+  text-align: center;
+  pointer-events: auto;
+  border: none;
+}
+
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+@keyframes tdToastFadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast.fadeInUp {
+  animation-name: tdToastFadeInUp;
+}
+
+.td-center-toast-body {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.td-center-toast-icon {
+  font-size: 20px;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.td-center-toast-message {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.35;
+}
+
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast.alert-warning .td-center-toast-icon,
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast.alert-warning .td-center-toast-message {
+  color: rgb(66, 77, 87);
+}
+
+/* widget / operazioni: alto a destra, fadeInDown / fadeOutUp */
+#toast-container.toast-top-right {
+  top: 20px !important;
+  right: 20px !important;
+  left: auto !important;
+  width: auto;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-widget-notify-toast {
+  width: 100% !important;
+  max-width: 360px;
+  min-width: 280px;
+  margin: 0 0 10px !important;
+  padding: 8px 12px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1051 !important;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-widget-notify-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+/* cambio / eliminazione progetto: alto a destra, colori Bootstrap come widget toast */
+#toast-container.toast-top-right .ngx-toastr.td-change-project-notify-toast {
+  width: 100% !important;
+  max-width: 360px;
+  min-width: 280px;
+  margin: 0 0 10px !important;
+  padding: 8px 12px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1051 !important;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-change-project-notify-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-change-project-notify-toast .td-widget-notify-message {
+  font-size: 14px;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-verify-email-toast {
+  width: 100% !important;
+  max-width: 360px;
+  min-width: 280px;
+  margin: 0 0 10px !important;
+  padding: 8px 12px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1051 !important;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-verify-email-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-verify-email-toast .toast-close-button {
+  display: none !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast {
+  width: 100% !important;
+  max-width: 360px;
+  min-width: 280px;
+  margin: 0 0 10px !important;
+  padding: 8px 12px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1051 !important;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast .toast-close-button {
+  display: none !important;
+}
+
+/* archiviazione: sfondo Bootstrap invariato (alert-info / alert-success), solo testo */
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast .toast-message,
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast .td-widget-notify-message {
+  color: #fff !important;
+  font-size: 14px;
+}
+
+.td-widget-notify-body {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.td-widget-notify-icon .material-icons {
+  vertical-align: middle;
+  padding: 3px;
+  border-radius: 50%;
+  font-size: 16px;
+  color: #fff;
+}
+
+.td-widget-notify-message {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  flex: 1;
+  min-width: 0;
+}

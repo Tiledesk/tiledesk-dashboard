@@ -17,7 +17,7 @@ import { RolesService } from 'app/services/roles.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { NavigationService } from 'app/services/navigation.service';
-// const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-contact-details',
@@ -1170,12 +1170,10 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       }, (error) => {
         this.logger.error('[CONTACTS-DTLS] - DELETE CONTACT - ERROR ', error);
         // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem');
         this.notify.showWidgetStyleUpdateNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         this.logger.log('[CONTACTS-DTLS] - DELETE CONTACT * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('Contact successfully deleted', 2, 'done');
         this.notify.showWidgetStyleUpdateNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
       });
 
@@ -1259,11 +1257,11 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       }, (error) => {
         this.logger.error('[WS-REQUESTS-MSGS] - UPDATE CONTACT - ERROR ', error);
         // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while updating contact', 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('EditContactErrorNoticationMsg'), 4, 'report_problem');
       }, () => {
         this.logger.log('[WS-REQUESTS-MSGS] - UPDATE CONTACT * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('Contact successfully updated', 2, 'done')
+       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('EditContactSuccessNoticationMsg'), 2, 'done')
       });
   }
 

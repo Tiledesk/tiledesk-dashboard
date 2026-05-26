@@ -2,22 +2,9 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, CanActivateFn, RouterStateSnapshot, UrlTree } from '@angular/router';
 
 import { Chatbot } from 'app/models/faq_kb-model';
-import { TooltipOptions } from 'ng2-tooltip-directive';
 import { concat, from, isObservable, Observable, of } from 'rxjs';
 import { concatMap, first, last, takeWhile } from 'rxjs/operators';
 import { TEAMMATE_STATUS } from './constants';
-
-export const CutomTooltipOptions: TooltipOptions = {
-    'show-delay': 0,
-    'tooltip-class': 'custom-ng2-tooltip',
-    'theme': 'light',
-    'shadow': true,
-    'hide-delay-mobile': 0,
-    'hideDelayAfterClick': 3000,
-    'hide-delay': 0,
-    'placement': 'top',
-    'autoPlacement': true,
-}
 
 export const stripEmojis = (str: string) =>
     str.replace(

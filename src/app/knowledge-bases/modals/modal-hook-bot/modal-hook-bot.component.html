@@ -13,7 +13,8 @@
         <mat-accordion>
             <mat-expansion-panel (opened)="panelOpenState = true"
                              (closed)="panelOpenState = false" style="box-shadow: unset;
-                             border: 1px solid #ccc;">
+                             border: 1px solid #ccc;"
+                             class="installation--expansion-panel">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
                         {{'Installation' | translate}}
@@ -76,11 +77,11 @@
       </textarea>
 
 
-    <h4 [innerHTML]="'DoYouWantToActivateBotForOneOfTheFollowingDepts' | translate: {bot_name: chatbotName} "> </h4>
+    <h4 [innerHTML]="'DoYouWantToActivateBotForOneOfTheFollowingDepts' | translate: {bot_name: chatbotName} " style="font-size: 14px;"> </h4>
 
   
 
-
+<div class="depts-without-bot-wpr" style="font-size: 14px;">
     <ng-select [items]="depts_without_bot_array" 
         appendTo="body"
         bindValue="id"
@@ -89,7 +90,7 @@
         [(ngModel)]="selectedDeptId"
         (change)="onSelectDeptId()">
     </ng-select>
-
+</div>
    
 </div>
 

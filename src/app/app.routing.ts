@@ -124,7 +124,7 @@ import { LoadingPageComponent } from './loading-page/loading-page.component';
 // import { WebhookComponent } from './webhook/webhook.component'; // now lazy
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 // import { NativeBotComponent } from './bots/native-bot/native-bot.component'; // No more used
-import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
+// import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 // import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component'; // No more used
 // import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component'; // now lazy
 // import { WidgetInstallationComponent } from './widget-installation/widget-installation.component'; // now lazy
@@ -154,6 +154,8 @@ import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welc
 import { RoleGuard } from './core/role.guard';
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
 import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
+
+// import { FaqEditAddComponent } from './bots/faq-edit-add/faq-edit-add.component'; // deleted
 
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
 
@@ -300,29 +302,31 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] }, // now Lazy
 
-  // CDS
-  {
-    path: 'project/:projectid/cds/:faqkbid',
-    loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+  // CDS - Deleted
+  // {
+  //   path: 'project/:projectid/cds/:faqkbid',
+  //   loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   // { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
 
-  {
-    path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
-    loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+  // Deleted
+  // {
+  //   path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
+  //   loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
 
-  {
-    path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
-    loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+  // Deleted
+  // {
+  //   path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
+  //   loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id/:calledby', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
 
 
@@ -1505,10 +1509,6 @@ const routes: Routes = [
   },
 
 
-
- 
-
-
   // Unathorized page - Token not valid
   {
     path: 'invalid-token',
@@ -1667,7 +1667,7 @@ const routes: Routes = [
   // { path: 'project/:projectid/tilebot/general/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/tilebot/intents/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/tilebot/fulfillment/:faqkbid/:type', component: TilebotComponent, canActivate: [AuthGuard] },
-  // { path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
+  //{ path: 'project/:projectid/faq/test/:faqkbid', component: FaqTestComponent, canActivate: [AuthGuard] },
 
   // { path: 'project/:projectid/createfaq/:faqkbid/:bottype/:botlang', component: FaqEditAddComponent, canActivate: [AuthGuard] },
   // { path: 'project/:projectid/editfaq/:faqkbid/:faqid/:bottype', component: FaqEditAddComponent, canActivate: [AuthGuard] },

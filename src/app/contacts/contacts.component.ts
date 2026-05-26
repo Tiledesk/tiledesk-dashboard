@@ -22,8 +22,7 @@ import { RolesService } from 'app/services/roles.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { parsePhoneNumberFromString, AsYouType } from 'libphonenumber-js';
-declare const $: any;
-// const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 @Component({
@@ -181,15 +180,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getTrashedContactsCount();
     // this.getActiveContactsCount();
 
-    // ----------------------------------------
-    //  Bootstrap 3.0 - Keep Dropdown Open
-    //  http://jsfiddle.net/KyleMit/ZS4L7/
-    // ----------------------------------------
-    $('.dropdown.keep-open').on({
-      "shown.bs.dropdown": function () { this.closable = false; },
-      "click": function () { this.closable = true; },
-      "hide.bs.dropdown": function () { return this.closable; }
-    });
     this.getBrowserVersion();
     
 
@@ -1247,13 +1237,10 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       }, (error) => {
         this.logger.error('[CONTACTS-COMP] - RESTORE CONTACT - ERROR ', error);
-        // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         this.logger.log('[CONTACTS-COMP] - RESTORE CONTACT * COMPLETE *');
-        // =========== NOTIFY SUCCESS===========
+      
         this.getContacts();
-        // this.notify.showNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
       });
 
   }
@@ -1278,13 +1265,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
       }, (error) => {
         this.logger.error('[CONTACTS-COMP] - DELETE REQUEST - ERROR ', error);
         // =========== NOTIFY ERROR ===========
-        // this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem');
-        this.notify.showNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
+
+        this.notify.showWidgetStyleUpdateNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         this.logger.log('[CONTACTS-COMP] - DELETE REQUEST * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
-        // this.notify.showNotification('Contact successfully deleted', 2, 'done');
-        this.notify.showNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
       });
 
   }

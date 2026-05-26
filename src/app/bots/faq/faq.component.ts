@@ -35,7 +35,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { NavigationService } from 'app/services/navigation.service';
 
 
-const swal = require('sweetalert');
+const Swal = require('sweetalert2');
 // import $ = require('jquery');
 // declare const $: any;
 @Component({
@@ -630,30 +630,30 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
   }
 
   translateAndPresentModalBotAssociatedWithDepartment() {
-    let parametres = { bot_name: this.faqKb_name, dept_name: this.selected_dept_name };
+    const parametres = { bot_name: this.faqKb_name, dept_name: this.selected_dept_name };
 
-    this.translate.get("BotHasBeenAssociatedWithDepartment", parametres).subscribe((res: string) => {
-      this.botHasBeenAssociatedWithDept = res
+    this.translate.get('BotHasBeenAssociatedWithDepartment', parametres).subscribe((res: string) => {
+      this.botHasBeenAssociatedWithDept = res;
+
+      Swal.fire({
+        title: this.translationsMap.get('Done') + '!',
+        text: res,
+        icon: 'success',
+        showCancelButton: false,
+        confirmButtonText: this.translate.instant('Ok'),
+        focusConfirm: true,
+      }).then(() => {
+        this.getDeptsByProjectId();
+        this.depts_without_bot_array = [];
+      });
     });
-
-    swal({
-      title: this.translationsMap.get('Done') + "!",
-      text: this.botHasBeenAssociatedWithDept,
-      icon: "success",
-      button: "OK",
-      dangerMode: false,
-    })
-      .then((WillUpdated) => {
-        this.getDeptsByProjectId()
-        this.depts_without_bot_array = []
-      })
   }
 
   // ---------------------------------------------------
   // Upload bot photo
   // ---------------------------------------------------
   upload(event) {
-    this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload')
+    this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload id_faq_kb', this.id_faq_kb);
     this.showSpinnerInUploadImageBtn = true;
     const file = event.target.files[0]
 
@@ -673,15 +673,17 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
       // Native upload
       this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service')
 
-      this.uploadImageNativeService.uploadBotPhotoProfile_Native(file, this.id_faq_kb).subscribe((downoloadurl) => {
-        this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - RES downoloadurl', downoloadurl);
-
-        this.botProfileImageurl = downoloadurl
-        this.timeStamp = (new Date()).getTime();
-      }, (error) => {
-        this.showSpinnerInUploadImageBtn = false;
-        this.logger.error('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - ERR ', error);
-      })
+      this.uploadImageNativeService
+        .uploadBotPhotoProfile_Native('bot_' + this.id_faq_kb, file)
+        .then((downloadUrl) => {
+          this.logger.log('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - RES', downloadUrl);
+          this.botProfileImageurl = downloadUrl;
+          this.timeStamp = Date.now();
+        })
+        .catch((error) => {
+          this.showSpinnerInUploadImageBtn = false;
+          this.logger.error('[FAQ-COMP] BOT PROFILE IMAGE (FAQ-COMP) upload with native service - ERR', error);
+        });
 
     }
     this.fileInputBotProfileImage.nativeElement.value = '';
@@ -703,8 +705,8 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     this.botProfileImageExist = false;
     this.botImageHasBeenUploaded = false;
 
-    const delete_bot_image_btn = <HTMLElement>document.querySelector('.delete_bot_image_btn');
-    delete_bot_image_btn.blur();
+    // const delete_bot_image_btn = <HTMLElement>document.querySelector('.delete_bot_image_btn');
+    // delete_bot_image_btn.blur();
   }
 
 
@@ -1562,11 +1564,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     }, (error) => {
       this.logger.error('[FAQ-COMP] DELETE FAQ ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      this.notify.showNotification(this.translationsMap.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer'), 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer'), 4, 'report_problem');
     }, () => {
       this.logger.log('[FAQ-COMP] DELETE FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
-      this.notify.showNotification(this.translationsMap.get('FaqPage.AnswerSuccessfullyDeleted'), 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('FaqPage.AnswerSuccessfullyDeleted'), 2, 'done');
     });
 
   }

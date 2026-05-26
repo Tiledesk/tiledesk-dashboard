@@ -2982,11 +2982,42 @@ span .conv-svg-icon {
   // height: 558px;
   height: 448px;
   overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
   padding: 0px;
   padding-left: 25px;
   padding-right: 25px;
+  scrollbar-width: thin;
+  scrollbar-color: #b9b9b9 transparent;
 
   // border-bottom: 1px solid #e5effe;
+
+  // Fixed width on hover/focus — avoid macOS/Chrome expanding the scrollbar rail
+  &::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #b9b9b9;
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover,
+  &::-webkit-scrollbar-thumb:active {
+    background-color: #727272;
+  }
+
+  &:hover::-webkit-scrollbar,
+  &:focus::-webkit-scrollbar,
+  &:focus-within::-webkit-scrollbar {
+    width: 6px !important;
+    height: 6px !important;
+  }
 }
 
 .card---footer {
@@ -2995,25 +3026,6 @@ span .conv-svg-icon {
   padding-top: 2px;
   margin-left: 32px;
   min-height: 4px;
-}
-
-// Custom scollbar fo the chat right sidebar
-#chat-wpr::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-#chat-wpr::-webkit-scrollbar-track {
-  background-color: #f9f9f9;
-}
-
-#chat-wpr::-webkit-scrollbar-thumb {
-  background-color: #b9b9b9;
-  border-radius: 0px;
-}
-
-#chat-wpr::-webkit-scrollbar-thumb:hover {
-  background-color: #727272;
 }
 
 .users-list-modal::-webkit-scrollbar {
@@ -3662,11 +3674,11 @@ span .conv-svg-icon {
   .dropdown-menu {
     position: absolute !important;
     top: 100% !important;
-    right: 0 !important;
+    right: 8px !important;
     left: auto !important;
     z-index: 1050 !important;
     min-width: 200px;
-    margin-top: 5px !important;
+    margin-top: -15px !important;
     padding: 5px 0;
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, 0.15);
@@ -3694,6 +3706,7 @@ span .conv-svg-icon {
     a {
       display: block;
       padding: 8px 15px;
+      margin: 0px !important;
       color: #333;
       text-decoration: none;
       

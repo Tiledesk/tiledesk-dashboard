@@ -48,8 +48,6 @@ import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.compone
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
-declare const $: any;
-
 declare interface RouteInfo {
   path: string;
   title: string;
@@ -154,7 +152,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   userProfileImageurl: string;
   timeStamp: any;
 
-  IS_MOBILE_MENU: boolean;
   scrollpos: number;
   elSidebarWrapper: any;
 
@@ -2674,43 +2671,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
 
-  isMobileMenu() {
-    // this.logger.log('SIDEBAR_IS_SMALL', this.SIDEBAR_IS_SMALL)
-    if ($(window).width() > 991) {
-      this.IS_MOBILE_MENU = false
-      // this.logger.log('[SIDEBAR] - IS MOBILE MENU ', this.IS_MOBILE_MENU);
-      // USED FOR THE SMALL SIDEBAR
-      // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-      // const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
-      // const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
-      // if (this.SIDEBAR_IS_SMALL === false) {
-      //     if (this.YOUR_PROJECT_ROUTE_IS_ACTIVE === false && this.AUTOLOGIN_ROUTE_IS_ACTIVE) {
-      //         elemMainPanel.style.width = "calc(100% - 260px)";
-      //         elemSidebar.style.width = "260px"
-      //         elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
-      //     }
-      // } else if (this.SIDEBAR_IS_SMALL === true) {
-      //     elemMainPanel.style.width = "calc(100% - 70px)"
-      //     elemSidebar.style.width = "70px"
-      //     elemSidebarWrapper.setAttribute('style', 'width: 70px; background-color: #2d323e!important');
-      // }
-      return false;
-    }
-
-    this.IS_MOBILE_MENU = true
-
-    // USED FOR THE SMALL SIDEBAR
-    // const elemMainPanel = <HTMLElement>document.querySelector('.main-panel');
-    // const elemSidebarWrapper = <HTMLElement>document.querySelector('.sidebar-wrapper');
-    // const elemSidebar = <HTMLElement>document.querySelector('.sidebar');
-    // elemMainPanel.style.width = "100%"
-    // elemSidebarWrapper.setAttribute('style', 'width: 260px;background-color: #2d323e!important');
-    // elemSidebar.style.width = "260px"
-    // // this.logger.log('[SIDEBAR] - IS MOBILE MENU ', this.IS_MOBILE_MENU);
-
-    return true;
-  };
-
   isMac(): boolean {
     this.logger.log('[SIDEBAR] NAVIGATOR PLATFORM', navigator.platform)
     let bool = false;
@@ -2719,17 +2679,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
     return bool;
   }
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    // this.logger.log('SIDEBAR - WINDOW WIDTH ON RESIZE', event.target.innerWidth);
-    if (event.target.innerWidth > 991) {
-      this.IS_MOBILE_MENU = false
-    } else {
-      this.IS_MOBILE_MENU = true
-    }
-  }
-
 
   onScroll(event: any): void {
     // this.logger.log('[SIDEBAR] RICHIAMO ON SCROLL ');

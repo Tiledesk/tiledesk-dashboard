@@ -41,8 +41,9 @@
 
 .widget--script-copy-instructions {
     padding-left: 5px;
-    padding-bottom: 5px;
+    padding-bottom: 15px;
     text-align: center;
+    padding-top: 5px;
 }
 
 .widget-content-copy {
@@ -85,4 +86,43 @@
 .accordion-instructions {
     padding-bottom: 5px;
     font-weight: 400;
+}
+
+.installation--expansion-panel {
+    box-shadow: none;
+    margin-bottom: 12px;
+}
+
+::ng-deep .installation--expansion-panel:not(.mat-expanded) {
+    background: #fff !important;
+    border-radius: 5px !important;
+    border: 1px solid #ccc !important;
+}
+
+::ng-deep .installation--expansion-panel.mat-expanded {
+    background: #fff !important;
+    border-radius: 5px !important;
+    border: 1px solid #ccc !important;
+    margin-bottom: 12px !important;
+}
+
+.installation--expansion-panel ::ng-deep {
+
+    .mat-expansion-panel-header {
+        padding: 0 10px !important;
+        height: 36px;
+    }
+
+    .mat-expansion-panel-header.mat-expanded {
+        height: 36px;
+    }
+
+    .mat-expansion-panel-header-title {
+        color: #000000de !important;
+        font-weight: 400 !important;
+    }
+
+    .mat-expansion-indicator::after {
+        color: #000000de !important;
+    }
 }

@@ -3288,15 +3288,22 @@
 																<div class="extensions-container">
 
 																	<!-- Option ALL -->
-																	<div class="option-row">
-																		<input type="radio" name="extOption" value="all" [(ngModel)]="selectedOption">
-																		<input type="text" [value]="'AllExtensions' | translate" disabled class="fixed-input" />
+																	<div class="option-row extensions-option-row">
+																		<div class="radio extensions-material-radio">
+																			<label>
+																				<input type="radio" name="extOption" value="all" [(ngModel)]="selectedOption">
+																				<span class="extensions-radio-caption">{{ 'AllExtensions' | translate }}</span>
+																			</label>
+																		</div>
 																	</div>
 
 																	<!-- Option Custom -->
-																	<div class="option-row">
-																		<input type="radio" name="extOption" value="custom" [(ngModel)]="selectedOption">
-
+																	<div class="option-row extensions-option-row extensions-option-row--custom">
+																		<div class="radio extensions-material-radio extensions-material-radio--compact">
+																			<label>
+																				<input type="radio" name="extOption" value="custom" [(ngModel)]="selectedOption">
+																			</label>
+																		</div>
 																		<input type="text"
 																			class="add-extensions-input"
 																			[(ngModel)]="newExtension"
