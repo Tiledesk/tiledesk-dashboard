@@ -13,7 +13,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "downlevelIteration": true,
-    "target": "es2017",
+    "target": "ES2022",
     "module": "es2020",
     "types": [
       "node"
@@ -29,7 +29,8 @@
       "@environments/*": [
         "src/environments/*"
       ]
-    }
+    },
+    "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
     "enableIvy": true,
