@@ -666,3 +666,27 @@ mat-expansion-panel ::ng-deep {
 //  ::ng-deep .preview-stream-toggle.mat-checked > .mat-slide-toggle-bar {
 //     background-color: rgba(33,150,243,.54) !important;
 // }
+
+// KB filter tags — preview dialog only (mat-dialog-content typography / inline SVG baseline)
+.kb-tags-container {
+  .kb-tags-btn-wpr {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .kb-tag {
+    margin: 0;
+  }
+
+  .delete-kb-tag-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    vertical-align: middle;
+  }
+
+  .delete-kb-tag-btn svg {
+    display: block;
+  }
+}

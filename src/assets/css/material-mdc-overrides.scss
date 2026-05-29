@@ -600,35 +600,64 @@ $td-slide-toggle-thumb-shadow:
   }
 }
 
-// ─── mat-menu (MDC) — home dashlet + checkbox rows ───────────────────────────
+// ─── mat-menu (MDC) — baseline (align AM14: 14px label, 20px icons, compact padding) ─
 
-.mat-mdc-menu-panel.home-dashlet-menu,
-.mat-mdc-menu-panel:has(.home-settings-checkbox) {
+.mat-mdc-menu-panel,
+.mat-menu-panel {
+  --mat-menu-item-label-text-size: 14px;
   --mat-menu-item-label-text-tracking: normal;
-  letter-spacing: normal;
   font-family: var(--header-font-family);
 }
 
-.mat-mdc-menu-panel.home-dashlet-menu .mat-mdc-menu-item,
-.mat-mdc-menu-panel:has(.home-settings-checkbox) .mat-mdc-menu-item,
-.mat-mdc-menu-panel.home-dashlet-menu .mat-mdc-menu-item .mat-mdc-menu-item-text,
-.mat-mdc-menu-panel:has(.home-settings-checkbox) .mat-mdc-menu-item .mat-mdc-menu-item-text,
-.mat-mdc-menu-panel.home-dashlet-menu .mat-mdc-menu-item .mdc-list-item__primary-text,
-.mat-mdc-menu-panel:has(.home-settings-checkbox) .mat-mdc-menu-item .mdc-list-item__primary-text,
-.mat-mdc-menu-panel.home-dashlet-menu .mat-mdc-menu-item > span,
-.mat-mdc-menu-panel:has(.home-settings-checkbox) .mat-mdc-menu-item > span {
+.mat-mdc-menu-panel .mat-mdc-menu-content,
+.mat-menu-panel .mat-menu-content {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-item,
+.mat-mdc-menu-panel .mat-menu-item,
+.mat-menu-panel .mat-menu-item {
   letter-spacing: normal !important;
+  font-size: 14px;
   font-family: var(--header-font-family);
 }
+
+.mat-mdc-menu-panel .mat-mdc-menu-item .mat-mdc-menu-item-text,
+.mat-mdc-menu-panel .mat-mdc-menu-item .mdc-list-item__primary-text,
+.mat-menu-panel .mat-menu-item {
+  font-size: 14px;
+  letter-spacing: normal !important;
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-item mat-icon,
+.mat-mdc-menu-panel .mat-mdc-menu-item .mat-icon,
+.mat-menu-panel .mat-menu-item mat-icon,
+.mat-menu-panel .mat-menu-item .mat-icon {
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+// ─── mat-menu — home dashlet (checkbox rows) ─────────────────────────────────
 
 .mat-mdc-menu-panel.home-dashlet-menu .mat-mdc-menu-item:has(.home-settings-checkbox),
 .mat-mdc-menu-panel:has(.home-settings-checkbox) .mat-mdc-menu-item:has(.home-settings-checkbox) {
   display: flex;
   align-items: center;
+  gap: 12px;
 
   .home-settings-checkbox {
-    margin: 0 12px 0 0;
+    margin: 0;
     flex-shrink: 0;
+  }
+
+  // Label testo è <span> fratello della checkbox, non figlio di mat-checkbox
+  > span {
+    font-size: 14px;
+    letter-spacing: normal !important;
   }
 }
 

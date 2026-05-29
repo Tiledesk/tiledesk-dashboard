@@ -370,7 +370,7 @@
 
        <div *ngIf="SHOW_MORE_BTN || showKBTableSpinner || !isLoading || kbsList?.length > 0" #tableBody class="table-body card-content table-responsive">
          
-            <table class="table table-hover">
+            <table class="table table-hover kb-table">
                 <thead>
                     <tr>
                         <th class="column-th-span" style="width:80px; cursor: default; text-align: center;">
@@ -486,8 +486,8 @@
                             </div>
                              <div *ngIf="kb.type == 'sitemap'" class="chip"
                                 style="display: flex; align-items: center; justify-content: center; background-color: #ff6154; color: white; padding: 2px 6px; border-radius: 10px;">
-                                <span id="description" class="material-icons-outlined"
-                                    style="font-size: 16px; color: white; transform: rotate(-90deg);">schema</span>
+                                <!-- <span id="description" class="material-icons-outlined"
+                                    style="font-size: 16px; color: white; transform: rotate(-90deg);">schema</span> -->
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Sitemap</span>
                             </div>
                             <div *ngIf="kb.type == 'faq'" class="chip"
@@ -609,7 +609,8 @@
                         </td>
 
 
-                        <td class="kb-name-col" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
+                        <td class="kb-name-col" (click)="onOpenBaseModalDetail(kb)">
+                            <div class="kb-name-col-inner">
                             <div [ngClass]="{'imported-file': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && (!kb?.tags || kb?.tags?.length === 0), 'imported-file-with-tags': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && kb?.tags?.length > 0}"
                                 class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;">
                                 {{ kb.name }}
@@ -637,8 +638,6 @@
                                         {{'KbPage.AddKbSitemap'| translate}}
                                     </span> 
                                     {{kb.sitemap_origin }}
-                                    <!-- <span *ngIf="kb.sitemap_origin"> {{kb.sitemap_origin }} </span>
-                                    <span *ngIf="kb.type === 'sitemap'"> {{kb.source }} </span> -->
                                  </span>
 
                             </div>
@@ -663,14 +662,14 @@
 
                             </div>
 
-
+                            </div>
                         </td>
 
                         <td style="max-width: 40px; text-align: end;">
                             <div
                                 style="width: 100%; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
                                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Actions">
-                                    <mat-icon>more_vert</mat-icon>
+                                    <mat-icon style="padding-top: 3px;">more_vert</mat-icon>
                                 </button>
                                <!-- type {{kb.type}} -->
                                 <mat-menu #menu="matMenu" xPosition="before" class="custom-menu">

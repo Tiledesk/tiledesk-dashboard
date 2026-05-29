@@ -4643,6 +4643,20 @@ li.li-active a {
   // background-color: #c2c2c2;
 }
 
+.kb-tags-btn-wpr {
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  background-color: var(--contact-tag-background);
+  color: var(--contact-tag-color);
+}
+
+.kb-tags-btn-wpr button svg {
+  position: relative;
+  top: 1px;
+  fill: var(--delete-tag-icon-color);
+}
+
 .kb-tag {
   margin-top: 0px;
   margin-bottom: 0px;
@@ -4685,9 +4699,6 @@ li.li-active a {
   color: var(--contact-tag-color);
 }
 
-// .tags-btn-wpr button {
-//   margin-left: -2px;
-// }
 
 .tags-btn-wpr button svg {
   position: relative;

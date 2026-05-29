@@ -291,19 +291,110 @@ table {
     line-height: 1.6;
 }
 
-// Fix ellipsis-text when inside flex container (kb-name-cell)
-td.kb-name-cell {
-    
-    max-width: 100%;
-  vertical-align: top;
-  overflow: hidden;
-}
+// KB table — uniform row height + ellipsis on name column (grid + table-layout: fixed)
+table.kb-table {
+  table-layout: fixed;
+  width: 100%;
 
-td.kb-name-cell .ellipsis-text {
+  // Subtitle line metrics (11px — matches .subtitle in this component)
+  $kb-table-title-line: calc(14px * 1.6);
+  $kb-table-subtitle-line: calc(11px * 1.3);
+
+  thead th.column-th-span {
+    white-space: normal;
+    line-height: 1.25;
+    vertical-align: bottom;
+  }
+
+  // Refresh rate header is long; 100px inline width caused overlap with "Last updated"
+  thead th:nth-child(3) {
+    width: 130px !important;
+  }
+
+  tbody tr {
+    td {
+      vertical-align: middle;
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+  }
+
+  // Keep td as table-cell (display:grid on td breaks row height + hover background)
+  td.kb-name-col,
+  td.kb-name-cell {
+    vertical-align: middle;
     overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  min-width: 0;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .kb-name-col-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: center;
+    min-width: 0;
+    width: 100%;
+    overflow: hidden;
+    min-height: calc(#{$kb-table-title-line} + #{$kb-table-subtitle-line});
+  }
+
+  .kb-name-col-inner > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  td.kb-name-col .ellipsis-text,
+  td.kb-name-cell .ellipsis-text,
+  .kb-name-col-inner .ellipsis-text {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  td.kb-name-col .subtitle,
+  td.kb-name-cell .subtitle {
+    line-height: 1.3;
+  }
+
+  td.kb-name-col .imported-file,
+  td.kb-name-col .imported-file-with-tags,
+  .kb-name-col-inner .imported-file,
+  .kb-name-col-inner .imported-file-with-tags {
+    height: auto;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+//   &.table-hover > tbody > tr:hover > td.kb-name-col {
+//     background-color: var(--table-tr-hover, #f5f5f5);
+//   }
+
+  td:last-child {
+    vertical-align: middle;
+    padding-top: 4px;
+    padding-bottom: 4px;
+
+    > div {
+      min-height: 0;
+      align-items: center;
+    }
+
+    .mat-mdc-icon-button,
+    .mat-icon-button {
+      width: 36px;
+      height: 36px;
+      padding: 0;
+      line-height: 36px;
+    }
+  }
+
+  td:first-child .chip {
+    margin: 0;
+  }
 }
 
 .loading-indicator {

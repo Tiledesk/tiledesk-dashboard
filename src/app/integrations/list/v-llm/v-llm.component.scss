@@ -294,24 +294,12 @@ p {
   outline: none;
   background: transparent;
   border-radius: 0px 4px 4px 0px;
-  padding: 2px 4px 0px 3px;
+  padding: 2px 4px 3px 3px;
   cursor: pointer;
 }
 
 .delete-model:hover {
   background: var(--delete-tag-btn-hover);
-}
-
-
-
-.tags-btn-wpr button {
-  margin-left: -2px;
-}
-
-.tags-btn-wpr button svg {
-  position: relative;
-  top: 1px;
-  fill: var(--delete-tag-icon-color);
 }
 
 
