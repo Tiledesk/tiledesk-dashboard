@@ -2442,6 +2442,11 @@
     "Friday": "Пятница",
     "Saturday": "Суббота",
     "SelectAnOption": "Select an option",
+    "AnalyticsNew": {
+        "Loading": "Loading analytics…",
+        "ConfigurationMissing": "Analytics embedding is not configured. Set analyticsApiBase and analyticsEmbedBase in the dashboard config (see EMBED-INTEGRATION.md).",
+        "TokenError": "Could not obtain an analytics embed token. Check your session and that the analytics API is reachable."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Аналитика",
         "HeatMapTitle": "Разговоров в час дня",
