@@ -67,4 +67,10 @@ export class EditLoadDistributionModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  adjustPercentage(delta: number): void {
+    const next = Math.min(100, Math.max(0, (Number(this.percentageControl.value) || 0) + delta));
+    this.percentageControl.setValue(next);
+    this.percentageControl.markAsDirty();
+  }
+
 }

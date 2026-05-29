@@ -126,10 +126,10 @@ h1[mat-dialog-title] {
   padding: 12px 24px;
   border-top: 1px solid #e0e0e0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 8px;
 
-  .btn-close {
+  .mat-dialog-close-btn {
     min-width: 80px;
   }
 }

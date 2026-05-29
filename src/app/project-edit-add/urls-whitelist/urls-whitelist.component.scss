@@ -28,14 +28,7 @@
   overflow-y: auto;
 }
 
-::ng-deep .show-error .mat-mdc-form-field-outline {
-  border-color: #f44336 !important; /* red */
-}
-
-::ng-deep .show-error .mat-mdc-form-field-outline-thick {
-  border-color: #f44336 !important;
-}
-
+// .show-error outline: material-mdc-overrides.scss (.show-error .mat-mdc-form-field…)
 
 .no-urls-message {
   text-align: center;

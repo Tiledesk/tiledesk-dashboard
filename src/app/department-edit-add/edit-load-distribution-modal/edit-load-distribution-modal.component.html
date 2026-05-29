@@ -2,10 +2,26 @@
 <mat-dialog-content>
   <p>{{'EditPercentageFor' | translate }}: <strong>{{ data.group.name }}</strong></p>
   
-  <mat-form-field appearance="fill" [class.error-border]="isTotalExceeded">
+  <mat-form-field appearance="outline" [class.error-border]="isTotalExceeded">
     <mat-label>{{'Percentage' | translate}}</mat-label>
-    <input matInput type="number" [formControl]="percentageControl" min="0" max="100">
-    <span matSuffix>%</span>
+    <input matInput type="number" [formControl]="percentageControl" min="0" max="100" step="1">
+    <span matSuffix class="percentage-input-suffix">
+      <span class="percentage-input-suffix__symbol" aria-hidden="true">%</span>
+      <span class="percentage-input-suffix__spinners">
+        <button type="button" class="percentage-step-btn"
+          tabindex="-1"
+          (mousedown)="$event.preventDefault()"
+          (click)="adjustPercentage(1)">
+          <span class="material-icons-outlined">expand_less</span>
+        </button>
+        <button type="button" class="percentage-step-btn"
+          tabindex="-1"
+          (mousedown)="$event.preventDefault()"
+          (click)="adjustPercentage(-1)">
+          <span class="material-icons-outlined">expand_more</span>
+        </button>
+      </span>
+    </span>
     <!-- <mat-error *ngIf="percentageControl.hasError('required')">
       Percentage is required
     </mat-error>

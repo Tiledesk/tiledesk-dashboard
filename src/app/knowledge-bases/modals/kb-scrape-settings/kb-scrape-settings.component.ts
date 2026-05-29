@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { KbScrapeConfig } from 'app/models/kb-scrape-config-model';
 
@@ -46,21 +45,17 @@ export class KbScrapeSettingsComponent implements OnInit {
     this.refreshStoredScrapeOptionFlag();
   }
 
-  onAutomaticSlideToggle(event: MatSlideToggleChange): void {
-    const checked = event.checked;
+  /**
+   * Side effects when automatic extraction toggles. Value is already on `config`
+   * via `[(ngModel)]` — required for Material 15 MDC slide-toggle (one-way `[checked]` desyncs).
+   */
+  onAutomaticSlideToggle(checked: boolean): void {
     if (checked) {
       this.htmlTagsPanelExpanded = false;
     } else {
       this.config.situatedContextEnabled = false;
     }
-    this.config.automaticContentExtraction = checked;
-  }
-
-  onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
-    if (!this.config.automaticContentExtraction) {
-      return;
-    }
-    this.config.situatedContextEnabled = event.checked;
+    this.cdr.markForCheck();
   }
 
   /**

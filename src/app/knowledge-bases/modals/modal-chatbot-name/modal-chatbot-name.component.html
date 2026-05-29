@@ -7,7 +7,7 @@
 
 <div mat-dialog-content>
 
-    <mat-form-field appearance="fill" class="ai-agent-name-mat-form-field">
+    <mat-form-field appearance="outline" class="ai-agent-name-mat-form-field">
         <mat-label>
             <!-- Chatbot name -->
             <!-- {{ "ChatbotName" | translate }} -->
@@ -17,7 +17,7 @@
             
 
         </mat-label>
-        <input placeholder="{{'MyAIAgentName' | translate}}" matInput [(ngModel)]="chatbotName" (ngModelChange)="onChangeChatbotName($event)">
+        <input matInput [(ngModel)]="chatbotName" (ngModelChange)="onChangeChatbotName($event)">
     </mat-form-field>
 </div>
 

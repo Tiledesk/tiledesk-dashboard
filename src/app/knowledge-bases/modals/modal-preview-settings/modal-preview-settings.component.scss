@@ -18,6 +18,8 @@
     font-weight: 400;
     font-size: 13px;
     margin-bottom: 4px;
+    font-family: var(--header-font-family);
+    letter-spacing: normal;
 }
 
 
@@ -109,25 +111,6 @@
     font-weight: 400;
 }
 
-.action-wait-slider ::ng-deep {
-
-    .mat-accent .mat-slider-track-fill {
-        background-color: #1e293b !important;
-    }
-
-    .mat-slider-thumb-label {
-        background-color: #1e293b !important;
-    }
-
-    .mat-slider-thumb-label-text {
-        color: #e5eaf5 !important;
-    }
-
-    .mat-slider-thumb {
-        background-color: #1e293b !important;
-    }
-}
-
 .context-texarea {
     width: 100%;
     border: 1px solid #ccc;
@@ -162,6 +145,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    padding-right: 12px;
 }
 
 .m-top-right-icon {
@@ -192,7 +177,8 @@
 }
 
 .no-overrides {
-    color: var(--text-color)
+    color: var(--text-color);
+    padding-left: 25px;
 }
 
 .reset-overrides {
@@ -361,6 +347,9 @@
             > span.setting-label {
                 line-height: 20px;
                 margin-left: 0;
+                letter-spacing: normal;
+                font-family: var(--header-font-family);
+
             }
 
             .checkbox-material {

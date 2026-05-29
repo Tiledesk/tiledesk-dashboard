@@ -1154,18 +1154,8 @@ button.close {
   left: -140px;
 }
 
-::ng-deep .custom-mat-tooltip-in-widget-setup {
-  background-color: #555555 !important;
-  color: #fff !important;
-  font-size: 12px !important;
-  line-height: 1.2;
-  border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-  border: 1px solid #555555 !important;
-  white-space: pre-line;
-}
+// Tooltip style moved to src/assets/css/material-mdc-overrides.scss
+// (.custom-mat-tooltip-in-widget-setup)
 
 .link-to-teammates {
   color: #03a5e8;

@@ -1,0 +1,275 @@
+/**
+ * Navbar "Utilizzo attuale" — quota usage menu + trigger.
+ * Global file: menu panel is in CDK overlay; trigger is #usage-stats in navbar.
+ *
+ * mat-menu: use class="quotas-usage-menu" (Material 15 applies it to the overlay panel).
+ */
+
+// ─── Trigger (navbar, not inside overlay) ───────────────────────────────────
+
+#usage-stats {
+  overflow: visible;
+}
+
+// Padding verticale/orizzontale: stesso di .navbar-nav > li > a (10px 15px) — non ridefinire qui
+.quote-modal-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background-color: #fff;
+  box-shadow: unset;
+  border-radius: 9999px;
+  overflow: visible;
+  text-decoration: none;
+  cursor: pointer;
+  color: rgb(85, 85, 85);
+
+  > span {
+    font-weight: 400;
+    text-transform: none;
+  }
+}
+
+// Menu open — pill azzurro, icona donut blu, caret su (come pre–Material 15)
+.navbar-nav > li#usage-stats > a.quote-modal-btn.quote-modal-btn-active {
+  background-color: rgb(220, 233, 255);
+}
+
+.quote-modal-btn .data-usage-icon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+  overflow: visible !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0;
+  color: #555555;
+}
+
+.quote-modal-btn .data-usage-icon.data-usage-icon-active {
+  color: var(--blue-20);
+}
+
+.quote-modal-btn .quote-caret-icon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+  overflow: visible !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex-shrink: 0;
+  color: #555555;
+  transform: rotate(0deg);
+  transition: transform 0.15s ease;
+}
+
+.quote-modal-btn .quote-caret-icon.quote-caret-icon--up {
+  transform: rotate(180deg);
+}
+
+.data-usage-icon-resource-limit-reached {
+  color: #f44336 !important;
+}
+
+.quote-modal-btn-no-left-padding {
+  margin-right: 0 !important;
+}
+
+// ─── Menu panel (CDK overlay) ───────────────────────────────────────────────
+
+.mat-menu-panel.quotas-usage-menu,
+.mat-mdc-menu-panel.quotas-usage-menu,
+.mat-mdc-menu-panel.mat-mdc-menu-panel.quotas-usage-menu {
+  max-width: 433px !important;
+  min-width: 433px !important;
+  width: 433px !important;
+  border-radius: 16px !important;
+  margin-top: 8px !important;
+  overflow: visible !important;
+}
+
+.mat-mdc-menu-panel.quotas-usage-menu .mat-mdc-menu-content,
+.mat-mdc-menu-panel.mat-mdc-menu-panel.quotas-usage-menu .mat-mdc-menu-content {
+  padding: 0 !important;
+  max-width: none !important;
+  min-width: 433px !important;
+  width: 433px !important;
+  overflow: visible !important;
+}
+
+.mat-mdc-menu-panel.quotas-usage-menu {
+  .menu-container {
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .quotas-usage-container-wpr {
+    box-sizing: border-box;
+    width: 412px;
+    max-width: 100%;
+    background: #fff;
+    overflow: visible;
+  }
+
+  .quotas-usage-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: stretch;
+  }
+
+  .quota-section-main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: normal;
+    border-bottom: 1px solid rgb(226, 232, 239);
+    padding-bottom: 16px;
+    padding-top: 16px;
+  }
+
+  .quota-section-main.last {
+    border-bottom-color: #fff;
+  }
+
+  .quota-container-wpr {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: normal;
+  }
+
+  .quota-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+
+  .quota-left-column-wpr {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    margin-right: 12px;
+  }
+
+  .quota-title-wpr {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  .quota-title {
+    margin: 0;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    font-family: var(--header-font-family);
+  }
+
+  .quota-plan-badge {
+    text-transform: none;
+    font-size: 9px;
+    line-height: 11px;
+    background-color: rgba(100, 116, 145, 0.08);
+    color: rgb(100, 116, 145);
+    padding: 3px 4px;
+    border-radius: 4px;
+    font-weight: 400;
+  }
+
+  .quota-partial-count-link {
+    margin: 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--blue-light);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .quota-right-column-wpr {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+  }
+
+  .quota-count-and-limit-wpr {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-shrink: 0;
+    min-width: 0;
+  }
+
+  .quota-right-title {
+    margin: 0;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: -0.01em;
+    text-align: right;
+    color: rgb(100, 116, 145);
+    white-space: nowrap;
+
+    &.link {
+      color: var(--blue-20) !important;
+      cursor: pointer !important;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .quota-limit-wpr {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .quota-limit {
+    margin: 0;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 18px;
+    letter-spacing: -0.01em;
+    text-align: right;
+    font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+  }
+
+  // .quota-pie, spinner, .quota-pie-label: material-mdc-overrides.scss
+
+  .quota-resets {
+    font-family: var(--header-font-family);
+    font-size: 13px;
+    font-weight: 400;
+    color: #566787;
+    padding-bottom: 3px;
+    letter-spacing: normal;
+    text-align: center;
+  }
+
+  .quotas-upgrade-btn-wpr {
+    text-align: center;
+    margin-bottom: 8px;
+    .btn {
+      height: 40px !important;
+    }
+  }
+
+
+}

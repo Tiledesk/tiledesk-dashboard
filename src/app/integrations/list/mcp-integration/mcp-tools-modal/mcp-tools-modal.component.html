@@ -1,6 +1,6 @@
 <h1 mat-dialog-title>
   <span>{{ 'Integration.MCPTools' | translate }}</span>
-  <button mat-icon-button class="close-button" (click)="onClose()" aria-label="Close">
+  <button mat-icon-button class="close-button" tabindex="-1" (click)="onClose()" aria-label="Close">
     <mat-icon>close</mat-icon>
   </button>
 </h1>
@@ -35,8 +35,8 @@
   </div>
 </div>
 
-<div mat-dialog-actions class="dialog-actions">
-  <button mat-button class="btn-close" (click)="onClose()">
+<div mat-dialog-actions class="dialog-actions" >
+  <button mat-button class="mat-dialog-close-btn" (click)="onClose()">
     {{ 'Close' | translate }}
   </button>
 </div>

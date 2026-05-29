@@ -1658,26 +1658,8 @@ span .switch-agent-admin-requests-btn {
 }
 
 
-::ng-deep .mat-white-tooltip {
-  background-color: #fff !important;
-  font-size: 11px !important;
-  border-radius: 2px !important;
-  font-family: 'Poppins', 'Roboto', 'Arial', sans-serif;
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
-  border: 1px solid #ccc;
-  color: #000 !important;
-  font-weight: 400 !important;
-}
-
-::ng-deep .conv-custom-mat-tooltip {
-  background-color: #2d323e !important;
-  font-size: 12px !important;
-  border-radius: 2px !important;
-  font-family: var(--header-font-family) !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-}
+// Tooltip styles moved to src/assets/css/material-mdc-overrides.scss
+// (.mat-white-tooltip, .conv-custom-mat-tooltip)
 
 .graph-legend {
   padding-left: 10px;

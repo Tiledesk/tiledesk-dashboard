@@ -62,15 +62,16 @@
                       <label class="col-12 col-sm-12" style="text-align: left; color:#7695a5; padding-right:0px">
                         {{ 'HistoryPage.DateRange' | translate }}
                       </label>
-                      <mat-form-field class="activity-date-range-picker" appearance="standard"
-                        style="width: 100%;">
-                        <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate placeholder="{{'StartDate' | translate}}" disabled>
-                          <input matEndDate placeholder="{{'EndDate' | translate}}" disabled>
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                      </mat-form-field>
+                      <div class="td-date-range-picker-row td-date-range-picker-row--200">
+                        <mat-form-field class="td-date-range-picker" appearance="fill" floatLabel="never">
+                          <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate placeholder="{{'StartDate' | translate}}" disabled>
+                            <input matEndDate placeholder="{{'EndDate' | translate}}" disabled>
+                          </mat-date-range-input>
+                          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-date-range-picker #picker></mat-date-range-picker>
+                        </mat-form-field>
+                      </div>
                     </div>
 
                     <div class="col-sm-4">

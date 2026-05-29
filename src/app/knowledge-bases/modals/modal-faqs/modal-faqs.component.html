@@ -426,7 +426,7 @@
   </button> -->
 
   <button  class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
-    {{ "Close" | translate }}
+    {{ "Cancel" | translate }}
   </button>
 
 </div>
@@ -458,7 +458,7 @@
   <div class="btn-after-upload-wpr" *ngIf="displayAfterUploadFromCSVSection === true">
 
     <button *ngIf="parse_err === true" class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
-      {{ "Close" | translate }}
+      {{ "Cancel" | translate }}
     </button>
 
     <button *ngIf="parse_err === false" class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase('false')">

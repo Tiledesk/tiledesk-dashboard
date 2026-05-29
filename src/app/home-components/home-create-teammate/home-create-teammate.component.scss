@@ -220,25 +220,8 @@
   line-height: 1.3;
 }
 
-::ng-deep .h-custom-mat-tooltip {
-  background-color: #2d323e !important;
-  font-size: 12px !important;
-  border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-}
-
-::ng-deep .h-custom-mat-tooltip-error {
-  background-color: #f44336 !important;
-  color: #fff;
-  font-size: 12px !important;
-  border-radius: 2px !important;
-  font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-  line-height: 1.3;
-}
+// Tooltip styles moved to src/assets/css/material-mdc-overrides.scss
+// (.h-custom-mat-tooltip, .h-custom-mat-tooltip-error)
 
 // --------------------------------------------------
 // ANIMATED ARROW https://codepen.io/cbrst/pen/ebxwLJ

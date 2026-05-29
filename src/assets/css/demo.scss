@@ -2498,98 +2498,7 @@ footer ul {
   display: none;
 }
 
-/* Mat Date picker in history & Not-real-time conversations */
-.custom-date-range-picker .mat-form-field-wrapper {
-  padding-bottom: 0px !important;
-}
-
-.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-underline {
-  display: none !important;
-}
-
-.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex {
-  padding-top: 0px !important;
-}
-
-.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
-  padding: 0px !important;
-  border-top: 0px !important;
-}
-
-.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle {
-  position: relative !important;
-  top: 2px !important;
-}
-
-.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-start-wrapper .mat-date-range-input-inner {
-  position: relative !important;
-  vertical-align: middle !important;
-}
-
-// .custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-start-wrapper {
-  
-// }
-
-.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-separator {
-  margin-bottom: 6px !important;
-}
-
-.custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-start-wrapper .mat-date-range-input-mirror {
-  display: none !important;
-}
-
-/* Mat Date picker in Activities */
-.activity-date-range-picker .mat-form-field-wrapper {
-  padding-bottom: 0px !important;
-}
-
-.activity-date-range-picker .mat-form-field-wrapper .mat-form-field-underline {
-  display: none !important;
-}
-
-.activity-date-range-picker .mat-form-field-wrapper .mat-form-field-flex {
-  padding-top: 0px !important;
-}
-
-.activity-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
-  border: 1px solid #ccc !important;
-  padding: 9px 8px;
-  height: 36px;
-  border-radius: 4px;
-  // position: relative;
-  // top: -1px;
-}
-
-.activity-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle .mat-focus-indicator {
-  vertical-align: middle !important;
-}
-
-/* Mat Date picker in Tags analytics */
-
-.tags-analytics-date-range-picker .mat-form-field-wrapper {
-  padding-bottom: 0px !important;
-}
-
-.tags-analytics-date-range-picker .mat-form-field-wrapper .mat-form-field-underline {
-  display: none !important;
-}
-
-.tags-analytics-date-range-picker .mat-form-field-wrapper .mat-form-field-flex {
-  padding-top: 0px !important;
-}
-
-.tags-analytics-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
-  border: 1px solid #ccc !important;
-  padding: 9px 8px;
-  height: 36px;
-  border-radius: 4px;
-  // position: relative;
-  // top: -1px;
-}
-
-.tags-analytics-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-suffix .mat-datepicker-toggle .mat-focus-indicator {
-  vertical-align: middle !important;
-}
+/* Mat date range — MDC: material-mdc-overrides.scss (.td-date-range-picker) */
 
 .mat-autocomplete-panel.mat-autocomplete-visible {
   // width: calc(100% - 49px);
@@ -2602,25 +2511,10 @@ footer ul {
 }
 
 
-/* Angular material input 
-/* ****************************** */
-.mat-form-field.mat-focused .mat-form-field-ripple {
-  background-color: var(--blue-20) !important
-}
+/* mat-form-field outline (MDC) → src/assets/css/material-mdc-overrides.scss */
 
-.mat-form-field.mat-focused .mat-form-field-label {
-  color: var(--blue-20) !important
-}
-
-.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-  color: var(--blue-20) !important
-}
-
-/* Angular material checkbox 
-/* ****************************** */
-.mat-checkbox-checked.mat-accent .mat-checkbox-background {
-  background-color: var(--blue-20) !important;
-}
+/* mat-checkbox — legacy AM14 selectors; MDC: material-mdc-overrides.scss
+   (.home-settings-checkbox = orange; other accent checkboxes may use theme / add overrides) */
 
 /* Angular radio button 
 /* ****************************** */
@@ -2633,10 +2527,8 @@ footer ul {
 }
 
 
-// Used 
-.mat-form-field-appearance-outline .mat-form-field-infix {
-  padding: 4.64px 0px 10px 0px !important;
-}
+// Outline infix padding — MDC: see material-mdc-overrides.scss
+// (legacy .mat-form-field-infix no longer matches on Material 15+)
 
 // ::ng-deep
 .cds-mat-tooltip {
@@ -3504,28 +3396,8 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   line-height: 0.7;
 }
 
-::ng-deep .conv-dtls-custom-mat-tooltip {
-  background-color: var(--dark-background);
-  color: var(--text-color-on-dark);
-  font-size: 12px !important;
-  border-radius: 2px !important;
-  font-family: var(--header-font-family);
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-  white-space: pre-line !important;
-  text-align: center !important;
-  line-height: 17px !important;
-}
-
-.custom-mat-tooltip {
-  background-color: var(--dark-background) !important;
-  font-size: 12px !important;
-  border-radius: 2px !important;
-  font-family: var(--header-font-family);
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-  color: var(--text-color-on-dark);
-}
+/* Tooltip styles centralized in src/assets/css/material-mdc-overrides.scss
+   (.conv-dtls-custom-mat-tooltip, .custom-mat-tooltip) */
 
 
 .demopage-title {
@@ -4163,29 +4035,14 @@ div:where(.swal2-container) .swal2-select {
 //   bottom: 0;
 // }
 
-.mat-progress-spinner {
-  position: absolute;
-  box-shadow: 0 0 0 4px #e8e9ed inset;
-  // box-shadow: 0 0 0 10px #e8e9ed inset;
-  border-radius: 50%;
-}
-
-.mat-progress-spinner::ng-deep circle {
-  // background-color: #2196F2 !important;
-  stroke: #2196F2 !important;
-}
+/* mat-progress-spinner quota pies (MDC) → material-mdc-overrides.scss (.quote, .quota-pie) */
 
 
-/* Angular material dialog customitations
-/* --------------------------------------- */
+/* Angular material dialog — MDC overrides in material-mdc-overrides.scss */
 
 .mat-dialog-title {
   font-family: var(--header-font-family) !important;
-}
-
-.mat-dialog-container {
-  font-family: var(--header-font-family) !important;
-  border-radius: var(--dialog-border-radius) !important;
+  letter-spacing: normal;
 }
 
 .mat-expansion-panel-header {
@@ -4193,9 +4050,7 @@ div:where(.swal2-container) .swal2-select {
   font-size: 14px !important;
 }
 
-.mat-form-field-infix {
-  font-family: var(--header-font-family) !important;
-}
+// .mat-form-field-infix — legacy; font on .mat-mdc-form-field-infix in material-mdc-overrides.scss
 
 .mat-select {
   font-family: var(--header-font-family) !important;
@@ -4204,22 +4059,6 @@ div:where(.swal2-container) .swal2-select {
 .mat-option {
   font-family: var(--header-font-family) !important;
 }
-
-.mat-dialog-actions>.mat-dialog-ok-btn {
-  background-color: var(--blue-20);
-  color: #fff !important;
-}
-
-.mat-dialog-actions>.mat-dialog-ok-btn.mat-focus-indicator.mat-button-disabled {
-  opacity: .6;
-  cursor: not-allowed;
-}
-
-.mat-dialog-actions>.mat-dialog-close-btn {
-  background-color: #647491;
-  color: #fff;
-}
-
 
 // Sleek widget overwrite iframe css
 .i-sl-wrapper {
@@ -4235,16 +4074,6 @@ div:where(.swal2-container) .swal2-select {
 
 
 
-
-.mat-dialog-actions>.mat-button {
-  border-radius: var(--btn-border-radius);
-}
-
-/* Use case KB > Upload CSV 
-/* ************************************* */
-.mat-dialog-actions>div>.mat-button {
-  border-radius: var(--btn-border-radius);
-}
 
 /* Graph card
 /* *********************************************** */
@@ -4910,13 +4739,7 @@ li.li-active a {
   }
 }
 
-.mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
-  background-color: rgba(33,150,243,.54) !important;
-}
-
-.mat-slide-toggle.mat-primary.mat-checked .mat-slide-toggle-thumb {
-  background-color: rgb(3,150,243) !important;
-}
+/* mat-slide-toggle (MDC) → src/assets/css/material-mdc-overrides.scss */
 
 
 /* analytics > metrics */

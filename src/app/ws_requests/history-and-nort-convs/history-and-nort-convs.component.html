@@ -213,24 +213,24 @@
                     {{ 'HistoryPage.DateRange' | translate }}
                   </label>
 
-                  <div class="col-sm-12 left-date-picker" >
-                    <mat-form-field class="custom-date-range-picker" 
-                      appearance="standard">
-                      <mat-date-range-input [rangePicker]="picker">
-                        <input (dateChange)="addEventStartDate($event.value)"
-                          (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
-                          placeholder="{{'StartDate' | translate}}" style="padding: 0 5px;">
-                        <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
-                          placeholder="{{'EndDate' | translate}}" style="padding: 0 5px;">
-                      </mat-date-range-input>
-                      
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
-                        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
-                      </mat-datepicker-toggle>
-
-                      <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
+                  <div class="col-sm-12 left-date-picker">
+                    <div class="td-date-range-picker-row">
+                      <mat-form-field class="td-date-range-picker" appearance="fill" floatLabel="never">
+                        <mat-date-range-input [rangePicker]="picker">
+                          <input (dateChange)="addEventStartDate($event.value)"
+                            (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
+                            placeholder="{{'StartDate' | translate}}">
+                          <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
+                            placeholder="{{'EndDate' | translate}}">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                      </mat-form-field>
+                      <button type="button" class="td-date-range-picker-clear" (click)="clearDateRange()"
+                        aria-label="Clear">
+                        <mat-icon>clear</mat-icon>
+                      </button>
+                    </div>
                   </div>
                 </div>
 

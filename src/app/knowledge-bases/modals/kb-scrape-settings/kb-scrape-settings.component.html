@@ -1,5 +1,8 @@
 <div class="automatic-content-extraction-row" style="display: flex; align-items: center; margin-bottom: 8px;">
-    <mat-slide-toggle [checked]="config.automaticContentExtraction" (change)="onAutomaticSlideToggle($event)" color="primary">
+    <mat-slide-toggle
+        [(ngModel)]="config.automaticContentExtraction"
+        (ngModelChange)="onAutomaticSlideToggle($event)"
+        color="primary">
         {{ 'KbPage.AutomaticContentExtraction' | translate }}
     </mat-slide-toggle>
 </div>
@@ -7,9 +10,8 @@
 <div class="situated-context-row"
     style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin-bottom: 12px; max-width: 640px;">
     <mat-slide-toggle
-        [checked]="config.situatedContextEnabled"
+        [(ngModel)]="config.situatedContextEnabled"
         [disabled]="!config.automaticContentExtraction"
-        (change)="onSituatedContextSlideToggle($event)"
         color="primary">
         {{ 'KbPage.SituatedContext' | translate }}
     </mat-slide-toggle>
@@ -83,24 +85,25 @@
                     <span class="input-label">
                         {{ 'KbPage.ExtractTags' | translate }}
                     </span>
-                    <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
-                        <mat-chip-list #extractTags aria-label="Tag selection">
+                    <mat-form-field class="kb-chip-field" appearance="outline" style="width: 100%; font-size: 13px;">
+                        <!-- Material 15: mat-chip-grid + mat-chip-row (mat-chip-list breaks mat-form-field / errorState) -->
+                        <mat-chip-grid #extractTags aria-label="Tag selection">
                             <!-- `htmlTag` pipe wraps the value in angle brackets (`body` → `<body>`)
                                  to make it visually unambiguous that these are HTML tags, not arbitrary strings.
                                  The stored value remains unwrapped — the pipe runs at render time only. -->
-                            <mat-chip *ngFor="let tag of config.extract_tags"
+                            <mat-chip-row *ngFor="let tag of config.extract_tags"
                                 (removed)="removeTag('extract_tags', tag)">
                                 {{ tag | htmlTag }}
-                                <button matChipRemove>
+                                <button matChipRemove [attr.aria-label]="'remove ' + tag">
                                     <mat-icon>cancel</mat-icon>
                                 </button>
-                            </mat-chip>
-                            <input style="font-size: 13px; background-color: white; border: none;"
-                                [matChipInputFor]="extractTags"
-                                placeholder="{{ 'KbPage.TypeAndPressEnter' | translate }}"
-                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                (matChipInputTokenEnd)="addTag('extract_tags', $event)">
-                        </mat-chip-list>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <input style="font-size: 13px; background-color: white; border: none;"
+                            [matChipInputFor]="extractTags"
+                            placeholder="{{ 'KbPage.TypeAndPressEnter' | translate }}"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="addTag('extract_tags', $event)">
                     </mat-form-field>
                 </div>
 
@@ -109,22 +112,22 @@
                     <span class="input-label">
                         {{ 'KbPage.UnwantedTags' | translate }}
                     </span>
-                    <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
-                        <mat-chip-list #unwantedTags aria-label="Tag selection">
+                    <mat-form-field class="kb-chip-field" appearance="outline" style="width: 100%; font-size: 13px;">
+                        <mat-chip-grid #unwantedTags aria-label="Tag selection">
                             <!-- See note on `htmlTag` pipe above (Tags to extract). -->
-                            <mat-chip *ngFor="let tag of config.unwanted_tags"
+                            <mat-chip-row *ngFor="let tag of config.unwanted_tags"
                                 (removed)="removeTag('unwanted_tags', tag)">
                                 {{ tag | htmlTag }}
-                                <button matChipRemove>
+                                <button matChipRemove [attr.aria-label]="'remove ' + tag">
                                     <mat-icon>cancel</mat-icon>
                                 </button>
-                            </mat-chip>
-                            <input style="font-size: 13px; background-color: white; border: none;"
-                                [matChipInputFor]="unwantedTags"
-                                placeholder="{{ 'KbPage.TypeAndPressEnter' | translate }}"
-                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                (matChipInputTokenEnd)="addTag('unwanted_tags', $event)">
-                        </mat-chip-list>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <input style="font-size: 13px; background-color: white; border: none;"
+                            [matChipInputFor]="unwantedTags"
+                            placeholder="{{ 'KbPage.TypeAndPressEnter' | translate }}"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="addTag('unwanted_tags', $event)">
                     </mat-form-field>
                 </div>
 
@@ -133,21 +136,21 @@
                     <span class="input-label">
                         {{ 'KbPage.UnwantedClassnames' | translate }}
                     </span>
-                    <mat-form-field class="chip-list" appearance="outline" style="width: 100%; font-size: 13px;">
-                        <mat-chip-list #unwantedClassnames aria-label="Tag selection">
-                            <mat-chip *ngFor="let tag of config.unwanted_classnames"
+                    <mat-form-field class="kb-chip-field" appearance="outline" style="width: 100%; font-size: 13px;">
+                        <mat-chip-grid #unwantedClassnames aria-label="Tag selection">
+                            <mat-chip-row *ngFor="let tag of config.unwanted_classnames"
                                 (removed)="removeTag('unwanted_classnames', tag)">
                                 {{ tag }}
-                                <button matChipRemove>
+                                <button matChipRemove [attr.aria-label]="'remove ' + tag">
                                     <mat-icon>cancel</mat-icon>
                                 </button>
-                            </mat-chip>
-                            <input style="font-size: 13px; background-color: white; border: none;"
-                                [matChipInputFor]="unwantedClassnames"
-                                placeholder="{{ 'KbPage.TypeAndPressEnter' | translate }}"
-                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                (matChipInputTokenEnd)="addTag('unwanted_classnames', $event)">
-                        </mat-chip-list>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <input style="font-size: 13px; background-color: white; border: none;"
+                            [matChipInputFor]="unwantedClassnames"
+                            placeholder="{{ 'KbPage.TypeAndPressEnter' | translate }}"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            (matChipInputTokenEnd)="addTag('unwanted_classnames', $event)">
                     </mat-form-field>
                 </div>
 

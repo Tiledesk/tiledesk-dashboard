@@ -57,6 +57,7 @@ export class TagsAnalyticsComponent implements OnInit {
   maxEndDate: Date | null = null; // To hold the maximum end date
 
   isLoading = true; // Loading state flag
+  chartReady = false;
 
 
   constructor(
@@ -303,151 +304,140 @@ export class TagsAnalyticsComponent implements OnInit {
     const initDayForQuery = moment(this.initDay, 'DD/MM/YYYY').format('MM/DD/YYYY')
     const endDayForQuery = moment(this.endDay, 'DD/MM/YYYY').format('MM/DD/YYYY')
 
+    this.isLoading = true;
+    this.chartReady = false;
+    this.chartOptions = undefined;
+
     // REST CALL
-    this.tagsService.geTagsForGraph('conversation-tag', initDayForQuery, endDayForQuery).subscribe((res: any) => {
+    this.tagsService.geTagsForGraph('conversation-tag', initDayForQuery, endDayForQuery).subscribe({
+      next: (res: any) => {
+        this.logger.log('[TAG-ANALYTICS] ---> GET GRAPH TAGS RES ', res);
 
-      this.logger.log('[TAG-ANALYTICS] ---> GET GRAPH TAGS RES ', res)
+        const apiDates = Array.isArray(res?.dates) ? res.dates : [];
+        const apiSeries = Array.isArray(res?.series) ? res.series : [];
 
-      // ---------------------------------------------
-      // Map series with filled values
-      // ---------------------------------------------
-      const filledSeries = res.series.map(serie => {
-        this.logger.log('filledSeries serie ', serie)
-        const valuesMap = Object.fromEntries(
-          res.dates.map((date, index) => [date, serie.values[index]])
-        );
-        this.logger.log('filledSeriesvaluesMap', valuesMap)
-        this.logger.log('filledSeries fullDateRange', fullDateRange)
+        const filledSeries = apiSeries.map((serie) => {
+          const rawValues = Array.isArray(serie?.values)
+            ? serie.values
+            : (Array.isArray(serie?.data) ? serie.data : []);
+          const valuesMap = Object.fromEntries(
+            apiDates.map((date, index) => [date, Number(rawValues[index]) || 0])
+          );
+          const filledValues = fullDateRange.map((date) => valuesMap[date] ?? 0);
 
-        const filledValues = fullDateRange.map(date => valuesMap[date] || 0); // Riempie i valori mancanti con 0
+          return { name: serie?.name ?? '', data: filledValues };
+        });
 
-        return { name: serie.name, data: filledValues };
-      });
+        const finalData = {
+          dates: fullDateRange,
+          series: filledSeries
+        };
 
-      // Final output with updated dates and filled series
-      const finalData = {
-        dates: fullDateRange,
-        series: filledSeries
-      };
-      
-      // --------------------------
-      // Build Graph
-      // --------------------------
-      this.buildGraph(finalData, chartStackedColumns)
-
-      this.logger.log('finalData', finalData);
-      // this.logger.log('finalData',  JSON.stringify(finalData));
-      // this.logger.log('finalData series',  finalData.series);
-      // this.logger.log('finalData series',  JSON.stringify(finalData.series));
-
-    }, error => {
-      this.logger.error('[TAG-ANALYTICS] - GET GRAPH TAGS - ERROR: ', error);
-    }, () => {
-      this.logger.log('[TAG-ANALYTICS] - GET GRAPH TAGS * COMPLETE *');
-
+        this.buildGraph(finalData, chartStackedColumns);
+        this.logger.log('finalData', finalData);
+      },
+      error: (error) => {
+        this.logger.error('[TAG-ANALYTICS] - GET GRAPH TAGS - ERROR: ', error);
+        this.chartOptions = undefined;
+        this.chartReady = false;
+        this.isLoading = false;
+      },
+      complete: () => {
+        this.logger.log('[TAG-ANALYTICS] - GET GRAPH TAGS * COMPLETE *');
+      }
     });
 
   }
 
-  buildGraph(finalData, chartStackedColumns) {
-    this.isLoading = true;
-    setTimeout(() => { // Simulate async operation
-      this.chartOptions = {
-        series: finalData.series,
-        // series: [
-        // {
-        //   name: "tag-ex-12",
-        //   data: [0, 0, 0, 2, 0, 0, 0]
-        // },
-        // {
-        //   name: "sales",
-        //   data: [0, 0, 0, 0, 1, 0, 0]
-        // },
-        // {
-        //   name: "support",
-        //   data: [0, 0, 0, 0, 2, 0, 0]
-        // },
-        // {
-        //   name: "info",
-        //   data: [0, 0, 0, 0, 1, 0, 0]
-        // }
-        // {
-        //   name: "Marine Sprite",
-        //   data: [44, 55, 41, 37, 22, 43, 21]
-        // },
-        // {
-        //   name: "Striking Calf",
-        //   data: [53, 32, 33, 52, 13, 43, 32]
-        // },
-        // {
-        //   name: "Tank Picture",
-        //   data: [12, 17, 11, 9, 15, 11, 20]
-        // },
-        // {
-        //   name: "Bucket Slope",
-        //   data: [9, 7, 5, 8, 6, 9, 4]
-        // },
-        // {
-        //   name: "Reborn Kid",
-        //   data: [25, 12, 19, 32, 25, 24, 10]
-        // }
-        // ],
-        chart: {
-          type: "bar",
-          height: 350,
-          stacked: chartStackedColumns
-        },
-        plotOptions: {
-          bar: {
-            horizontal: false,
-            // columnWidth: "55%",
-            // borderRadius: 8
-          }
-        },
-        stroke: {
-          width: 1,
-          colors: ["#fff"]
-        },
-        // title: {
-        //   text: "Fiction Books Sales"
-        // },
-        xaxis: {
-          categories: finalData.dates, // [2008, 2009, 2010, 2011, 2012, 2013, 2014], //  finalData.dates,
+  private canRenderChart(finalData: { dates: string[] }): boolean {
+    return !!finalData?.dates?.length;
+  }
 
-          labels: {
-            formatter: function (val) {
-              return val; // + "K";
-            }
-          }
-        },
-        yaxis: {
-          // max: 5,
-          title: {
-            text: undefined
-          }
-        },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return val + "";
-            }
-          }
-        },
-        fill: {
-          opacity: 1
-        },
-        legend: {
-          position: "bottom",
-          horizontalAlign: "center",
-          offsetX: 40
+  /** ApexCharts bar richiede almeno una serie; con API vuota usiamo zeri per mostrare solo gli assi. */
+  private chartSeriesForDisplay(
+    series: { name: string; data: number[] }[],
+    datesCount: number
+  ): { series: ApexAxisChartSeries; showLegend: boolean } {
+    const valid = series.filter(
+      (s) => Array.isArray(s.data) && s.data.length === datesCount
+    );
+    if (valid.length > 0) {
+      return { series: valid, showLegend: true };
+    }
+    return {
+      series: [{ name: ' ', data: Array(datesCount).fill(0) }],
+      showLegend: false
+    };
+  }
+
+  buildGraph(
+    finalData: { dates: string[]; series: { name: string; data: number[] }[] },
+    chartStackedColumns: boolean
+  ) {
+    this.chartReady = false;
+    this.chartOptions = undefined;
+
+    if (!this.canRenderChart(finalData)) {
+      this.isLoading = false;
+      return;
+    }
+
+    const { series, showLegend } = this.chartSeriesForDisplay(
+      finalData.series,
+      finalData.dates.length
+    );
+
+    this.chartOptions = {
+      series,
+      chart: {
+        type: 'bar',
+        height: 350,
+        stacked: chartStackedColumns,
+        toolbar: { show: false }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false
         }
-      };
+      },
+      stroke: {
+        show: true,
+        width: 1,
+        colors: ['#fff']
+      },
+      xaxis: {
+        type: 'category',
+        categories: finalData.dates,
+        labels: {
+          formatter: (val: string) => val
+        }
+      },
+      yaxis: {
+        labels: {
+          formatter: (val: number) => String(val)
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: (val: number) => String(val)
+        }
+      },
+      fill: {
+        opacity: 1
+      },
+      legend: {
+        show: showLegend,
+        position: 'bottom',
+        horizontalAlign: 'center',
+        offsetX: 40
+      }
+    };
 
-      this.isLoading = false; // Hide loading indicator
-    }, 1000); // Simulated delay (e.g., fetching or processing data)
-    //  this.logger.log('[TAG-ANALYTICS] chartOptions ', this.chartOptions )
-    // this.chart = new ApexCharts(document.querySelector("#chart"), this.chartOptions);  
-    // chart.render(); 
+    this.chartReady = true;
+    this.isLoading = false;
   }
 
 

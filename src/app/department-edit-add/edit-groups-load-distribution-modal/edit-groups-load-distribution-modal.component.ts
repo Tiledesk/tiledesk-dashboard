@@ -85,4 +85,11 @@ export class EditGroupsLoadDistributionModalComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  adjustPercentage(index: number, delta: number): void {
+    const control = this.percentages.at(index);
+    const next = Math.min(100, Math.max(0, (Number(control.value) || 0) + delta));
+    control.setValue(next);
+    control.markAsDirty();
+  }
+
 }

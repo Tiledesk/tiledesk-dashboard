@@ -23,20 +23,21 @@
 </div>
 
 <!-- (mousemove)="onMouseMove($event)" (mouseenter)="onMouseEnter($event)"-->
-<div mat-dialog-content (click)="handleClickInside($event)" style="overscroll-behavior: contain;">
+<div mat-dialog-content (click)="handleClickInside($event)" style="overscroll-behavior: contain;padding-top: 5px;">
+   
     <!-- ----------------------------------------------- -->
     <!-- AI Model -->
     <!-- ----------------------------------------------- -->
     <div class="row-container" style="margin-top: 0px;">
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
-            [satPopoverAnchor]="aiModel"
+            [satPopoverAnchor]="aiModel || ''"
             (mouseenter)="openHelpPopover(aiModel)"
             (mouseleave)="scheduleDelayedHelpPopoverClose(aiModel)"
             (click)="closeAllSettingsPopovers()">
             {{ 'KbPage.SelectEngine'| translate}}
         </label>
         <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-            [satPopoverAnchor]="aiModelDx"
+            [satPopoverAnchor]="aiModelDx || ''"
             (mouseenter)="openHelpPopover(aiModelDx)"
             (mouseleave)="scheduleDelayedHelpPopoverClose(aiModelDx)"
             (click)="closeAllSettingsPopovers()">
@@ -116,7 +117,7 @@
             <div class="label-wpr">
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal"  id="ai-settings-label"  class="setting-label"
-                    [satPopoverAnchor]="maxTokens"
+                    [satPopoverAnchor]="maxTokens || ''"
                     (mouseenter)="openHelpPopover(maxTokens)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(maxTokens)"
                     (click)="closeAllSettingsPopovers()">
@@ -124,7 +125,7 @@
                     {{ 'KbPage.MaxTokens'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="maxTokensDx"
+                    [satPopoverAnchor]="maxTokensDx || ''"
                     (mouseenter)="openHelpPopover(maxTokensDx)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(maxTokensDx)"
                     (click)="closeAllSettingsPopovers()">
@@ -140,8 +141,9 @@
         <div class="field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">{{ formatMaxTokensRangeLabel(max_tokens_min) }}</div>
-                <mat-slider class="wait-slider max-tokens-slider" thumbLabel step="1" [min]="max_tokens_min" [max]="max_tokens_max" [(ngModel)]="max_tokens"
-                    (input)="max_tokens = $event.value" (change)="updateSliderValue($event.value, 'max_tokens')" [displayWith]="formatMaxTokens" aria-label="units">
+                <mat-slider class="wait-slider max-tokens-slider" thumbLabel step="1" [min]="max_tokens_min" [max]="max_tokens_max"
+                    [displayWith]="formatMaxTokens" aria-label="units">
+                    <input matSliderThumb [(ngModel)]="max_tokens" (ngModelChange)="updateSliderValue($event, 'max_tokens')">
                 </mat-slider>
                 <div class="action-wait-range">{{ formatMaxTokensRangeLabel(max_tokens_catalog_max) }}</div>
             </div>
@@ -196,7 +198,7 @@
             <div class="label-wpr">
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
-                    [satPopoverAnchor]="aiModeltemperature"
+                    [satPopoverAnchor]="aiModeltemperature || ''"
                     (mouseenter)="openHelpPopover(aiModeltemperature)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(aiModeltemperature)"
                     (click)="closeAllSettingsPopovers()">
@@ -204,7 +206,7 @@
                     {{ 'KbPage.Temperature'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="aiModeltemperatureDx"
+                    [satPopoverAnchor]="aiModeltemperatureDx || ''"
                     (mouseenter)="openHelpPopover(aiModeltemperatureDx)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(aiModeltemperatureDx)"
                     (click)="closeAllSettingsPopovers()">
@@ -218,9 +220,10 @@
         <div class="field-box  max-tokens-field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">0</div>
-                <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" [(ngModel)]="temperature"
-                    (change)="updateSliderValue($event.value, 'temperature')" aria-label="units" [disabled]="temperature_slider_disabled"
+                <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1"
+                    aria-label="units" [disabled]="temperature_slider_disabled"
                     [ngClass]="{'mat-slider-disabled': temperature_slider_disabled}">
+                    <input matSliderThumb [(ngModel)]="temperature" (ngModelChange)="updateSliderValue($event, 'temperature')">
                 </mat-slider>
                 <div class="action-wait-range">1</div>
             </div>
@@ -284,7 +287,7 @@
             <div class="label-wpr">
         
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
-                    [satPopoverAnchor]="aiSearchType"
+                    [satPopoverAnchor]="aiSearchType || ''"
                     (mouseenter)="openHelpPopover(aiSearchType)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(aiSearchType)"
                     (click)="closeAllSettingsPopovers()">
@@ -293,7 +296,7 @@
                       <!-- Search type -->
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="aiSearchTypeDx"
+                    [satPopoverAnchor]="aiSearchTypeDx || ''"
                     (mouseenter)="openHelpPopover(aiSearchTypeDx)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(aiSearchTypeDx)"
                     (click)="closeAllSettingsPopovers()">
@@ -308,8 +311,8 @@
         <div class="field-box  max-tokens-field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">0</div>
-                <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" [(ngModel)]="alpha"
-                    (change)="updateSliderValue($event.value, 'alpha')" aria-label="units">
+                <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" aria-label="units">
+                    <input matSliderThumb [(ngModel)]="alpha" (ngModelChange)="updateSliderValue($event, 'alpha')">
                 </mat-slider>
                 <div class="action-wait-range">1</div>
             </div>
@@ -371,14 +374,14 @@
             <div class="label-wpr">
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
-                    [satPopoverAnchor]="chunkLimit"
+                    [satPopoverAnchor]="chunkLimit || ''"
                     (mouseenter)="openHelpPopover(chunkLimit)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(chunkLimit)"
                     (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.ChunkLimit'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="chunkLimitDx"
+                    [satPopoverAnchor]="chunkLimitDx || ''"
                     (mouseenter)="openHelpPopover(chunkLimitDx)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(chunkLimitDx)"
                     (click)="closeAllSettingsPopovers()">
@@ -392,8 +395,8 @@
         <div class="field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">1</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" min="0" max="40" [(ngModel)]="topK"
-                    (change)="updateSliderValue($event.value, 'top_k')" aria-label="units">
+                <mat-slider class="wait-slider" thumbLabel step="1" min="0" max="40" aria-label="units">
+                    <input matSliderThumb [(ngModel)]="topK" (ngModelChange)="updateSliderValue($event, 'top_k')">
                 </mat-slider>
                 <div class="action-wait-range">40</div>
             </div>
@@ -447,7 +450,7 @@
     <!-- ----------------------------- -->
     <div id="re-ranking" class="checkbox"  *ngIf="diplaySearchTypeSlider || pineconeReranking">
         <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
-            [satPopoverAnchor]="rerank"
+            [satPopoverAnchor]="rerank || ''"
             (mouseenter)="openHelpPopover(rerank)"
             (mouseleave)="scheduleDelayedHelpPopoverClose(rerank)"
             (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
@@ -459,7 +462,7 @@
         </label>
 
         <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-            [satPopoverAnchor]="rerankdx"
+            [satPopoverAnchor]="rerankdx || ''"
             (mouseenter)="openHelpPopover(rerankdx)"
             (mouseleave)="scheduleDelayedHelpPopoverClose(rerankdx)"
             (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
@@ -518,14 +521,14 @@
             <div class="label-wpr">
             
                 <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
-                    [satPopoverAnchor]="rerankingMultiplier"
+                    [satPopoverAnchor]="rerankingMultiplier || ''"
                     (mouseenter)="openHelpPopover(rerankingMultiplier)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(rerankingMultiplier)"
                     (click)="closeAllSettingsPopovers()">
                     {{ 'KbPage.RerankingMultiplier'| translate}}
                 </label>
                 <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                    [satPopoverAnchor]="rerankingMultiplierDx"
+                    [satPopoverAnchor]="rerankingMultiplierDx || ''"
                     (mouseenter)="openHelpPopover(rerankingMultiplierDx)"
                     (mouseleave)="scheduleDelayedHelpPopoverClose(rerankingMultiplierDx)"
                     (click)="closeAllSettingsPopovers()">
@@ -539,8 +542,8 @@
         <div class="field-box" style="margin-bottom: 6px !important;">
             <div class="action-wait-slider">
                 <div class="action-wait-range">2</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="50" [(ngModel)]="reRankingMultipler"
-                    (change)="updateSliderValue($event.value, 're_ranking_multipler')" aria-label="units">
+                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="50" aria-label="units">
+                    <input matSliderThumb [(ngModel)]="reRankingMultipler" (ngModelChange)="updateSliderValue($event, 're_ranking_multipler')">
                 </mat-slider>
                 <div class="action-wait-range">50</div>
             </div>
@@ -601,7 +604,7 @@
         <div class="label-wpr">
      
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
-                [satPopoverAnchor]="systemContext"
+                [satPopoverAnchor]="systemContext || ''"
                 (mouseenter)="openHelpPopover(systemContext)"
                 (mouseleave)="scheduleDelayedHelpPopoverClose(systemContext)"
                 (click)="closeAllSettingsPopovers()">
@@ -609,7 +612,7 @@
                 {{ 'KbPage.SystemContext'| translate}}
             </label>
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                [satPopoverAnchor]="systemContextDx"
+                [satPopoverAnchor]="systemContextDx || ''"
                 (mouseenter)="openHelpPopover(systemContextDx)"
                 (mouseleave)="scheduleDelayedHelpPopoverClose(systemContextDx)"
                 (click)="closeAllSettingsPopovers()">
@@ -670,7 +673,7 @@
         <div class="checkbox" id="advanced-context"  style="margin-top: 8px;">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
-            [satPopoverAnchor]="advancedContext"
+            [satPopoverAnchor]="advancedContext || ''"
             (mouseenter)="openHelpPopover(advancedContext)"
             (mouseleave)="scheduleDelayedHelpPopoverClose(advancedContext)"
             (click)="closeAllSettingsPopovers()">
@@ -681,7 +684,7 @@
             </label>
 
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}"
-            [satPopoverAnchor]="advancedContextDx"
+            [satPopoverAnchor]="advancedContextDx || ''"
             (mouseenter)="openHelpPopover(advancedContextDx)"
             (mouseleave)="scheduleDelayedHelpPopoverClose(advancedContextDx)"
             (click)="closeAllSettingsPopovers()">
@@ -746,7 +749,7 @@
          
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
             [ngClass]="{'disabled-label': chunkOnly}"
-            [satPopoverAnchor]="contentsSources"
+            [satPopoverAnchor]="contentsSources || ''"
             (mouseenter)="openHelpPopover(contentsSources)"
             (mouseleave)="scheduleDelayedHelpPopoverClose(contentsSources)"
             (click)="closeAllSettingsPopovers()">
@@ -757,7 +760,7 @@
             </label>
 
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label" [ngClass]="{'disabled-label': chunkOnly}"
-                [satPopoverAnchor]="contentsSourcesDx"
+                [satPopoverAnchor]="contentsSourcesDx || ''"
                 (mouseenter)="openHelpPopover(contentsSourcesDx)"
                 (mouseleave)="scheduleDelayedHelpPopoverClose(contentsSourcesDx)"
                 (click)="closeAllSettingsPopovers()">
@@ -820,7 +823,7 @@
         <!-- ----------------------------- -->
         <div id="chunk-only" class="checkbox">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label"  class="setting-label"
-            [satPopoverAnchor]="chunkonly"
+            [satPopoverAnchor]="chunkonly || ''"
             (mouseenter)="openHelpPopover(chunkonly)"
             (mouseleave)="scheduleDelayedHelpPopoverClose(chunkonly)"
             (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
@@ -832,7 +835,7 @@
             </label>
 
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-             [satPopoverAnchor]="chunkonlyDx"
+             [satPopoverAnchor]="chunkonlyDx || ''"
             (mouseenter)="openHelpPopover(chunkonlyDx)"
             (mouseleave)="scheduleDelayedHelpPopoverClose(chunkonlyDx)"
             (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
@@ -881,7 +884,7 @@
         <!-- ----------------------------- -->
         <div id="use-hyde" class="checkbox">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
-                [satPopoverAnchor]="hydePopover"
+                [satPopoverAnchor]="hydePopover || ''"
                 (mouseenter)="openHelpPopover(hydePopover)"
                 (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopover)"
                 (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
@@ -892,7 +895,7 @@
             </label>
 
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                [satPopoverAnchor]="hydePopoverDx"
+                [satPopoverAnchor]="hydePopoverDx || ''"
                 (mouseenter)="openHelpPopover(hydePopoverDx)"
                 (mouseleave)="scheduleDelayedHelpPopoverClose(hydePopoverDx)"
                 (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
@@ -947,7 +950,7 @@
         <!-- ----------------------------- -->
         <div id="use-cache" class="checkbox">
             <label *ngIf="!wasOpenedFromThePreviewKBModal" id="ai-settings-label" class="setting-label"
-                [satPopoverAnchor]="useCachePopover"
+                [satPopoverAnchor]="useCachePopover || ''"
                 (mouseenter)="openHelpPopover(useCachePopover)"
                 (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopover)"
                 (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">
@@ -958,7 +961,7 @@
             </label>
 
             <label id="ai-settings-label" *ngIf="wasOpenedFromThePreviewKBModal" class="setting-label"
-                [satPopoverAnchor]="useCachePopoverDx"
+                [satPopoverAnchor]="useCachePopoverDx || ''"
                 (mouseenter)="openHelpPopover(useCachePopoverDx)"
                 (mouseleave)="scheduleDelayedHelpPopoverClose(useCachePopoverDx)"
                 (click)="closeAllSettingsPopovers(); onCheckboxClick($event)">

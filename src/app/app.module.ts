@@ -258,7 +258,8 @@ import { AutofocusDirective } from './_directives/autofocus.directive';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
-import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { TD_DATE_FORMATS } from './core/td-date-formats';
 // import { ColorPickerModule } from 'ngx-color-picker';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -778,7 +779,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
       useClass: MomentDateAdapter,
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
-    { provide: MAT_DATE_FORMATS, useValue: MAT_MOMENT_DATE_FORMATS },
+    { provide: MAT_DATE_FORMATS, useValue: TD_DATE_FORMATS },
     AppConfigService, // https://juristr.com/blog/2018/01/ng-app-runtime-config/
     BrandService,
     LoggerService,

@@ -72,20 +72,22 @@
                         </div>
 
                         <div class="analytics-date-picker">
-                            <mat-form-field class="tags-analytics-date-range-picker" appearance="standard">
-                                <!-- <mat-label>Select a date range</mat-label> -->
-                                <mat-date-range-input [rangePicker]="picker" [min]="minEndDate" [max]="maxEndDate">
-                                    <input matStartDate placeholder="{{'StartDate' | translate}}" [(ngModel)]="startDate"
-                                        (dateChange)="onSelectStartDate($event.value)">
-                                    <input matEndDate placeholder="{{'EndDate' | translate}}" [(ngModel)]="endDate"
-                                        (dateChange)="onSelectEndDate($event.value)">
-                                </mat-date-range-input>
-                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                                <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
-                                    <mat-icon matDatepickerToggleIcon>clear</mat-icon>
-                                </mat-datepicker-toggle>
-                                <mat-date-range-picker #picker></mat-date-range-picker>
-                            </mat-form-field>
+                            <div class="td-date-range-picker-row td-date-range-picker-row--analytics">
+                                <mat-form-field class="td-date-range-picker" appearance="fill" floatLabel="never">
+                                    <mat-date-range-input [rangePicker]="picker" [min]="minEndDate" [max]="maxEndDate">
+                                        <input matStartDate placeholder="{{'StartDate' | translate}}" [(ngModel)]="startDate"
+                                            (dateChange)="onSelectStartDate($event.value)">
+                                        <input matEndDate placeholder="{{'EndDate' | translate}}" [(ngModel)]="endDate"
+                                            (dateChange)="onSelectEndDate($event.value)">
+                                    </mat-date-range-input>
+                                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                                <button type="button" class="td-date-range-picker-clear" (click)="clearDateRange()"
+                                    aria-label="Clear">
+                                    <mat-icon>clear</mat-icon>
+                                </button>
+                            </div>
                         </div>
 
                         <!-- <div class="analytics-label-on-bottom">
@@ -165,11 +167,11 @@
               
                 <div *ngIf="!isLoading" class="card-content"
                     style=" margin:0px auto; padding-top: 0px;padding-bottom: 10px;">
-                    <div id="chart" *ngIf='chartOptions'>
+                    <div id="chart" *ngIf="chartReady && chartOptions">
                         <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
                             [dataLabels]="chartOptions.dataLabels" [plotOptions]="chartOptions.plotOptions"
                             [xaxis]="chartOptions.xaxis" [stroke]="chartOptions.stroke" [fill]="chartOptions.fill"
-                            [yaxis]="chartOptions.yaxis" [title]="chartOptions.title" [tooltip]="chartOptions.tooltip"
+                            [yaxis]="chartOptions.yaxis" [tooltip]="chartOptions.tooltip"
                             [legend]="chartOptions.legend">
                         </apx-chart>
                     </div>

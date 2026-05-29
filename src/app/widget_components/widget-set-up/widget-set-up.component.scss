@@ -3230,18 +3230,8 @@ pre {
   top: -2px;
 }
 
-::ng-deep .custom-mat-tooltip-in-widget-setup {
-  background-color: #555555 !important;
-  color: #fff !important;
-  font-size: 12px !important;
-  line-height: 1.2;
-  border-radius: 2px !important;
-  font-family: var(--header-font-family); // "Poppins", "Roboto", "Arial", sans-serif;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-  border: 1px solid #555555 !important;
-  white-space: pre-line;
-}
+// Tooltip style moved to src/assets/css/material-mdc-overrides.scss
+// (.custom-mat-tooltip-in-widget-setup)
 
 .feature-not-available {
   background-color: #fcf9fe;
@@ -3382,15 +3372,7 @@ pre {
   color: #f44336;
 }
 
-::ng-deep .custom-mat-tooltip {
-  background-color: #2d323e !important;
-  font-size: 12px !important;
-  border-radius: 2px !important;
-  font-family: var(--header-font-family) !important; // "Poppins", "Roboto", "Arial", sans-serif !important;
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-  color: #fff !important;
-}
+// Tooltip style moved to src/assets/css/material-mdc-overrides.scss (.custom-mat-tooltip)
 
 .hide-unbranding {
   display: none;

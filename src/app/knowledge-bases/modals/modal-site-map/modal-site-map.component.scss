@@ -3,6 +3,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding-right: 12px;
 }
 
 .m-top-right-icon {
@@ -354,23 +355,6 @@
     color: var(--blue-20);
 }
 
-
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
-    margin: .25em 0;
-    padding-bottom: 4px;
-}
-
-
-::ng-deep .mat-chip-list-wrapper {
-    max-height: 100px;
-    overflow: scroll;
-
-    .mat-standard-chip {
-        border-radius: 10px;
-        background-color: transparent;
-        border: solid 1px #b9b9b9;
-    }
-}
 
 ::ng-deep.ng-select.scrape-types-select .ng-select-container {
     // height: 48px !important;

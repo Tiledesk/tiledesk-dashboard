@@ -9,6 +9,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    padding-right: 12px;
 }
 
 .m-top-right-icon {
@@ -350,11 +351,6 @@
 // }
 
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
-    margin: .25em 0;
-    padding-bottom: 4px;
-}
-
 .scrape-options-header {
     display: flex;
     // justify-content: space-between;
@@ -416,17 +412,6 @@
     border-radius: 9999px;
 }
 
-
-::ng-deep .mat-chip-list-wrapper {
-    max-height: 100px;
-    overflow: scroll;
-
-    .mat-standard-chip {
-        border-radius: 10px;
-        background-color: transparent;
-        border: solid 1px #b9b9b9;
-    }
-}
 
 ::ng-deep.ng-select.scrape-types-select .ng-select-container {
     // height: 48px !important;
@@ -591,19 +576,6 @@
     }
 }
 
-// Tighten the mat-form-field bottom space inside the popover so the
-// row doesn't get unnecessarily tall (mat-form-field reserves room for
-// hint/error text we don't use here).
-.sitemap-popover ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0;
-    margin: 0;
-}
-
-.sitemap-popover ::ng-deep .mat-form-field-underline,
-.sitemap-popover ::ng-deep .mat-form-field-subscript-wrapper {
-    display: none;
-}
-
 .html-tags--expansion-panel {
     box-shadow: none;
     margin-bottom: 12px;
@@ -693,6 +665,7 @@
 
 // }
 
+// mat-form-field outline: material-mdc-overrides.scss
 // ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
 //     margin: .25em 0;
 //     padding-bottom: 4px;

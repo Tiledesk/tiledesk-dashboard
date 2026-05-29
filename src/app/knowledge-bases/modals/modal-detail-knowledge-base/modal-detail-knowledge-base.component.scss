@@ -7,7 +7,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;
+    align-items: center;    
+    padding-right: 12px;
 }
 
 .m-top-right-icon {
@@ -624,24 +625,6 @@
     margin-bottom: 18px;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
-    margin: .25em 0;
-    padding-bottom: 4px;
-}
-
-
-::ng-deep .mat-chip-list-wrapper {
-    max-height: 100px;
-    overflow: scroll;
-
-    .mat-standard-chip {
-        border-radius: 10px;
-        background-color: transparent;
-        border: solid 1px #b9b9b9;
-    }
-}
-
-
 // Scrape option chips styling
 // ::ng-deep .scrape-option-chip {
 //     background-color: white !important;
@@ -725,6 +708,7 @@
 //     padding-bottom: 0;
 // }
 
+// mat-form-field: material-mdc-overrides.scss
 // .scrape-options-accordion ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
 //     margin: 0.25em 0;
 //     padding-bottom: 4px;

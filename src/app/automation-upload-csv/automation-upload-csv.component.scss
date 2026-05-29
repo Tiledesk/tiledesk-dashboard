@@ -2,6 +2,17 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    padding-right: 12px;
+}
+
+.m-top-right-icon {
+    cursor: pointer;
+    opacity: 0.6;
+    transition: opacity 0.2s ease-in-out;
+    &:hover {
+        opacity: 1;
+    }
 }
 
 

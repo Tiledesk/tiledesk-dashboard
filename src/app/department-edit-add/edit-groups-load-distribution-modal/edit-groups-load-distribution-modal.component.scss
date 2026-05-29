@@ -23,14 +23,10 @@
   margin-left: 2px;
 }
 
-.mat-form-field-invalid .mat-form-field-outline {
-  color: #f44336 !important;
-}
-
-.mat-form-field-invalid .mat-form-field-label {
-  color: #f44336 !important;
-}
+// Invalid outline/label: material-mdc-overrides.scss (.mat-mdc-form-field.mat-form-field-invalid)
 
 mat-form-field {
   width: 100%;
 }
+
+// % + steppers suffix: material-mdc-overrides.scss (.percentage-input-suffix)

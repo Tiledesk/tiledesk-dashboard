@@ -4,65 +4,7 @@
   justify-content: center;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-  /* padding: 1em 0 1em 0; */
-  //padding-top: 8px;
-  padding: 1ex 0 !important;
-}
-
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline-thick {
-  color: var(--icon-hover-color) !important;
-  border-radius: 20px !important;
-}
-
-::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
-  color: var(--icon-hover-color) !important;
-  caret-color: var(--icon-hover-color) !important;
-  border-radius: 28px !important; 
-}
-
-::ng-deep .mat-input-element {
-  caret-color: var(--icon-hover-color) !important;
-}
-
-::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
-  color: var(--icon-hover-color) !important; /* Colore desiderato, es. blu */
-}
-
-::ng-deep .mat-form-field-underline {
-  /*change color of underline*/
-  background-color: grey !important;
-} 
-
-::ng-deep .mat-form-field-ripple {
- /*change color of underline when focused*/
- background-color: var(--icon-hover-color) !important;;
-}
-
-
-/*
-::ng-deep  .mat-form-field-flex:hover .mat-form-field-outline .mat-form-field-outline-thick {
-  color: red;
-}
-
-::ng-deep .mat-form-field-appearance-outline:hover .mat-form-field-outline-start, .mat-form-field-appearance-outline .mat-form-field-outline-end {
-  border-color: var(--icon-hover-color) !important; 
-  }
-
-::ng-deep .custom-namespace-mat-form-field.mat-form-field-appearance-outline .mat-form-field-outline {
-  transition: border-color 0.2s;
-}
-::ng-deep .custom-namespace-mat-form-field:hover .mat-form-field-outline {
-  border-color: var(--icon-hover-color) !important; 
-}
-::ng-deep .custom-namespace-mat-form-field .mat-form-field-outline-thick {
-  transition: border-color 0.2s;
-}
-::ng-deep .custom-namespace-mat-form-field:hover .mat-form-field-outline-thick {
-  border-color: var(--icon-hover-color) !important; 
-}
-*/
-
+// Outline/focus/error: material-mdc-overrides.scss (.custom-namespace-mat-form-field, baseline outline)
 .cc-mat-form-field {
   width: 100%;
 }

@@ -31,7 +31,6 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { BrandService } from 'app/services/brand.service';
 import { RolesService } from 'app/services/roles.service';
 import { RoleService } from 'app/services/role.service';
@@ -39,17 +38,6 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { NavigationService } from 'app/services/navigation.service';
 
 
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD/MM/YYYY',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  },
-};
 const Swal = require('sweetalert2')
 
 @Component({
@@ -81,9 +69,6 @@ const Swal = require('sweetalert2')
       ])
     ])
   ],
-  providers: [
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
-  ]
 })
 
 

@@ -21,13 +21,5 @@ li > a {
     // text-transform: uppercase;
 }
 
-::ng-deep .custom-mat-tooltip-in-settings-sidebar {
-    background-color: var(--settings-sidebar-mat-tooltip-background-color) !important;
-    color: var(--settings-sidebar-mat-tooltip-color) !important;
-    font-size: var(--settings-sidebar-mat-tooltip-font-size)  !important;
-    border-radius: var(--settings-sidebar-mat-tooltip-border-radius) !important;
-    font-family: var(--header-font-family);
-    padding-top:8px!important;
-    padding-bottom:8px!important;
-    border: var(--settings-sidebar-mat-tooltip-border)!important;
-  }
+// Tooltip style moved to src/assets/css/material-mdc-overrides.scss
+// (.custom-mat-tooltip-in-settings-sidebar)
