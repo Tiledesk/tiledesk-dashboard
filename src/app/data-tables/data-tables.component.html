@@ -1,0 +1,192 @@
+<div class="main-content" style="padding-top: 0px; padding-left: 5px; padding-right: 5px;">
+  <div class="container-fluid" style="padding-left: 5px; padding-right: 5px;">
+
+    <div class="dt-layout">
+
+      <!-- ─── Sidebar ───────────────────────────────────────────── -->
+      <div class="dt-sidebar">
+
+        <div class="sidebar-title dt-sidebar-title">
+          <span>{{ 'DataTables.YourTables' | translate }}</span>
+        </div>
+
+        <button class="dt-create-btn" (click)="openCreateTableModal()">
+          <mat-icon style="vertical-align: middle;">add</mat-icon>
+          <span style="vertical-align: middle;">{{ 'DataTables.CreateTable' | translate }}</span>
+        </button>
+
+        <ul class="dt-list" *ngIf="!isLoadingTables && tables?.length > 0">
+          <li *ngFor="let t of tables; trackBy: trackByTableId"
+              (click)="onSelectTable(t)"
+              [ngClass]="{ 'active': isTableSelected(t) }"
+              [style.background]="isTableSelected(t) ? '#e3e9f6' : 'transparent'"
+              [style.borderLeftColor]="isTableSelected(t) ? '#0f62ff' : 'transparent'">
+            <div class="dt-list-item">
+              <span class="material-icons-outlined dt-list-icon">grid_on</span>
+              <div class="dt-list-name">{{ t.name }}</div>
+              <mat-icon *ngIf="isTableSelected(t)" class="dt-list-chevron">chevron_right</mat-icon>
+            </div>
+          </li>
+        </ul>
+
+        <div *ngIf="!isLoadingTables && (!tables || tables.length === 0)" class="dt-empty">
+          {{ 'DataTables.NoTablesYet' | translate }}
+        </div>
+
+      </div>
+
+      <!-- ─── Main ─────────────────────────────────────────────── -->
+      <div class="dt-main">
+
+        <ng-container *ngIf="selectedTable; else noTableSelected">
+
+          <div class="dt-header">
+            <h2 class="dt-title">{{ selectedTable.name }}</h2>
+            <div class="dt-toolbar">
+              <button  class="btn btn-tdblu-no-boxshadow"
+                      (click)="onAddRow()"
+                      [disabled]="!getColumns(selectedTable).length"
+                      style="border: unset;">
+                <!-- <mat-icon>add</mat-icon> -->
+                {{ 'DataTables.AddRow' | translate }}
+              </button>
+              <button  class="btn btn-outlined"
+                      #addColumnTrigger="cdkOverlayOrigin"
+                      cdkOverlayOrigin
+                      (click)="toggleAddColumnPopover()">
+                <!-- <mat-icon>view_column</mat-icon> -->
+                {{ 'DataTables.AddColumn' | translate }}
+              </button>
+            </div>
+          </div>
+
+          <ng-template
+            cdkConnectedOverlay
+            [cdkConnectedOverlayOrigin]="addColumnTrigger"
+            [cdkConnectedOverlayOpen]="isAddColumnPopoverOpen"
+            [cdkConnectedOverlayPositions]="addColumnPopoverPositions"
+            [cdkConnectedOverlayHasBackdrop]="true"
+            (backdropClick)="closeAddColumnPopover()"
+            (detach)="closeAddColumnPopover()">
+            <div class="dt-add-column-popover" (click)="$event.stopPropagation()">
+              <div class="dt-add-column-field">
+                <label class="dt-add-column-label">
+                  {{ 'DataTables.Name' | translate }}
+                  <span class="dt-required">*</span>
+                </label>
+                <mat-form-field appearance="outline" class="dt-add-column-mat-field" floatLabel="never">
+                  <input matInput
+                         [(ngModel)]="newColumnName"
+                         (ngModelChange)="onNewColumnNameChange()"
+                         [placeholder]="('DataTables.ColumnNamePlaceholder' | translate)"
+                         autocomplete="off"
+                         (keydown.enter)="canSubmitAddColumn() && submitAddColumn()">
+                </mat-form-field>
+                <div *ngIf="addColumnNameError === 'duplicate'" class="dt-add-column-error">
+                  {{ 'DataTables.DuplicateColumnName' | translate }}
+                </div>
+              </div>
+
+              <div class="dt-add-column-field">
+                <label class="dt-add-column-label">
+                  {{ 'DataTables.Type' | translate }}
+                  <span class="dt-required">*</span>
+                </label>
+                <mat-form-field appearance="outline" class="dt-add-column-mat-field" floatLabel="never">
+                  <mat-select [(ngModel)]="newColumnType">
+                    <mat-option *ngFor="let opt of columnTypes"
+                                [value]="opt.value"
+                                [disabled]="opt.disabled">
+                      {{ opt.label }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <button mat-flat-button
+                      type="button"
+                      class="dt-add-column-submit"
+                      [disabled]="!canSubmitAddColumn()"
+                      (click)="submitAddColumn()">
+                {{ 'DataTables.AddColumn' | translate }}
+              </button>
+            </div>
+          </ng-template>
+
+          <div class="dt-columns-card">
+            <table class="dt-columns-table">
+              <thead>
+                <tr>
+                  <th *ngFor="let col of getColumns(selectedTable); trackBy: trackByColumnName"
+                      class="dt-col-th">
+                    <div class="dt-col-header">
+                      <span class="dt-col-type-icon" aria-hidden="true">T</span>
+                      <span class="dt-col-name">{{ col.name }}</span>
+                      <button mat-icon-button
+                              class="dt-col-menu-btn"
+                              [matMenuTriggerFor]="columnMenu"
+                              (click)="columnMenuTarget = col; $event.stopPropagation()"
+                              [attr.aria-label]="('DataTables.ColumnActions' | translate)">
+                        <mat-icon>more_horiz</mat-icon>
+                      </button>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngIf="isLoadingRows">
+                  <td [attr.colspan]="getColumns(selectedTable).length || 1" class="dt-empty-cell">
+                    {{ 'Processing' | translate }}
+                  </td>
+                </tr>
+
+                <ng-container *ngIf="!isLoadingRows">
+                  <tr *ngFor="let row of rows; trackBy: trackByRowId" class="dt-data-row">
+                    <td *ngFor="let col of getColumns(selectedTable); trackBy: trackByColumnName"
+                        class="dt-data-cell">
+                      <input type="text"
+                             class="dt-cell-input"
+                             [(ngModel)]="row.data[col.name]"
+                             (blur)="onCellBlur(row, col.name)"
+                             [attr.aria-label]="col.name">
+                    </td>
+                  </tr>
+
+                  <tr *ngIf="getColumns(selectedTable).length === 0" class="dt-empty-row">
+                    <td colspan="1" class="dt-empty-cell">
+                      {{ 'DataTables.NoColumnsYet' | translate }}
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+
+          <mat-menu #columnMenu="matMenu" class="dt-col-menu">
+            <button mat-menu-item (click)="onRenameColumn(columnMenuTarget)">
+              <mat-icon>edit</mat-icon>
+              <span>{{ 'DataTables.RenameColumn' | translate }}</span>
+            </button>
+            <button mat-menu-item (click)="onDeleteColumn(columnMenuTarget)">
+              <mat-icon>delete</mat-icon>
+              <span>{{ 'DataTables.DeleteColumn' | translate }}</span>
+            </button>
+          </mat-menu>
+
+        </ng-container>
+
+        <ng-template #noTableSelected>
+          <div class="dt-empty-state">
+            <span class="material-icons-outlined dt-empty-state-icon">grid_on</span>
+            <div class="dt-empty-state-title">
+              {{ 'DataTables.SelectOrCreateTable' | translate }}
+            </div>
+          </div>
+        </ng-template>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
