@@ -1259,6 +1259,15 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
+  // ---------------------------
+  // Data tables
+  // ---------------------------
+  {
+    path: 'project/:projectid/data-tables',
+    loadChildren: () => import('app/data-tables/data-tables.module').then(m => m.DataTablesModule),
+    canActivate: [AuthGuard]
+  },
+
   // Check moved in RoleService
   // {
   //   path: 'project/:projectid/knowledge-bases/:namespaceid',
