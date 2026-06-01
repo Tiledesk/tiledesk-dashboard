@@ -1,0 +1,359 @@
+// Layout aligned with knowledge-bases: sticky left sidebar + scrollable main.
+.dt-layout {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.dt-sidebar {
+  padding: 6px 0;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  border-right: 1px solid #e0e0e0;
+  width: 260px;
+  min-width: 200px;
+  max-width: 320px;
+}
+
+.sidebar-title {
+  color: var(--settings-sidebar-color);
+  padding-left: 12px;
+  font-size: var(--settings-sidebar-group-name-font-size);
+  font-weight: 500;
+  line-height: 14px;
+  text-transform: var(--settings-sidebar-group-name-text-transform);
+  cursor: default;
+  margin-bottom: 12px;
+}
+
+.dt-sidebar-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 12px;
+  padding-top: 6px;
+}
+
+.dt-create-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  // margin: 9px 9px 0;
+  // width: calc(100% - 18px);
+  height: 36px;
+  padding: 0 12px 0 6px;
+  background: transparent;
+  // background-color: var(--blue-light, #1f77ff);
+  // color: #fff;
+  color: var(--blue-20);
+  border: none;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  // transition: opacity 0.15s ease-in-out;
+
+  &:hover { 
+    // opacity: 0.85; 
+   text-decoration: underline;
+  }
+
+  mat-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+  }
+}
+
+.dt-list {
+  list-style: none !important;
+  padding: 0;
+  margin: 12px 0 0;
+}
+
+.dt-list li {
+  cursor: pointer;
+  padding: 9px 0 9px 9px;
+  border-left: 4px solid transparent;
+  transition: background 0.2s, border-color 0.2s;
+  height: 42px;
+
+  &:hover { background: #f3f5f9; }
+}
+
+.dt-list-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  font-size: 14px;
+  font-family: var(--header-font-family);
+  min-width: 0;
+}
+
+.dt-list-icon {
+  font-size: 18px;
+  color: #566787;
+  flex: 0 0 18px;
+}
+
+.dt-list-name {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dt-list-chevron {
+  color: #0f62ff;
+  flex: 0 0 24px;
+}
+
+.dt-empty {
+  padding: 18px 12px;
+  font-size: 13px;
+  color: #888;
+}
+
+// ─── Main ─────────────────────────────────────────────────────────────────
+.dt-main {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0px 20px;
+}
+
+.dt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.dt-title {
+  font-size: 20px;
+  font-weight: 500;
+  font-family: var(--header-font-family);
+  margin: 0;
+  color: var(--text-color);
+}
+
+.dt-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dt-toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.dt-columns-card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  overflow: auto;
+}
+
+.dt-columns-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+
+  thead th {
+    text-align: left;
+    background: #fafbfc;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 0;
+    font-weight: 500;
+    font-size: 13px;
+    color: #1d2939;
+  }
+}
+
+.dt-col-th {
+  min-width: 160px;
+}
+
+.dt-col-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 6px 8px 12px;
+  height: 36px;
+}
+
+.dt-col-type-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  background: #eef2f7;
+  color: #566787;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.dt-col-name {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dt-col-menu-btn {
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  padding: 0 !important;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.dt-data-row {
+  background: #fff;
+}
+
+.dt-data-cell {
+  padding: 0;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #f0f0f0;
+  vertical-align: middle;
+  min-width: 160px;
+}
+
+.dt-cell-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  min-height: 36px;
+  font-size: 13px;
+  font-family: var(--header-font-family);
+  color: var(--text-color);
+  background: transparent;
+
+  &:focus {
+    background: #f5f8ff;
+    box-shadow: inset 0 0 0 1px var(--blue-20, #0f62ff);
+  }
+
+  &::placeholder {
+    color: #b0b8c4;
+  }
+}
+
+.dt-empty-row {
+  background: #fff;
+}
+
+.dt-empty-cell {
+  padding: 32px 12px;
+  text-align: center;
+  font-size: 13px;
+  color: #888;
+  border-top: 1px solid #e0e0e0;
+}
+
+.dt-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 80px 20px;
+  color: #888;
+  text-align: center;
+}
+
+.dt-empty-state-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+  color: #c0c4c7;
+}
+
+.dt-empty-state-title {
+  font-size: 16px;
+  font-family: var(--header-font-family);
+}
+
+// ─── Add Column popover (toolbar) ─────────────────────────────────────────
+.dt-add-column-popover {
+  width: 280px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  font-family: var(--header-font-family);
+}
+
+.dt-add-column-field {
+  margin-bottom: 12px;
+}
+
+.dt-add-column-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 4px;
+}
+
+.dt-required {
+  color: #c62445;
+  margin-left: 2px;
+}
+
+.dt-add-column-mat-field {
+  width: 100%;
+
+  ::ng-deep .mat-mdc-form-field-infix,
+  ::ng-deep .mat-form-field-infix {
+    min-height: 36px;
+  }
+}
+
+.dt-add-column-error {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #c62445;
+}
+
+.dt-add-column-submit {
+  width: 100%;
+  margin-top: 4px;
+  height: 36px;
+  background-color: var(--blue-light, #1f77ff) !important;
+  color: #fff !important;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 400;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,99 @@
+<h1 mat-dialog-title>{{ 'DataTables.CreateTable' | translate }}</h1>
+
+<div mat-dialog-content>
+  <form [formGroup]="form" class="ct-form" (ngSubmit)="onSubmit()">
+
+    <!-- ─── Table name ─────────────────────────────────────────── -->
+    <div class="ct-section">
+      <label class="ct-label">{{ 'DataTables.Name' | translate }}</label>
+      <div class="ct-input-wrap" [class.ct-input-wrap--error]="showRequiredError(form.get('name'))">
+        <input type="text"
+               class="ct-input"
+               formControlName="name"
+               [placeholder]="('DataTables.TableNamePlaceholder' | translate)"
+               autocomplete="off">
+        <div *ngIf="showRequiredError(form.get('name'))" class="ct-field-hint">
+          {{ 'DataTables.RequiredField' | translate }}
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── Columns ────────────────────────────────────────────── -->
+    <div class="ct-section">
+      <label class="ct-label">{{ 'DataTables.Columns' | translate }}</label>
+
+      <div *ngIf="columns.controls.length === 0" class="ct-empty">
+        {{ 'DataTables.CurrentlyNoItemsExist' | translate }}
+      </div>
+
+      <div formArrayName="columns" class="ct-cols">
+        <div *ngFor="let col of columns.controls; let i = index"
+             [formGroupName]="i"
+             class="ct-col-row">
+
+          <div class="ct-col-field">
+            <label class="ct-sublabel">{{ 'DataTables.Name' | translate }}</label>
+            <div class="ct-input-wrap"
+                 [class.ct-input-wrap--error]="showRequiredError(columns.at(i).get('name'))">
+              <input type="text"
+                     class="ct-input"
+                     formControlName="name"
+                     autocomplete="off">
+              <div *ngIf="showRequiredError(columns.at(i).get('name'))" class="ct-field-hint">
+                {{ 'DataTables.RequiredField' | translate }}
+              </div>
+            </div>
+            <div *ngIf="isDuplicateName(i)" class="ct-error">
+              {{ 'DataTables.DuplicateColumnName' | translate }}
+            </div>
+          </div>
+
+          <div class="ct-col-field">
+            <label class="ct-sublabel">{{ 'DataTables.Type' | translate }}</label>
+            <ng-select class="ct-ng-select"
+                       appendTo="body"
+                       formControlName="type"
+                       [clearable]="false"
+                       [searchable]="false">
+              <ng-option *ngFor="let opt of columnTypes"
+                         [value]="opt.value"
+                         [disabled]="opt.disabled">
+                {{ opt.label }}
+              </ng-option>
+            </ng-select>
+          </div>
+
+          <button 
+                  type="button"
+                  class="ct-col-remove"
+                  (click)="removeColumn(i)"
+                  [attr.aria-label]="('DataTables.RemoveColumn' | translate)">
+            <span class="material-icons-outlined">close</span>
+          </button>
+
+        </div>
+      </div>
+
+      <button mat-stroked-button
+              type="button"
+              class="ct-add-col-btn"
+              (click)="addColumn()">
+        <!-- <mat-icon>add</mat-icon> -->
+        {{ 'DataTables.AddColumn' | translate }}
+      </button>
+    </div>
+
+  </form>
+</div>
+
+<div mat-dialog-actions style="justify-content: center;">
+  <button mat-button class="mat-dialog-close-btn" type="button" (click)="onCancel()">
+    {{ 'Cancel' | translate }}
+  </button>
+  <button mat-button
+          class="mat-dialog-ok-btn"
+          type="button"
+          (click)="onSubmit()">
+    {{ 'Create' | translate }}
+  </button>
+</div>
