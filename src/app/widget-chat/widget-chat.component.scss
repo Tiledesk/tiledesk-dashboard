@@ -303,6 +303,30 @@ text-align: center;
   height: 56px
 }
 
+.chat21-streaming-button {
+  display: flex;
+  width: 34px;
+  text-align: center;
+  justify-content: center;
+  height: 56px
+}
+
+.audio-voice-streaming {
+    background:rgb(95, 99, 104);
+    height: 26px;
+    width: 26px;
+    position: relative;
+    top: 15px;
+    border-radius: 999px;
+}
+
+.voice-streaming-button {
+    position: relative;
+    top: 4px;
+}
+
+
+
 .hide-attachment-btn {
   display: none;
 }
@@ -312,5 +336,9 @@ text-align: center;
 }
 
 .hide-audio-btn {
+  display: none;
+}
+
+.hide-voice-streaming-btn {
   display: none;
 }
