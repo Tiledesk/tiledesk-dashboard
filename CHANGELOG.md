@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.219-stage 
+- Adds charts for visualizing answered/unanswered questions and answer rates over time. 
+￼
 ### 2.7.218-stage
 - Disables the stream option if the Chunks only option is enabled
 - Gets the sources from the metadata object returned in the response if the Chunks only option is enabled.
