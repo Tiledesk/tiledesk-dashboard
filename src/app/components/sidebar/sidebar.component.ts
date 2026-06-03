@@ -169,6 +169,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   ACTIVITIES_ROUTE_IS_ACTIVE: boolean;
   ACTIVITIES_DEMO_ROUTE_IS_ACTIVE: boolean;
   ANALYTICS_DEMO_ROUTE_IS_ACTIVE: boolean;
+   /** True when URL is …/analytics/new (badge “new” on sidebar analytics icon). */
+  ANALYTICS_NEW_ROUTE_IS_ACTIVE: boolean;
   WIDGET_ROUTE_IS_ACTIVE: boolean;
   ANALITYCS_ROUTE_IS_ACTIVE: boolean;
   HOME_ROUTE_IS_ACTIVE: boolean;
@@ -1625,6 +1627,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         } else {
           // this.logger.log('[SIDEBAR] NavigationEnd - THE analytics-demo route IS NOT ACTIVE  ', event.url);
           this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = false;
+        }
+
+        if (event.url.indexOf('/analytics/new') !== -1) {
+          this.ANALYTICS_NEW_ROUTE_IS_ACTIVE = true;
+        } else {
+          this.ANALYTICS_NEW_ROUTE_IS_ACTIVE = false;
         }
 
         if (event.url.indexOf('/widget') !== -1) {

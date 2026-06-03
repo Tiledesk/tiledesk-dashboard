@@ -28,6 +28,8 @@
   "oauth2SigninEnabled": "${OAUTH2_SIGNIN_ENABLED}",
   "logoutURL": "${LOGOUT_URL}",
   "pineconeReranking":"${PINECONE_RERANKING}",
+  "analyticsApiBase": "${ANALYTICS_API_BASE}",
+  "analyticsEmbedBase": "${ANALYTICS_EMBED_BASE}",
   "firebase": {
       "apiKey": "${FIREBASE_APIKEY}",
       "authDomain": "${FIREBASE_AUTHDOMAIN}",
