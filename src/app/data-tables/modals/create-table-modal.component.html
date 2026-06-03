@@ -5,14 +5,16 @@
 
     <!-- ─── Table name ─────────────────────────────────────────── -->
     <div class="ct-section">
-      <label class="ct-label">{{ 'DataTables.Name' | translate }}</label>
-      <div class="ct-input-wrap" [class.ct-input-wrap--error]="showRequiredError(form.get('name'))">
+      <label class="ct-label">{{ 'DataTables.Name' | translate }}
+        <span *ngIf="showTableNameRequiredError()" class="required-field-asterisk">*</span>
+      </label> 
+      <div class="ct-input-wrap" [class.ct-input-wrap--error]="showTableNameRequiredError()">
         <input type="text"
                class="ct-input"
                formControlName="name"
                [placeholder]="('DataTables.TableNamePlaceholder' | translate)"
                autocomplete="off">
-        <div *ngIf="showRequiredError(form.get('name'))" class="ct-field-hint">
+        <div *ngIf="showTableNameRequiredError()" class="ct-field-hint">
           {{ 'DataTables.RequiredField' | translate }}
         </div>
       </div>
@@ -32,14 +34,16 @@
              class="ct-col-row">
 
           <div class="ct-col-field">
-            <label class="ct-sublabel">{{ 'DataTables.Name' | translate }}</label>
+            <label class="ct-sublabel">{{ 'DataTables.Name' | translate }}
+              <span *ngIf="showColumnNameRequiredError(i)"class="required-field-asterisk">*</span>
+            </label> 
             <div class="ct-input-wrap"
-                 [class.ct-input-wrap--error]="showRequiredError(columns.at(i).get('name'))">
+                 [class.ct-input-wrap--error]="showColumnNameRequiredError(i)">
               <input type="text"
                      class="ct-input"
                      formControlName="name"
                      autocomplete="off">
-              <div *ngIf="showRequiredError(columns.at(i).get('name'))" class="ct-field-hint">
+              <div *ngIf="showColumnNameRequiredError(i)" class="ct-field-hint">
                 {{ 'DataTables.RequiredField' | translate }}
               </div>
             </div>
@@ -93,6 +97,7 @@
   <button mat-button
           class="mat-dialog-ok-btn"
           type="button"
+          [disabled]="isCreateDisabled()"
           (click)="onSubmit()">
     {{ 'Create' | translate }}
   </button>

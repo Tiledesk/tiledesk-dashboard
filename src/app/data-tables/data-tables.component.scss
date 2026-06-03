@@ -1,5 +1,6 @@
 // Layout aligned with knowledge-bases: sticky left sidebar + scrollable main.
 .dt-layout {
+  --dt-sidebar-width: 260px;
   display: flex;
   flex-direction: row;
   height: 100%;
@@ -12,7 +13,7 @@
   top: 0;
   overflow-y: auto;
   border-right: 1px solid #e0e0e0;
-  width: 260px;
+  width: var(--dt-sidebar-width);
   min-width: 200px;
   max-width: 320px;
 }
@@ -123,7 +124,13 @@
 .dt-main {
   flex: 1 1 0;
   min-width: 0;
-  padding: 0px 20px;
+  padding: 0 20px;
+  position: relative;
+  min-height: calc(100vh - 60px);
+
+  &--has-selection {
+    padding-bottom: 72px;
+  }
 }
 
 .dt-header {
@@ -140,12 +147,61 @@
   font-family: var(--header-font-family);
   margin: 0;
   color: var(--text-color);
+  cursor: text;
+}
+
+.dt-title-wrap {
+  min-width: 0;
+}
+
+.dt-title-rename-wrap {
+  min-width: 280px;
+  max-width: 560px;
+  position: relative;
+}
+
+.dt-title-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  padding: 3px 6px;
+  margin: 0;
+  min-height: 34px;
+  font-size: 20px;
+  font-weight: 500;
+  font-family: var(--header-font-family);
+  color: var(--text-color);
+  background: #fff;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px var(--blue-20, #0f62ff);
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.dt-title-rename-error {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  font-size: 12px;
+  line-height: 1.25;
+  color: #d32f2f;
+  white-space: normal;
 }
 
 .dt-toolbar {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+.dt-delete-table-btn {
+  margin-left: 8px;
 }
 
 .dt-toolbar-btn {
@@ -161,10 +217,77 @@
 }
 
 .dt-columns-card {
+  --dt-col-width: 160px;
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  overflow: auto;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.dt-select-th,
+.dt-select-cell {
+  width: 20px;
+  min-width: 20px;
+  max-width: 20px;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dt-select-cell {
+  background: #fff;
+}
+
+.dt-row-checkbox {
+  margin: 0 auto;
+}
+
+.dt-data-row--selected {
+  // background: #ede9fe; // test — previous selection color
+  background: rgb(220, 233, 255);
+
+  .dt-select-cell,
+  .dt-data-cell {
+    // background: #ede9fe;
+    background: rgb(220, 233, 255);
+  }
+
+  .dt-cell-input {
+    background: transparent;
+  }
+}
+
+.dt-row-selection-bar {
+  // Fixed to viewport bottom (always visible); centered in main panel, not under sidebar.
+  position: fixed;
+  bottom: 24px;
+  left: calc(var(--dt-sidebar-width) + (100vw - var(--dt-sidebar-width)) / 2);
+  transform: translateX(-50%);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: min(560px, calc(100vw - var(--dt-sidebar-width) - 40px));
+  padding: 12px 20px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  font-family: var(--header-font-family);
+}
+
+.dt-row-selection-count {
+  font-size: 14px;
+  color: #566787;
+  white-space: nowrap;
+  margin-right: 4px;
+}
+
+.dt-row-selection-delete,
+.dt-row-selection-clear {
+  white-space: nowrap;
 }
 
 .dt-columns-table {
@@ -172,10 +295,24 @@
   border-collapse: collapse;
   table-layout: fixed;
 
-  thead th {
-    text-align: left;
-    background: #fafbfc;
+  th,
+  td {
+    border-right: 1px solid #f0f0f0;
     border-bottom: 1px solid #e0e0e0;
+  }
+
+  // Avoid double border with .dt-columns-card outer edge
+  th:last-child,
+  td:last-child {
+    border-right: none;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  thead th {
+    background: #fafbfc;
     padding: 0;
     font-weight: 500;
     font-size: 13px;
@@ -183,8 +320,11 @@
   }
 }
 
-.dt-col-th {
-  min-width: 160px;
+.dt-col-th,
+.dt-data-cell {
+  width: var(--dt-col-width, 160px);
+  min-width: var(--dt-col-width, 160px);
+  max-width: var(--dt-col-width, 160px);
 }
 
 .dt-col-header {
@@ -197,6 +337,7 @@
 
 .dt-col-type-icon {
   display: inline-flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
   width: 18px;
@@ -216,6 +357,50 @@
   text-overflow: ellipsis;
 }
 
+.dt-col-header--renaming {
+  overflow: visible;
+}
+
+.dt-col-rename-wrap {
+  flex: 1 1 0;
+  min-width: 0;
+  position: relative;
+}
+
+.dt-col-name-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  padding: 2px 4px;
+  margin: 0;
+  min-height: 22px;
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--header-font-family);
+  color: #1d2939;
+  background: #fff;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px var(--blue-20, #0f62ff);
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.dt-col-rename-error {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  font-size: 11px;
+  line-height: 1.2;
+  color: #d32f2f;
+  white-space: normal;
+}
+
 .dt-col-menu-btn {
   width: 28px !important;
   height: 28px !important;
@@ -226,6 +411,7 @@
     font-size: 18px;
     width: 18px;
     height: 18px;
+    line-height: 17px;
   }
 }
 
@@ -235,10 +421,7 @@
 
 .dt-data-cell {
   padding: 0;
-  border-bottom: 1px solid #e0e0e0;
-  border-right: 1px solid #f0f0f0;
   vertical-align: middle;
-  min-width: 160px;
 }
 
 .dt-cell-input {
@@ -253,6 +436,9 @@
   font-family: var(--header-font-family);
   color: var(--text-color);
   background: transparent;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   &:focus {
     background: #f5f8ff;
@@ -327,18 +513,79 @@
   margin-left: 2px;
 }
 
-.dt-add-column-mat-field {
-  width: 100%;
+.dt-input-wrap {
+  display: flex;
+  flex-direction: column;
+}
 
-  ::ng-deep .mat-mdc-form-field-infix,
-  ::ng-deep .mat-form-field-infix {
-    min-height: 36px;
+.dt-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px 12px;
+  min-height: 36px;
+  font-size: 14px;
+  font-family: var(--header-font-family);
+  color: var(--text-color);
+  background: #fff;
+  border: 1px solid #d0d5dd;
+  border-radius: 4px;
+  outline: none;
+
+  &::placeholder {
+    color: #98a2b3;
+  }
+
+  &:focus {
+    border-color: var(--blue-light, #1f77ff);
+  }
+}
+
+.dt-input-wrap--error .dt-input {
+  border-color: #c62445;
+
+  &:focus {
+    border-color: #c62445;
+    box-shadow: 0 0 0 1px rgba(198, 36, 69, 0.2);
+  }
+}
+
+.dt-field-hint {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #c62445;
+  font-family: var(--header-font-family);
+}
+
+.dt-ng-select {
+  ::ng-deep {
+    .ng-select-container {
+      min-height: 36px;
+      border-radius: 4px;
+      border-color: #d0d5dd;
+      font-family: var(--header-font-family);
+      font-size: 14px;
+    }
+
+    .ng-value-container {
+      padding-left: 12px;
+    }
+
+    .ng-dropdown-panel {
+      font-family: var(--header-font-family);
+      font-size: 14px;
+    }
+
+    .ng-option-disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
   }
 }
 
 .dt-add-column-error {
-  margin-top: 2px;
-  font-size: 11px;
+  margin-top: 4px;
+  font-size: 12px;
   color: #c62445;
 }
 
@@ -355,5 +602,19 @@
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+}
+
+::ng-deep .mat-menu-panel.dt-col-menu {
+  .mat-menu-content {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .mat-menu-item .mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+    margin-right: 8px;
   }
 }

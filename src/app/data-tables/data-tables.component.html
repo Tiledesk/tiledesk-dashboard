@@ -41,12 +41,40 @@
         <ng-container *ngIf="selectedTable; else noTableSelected">
 
           <div class="dt-header">
-            <h2 class="dt-title">{{ selectedTable.name }}</h2>
+            <div class="dt-title-wrap">
+              <h2 *ngIf="!isRenamingTableTitle"
+                  class="dt-title"
+                  (click)="onStartRenameTableTitle()">
+                {{ selectedTable.name }}
+              </h2>
+              <div *ngIf="isRenamingTableTitle"
+                   class="dt-title-rename-wrap"
+                   (click)="$event.stopPropagation()">
+                <input type="text"
+                       class="dt-title-input"
+                       [(ngModel)]="renameTableDraft"
+                       (ngModelChange)="onRenameTableDraftChange()"
+                       (blur)="onRenameTableTitleBlur()"
+                       (keydown)="onRenameTableTitleKeydown($event)"
+                       [disabled]="isRenamingTableSaving"
+                       [attr.aria-label]="('DataTables.RenameTable' | translate)"
+                       [attr.aria-invalid]="!!renameTableError">
+                <span *ngIf="renameTableError === 'required'"
+                      class="dt-title-rename-error"
+                      role="alert">
+                  {{ 'DataTables.RequiredField' | translate }}
+                </span>
+                <span *ngIf="renameTableError === 'duplicate'"
+                      class="dt-title-rename-error"
+                      role="alert">
+                  {{ 'DataTables.DuplicateTableName' | translate }}
+                </span>
+              </div>
+            </div>
             <div class="dt-toolbar">
-              <button  class="btn btn-tdblu-no-boxshadow"
+              <button  class="btn btn-outlined"
                       (click)="onAddRow()"
-                      [disabled]="!getColumns(selectedTable).length"
-                      style="border: unset;">
+                      [disabled]="!getColumns(selectedTable).length">
                 <!-- <mat-icon>add</mat-icon> -->
                 {{ 'DataTables.AddRow' | translate }}
               </button>
@@ -56,6 +84,14 @@
                       (click)="toggleAddColumnPopover()">
                 <!-- <mat-icon>view_column</mat-icon> -->
                 {{ 'DataTables.AddColumn' | translate }}
+              </button>
+              <button id="delete-data-table"
+                      class="btn btn-red dt-delete-table-btn"
+                      aria-label="Delete"
+                      style="text-transform: capitalize;"
+                      [disabled]="isDeletingTable"
+                      (click)="onDeleteTable()">
+                {{ 'Delete' | translate }}
               </button>
             </div>
           </div>
@@ -72,16 +108,21 @@
               <div class="dt-add-column-field">
                 <label class="dt-add-column-label">
                   {{ 'DataTables.Name' | translate }}
-                  <span class="dt-required">*</span>
+                  <span *ngIf="showAddColumnNameRequiredError()" class="dt-required">*</span>
                 </label>
-                <mat-form-field appearance="outline" class="dt-add-column-mat-field" floatLabel="never">
-                  <input matInput
+                <div class="dt-input-wrap"
+                     [class.dt-input-wrap--error]="showAddColumnNameRequiredError()">
+                  <input type="text"
+                         class="dt-input"
                          [(ngModel)]="newColumnName"
                          (ngModelChange)="onNewColumnNameChange()"
                          [placeholder]="('DataTables.ColumnNamePlaceholder' | translate)"
                          autocomplete="off"
                          (keydown.enter)="canSubmitAddColumn() && submitAddColumn()">
-                </mat-form-field>
+                  <div *ngIf="showAddColumnNameRequiredError()" class="dt-field-hint">
+                    {{ 'DataTables.RequiredField' | translate }}
+                  </div>
+                </div>
                 <div *ngIf="addColumnNameError === 'duplicate'" class="dt-add-column-error">
                   {{ 'DataTables.DuplicateColumnName' | translate }}
                 </div>
@@ -90,17 +131,19 @@
               <div class="dt-add-column-field">
                 <label class="dt-add-column-label">
                   {{ 'DataTables.Type' | translate }}
-                  <span class="dt-required">*</span>
+                  <!-- <span class="dt-required">*</span> -->
                 </label>
-                <mat-form-field appearance="outline" class="dt-add-column-mat-field" floatLabel="never">
-                  <mat-select [(ngModel)]="newColumnType">
-                    <mat-option *ngFor="let opt of columnTypes"
-                                [value]="opt.value"
-                                [disabled]="opt.disabled">
-                      {{ opt.label }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+                <ng-select class="dt-ng-select"
+                           appendTo="body"
+                           [(ngModel)]="newColumnType"
+                           [clearable]="false"
+                           [searchable]="false">
+                  <ng-option *ngFor="let opt of columnTypes"
+                             [value]="opt.value"
+                             [disabled]="opt.disabled">
+                    {{ opt.label }}
+                  </ng-option>
+                </ng-select>
               </div>
 
               <button mat-flat-button
@@ -117,12 +160,43 @@
             <table class="dt-columns-table">
               <thead>
                 <tr>
+                  <th class="dt-select-th">
+                    <mat-checkbox class="dt-row-checkbox"
+                                  [checked]="isAllRowsSelected()"
+                                  [indeterminate]="isSomeRowsSelected()"
+                                  [disabled]="!rows.length || isLoadingRows"
+                                  (change)="onToggleSelectAll($event.checked)"
+                                  (click)="$event.stopPropagation()"
+                                  [attr.aria-label]="('DataTables.SelectAllRows' | translate)">
+                    </mat-checkbox>
+                  </th>
                   <th *ngFor="let col of getColumns(selectedTable); trackBy: trackByColumnName"
                       class="dt-col-th">
-                    <div class="dt-col-header">
+                    <div class="dt-col-header"
+                         [class.dt-col-header--renaming]="isRenamingColumn(col)">
                       <span class="dt-col-type-icon" aria-hidden="true">T</span>
-                      <span class="dt-col-name">{{ col.name }}</span>
-                      <button mat-icon-button
+                      <span *ngIf="!isRenamingColumn(col)"
+                            class="dt-col-name">{{ col.name }}</span>
+                      <div *ngIf="isRenamingColumn(col)"
+                           class="dt-col-rename-wrap"
+                           (click)="$event.stopPropagation()">
+                        <input type="text"
+                               class="dt-col-name-input"
+                               [(ngModel)]="renameColumnDraft"
+                               (ngModelChange)="onRenameColumnDraftChange()"
+                               (blur)="onRenameColumnBlur()"
+                               (keydown)="onRenameColumnKeydown($event)"
+                               [disabled]="isRenamingColumnSaving"
+                               [attr.aria-label]="('DataTables.RenameColumn' | translate)"
+                               [attr.aria-invalid]="!!renameColumnError">
+                        <span *ngIf="renameColumnError === 'duplicate'"
+                              class="dt-col-rename-error"
+                              role="alert">
+                          {{ 'DataTables.DuplicateColumnName' | translate }}
+                        </span>
+                      </div>
+                      <button *ngIf="!isRenamingColumn(col)"
+                              mat-icon-button
                               class="dt-col-menu-btn"
                               [matMenuTriggerFor]="columnMenu"
                               (click)="columnMenuTarget = col; $event.stopPropagation()"
@@ -135,13 +209,23 @@
               </thead>
               <tbody>
                 <tr *ngIf="isLoadingRows">
-                  <td [attr.colspan]="getColumns(selectedTable).length || 1" class="dt-empty-cell">
+                  <td [attr.colspan]="(getColumns(selectedTable).length || 1) + 1" class="dt-empty-cell">
                     {{ 'Processing' | translate }}
                   </td>
                 </tr>
 
                 <ng-container *ngIf="!isLoadingRows">
-                  <tr *ngFor="let row of rows; trackBy: trackByRowId" class="dt-data-row">
+                  <tr *ngFor="let row of rows; trackBy: trackByRowId"
+                      class="dt-data-row"
+                      [class.dt-data-row--selected]="isRowSelected(row)">
+                    <td class="dt-select-cell" (click)="$event.stopPropagation()">
+                      <mat-checkbox class="dt-row-checkbox"
+                                    [checked]="isRowSelected(row)"
+                                    (change)="onToggleRowSelection(row, $event.checked)"
+                                    (click)="$event.stopPropagation()"
+                                    [attr.aria-label]="('DataTables.SelectRow' | translate)">
+                      </mat-checkbox>
+                    </td>
                     <td *ngFor="let col of getColumns(selectedTable); trackBy: trackByColumnName"
                         class="dt-data-cell">
                       <input type="text"
@@ -160,6 +244,29 @@
                 </ng-container>
               </tbody>
             </table>
+          </div>
+
+          <div *ngIf="hasRowSelection" class="dt-row-selection-bar">
+            <span class="dt-row-selection-count">
+              <ng-container *ngIf="selectedRowsCount === 1; else manyRowsSelected">
+                {{ 'DataTables.OneRowSelected' | translate }}
+              </ng-container>
+              <ng-template #manyRowsSelected>
+                {{ 'DataTables.NRowsSelected' | translate: selectedRowsLabelParams }}
+              </ng-template>
+            </span>
+            <button type="button"
+                    class="btn btn-tdblu-no-boxshadow dt-row-selection-delete"
+                    [disabled]="isDeletingRows"
+                    (click)="deleteSelectedRows()">
+              {{ 'DataTables.DeleteRows' | translate }}
+            </button>
+            <button type="button"
+                    class="btn btn-outlined dt-row-selection-clear"
+                    [disabled]="isDeletingRows"
+                    (click)="clearRowSelection()">
+              {{ 'DataTables.ClearSelection' | translate }}
+            </button>
           </div>
 
           <mat-menu #columnMenu="matMenu" class="dt-col-menu">

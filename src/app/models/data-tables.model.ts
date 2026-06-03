@@ -13,7 +13,7 @@ export interface DataTable {
 }
 
 export interface DataTableWithRows extends DataTable {
-  rows?: RowData[];
+  rows?: Array<RowData | TableRow>;
 }
 
 export interface CreateTableRequest {

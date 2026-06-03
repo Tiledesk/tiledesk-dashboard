@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { TableSchema } from 'app/models/data-tables.model';
 
@@ -62,11 +62,6 @@ export class CreateTableModalComponent {
     this.columns.removeAt(index);
   }
 
-  showRequiredError(control: AbstractControl | null): boolean {
-    if (!control) { return false; }
-    return control.hasError('required') && (control.touched || this.submitted);
-  }
-
   isDuplicateName(index: number): boolean {
     const value = (this.columns.at(index).get('name')?.value || '').trim().toLowerCase();
     if (!value) { return false; }
@@ -78,9 +73,38 @@ export class CreateTableModalComponent {
     return count > 1;
   }
 
+  hasTableName(): boolean {
+    return !!(this.form.get('name')?.value || '').trim();
+  }
+
+  /** Table name: show required state immediately when the modal opens. */
+  showTableNameRequiredError(): boolean {
+    return !this.hasTableName();
+  }
+
+  getColumnName(index: number): string {
+    return (this.columns.at(index).get('name')?.value || '').trim();
+  }
+
+  /** Column name: show required state as soon as the row is added. */
+  showColumnNameRequiredError(index: number): boolean {
+    return !this.getColumnName(index);
+  }
+
+  hasEmptyColumnNames(): boolean {
+    for (let i = 0; i < this.columns.length; i++) {
+      if (!this.getColumnName(i)) { return true; }
+    }
+    return false;
+  }
+
+  isCreateDisabled(): boolean {
+    return !this.hasTableName() || this.hasEmptyColumnNames();
+  }
+
   canSubmit(): boolean {
-    if (this.form.invalid) { return false; }
-    if (this.columns.length === 0) { return false; }
+    if (!this.hasTableName()) { return false; }
+    if (this.hasEmptyColumnNames()) { return false; }
     for (let i = 0; i < this.columns.length; i++) {
       if (this.isDuplicateName(i)) { return false; }
     }
