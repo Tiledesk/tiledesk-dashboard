@@ -147,32 +147,35 @@ export function computeAnswerRatePercent(answered: number, unanswered: number): 
   return Math.round((answered / total) * 1000) / 10;
 }
 
-/** Grid padding so line symbols are not clipped at the edges (sparkline in ~90px). */
+/** Shared grid so both sparklines share the same plot area geometry. */
 const SPARKLINE_GRID = { left: 8, right: 10, top: 22, bottom: 8, containLabel: false };
-const SPARKLINE_GRID_COMPACT = { left: 8, right: 10, top: 4, bottom: 8, containLabel: false };
 
-function sparklineCountYAxis(): EChartsOption['yAxis'] {
+function sparklineCountYAxis(maxValue: number): EChartsOption['yAxis'] {
   return {
     type: 'value',
+    min: 0,
+    max: Math.max(Math.ceil(maxValue * 1.15), 1),
     minInterval: 1,
     splitLine: { show: false },
     axisLine: { show: false },
     axisTick: { show: false },
     axisLabel: { show: false },
-    min: (value) => (value.min <= 0 ? -0.5 : Math.floor(value.min * 0.85)),
-    max: (value) => Math.ceil(Math.max(value.max, 1) * 1.2),
   };
 }
 
-function sparklineRateYAxis(): EChartsOption['yAxis'] {
+function sparklineRateYAxis(maxRate: number): EChartsOption['yAxis'] {
+  const max = maxRate <= 0
+    ? 100
+    : Math.min(100, Math.ceil(Math.max(maxRate, 5) * 1.08));
+
   return {
     type: 'value',
+    min: 0,
+    max,
     splitLine: { show: false },
     axisLine: { show: false },
     axisTick: { show: false },
     axisLabel: { show: false },
-    min: (value) => (value.min <= 0 ? -4 : Math.floor(value.min * 0.92)),
-    max: (value) => Math.ceil(Math.max(value.max, 5) * 1.08),
   };
 }
 
@@ -195,6 +198,11 @@ export function buildAnsweredUnansweredChartOption(
   points: KbOverTimePoint[],
   labels: { answered: string; unanswered: string },
 ): EChartsOption {
+  const maxCount = points.reduce(
+    (max, p) => Math.max(max, p.answered, p.unanswered),
+    0,
+  );
+
   return {
     color: [ANSWERED_COLOR, UNANSWERED_COLOR],
     grid: SPARKLINE_GRID,
@@ -221,7 +229,7 @@ export function buildAnsweredUnansweredChartOption(
       textStyle: { fontSize: 10, color: '#566787' },
     },
     xAxis: sparklineXAxis(points.length),
-    yAxis: sparklineCountYAxis(),
+    yAxis: sparklineCountYAxis(maxCount),
     series: [
       {
         name: labels.answered,
@@ -253,10 +261,11 @@ export function buildAnswerRateChartOption(
   label: string,
 ): EChartsOption {
   const rates = points.map((p) => computeAnswerRatePercent(p.answered, p.unanswered));
+  const maxRate = rates.reduce((max, rate) => Math.max(max, rate), 0);
 
   return {
     color: [RATE_COLOR],
-    grid: SPARKLINE_GRID_COMPACT,
+    grid: SPARKLINE_GRID,
     tooltip: {
       trigger: 'axis',
       confine: true,
@@ -269,7 +278,7 @@ export function buildAnswerRateChartOption(
       },
     },
     xAxis: sparklineXAxis(points.length),
-    yAxis: sparklineRateYAxis(),
+    yAxis: sparklineRateYAxis(maxRate),
     series: [
       {
         name: label,
