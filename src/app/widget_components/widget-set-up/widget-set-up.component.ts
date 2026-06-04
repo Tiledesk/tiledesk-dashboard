@@ -379,6 +379,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public showAttachmentButton: boolean;
   public showEmojiButton: boolean;
   public showAudioRecorderButton: boolean;
+  public showVoiceStreamingButton: boolean;
   public enablePrechatformFieldsCheckBox: boolean;
   public prechatFormTexareaJson: any;
   public prechatFormArray: Array<any> = [];
@@ -2798,6 +2799,25 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.showAudioRecorderButton = true;
         }
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  showAudioRecorderButton ', this.showAudioRecorderButton);
+        
+        // -------------------------------------------------------
+        // Display / hide Voice streaming button (if widget object)
+        // -------------------------------------------------------
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  project.widget hasOwnProperty showAudioStreamFooterButton', project.widget.hasOwnProperty('showAudioStreamFooterButton'));
+        if (project.widget.hasOwnProperty('showAudioStreamFooterButton')) {
+          if (project.widget.showAudioStreamFooterButton === true) {
+
+            this.showVoiceStreamingButton = true;
+
+          } else if (project.widget.showAudioStreamFooterButton === false) {
+            this.showVoiceStreamingButton = false;
+          }
+
+
+        } else {
+          this.showVoiceStreamingButton = false;
+        }
+
 
         // ------------------------------------------------------------------------
         // @ themeColor
@@ -3038,6 +3058,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // -----------------------------------------------------------------------
         this.showAudioRecorderButton = true;
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  showAudioRecorderButton ', this.showAudioRecorderButton);
+
+        // -----------------------------------------------------------------------
+        // @ Voice streaming Button - WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.showVoiceStreamingButton = false;
+        this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  showVoiceStreamingButton ', this.showVoiceStreamingButton);
 
 
         // -----------------------------------------------------------------------
@@ -4755,19 +4781,21 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
   }
 
-  // this.showAudioRecorderButton
-  // showAudioRecorderFooterButton
+  // -----------------------------------------------------------------------
+  //  @ Voice Streaming Button
+  // -----------------------------------------------------------------------
+  toggleVoiceStreamingButton(event) {
+    console.log('[WIDGET-SET-UP] - Display Voice Streaming Button ', event.target.checked)
+    if (event.target.checked === true) {
 
-  // getExtensionsForBackend() {
-  //   if (this.selectedOption === 'all') {
-  //     // return '*/*';
-  //     this.allowedUploadExtentions = '*/*';
-  //   } else {
-  //     this.logger.log('[WIDGET-SET-UP] ExtensionsForBackend ', this.extensions.join(','))
-  //     // return this.extensions.join(',');
-  //     this.allowedUploadExtentions = this.extensions.join(',');
-  //   }
-  // }
+      this.showVoiceStreamingButton = false;
+
+    } else {
+      this.showVoiceStreamingButton = true;
+
+    }
+  }
+
 
   saveWidgetAdvancedSetting() {
     this.logger.log('[WIDGET-SET-UP] showAttachmentButton ', this.showAttachmentButton)
@@ -4802,6 +4830,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
     } else {
       delete this.widgetObj['showAudioRecorderFooterButton'];
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    }
+
+    if (this.showVoiceStreamingButton === true) {
+      this.widgetObj['showAudioStreamFooterButton'] = this.showVoiceStreamingButton;
+      // this.widgetService.updateWidgetProject(this.widgetObj)
+      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    } else {
+      delete this.widgetObj['showAudioStreamFooterButton'];
       // this.widgetService.updateWidgetProject(this.widgetObj)
       // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
     }

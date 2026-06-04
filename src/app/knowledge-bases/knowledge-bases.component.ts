@@ -1266,6 +1266,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.getChatbotUsingNamespace(this.selectedNamespace.id)
 
         this.selectedNamespaceName = namespace['name']
+       // this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+
         if (this.selectedTab === 'unanswered') {
           this.switchTab('contents');
         }

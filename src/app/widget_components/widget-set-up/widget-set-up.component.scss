@@ -760,6 +760,12 @@ input[type="text"]:disabled {
   gap: 3px;
 }
 
+.nw-voice-streaming-button-onoffswitch-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 3px;
+} 
 .widget-pattern-withelist-button-onoffswitch-wrapper {
   display: flex;
   flex-direction: row;

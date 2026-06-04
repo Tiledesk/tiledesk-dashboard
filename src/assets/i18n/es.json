@@ -736,6 +736,8 @@
     "WhenEnabledEmoji":"Cuando está habilitado, los usuarios pueden enviar emojis. Cuando está deshabilitado, el botón de emojis estará oculto.",
     "DisableVoiceRecoder":"Desactivar grabadora de voz",
     "WhenEnabledVoiceRecoder":"Cuando está habilitado, los usuarios pueden grabar mensajes de voz. Cuando está deshabilitado, el botón de grabadora de voz estará oculto y el usuario solo podrá enviar mensajes de texto.",
+    "VoiceStreamingMode": "Modo de transmisión de voz",
+    "VoiceStreamingModeDesc": "Si está habilitado, el usuario puede transmitir voz en tiempo real mientras habla. Si está deshabilitado, el botón no será visible.",
     "UploadLogo":"Subir logotipo",
     "FileTooLarge": "El archivo es demasiado grande para cargarlo. Tamaño máximo de archivo: {{file_size}}",
     "ImagePreview":"Vista previa de la imagen",
