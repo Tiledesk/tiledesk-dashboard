@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.221-stage 
+- Increases the date range of the charts on the knowledge bases page from 7 to 21 days
+
 ### 2.7.220-stage 
 - Refactors knowledge base charts to use bar charts for Answered and Unanswered questions
 - Move charts to knowledge base KPIs
