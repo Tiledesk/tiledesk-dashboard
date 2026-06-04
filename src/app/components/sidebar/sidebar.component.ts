@@ -2816,7 +2816,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
   }
 
-   handleAnalyticsClick(event: MouseEvent): void {
+  handleAnalyticsClick(event: MouseEvent): void {
     if (!this.PERMISSION_TO_VIEW_ANALYTICS) {
       event.preventDefault(); // Stops routerLink navigation
       event.stopPropagation(); // Stops bubbling
