@@ -1238,6 +1238,151 @@ table {
     color: #e53935;
 }
 
+/* --- KB stats sparkline row (single card, vertical dividers) --- */
+:host {
+    .kb-stats-charts {
+        width: 100%;
+        height: 125px;
+        max-height: 125px;
+        margin-top: 16px;
+        margin-bottom: 8px;
+        box-sizing: border-box;
+    }
+
+    .kb-stats-chart-card {
+        height: 100%;
+        background: #fff;
+        border-radius: 12px;
+        border: 1px solid #e8ecf1;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        padding: 8px 12px;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .kb-stats-chart-card__panels {
+        display: flex;
+        align-items: stretch;
+        gap: 0;
+        flex: 1 1 auto;
+        min-height: 0;
+        width: 100%;
+    }
+
+    .kb-stats-chart-panel {
+        flex: 1 1 0;
+        min-width: 0;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .kb-stats-chart-panel--contents {
+        flex: 0 0 auto;
+        width: 18%;
+        min-width: 108px;
+        max-width: 160px;
+        justify-content: flex-start;
+    }
+
+    .kb-stats-chart-panel__value {
+        flex: 0 0 auto;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 1.2;
+        color: rgb(27, 25, 25);
+        margin-bottom: 2px;
+        padding-left: 0;
+    }
+
+    .kb-stats-chart-panel--contents .kb-stats-chart-panel__value {
+        margin-bottom: 0;
+    }
+
+    .kb-stats-chart-card__divider {
+        flex: 0 0 1px;
+        width: 1px;
+        align-self: stretch;
+        background: #e8ecf1;
+        margin: 0 14px;
+    }
+
+    .kb-stats-chart-card__title {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0;
+        width: fit-content;
+        max-width: 100%;
+        margin-bottom: 2px;
+        padding: 0;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+        text-align: left;
+        font-family: var(--header-font-family);
+        line-height: 1.2;
+
+        &:focus {
+            outline: none;
+        }
+
+        &:focus-visible {
+            outline: 2px solid #006cff;
+            outline-offset: 1px;
+        }
+
+        &:hover .kb-stats-chart-card__title-text:not(.contents) {
+            text-decoration: underline;
+        }
+    }
+
+    .kb-stats-chart-card__title-text {
+        flex: 0 1 auto;
+        min-width: 0;
+        font-size: 12px;
+        line-height: 1.2;
+        font-weight: 400;
+        color: rgb(135, 150, 175);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .kb-stats-chart-card__title-arrow {
+        flex-shrink: 0;
+        width: 14px;
+        height: 14px;
+        font-size: 14px;
+        line-height: 14px;
+        color: rgb(135, 150, 175);
+        margin-left: -2px;
+    }
+
+    .kb-stats-chart-card__state {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1 1 auto;
+        min-height: 0;
+    }
+
+    .kb-stats-chart {
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 52px;
+        height: 100%;
+        margin-left: 0;
+        padding-left: 0;
+        overflow: visible;
+    }
+}
+
 /* --- Tab principali: Contenuti / Domande --- */
 .kb-main-tabs {
     display: block;
