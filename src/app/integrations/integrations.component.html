@@ -131,6 +131,18 @@
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </groq-integration>
 
+                                        <cerebras-integration *ngIf="integrationSelectedName === INT_KEYS.CEREBRAS"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </cerebras-integration>
+
+                                        <openrouter-integration *ngIf="integrationSelectedName === INT_KEYS.OPENROUTER"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </openrouter-integration>
+
                                         <cohere-integration *ngIf="integrationSelectedName === INT_KEYS.COHERE"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
@@ -154,11 +166,23 @@
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </v-llm>
 
-                                    <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
+                                        <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </deepseek-integration> 
+
+                                        <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </deepseek-integration>
+                                        
+                                        <elevenlabs-integration *ngIf="integrationSelectedName === INT_KEYS.ELEVENLABS"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </elevenlabs-integration>
 
 
                                         <qapla-integration *ngIf="integrationSelectedName === INT_KEYS.QAPLA"
@@ -182,12 +206,23 @@
                                             <img src="assets/img/int/upgrade-icon.svg" alt="Upgrade Plan">
 
                                             <p *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" class="upgrade-title">
-                                                {{ 'ContactUs' | translate }}!</p>
+                                                {{ 'ContactUs' | translate }}!
+                                            </p>
 
                                             <p *ngIf="integrationSelectedName === INT_KEYS.TWILIO_VOICE" class="upgrade-subtitle">
                                             <span style="display: block;"> Voice brings real-time, human interaction into your workflows. </span>  
                                             <span style="display: block;">With Twilio Voice, you can handle calls, automate voice interactions, and seamlessly switch between chat and voice.</span>
                                             </p>
+
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.ELEVENLABS" class="upgrade-title">
+                                                {{ 'ContactUs' | translate }}!
+                                            </p>
+
+                                            <p *ngIf="integrationSelectedName === INT_KEYS.ELEVENLABS" class="upgrade-subtitle">
+                                            <span style="display: block;"> Elevenlabs allows you to create natural-sounding voiceovers for your content. </span>  
+                                            <span style="display: block;">With Elevenlabs, you can generate high-quality audio in multiple languages and voices.</span>
+                                            </p>
+
                                             
                                             <p *ngIf="integrationSelectedName === INT_KEYS.OPENAI" class="upgrade-title">
                                                 {{ 'Integration.UpgradePlan' | translate }}</p>
@@ -202,15 +237,15 @@
                                                 [innerHTML]="'Integration.AvailableFromPlanShort' | translate: { plan_require: plan_require }">
                                             </p>
 
-                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE" class="upgrade-title">
+                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE && integrationSelectedName !== INT_KEYS.ELEVENLABS" class="upgrade-title">
                                                 {{'Integration.UpgradePlan' | translate }}</p>
-                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE" class="upgrade-subtitle"
+                                            <p *ngIf="integrationSelectedName !== INT_KEYS.OPENAI && integrationSelectedName !== INT_KEYS.TWILIO_VOICE && integrationSelectedName !== INT_KEYS.ELEVENLABS" class="upgrade-subtitle"
                                                 [innerHTML]="'Integration.AvailableFromPlan' | translate: { plan_require: plan_require }">
                                             </p>
 
                                         
 
-                                            <button *ngIf="integrationSelectedName !== INT_KEYS.TWILIO_VOICE" 
+                                            <button *ngIf="integrationSelectedName !== INT_KEYS.TWILIO_VOICE && integrationSelectedName !== INT_KEYS.ELEVENLABS" 
                                                 class="custom-upgrade-primary-button" 
                                                 (click)="goToPricing()">
                                                 {{'Integration.UpgradeNow' |  translate }}
@@ -220,6 +255,13 @@
                                                 (click)="contactUs()">
                                                 {{'ContactUs' |  translate }}
                                             </button>
+                                            <button *ngIf="integrationSelectedName === INT_KEYS.ELEVENLABS" 
+                                                class="custom-upgrade-primary-button" 
+                                                (click)="contactUsEvenlabs()">
+                                                {{'ContactUs' |  translate }}
+                                            </button>
+
+                                        
                                         </div>
                                     </div>
                                     

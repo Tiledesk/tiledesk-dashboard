@@ -756,6 +756,8 @@
     "WhenEnabledEmoji":"Se abilitato, gli utenti possono inviare emoji. Se disabilitato, il pulsante emoji sarà nascosto",
     "DisableVoiceRecoder":"Disattiva il registratore vocale",
     "WhenEnabledVoiceRecoder":"Se abilitato, gli utenti possono registrare messaggi vocali. Se disabilitato, il pulsante del registratore vocale sarà nascosto e l'utente potrà solo inviare messaggi di testo",
+    "VoiceStreamingMode": "Modalità voce in streaming",
+    "VoiceStreamingModeDesc": "Se abilitata, l'utente può trasmettere la voce in tempo reale mentre parla. Se disabilitata, il pulsante non sarà visibile.",
     "UploadLogo":"Carica il logo",
     "FileTooLarge": "Il file è troppo grande per essere caricato. Dimensione massima del file {{file_size}}",
     "ImagePreview":"Anteprima dell'immagine",

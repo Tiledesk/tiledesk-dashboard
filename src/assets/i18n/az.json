@@ -757,6 +757,8 @@
     "WhenEnabledEmoji": "Aktivləşdirildikdə, istifadəçilər emoji göndərə bilər. Deaktiv edildikdə, emoji düyməsi gizlənəcək",
     "DisableVoiceRecoder":"Səs yazıcını deaktiv edin",
     "WhenEnabledVoiceRecoder":"Aktivləşdirildikdə, istifadəçilər səsli mesajları yaza bilərlər. Deaktiv edildikdə, səs yazıcı düyməsi gizlənəcək və istifadəçi yalnız mətn mesajı göndərə bilər",
+    "VoiceStreamingMode": "Səs axını rejimi",
+    "VoiceStreamingModeDesc": "Aktivdirsə, istifadəçi danışarkən səsi real vaxtda ötürə bilər. Deaktivdirsə, düymə görünməyəcək.",
     "UploadLogo":"Loqo yükləyin",
     "FileTooLarge": "Fayl yükləmək üçün çox böyükdür. Maksimum fayl ölçüsü {{file_size}}",
     "ImagePreview":"Şəkil önizləmə",
