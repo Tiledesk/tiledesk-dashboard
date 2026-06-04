@@ -756,6 +756,8 @@
 	"WhenEnabledEmoji":"Wenn aktiviert, können Benutzer Emojis senden. Wenn deaktiviert, wird die Emoji-Schaltfläche ausgeblendet",
 	"DisableVoiceRecoder":"Sprachrekorder deaktivieren",
 	"WhenEnabledVoiceRecoder":"Wenn diese Option aktiviert ist, können Benutzer Sprachnachrichten aufzeichnen. Wenn sie deaktiviert ist, wird die Schaltfläche für die Sprachaufzeichnung ausgeblendet und der Benutzer kann nur Textnachrichten senden",
+	"VoiceStreamingMode": "Voice-Streaming-Modus",
+    "VoiceStreamingModeDesc": "Wenn aktiviert, kann der Benutzer Sprache in Echtzeit übertragen, während er spricht. Wenn deaktiviert, ist die Schaltfläche nicht sichtbar.",
 	"UploadLogo":"Logo hochladen",
 	"FileTooLarge": "Die Datei ist zu groß zum Hochladen. Maximale Dateigröße {{file_size}}",
 	"ImagePreview":"Bildvorschau",
