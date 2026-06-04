@@ -257,6 +257,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   PERMISSION_TO_ADD_CONTENTS: boolean;
   PERMISSION_TO_EXPORT_CONTENTS: boolean;
   PERMISSION_TO_EDIT_FLOWS:boolean
+  PERMISSION_TO_VIEW_ANALYTICS: boolean;
 
   // --- TAB SWITCHER ---
   selectedTab: 'contents' | 'unanswered' = 'contents';
@@ -710,6 +711,25 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_ADD_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_ADD);
           this.logger.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_ANALYTICS
+        // -------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = true;
+          this.logger.log('[SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_ANALYTICS = false;
+          this.logger.log('[SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_ANALYTICS = status.matchedPermissions.includes(PERMISSIONS.ANALYTICS_READ);
+          this.logger.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ANALYTICS:', this.PERMISSION_TO_VIEW_ANALYTICS);
         }
 
 
@@ -4793,6 +4813,11 @@ _presentDialogImportContents() {
   }
 
   onKbChartTitleClick(chartId: AnalyticsKbChartId): void {
+    if (!this.PERMISSION_TO_VIEW_ANALYTICS) {
+      this.notify.presentDialogNoPermissionToViewThisSection();
+      return;
+    }
+
     const kbId = this.selectedNamespace?.id;
     if (!this.id_project || !kbId) {
       return;
