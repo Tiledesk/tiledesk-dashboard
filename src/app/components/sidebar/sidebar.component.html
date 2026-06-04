@@ -62,11 +62,10 @@
     <!-- ------------------------------------------- -->
     <!-- CHAT  -->
     <!-- ------------------------------------------- -->
-    <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
+    <!-- <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" routerLinkActive="item-active" 
       [class.item-active]="CONVERSATION_DETAIL_ROUTE_IS_ACTIVE">
 
-      <!-- <i class="material-icons sidebar-icons">chat</i> -->
       <a id="openchat-a" #openchatbtn class="customAncor" 
         [routerLink]="project ? ['/project', project._id, 'conversation-detail'] : ['/conversation-detail']"
         (click)="openChat()">
@@ -78,12 +77,40 @@
         <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
           class="new-messages-count">{{new_messages_count}} </span>
       </a>
+    </div> -->
+
+    <!-- ------------------------------------------- -->
+    <!-- CHAT old no iframe   -->
+    <!-- ------------------------------------------- -->
+    <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
+      matTooltipHideDelay="100">
+      <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
+        (click)="openChat()">
+        <span id="openchat-span">
+         
+
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"  fill="none">
+            <style type="text/css">
+              .openchat-st0 {
+                fill: none !important;
+               
+              }
+            </style>
+            <path class="openchat-st0" d="M0 0h24v24H0V0z" fill="none" />
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
+          </svg>
+
+        </span>
+        <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
+          class="new-messages-count">{{new_messages_count}} </span>
+      </a>
     </div>
 
     <!-- ------------------------------------------- -->
     <!-- HOME   (click)="goToHome()"" -->
     <!-- ------------------------------------------- -->
-    <div *ngIf="PERMISSION_TO_VIEW_HOME" matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
+     <!-- *ngIf="PERMISSION_TO_VIEW_HOME" -->
+    <div  matTooltip="Home" routerLinkActive="item-active" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" matTooltipClass="custom-mat-tooltip">
       <a target="_self" routerLink="project/{{ project?._id }}/home" class="customAncor">
         <span>
@@ -97,7 +124,7 @@
     </div>
 
     <!-- -------------------------------------------------------- -->
-    <!--  @ Knowledge Bases  && ARE_NEW_KB == true  && isVisibleKNB-->
+    <!--  @ Knowledge Bases -->
     <!-- -------------------------------------------------------- -->
     <ng-container *ngIf="PERMISSION_TO_VIEW_KB"> 
       <ng-container *ngIf="USER_ROLE !== 'agent'  && isVisibleKNB">
@@ -279,7 +306,8 @@
     <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
       <ng-container *ngIf="isVisibleANA">
         <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
-          [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" matTooltipClass="sb-mat-tooltip"
+          [class.item-active]="ANALITYCS_ROUTE_IS_ACTIVE || ANALYTICS_DEMO_ROUTE_IS_ACTIVE"
+          matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
           matTooltipHideDelay="100"
           style="position: relative;">
@@ -295,12 +323,58 @@
               </svg>
             </span>
           </a>
-          <div *ngIf="ANALYTICS_NEW_ROUTE_IS_ACTIVE" class="sidebar-analytics-new-badge">
+
+          <!-- <div *ngIf="ANALYTICS_NEW_ROUTE_IS_ACTIVE" class="sidebar-analytics-new-badge">
             <span class="material-icons-outlined">fiber_new</span>
-          </div>
+          </div> -->
         </div>
       </ng-container>
     </ng-container> 
+
+    <!-- ----------------------------- -->
+    <!-- ANALYTICS  new -->
+    <!-- ----------------------------- -->
+    <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+      <ng-container *ngIf="isVisibleANA">
+        <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
+          [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100" 
+          style="position: relative;">
+          <a class="customAncor" 
+          [routerLink]="PERMISSION_TO_VIEW_ANALYTICS ? ['/project', project._id, 'analytics', 'new'] : null"
+          >
+          
+            <span>
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+                <path
+                  d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z" />
+              </svg>
+            </span>
+          </a>
+
+          <div style="position: absolute;top: -3px;">
+            <span class="material-icons-outlined" style="color:#3ea9f5;">
+              fiber_new
+            </span>
+          </div>
+        </div>
+
+      </ng-container>
+
+    </ng-container> 
+
+    <!-- ANALYTICS new — voce sidebar dedicata disabilitata in prod; nuovi analytics via URL …/analytics/new -->
+    <!--
+    <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+      <ng-container *ngIf="isVisibleANA">
+        <div id="analytics-new" … routerLink …/analytics/new …>
+          … fiber_new …
+        </div>
+      </ng-container>
+    </ng-container>
+    -->
 
       <!-- Maintance module -->
      <!-- <ng-container>
