@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.220-stage 
+- Refactors knowledge base charts to use bar charts for Answered and Unanswered questions
+- Move charts to knowledge base KPIs
+
 ### 2.7.219-stage 
 - Adds charts for visualizing answered/unanswered questions and answer rates over time. 
 ￼
