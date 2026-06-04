@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.175-AR
+- Adds new Analytics
+- Adds bar charts for answered and unanswered questions and a line chart for response rate to the knowledge base
+
 ### 2.7.174-AR
 - Disables the stream option if the Chunks only option is enabled
 - Deletes all content associated with a sitemap when the sitemap is deleted (ITDELSDAM-5226)
