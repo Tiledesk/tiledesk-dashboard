@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.223-stage 
+- Changes the ElevenLabs integration value from "voice_streaming" to "elevenlabs"
+
 ### 2.7.222-stage 
 - Improves the knowledge base charts rendering 
 - Adds the date range (from and to) to the payload of POST messages sent to the analytics iframe
