@@ -31,7 +31,7 @@ export enum INTEGRATIONS_KEYS {
     OLLAMA = 'ollama',
     MCP = 'mcp',
     VLLM = 'vllm',
-    ELEVENLABS = "voice_streaming",
+    ELEVENLABS = "elevenlabs",
     CEREBRAS = "cerebras",
     OPENROUTER = 'openrouter'
 }
