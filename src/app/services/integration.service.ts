@@ -170,6 +170,17 @@ export class IntegrationService {
     return this.http.get(url,  httpOptions );
   }
 
+  checkElevenLabsKeyValidity(url: string, api_key?: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'xi-api-key': api_key,
+        'Content-Type': 'application/json'
+      })
+    };
+
+    return this.http.get(url, httpOptions);
+  }
+
   /**
    * Retrieve MCP tools from server
    * @param serverUrl The URL of the MCP server

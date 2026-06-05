@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration} from './utils'; // , DeepseekIntegration
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration, ElevenLabsIntegration, CerebrasIntegration, OpenRouterIntegration} from './utils'; // , DeepseekIntegration
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +19,7 @@ import { RolesService } from 'app/services/roles.service';
 import { C } from '@angular/cdk/keycodes';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { browserRefresh } from 'app/app.component';
+import { AppConfigService } from 'app/services/app-config.service';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -76,6 +77,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   profileType: string;
   user: any;
 
+  salesEmail: string;
+  public_Key: string;
+  isVisiblePAY: boolean;
+
   isAuthorized = false;
   permissionChecked = false;
   PERMISSION_TO_UPDATE: boolean;
@@ -93,12 +98,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     public prjctPlanService: ProjectPlanService,
     private projectPlanService: ProjectPlanService,
     private appService: AppStoreService,
+    public appConfigService: AppConfigService,
     private roleService: RoleService,
     public rolesService: RolesService
   ) {
     const _brand = this.brand.getBrand();
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
     this.translateparams = _brand;
+    this.salesEmail = _brand['CONTACT_SALES_EMAIL'];
     // this.INTEGRATIONS_CLONE = JSON.parse(JSON.stringify(INTEGRATION_LIST_ARRAY))
 
   }
@@ -106,6 +113,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCurrentProject();
     this.getLoggedUser()
+    this.getOSCODE();
     this.getProjectPlan();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
@@ -170,6 +178,53 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   // ------------------------------
   // UTILS FUNCTIONS - START
   // ------------------------------
+
+    getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[INTEGRATION-COMP] AppConfigService getAppConfig public_Key', this.public_Key);
+
+    let keys = this.public_Key.split("-");
+    this.logger.log('[INTEGRATION-COMP] PUBLIC-KEY - public_Key keys', keys)
+
+    keys.forEach(key => {
+
+      if (key.includes("PAY")) {
+
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePAY = false;
+          this.logger.log('[INTEGRATION-COMP] isVisiblePAY', this.isVisiblePAY)
+        } else {
+          this.isVisiblePAY = true;
+          this.logger.log('[INTEGRATION-COMP] isVisiblePAY', this.isVisiblePAY)
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePAY = false;
+    }
+  }
+
+  getPayValue(): boolean {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    let keys = this.public_Key.split("-");
+
+    let payKey = keys.find((key) => key.startsWith('PAY'));
+    if (payKey) {
+      let payParts = payKey.split(':');
+      let payValue = payParts[1];
+      if (payValue === 'F') {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    // If PAY key doesn't exist, return false
+    return false;
+  }
 
   getLoggedUser() {
     this.auth.user_bs
@@ -447,7 +502,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
     this.integrationSelectedType = 'none'
     this.integrationLocked = false;
-    this.checkPlan(integration.plan).then(() => {
+    this.checkPlan(integration, integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
@@ -658,9 +713,18 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       return new GroqIntegration();
     }
 
+    if (key === INTEGRATIONS_KEYS.CEREBRAS) {
+      return new CerebrasIntegration();
+    }
+
+    if (key === INTEGRATIONS_KEYS.OPENROUTER) {
+      return new OpenRouterIntegration();
+    }
+
     if (key === INTEGRATIONS_KEYS.COHERE) {
       return new CohereIntegration();
     }
+
 
     if (key === INTEGRATIONS_KEYS.OLLAMA) {
       return new OllamaIntegration();
@@ -859,7 +923,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.logger.log('[INTEGRATION-COMP] INTEGRATIONS ', this.INTEGRATIONS)
   }
 
-  checkPlan(integration_plan) {
+  checkPlan(integration, integration_plan) {
     this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
@@ -871,6 +935,26 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       //   }
       //   resolve(true)
       // }
+
+      if (integration && integration.key === this.INT_KEYS.ELEVENLABS) {
+        // First check: if trial is expired (free profile with expired trial)
+        if (this.profileType === 'free' && this.trialExpired === true) {
+          reject(false);
+        }
+        // Second check: if subscription is expired (payment profile with inactive subscription)
+        else if (this.profileType === 'payment' && this.subscriptionIsActive === false) {
+          reject(false);
+        } else if (!this.getPayValue()) {
+          reject(false);
+        } else if (!this.customization) {
+          reject(false);
+        } else if (!this.customization.hasOwnProperty(this.INT_KEYS.ELEVENLABS) || this.customization[this.INT_KEYS.ELEVENLABS] === false) {
+          reject(false);
+        } else {
+          resolve(true);
+        }
+        return;
+      }
 
       // FREE or SANDBOX PLAN - Trial expired // nk
       if ((this.profile_name === 'free' && this.trialExpired) || (this.profile_name === 'Sandbox' && this.trialExpired)) {
@@ -946,7 +1030,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   manageAppVisibility(projectProfileData) {
-
+    const isVisiblePAY = this.getPayValue();
     if (projectProfileData && projectProfileData.customization) {
 
       if (projectProfileData.customization[this.INT_KEYS.WHATSAPP] === false) {
