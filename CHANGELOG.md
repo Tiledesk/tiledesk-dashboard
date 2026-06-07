@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.224-stage
+- Implements Data tables
+
 ### 2.7.223-stage 
 - Changes the ElevenLabs integration value from "voice_streaming" to "elevenlabs"
 
