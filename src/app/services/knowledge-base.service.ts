@@ -3,8 +3,10 @@ import { AppConfigService } from './app-config.service';
 import { AuthService } from 'app/core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoggerService } from './logger/logger.service';
+import { AnalyticsEmbedService } from './analytics-embed.service';
 import { KB } from 'app/models/kbsettings-model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, throwError } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 
 
@@ -17,6 +19,7 @@ export class KnowledgeBaseService {
   public previewKbClosed$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(null)
 
   SERVER_BASE_PATH: string;
+  ANALYTICS_API_BASE_PATH: string;
   TOKEN: string;
   user: any;
   project_id: any;
@@ -25,7 +28,8 @@ export class KnowledgeBaseService {
     public appConfigService: AppConfigService,
     private auth: AuthService,
     private httpClient: HttpClient,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private analyticsEmbedService: AnalyticsEmbedService,
   ) {
     this.auth.user_bs.subscribe((user) => {
       this.user = user;
@@ -48,6 +52,9 @@ export class KnowledgeBaseService {
 
   getAppConfig() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    this.ANALYTICS_API_BASE_PATH = this.appConfigService.getConfig().analyticsApiBase;
+      this.logger.log('[KNOWLEDGE BASE SERVICE] - SERVER_BASE_PATH ', this.SERVER_BASE_PATH); 
+      console.log('[KNOWLEDGE BASE SERVICE] - ANALYTICS_API_BASE_PATH ', this.ANALYTICS_API_BASE_PATH);
   }
 
   getCurrentProject() {
@@ -391,6 +398,31 @@ export class KnowledgeBaseService {
     const url = this.SERVER_BASE_PATH + this.project_id + "/kbsettings/" + kb_settings._id;
     this.logger.log("[KNOWLEDGE BASE SERVICE] - save settings URL ", url);
     return this.httpClient.put(url, kb_settings, httpOptions);
+  }
+
+
+  getAnwseredUnansweredQuestionsForCharts(from: string, to: string, namespaceid: string) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for analytics charts'));
+    }
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const url = `${base}/api/v1/${this.project_id}/charts/ai/kb-per-kb-over-time?granularity=day&from=${from}&to=${to}&kb=${namespaceid}`;
+        console.log('[KNOWLEDGE BASE SERVICE] - getAnwseredUnansweredQuestionsForCharts URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
   }
 
   // DEPRECATED FUNCTIONS - END

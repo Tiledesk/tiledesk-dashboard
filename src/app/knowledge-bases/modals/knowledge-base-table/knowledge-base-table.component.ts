@@ -248,7 +248,6 @@ export class KnowledgeBaseTableComponent implements OnInit {
     }
   }
 
- 
   /** After deleting a sitemap KB: clear all list filters and reload (child URLs may still be removing). */
   resetFiltersAfterSitemapDelete(): void {
     this.resetFilter();
@@ -261,6 +260,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
     this.loadByFilter.next({ ...this.searchParams });
     this.cdr.markForCheck();
   }
+
 
  
 
