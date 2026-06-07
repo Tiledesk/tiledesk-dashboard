@@ -1,38 +1,30 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Inject, ViewChild } from '@angular/core';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { TableSchema } from 'app/models/data-tables.model';
+import { ColumnInput, ColumnType, isValidColumnName } from 'app/models/data-tables.model';
+import { DATA_TABLE_COLUMN_TYPE_OPTIONS, DataTableColumnTypeOption } from '../data-tables-column-types.util';
 
 /** Closed dialog payload returned to the caller (Create Table). */
 export interface CreateTableModalResult {
   name: string;
-  schema: TableSchema;
+  schema: ColumnInput[];
 }
 
-/** UI labels for the column type select; API expects the lowercase value. */
-interface ColumnTypeOption {
-  label: string;
-  /** API value (sent to backend in the schema map). */
-  value: string;
-  /** Disabled in this iteration: only String is enabled. */
-  disabled: boolean;
+export interface CreateTableModalData {
+  existingTableNames?: string[];
 }
 
 @Component({
   selector: 'appdashboard-create-table-modal',
   templateUrl: './create-table-modal.component.html',
-  styleUrls: ['./create-table-modal.component.scss'],
+  styleUrls: ['./create-table-modal.component.scss', '../data-tables-type-select.shared.scss'],
 })
-export class CreateTableModalComponent {
+export class CreateTableModalComponent implements AfterViewInit {
 
-  // Only String is selectable for now; other types are intentionally disabled
-  // to keep server-side schema validation aligned with current backend support.
-  readonly columnTypes: ColumnTypeOption[] = [
-    { label: 'String',  value: 'string',  disabled: false },
-    { label: 'Boolean', value: 'boolean', disabled: true  },
-    { label: 'Date',    value: 'date',    disabled: true  },
-    { label: 'Number',  value: 'number',  disabled: true  },
-  ];
+  readonly columnTypes: DataTableColumnTypeOption[] = DATA_TABLE_COLUMN_TYPE_OPTIONS;
+
+  @ViewChild('tableNameInput') tableNameInput!: ElementRef<HTMLInputElement>;
 
   form: FormGroup;
   submitted = false;
@@ -40,11 +32,17 @@ export class CreateTableModalComponent {
   constructor(
     private fb: FormBuilder,
     public dialogRef: MatDialogRef<CreateTableModalComponent, CreateTableModalResult>,
+    @Inject(MAT_DIALOG_DATA) private data: CreateTableModalData = {},
   ) {
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(1)]],
       columns: this.fb.array([]),
     });
+    this.addColumn();
+  }
+
+  ngAfterViewInit(): void {
+    this.focusTableName();
   }
 
   get columns(): FormArray {
@@ -54,12 +52,26 @@ export class CreateTableModalComponent {
   addColumn(): void {
     this.columns.push(this.fb.group({
       name: ['', [Validators.required, Validators.minLength(1)]],
-      type: ['string', Validators.required],
+      type: ['string' as ColumnType, Validators.required],
     }));
+  }
+
+  private focusTableName(): void {
+    setTimeout(() => {
+      this.tableNameInput?.nativeElement?.focus();
+    });
   }
 
   removeColumn(index: number): void {
     this.columns.removeAt(index);
+  }
+
+  hasColumns(): boolean {
+    return this.columns.length > 0;
+  }
+
+  showNoColumnsError(): boolean {
+    return !this.hasColumns();
   }
 
   isDuplicateName(index: number): boolean {
@@ -73,20 +85,30 @@ export class CreateTableModalComponent {
     return count > 1;
   }
 
+  isInvalidColumnName(index: number): boolean {
+    const name = this.getColumnName(index);
+    return !!name && !isValidColumnName(name);
+  }
+
   hasTableName(): boolean {
     return !!(this.form.get('name')?.value || '').trim();
   }
 
-  /** Table name: show required state immediately when the modal opens. */
   showTableNameRequiredError(): boolean {
     return !this.hasTableName();
+  }
+
+  isDuplicateTableName(): boolean {
+    const value = (this.form.get('name')?.value || '').trim().toLowerCase();
+    if (!value) { return false; }
+    const names = this.data.existingTableNames || [];
+    return names.some((name) => (name || '').trim().toLowerCase() === value);
   }
 
   getColumnName(index: number): string {
     return (this.columns.at(index).get('name')?.value || '').trim();
   }
 
-  /** Column name: show required state as soon as the row is added. */
   showColumnNameRequiredError(index: number): boolean {
     return !this.getColumnName(index);
   }
@@ -98,13 +120,27 @@ export class CreateTableModalComponent {
     return false;
   }
 
+  hasInvalidColumnNames(): boolean {
+    for (let i = 0; i < this.columns.length; i++) {
+      if (this.isInvalidColumnName(i)) { return true; }
+    }
+    return false;
+  }
+
   isCreateDisabled(): boolean {
-    return !this.hasTableName() || this.hasEmptyColumnNames();
+    return !this.hasTableName()
+      || this.isDuplicateTableName()
+      || !this.hasColumns()
+      || this.hasEmptyColumnNames()
+      || this.hasInvalidColumnNames();
   }
 
   canSubmit(): boolean {
     if (!this.hasTableName()) { return false; }
+    if (this.isDuplicateTableName()) { return false; }
+    if (!this.hasColumns()) { return false; }
     if (this.hasEmptyColumnNames()) { return false; }
+    if (this.hasInvalidColumnNames()) { return false; }
     for (let i = 0; i < this.columns.length; i++) {
       if (this.isDuplicateName(i)) { return false; }
     }
@@ -117,12 +153,11 @@ export class CreateTableModalComponent {
     if (!this.canSubmit()) { return; }
 
     const name = (this.form.value.name || '').trim();
-    const schema: TableSchema = {};
-    for (const col of this.columns.controls) {
-      const colName = (col.value.name || '').trim();
-      const colType = col.value.type || 'string';
-      schema[colName] = colType;
-    }
+    const schema: ColumnInput[] = this.columns.controls.map((col, index) => ({
+      name: (col.value.name || '').trim(),
+      type: (col.value.type || 'string') as ColumnType,
+      index,
+    }));
 
     this.dialogRef.close({ name, schema });
   }

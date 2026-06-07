@@ -13,6 +13,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { DataTablesComponent } from './data-tables.component';
+import { ColumnTypeIconComponent } from './column-type-icon/column-type-icon.component';
 import { CreateTableModalComponent } from './modals/create-table-modal.component';
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     DataTablesComponent,
+    ColumnTypeIconComponent,
     CreateTableModalComponent,
   ],
   imports: [

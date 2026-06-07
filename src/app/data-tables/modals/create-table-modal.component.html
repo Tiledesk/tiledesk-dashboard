@@ -8,8 +8,10 @@
       <label class="ct-label">{{ 'DataTables.Name' | translate }}
         <span *ngIf="showTableNameRequiredError()" class="required-field-asterisk">*</span>
       </label> 
-      <div class="ct-input-wrap" [class.ct-input-wrap--error]="showTableNameRequiredError()">
-        <input type="text"
+      <div class="ct-input-wrap"
+           [class.ct-input-wrap--error]="showTableNameRequiredError() || isDuplicateTableName()">
+        <input #tableNameInput
+               type="text"
                class="ct-input"
                formControlName="name"
                [placeholder]="('DataTables.TableNamePlaceholder' | translate)"
@@ -17,15 +19,20 @@
         <div *ngIf="showTableNameRequiredError()" class="ct-field-hint">
           {{ 'DataTables.RequiredField' | translate }}
         </div>
+        <div *ngIf="isDuplicateTableName()" class="ct-field-hint">
+          {{ 'DataTables.DuplicateTableName' | translate }}
+        </div>
       </div>
     </div>
 
     <!-- ─── Columns ────────────────────────────────────────────── -->
     <div class="ct-section">
-      <label class="ct-label">{{ 'DataTables.Columns' | translate }}</label>
+      <label class="ct-label">{{ 'DataTables.Columns' | translate }}
+        <span *ngIf="showNoColumnsError()" class="required-field-asterisk">*</span>
+      </label>
 
-      <div *ngIf="columns.controls.length === 0" class="ct-empty">
-        {{ 'DataTables.CurrentlyNoItemsExist' | translate }}
+      <div *ngIf="showNoColumnsError()" class="ct-error">
+        {{ 'DataTables.AtLeastOneColumn' | translate }}
       </div>
 
       <div formArrayName="columns" class="ct-cols">
@@ -47,28 +54,41 @@
                 {{ 'DataTables.RequiredField' | translate }}
               </div>
             </div>
-            <div *ngIf="isDuplicateName(i)" class="ct-error">
-              {{ 'DataTables.DuplicateColumnName' | translate }}
-            </div>
+                <div *ngIf="isDuplicateName(i)" class="ct-error">
+                  {{ 'DataTables.DuplicateColumnName' | translate }}
+                </div>
+                <div *ngIf="isInvalidColumnName(i)" class="ct-error">
+                  {{ 'DataTables.InvalidColumnName' | translate }}
+                </div>
           </div>
 
           <div class="ct-col-field">
             <label class="ct-sublabel">{{ 'DataTables.Type' | translate }}</label>
             <ng-select class="ct-ng-select"
                        appendTo="body"
+                       dropdownPanelClass="dt-type-select-panel"
                        formControlName="type"
+                       [items]="columnTypes"
+                       bindLabel="label"
+                       bindValue="value"
                        [clearable]="false"
                        [searchable]="false">
-              <ng-option *ngFor="let opt of columnTypes"
-                         [value]="opt.value"
-                         [disabled]="opt.disabled">
-                {{ opt.label }}
-              </ng-option>
+              <ng-template ng-label-tmp let-item="item">
+                <span class="dt-type-select-option">
+                  <appdashboard-dt-column-type-icon [type]="item.value"></appdashboard-dt-column-type-icon>
+                  <span class="dt-type-select-label">{{ item.label }}</span>
+                </span>
+              </ng-template>
+              <ng-template ng-option-tmp let-item="item">
+                <span class="dt-type-select-option">
+                  <appdashboard-dt-column-type-icon [type]="item.value"></appdashboard-dt-column-type-icon>
+                  <span class="dt-type-select-label">{{ item.label }}</span>
+                </span>
+              </ng-template>
             </ng-select>
           </div>
 
-          <button 
-                  type="button"
+          <button type="button"
                   class="ct-col-remove"
                   (click)="removeColumn(i)"
                   [attr.aria-label]="('DataTables.RemoveColumn' | translate)">

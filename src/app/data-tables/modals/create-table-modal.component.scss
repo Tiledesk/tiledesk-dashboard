@@ -157,7 +157,7 @@
     }
 
     .ng-value-container {
-      padding-left: 12px;
+      padding-left: 8px;
     }
 
     .ng-dropdown-panel {
@@ -168,6 +168,15 @@
     .ng-option-disabled {
       opacity: 0.45;
       cursor: not-allowed;
+    }
+
+    .ng-option-marked .dt-type-icon {
+      background: #fff4e5;
+      color: #e65100;
+    }
+
+    .ng-option-marked .dt-type-select-label {
+      color: #e65100;
     }
   }
 }

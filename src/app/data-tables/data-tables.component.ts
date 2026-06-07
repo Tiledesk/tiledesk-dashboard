@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { ConnectedPosition } from '@angular/cdk/overlay';
@@ -10,44 +10,63 @@ import { NotifyService } from 'app/core/notify.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { DataTablesService } from 'app/services/data-tables.service';
-import { DataTable, RowData, TableRow, TableSchema } from 'app/models/data-tables.model';
-import { CreateTableModalComponent, CreateTableModalResult } from './modals/create-table-modal.component';
+import {
+  Column,
+  ColumnInput,
+  ColumnType,
+  DataTable,
+  isValidColumnName,
+  RowData,
+  RowDocument,
+  RowListItem,
+  RowSearchRequest,
+  sortColumns,
+} from 'app/models/data-tables.model';
+import {
+  CreateTableModalComponent,
+  CreateTableModalData,
+  CreateTableModalResult,
+} from './modals/create-table-modal.component';
+import {
+  DATA_TABLE_COLUMN_TYPE_OPTIONS,
+  DataTableColumnTypeOption,
+  datetimeLocalToIso,
+  finalizeNumberCellValue,
+  formatNumberCellDisplay,
+  isValidNumberInputDraft,
+  isoToDatetimeLocal,
+  normalizeNumberDecimalSeparator,
+  parseNumberCellValue,
+} from './data-tables-column-types.util';
 
 const Swal = require('sweetalert2');
 
-/** Visual column model for the table view (derived from DataTable.schema). */
 interface ColumnView {
+  id: string;
   name: string;
-  type: string;
+  type: ColumnType;
 }
 
-/** Editable grid row — localId for trackBy; _id after first save to API. */
 interface EditableRow {
   localId: string;
   _id?: string;
   data: RowData;
   isSaving?: boolean;
-  /** Prevents duplicate insertRow when blur fires on multiple cells before _id is set. */
-  insertInFlight?: boolean;
-}
-
-/** UI labels for the column type select; API expects the lowercase value. */
-interface ColumnTypeOption {
-  label: string;
-  value: string;
-  disabled: boolean;
+  pendingCellSave?: boolean;
 }
 
 @Component({
   selector: 'appdashboard-data-tables',
   templateUrl: './data-tables.component.html',
-  styleUrls: ['./data-tables.component.scss'],
+  styleUrls: ['./data-tables.component.scss', './data-tables-type-select.shared.scss'],
 })
 export class DataTablesComponent implements OnInit {
 
+  /** Row bulk-delete checkboxes — hidden until feature is ready. */
+  readonly showRowSelectionColumn = false;
+
   tables: DataTable[] = [];
   selectedTable: DataTable | null = null;
-  /** Stable id for sidebar highlight — avoids reference mismatch after getTable(). */
   selectedTableId: string | null = null;
   rows: EditableRow[] = [];
   columnMenuTarget: ColumnView | null = null;
@@ -55,31 +74,25 @@ export class DataTablesComponent implements OnInit {
   renameTableDraft = '';
   renameTableError = '';
   isRenamingTableSaving = false;
-  renamingColumnName: string | null = null;
+  renamingColumnId: string | null = null;
   renameColumnDraft = '';
-  renameColumnError = '';
   isRenamingColumnSaving = false;
   selectedRowIds = new Set<string>();
 
-  isLoadingTables = false;
+  isLoadingTables = true;
   isLoadingRows = false;
+  rowSearchQuery = '';
+  private rowSearchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   isDeletingRows = false;
   isDeletingTable = false;
 
-  // Add Column popover (toolbar)
   isAddColumnPopoverOpen = false;
   isSavingColumn = false;
   isDeletingColumn = false;
   newColumnName = '';
-  newColumnType = 'string';
-  addColumnNameError = '';
+  newColumnType: ColumnType = 'string';
 
-  readonly columnTypes: ColumnTypeOption[] = [
-    { label: 'String',  value: 'string',  disabled: false },
-    { label: 'Boolean', value: 'boolean', disabled: true  },
-    { label: 'Date',    value: 'date',    disabled: true  },
-    { label: 'Number',  value: 'number',  disabled: true  },
-  ];
+  readonly columnTypes: DataTableColumnTypeOption[] = DATA_TABLE_COLUMN_TYPE_OPTIONS;
 
   readonly addColumnPopoverPositions: ConnectedPosition[] = [
     {
@@ -100,6 +113,8 @@ export class DataTablesComponent implements OnInit {
 
   private localIdCounter = 0;
   private id_project = '';
+  private shouldFocusFirstColumnCell = false;
+  private isAutoFocusingFirstCell = false;
 
   constructor(
     private dialog: MatDialog,
@@ -110,6 +125,7 @@ export class DataTablesComponent implements OnInit {
     private auth: AuthService,
     private route: ActivatedRoute,
     private localDbService: LocalDbService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -140,81 +156,46 @@ export class DataTablesComponent implements OnInit {
     });
   }
 
-  private loadTableRows(table: DataTable): void {
+  private loadTableRows(table: DataTable, search?: RowSearchRequest): void {
     this.clearRowSelection();
 
     if (!table._id) {
       this.rows = this.buildRowsFromLoaded(table.schema, []);
+      this.maybeFocusFirstColumnCell();
       return;
     }
 
     this.isLoadingRows = true;
-    this.dataTablesService.getTable(table._id).subscribe({
-      next: (full) => {
-        if (!full) {
-          this.isLoadingRows = false;
-          this.rows = this.buildRowsFromLoaded(table.schema, []);
-          return;
-        }
-        const merged: DataTable = { ...table, ...full, schema: full.schema || table.schema };
-        const index = this.tables.findIndex((t) => t._id === table._id);
-        if (index >= 0) {
-          this.tables[index] = merged;
-        }
-        this.selectedTable = merged;
-        this.selectedTableId = merged._id || null;
-        this.rows = this.buildRowsFromLoaded(full.schema || table.schema, full.rows || []);
+    this.dataTablesService.listRows(table._id, search).subscribe({
+      next: (loadedRows) => {
+        this.rows = this.buildRowsFromLoaded(table.schema, loadedRows || []);
         this.isLoadingRows = false;
+        this.maybeFocusFirstColumnCell();
       },
       error: (err) => {
         this.isLoadingRows = false;
         this.rows = this.buildRowsFromLoaded(table.schema, []);
-        this.logger.error('[DATA-TABLES] getTable error', err);
+        this.logger.error('[DATA-TABLES] listRows error', err);
+        this.maybeFocusFirstColumnCell();
       },
     });
   }
 
-  private buildRowsFromLoaded(
-    schema: TableSchema | undefined,
-    loaded: Array<RowData | TableRow>,
-  ): EditableRow[] {
-    if (!schema || !Object.keys(schema).length) {
+  private buildRowsFromLoaded(schema: Column[] | undefined, loaded: RowListItem[]): EditableRow[] {
+    const columns = sortColumns(schema);
+    if (!columns.length) {
       return [];
     }
     if (!loaded.length) {
-      return [this.createEmptyRow(schema)];
+      return [];
     }
-    return loaded.map((item, index) => this.toEditableRow(item, schema, index));
+    return loaded.map((item, index) => this.toEditableRow(item, columns, index));
   }
 
-  private toEditableRow(
-    item: RowData | TableRow,
-    schema: TableSchema,
-    index: number,
-  ): EditableRow {
-    const tableRow = item as TableRow;
-    let rowId = tableRow._id;
-    let payload: RowData;
-
-    if (
-      tableRow.data != null
-      && typeof tableRow.data === 'object'
-      && !Array.isArray(tableRow.data)
-    ) {
-      payload = tableRow.data;
-    } else {
-      const raw = { ...(item as RowData) };
-      delete raw._id;
-      delete raw.id_project;
-      delete raw.id_table;
-      delete raw.createdAt;
-      delete raw.updatedAt;
-      delete raw.data;
-      if (!rowId && typeof (item as RowData)._id === 'string') {
-        rowId = (item as RowData)._id as string;
-      }
-      payload = raw;
-    }
+  private toEditableRow(item: RowListItem, schema: Column[], index: number): EditableRow {
+    const rowId = item._id;
+    const payload: RowData = { ...item };
+    delete payload._id;
 
     return {
       localId: rowId || `row-${index}-${this.newLocalId()}`,
@@ -223,20 +204,73 @@ export class DataTablesComponent implements OnInit {
     };
   }
 
-  private createEmptyRow(schema: TableSchema): EditableRow {
+  private createEmptyRow(schema: Column[]): EditableRow {
     const data: RowData = {};
-    Object.keys(schema).forEach((key) => {
-      data[key] = '';
+    schema.forEach((col) => {
+      data[col.name] = this.defaultCellValue(col.type);
     });
     return { localId: this.newLocalId(), data };
   }
 
-  private normalizeRowData(data: RowData, schema: TableSchema): RowData {
+  private defaultCellValue(type: ColumnType): unknown {
+    switch (type) {
+      case 'boolean':
+        return false;
+      case 'number':
+        return null;
+      default:
+        return '';
+    }
+  }
+
+  private normalizeRowData(data: RowData, schema: Column[]): RowData {
     const normalized: RowData = {};
-    Object.keys(schema).forEach((key) => {
-      normalized[key] = data?.[key] ?? '';
+    schema.forEach((col) => {
+      const value = data?.[col.name];
+      normalized[col.name] = value ?? this.defaultCellValue(col.type);
     });
     return normalized;
+  }
+
+  private serializeRowData(data: RowData, schema: Column[]): RowData {
+    const serialized: RowData = {};
+    schema.forEach((col) => {
+      serialized[col.name] = this.serializeCellValue(data[col.name], col.type);
+    });
+    return serialized;
+  }
+
+  private serializeCellValue(value: unknown, type: ColumnType): unknown {
+    if (value === '' || value === undefined) {
+      return null;
+    }
+    if (type === 'number') {
+      if (value === null) { return null; }
+      const num = typeof value === 'number' ? value : Number(value);
+      return Number.isNaN(num) ? null : num;
+    }
+    if (type === 'boolean') {
+      return !!value;
+    }
+    if (type === 'datetime') {
+      if (value === null || value === undefined || value === '') {
+        return null;
+      }
+      const date = new Date(String(value));
+      return Number.isNaN(date.getTime()) ? null : date.toISOString();
+    }
+    return value;
+  }
+
+  private mergeRowDataFromServer(local: RowData, server: RowData | undefined, schema: Column[]): RowData {
+    const merged = this.normalizeRowData(server, schema);
+    schema.forEach((col) => {
+      const localValue = local[col.name];
+      if (this.cellHasValue(localValue, col.type)) {
+        merged[col.name] = localValue;
+      }
+    });
+    return merged;
   }
 
   private newLocalId(): string {
@@ -245,7 +279,34 @@ export class DataTablesComponent implements OnInit {
   }
 
   private rowHasAnyValue(row: EditableRow): boolean {
-    return Object.values(row.data).some((v) => v !== '' && v != null);
+    const schema = sortColumns(this.selectedTable?.schema);
+    return schema.some((col) => this.cellHasValue(row.data[col.name], col.type));
+  }
+
+  private cellHasValue(value: unknown, type: ColumnType): boolean {
+    if (type === 'boolean') {
+      return value === true || value === false;
+    }
+    if (type === 'number') {
+      return value !== null && value !== undefined && value !== '';
+    }
+    return value !== '' && value != null;
+  }
+
+  private applyTableUpdate(tableId: string, updated: DataTable): DataTable {
+    const merged: DataTable = {
+      ...(this.selectedTable || {}),
+      ...updated,
+      schema: updated.schema || this.selectedTable?.schema,
+    };
+    const index = this.tables.findIndex((t) => t._id === tableId);
+    if (index >= 0) {
+      this.tables[index] = merged;
+      this.tables = [...this.tables];
+    }
+    this.selectedTable = merged;
+    this.selectedTableId = merged._id || null;
+    return merged;
   }
 
   // ─── Sidebar / last-table persistence ───────────────────────────────────
@@ -264,7 +325,6 @@ export class DataTablesComponent implements OnInit {
     return this.localDbService.getFromStorage(this.lastTableStorageKey()) || null;
   }
 
-  /** Restore last opened table from storage, or select the first in the list. */
   private selectInitialTable(): void {
     if (!this.tables.length) {
       this.selectedTable = null;
@@ -286,13 +346,49 @@ export class DataTablesComponent implements OnInit {
     this.selectTable(tableToSelect);
   }
 
-  private selectTable(table: DataTable): void {
+  private selectTable(table: DataTable, options?: { focusFirstColumnCell?: boolean }): void {
     this.cancelRenameTableTitle();
     this.cancelRenameColumn();
+    this.rowSearchQuery = '';
     this.selectedTableId = table._id || null;
     this.selectedTable = table;
     this.persistLastTable(table);
+    this.shouldFocusFirstColumnCell = !!options?.focusFirstColumnCell;
     this.loadTableRows(table);
+  }
+
+  onRefreshTable(): void {
+    const table = this.selectedTable;
+    if (!table) { return; }
+    this.loadTableRows(table, this.buildRowSearchRequest());
+  }
+
+  onRowSearchChange(): void {
+    if (this.rowSearchDebounceTimer) {
+      clearTimeout(this.rowSearchDebounceTimer);
+    }
+    this.rowSearchDebounceTimer = setTimeout(() => {
+      const table = this.selectedTable;
+      if (!table) { return; }
+      this.loadTableRows(table, this.buildRowSearchRequest());
+    }, 300);
+  }
+
+  private buildRowSearchRequest(): RowSearchRequest | undefined {
+    const query = (this.rowSearchQuery || '').trim();
+    if (!query) { return undefined; }
+    const stringColumns = sortColumns(this.selectedTable?.schema)
+      .filter((col) => col.type === 'string')
+      .map((col) => col.name);
+    if (!stringColumns.length) { return undefined; }
+    return {
+      must_match: 'any',
+      conditions: stringColumns.map((column) => ({
+        column,
+        operator: 'contains',
+        value: query,
+      })),
+    };
   }
 
   onSelectTable(table: DataTable): void {
@@ -311,26 +407,39 @@ export class DataTablesComponent implements OnInit {
   // ─── Columns view ────────────────────────────────────────────────────────
 
   getColumns(table: DataTable | null): ColumnView[] {
-    if (!table || !table.schema) { return []; }
-    return Object.keys(table.schema).map((name) => ({
-      name,
-      type: table.schema![name],
+    return sortColumns(table?.schema).map((col) => ({
+      id: col.id,
+      name: col.name,
+      type: col.type,
     }));
   }
 
-  trackByColumnName = (_: number, c: ColumnView): string => c.name;
+  getTableBodyColspan(): number {
+    const dataCols = this.getColumns(this.selectedTable).length;
+    const cols = dataCols || 1;
+    return this.showRowSelectionColumn ? cols + 1 : cols;
+  }
+
+  canDeleteColumn(): boolean {
+    return this.getColumns(this.selectedTable).length > 1;
+  }
+
+  trackByColumnId = (_: number, c: ColumnView): string => c.id || c.name;
 
   trackByRowId = (_: number, row: EditableRow): string => row._id || row.localId;
 
   // ─── Create table modal ─────────────────────────────────────────────────
 
   openCreateTableModal(): void {
-    const ref = this.dialog.open<CreateTableModalComponent, undefined, CreateTableModalResult>(
+    const ref = this.dialog.open<CreateTableModalComponent, CreateTableModalData, CreateTableModalResult>(
       CreateTableModalComponent,
       {
         width: '520px',
         autoFocus: false,
         disableClose: true,
+        data: {
+          existingTableNames: this.tables.map((t) => t.name || ''),
+        },
       },
     );
 
@@ -340,17 +449,105 @@ export class DataTablesComponent implements OnInit {
     });
   }
 
-  private createTable(name: string, schema: TableSchema): void {
+  private createTable(name: string, schema: ColumnInput[]): void {
+    if (!schema.length) {
+      return;
+    }
     this.dataTablesService.createTable({ name, schema }).subscribe({
       next: (table) => {
         this.logger.log('[DATA-TABLES] table created', table);
         this.tables = [...this.tables, table];
-        this.selectTable(table);
+        this.insertInitialRowAndSelect(table);
       },
       error: (err) => {
         this.logger.error('[DATA-TABLES] createTable error', err);
       },
     });
+  }
+
+  private insertInitialRowAndSelect(table: DataTable): void {
+    const tableId = table._id;
+    const schema = sortColumns(table.schema);
+    if (!tableId || !schema.length) {
+      this.selectTable(table, { focusFirstColumnCell: true });
+      return;
+    }
+
+    const rowData = this.createEmptyRow(schema).data;
+    this.dataTablesService.insertRow(tableId, {
+      data: this.serializeRowData(rowData, schema),
+    }).subscribe({
+      next: () => {
+        this.logger.log('[DATA-TABLES] initial row created');
+        this.selectTable(table, { focusFirstColumnCell: true });
+      },
+      error: (err) => {
+        this.logger.error('[DATA-TABLES] insertInitialRow error', err);
+        this.selectTable(table, { focusFirstColumnCell: true });
+      },
+    });
+  }
+
+  private maybeFocusFirstColumnCell(): void {
+    if (!this.shouldFocusFirstColumnCell) {
+      return;
+    }
+    this.shouldFocusFirstColumnCell = false;
+    this.cdr.detectChanges();
+    requestAnimationFrame(() => {
+      setTimeout(() => this.focusFirstColumnCell(), 0);
+    });
+  }
+
+  private focusBooleanCell(cellEl: HTMLElement): void {
+    cellEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    const checkbox = cellEl.querySelector<HTMLElement>('mat-checkbox.dt-cell-checkbox');
+    const input = checkbox?.querySelector<HTMLInputElement>('.mat-checkbox-input')
+      || checkbox?.querySelector<HTMLInputElement>('input[type="checkbox"]');
+    const layout = checkbox?.querySelector<HTMLElement>('.mat-checkbox-layout');
+    const focusTarget = input || layout;
+    if (!focusTarget) {
+      return;
+    }
+    this.isAutoFocusingFirstCell = true;
+    focusTarget.focus();
+    setTimeout(() => {
+      this.isAutoFocusingFirstCell = false;
+    });
+  }
+
+  private focusFirstColumnCell(): void {
+    const columns = this.getColumns(this.selectedTable);
+    const firstCol = columns[0];
+    if (!firstCol || !this.rows.length) {
+      return;
+    }
+
+    const cellEl = document.querySelector<HTMLElement>('[data-dt-first-cell="true"]');
+    if (!cellEl) {
+      return;
+    }
+
+    if (firstCol.type === 'boolean') {
+      this.focusBooleanCell(cellEl);
+      return;
+    }
+
+    const input = cellEl.querySelector<HTMLInputElement>('.dt-cell-input');
+    if (!input) {
+      return;
+    }
+
+    cellEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    this.isAutoFocusingFirstCell = true;
+    input.focus();
+    setTimeout(() => {
+      this.isAutoFocusingFirstCell = false;
+    });
+  }
+
+  getRenameTableTitleInputSize(): number {
+    return Math.max((this.renameTableDraft || '').length, 1);
   }
 
   onStartRenameTableTitle(): void {
@@ -412,7 +609,8 @@ export class DataTablesComponent implements OnInit {
       (t) => t._id !== tableId && (t.name || '').trim().toLowerCase() === normalizedNewName,
     );
     if (duplicate) {
-      this.renameTableError = 'duplicate';
+      this.showRenameTableNotification('DataTables.DuplicateTableName');
+      this.refocusRenameTableTitleInput();
       return;
     }
 
@@ -422,41 +620,59 @@ export class DataTablesComponent implements OnInit {
     }
 
     this.isRenamingTableSaving = true;
-    this.dataTablesService.updateTable(tableId, {
-      name: newName,
-      schema: table.schema,
-    }).subscribe({
+    this.dataTablesService.updateTable(tableId, { name: newName }).subscribe({
       next: (updated) => {
         this.isRenamingTableSaving = false;
-
-        const merged: DataTable = {
-          ...table,
-          ...(updated || {}),
-          name: (updated?.name || newName),
-        };
-        const index = this.tables.findIndex((t) => t._id === tableId);
-        if (index >= 0) {
-          this.tables[index] = merged;
-          this.tables = [...this.tables];
-        }
-        this.selectedTable = merged;
+        this.applyTableUpdate(tableId, { ...table, ...(updated || {}), name: updated?.name || newName });
         this.cancelRenameTableTitle();
       },
       error: (err) => {
         this.isRenamingTableSaving = false;
         this.logger.error('[DATA-TABLES] updateTable (rename table) error', err);
-        this.showRenameTableError();
+        this.handleRenameTableApiError(err);
       },
+    });
+  }
+
+  private handleRenameTableApiError(err: unknown): void {
+    const httpErr = err as { status?: number; error?: { message?: string; error?: string } };
+    const status = httpErr?.status;
+
+    if (status === 409) {
+      this.showRenameTableNotification('DataTables.DuplicateTableName');
+      this.refocusRenameTableTitleInput();
+      return;
+    }
+
+    if (status === 400) {
+      const serverMessage = httpErr?.error?.message || httpErr?.error?.error;
+      this.showRenameTableNotification(
+        serverMessage || this.translate.instant('DataTables.RenameTableValidationError'),
+        !!serverMessage,
+      );
+      this.refocusRenameTableTitleInput();
+      return;
+    }
+
+    this.showRenameTableError();
+  }
+
+  private showRenameTableNotification(messageKeyOrText: string, isRawMessage = false): void {
+    const message = isRawMessage ? messageKeyOrText : this.translate.instant(messageKeyOrText);
+    this.notify.showWidgetStyleUpdateNotification(message, 4, 'report_problem');
+  }
+
+  private refocusRenameTableTitleInput(): void {
+    setTimeout(() => {
+      const input = document.querySelector<HTMLInputElement>('.dt-title-input');
+      input?.focus();
+      input?.select();
     });
   }
 
   private showRenameTableError(): void {
     this.cancelRenameTableTitle();
-    this.notify.showWidgetStyleUpdateNotification(
-      this.translate.instant('DataTables.RenameTableError'),
-      4,
-      'report_problem',
-    );
+    this.showRenameTableNotification('DataTables.RenameTableError');
   }
 
   onDeleteTable(): void {
@@ -518,11 +734,34 @@ export class DataTablesComponent implements OnInit {
     );
   }
 
+  get hasActiveRowSearch(): boolean {
+    return !!this.rowSearchQuery.trim();
+  }
+
+  get showNoSearchResultsState(): boolean {
+    return !this.isLoadingRows
+      && this.getColumns(this.selectedTable).length > 0
+      && this.rows.length === 0
+      && this.hasActiveRowSearch;
+  }
+
+  get showNoRowsState(): boolean {
+    return !this.isLoadingRows
+      && this.getColumns(this.selectedTable).length > 0
+      && this.rows.length === 0
+      && !this.hasActiveRowSearch;
+  }
+
+  get isHeaderRowCheckboxDisabled(): boolean {
+    return this.isLoadingRows || this.rows.length === 0;
+  }
+
   // ─── Grid actions ───────────────────────────────────────────────────────
 
   onAddRow(): void {
-    if (!this.selectedTable?.schema) { return; }
-    this.rows = [...this.rows, this.createEmptyRow(this.selectedTable.schema)];
+    const schema = sortColumns(this.selectedTable?.schema);
+    if (!schema.length) { return; }
+    this.rows = [...this.rows, this.createEmptyRow(schema)];
   }
 
   // ─── Row selection ─────────────────────────────────────────────────────
@@ -578,13 +817,10 @@ export class DataTablesComponent implements OnInit {
     if (!selected.length || this.isDeletingRows) { return; }
 
     const removeIds = new Set(selected.map((r) => r.localId));
-    const toDeleteOnServer = selected.filter((r) => this.rowHasAnyValue(r));
+    const toDeleteOnServer = selected.filter((r) => r._id);
 
     const removeLocally = (): void => {
       this.rows = this.rows.filter((r) => !removeIds.has(r.localId));
-      if (!this.rows.length && this.selectedTable?.schema) {
-        this.rows = [this.createEmptyRow(this.selectedTable.schema)];
-      }
       this.clearRowSelection();
     };
 
@@ -596,7 +832,7 @@ export class DataTablesComponent implements OnInit {
     this.isDeletingRows = true;
     forkJoin(
       toDeleteOnServer.map((row) =>
-        this.dataTablesService.deleteRow(tableId, { data: { ...row.data } }).pipe(
+        this.dataTablesService.deleteRow(tableId, { id_row: row._id! }).pipe(
           catchError((err) => {
             this.logger.error('[DATA-TABLES] deleteRow error', err);
             return of(null);
@@ -624,39 +860,282 @@ export class DataTablesComponent implements OnInit {
     );
   }
 
+  focusedDatetimeCellKey: string | null = null;
+  focusedNumberCellKey: string | null = null;
+  private numberCellEditDrafts = new Map<string, string>();
+  private datetimeOpenedByPointer = false;
+  private datetimePickerOpen = false;
+  private datetimeClosingPicker = false;
+
+  getDatetimeLocalValue(row: EditableRow, columnName: string): string {
+    return isoToDatetimeLocal(row.data[columnName]);
+  }
+
+  setDatetimeLocalValue(row: EditableRow, columnName: string, value: string): void {
+    row.data[columnName] = datetimeLocalToIso(value) ?? '';
+  }
+
+  getDatetimeCellKey(row: EditableRow, columnName: string): string {
+    return `${row.localId}:${columnName}`;
+  }
+
+  isDatetimeCellFocused(row: EditableRow, columnName: string): boolean {
+    return this.focusedDatetimeCellKey === this.getDatetimeCellKey(row, columnName);
+  }
+
+  hasDatetimeValue(row: EditableRow, columnName: string): boolean {
+    return !!this.getDatetimeLocalValue(row, columnName);
+  }
+
+  onDatetimeMouseDown(): void {
+    this.datetimeOpenedByPointer = true;
+  }
+
+  getColumnHeaderId(col: ColumnView): string {
+    return `dt-col-${col.id}`;
+  }
+
+  getCellAutocomplete(row: EditableRow, col: ColumnView): string {
+    return `nope-${row.localId}-${col.id}`;
+  }
+
+  getNumberCellKey(row: EditableRow, columnName: string): string {
+    return `${row.localId}:${columnName}`;
+  }
+
+  getNumberCellDisplayValue(row: EditableRow, columnName: string): string {
+    const key = this.getNumberCellKey(row, columnName);
+    if (this.focusedNumberCellKey === key) {
+      const draft = this.numberCellEditDrafts.get(key);
+      if (draft !== undefined) {
+        return draft;
+      }
+      return formatNumberCellDisplay(row.data[columnName], true);
+    }
+    return formatNumberCellDisplay(row.data[columnName], false);
+  }
+
+  onNumberCellFocus(row: EditableRow, columnName: string, event: FocusEvent): void {
+    this.onCellInputFocus(event);
+    const key = this.getNumberCellKey(row, columnName);
+    this.focusedNumberCellKey = key;
+    this.numberCellEditDrafts.set(key, formatNumberCellDisplay(row.data[columnName], true));
+  }
+
+  onNumberCellBlur(row: EditableRow, columnName: string): void {
+    const key = this.getNumberCellKey(row, columnName);
+    this.numberCellEditDrafts.delete(key);
+    this.focusedNumberCellKey = null;
+    this.onCellBlur(row, columnName);
+  }
+
+  onCellInputFocus(event: FocusEvent): void {
+    const input = event.target as HTMLInputElement | null;
+    if (!input) { return; }
+    if (input.hasAttribute('readonly')) {
+      input.removeAttribute('readonly');
+    }
+    input.setAttribute('autocomplete', 'one-time-code');
+    input.setAttribute('autocorrect', 'off');
+    input.setAttribute('autocapitalize', 'off');
+    input.setAttribute('spellcheck', 'false');
+  }
+
+  onNumberCellChange(row: EditableRow, col: ColumnView, value: string): void {
+    const key = this.getNumberCellKey(row, col.name);
+    this.numberCellEditDrafts.set(key, value);
+    const parsed = parseNumberCellValue(value);
+    if (parsed === undefined) {
+      return;
+    }
+    row.data[col.name] = parsed;
+  }
+
+  onNumberCellKeydown(event: KeyboardEvent): void {
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+      return;
+    }
+    const allowedKeys = [
+      'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
+      'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End',
+    ];
+    if (allowedKeys.includes(event.key)) {
+      return;
+    }
+    if (/^\d$/.test(event.key)) {
+      return;
+    }
+    const input = event.target as HTMLInputElement;
+    const { value, selectionStart, selectionEnd } = input;
+    const next =
+      value.slice(0, selectionStart ?? value.length)
+      + event.key
+      + value.slice(selectionEnd ?? value.length);
+    if (isValidNumberInputDraft(next)) {
+      return;
+    }
+    event.preventDefault();
+  }
+
+  onNumberCellPaste(event: ClipboardEvent, row: EditableRow, col: ColumnView): void {
+    event.preventDefault();
+    const pasted = event.clipboardData?.getData('text') ?? '';
+    const input = event.target as HTMLInputElement;
+    const start = input.selectionStart ?? input.value.length;
+    const end = input.selectionEnd ?? input.value.length;
+    const next = input.value.slice(0, start) + pasted + input.value.slice(end);
+    if (!isValidNumberInputDraft(next)) {
+      return;
+    }
+    this.onNumberCellChange(row, col, next);
+  }
+
+  onDatetimeFocus(row: EditableRow, columnName: string, event: FocusEvent): void {
+    this.onCellInputFocus(event);
+    this.focusedDatetimeCellKey = this.getDatetimeCellKey(row, columnName);
+    if (this.datetimeClosingPicker) {
+      return;
+    }
+    const openedByPointer = this.datetimeOpenedByPointer;
+    this.datetimeOpenedByPointer = false;
+    if (!this.isAutoFocusingFirstCell && !openedByPointer && !this.datetimePickerOpen) {
+      this.openDatetimePicker(event.target as HTMLInputElement);
+    }
+  }
+
+  onDatetimeClick(event: MouseEvent): void {
+    const input = event.target as HTMLInputElement;
+    if (this.datetimePickerOpen) {
+      this.closeDatetimePicker(input);
+      return;
+    }
+    this.openDatetimePicker(input);
+  }
+
+  onDatetimePickerDismissed(): void {
+    this.datetimePickerOpen = false;
+  }
+
+  private openDatetimePicker(input: HTMLInputElement | null): void {
+    if (!input || typeof input.showPicker !== 'function') {
+      return;
+    }
+    try {
+      input.showPicker();
+      this.datetimePickerOpen = true;
+    } catch {
+      // Some browsers reject showPicker outside a direct user gesture.
+    }
+  }
+
+  private closeDatetimePicker(input: HTMLInputElement): void {
+    this.datetimePickerOpen = false;
+    this.datetimeClosingPicker = true;
+    input.blur();
+    requestAnimationFrame(() => {
+      input.focus();
+      setTimeout(() => {
+        this.datetimeClosingPicker = false;
+      }, 0);
+    });
+  }
+
+  onDatetimeBlur(row: EditableRow, columnName: string): void {
+    if (this.datetimeClosingPicker) {
+      return;
+    }
+    this.datetimePickerOpen = false;
+    this.focusedDatetimeCellKey = null;
+    this.onCellBlur(row, columnName);
+  }
+
+  clearDatetimeCell(row: EditableRow, column: ColumnView, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    row.data[column.name] = '';
+    this.onCellBlur(row, column.name);
+  }
+
+  onBooleanCellChange(row: EditableRow, column: ColumnView, checked: boolean): void {
+    row.data[column.name] = checked;
+    this.onCellBlur(row, column.name);
+  }
+
   onCellBlur(row: EditableRow, columnName: string): void {
     const tableId = this.selectedTable?._id;
-    if (!tableId || row.isSaving) { return; }
+    const schema = sortColumns(this.selectedTable?.schema);
+    if (!tableId || !schema.length) { return; }
+
+    const column = schema.find((c) => c.name === columnName);
+    if (!column) { return; }
+
+    if (column.type === 'number') {
+      row.data[columnName] = finalizeNumberCellValue(row.data[columnName]);
+    }
 
     if (row._id) {
-      row.isSaving = true;
-      this.dataTablesService.updateRow(tableId, {
-        id_row: row._id,
-        data: { [columnName]: row.data[columnName] ?? '' },
-      }).subscribe({
-        next: () => { row.isSaving = false; },
-        error: (err) => {
-          row.isSaving = false;
-          this.logger.error('[DATA-TABLES] updateRow error', err);
-        },
-      });
+      this.updateRowCell(tableId, row, column);
       return;
     }
 
     if (!this.rowHasAnyValue(row)) { return; }
 
+    if (row.isSaving) {
+      row.pendingCellSave = true;
+      return;
+    }
+
+    this.insertNewRow(tableId, row, schema);
+  }
+
+  private updateRowCell(tableId: string, row: EditableRow, column: Column): void {
+    this.dataTablesService.updateRow(tableId, {
+      id_row: row._id!,
+      data: { [column.name]: this.serializeCellValue(row.data[column.name], column.type) },
+    }).subscribe({
+      error: (err) => {
+        this.logger.error('[DATA-TABLES] updateRow error', err);
+      },
+    });
+  }
+
+  private insertNewRow(tableId: string, row: EditableRow, schema: Column[]): void {
     row.isSaving = true;
-    this.dataTablesService.insertRow(tableId, { data: { ...row.data } }).subscribe({
-      next: (saved) => {
+    const localSnapshot = { ...row.data };
+    this.dataTablesService.insertRow(tableId, {
+      data: this.serializeRowData(row.data, schema),
+    }).subscribe({
+      next: (saved: RowDocument) => {
         row._id = saved._id;
+        row.data = this.mergeRowDataFromServer(localSnapshot, saved.data, schema);
         row.isSaving = false;
-        if (saved.data && this.selectedTable?.schema) {
-          row.data = this.normalizeRowData(saved.data, this.selectedTable.schema);
+        if (row.pendingCellSave) {
+          row.pendingCellSave = false;
+          this.syncFullRow(tableId, row, schema);
         }
       },
       error: (err) => {
         row.isSaving = false;
+        row.pendingCellSave = false;
         this.logger.error('[DATA-TABLES] insertRow error', err);
+      },
+    });
+  }
+
+  private syncFullRow(tableId: string, row: EditableRow, schema: Column[]): void {
+    if (!row._id) { return; }
+    const localSnapshot = { ...row.data };
+    this.dataTablesService.updateRow(tableId, {
+      id_row: row._id,
+      data: this.serializeRowData(row.data, schema),
+    }).subscribe({
+      next: (saved) => {
+        if (saved.data) {
+          row.data = this.mergeRowDataFromServer(localSnapshot, saved.data, schema);
+        }
+      },
+      error: (err) => {
+        this.logger.error('[DATA-TABLES] syncFullRow error', err);
       },
     });
   }
@@ -677,92 +1156,100 @@ export class DataTablesComponent implements OnInit {
   resetAddColumnForm(): void {
     this.newColumnName = '';
     this.newColumnType = 'string';
-    this.addColumnNameError = '';
     this.isSavingColumn = false;
   }
 
+  private getAddColumnNameTrimmed(): string {
+    return (this.newColumnName || '').trim();
+  }
+
   showAddColumnNameRequiredError(): boolean {
-    return this.isAddColumnPopoverOpen && !(this.newColumnName || '').trim();
+    return this.isAddColumnPopoverOpen && !this.getAddColumnNameTrimmed();
+  }
+
+  showAddColumnInvalidNameError(): boolean {
+    const name = this.getAddColumnNameTrimmed();
+    return !!name && !isValidColumnName(name);
+  }
+
+  showAddColumnDuplicateNameError(): boolean {
+    const name = this.getAddColumnNameTrimmed();
+    if (!name || !isValidColumnName(name)) { return false; }
+    return sortColumns(this.selectedTable?.schema).some(
+      (c) => c.name.toLowerCase() === name.toLowerCase(),
+    );
+  }
+
+  showAddColumnNameInputError(): boolean {
+    return this.showAddColumnNameRequiredError()
+      || this.showAddColumnInvalidNameError()
+      || this.showAddColumnDuplicateNameError();
   }
 
   canSubmitAddColumn(): boolean {
-    return !!this.newColumnName?.trim() && !this.isSavingColumn;
+    const name = this.getAddColumnNameTrimmed();
+    return !!name
+      && isValidColumnName(name)
+      && !this.showAddColumnDuplicateNameError()
+      && !this.isSavingColumn;
   }
 
-  onNewColumnNameChange(): void {
-    this.addColumnNameError = '';
-  }
-
-  // Adds ccolumn from the popover form; on success updates the table schema and adds the new column to all rows with empty value.
   submitAddColumn(): void {
-    const columnName = (this.newColumnName || '').trim();
+    const columnName = this.getAddColumnNameTrimmed();
     const table = this.selectedTable;
-    if (!columnName || !table?._id || !table.schema) { return; }
-
-    const existingKeys = Object.keys(table.schema).map((k) => k.toLowerCase());
-    if (existingKeys.includes(columnName.toLowerCase())) {
-      this.addColumnNameError = 'duplicate';
-      return;
-    }
-
-    const newSchema: TableSchema = {
-      ...table.schema,
-      [columnName]: this.newColumnType,
-    };
+    if (!columnName || !table?._id) { return; }
+    if (!isValidColumnName(columnName) || this.showAddColumnDuplicateNameError()) { return; }
 
     this.isSavingColumn = true;
-    this.dataTablesService.updateTable(table._id, { schema: newSchema }).subscribe({
+    this.dataTablesService.addColumn(table._id, {
+      name: columnName,
+      type: this.newColumnType,
+    }).subscribe({
       next: (updated) => {
         this.isSavingColumn = false;
-
-        if (!updated?.schema || !(columnName in updated.schema)) {
+        const added = sortColumns(updated?.schema).find((c) => c.name === columnName);
+        if (!added) {
           this.showCreateColumnError();
           return;
         }
 
-        const merged: DataTable = {
-          ...table,
-          ...updated,
-          schema: updated.schema,
-        };
-        const index = this.tables.findIndex((t) => t._id === table._id);
-        if (index >= 0) {
-          this.tables[index] = merged;
-        }
-        this.selectedTable = merged;
+        this.applyTableUpdate(table._id!, updated);
         this.rows = this.rows.map((row) => ({
           ...row,
-          data: { ...row.data, [columnName]: '' },
+          data: { ...row.data, [columnName]: this.defaultCellValue(added.type) },
         }));
         this.closeAddColumnPopover();
         this.logger.log('[DATA-TABLES] column added', columnName);
       },
       error: (err) => {
         this.isSavingColumn = false;
-        this.logger.error('[DATA-TABLES] updateTable (add column) error', err);
+        this.logger.error('[DATA-TABLES] addColumn error', err);
         this.showCreateColumnError();
       },
     });
   }
 
-  private showCreateColumnError(): void {
-    this.closeAddColumnPopover();
+  private showColumnNameValidationNotification(messageKey: string): void {
     this.notify.showWidgetStyleUpdateNotification(
-      this.translate.instant('DataTables.CreateColumnError'),
+      this.translate.instant(messageKey),
       4,
       'report_problem',
     );
   }
 
+  private showCreateColumnError(): void {
+    this.closeAddColumnPopover();
+    this.showColumnNameValidationNotification('DataTables.CreateColumnError');
+  }
+
   isRenamingColumn(col: ColumnView): boolean {
-    return this.renamingColumnName === col.name;
+    return this.renamingColumnId === col.id;
   }
 
   onRenameColumn(col: ColumnView | null): void {
     if (!col) { return; }
-    this.renamingColumnName = col.name;
+    this.renamingColumnId = col.id;
     this.renameColumnDraft = col.name;
-    this.renameColumnError = '';
     setTimeout(() => {
       const input = document.querySelector<HTMLInputElement>('.dt-col-name-input');
       input?.focus();
@@ -770,12 +1257,8 @@ export class DataTablesComponent implements OnInit {
     });
   }
 
-  onRenameColumnDraftChange(): void {
-    this.renameColumnError = '';
-  }
-
   onRenameColumnBlur(): void {
-    if (!this.renamingColumnName || this.isRenamingColumnSaving) { return; }
+    if (!this.renamingColumnId || this.isRenamingColumnSaving) { return; }
     this.commitRenameColumn();
   }
 
@@ -792,129 +1275,87 @@ export class DataTablesComponent implements OnInit {
   }
 
   cancelRenameColumn(): void {
-    this.renamingColumnName = null;
+    this.renamingColumnId = null;
     this.renameColumnDraft = '';
-    this.renameColumnError = '';
+  }
+
+  private refocusRenameColumnInput(): void {
+    setTimeout(() => {
+      const input = document.querySelector<HTMLInputElement>('.dt-col-name-input');
+      input?.focus();
+      input?.select();
+    });
   }
 
   commitRenameColumn(): void {
-    const oldName = this.renamingColumnName;
+    const columnId = this.renamingColumnId;
     const table = this.selectedTable;
-    if (!oldName || !table?._id || !table.schema || this.isRenamingColumnSaving) { return; }
+    const schema = sortColumns(table?.schema);
+    const currentColumn = schema.find((c) => c.id === columnId);
+    if (!columnId || !table?._id || !currentColumn || this.isRenamingColumnSaving) { return; }
 
     const newName = (this.renameColumnDraft || '').trim();
-    if (!newName || newName === oldName) {
+    if (!newName || newName === currentColumn.name) {
       this.cancelRenameColumn();
       return;
     }
 
-    const existingKeys = Object.keys(table.schema)
-      .filter((k) => k !== oldName)
-      .map((k) => k.toLowerCase());
-    if (existingKeys.includes(newName.toLowerCase())) {
-      this.renameColumnError = 'duplicate';
+    if (!isValidColumnName(newName)) {
+      this.showColumnNameValidationNotification('DataTables.InvalidColumnName');
+      this.refocusRenameColumnInput();
       return;
     }
 
-    const newSchema = this.buildRenamedSchema(table.schema, oldName, newName);
+    const duplicate = schema.some(
+      (c) => c.id !== columnId && c.name.toLowerCase() === newName.toLowerCase(),
+    );
+    if (duplicate) {
+      this.showColumnNameValidationNotification('DataTables.DuplicateColumnName');
+      this.refocusRenameColumnInput();
+      return;
+    }
 
+    const oldName = currentColumn.name;
     this.isRenamingColumnSaving = true;
-    this.dataTablesService.updateTable(table._id, { schema: newSchema }).subscribe({
+    this.dataTablesService.renameColumn(table._id, columnId, { name: newName }).subscribe({
       next: (updated) => {
-        if (!updated?.schema || !(newName in updated.schema)) {
-          this.isRenamingColumnSaving = false;
+        this.isRenamingColumnSaving = false;
+        const renamed = sortColumns(updated?.schema).find((c) => c.id === columnId);
+        if (!renamed) {
           this.showRenameColumnError();
           return;
         }
 
-        const merged: DataTable = {
-          ...table,
-          ...updated,
-          schema: updated.schema,
-        };
-        const index = this.tables.findIndex((t) => t._id === table._id);
-        if (index >= 0) {
-          this.tables[index] = merged;
-        }
-        this.selectedTable = merged;
-        this.rows = this.rows.map((row) => ({
-          ...row,
-          data: this.remapRowDataForRenamedColumn(row.data, oldName, newName, updated.schema!),
-        }));
+        this.applyTableUpdate(table._id!, updated);
+        this.rows = this.rows.map((row) => {
+          const migrated = { ...row.data };
+          if (Object.prototype.hasOwnProperty.call(migrated, oldName)) {
+            migrated[newName] = migrated[oldName];
+            delete migrated[oldName];
+          }
+          return {
+            ...row,
+            data: this.normalizeRowData(migrated, sortColumns(updated.schema)),
+          };
+        });
         this.cancelRenameColumn();
-        this.isRenamingColumnSaving = false;
-        this.persistRenamedColumnInRows(table._id!, oldName, newName);
         this.logger.log('[DATA-TABLES] column renamed', oldName, '→', newName);
       },
       error: (err) => {
         this.isRenamingColumnSaving = false;
-        this.logger.error('[DATA-TABLES] updateTable (rename column) error', err);
+        this.logger.error('[DATA-TABLES] renameColumn error', err);
         this.showRenameColumnError();
       },
     });
   }
 
-  private buildRenamedSchema(schema: TableSchema, oldName: string, newName: string): TableSchema {
-    const result: TableSchema = {};
-    Object.keys(schema).forEach((key) => {
-      if (key === oldName) {
-        result[newName] = schema[key];
-      } else {
-        result[key] = schema[key];
-      }
-    });
-    return result;
-  }
-
-  private remapRowDataForRenamedColumn(
-    data: RowData,
-    oldName: string,
-    newName: string,
-    schema: TableSchema,
-  ): RowData {
-    const migrated = { ...data };
-    if (Object.prototype.hasOwnProperty.call(migrated, oldName)) {
-      migrated[newName] = migrated[oldName];
-      delete migrated[oldName];
-    } else if (!Object.prototype.hasOwnProperty.call(migrated, newName)) {
-      migrated[newName] = '';
-    }
-    return this.normalizeRowData(migrated, schema);
-  }
-
-  /** Sync persisted rows after schema key rename (best-effort). */
-  private persistRenamedColumnInRows(tableId: string, oldName: string, newName: string): void {
-    const rowsToSync = this.rows.filter(
-      (r) => r._id && this.rowHasAnyValue(r) && Object.prototype.hasOwnProperty.call(r.data, newName),
-    );
-    if (!rowsToSync.length) { return; }
-
-    forkJoin(
-      rowsToSync.map((row) =>
-        this.dataTablesService.updateRow(tableId, {
-          id_row: row._id,
-          data: { ...row.data },
-        }).pipe(
-          catchError((err) => {
-            this.logger.error('[DATA-TABLES] updateRow after rename error', err);
-            return of(null);
-          }),
-        ),
-      ),
-    ).subscribe();
-  }
-
   private showRenameColumnError(): void {
     this.cancelRenameColumn();
-    this.notify.showWidgetStyleUpdateNotification(
-      this.translate.instant('DataTables.RenameColumnError'),
-      4,
-      'report_problem',
-    );
+    this.showColumnNameValidationNotification('DataTables.RenameColumnError');
   }
 
   onDeleteColumn(col: ColumnView | null): void {
-    if (!col || this.isDeletingColumn) { return; }
+    if (!col || this.isDeletingColumn || !this.canDeleteColumn()) { return; }
 
     Swal.fire({
       title: this.translate.instant('DataTables.DeleteColumn'),
@@ -935,100 +1376,44 @@ export class DataTablesComponent implements OnInit {
   }
 
   private deleteColumn(col: ColumnView): void {
-    const columnName = col.name;
     const table = this.selectedTable;
-    if (!table?._id || !table.schema || !(columnName in table.schema) || this.isDeletingColumn) {
+    if (!table?._id || !col.id || this.isDeletingColumn) {
       return;
     }
 
-    if (this.renamingColumnName === columnName) {
+    if (this.renamingColumnId === col.id) {
       this.cancelRenameColumn();
     }
 
-    const newSchema = this.buildSchemaWithoutColumn(table.schema, columnName);
-
     this.isDeletingColumn = true;
-    this.dataTablesService.updateTable(table._id, { schema: newSchema }).subscribe({
+    this.dataTablesService.deleteColumn(table._id, col.id).subscribe({
       next: (updated) => {
         this.isDeletingColumn = false;
-
-        if (!updated?.schema || columnName in updated.schema) {
+        const stillExists = sortColumns(updated?.schema).some((c) => c.id === col.id);
+        if (stillExists) {
           this.showDeleteColumnError();
           return;
         }
 
-        const merged: DataTable = {
-          ...table,
-          ...updated,
-          schema: updated.schema,
-        };
-        const index = this.tables.findIndex((t) => t._id === table._id);
-        if (index >= 0) {
-          this.tables[index] = merged;
-        }
-        this.selectedTable = merged;
-
-        const schemaKeys = Object.keys(updated.schema);
-        if (!schemaKeys.length) {
+        this.applyTableUpdate(table._id!, updated);
+        const schema = sortColumns(updated.schema);
+        if (!schema.length) {
           this.rows = [];
         } else {
-          this.rows = this.rows.map((row) => ({
-            ...row,
-            data: this.removeColumnFromRowData(row.data, columnName, updated.schema!),
-          }));
+          this.rows = this.rows.map((row) => {
+            const migrated = { ...row.data };
+            delete migrated[col.name];
+            return { ...row, data: this.normalizeRowData(migrated, schema) };
+          });
         }
-
-        this.persistDeletedColumnInRows(table._id!, columnName);
-        this.logger.log('[DATA-TABLES] column deleted', columnName);
+        this.logger.log('[DATA-TABLES] column deleted', col.name);
       },
       error: (err) => {
         this.isDeletingColumn = false;
-        this.logger.error('[DATA-TABLES] updateTable (delete column) error', err);
+        this.logger.error('[DATA-TABLES] deleteColumn error', err);
         this.showDeleteColumnError();
       },
     });
-  }
-
-  private buildSchemaWithoutColumn(schema: TableSchema, columnName: string): TableSchema {
-    const result: TableSchema = {};
-    Object.keys(schema).forEach((key) => {
-      if (key !== columnName) {
-        result[key] = schema[key];
-      }
-    });
-    return result;
-  }
-
-  private removeColumnFromRowData(
-    data: RowData,
-    columnName: string,
-    schema: TableSchema,
-  ): RowData {
-    const migrated = { ...data };
-    delete migrated[columnName];
-    return this.normalizeRowData(migrated, schema);
-  }
-
-  /** Sync persisted rows after schema column removal (best-effort). */
-  private persistDeletedColumnInRows(tableId: string, columnName: string): void {
-    const rowsToSync = this.rows.filter(
-      (r) => r._id && this.rowHasAnyValue(r) && !Object.prototype.hasOwnProperty.call(r.data, columnName),
-    );
-    if (!rowsToSync.length) { return; }
-
-    forkJoin(
-      rowsToSync.map((row) =>
-        this.dataTablesService.updateRow(tableId, {
-          id_row: row._id,
-          data: { ...row.data },
-        }).pipe(
-          catchError((err) => {
-            this.logger.error('[DATA-TABLES] updateRow after delete column error', err);
-            return of(null);
-          }),
-        ),
-      ),
-    ).subscribe();
   }
 
   private showDeleteColumnError(): void {
@@ -1039,4 +1424,3 @@ export class DataTablesComponent implements OnInit {
     );
   }
 }
-

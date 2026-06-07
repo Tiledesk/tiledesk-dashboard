@@ -1,0 +1,12 @@
+.dt-type-select-option {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 20px;
+}
+
+.dt-type-select-label {
+  font-size: 14px;
+  line-height: 1.2;
+  text-transform: lowercase;
+}
