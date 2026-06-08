@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.225-stage
+- Improves Data tables
+
 ### 2.7.224-stage
 - Implements Data tables
 
