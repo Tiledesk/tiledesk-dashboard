@@ -359,9 +359,9 @@
     </ng-container>  -->
 
     <!-- ----------------------------- -->
-    <!-- ANALYTICS  new -->
+    <!-- ANALYTICS  new to fix -->
     <!-- ----------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+    <!-- <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
       <ng-container *ngIf="isVisibleANA">
         <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
           [class.item-active]="ANALITYCS_ROUTE_IS_ACTIVE || ANALYTICS_DEMO_ROUTE_IS_ACTIVE"
@@ -381,13 +381,41 @@
               </svg>
             </span>
           </a>
-
-          <!-- <div *ngIf="ANALYTICS_NEW_ROUTE_IS_ACTIVE" class="sidebar-analytics-new-badge">
-            <span class="material-icons-outlined">fiber_new</span>
-          </div> -->
         </div>
       </ng-container>
-    </ng-container> 
+    </ng-container>  -->
+
+
+    <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+      <ng-container *ngIf="isVisibleANA">
+        <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
+          [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100" 
+          style="position: relative;">
+          <a class="customAncor" 
+          [routerLink]="PERMISSION_TO_VIEW_ANALYTICS ? ['/project', project._id, 'analytics', 'new'] : null"
+          >
+          
+            <span>
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+                <path
+                  d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z" />
+              </svg>
+            </span>
+          </a>
+
+          <div style="position: absolute;top: -3px;">
+            <!-- <span class="material-icons-outlined" style="color:#3ea9f5;">
+              fiber_new
+            </span> -->
+          </div>
+        </div>
+
+      </ng-container>
+
+    </ng-container>
 
       <!-- Maintance module -->
      <!-- <ng-container>
