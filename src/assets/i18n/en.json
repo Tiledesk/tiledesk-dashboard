@@ -810,6 +810,8 @@
     "WhenEnabledEmoji":"When enabled, users can send emoji. When disabled, the emoji button will be hidden",
     "DisableVoiceRecoder":"Disable Voice recorder",
     "WhenEnabledVoiceRecoder": "When enabled, users can record voice messages. When disabled, the voice recorder button will be hidden and user can only send text message",
+    "VoiceStreamingMode": "Voice streaming mode",
+    "VoiceStreamingModeDesc": "If enabled, the user can transmit voice in real time while speaking. If disabled, the button will not be visible.",
     "UploadLogo":"Upload logo",
     "FileTooLarge": "File is too large to upload. Max file size {{file_size}}",
     "ImagePreview":"Image preview",
@@ -2150,6 +2152,8 @@
         "KbStatsAnswered": "Answered",
         "KbStatsUnanswered": "Unanswered",
         "KbStatsAnswerRate": "Answer rate",
+        "KbChartAnsweredUnansweredOverTime": "Answered and unanswered over time",
+        "KbChartAnswerRateOverTime": "Answer rate over time",
         "QuestionsTextSearchPlaceholder": "Text search",
         "Questions": "Questions",
         "AnsweredQuestionsTab": "Answered",
@@ -2478,7 +2482,7 @@
     "Friday": "Friday",
     "Saturday": "Saturday",
     "SelectAnOption": "Select an option",
-     "AnalyticsNew": {
+    "AnalyticsNew": {
         "Loading": "Loading analytics…",
         "ConfigurationMissing": "Analytics embedding is not configured. Set analyticsApiBase and analyticsEmbedBase in the dashboard config (see EMBED-INTEGRATION.md).",
         "TokenError": "Could not obtain an analytics embed token. Check your session and that the analytics API is reachable."
