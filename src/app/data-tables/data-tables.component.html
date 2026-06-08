@@ -229,7 +229,8 @@
                   </th>
                   <th *ngFor="let col of getColumns(selectedTable); trackBy: trackByColumnId"
                       class="dt-col-th"
-                      [attr.id]="getColumnHeaderId(col)">
+                      [attr.id]="getColumnHeaderId(col)"
+                      scope="col">
                     <div class="dt-col-header">
                       <appdashboard-dt-column-type-icon [type]="col.type"></appdashboard-dt-column-type-icon>
                       <span *ngIf="!isRenamingColumn(col)"
@@ -247,7 +248,8 @@
                                [disabled]="isRenamingColumnSaving"
                                [attr.aria-label]="('DataTables.RenameColumn' | translate)">
                       </div>
-                      <button mat-icon-button
+                      <button type="button"
+                              mat-icon-button
                               class="dt-col-menu-btn"
                               [class.dt-col-menu-btn--hidden]="isRenamingColumn(col)"
                               [matMenuTriggerFor]="columnMenu"
@@ -259,11 +261,15 @@
                       </button>
                     </div>
                   </th>
+                  <th *ngIf="showDeleteRowColumn && getColumns(selectedTable).length"
+                      class="dt-actions-th"
+                      scope="col"
+                      aria-hidden="true"></th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngIf="isLoadingRows">
-                  <td [attr.colspan]="getTableBodyColspan()" class="dt-empty-cell">
+                  <td [colSpan]="getTableBodyColspan()" class="dt-empty-cell">
                     {{ 'Processing' | translate }}
                   </td>
                 </tr>
@@ -304,6 +310,7 @@
                                [ngModel]="row.data[col.name] ?? ''"
                                (ngModelChange)="row.data[col.name] = $event"
                                (focus)="onCellInputFocus($event)"
+                               (keydown.enter)="onCellInputEnterKeydown($event)"
                                (blur)="onCellBlur(row, col.name)">
                         <input *ngSwitchCase="'number'"
                                type="text"
@@ -356,6 +363,7 @@
                                  (click)="onDatetimeClick($event)"
                                  (change)="onDatetimePickerDismissed()"
                                  (cancel)="onDatetimePickerDismissed()"
+                                 (keydown.enter)="onCellInputEnterKeydown($event)"
                                  (blur)="onDatetimeBlur(row, col.name)">
                           <button *ngIf="hasDatetimeValue(row, col.name) && !isDatetimeCellFocused(row, col.name)"
                                   type="button"
@@ -380,39 +388,40 @@
                                [ngModelOptions]="{standalone: true}"
                                [(ngModel)]="row.data[col.name]"
                                (focus)="onCellInputFocus($event)"
+                               (keydown.enter)="onCellInputEnterKeydown($event)"
                                (blur)="onCellBlur(row, col.name)">
                       </ng-container>
+                    </td>
+                    <td *ngIf="showDeleteRowColumn && getColumns(selectedTable).length"
+                        class="dt-actions-cell"
+                        (click)="$event.stopPropagation()">
+                      <button type="button"
+                              class="dt-delete-row-btn"
+                              [disabled]="isDeletingRow(row) || isDeletingRows"
+                              (click)="onDeleteRow(row)"
+                              [attr.aria-label]="('DataTables.DeleteRow' | translate)">
+                        <mat-icon class="dt-delete-row-icon">delete</mat-icon>
+                      </button>
                     </td>
                   </tr>
 
                   <tr *ngIf="showNoSearchResultsState" class="dt-no-search-results-row">
-                    <td [attr.colspan]="getTableBodyColspan()"
+                    <td [colSpan]="getTableBodyColspan()"
                         class="dt-no-search-results-cell">
                       {{ 'DataTables.NoSearchResults' | translate }}
                     </td>
                   </tr>
 
                   <tr *ngIf="showNoRowsState" class="dt-no-rows-row">
-                    <td *ngIf="showRowSelectionColumn"
-                        class="dt-select-cell dt-no-rows-add-cell">
+                    <td [colSpan]="getTableBodyColspan()"
+                        class="dt-no-rows-cell">
                       <button type="button"
-                              class="dt-add-row-inline-btn"
-                              (click)="onAddRow()"
-                              [attr.aria-label]="('DataTables.AddRow' | translate)">
-                        <mat-icon>add</mat-icon>
-                      </button>
-                    </td>
-                    <td [attr.colspan]="showRowSelectionColumn ? getColumns(selectedTable).length : getTableBodyColspan()"
-                        class="dt-no-rows-cell"
-                        [class.dt-no-rows-cell--with-add]="!showRowSelectionColumn">
-                      <button *ngIf="!showRowSelectionColumn"
-                              type="button"
                               class="dt-add-row-inline-btn dt-add-row-inline-btn--inline"
                               (click)="onAddRow()"
                               [attr.aria-label]="('DataTables.AddRow' | translate)">
                         <mat-icon>add</mat-icon>
                       </button>
-                      {{ 'DataTables.NoRows' | translate }}
+                      <span class="dt-no-rows-label" style="font-weight: 400;">{{ 'DataTables.NoRows' | translate }}</span>
                     </td>
                   </tr>
 

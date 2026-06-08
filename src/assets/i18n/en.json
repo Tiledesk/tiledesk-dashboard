@@ -40,6 +40,7 @@
     "Hours": "Operating Hours",
     "KnowledgeBases": "Knowledge Bases",
     "DataTables": {
+        "DataTablesBeta": "Data Tables (BETA)",
         "DataTables": "Data Tables",
         "YourTables": "Your Tables",
         "CreateTable": "Create table",
@@ -79,6 +80,8 @@
         "OneRowSelected": "1 row selected",
         "NRowsSelected": "{{count}} rows selected",
         "DeleteRows": "Delete",
+        "DeleteRow": "Delete row",
+        "DeleteRowConfirmMessage": "Are you sure you want to delete this row? This action cannot be undone.",
         "ClearSelection": "Clear selection",
         "DeleteRowsError": "An error occurred while deleting rows",
         "SelectAllRows": "Select all rows",

@@ -19,6 +19,7 @@ import {
   RowData,
   RowDocument,
   RowListItem,
+  RowCondition,
   RowSearchRequest,
   sortColumns,
 } from 'app/models/data-tables.model';
@@ -65,6 +66,9 @@ export class DataTablesComponent implements OnInit {
   /** Row bulk-delete checkboxes — hidden until feature is ready. */
   readonly showRowSelectionColumn = false;
 
+  /** UI-only trailing column with row delete action (not part of table schema). */
+  readonly showDeleteRowColumn = true;
+
   tables: DataTable[] = [];
   selectedTable: DataTable | null = null;
   selectedTableId: string | null = null;
@@ -84,6 +88,7 @@ export class DataTablesComponent implements OnInit {
   rowSearchQuery = '';
   private rowSearchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   isDeletingRows = false;
+  deletingRowId: string | null = null;
   isDeletingTable = false;
 
   isAddColumnPopoverOpen = false;
@@ -377,18 +382,44 @@ export class DataTablesComponent implements OnInit {
   private buildRowSearchRequest(): RowSearchRequest | undefined {
     const query = (this.rowSearchQuery || '').trim();
     if (!query) { return undefined; }
-    const stringColumns = sortColumns(this.selectedTable?.schema)
+
+    const schema = sortColumns(this.selectedTable?.schema);
+    const conditions: RowCondition[] = [];
+
+    schema
       .filter((col) => col.type === 'string')
-      .map((col) => col.name);
-    if (!stringColumns.length) { return undefined; }
+      .forEach((col) => {
+        conditions.push({
+          column: col.name,
+          operator: 'contains',
+          value: query,
+        });
+      });
+
+    const numericQuery = this.parseSearchNumber(query);
+    if (numericQuery !== null) {
+      schema
+        .filter((col) => col.type === 'number')
+        .forEach((col) => {
+          conditions.push({
+            column: col.name,
+            operator: 'equal',
+            value: numericQuery,
+          });
+        });
+    }
+
+    if (!conditions.length) { return undefined; }
+
     return {
       must_match: 'any',
-      conditions: stringColumns.map((column) => ({
-        column,
-        operator: 'contains',
-        value: query,
-      })),
+      conditions,
     };
+  }
+
+  private parseSearchNumber(query: string): number | null {
+    const parsed = parseNumberCellValue(query);
+    return typeof parsed === 'number' ? parsed : null;
   }
 
   onSelectTable(table: DataTable): void {
@@ -416,8 +447,15 @@ export class DataTablesComponent implements OnInit {
 
   getTableBodyColspan(): number {
     const dataCols = this.getColumns(this.selectedTable).length;
-    const cols = dataCols || 1;
-    return this.showRowSelectionColumn ? cols + 1 : cols;
+    if (!dataCols) { return 1; }
+    let cols = dataCols;
+    if (this.showRowSelectionColumn) { cols += 1; }
+    if (this.showDeleteRowColumn) { cols += 1; }
+    return cols;
+  }
+
+  isDeletingRow(row: EditableRow): boolean {
+    return this.deletingRowId === row.localId;
   }
 
   canDeleteColumn(): boolean {
@@ -811,6 +849,55 @@ export class DataTablesComponent implements OnInit {
     this.selectedRowIds = new Set();
   }
 
+  onDeleteRow(row: EditableRow): void {
+    if (this.deletingRowId || this.isDeletingRows) { return; }
+
+    Swal.fire({
+      title: this.translate.instant('DataTables.DeleteRow'),
+      text: this.translate.instant('DataTables.DeleteRowConfirmMessage'),
+      icon: 'warning',
+      showCloseButton: false,
+      showCancelButton: true,
+      showConfirmButton: true,
+      confirmButtonText: this.translate.instant('Delete'),
+      cancelButtonText: this.translate.instant('Cancel'),
+      reverseButtons: true,
+      focusCancel: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteRow(row);
+      }
+    });
+  }
+
+  private deleteRow(row: EditableRow): void {
+    const tableId = this.selectedTable?._id;
+    const removeLocally = (): void => {
+      this.rows = this.rows.filter((r) => r.localId !== row.localId);
+      this.selectedRowIds.delete(row.localId);
+      this.selectedRowIds = new Set(this.selectedRowIds);
+    };
+
+    if (!tableId || !row._id) {
+      removeLocally();
+      return;
+    }
+
+    this.deletingRowId = row.localId;
+    this.dataTablesService.deleteRow(tableId, { id_row: row._id }).subscribe({
+      next: () => {
+        this.deletingRowId = null;
+        removeLocally();
+        this.logger.log('[DATA-TABLES] row deleted', row._id);
+      },
+      error: (err) => {
+        this.deletingRowId = null;
+        this.logger.error('[DATA-TABLES] deleteRow error', err);
+        this.showDeleteRowsError();
+      },
+    });
+  }
+
   deleteSelectedRows(): void {
     const tableId = this.selectedTable?._id;
     const selected = this.rows.filter((r) => this.selectedRowIds.has(r.localId));
@@ -951,7 +1038,15 @@ export class DataTablesComponent implements OnInit {
     row.data[col.name] = parsed;
   }
 
+  onCellInputEnterKeydown(event: KeyboardEvent): void {
+    event.preventDefault();
+  }
+
   onNumberCellKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      return;
+    }
     if (event.ctrlKey || event.metaKey || event.altKey) {
       return;
     }

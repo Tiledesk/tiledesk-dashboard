@@ -309,6 +309,7 @@
 .dt-columns-card {
   --dt-col-min-width: 160px;
   --dt-select-col-width: 35px;
+  --dt-actions-col-width: 44px;
   display: block;
   width: 100%;
   max-width: 100%;
@@ -334,6 +335,60 @@
   background: #fff;
 }
 
+.dt-actions-th,
+.dt-actions-cell {
+  width: var(--dt-actions-col-width, 44px);
+  min-width: var(--dt-actions-col-width, 44px);
+  max-width: var(--dt-actions-col-width, 44px);
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dt-actions-th {
+  background: #fafbfc;
+}
+
+.dt-actions-cell {
+  background: #fff;
+}
+
+.dt-delete-row-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  color: #667085;
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:hover:not([disabled]) {
+    background: var(--mat-icon-button-hover-background-color, #f0f0f0);
+    color: #d92d20;
+
+    .dt-delete-row-icon {
+      color: #d92d20;
+    }
+  }
+
+  .dt-delete-row-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    color: #667085;
+  }
+}
+
 .dt-row-checkbox {
   margin: 0 auto;
 }
@@ -343,7 +398,8 @@
   background: rgb(220, 233, 255);
 
   .dt-select-cell,
-  .dt-data-cell {
+  .dt-data-cell,
+  .dt-actions-cell {
     // background: #ede9fe;
     background: rgb(220, 233, 255);
   }
@@ -682,10 +738,6 @@
   }
 }
 
-.dt-no-rows-add-cell {
-  padding: 0;
-}
-
 .dt-add-row-inline-btn {
   display: inline-flex;
   align-items: center;
@@ -719,18 +771,18 @@
   line-height: 36px;
   color: #888;
   background: #fff;
+  vertical-align: middle;
+  white-space: nowrap;
+}
 
-  &--with-add {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-  }
+.dt-no-rows-label {
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .dt-add-row-inline-btn--inline {
-  margin: 0;
-  flex-shrink: 0;
+  margin: 0 8px 0 0;
+  vertical-align: middle;
 }
 
 .dt-empty-state {

@@ -242,7 +242,8 @@
           #tooltip="matTooltip"
           matTooltipPosition='right'
           matTooltipHideDelay="100"
-          routerLinkActive="item-active">
+          routerLinkActive="item-active"
+          style="position: relative;">
           <a class="customAncor" routerLink="project/{{ project._id }}/data-tables">
             <!-- <span class="material-icons-outlined data-tables-sidebar-icon">
               grid_on
@@ -253,6 +254,12 @@
               </svg>
             </span>
           </a>
+
+          <div class="sidebar-beta-badge">
+            <span class="sidebar-beta-badge-icon" style="position: absolute;top: 2px;left: 16px;font-weight: 500;font-size: 8px;"
+            [ngStyle]="{ 'color': DATA_TABLES_ROUTE_IS_ACTIVE ? '#3ea9f5' : '#fff' }">BETA</span>
+          </div>
+
         </div>
       </ng-container>
 

@@ -38,6 +38,7 @@
     "Hours": "Orari di attività",
     "KnowledgeBases": "Knowledge Bases",
         "DataTables": {
+        "DataTablesBeta": "Tabelle dati (BETA)",    
         "DataTables": "Tabelle dati",
         "YourTables": "Le tue tabelle",
         "CreateTable": "Crea tabella",
@@ -77,6 +78,8 @@
         "OneRowSelected": "1 riga selezionata",
         "NRowsSelected": "{{count}} righe selezionate",
         "DeleteRows": "Elimina",
+        "DeleteRow": "Elimina riga",
+        "DeleteRowConfirmMessage": "Sei sicuro di voler eliminare questa riga? Questa azione non può essere annullata.",
         "ClearSelection": "Deseleziona",
         "DeleteRowsError": "Si è verificato un errore durante l'eliminazione delle righe",
         "SelectAllRows": "Seleziona tutte le righe",
