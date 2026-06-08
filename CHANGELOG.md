@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.226-stage
+- Fixes the bug: Analytics sidebar menu item redirects to old version of Analytics
+
 ### 2.7.225-stage
 - Improves Data tables
 
