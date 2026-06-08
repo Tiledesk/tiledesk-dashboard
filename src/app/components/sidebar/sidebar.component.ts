@@ -47,6 +47,7 @@ import { environment } from 'environments/environment';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
 
 declare const $: any;
 
@@ -2826,6 +2827,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       this.notify.presentDialogNoPermissionToViewThisSection()
     }
   }
+
+  get useNewAnalytics(): boolean {
+    return isNewAnalyticsConfigured(this.appConfigService.getConfig());
+  }
+
+  getAnalyticsRouterLink(): (string | number)[] | null {
+    if (!this.PERMISSION_TO_VIEW_ANALYTICS || !this.project?._id) {
+      return null;
+    }
+    const link: (string | number)[] = ['/project', this.project._id, 'analytics'];
+    if (this.useNewAnalytics) {
+      link.push('new');
+    }
+    return link;
+  }
+
 
    handleAnalyticsClick(event: MouseEvent): void {
     if (!this.PERMISSION_TO_VIEW_ANALYTICS) {
