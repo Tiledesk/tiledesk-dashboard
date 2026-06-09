@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.176-AR
+- Enhances knowledge base analytics by implementing shared Y-axis scaling for bar charts
+- Updates HTML to format displayed statistics counts
+- Removes links to old analytics
+
 ### 2.7.175-AR
 - Adds new Analytics
 - Adds bar charts for answered and unanswered questions and a line chart for response rate to the knowledge base
