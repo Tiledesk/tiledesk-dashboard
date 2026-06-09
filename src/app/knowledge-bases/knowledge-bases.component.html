@@ -390,7 +390,7 @@
                             </span>
                             <mat-icon class="kb-stats-chart-card__title-arrow" aria-hidden="true">chevron_right</mat-icon>
                           </button>
-                          <div class="kb-stats-chart-panel__value">{{ kbStatsAnsweredCount }}</div>
+                          <div class="kb-stats-chart-panel__value">{{ kbStatsAnsweredCount | number:'1.0-0' }}</div>
                           <div #kbAnsweredChart class="kb-stats-chart"></div>
                         </div>
                         <div class="kb-stats-chart-card__divider" aria-hidden="true"></div>
@@ -403,7 +403,7 @@
                             </span>
                             <mat-icon class="kb-stats-chart-card__title-arrow" aria-hidden="true">chevron_right</mat-icon>
                           </button>
-                          <div class="kb-stats-chart-panel__value">{{ kbStatsUnansweredCount }}</div>
+                          <div class="kb-stats-chart-panel__value">{{ kbStatsUnansweredCount | number:'1.0-0' }}</div>
                           <div #kbUnansweredChart class="kb-stats-chart"></div>
                         </div>
                         <div class="kb-stats-chart-card__divider" aria-hidden="true"></div>
@@ -416,7 +416,7 @@
                             </span>
                             <mat-icon class="kb-stats-chart-card__title-arrow" aria-hidden="true">chevron_right</mat-icon>
                           </button>
-                          <div class="kb-stats-chart-panel__value">{{ kbStatsAnswerRatePercent }}%</div>
+                          <div class="kb-stats-chart-panel__value">{{ kbStatsAnswerRatePercentValue | number:'1.0-1' }}%</div>
                           <div #kbAnswerRateChart class="kb-stats-chart"></div>
                         </div>
                       </div>

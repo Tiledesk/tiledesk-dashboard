@@ -151,17 +151,111 @@ const BAR_CHART_GRID = { left: 0, right: 0, top: 2, bottom: 6, containLabel: fal
 /** Line sparkline: side padding so first/last point markers are not clipped. */
 const LINE_CHART_GRID = { left: 8, right: 10, top: 4, bottom: 8, containLabel: false };
 
-function sparklineCountYAxis(maxValue: number): EChartsOption['yAxis'] {
+/** Flat baseline height (px) for zero counts — same on every KB. */
+const ZERO_BAR_MIN_HEIGHT_PX = 2;
+/** Minimum bar height (px) for non-zero counts — always above zero dashes. */
+const NONZERO_BAR_MIN_HEIGHT_PX = 5;
+/** Fallback scale when every day is 0 (keeps axis max > 0 so the chart renders). */
+const ALL_ZERO_FALLBACK_SCALE = 10;
+/** Headroom above the shared daily max on the Y axis. */
+const SHARED_AXIS_HEADROOM = 1.15;
+
+function resolveBarScaleReference(sharedCountMax: number): number {
+  return sharedCountMax > 0 ? sharedCountMax : ALL_ZERO_FALLBACK_SCALE;
+}
+
+function computeKbCountAxisMax(sharedCountMax: number): number {
+  const scaleRef = resolveBarScaleReference(sharedCountMax);
+  return Math.max(Math.ceil(scaleRef * SHARED_AXIS_HEADROOM), 1);
+}
+
+/** Explicit Y-axis max shared by answered and unanswered bar charts. */
+export function computeKbBarChartsSharedAxisMax(points: KbOverTimePoint[]): number {
+  return computeKbCountAxisMax(computeKbBarChartsSharedCountMax(points));
+}
+
+/** Total answered / unanswered over the chart period (sum of daily values). */
+export function computeKbOverTimeTotals(points: KbOverTimePoint[]): {
+  answered: number;
+  unanswered: number;
+} {
+  return points.reduce(
+    (totals, point) => ({
+      answered: totals.answered + (point.answered ?? 0),
+      unanswered: totals.unanswered + (point.unanswered ?? 0),
+    }),
+    { answered: 0, unanswered: 0 },
+  );
+}
+
+/** Max daily count across answered and unanswered — shared Y scale for both bar charts. */
+export function computeKbBarChartsSharedCountMax(points: KbOverTimePoint[]): number {
+  return points.reduce(
+    (max, point) => Math.max(max, point.answered ?? 0, point.unanswered ?? 0),
+    0,
+  );
+}
+
+function kbBarItemStyle(color: string): KbBarSeriesItem['itemStyle'] {
+  return { color, opacity: 1, borderRadius: [2, 2, 0, 0] };
+}
+
+interface KbBarSeriesItem {
+  value: number | string;
+  itemStyle: { color: string; opacity: number; borderRadius: [number, number, number, number] };
+}
+
+function buildKbSharedCountYAxis(yAxisMax: number): EChartsOption['yAxis'] {
   return {
     type: 'value',
     min: 0,
-    max: Math.max(Math.ceil(maxValue * 1.15), 1),
-    minInterval: 1,
+    max: yAxisMax,
+    scale: false,
     splitLine: { show: false },
     axisLine: { show: false },
     axisTick: { show: false },
     axisLabel: { show: false },
   };
+}
+
+function buildKbZeroBaselineSeriesData(
+  points: KbOverTimePoint[],
+  field: 'answered' | 'unanswered',
+  color: string,
+): KbBarSeriesItem[] {
+  return points.map((point) => {
+    const actual = point[field];
+    if (actual > 0) {
+      return {
+        value: '-',
+        itemStyle: kbBarItemStyle(color),
+      };
+    }
+    return {
+      value: 0,
+      itemStyle: kbBarItemStyle(color),
+    };
+  });
+}
+
+function buildKbValueBarSeriesData(
+  points: KbOverTimePoint[],
+  field: 'answered' | 'unanswered',
+  color: string,
+): KbBarSeriesItem[] {
+  return points.map((point) => {
+    const actual = point[field];
+    if (actual <= 0) {
+      return {
+        value: '-',
+        itemStyle: kbBarItemStyle(color),
+      };
+    }
+    return {
+      value: actual,
+      itemStyle: kbBarItemStyle(color),
+    };
+  });
 }
 
 function sparklineRateYAxis(maxRate: number): EChartsOption['yAxis'] {
@@ -211,9 +305,15 @@ export function buildKbCountBarChartOption(
   field: 'answered' | 'unanswered',
   label: string,
   color: string,
+  sharedCountMax: number,
 ): EChartsOption {
-  const data = points.map((p) => p[field]);
-  const maxCount = data.reduce((max, value) => Math.max(max, value), 0);
+  const rawValues = points.map((p) => p[field]);
+  const yAxisMax = computeKbCountAxisMax(sharedCountMax);
+  const barSeriesDefaults = {
+    type: 'bar' as const,
+    barWidth: '72%',
+    barCategoryGap: '18%',
+  };
 
   return {
     color: [color],
@@ -222,24 +322,34 @@ export function buildKbCountBarChartOption(
       trigger: 'axis',
       confine: true,
       formatter: (params) => {
-        const item = Array.isArray(params) ? params[0] : params;
-        if (!item) { return ''; }
-        const idx = item.dataIndex ?? 0;
+        const items = Array.isArray(params) ? params : [params];
+        const idx = items[0]?.dataIndex ?? 0;
         const day = buildAxisTooltipDayHeader(points, idx);
-        return `${day}<br/>${item.marker} ${item.seriesName}: ${item.value}`;
+        const actual = rawValues[idx] ?? 0;
+        const marker = items.find((item) => item.seriesName === label)?.marker
+          || items[0]?.marker
+          || '';
+        return `${day}<br/>${marker} ${label}: ${actual}`;
       },
     },
     xAxis: sparklineBarXAxis(points),
-    yAxis: sparklineCountYAxis(maxCount),
+    yAxis: buildKbSharedCountYAxis(yAxisMax),
     series: [
       {
+        ...barSeriesDefaults,
         name: label,
-        type: 'bar',
-        barWidth: '72%',
-        barCategoryGap: '18%',
-        barMinHeight: 2,
-        itemStyle: { color, borderRadius: [2, 2, 0, 0] },
-        data,
+        z: 2,
+        barMinHeight: NONZERO_BAR_MIN_HEIGHT_PX,
+        data: buildKbValueBarSeriesData(points, field, color),
+      },
+      {
+        ...barSeriesDefaults,
+        name: `${label}-zero`,
+        z: 1,
+        barGap: '-100%',
+        barMinHeight: ZERO_BAR_MIN_HEIGHT_PX,
+        data: buildKbZeroBaselineSeriesData(points, field, color),
+        tooltip: { show: false },
       },
     ],
   };
@@ -248,15 +358,17 @@ export function buildKbCountBarChartOption(
 export function buildAnsweredBarChartOption(
   points: KbOverTimePoint[],
   label: string,
+  sharedCountMax: number,
 ): EChartsOption {
-  return buildKbCountBarChartOption(points, 'answered', label, ANSWERED_COLOR);
+  return buildKbCountBarChartOption(points, 'answered', label, ANSWERED_COLOR, sharedCountMax);
 }
 
 export function buildUnansweredBarChartOption(
   points: KbOverTimePoint[],
   label: string,
+  sharedCountMax: number,
 ): EChartsOption {
-  return buildKbCountBarChartOption(points, 'unanswered', label, UNANSWERED_COLOR);
+  return buildKbCountBarChartOption(points, 'unanswered', label, UNANSWERED_COLOR, sharedCountMax);
 }
 
 /** Answer rate over time — line sparkline. */

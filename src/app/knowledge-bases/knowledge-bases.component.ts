@@ -66,6 +66,8 @@ import {
   buildAnswerRateChartOption,
   buildDayKeysBetween,
   buildUnansweredBarChartOption,
+  computeKbBarChartsSharedCountMax,
+  computeKbOverTimeTotals,
   KbOverTimePoint,
   parseKbOverTimeResponse,
 } from './kb-analytics-charts.util';
@@ -296,19 +298,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.totalCount = this.namespaces.reduce((acc: number, n: any) => acc + (Number(n.count) || 0), 0);
   }
 
-  /** `count` / `total` dalle API answered/unanswered (liste paginate). */
-  private extractQuestionsApiCount(res: any): number {
-    if (!res || typeof res !== 'object') {
-      return 0;
-    }
-    if (typeof res['total'] === 'number') {
-      return res['total'];
-    }
-    if (typeof res['count'] === 'number') {
-      return res['count'];
-    }
-    return 0;
-  }
+
 
   /** Allinea il campo `answer` per la UI (varianti API / serializzazione). */
   private normalizeAnsweredQuestionItem(item: any): any {
@@ -327,54 +317,24 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     return answerStr ? { ...item, answer: answerStr } : { ...item };
   }
 
-  /** Percentuale answered / (answered + unanswered). */
-  get kbStatsAnswerRatePercent(): string {
+ 
+  /** Valore numerico del tasso di risposta (0–100). */
+  get kbStatsAnswerRatePercentValue(): number {
     const a = this.kbStatsAnsweredCount;
     const u = this.kbStatsUnansweredCount;
     const d = a + u;
     if (d <= 0) {
-      return '0.0';
+      return 0;
     }
-    return ((100 * a) / d).toFixed(1);
+    return Math.round((1000 * a) / d) / 10;
   }
 
-  /** Aggiorna i KPI domande (chiamate leggere: page 0, limit 1). */
-  loadKbStatsCounts(): void {
-    if (!this.id_project || !this.selectedNamespace?.id) {
-      this.kbStatsAnsweredCount = 0;
-      this.kbStatsUnansweredCount = 0;
-      return;
-    }
-    forkJoin({
-      answered: this.unansweredQuestionsService.getAnsweredQuestions(
-        this.id_project,
-        this.selectedNamespace.id,
-        1,
-        0,
-        'createdAt',
-        -1
-      ),
-      unanswered: this.unansweredQuestionsService.getUnansweredQuestions(
-        this.id_project,
-        this.selectedNamespace.id,
-        1,
-        0,
-        'createdAt',
-        -1
-      ),
-    })
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        next: (results) => {
-          this.kbStatsAnsweredCount = this.extractQuestionsApiCount(results.answered);
-          this.kbStatsUnansweredCount = this.extractQuestionsApiCount(results.unanswered);
-        },
-        error: (err) => {
-          this.logger.error('[KNOWLEDGE-BASES-COMP] loadKbStatsCounts', err);
-          this.kbStatsAnsweredCount = 0;
-          this.kbStatsUnansweredCount = 0;
-        },
-      });
+  
+  
+  private applyKbChartStatsFromPoints(points: KbOverTimePoint[]): void {
+    const totals = computeKbOverTimeTotals(points);
+    this.kbStatsAnsweredCount = totals.answered;
+    this.kbStatsUnansweredCount = totals.unanswered;
   }
 
   switchTab(tab: 'contents' | 'unanswered') {
@@ -4563,9 +4523,6 @@ _presentDialogImportContents() {
           this.isLoadingMoreAnswered = false;
           this.answeredQuestionsPage = page;
 
-          if (page === 0 && !append && !String(this.answeredQuestionsSearch || '').trim()) {
-            this.kbStatsAnsweredCount = this.extractQuestionsApiCount(res);
-          }
 
           this.logger.log('[KnowledgeBasesComponent] Loaded answered questions:', {
             page,
@@ -4653,9 +4610,6 @@ _presentDialogImportContents() {
           this.isLoadingMoreUnanswered = false;
           this.unansweredQuestionsPage = page;
 
-          if (page === 0 && !append && !String(this.unansweredQuestionsSearch || '').trim()) {
-            this.kbStatsUnansweredCount = this.extractQuestionsApiCount(res);
-          }
           
           this.logger.log('[KnowledgeBasesComponent] Loaded unanswered questions:', {
             page,
@@ -4730,6 +4684,9 @@ _presentDialogImportContents() {
   getAnwseredUnansweredQuestionsForCharts() {
     const namespaceId = this.selectedNamespace?.id;
     if (!namespaceId) {
+      this.kbStatsAnsweredCount = 0;
+      this.kbStatsUnansweredCount = 0;
+      this.kbChartPoints = [];
       this.logger.warn('[KnowledgeBasesComponent] getAnwseredUnansweredQuestionsForCharts skipped: no selectedNamespace');
       return;
     }
@@ -4745,6 +4702,7 @@ _presentDialogImportContents() {
           if (requestId !== this.kbChartsRequestId) { return; }
           const dayKeys = buildDayKeysBetween(new Date(startDate), new Date(endDate));
           this.kbChartPoints = alignPointsToDayKeys(dayKeys, parseKbOverTimeResponse(res));
+          this.applyKbChartStatsFromPoints(this.kbChartPoints);
           this.kbChartsLoading = false;
           this.cdr.detectChanges();
           this.scheduleKbChartsRender();
@@ -4752,8 +4710,12 @@ _presentDialogImportContents() {
         },
         error: (err) => {
           if (requestId !== this.kbChartsRequestId) { return; }
+          this.kbChartPoints = [];
+          this.kbStatsAnsweredCount = 0;
+          this.kbStatsUnansweredCount = 0;
           this.kbChartsLoading = false;
           this.disposeKbCharts();
+          this.cdr.markForCheck();
           this.logger.error('[KnowledgeBasesComponent] Error loading questions stats for charts', err);
         },
       });
@@ -4842,27 +4804,28 @@ _presentDialogImportContents() {
     const answeredLabel = this.translate.instant('KbPage.KbStatsAnswered');
     const unansweredLabel = this.translate.instant('KbPage.KbStatsUnanswered');
     const rateLabel = this.translate.instant('KbPage.KbStatsAnswerRate');
+    const sharedCountMax = computeKbBarChartsSharedCountMax(this.kbChartPoints);
 
     this.disposeChartOnElement(answeredEl);
     this.disposeChartOnElement(unansweredEl);
     this.disposeChartOnElement(rateEl);
 
     this.answeredChart = echarts.init(answeredEl);
-    this.answeredChart.setOption(
-      buildAnsweredBarChartOption(this.kbChartPoints, answeredLabel),
-      true,
+     this.answeredChart.setOption(
+      buildAnsweredBarChartOption(this.kbChartPoints, answeredLabel, sharedCountMax),
+      { notMerge: true },
     );
 
     this.unansweredChart = echarts.init(unansweredEl);
     this.unansweredChart.setOption(
-      buildUnansweredBarChartOption(this.kbChartPoints, unansweredLabel),
-      true,
+      buildUnansweredBarChartOption(this.kbChartPoints, unansweredLabel, sharedCountMax),
+      { notMerge: true },
     );
 
     this.answerRateChart = echarts.init(rateEl);
     this.answerRateChart.setOption(
       buildAnswerRateChartOption(this.kbChartPoints, rateLabel),
-      true,
+      { notMerge: true },
     );
 
     requestAnimationFrame(() => {
