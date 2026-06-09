@@ -348,18 +348,19 @@ const routes: Routes = [
 
   // new Analytics
   {
-    path: 'project/:projectid/analytics/new',
+    // path: 'project/:projectid/analytics/new',
+    path: 'project/:projectid/analytics',
     loadChildren: () => import('app/analytics-new/analytics-new.module').then(m => m.AnalyticsNewModule),
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
 
 
   // Analytics
-  {
-    path: 'project/:projectid/analytics',
-    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
-    canActivate: [AuthGuard, ProjectProfileGuard]
-  },
+  // {
+  //   path: 'project/:projectid/analytics',
+  //   loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
+  //   canActivate: [AuthGuard, ProjectProfileGuard]
+  // },
   // { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
   {

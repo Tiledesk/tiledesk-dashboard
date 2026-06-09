@@ -3312,7 +3312,6 @@ _presentDialogImportContents() {
         this.kbsContentTotalCount = total;
         this.syncNamespaceContentCount(total);
       }
-      this.loadKbStatsCounts();
       this.logger.log('[KNOWLEDGE BASES COMP] resp.kbs ', resp.kbs)
       
       // If called after update or add, replace the entire list to maintain server order
