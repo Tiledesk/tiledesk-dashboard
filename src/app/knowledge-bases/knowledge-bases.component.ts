@@ -4793,7 +4793,7 @@ _presentDialogImportContents() {
       from: startDate,
       to: endDate,
     });
-    this.router.navigate(['project', this.id_project, 'analytics', 'new']);
+    this.router.navigate(['project', this.id_project, 'analytics']);
   }
 
   private renderKbCharts(): void {
