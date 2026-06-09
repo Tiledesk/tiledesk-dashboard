@@ -942,6 +942,7 @@ export const CHANNELS_NAME = {
     VOICE_VXML: 'voice-vxml',
     VOICE_TWILIO: 'voice_twilio',
     SMS_TWILIO: 'sms-twilio',
+    // ELEVENLABS: 'elevenlabs', // Widget requests use chat21; no separate request channel id for ElevenLabs in this dashboard
 }
 
 export const CHANNELS = [
@@ -954,7 +955,7 @@ export const CHANNELS = [
     { id: CHANNELS_NAME.VOICE_VXML, name: 'Voice' },
     { id: CHANNELS_NAME.VOICE_TWILIO, name: 'Voice' },
     { id: CHANNELS_NAME.SMS_TWILIO, name: 'SMS' },
-
+    // { id: CHANNELS_NAME.ELEVENLABS, name: 'ElevenLabs' } // See CHANNELS_NAME.ELEVENLABS comment
 ]
 
 /**

@@ -1,13 +1,52 @@
 # tiledesk-dashboard
 
-### 2.7.178
-- Implements the new analytics (for test purpose)
+### 2.7.226-stage
+- Fixes the bug: Analytics sidebar menu item redirects to old version of Analytics
 
-### 2.7.177
+### 2.7.225-stage
+- Improves Data tables
+
+### 2.7.224-stage
+- Implements Data tables
+
+### 2.7.223-stage 
+- Changes the ElevenLabs integration value from "voice_streaming" to "elevenlabs"
+
+### 2.7.222-stage 
+- Improves the knowledge base charts rendering 
+- Adds the date range (from and to) to the payload of POST messages sent to the analytics iframe
+
+### 2.7.221-stage 
+- Increases the date range of the charts on the knowledge bases page from 7 to 21 days
+
+### 2.7.220-stage 
+- Refactors knowledge base charts to use bar charts for Answered and Unanswered questions
+- Move charts to knowledge base KPIs
+
+### 2.7.219-stage 
+- Adds charts for visualizing answered/unanswered questions and answer rates over time. 
+￼
+### 2.7.218-stage
 - Disables the stream option if the Chunks only option is enabled
-- Gets the fonts from the metadata object returned in the response if the Chunks only option is enabled.
+- Gets the sources from the metadata object returned in the response if the Chunks only option is enabled.
 - Displays a specific message in the response field of the Knowledge Base Preview dialog if the Chunks only option is enabled
-- Fixes the bug: Ollama and Vllm models not displayed in Knowledge base preview dialog
+- Fixes the bug : Ollama and Vllm models not displayed in preview
+
+### 2.7.216-stage
+- Implements integrations with Cerebras and OpenRouter
+
+### 2.7.215-stage
+- Deletes all content associated with a sitemap when the sitemap is deleted
+
+### 2.7.214-stage
+- Implements ElevenLabs integration
+- Adds a setting in the widget's advanced settings to show/hide the voice streaming button
+
+ 
+### 2.7.212-stage
+- Implement multi-project availability
+- Adds the ability to export unanswered and answered questions in CSV or JSON format
+- Enables the message retention tab in the project settings
 
 ### 2.7.176
 - Implements multi-project availability
@@ -19,6 +58,19 @@
 - Adds OpenAI GPT-5.5 model
 
 ### 2.7.174
+- Fixed the bug: the permission to Create a Department does not work
+- Fixes bug: The name displayed in the navbar on the support page is incorrect
+
+### 2.7.211-stage 
+- Adds new analytics (fix)
+
+### 2.7.210-stage 
+- Adds new analytics
+
+### 2.7.209-stage 
+- Adds OpenAI GPT-5.5 model
+
+### 2.7.208-stage 
 - Fixed the bug: the permission to Create a Department does not work
 - Fixes bug: The name displayed in the navbar on the support page is incorrect
 

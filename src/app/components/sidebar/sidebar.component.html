@@ -233,6 +233,37 @@
       </ng-container> -->
 
       <!-- ----------------------------- -->
+      <!-- Data tables  -->
+      <!-- ----------------------------- -->
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <div id="data-tables-anchor-wpr" *ngIf="project"
+          matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'DataTables.DataTables' | translate }}"
+          #tooltip="matTooltip"
+          matTooltipPosition='right'
+          matTooltipHideDelay="100"
+          routerLinkActive="item-active"
+          style="position: relative;">
+          <a class="customAncor" routerLink="project/{{ project._id }}/data-tables">
+            <!-- <span class="material-icons-outlined data-tables-sidebar-icon">
+              grid_on
+            </span> -->
+            <span>
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="none">
+                <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h133v-133H200v133Zm213 0h134v-133H413v133Zm214 0h133v-133H627v133ZM200-413h133v-134H200v134Zm213 0h134v-134H413v134Zm214 0h133v-134H627v134ZM200-627h133v-133H200v133Zm213 0h134v-133H413v133Zm214 0h133v-133H627v133Z"/>
+              </svg>
+            </span>
+          </a>
+
+          <div class="sidebar-beta-badge">
+            <span class="sidebar-beta-badge-icon" style="position: absolute;top: 2px;left: 16px;font-weight: 500;font-size: 8px;"
+            [ngStyle]="{ 'color': DATA_TABLES_ROUTE_IS_ACTIVE ? '#3ea9f5' : '#fff' }">BETA</span>
+          </div>
+
+        </div>
+      </ng-container>
+
+      <!-- ----------------------------- -->
       <!-- WA broadcasts  -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="PERMISSION_TO_VIEW_WA_BRODCAST"> 
@@ -303,7 +334,7 @@
     <!-- ----------------------------- -->
     <!-- ANALYTICS -->
     <!-- ----------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+    <!-- <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
       <ng-container *ngIf="isVisibleANA">
         <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
           [class.item-active]="ANALITYCS_ROUTE_IS_ACTIVE || ANALYTICS_DEMO_ROUTE_IS_ACTIVE"
@@ -323,24 +354,68 @@
               </svg>
             </span>
           </a>
-
-          <div *ngIf="ANALYTICS_NEW_ROUTE_IS_ACTIVE" class="sidebar-analytics-new-badge">
-            <span class="material-icons-outlined">fiber_new</span>
-          </div>
         </div>
       </ng-container>
-    </ng-container> 
+    </ng-container>  -->
 
-    <!-- ANALYTICS new — voce sidebar dedicata disabilitata in prod; nuovi analytics via URL …/analytics/new -->
-    <!--
+    <!-- ----------------------------- -->
+    <!-- ANALYTICS  new to fix -->
+    <!-- ----------------------------- -->
+    <!-- <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+      <ng-container *ngIf="isVisibleANA">
+        <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
+          [class.item-active]="ANALITYCS_ROUTE_IS_ACTIVE || ANALYTICS_DEMO_ROUTE_IS_ACTIVE"
+          matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100"
+          style="position: relative;">
+          <a class="customAncor" 
+          [routerLink]="getAnalyticsRouterLink()"
+          (click)="handleAnalyticsClick($event)">
+          
+            <span>
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+                <path
+                  d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z" />
+              </svg>
+            </span>
+          </a>
+        </div>
+      </ng-container>
+    </ng-container>  -->
+
+
     <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
       <ng-container *ngIf="isVisibleANA">
-        <div id="analytics-new" … routerLink …/analytics/new …>
-          … fiber_new …
+        <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
+          [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" matTooltipClass="sb-mat-tooltip"
+          matTooltip="{{ 'Analytics.AnalyticsTITLE' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
+          matTooltipHideDelay="100" 
+          style="position: relative;">
+          <a class="customAncor" 
+          [routerLink]="PERMISSION_TO_VIEW_ANALYTICS ? ['/project', project._id, 'analytics', 'new'] : null"
+          >
+          
+            <span>
+            
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
+                <path
+                  d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z" />
+              </svg>
+            </span>
+          </a>
+
+          <div style="position: absolute;top: -3px;">
+            <!-- <span class="material-icons-outlined" style="color:#3ea9f5;">
+              fiber_new
+            </span> -->
+          </div>
         </div>
+
       </ng-container>
+
     </ng-container>
-    -->
 
       <!-- Maintance module -->
      <!-- <ng-container>

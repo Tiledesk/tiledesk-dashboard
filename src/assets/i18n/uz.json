@@ -757,6 +757,8 @@
     "WhenEnabledEmoji":"Yoqilganda foydalanuvchilar emoji yuborishlari mumkin. Oʻchirilganida, emoji tugmasi berkitiladi",
     "DisableVoiceRecoder":"Ovoz yozuvchisini o'chiring",
     "WhenEnabledVoiceRecoder":"Yoqilganda foydalanuvchilar ovozli xabarlarni yozib olishlari mumkin. O'chirilganida, ovoz yozish tugmasi yashirin bo'ladi va foydalanuvchi faqat matnli xabar yuborishi mumkin",
+    "VoiceStreamingMode": "Ovozli striming rejimi",
+    "VoiceStreamingModeDesc": "Yoqilgan bo'lsa, foydalanuvchi gapirganda ovozni real vaqtda uzatishi mumkin. O'chirilgan bo'lsa, tugma ko'rinmaydi.",
     "UploadLogo":"Logotip yuklang",
     "FileTooLarge": "Fayl yuklash uchun juda katta. Maksimal fayl hajmi {{file_size}}",
     "ImagePreview":"Rasmni oldindan ko'rish",
