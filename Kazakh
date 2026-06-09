@@ -2116,6 +2116,8 @@
         "KbStatsAnswered": "Answered",
         "KbStatsUnanswered": "Unanswered",
         "KbStatsAnswerRate": "Answer rate",
+        "KbChartAnsweredUnansweredOverTime": "Answered and unanswered over time",
+        "KbChartAnswerRateOverTime": "Answer rate over time",
         "QuestionsTextSearchPlaceholder": "Text search",
         "Questions": "Questions",
         "AnsweredQuestionsTab": "Answered",
