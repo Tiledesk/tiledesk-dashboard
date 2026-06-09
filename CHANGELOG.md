@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.228-stage
+- Fixes the bug: Knowledge base statistics links to new analytics don't work
+
 ### 2.7.227-stage
 - Enhances knowledge base analytics by implementing shared Y-axis scaling for bar charts
 - Update the format of knowledge base statistics counts
