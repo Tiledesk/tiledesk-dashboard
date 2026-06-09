@@ -387,6 +387,7 @@
 
 
     <ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+       <!-- [routerLink]="PERMISSION_TO_VIEW_ANALYTICS ? ['/project', project._id, 'analytics', 'new'] : null" -->
       <ng-container *ngIf="isVisibleANA">
         <div id="analytics" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active" (click)="stopScroll()"
           [class.item-active]="ANALYTICS_DEMO_ROUTE_IS_ACTIVE" matTooltipClass="sb-mat-tooltip"
@@ -394,7 +395,7 @@
           matTooltipHideDelay="100" 
           style="position: relative;">
           <a class="customAncor" 
-          [routerLink]="PERMISSION_TO_VIEW_ANALYTICS ? ['/project', project._id, 'analytics', 'new'] : null"
+          [routerLink]="PERMISSION_TO_VIEW_ANALYTICS ? ['/project', project._id, 'analytics'] : null"
           >
           
             <span>
