@@ -107,6 +107,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   private modelDefaultValue = "gpt-4o";
   /** Valore errato ancora restituito dal server per max_tokens con gpt-4o (workaround sotto). */
   private static readonly SERVER_LEGACY_MAX_TOKENS_SENTINEL = 256;
+  private static readonly VLLM_SELECT_VALUE_SEP = '::';
   private maxTokensDefaultValue = 10000;
   private temperatureDefaultValue = 0.7
   private alphaDefaultValue = 0.5
@@ -385,8 +386,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   //     }
   //   })
   // }
-
-  getVllmModels() {
+  old_getVllmModels() {
     const integrationName = 'vllm';
     this.integrationService.getIntegrationByName(integrationName).subscribe({
       next: (res: any) => {
@@ -415,6 +415,70 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
          this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
       }
     });
+  }
+
+  getVllmModels() {
+    const integrationName = 'vllm';
+    this.integrationService.getIntegrationByName(integrationName).subscribe({
+      next: (res: any) => {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
+
+        const vllmProvider = LLM_MODEL.find(p => p.value === 'vllm');
+        const modelOptions = this.extractVllmModelsFromServers(res);
+
+        if (vllmProvider && modelOptions.length) {
+          vllmProvider.models = modelOptions.map((item) => ({
+            name: item.name,
+            value: item.value,
+            description: '',
+            status: 'active' as const,
+            vllmServer: item.serverName,
+          })) as any;
+
+          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI vllmProvider:', vllmProvider.models);
+        } else {
+          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per vLLM');
+        }
+
+        // 🔁 Ricarica i gruppi dopo aver aggiornato il provider
+        this.loadModelGroups();
+      },
+      error: (err) => {
+         this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getVllmModels:', err);
+      },
+      complete: () => {
+         this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+      }
+    });
+  }
+
+  /** Builds display labels from value.servers[] (name = "Server ・ model", value = model only). */
+  private extractVllmModelsFromServers(integration: any): Array<{ name: string; value: string; serverName: string }> {
+    const servers = integration?.value?.servers;
+    if (!Array.isArray(servers)) {
+      return [];
+    }
+
+    const models: Array<{ name: string; value: string; serverName: string }> = [];
+    servers.forEach((server: { name?: string; models?: string[] }) => {
+      const serverName = String(server?.name || '').trim();
+      if (!Array.isArray(server?.models)) {
+        return;
+      }
+      server.models.forEach((model) => {
+        const modelName = String(model || '').trim();
+        if (!modelName) {
+          return;
+        }
+        models.push({
+          name: serverName ? `${serverName} ・ ${modelName}` : modelName,
+          value: modelName,
+          serverName,
+        });
+      });
+    });
+
+    return models;
   }
 
   getOllamaModels() {
@@ -474,43 +538,42 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       // trova il provider corrispondente in LLM_MODEL
       const provider = LLM_MODEL.find(p => p.name.toLowerCase() === group.providerName.toLowerCase());
 
-      return group.models.map(model => ({
-        ...model,
-        providerName: group.providerName,
-        llmValue: provider ? provider.value : null, // <- aggiungo il valore dell'LLM
-        llmSrc: provider ? provider.src : null // <- se vuoi anche l’icona
-      }));
+      return group.models.map(model => {
+        const llmValue = provider ? provider.value : null;
+        const vllmServer = (model as any).vllmServer;
+        return {
+          ...model,
+          providerName: group.providerName,
+          llmValue,
+          llmSrc: provider ? provider.src : null,
+          vllmServer,
+          selectValue: this.buildModelSelectValue(model.value, llmValue, vllmServer),
+        };
+      });
     });
 
     this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
-    // eventualmente seleziona il modello corrente
-    const selectedProvider = this.modelGroups.find(g =>
-      g.models.some(m => m.value === this.selectedNamespace.preview_settings.model)
+
+    const modelRow = this.resolveInitialModelRow();
+    const settings = this.selectedNamespace.preview_settings;
+    this.selectedModel = modelRow?.selectValue ?? this.buildModelSelectValue(
+      settings.model,
+      settings.llm,
+      settings.vllmServer,
     );
-    if (selectedProvider) {
-      const selectedModelObj = selectedProvider.models.find(m =>
-        m.value === this.selectedNamespace.preview_settings.model
-      );
-      this.selectedModel = selectedModelObj?.value;
+    this.applyPreviewSettingsLlmFromModel(modelRow);
+    if (!settings.llm && modelRow?.llmValue) {
+      settings.llm = modelRow.llmValue;
     }
 
     this.logger.log('[MODAL PREVIEW SETTINGS] selectedModel ', this.selectedModel)
     this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
     this.logger.log('[MODAL PREVIEW SETTINGS] modelDefaultValue ', this.modelDefaultValue)
-
-
-
-    const modelRow = this.flattenedModels.find(
-      (el) => el.value === this.selectedNamespace.preview_settings.model
-    );
-    this.selectedModel = modelRow?.value ?? this.selectedNamespace.preview_settings.model;
     this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
+    this.logger.log("[MODAL PREVIEW SETTINGS] preview_settings.llm", settings.llm)
+    this.logger.log("[MODAL PREVIEW SETTINGS] preview_settings.vllmServer", settings.vllmServer)
 
-    const selectedLlmProvider = this.getLlmProviderByModel(this.selectedNamespace.preview_settings.model);
-    this.logger.log("[MODAL PREVIEW SETTINGS] selectedLlmProvider on init", selectedLlmProvider)
-    this.selectedNamespace.preview_settings.llm = selectedLlmProvider;
-
-    const mv = this.selectedNamespace?.preview_settings?.model;
+    const mv = settings?.model;
     if (mv) {
       this.applyMaxTokenSliderFromUtil(mv, { resetMaxTokensToDefault: false });
     }
@@ -519,6 +582,69 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   getLlmProviderByModel(modelValue: string): string | null {
     const found = this.flattenedModels.find(el => el.value === modelValue);
     return found ? found.llmValue : null;
+  }
+
+  private buildModelSelectValue(modelValue: string, llmValue?: string | null, vllmServer?: string): string {
+    if (llmValue === 'vllm' && vllmServer) {
+      return `${vllmServer}${ModalPreviewSettingsComponent.VLLM_SELECT_VALUE_SEP}${modelValue}`;
+    }
+    return modelValue;
+  }
+
+  private parseModelValueFromSelectValue(selectValue: string): string {
+    const sep = ModalPreviewSettingsComponent.VLLM_SELECT_VALUE_SEP;
+    const idx = selectValue.indexOf(sep);
+    if (idx >= 0) {
+      return selectValue.slice(idx + sep.length);
+    }
+    return selectValue;
+  }
+
+  private resolveFlattenedModelBySelectValue(selectValue: string): any {
+    return this.flattenedModels.find(m => m.selectValue === selectValue)
+      || this.flattenedModels.find(m => m.value === selectValue);
+  }
+
+  private resolveInitialModelRow(): any {
+    return this.resolveModelRowFromSettings(this.selectedNamespace?.preview_settings);
+  }
+
+  private resolveModelRowFromSettings(settings: any): any {
+    if (!settings?.model) {
+      return null;
+    }
+
+    if (settings.llm === 'vllm' && settings.vllmServer) {
+      const byServer = this.flattenedModels.find(
+        m => m.value === settings.model && m.llmValue === 'vllm' && m.vllmServer === settings.vllmServer,
+      );
+      if (byServer) {
+        return byServer;
+      }
+    }
+
+    const matches = this.flattenedModels.filter(m => m.value === settings.model);
+    if (settings.llm) {
+      const byLlm = matches.find(m => m.llmValue === settings.llm);
+      if (byLlm) {
+        return byLlm;
+      }
+    }
+
+    return matches[0] || null;
+  }
+
+  private applyPreviewSettingsLlmFromModel(modelRow: any): void {
+    if (!modelRow || !this.selectedNamespace?.preview_settings) {
+      return;
+    }
+
+    this.selectedNamespace.preview_settings.llm = modelRow.llmValue;
+    if (modelRow.llmValue === 'vllm' && modelRow.vllmServer) {
+      this.selectedNamespace.preview_settings.vllmServer = modelRow.vllmServer;
+    } else {
+      delete this.selectedNamespace.preview_settings.vllmServer;
+    }
   }
 
 
@@ -576,49 +702,43 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.aiSettingsObject[0].maxTokens = this.max_tokens;
   }
 
-  onSelectModel(selectedModel) {
-    this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel", selectedModel)
+  onSelectModel(selectedSelectValue) {
+    this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedSelectValue", selectedSelectValue)
 
-    const selected = this.flattenedModels.find(m => m.value === selectedModel);
+    const selected = this.resolveFlattenedModelBySelectValue(selectedSelectValue);
+    const modelValue = this.parseModelValueFromSelectValue(selectedSelectValue);
+
     if (selected) {
       this.logger.log('Modello selezionato:', selected.name);
       this.logger.log('LLM Provider:', selected.llmValue);
       this.logger.log('Icona provider:', selected.llmSrc);
-      this.selectedNamespace.preview_settings.llm = selected.llmValue
+      this.applyPreviewSettingsLlmFromModel(selected);
     }
 
-    if (selectedModel.startsWith('gpt-5')) {
-
+    if (modelValue.startsWith('gpt-5')) {
       this.temperature = 1;
       this.aiSettingsObject[0].temperature = 1;
       this.selectedNamespace.preview_settings.temperature = 1;
       this.kbService.hasChagedAiSettings(this.aiSettingsObject);
       this.temperature_slider_disabled = true;
-      // this.max_tokens_max = 100000
-      this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel selectedModel 2", selectedModel)
+      this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel modelValue gpt-5", modelValue)
     } else {
-
       this.aiSettingsObject[0].temperature = this.temperatureDefaultValue;
       this.selectedNamespace.preview_settings.temperature = this.temperatureDefaultValue;
       this.kbService.hasChagedAiSettings(this.aiSettingsObject);
       this.temperature = this.temperatureDefaultValue;
       this.temperature_slider_disabled = false;
-      // this.max_tokens_max = 9999
-      //  if (this.max_tokens > 9999 ) {
-      //   this.max_tokens = this.maxTokensDefaultValue;
-      // }
     }
 
     if (!this.wasOpenedFromThePreviewKBModal) {
-      this.selectedNamespace.preview_settings.model = selectedModel
+      this.selectedNamespace.preview_settings.model = modelValue;
     }
 
-    // Comunicate to the subscriber "modal-preview-k-b" the change of the model
-    this.aiSettingsObject[0].model = selectedModel
+    this.aiSettingsObject[0].model = modelValue;
     this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject", this.aiSettingsObject)
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
-    if (selectedModel !== this.selectedNamespace.preview_settings.model) {
+    if (modelValue !== this.selectedNamespace.preview_settings.model) {
       if (this.hasAlreadyOverridedModel !== true) {
         this.countOfOverrides = this.countOfOverrides + 1;
       }
@@ -627,7 +747,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.countOfOverrides = this.countOfOverrides - 1;
     }
 
-    this.applyMaxTokenSliderFromUtil(selectedModel, { resetMaxTokensToDefault: true });
+    this.applyMaxTokenSliderFromUtil(modelValue, { resetMaxTokensToDefault: true });
     this.kbService.hasChagedAiSettings(this.aiSettingsObject);
   }
 
@@ -1029,8 +1149,19 @@ private restoreDialogScrollPosition(): void {
   }
 
   onSavePreviewSettings() {
-    // this.logger.log('[MODAL PREVIEW SETTINGS] onSavePreviewSettings')
+    this.syncPreviewSettingsFromSelectedModel();
     this.dialogRef.close({ action: "update", selectedNamespace: this.selectedNamespace });
+  }
+
+  /** Allinea model, llm e vllmServer in preview_settings prima del PUT namespace. */
+  private syncPreviewSettingsFromSelectedModel(): void {
+    if (!this.selectedModel || !this.selectedNamespace?.preview_settings) {
+      return;
+    }
+    const modelRow = this.resolveFlattenedModelBySelectValue(this.selectedModel);
+    const modelValue = this.parseModelValueFromSelectValue(this.selectedModel);
+    this.selectedNamespace.preview_settings.model = modelValue;
+    this.applyPreviewSettingsLlmFromModel(modelRow);
   }
 
   // closeSettingsAndOpenPreviewKBModal() {
@@ -1059,15 +1190,25 @@ private restoreDialogScrollPosition(): void {
     this.hasAlreadyOverrideUseHyde = false;
     //this.hasAlreadyOverrideReRankingMultipler = false;
 
-    this.selectedModel = this.selectedNamespaceClone.preview_settings.model;
-    // this.selectedNamespace.preview_settings.model = this.modelDefaultValue
+    const cloneSettings = this.selectedNamespaceClone.preview_settings;
+    const modelRow = this.resolveModelRowFromSettings(cloneSettings);
+    this.selectedModel = modelRow?.selectValue ?? this.buildModelSelectValue(
+      cloneSettings.model,
+      cloneSettings.llm,
+      cloneSettings.vllmServer,
+    );
+    this.selectedNamespace.preview_settings.model = cloneSettings.model;
+    this.selectedNamespace.preview_settings.llm = cloneSettings.llm;
+    if (cloneSettings.vllmServer) {
+      this.selectedNamespace.preview_settings.vllmServer = cloneSettings.vllmServer;
+    } else {
+      delete this.selectedNamespace.preview_settings.vllmServer;
+    }
 
+    this.max_tokens = cloneSettings.max_tokens;
 
-    // this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
-    this.max_tokens = this.selectedNamespaceClone.preview_settings.max_tokens;
-    // this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
-
-    if (this.selectedModel.startsWith('gpt-5')) {
+    const resetModelValue = cloneSettings.model;
+    if (resetModelValue.startsWith('gpt-5')) {
       this.temperature = 1
       this.temperature_slider_disabled = true;
       //  this.max_tokens_max = 100000
@@ -1107,9 +1248,9 @@ private restoreDialogScrollPosition(): void {
     this.useCache = this.selectedNamespaceClone.preview_settings.use_cache;
     this.logger.log('Reset this.useCache ', this.useCache)
 
-    this.applyMaxTokenSliderFromUtil(this.selectedModel, { resetMaxTokensToDefault: false });
+    this.applyMaxTokenSliderFromUtil(resetModelValue, { resetMaxTokensToDefault: false });
 
-    this.aiSettingsObject[0].model = this.selectedModel;
+    this.aiSettingsObject[0].model = resetModelValue;
     this.aiSettingsObject[0].maxTokens = this.max_tokens
     this.aiSettingsObject[0].temperature = this.temperature;
     this.aiSettingsObject[0].top_k = this.topK;
@@ -1126,9 +1267,16 @@ private restoreDialogScrollPosition(): void {
   }
 
   resetToDefault() {
-    // this.selectedModel = this.model_list[3].value;
-    this.selectedModel = this.modelDefaultValue
-    this.selectedNamespace.preview_settings.model = this.modelDefaultValue
+    const defaultModelRow = this.flattenedModels.find(
+      m => m.value === this.modelDefaultValue && m.llmValue === 'openai',
+    ) || this.flattenedModels.find(m => m.value === this.modelDefaultValue);
+    this.selectedModel = defaultModelRow?.selectValue ?? this.modelDefaultValue;
+    this.selectedNamespace.preview_settings.model = this.modelDefaultValue;
+    this.applyPreviewSettingsLlmFromModel(defaultModelRow);
+    if (!defaultModelRow) {
+      this.selectedNamespace.preview_settings.llm = 'openai';
+      delete this.selectedNamespace.preview_settings.vllmServer;
+    }
 
     this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)
 

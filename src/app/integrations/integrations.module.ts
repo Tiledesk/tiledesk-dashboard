@@ -29,6 +29,7 @@ import { OllamaIntegrationComponent } from './list/ollama-integration/ollama-int
 import { DeepseekIntegrationComponent } from './list/deepseek-integration/deepseek-integration.component';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 import { VLLMComponent } from './list/v-llm/v-llm.component';
+import { VllmEndpointTableComponent } from './list/v-llm/vllm-endpoint-table/vllm-endpoint-table.component';
 import { McpIntegrationComponent } from './list/mcp-integration/mcp-integration.component';
 import { McpServerTableComponent } from './list/mcp-integration/mcp-server-table/mcp-server-table.component';
 import { McpToolsModalComponent } from './list/mcp-integration/mcp-tools-modal/mcp-tools-modal.component';
@@ -64,8 +65,8 @@ const routes: Routes = [
     McpIntegrationComponent,
     McpServerTableComponent,
     McpToolsModalComponent,
-    DeepseekIntegrationComponent,
     VLLMComponent,
+    VllmEndpointTableComponent,
     ElevenlabsIntegrationComponent,
     CerebrasIntegrationComponent,
     OpenRouterIntegrationComponent

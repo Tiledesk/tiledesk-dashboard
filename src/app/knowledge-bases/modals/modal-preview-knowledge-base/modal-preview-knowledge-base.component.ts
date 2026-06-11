@@ -662,6 +662,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       'use_cache': this.useCache,
       'llm': this.selectedNamespace.preview_settings.llm,
       'tags':this.kbTagsArray
+    };
+    if (this.selectedNamespace.preview_settings.llm === 'vllm' && this.selectedNamespace.preview_settings.vllmServer) {
+      this.body.vllmServer = this.selectedNamespace.preview_settings.vllmServer;
     }
     // this.error_answer = false;
 

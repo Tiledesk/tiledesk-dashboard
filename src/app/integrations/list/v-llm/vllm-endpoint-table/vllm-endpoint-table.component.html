@@ -1,25 +1,23 @@
-<div class="mcp-table-wrapper">
-    <!-- Filter Section -->
+<div class="vllm-table-wrapper">
     <div class="filters-card">
         <div class="card-content">
             <div class="search-filters-card-header">
                 <div class="fake-input">
-                    <input 
-                        type="text" 
+                    <input
+                        type="text"
                         [(ngModel)]="filterText"
                         (input)="onFilterChange($any($event.target).value)"
-                        placeholder="{{ 'Integration.SearchByNameURLOrType' | translate }}">
+                        placeholder="{{ 'Integration.SearchByNameURLOrModels' | translate }}">
                     <span class="material-icons-outlined">search</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Table Section -->
     <div class="card contents-card">
         <div class="card-header">
-            <div class="servers-count">
-                {{ 'Integration.TotalMCPServers' | translate }}: <span class="count-num">{{ filteredServers.length }}</span>
+            <div class="endpoints-count">
+                {{ 'Integration.TotalVllmEndpoints' | translate }}: <span class="count-num">{{ filteredEndpoints.length }}</span>
             </div>
         </div>
 
@@ -35,40 +33,37 @@
                             <span>URL</span>
                             <span class="material-icons-outlined sort-icon">{{ getSortIcon('url') }}</span>
                         </th>
-                        <th class="sortable-column" (click)="onSort('transport')">
-                            <span>{{ 'Type' | translate }}</span>
-                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('transport') }}</span>
+                        <th class="apikey-column">
+                            <span>{{ 'Integration.ApiKey' | translate }}</span>
                         </th>
-                        <th class="tools-column">
-                            <span>{{ 'Integration.Tools' | translate }}</span>
+                        <th class="models-column">
+                            <span>{{ 'Models' | translate }}</span>
                         </th>
                         <th class="actions-column"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let server of filteredServers" 
-                        class="server-row"
-                        (click)="onRowClick(server)">
+                    <tr *ngFor="let endpoint of filteredEndpoints"
+                        class="endpoint-row"
+                        (click)="onRowClick(endpoint)">
                         <td class="name-column">
-                            <span class="server-name">{{ server.name }}</span>
+                            <span class="endpoint-name">{{ endpoint.name }}</span>
                         </td>
                         <td class="url-column">
-                            <span class="server-url">{{ server.url }}</span>
+                            <span class="endpoint-url">{{ endpoint.url }}</span>
                         </td>
-                        <td class="transport-column">
-                            <div class="transport-chip">
-                                <span>{{ getTransportDisplay(server.transport) }}</span>
-                            </div>
+                        <td class="apikey-column">
+                            <span class="apikey-placeholder" *ngIf="hasApiKey(endpoint)">{{ apiKeyPlaceholder }}</span>
                         </td>
-                        <td class="tools-column">
-                            <div class="tools-badge">
-                                <span class="badge-number">{{ getToolsCount(server) }}</span>
+                        <td class="models-column">
+                            <div class="models-badge">
+                                <span class="badge-number">{{ getModelsCount(endpoint) }}</span>
                             </div>
                         </td>
                         <td class="actions-column">
-                            <button 
-                                mat-icon-button 
-                                (click)="onDelete(server, $event)"
+                            <button
+                                mat-icon-button
+                                (click)="onDelete(endpoint, $event)"
                                 [matTooltip]="'Delete' | translate"
                                 matTooltipClass="custom-mat-tooltip"
                                 matTooltipHideDelay="100"
@@ -79,11 +74,11 @@
                             </button>
                         </td>
                     </tr>
-                    <tr *ngIf="filteredServers.length === 0">
+                    <tr *ngIf="filteredEndpoints.length === 0">
                         <td colspan="5" class="no-data">
                             <div class="no-data-message">
-                                <span class="material-icons-outlined">inbox</span>
-                                <p>{{ 'Integration.NoMCPServersFound' | translate }}</p>
+                                <span class="material-icons-outlined">link_off</span>
+                                <p>{{ emptyStateMessageKey | translate }}</p>
                             </div>
                         </td>
                     </tr>
@@ -92,4 +87,3 @@
         </div>
     </div>
 </div>
-

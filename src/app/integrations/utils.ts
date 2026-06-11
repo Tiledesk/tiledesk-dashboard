@@ -140,8 +140,8 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "VXML Voice",            category: INTEGRATIONS_CATEGORIES.VOICE,            key: INTEGRATIONS_KEYS.VXML_VOICE,      src_icon: "assets/img/int/vxml-icon.png",                   src_logo: "assets/img/int/vxml-icon.png",               pro: true,  plan: 'Pro' },
     { name: "Twilio Voice",          category: INTEGRATIONS_CATEGORIES.VOICE,            key: INTEGRATIONS_KEYS.TWILIO_VOICE,    src_icon: "assets/img/int/voice-twilio-icon.png",           src_logo: "assets/img/int/voice-twilio-icon.png",       pro: true,  plan: 'Starter' },
     { name: "Elevenlabs",            category: INTEGRATIONS_CATEGORIES.VOICE,            key: INTEGRATIONS_KEYS.ELEVENLABS,      src_icon: "assets/img/int/elevenlabs-icon.png",             src_logo: "assets/img/int/elevenlabs-logo.png",         pro: true,  plan: 'Starter' },
-    { name: "Cerebras",              category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.CEREBRAS,        src_icon: "assets/img/int/cerebras-icon.png",               src_logo: "assets/img/int/cerebras-logo.svg",           pro: true,  plan: 'Pro' },
-    { name: "OpenRouter",            category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENROUTER,      src_icon: "assets/img/int/openrouter-icon.png",             src_logo: "assets/img/int/openrouter-logo.png",         pro: true,  plan: 'Pro' },
+   // { name: "Cerebras",              category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.CEREBRAS,        src_icon: "assets/img/int/cerebras-icon.png",               src_logo: "assets/img/int/cerebras-logo.svg",           pro: true,  plan: 'Pro' },
+   // { name: "OpenRouter",            category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENROUTER,      src_icon: "assets/img/int/openrouter-icon.png",             src_logo: "assets/img/int/openrouter-logo.png",         pro: true,  plan: 'Pro' },
     //{ name: "Zapier",              category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.ZAPIER,          src_icon: "assets/img/int/zapier-icon.png",                 src_logo: "assets/img/int/zapier-logo.svg",             pro: true,  plan: 'Basic' },
     //{ name: "Zendesk",             category: INTEGRATIONS_CATEGORIES.LIVE_CHAT,        key: INTEGRATIONS_KEYS.ZENDESK,         src_icon: "assets/img/int/zendesk-icon.png",                src_logo: "assets/img/int/zendesk-logo.png",            pro: true,  plan: 'Premium' },
     //{ name: "Zoho",                category: INTEGRATIONS_CATEGORIES.OTHER,            key: INTEGRATIONS_KEYS.ZOHO,            src_icon: "assets/img/int/zoho-icon.png",                   src_logo: "assets/img/int/zoho-logo.png",               pro: true,  plan: 'Premium' }
@@ -247,10 +247,7 @@ export class vLLMIntegration extends Integration {
         super();
         this.name = INTEGRATIONS_KEYS.VLLM;
         this.value = {
-            url: null,
-            token: null,
-            apikey: null,
-            models: []
+            servers: []
         }
     }
 }
