@@ -2505,6 +2505,8 @@ button.buttonRounded:hover {
 // --------- ./end new on-off btn logo ---------
 
 // --------- start on-off btn adavanced section ---------
+// Checkbox binding is inverted ([checked]="!showX"): unchecked = enabled, checked = disabled.
+// Visual states mirror the standard nw-onoffswitch (enabled = blue + knob right).
 .advanced-sect-nw-onoffswitch {
   position: relative;
   width: 45px;
@@ -2529,7 +2531,7 @@ button.buttonRounded:hover {
   line-height: 25px;
   border: 2px solid var(--accent-text-color);
   border-radius: 25px;
-  background-color: var(--accent-text-color); // #ffffff;
+  background-color: var(--accent-text-color);
   transition: background-color 0.3s ease-in;
 }
 
@@ -2542,23 +2544,23 @@ button.buttonRounded:hover {
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 20px;
+  right: 0px;
   border: 2px solid var(--accent-text-color);
   border-radius: 25px;
   transition: all 0.3s ease-in 0s;
 }
 
 .advanced-sect-nw-onoffswitch-checkbox:checked+.advanced-sect-nw-onoffswitch-label {
-  background-color: #fff; // var(--accent-text-color); 
+  background-color: #ffffff;
 }
 
 .advanced-sect-nw-onoffswitch-checkbox:checked+.advanced-sect-nw-onoffswitch-label,
 .advanced-sect-nw-onoffswitch-checkbox:checked+.advanced-sect-nw-onoffswitch-label:before {
-  border-color:  #e3e3e3// var(--accent-text-color); 
+  border-color: #e3e3e3;
 }
 
 .advanced-sect-nw-onoffswitch-checkbox:checked+.advanced-sect-nw-onoffswitch-label:before {
-  right: 0px;
+  right: 20px;
 }
 
 // --------- ./end on-off btn adavanced section ---------

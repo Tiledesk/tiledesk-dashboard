@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.8.6
+- Fixes the bug: the behavior of the switch buttons in the widget set up > advanced section is not aligned with the other ones on the page
+- Removes the query param ?tiledeskLogout
+
+### 2.8.5
+- Minor improvements
+
 ### 2.8.4
 - Latest stable
 

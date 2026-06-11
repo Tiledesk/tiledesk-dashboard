@@ -1161,20 +1161,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  /**
-   * Helper method to preserve tiledesk_logOut query parameter when navigating
-   */
-  private getQueryParamsWithTiledeskLogOut(customParams: any = {}): any {
-    const currentParams = this.route.snapshot.queryParamMap;
-    const tiledeskLogOut = currentParams.get('tiledesk_logOut');
-    
-    const queryParams = { ...customParams };
-    if (tiledeskLogOut) {
-      queryParams['tiledesk_logOut'] = tiledeskLogOut;
-    }
-    
-    return queryParams;
-  }
+  // /**
+  //  * Helper method to preserve tiledesk_logOut query parameter when navigating
+  //  * tiledesk_logOut: disabilitato su questo branch
+  //  */
+  // private getQueryParamsWithTiledeskLogOut(customParams: any = {}): any {
+  //   const currentParams = this.route.snapshot.queryParamMap;
+  //   const tiledeskLogOut = currentParams.get('tiledesk_logOut');
+  //
+  //   const queryParams = { ...customParams };
+  //   if (tiledeskLogOut) {
+  //     queryParams['tiledesk_logOut'] = tiledeskLogOut;
+  //   }
+  //
+  //   return queryParams;
+  // }
 
   goToRequestMsgs(request_recipient: string) {
     // this.logger.log('HERE IN goToRequestMsgs this.requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter)

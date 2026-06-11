@@ -3222,7 +3222,7 @@
 														<div class="form-group"
 															style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 															<label
-																class="col-sm-12 control-label widget-settings-control-head-label">
+																class="col-sm-12 control-label widget-settings-control-head-label" style="white-space: nowrap;">
 
 																<!-- {{'DisableAttachments' | translate}} -->
 																{{'Attachments' | translate}}
@@ -3273,7 +3273,7 @@
 																	</div>
 																</div>
 
-																<div class="option-description">
+																<div class="option-description" style="white-space: nowrap;">
 																	{{'AllowedFileExtensions' | translate}}
 																	<i class="material-icons" style="position: relative; top: 2px; font-size: 14px; color: #7695a5; cursor: pointer;"
 																	matTooltipClass="custom-mat-tooltip-in-widget-setup"
@@ -3334,7 +3334,7 @@
 														<div class="form-group"
 															style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 															<label
-																class="col-sm-12 control-label widget-settings-control-head-label">
+																class="col-sm-12 control-label widget-settings-control-head-label" style="white-space: nowrap;">
 
 																<!-- {{ 'DisableEmoji' | translate }} -->
 																{{ 'Emoji' | translate }}
@@ -3392,7 +3392,7 @@
 														<div class="form-group"
 															style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 															<label
-																class="col-sm-12 control-label widget-settings-control-head-label">
+																class="col-sm-12 control-label widget-settings-control-head-label" style="white-space: nowrap;">
 
 																<!-- {{'DisableVoiceRecoder' | translate}} -->
 																{{'VoiceRecorder' | translate}}
@@ -3451,10 +3451,10 @@
 														<div class="form-group"
 															style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 															<label
-																class="col-sm-12 control-label widget-settings-control-head-label">
+																class="col-sm-12 control-label widget-settings-control-head-label" style="white-space: nowrap;">
 
 																{{'VoiceStreamingMode' | translate}}
-																<span class="info-icon---wpr"
+																<span class="info-icon---wpr"VoiceRecorder
 																	matTooltipClass="custom-mat-tooltip-in-widget-setup"
 																	matTooltip="{{'VoiceStreamingModeDesc' | translate}}"
 																	#tooltip="matTooltip" matTooltipPosition='above'
@@ -3569,13 +3569,22 @@
 													
 																<div *ngIf="showVoiceStreamingButton"
 																	class="widget-footer-action-audio-stream"
-																	style="width: 26px;height: 26px;background-color: rgb(95, 99, 104);border-radius: 9999px;padding: 4px 3px 3px 4px;">
-																	<svg role="img" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 30 30" fill="#fff" preserveAspectRatio="xMidYMid meet">
+																	style="width: 26px;height: 26px;border-radius: 9999px;padding: 4px 3px 3px 4px;">
+																	<!-- <svg role="img" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 30 30" fill="#fff" preserveAspectRatio="xMidYMid meet">
 																		<path d="m5.21 7.41c-1.21 0-2.21 0.99-2.21 2.21v8.14c0 1.21 0.99 2.21 2.21 2.21 1.22 0 2.21-0.99 2.21-2.21v-8.14c0-1.21-0.99-2.21-2.21-2.21z" class="s0"></path>
 																		<path d="m11.64 3.01c-1.22 0-2.21 0.99-2.21 2.2v16.94c0 1.21 0.99 2.2 2.21 2.2 1.22 0 2.21-0.98 2.21-2.2v-16.94c0-1.21-0.99-2.21-2.21-2.21z" class="s0"></path>
 																		<path d="m15.86 9.25v8.88c0 1.21 0.99 2.21 2.21 2.21 1.22 0 2.21-0.99 2.21-2.21v-8.88c0-1.22-0.99-2.21-2.21-2.21-1.22 0-2.21 0.99-2.21 2.21z" class="s0"></path>
 																		<path d="m24.5 8.97c-1.22 0-2.21 0.99-2.21 2.21v5.02c0 1.22 0.99 2.21 2.21 2.21 1.22 0 2.21-0.99 2.21-2.21v-5.02c0-1.21-0.99-2.21-2.21-2.21z" class="s0"></path>
-																	</svg>	
+																	</svg>	 -->
+																	<svg _ngcontent-ng-c769215207="" role="img" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 23 23" aria-labelledby="altIconTitle">
+																		<rect _ngcontent-ng-c769215207="" x="0" y="7.5" height="6px" fill-opacity="1" width="2px" rx="0.75" ry="0.75"></rect>
+																		<rect _ngcontent-ng-c769215207="" x="4" y="5.5" height="10px" fill-opacity="1" width="2px" rx="0.75" ry="0.75"></rect>
+																		<rect _ngcontent-ng-c769215207="" x="8" y="2.5" height="16px" fill-opacity="1" width="2px" rx="0.75" ry="0.75"></rect>
+																		<rect _ngcontent-ng-c769215207="" x="12" y="5.5" height="10px" fill-opacity="1" width="2px" rx="0.75" ry="0.75"></rect>
+																		<rect _ngcontent-ng-c769215207="" x="16" y="2.5" height="16px" fill-opacity="1" width="2px" rx="0.75" ry="0.75"></rect>
+																		<rect _ngcontent-ng-c769215207="" x="20" y="7.5" height="6px" fill-opacity="1" width="2px" rx="0.75" ry="0.75"></rect>
+																		<title _ngcontent-ng-c769215207="" id="altIconTitle">Usa la modalità vocale</title>
+																	</svg>
 																</div>
 															</div>
 

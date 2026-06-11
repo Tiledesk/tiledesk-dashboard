@@ -355,12 +355,12 @@ const routes: Routes = [
   },
 
 
-  // Analytics
-  // {
-  //   path: 'project/:projectid/analytics',
-  //   loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
-  //   canActivate: [AuthGuard, ProjectProfileGuard]
-  // },
+  // Analytics old 
+  {
+    path: 'project/:projectid/analytics/old',
+    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
   // { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
 
   {

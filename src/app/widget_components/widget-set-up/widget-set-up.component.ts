@@ -4674,37 +4674,9 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //  @ Attachment Button
   // -----------------------------------------------------------------------
   toggleDiplayAttachmentButton(event) {
-    // this.DISPLAY_WIDGET_HOME = false;
-    // this.DISPLAY_CALLOUT = false;
-    // this.DISPLAY_WIDGET_CHAT = true;
-    // this.DISPLAY_WIDGET_PRECHAT_FORM = false;
-    // this.widget_preview_selected = '0002'
-
-    this.logger.log('[WIDGET-SET-UP] - Display Attachment Button ', event.target.checked)
-    if (event.target.checked === true) {
-
-      this.showAttachmentButton = false;
-      // *** ADD PROPERTY
-      // this.widgetObj['showAttachmentFooterButton'] = this.showAttachmentButton;
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    } else {
-      this.showAttachmentButton = true;
-
-      // *** REMOVE PROPERTY
-      // delete this.widgetObj['allowedLoadingDomain'];
-      // delete this.widgetObj['allowedOnSpecificUrlList'];
-      // delete this.widgetObj['allowedUploadExtentions'];
-      // delete this.widgetObj['hideOnSpecificDomainList'];
-      // delete this.widgetObj['hideOnSpecificUrl'];
-      // delete this.widgetObj['hideOnSpecificUrlList'];
-      // delete  this.widgetObj['hideOnSpecificDomain']; 
-      
-
-      this.widgetService.updateWidgetProject(this.widgetObj)
-
-      this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    }
+    const checked = (event.target as HTMLInputElement).checked;
+    this.logger.log('[WIDGET-SET-UP] - Display Attachment Button ', checked);
+    this.showAttachmentButton = !checked;
   }
 
 
@@ -4742,121 +4714,73 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   //  @ Emoji Button
   // -----------------------------------------------------------------------
   toggleDiplayEmojiButton(event) {
-    // this.DISPLAY_WIDGET_HOME = false;
-    // this.DISPLAY_CALLOUT = false;
-    // this.DISPLAY_WIDGET_CHAT = true;
-    // this.DISPLAY_WIDGET_PRECHAT_FORM = false;
-    // this.widget_preview_selected = '0002'
-    this.logger.log('[WIDGET-SET-UP] - Display Emoji Button ', event.target.checked)
-    if (event.target.checked === true) {
-
-      this.showEmojiButton = false;
-      // *** ADD PROPERTY
-      // this.widgetObj['showEmojiFooterButton'] = this.showEmojiButton;
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    } else {
-      this.showEmojiButton = true;
-
-      // *** REMOVE PROPERTY
-      // delete this.widgetObj['showEmojiFooterButton'];
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    }
+    const checked = (event.target as HTMLInputElement).checked;
+    this.logger.log('[WIDGET-SET-UP] - Display Emoji Button ', checked);
+    this.showEmojiButton = !checked;
   }
 
   // -----------------------------------------------------------------------
   //  @ Audio Recorder Button
   // -----------------------------------------------------------------------
   toggleAudioRecorderButton(event) {
-
-    this.logger.log('[WIDGET-SET-UP] - Display Audio Recorder Button ', event.target.checked)
-    if (event.target.checked === true) {
-
-      this.showAudioRecorderButton = false;
-
-    } else {
-      this.showAudioRecorderButton = true;
-
-    }
+    const checked = (event.target as HTMLInputElement).checked;
+    this.logger.log('[WIDGET-SET-UP] - Display Audio Recorder Button ', checked);
+    this.showAudioRecorderButton = !checked;
   }
 
   // -----------------------------------------------------------------------
   //  @ Voice Streaming Button
   // -----------------------------------------------------------------------
   toggleVoiceStreamingButton(event) {
-    console.log('[WIDGET-SET-UP] - Display Voice Streaming Button ', event.target.checked)
-    if (event.target.checked === true) {
+    const checked = (event.target as HTMLInputElement).checked;
+    this.logger.log('[WIDGET-SET-UP] - Display Voice Streaming Button ', checked);
+    this.showVoiceStreamingButton = !checked;
+  }
 
-      this.showVoiceStreamingButton = false;
+  /**
+   * Maps UI footer-button flags to widgetObj keys for the advanced section save.
+   * Attachment / Emoji / Audio recorder: false when disabled, key removed when enabled.
+   * Voice streaming: true when enabled, key removed when disabled.
+   */
+  private syncAdvancedFooterButtonsToWidgetObj(): void {
+    this.applyHideWhenFalseFooterFlag('showAttachmentFooterButton', this.showAttachmentButton);
+    this.applyHideWhenFalseFooterFlag('showEmojiFooterButton', this.showEmojiButton);
+    this.applyHideWhenFalseFooterFlag('showAudioRecorderFooterButton', this.showAudioRecorderButton);
 
+    if (this.showVoiceStreamingButton === true) {
+      this.widgetObj['showAudioStreamFooterButton'] = true;
     } else {
-      this.showVoiceStreamingButton = true;
+      delete this.widgetObj['showAudioStreamFooterButton'];
+    }
+  }
 
+  /** Disabled → explicit false; enabled → remove key (widget default = shown/enabled). */
+  private applyHideWhenFalseFooterFlag(key: string, enabled: boolean): void {
+    if (enabled === false) {
+      this.widgetObj[key] = false;
+    } else {
+      delete this.widgetObj[key];
     }
   }
 
 
   saveWidgetAdvancedSetting() {
-    this.logger.log('[WIDGET-SET-UP] showAttachmentButton ', this.showAttachmentButton)
-    this.logger.log('[WIDGET-SET-UP] showEmojiButton ', this.showEmojiButton)
+    this.logger.log('[WIDGET-SET-UP] showAttachmentButton ', this.showAttachmentButton);
+    this.logger.log('[WIDGET-SET-UP] showEmojiButton ', this.showEmojiButton);
+    this.logger.log('[WIDGET-SET-UP] showAudioRecorderButton ', this.showAudioRecorderButton);
+    this.logger.log('[WIDGET-SET-UP] showVoiceStreamingButton ', this.showVoiceStreamingButton);
 
-    if (this.showAttachmentButton === false) {
-      // *** ADD PROPERTY
-      this.widgetObj['showAttachmentFooterButton'] = this.showAttachmentButton;
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    this.syncAdvancedFooterButtonsToWidgetObj();
+
+    this.logger.log('[WIDGET-SET-UP] selectedOption', this.selectedOption);
+    if (this.selectedOption === 'all') {
+      this.widgetObj['allowedUploadExtentions'] = '*/*';
     } else {
-
-      delete this.widgetObj['showAttachmentFooterButton'];
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-
+      this.widgetObj['allowedUploadExtentions'] = this.extensions.join(',');
     }
 
-
-    if (this.showEmojiButton === false) {
-      this.widgetObj['showEmojiFooterButton'] = this.showEmojiButton;
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    } else {
-      delete this.widgetObj['showEmojiFooterButton'];
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    }
-
-    if (this.showAudioRecorderButton === false) {
-      this.widgetObj['showAudioRecorderFooterButton'] = this.showAudioRecorderButton;
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    } else {
-      delete this.widgetObj['showAudioRecorderFooterButton'];
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    }
-
-    if (this.showVoiceStreamingButton === true) {
-      this.widgetObj['showAudioStreamFooterButton'] = this.showVoiceStreamingButton;
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    } else {
-      delete this.widgetObj['showAudioStreamFooterButton'];
-      // this.widgetService.updateWidgetProject(this.widgetObj)
-      // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
-    }
-
-    this.widgetObj['allowedUploadExtentions'] = this.allowedUploadExtentions;
-    this.logger.log('[WIDGET-SET-UP] this.allowedUploadExtentions',   this.allowedUploadExtentions) 
-
-     this.logger.log('[WIDGET-SET-UP] selectedOption',   this.selectedOption)
-     if(this.selectedOption === 'all') {
-       this.widgetObj['allowedUploadExtentions'] = '*/*'
-     } else {
-      
-      this.widgetObj['allowedUploadExtentions'] = this.extensions.join(',')
-    }
-
-    this.widgetService.updateWidgetProject(this.widgetObj)
-    this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
+    this.widgetService.updateWidgetProject(this.widgetObj);
+    this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj);
   }
 
 

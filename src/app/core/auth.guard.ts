@@ -364,23 +364,20 @@ export class AuthGuard implements CanActivate {
   const queryParamsFromUrl = new URLSearchParams(queryString);
 
   const token = queryParamsFromUrl.get('token');
-  const tiledeskLogOut = queryParamsFromUrl.get('tiledesk_logOut');
-   this.logger.log('[AUTH-GUARD] SSO queryParamsFromUrl token:', tiledeskLogOut);
-   this.logger.log('[AUTH-GUARD] SSO queryParamsFromUrl tiledeskLogOut:', tiledeskLogOut);
-  // Memorizzo tiledesk_logOut nello storage se presente
-  if (tiledeskLogOut !== null) {
-    this.localDbService.setInStorage('tiledesk_logOut', tiledeskLogOut);
-  } else {
-    // Se il parametro non è presente, lo rimuovo
-    this.localDbService.removeFromStorage('tiledesk_logOut');
-    this.logger.log('[AUTH-GUARD] SSO tiledesk_logOut rimosso perché non presente nell’URL');
-  } 
-
-  const persistentLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
+  // tiledesk_logOut: disabilitato su questo branch (feature per cliente embed/SSO)
+  // const tiledeskLogOut = queryParamsFromUrl.get('tiledesk_logOut');
+  // this.logger.log('[AUTH-GUARD] SSO queryParamsFromUrl token:', tiledeskLogOut);
+  // this.logger.log('[AUTH-GUARD] SSO queryParamsFromUrl tiledeskLogOut:', tiledeskLogOut);
+  // if (tiledeskLogOut !== null) {
+  //   this.localDbService.setInStorage('tiledesk_logOut', tiledeskLogOut);
+  // } else {
+  //   this.localDbService.removeFromStorage('tiledesk_logOut');
+  //   this.logger.log('[AUTH-GUARD] SSO tiledesk_logOut rimosso perché non presente nell’URL');
+  // }
+  // const persistentLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
 
   this.logger.log('[AUTH-GUARD] SSO Route pulita:', route);
   this.logger.log('[AUTH-GUARD] SSO Token:', token);
-  this.logger.log('[AUTH-GUARD] SSO tiledesk_logOut persistente:', persistentLogOut);
 
   const HAS_JWT = JSON.stringify(next.queryParams).includes('JWT');
   this.logger.log('[AUTH-GUARD] SSO HAS_JWT', HAS_JWT);
@@ -412,11 +409,7 @@ export class AuthGuard implements CanActivate {
     } else {
       // JWT presente -> naviga autologin
       this.logger.log('[AUTH-GUARD] SSO Navigazione autologin');
-      this.router.navigate(
-        ['/autologin', route, token],
-        { queryParams: { tiledesk_logOut: persistentLogOut } }
-      );
-      // this.router.navigate(['/autologin', route, token]);
+      this.router.navigate(['/autologin', route, token]);
       return false;
     }
   }

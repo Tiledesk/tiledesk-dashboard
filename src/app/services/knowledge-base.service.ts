@@ -54,7 +54,7 @@ export class KnowledgeBaseService {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
     this.ANALYTICS_API_BASE_PATH = this.appConfigService.getConfig().analyticsApiBase;
       this.logger.log('[KNOWLEDGE BASE SERVICE] - SERVER_BASE_PATH ', this.SERVER_BASE_PATH); 
-      console.log('[KNOWLEDGE BASE SERVICE] - ANALYTICS_API_BASE_PATH ', this.ANALYTICS_API_BASE_PATH);
+      this.logger.log('[KNOWLEDGE BASE SERVICE] - ANALYTICS_API_BASE_PATH ', this.ANALYTICS_API_BASE_PATH);
   }
 
   getCurrentProject() {
