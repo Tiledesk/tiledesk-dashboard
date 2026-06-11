@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.230-stage
+- Introduces a new chunking option using regular expressions in the file upload modal, allowing users to define chunks for TXT and Markdown files
+- Improves the file upload component to handle regular expression input and validation
+
 ### 2.7.229-stage
 - Refactors the VLLM integration to manage OpenAI-compatible endpoints and models
 
