@@ -170,12 +170,6 @@
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
-                                        </deepseek-integration> 
-
-                                        <deepseek-integration *ngIf="integrationSelectedName === INT_KEYS.DEEPSEEK"
-                                            [integration]="selectedIntegration"
-                                            (onUpdateIntegration)=integrationUpdateEvent($event)
-                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </deepseek-integration>
                                         
                                         <elevenlabs-integration *ngIf="integrationSelectedName === INT_KEYS.ELEVENLABS"
