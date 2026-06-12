@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.231-stage
+- Replaces the regex chunking tooltip with an always-visible description in the Import File dialog
+- Adds an upload failure message and retry action in the Import File dialog
+- Adds sitemap fetch error feedback in the Import from Websites dialog 
+- Replaces server-reported response time with client-side wait time in the Knowledge Base Preview dialog
+
 ### 2.7.230-stage
 - Introduces a new chunking option using regular expressions in the file upload modal, allowing users to define chunks for TXT and Markdown files
 - Improves the file upload component to handle regular expression input and validation
