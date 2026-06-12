@@ -247,6 +247,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   CREATE_BOT_ROUTE_IS_ACTIVE: boolean;
   SUPPORT_ROUTE_IS_ACTIVE: boolean;
   NORT_CONV_ROUTE_IS_ACTIVE: boolean;
+  DATA_TABLES_ROUTE_IS_ACTIVE: boolean;
 
 
   prjct_profile_name: string;
@@ -334,6 +335,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_PROJECT_SETTING_BANNED: boolean;
   PERMISSION_TO_VIEW_PROJECT_SETTING_ADVANCED: boolean;
   PERMISSION_TO_VIEW_HOME: boolean;
+  
 
   constructor(
     private router: Router,
@@ -1999,6 +2001,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_ROUTE_IS_ACTIVE ', this.MONITOR_ROUTE_IS_ACTIVE);
         }
 
+
+        if (event.url.indexOf('/data-tables') !== -1) {
+          this.DATA_TABLES_ROUTE_IS_ACTIVE = true;
+          // this.logger.log('[SIDEBAR] NavigationEnd - DATA_TABLES_ROUTE_IS_ACTIVE ', this.DATA_TABLES_ROUTE_IS_ACTIVE);
+        } else {
+          this.DATA_TABLES_ROUTE_IS_ACTIVE = false;
+          // this.logger.log('[SIDEBAR] NavigationEnd - DATA_TABLES_ROUTE_IS_ACTIVE ', this.DATA_TABLES_ROUTE_IS_ACTIVE);
+        }
+
         if (event.url.indexOf('/wsrequests/no-auth') !== -1) {
           this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_NO_AUTH_ROUTE_IS_ACTIVE ', this.MONITOR_NO_AUTH_ROUTE_IS_ACTIVE);
@@ -2831,6 +2842,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
     return link;
   }
+
 
    handleAnalyticsClick(event: MouseEvent): void {
     if (!this.PERMISSION_TO_VIEW_ANALYTICS) {
