@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.232-stage
+- Fixes the bug: Uploaded files can be modified
+- Improves the TXT contents type filter in the knowledge base table to also include regex_custom  file type upload 
+
 ### 2.7.231-stage
 - Replaces the regex chunking tooltip with an always-visible description in the Import File dialog
 - Adds an upload failure message and retry action in the Import File dialog
