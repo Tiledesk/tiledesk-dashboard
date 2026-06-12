@@ -1244,6 +1244,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         this.selectedNamespaceName = namespace['name']
         // this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
+       // this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
 
         if (this.selectedTab === 'unanswered') {
           this.switchTab('contents');

@@ -338,6 +338,13 @@ const routes: Routes = [
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
 
+  // new Analytics
+  // {
+  //   path: 'project/:projectid/analytics/new',
+  //   loadChildren: () => import('app/analytics-new/analytics-new.module').then(m => m.AnalyticsNewModule),
+  //   canActivate: [AuthGuard, ProjectProfileGuard]
+  // },
+
   // Activities demo page
   {
     path: 'project/:projectid/activities-demo',
@@ -1257,6 +1264,15 @@ const routes: Routes = [
   {
     path: 'project/:projectid/knowledge-bases',
     loadChildren: () => import('app/knowledge-bases/knowledge-bases.module').then(m => m.KnowledgeBasesModule),
+    canActivate: [AuthGuard]
+  },
+
+  // ---------------------------
+  // Data tables
+  // ---------------------------
+  {
+    path: 'project/:projectid/data-tables',
+    loadChildren: () => import('app/data-tables/data-tables.module').then(m => m.DataTablesModule),
     canActivate: [AuthGuard]
   },
 
