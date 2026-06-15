@@ -34,6 +34,7 @@ import {
 
 export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent implements OnInit, AfterViewInit {
   private static readonly SERVER_LEGACY_MAX_TOKENS_SENTINEL = 256;
+  private static readonly VLLM_SELECT_VALUE_SEP = '::';
 
   // @Input() selectedNamespace: any;
   @Output() deleteKnowledgeBase = new EventEmitter();
@@ -156,7 +157,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     if (data && data.selectedNamespace) {
       this.selectedNamespace = data.selectedNamespace;
       this.namespaceid = this.selectedNamespace.id;
-      this.selectedModel = this.selectedNamespace.preview_settings.model;
+      this.selectedModel = this.parseModelValueFromSelectValue(this.selectedNamespace.preview_settings.model);
       this.maxTokens = this.selectedNamespace.preview_settings.max_tokens;
       this.temperature = this.selectedNamespace.preview_settings.temperature;
       this.alpha = this.selectedNamespace.preview_settings.alpha;
@@ -466,12 +467,12 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
 
         if (editedAiSettings && editedAiSettings[0]['model']) {
-          this.selectedModel = editedAiSettings[0]['model']
+          this.selectedModel = this.parseModelValueFromSelectValue(editedAiSettings[0]['model'])
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test from editedAiSettings 1', this.selectedModel)
         } else {
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use selectedNamespace > preview_settings', this.selectedNamespace.preview_settings)
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test from editedAiSettings 2', editedAiSettings[0]['model'])
-          this.selectedModel = this.selectedNamespace.preview_settings.model
+          this.selectedModel = this.parseModelValueFromSelectValue(this.selectedNamespace.preview_settings.model)
           this.logger.log('[MODAL-PREVIEW-KB] listenToAiSettingsChanges selectedModel to use for test from selectedNamespace ', this.selectedModel)
         }
         const incomingMax = editedAiSettings[0]['maxTokens'];
@@ -641,10 +642,14 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     if (!this.question || !this.question.trim()) {
       return;
     }
+    const previewSettings = this.selectedNamespace.preview_settings;
+    const askModel = this.resolveAskModelName();
+    const askLlm = previewSettings?.llm;
+
     this.body = {
       "question": this.question,
       "namespace": this.namespaceid,
-      "model": this.selectedModel,
+      "model": askModel,
       "temperature": this.temperature,
       "alpha": this.alpha,
       "max_tokens": this.maxTokens,
@@ -657,8 +662,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       'citations': this.citations,
       'use_hyde': this.useHyde,
       'use_cache': this.useCache,
-      'llm': this.selectedNamespace.preview_settings.llm,
+      'llm': askLlm,
       'tags':this.kbTagsArray
+    };
+    if (askLlm === 'vllm' && previewSettings?.vllmServer) {
+      this.body.vllmServer = previewSettings.vllmServer;
     }
     // this.error_answer = false;
 
@@ -686,7 +694,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }
   }
 
-  askAI(body, startTime) {
+   askAI(body, startTime) {
     this.openaiService.askGpt(body).subscribe((response: any) => {
 
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview response: ", response)
@@ -694,13 +702,20 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.prompt_token_size = response.prompt_token_size;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
       const endTime = performance.now();
-      // this.responseTime = Math.round((endTime - startTime) / 1000);
-      this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
-      this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
+      // Server `duration` measures backend pipeline only; UI shows perceived wait (client-side).
+      // this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
+      this.setResponseTimeFromClient(startTime);
       this.qa = response;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
       this.logger.log("ask gpt preview this.qa?.content_chunks: ", this.qa?.content_chunks);
       this.logger.log("ask gpt preview this.qa?.chunks: ", this.qa?.chunks);
+     // if (this.qa?.content_chunks) {
+     //   this.contentChunks = this.qa?.content_chunks 
+     // } else if (this.qa?.chunks)  {
+     //   this.contentChunks = this.qa?.chunks
+     // }
+     
+     // this.contentSources = this.extractAllSources(response);
       this.contentChunks = this.extractContentChunks(response);
       this.contentSources = this.extractSourcesForPreview(response);
       this.logger.log("ask gpt preview contentChunks: ", this.contentChunks);
@@ -799,9 +814,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       // console.log("ERROR ask gpt message ",  message);
 
       // this.error_answer = true;
-      this.responseTime = 0;
+      this.setResponseTimeFromClient(startTime);
       this.prompt_token_size = 0;
-      this.translateparam = { respTime: this.formatNumberUS(0, true) };
       this.show_answer = true;
       this.searching = false;
     }, () => {
@@ -841,7 +855,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.kbStreamFinalized = true;
         this.searching = false;
         this.show_answer = true;
-        this.handleAskAIError(err);
+        this.handleAskAIError(err, startTime);
       },
       complete: () => {
         if (!this.kbStreamFinalized) {
@@ -851,7 +865,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     });
   }
 
-   private finalizeStreamResponse(response: any, _startTime: number) {
+     private finalizeStreamResponse(response: any, startTime: number) {
     if (this.kbStreamFinalized) {
       return;
     }
@@ -859,8 +873,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     if (response) {
       response['ai_model'] = this.selectedModel;
       this.prompt_token_size = response.prompt_token_size;
-      this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
-      this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
       this.qa = response;
       this.contentChunks = this.qa?.content_chunks ?? [];
       this.contentSources = this.extractAllSources(response);
@@ -879,6 +891,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.contentChunks = [];
       this.contentSources = [];
     }
+    // Server `duration` measures backend pipeline only; stream UI uses full client wait until done.
+    // this.responseTime = response?.duration != null ? Math.round(response.duration * 100) / 100 : null;
+    this.setResponseTimeFromClient(startTime);
     this.show_answer = true;
     this.searching = false;
     this.aiQuotaExceeded = false;
@@ -889,7 +904,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.logger.log('[MODAL-PREVIEW-KB] askAIStream completed', { qa: this.qa, answerLength: this.answer?.length });
   }
 
-  private handleAskAIError(err: any) {
+  private handleAskAIError(err: any, startTime?: number) {
     this.logger.log('ask gpt preview response error: ', err);
     if (err?.error && typeof err.error === 'string') {
       this.answer = err.error;
@@ -927,11 +942,22 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     } else {
       this.answer = 'An error occurred while processing your request.';
     }
-    this.responseTime = 0;
+    if (startTime != null) {
+      this.setResponseTimeFromClient(startTime);
+    } else {
+      this.responseTime = 0;
+      this.translateparam = { respTime: this.formatNumberUS(0, true) };
+    }
     this.prompt_token_size = 0;
-    this.translateparam = { respTime: this.formatNumberUS(0, true) };
     this.cdr.detectChanges();
   }
+
+  /** Elapsed seconds from question submit to response complete (perceived wait). */
+  private setResponseTimeFromClient(startTime: number): void {
+    this.responseTime = Math.round((performance.now() - startTime) / 10) / 100;
+    this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
+  }
+
 
   private isValidURL(url) {
     var urlPattern = /^(ftp|http|https):\/\/[^ "]+$/;
@@ -1180,7 +1206,25 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
  
 
- goToKbTagsDoc() {
+  private resolveAskModelName(): string {
+    const settingsModel = this.selectedNamespace?.preview_settings?.model;
+    const raw = this.selectedModel || settingsModel;
+    return this.parseModelValueFromSelectValue(raw);
+  }
+
+  private parseModelValueFromSelectValue(selectValue: string): string {
+    if (!selectValue) {
+      return selectValue;
+    }
+    const sep = ModalPreviewKnowledgeBaseComponent.VLLM_SELECT_VALUE_SEP;
+    const idx = selectValue.indexOf(sep);
+    if (idx >= 0) {
+      return selectValue.slice(idx + sep.length);
+    }
+    return selectValue;
+  }
+
+  goToKbTagsDoc() {
     const docsUrl = URL_kb_contents_tags;
     window.open(docsUrl, '_blank');
   }

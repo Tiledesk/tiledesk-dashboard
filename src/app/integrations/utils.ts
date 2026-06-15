@@ -233,17 +233,28 @@ export class McpIntegration extends Integration {
     }
 }
 
+// export class vLLMIntegration extends Integration {
+//     constructor() {
+//         super();
+//         this.name = INTEGRATIONS_KEYS.VLLM;
+//         this.value = {
+//             url: null,
+//             token: null,
+//             models: []
+//         }
+//     }
+// }
+
 export class vLLMIntegration extends Integration {
     constructor() {
         super();
         this.name = INTEGRATIONS_KEYS.VLLM;
         this.value = {
-            url: null,
-            token: null,
-            models: []
+            servers: []
         }
     }
 }
+
 
 
 export class DeepseekIntegration extends Integration {

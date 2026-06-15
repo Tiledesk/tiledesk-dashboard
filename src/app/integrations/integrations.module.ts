@@ -31,7 +31,9 @@ import { VLLMComponent } from './list/v-llm/v-llm.component';
 import { McpIntegrationComponent } from './list/mcp-integration/mcp-integration.component';
 import { McpServerTableComponent } from './list/mcp-integration/mcp-server-table/mcp-server-table.component';
 import { McpToolsModalComponent } from './list/mcp-integration/mcp-tools-modal/mcp-tools-modal.component';
-
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { VllmEndpointTableComponent } from './list/v-llm/vllm-endpoint-table/vllm-endpoint-table.component';
 
 const routes: Routes = [
   { path: "", component: IntegrationsComponent},
@@ -59,7 +61,8 @@ const routes: Routes = [
     McpIntegrationComponent,
     McpServerTableComponent,
     McpToolsModalComponent,
-    VLLMComponent
+    VLLMComponent,
+    VllmEndpointTableComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -68,6 +71,8 @@ const routes: Routes = [
     MatIconModule,
     MatMenuModule,
     MatButtonModule,
+    MatDialogModule,
+    MatTooltipModule,
     TranslateModule,
     SettingsSidebarModule,
     SharedModule,

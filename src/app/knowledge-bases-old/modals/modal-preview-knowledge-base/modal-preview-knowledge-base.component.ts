@@ -560,7 +560,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       'citations': this.citations,
       'llm': this.selectedNamespace.preview_settings.llm,
       'tags':this.kbTagsArray
+    };
+    if (this.selectedNamespace.preview_settings.llm === 'vllm' && this.selectedNamespace.preview_settings.vllmServer) {
+      this.body.vllmServer = this.selectedNamespace.preview_settings.vllmServer;
     }
+
     // this.error_answer = false;
 
     // Salva la question solo se non è vuota
@@ -589,9 +593,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.prompt_token_size = response.prompt_token_size;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
       const endTime = performance.now();
-      // this.responseTime = Math.round((endTime - startTime) / 1000);
-      this.responseTime = response.duration
-      this.translateparam = { respTime: this.responseTime };
+     
+      // this.responseTime = response.duration
+      // this.translateparam = { respTime: this.responseTime };
+      this.setResponseTimeFromClient(startTime);
       this.qa = response;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
       this.contentChunks = this.qa?.content_chunks
@@ -705,6 +710,19 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       // Usa la funzione helper per controllare e parsare la question salvata
       this.checkStoredQuestion();
     })
+  }
+
+  /** Elapsed seconds from question submit to response complete (perceived wait). */
+  private setResponseTimeFromClient(startTime: number): void {
+    this.responseTime = Math.round((performance.now() - startTime) / 10) / 100;
+    this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
+  }
+
+  private formatNumberUS(value: number | null | undefined, decimals = false): string {
+    if (value == null) return '';
+    return decimals
+      ? value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+      : value.toLocaleString('en-US');
   }
 
   private isValidURL(url) {
