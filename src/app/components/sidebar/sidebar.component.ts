@@ -47,6 +47,7 @@ import { environment } from 'environments/environment';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
 
 declare interface RouteInfo {
   path: string;
@@ -166,6 +167,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   ACTIVITIES_ROUTE_IS_ACTIVE: boolean;
   ACTIVITIES_DEMO_ROUTE_IS_ACTIVE: boolean;
   ANALYTICS_DEMO_ROUTE_IS_ACTIVE: boolean;
+  /** True when URL is …/analytics/new (badge “new” on sidebar analytics icon). */
+  ANALYTICS_NEW_ROUTE_IS_ACTIVE: boolean;
   WIDGET_ROUTE_IS_ACTIVE: boolean;
   ANALITYCS_ROUTE_IS_ACTIVE: boolean;
   HOME_ROUTE_IS_ACTIVE: boolean;
@@ -1624,6 +1627,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = false;
         }
 
+        if (event.url.indexOf('/analytics/new') !== -1) {
+          this.ANALYTICS_NEW_ROUTE_IS_ACTIVE = true;
+        } else {
+          this.ANALYTICS_NEW_ROUTE_IS_ACTIVE = false;
+        }
+
         if (event.url.indexOf('/widget') !== -1) {
           // this.logger.log('[SIDEBAR] NavigationEnd - THE widget route IS ACTIVE  ', event.url);
           this.WIDGET_ROUTE_IS_ACTIVE = true;
@@ -2755,6 +2764,21 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       event.stopPropagation(); // Stops bubbling
       this.notify.presentDialogNoPermissionToViewThisSection()
     }
+  }
+
+  get useNewAnalytics(): boolean {
+    return isNewAnalyticsConfigured(this.appConfigService.getConfig());
+  }
+
+  getAnalyticsRouterLink(): (string | number)[] | null {
+    if (!this.PERMISSION_TO_VIEW_ANALYTICS || !this.project?._id) {
+      return null;
+    }
+    const link: (string | number)[] = ['/project', this.project._id, 'analytics'];
+    if (this.useNewAnalytics) {
+      link.push('new');
+    }
+    return link;
   }
 
    handleAnalyticsClick(event: MouseEvent): void {

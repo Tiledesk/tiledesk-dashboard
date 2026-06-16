@@ -332,7 +332,7 @@
                          
                   </div>
 
-                  <div class="kb-stats-cards" *ngIf="selectedNamespace">
+                  <!-- <div class="kb-stats-cards" *ngIf="selectedNamespace">
                     <div class="kb-stats-card kb-stats-card--clickable" role="button" tabindex="0"
                       [attr.aria-label]="('KbPage.KbStatsContents' | translate) + ' — ' + ('KbPage.Contents' | translate)"
                       (click)="onKbStatsContentsClick()"
@@ -360,6 +360,66 @@
                     <div class="kb-stats-card">
                       <div class="kb-stats-card__label">{{ 'KbPage.KbStatsAnswerRate' | translate }}</div>
                       <div class="kb-stats-card__value kb-stats-card__value--dark">{{ kbStatsAnswerRatePercent }}%</div>
+                    </div>
+                  </div> -->
+
+                  <div class="kb-stats-charts" *ngIf="selectedNamespace">
+                    <div class="kb-stats-chart-card">
+                      <div *ngIf="kbChartsLoading" class="kb-stats-chart-card__state">
+                        <mat-spinner diameter="28"></mat-spinner>
+                      </div>
+                      <div *ngIf="!kbChartsLoading" class="kb-stats-chart-card__panels">
+                        <div class="kb-stats-chart-panel kb-stats-chart-panel--contents">
+                          <button type="button"
+                                  class="kb-stats-chart-card__title"
+                                  (click)="onKbStatsContentsClick()">
+                            <span class="kb-stats-chart-card__title-text contents">
+                              {{ 'KbPage.KbStatsContents' | translate }}
+                            </span>
+                            <!-- <mat-icon class="kb-stats-chart-card__title-arrow" aria-hidden="true">chevron_right</mat-icon> -->
+                          </button>
+                          <div class="kb-stats-chart-panel__value">{{ kbsContentTotalCount }}</div>
+                        </div>
+                        <div class="kb-stats-chart-card__divider" aria-hidden="true"></div>
+                        <div class="kb-stats-chart-panel">
+                          <button type="button"
+                                  class="kb-stats-chart-card__title"
+                                  (click)="onKbChartTitleClick('answered')">
+                            <span class="kb-stats-chart-card__title-text">
+                              {{ 'KbPage.KbStatsAnswered' | translate }}
+                            </span>
+                            <mat-icon class="kb-stats-chart-card__title-arrow" aria-hidden="true">chevron_right</mat-icon>
+                          </button>
+                          <div class="kb-stats-chart-panel__value">{{ kbStatsAnsweredCount | number:'1.0-0' }}</div>
+                          <div #kbAnsweredChart class="kb-stats-chart"></div>
+                        </div>
+                        <div class="kb-stats-chart-card__divider" aria-hidden="true"></div>
+                        <div class="kb-stats-chart-panel">
+                          <button type="button"
+                                  class="kb-stats-chart-card__title"
+                                  (click)="onKbChartTitleClick('unanswered')">
+                            <span class="kb-stats-chart-card__title-text">
+                              {{ 'KbPage.KbStatsUnanswered' | translate }}
+                            </span>
+                            <mat-icon class="kb-stats-chart-card__title-arrow" aria-hidden="true">chevron_right</mat-icon>
+                          </button>
+                          <div class="kb-stats-chart-panel__value">{{ kbStatsUnansweredCount | number:'1.0-0' }}</div>
+                          <div #kbUnansweredChart class="kb-stats-chart"></div>
+                        </div>
+                        <div class="kb-stats-chart-card__divider" aria-hidden="true"></div>
+                        <div class="kb-stats-chart-panel">
+                          <button type="button"
+                                  class="kb-stats-chart-card__title"
+                                  (click)="onKbChartTitleClick('answer-rate')">
+                            <span class="kb-stats-chart-card__title-text">
+                              {{ 'KbPage.KbStatsAnswerRate' | translate }}
+                            </span>
+                            <mat-icon class="kb-stats-chart-card__title-arrow" aria-hidden="true">chevron_right</mat-icon>
+                          </button>
+                          <div class="kb-stats-chart-panel__value">{{ kbStatsAnswerRatePercentValue | number:'1.0-1' }}%</div>
+                          <div #kbAnswerRateChart class="kb-stats-chart"></div>
+                        </div>
+                      </div>
                     </div>
                   </div>
       

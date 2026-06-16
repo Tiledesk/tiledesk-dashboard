@@ -134,9 +134,12 @@
                             <input matInput type="url" [(ngModel)]="siteMap"
                                 #sitemapUrlInput
                                 placeholder="https://example.com/sitemap.xml"
+                                (input)="onSitemapUrlInput()"
                                 (keydown.enter)="fetchSiteMap()">
                         </mat-form-field>
-                        <button class="fetch-button" (click)="fetchSiteMap()">
+                        <button class="fetch-button"
+                            [disabled]="sitemapFetchInProgress"
+                            (click)="fetchSiteMap()">
                             {{ 'Fetch' | translate }}
                         </button>
                         <button class="sitemap-popover__close"
@@ -146,6 +149,11 @@
                             <mat-icon>close</mat-icon>
                         </button>
                     </div>
+                    <p *ngIf="sitemapFetchError"
+                        class="sitemap-popover__error"
+                        role="alert">
+                        {{ sitemapFetchError }}
+                    </p>
                 </div>
             </ng-template>
         </div>

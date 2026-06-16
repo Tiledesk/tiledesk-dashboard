@@ -23,6 +23,7 @@ export class ModalUploadFileComponent implements OnInit {
   hideDropZone = false;
   hideProgressBar = true;
   uploadCompleted = false;
+  uploadFailed = false;
   uploadedFileName: string;
 
   hasAlreadyUploadAfile = false
@@ -40,10 +41,15 @@ export class ModalUploadFileComponent implements OnInit {
   /** Sent to the server as `situated_context`; always included in the body (default false). */
   situatedContextEnabled = false;
 
+  selectedTabIndex = 0;
+  regexChunkingEnabled = false;
+  chunkRegexInput = '';
+
   // KB Tags
   kbTag: string = '';
   kbTagsArray = []
   @ViewChild('kbTagsContainer') kbTagsContainer!: ElementRef;
+  @ViewChild('chunkRegexInputEl') chunkRegexInputEl?: ElementRef<HTMLInputElement>;
   private observer!: MutationObserver;
   tagContainerElementHeight: any;
   public hideHelpLink: boolean;
@@ -59,6 +65,7 @@ export class ModalUploadFileComponent implements OnInit {
       offsetX: -30
     }
   ];
+
  
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -103,6 +110,49 @@ export class ModalUploadFileComponent implements OnInit {
     clearTimeout(this.closeTimeout);
   }
 
+  get regexChunkingDisabled(): boolean {
+    const raw = (this.fileUrlInput || '').trim();
+    if (raw) {
+      const spec = this.parseUrlImportSpec(raw);
+      return !spec || (spec.ext !== 'txt' && spec.ext !== 'md');
+    }
+    const ext = (this.file_extension || this.body?.type || '').toLowerCase();
+    return ext !== 'txt' && ext !== 'md';
+  }
+
+  onTabIndexChange(index: number): void {
+    this.selectedTabIndex = index;
+    this.syncRegexChunkingState();
+  }
+
+  onRegexChunkingSlideToggle(event: MatSlideToggleChange): void {
+    this.regexChunkingEnabled = event.checked;
+    if (!event.checked) {
+      this.chunkRegexInput = '';
+      if (this.chunkRegexInputEl?.nativeElement) {
+        this.chunkRegexInputEl.nativeElement.value = '';
+      }
+    }
+  }
+
+  onChunkRegexInput(event: Event): void {
+    this.chunkRegexInput = (event.target as HTMLInputElement).value;
+  }
+
+  private getChunkRegexValue(): string {
+    const fromDom = this.chunkRegexInputEl?.nativeElement?.value;
+    return ((fromDom ?? this.chunkRegexInput) || '').trim();
+  }
+
+  private syncRegexChunkingState(): void {
+    if (this.regexChunkingDisabled && this.regexChunkingEnabled) {
+      this.regexChunkingEnabled = false;
+    }
+    if (!this.regexChunkingEnabled || this.regexChunkingDisabled) {
+      this.chunkRegexInput = '';
+    }
+  }
+
   // listenToUploadingStatus() {
   //   this.uploadImageNativeService.uploadAttachment$.subscribe((uploadingStatus) => { 
   //     this.logger.log('[MODAL-UPLOAD-FILE] uploadingStatus  ',uploadingStatus);
@@ -121,6 +171,13 @@ export class ModalUploadFileComponent implements OnInit {
       const file: File = fileList[0];
       // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - file ', file);
 
+      if (!this.isSupportedUploadFile(file)) {
+        this.fileSupported = false;
+        this.fileSizeExceeds = false;
+        return;
+      }
+
+      this.fileSupported = true;
       this.uploadedFile = file;
 
 
@@ -153,11 +210,7 @@ export class ModalUploadFileComponent implements OnInit {
       this.clearUrlImportFields();
       // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - DROP file ', file);
 
-      var mimeType = fileList[0].type;
-      // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType);
-      // || mimeType === "application/json"
-      // || mimeType === "text/plain"
-      if (mimeType === "application/pdf" || mimeType === "application/vnd.openxmlformats-officedocument.wordprocessingml.document"  || mimeType === "text/plain") {
+      if (this.isSupportedUploadFile(file)) {
 
         this.fileSupported = true;
 
@@ -178,8 +231,7 @@ export class ModalUploadFileComponent implements OnInit {
           // this.logger.log('[MODAL-UPLOAD-FILE] drop  fileSizeExceeds ', this.fileSizeExceeds);
         }
         // this.doFormData(file)
-        // && mimeType !==  "text/plain"
-      } else if (mimeType !== "application/pdf" && mimeType !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document" && mimeType !==  "text/plain") {
+      } else {
         // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop mimeType files ', mimeType, 'NOT SUPPORTED FILE TYPE');
         
         this.fileSupported = false;
@@ -238,6 +290,7 @@ export class ModalUploadFileComponent implements OnInit {
 
   handleFileUploading(file: any) {
     this.uploadCompleted = false;
+    this.uploadFailed = false;
     this.body = null;
 
     if (this.hasAlreadyUploadAfile === false) {
@@ -249,10 +302,9 @@ export class ModalUploadFileComponent implements OnInit {
       this.file_extension = file.name.substring(file.name.lastIndexOf('.') + 1, file.name.length) || file.name;
       this.file_size_in_mb = (file.size / (1024 * 1024)).toFixed(2);
       this.file_name_ellipsis_the_middle = this.start_and_end(file.name);
+      this.syncRegexChunkingState();
 
-      this.uploadFileToStorage(file).catch((error) => {
-        this.logger.error(`[MODAL-UPLOAD-FILE] - upload native error `, error);
-      });
+      this.uploadFileToStorage(file);
     }
 
 
@@ -312,17 +364,43 @@ export class ModalUploadFileComponent implements OnInit {
     return this.uploadImageNativeService.uploadAssetFile(file, 86400).then((downloadURL) => {
       if (downloadURL) {
         this.uploadCompleted = true;
+        this.uploadFailed = false;
         this.body = {
-          type: this.file_extension,
+          type: this.mapFileExtToKbType(this.file_extension),
           source: downloadURL,
           content: '',
           name: this.uploadedFileName,
           tags: [...this.kbTagsArray]
         };
+        this.syncRegexChunkingState();
         return true;
       }
+      this.handleUploadFailure();
+      return false;
+    }).catch((error) => {
+      this.logger.error('[MODAL-UPLOAD-FILE] - upload native error ', error);
+      this.handleUploadFailure();
       return false;
     });
+  }
+
+  private handleUploadFailure(): void {
+    this.uploadFailed = true;
+    this.uploadCompleted = false;
+    this.hasAlreadyUploadAfile = false;
+    this.body = null;
+  }
+
+  resetUploadForRetry(): void {
+    this.uploadFailed = false;
+    this.uploadCompleted = false;
+    this.hasAlreadyUploadAfile = false;
+    this.hideDropZone = false;
+    this.body = null;
+    this.uploadedFile = null;
+    this.uploadedFileName = null;
+    this.file_extension = null;
+    this.file_name_ellipsis_the_middle = null;
   }
 
   start_and_end(str: string) {
@@ -342,14 +420,23 @@ export class ModalUploadFileComponent implements OnInit {
 
   get importDisabled(): boolean {
     const raw = (this.fileUrlInput || '').trim();
-    /** URL field has priority: Import only when it is a valid http(s) link to .pdf / .docx / .txt */
+    /** URL field has priority: Import only when it is a valid http(s) link to .pdf / .docx / .txt / .md (md URL only). */
     if (raw) {
-      return this.parseUrlImportSpec(raw) === null;
-    }
-    if (this.body) {
+      if (this.parseUrlImportSpec(raw) === null) {
+        return true;
+      }
+      if (this.regexChunkingEnabled && !this.getChunkRegexValue()) {
+        return true;
+      }
       return false;
     }
-    if (this.hideDropZone && !this.uploadCompleted) {
+    if (this.body) {
+      if (this.regexChunkingEnabled && !this.getChunkRegexValue()) {
+        return true;
+      }
+      return false;
+    }
+    if (this.hideDropZone && !this.uploadCompleted && !this.uploadFailed) {
       return true;
     }
     return true;
@@ -373,9 +460,11 @@ export class ModalUploadFileComponent implements OnInit {
     const raw = (this.fileUrlInput || '').trim();
     if (!raw) {
       this.urlImportInvalid = false;
+      this.syncRegexChunkingState();
       return;
     }
     this.urlImportInvalid = this.parseUrlImportSpec(raw) === null;
+    this.syncRegexChunkingState();
   }
 
  onOkPresssed(): void {
@@ -387,9 +476,41 @@ export class ModalUploadFileComponent implements OnInit {
     if (!this.body) {
       return;
     }
-    this.body.tags = [...this.kbTagsArray];
-    this.body.situated_context = this.situatedContextEnabled;
-    this.dialogRef.close(this.body);
+    this.dialogRef.close(this.buildSubmitBody());
+  }
+
+  private buildSubmitBody(): any {
+    const submitBody: any = {
+      ...this.body,
+      tags: [...this.kbTagsArray],
+      situated_context: this.situatedContextEnabled,
+    };
+
+    if (this.isRegexChunkingActive()) {
+      submitBody.type = 'regex_custom';
+      submitBody.chunk_regex = this.getChunkRegexValue();
+    } else {
+      delete submitBody.chunk_regex;
+      submitBody.type = this.mapFileExtToKbType(submitBody.type);
+    }
+
+    return submitBody;
+  }
+
+  /** Table/backend use `txt` for plain-text imports; `.md` files are stored as `txt`. */
+  private mapFileExtToKbType(ext: string): string {
+    const normalized = (ext || '').toLowerCase();
+    return normalized === 'md' ? 'txt' : normalized;
+  }
+
+  private isRegexChunkingActive(): boolean {
+    if (this.regexChunkingDisabled) {
+      return false;
+    }
+    if (!this.regexChunkingEnabled) {
+      return false;
+    }
+    return !!this.getChunkRegexValue();
   }
 
   onSituatedContextSlideToggle(event: MatSlideToggleChange): void {
@@ -405,7 +526,7 @@ export class ModalUploadFileComponent implements OnInit {
       return false;
     }
     this.body = {
-      type: spec.ext,
+      type: this.mapFileExtToKbType(spec.ext),
       source: spec.url.href,
       content: '',
       name: spec.name,
@@ -440,6 +561,8 @@ export class ModalUploadFileComponent implements OnInit {
       ext = 'docx';
     } else if (lower.endsWith('.txt')) {
       ext = 'txt';
+    } else if (lower.endsWith('.md')) {
+      ext = 'md';
     } else {
       return null;
     }
@@ -451,6 +574,30 @@ export class ModalUploadFileComponent implements OnInit {
   private clearUrlImportFields(): void {
     this.fileUrlInput = '';
     this.urlImportInvalid = false;
+    this.syncRegexChunkingState();
+  }
+
+  private static readonly SUPPORTED_UPLOAD_EXTENSIONS = new Set(['pdf', 'docx', 'txt', 'md']);
+
+  private static readonly SUPPORTED_UPLOAD_MIME_TYPES = new Set([
+    'application/pdf',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'text/plain',
+    'text/markdown',
+    'text/x-markdown',
+  ]);
+
+  private getFileExtensionFromName(filename: string): string {
+    const dot = filename.lastIndexOf('.');
+    return dot >= 0 ? filename.slice(dot + 1).toLowerCase() : '';
+  }
+
+  private isSupportedUploadFile(file: File): boolean {
+    const ext = this.getFileExtensionFromName(file.name);
+    if (ModalUploadFileComponent.SUPPORTED_UPLOAD_EXTENSIONS.has(ext)) {
+      return true;
+    }
+    return !!file.type && ModalUploadFileComponent.SUPPORTED_UPLOAD_MIME_TYPES.has(file.type);
   }
 
   /**

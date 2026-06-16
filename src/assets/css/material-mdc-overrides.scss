@@ -600,6 +600,36 @@ $td-slide-toggle-thumb-shadow:
   }
 }
 
+// Label — mirror mat-slide-toggle (Poppins, active/disabled colors).
+.mat-mdc-checkbox .mdc-form-field > label {
+  font-family: var(--header-font-family);
+  font-weight: 400;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.mat-mdc-checkbox.mat-mdc-checkbox-disabled .mdc-form-field > label {
+  font-weight: 400;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+// No grey ripple/focus halo (history/NORT uses plain form-check-input without MDC state layer).
+.mat-mdc-checkbox .mdc-checkbox__ripple,
+.mat-mdc-checkbox .mdc-checkbox:hover .mdc-checkbox__native-control:not([disabled]) ~ .mdc-checkbox__ripple,
+.mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control:not([disabled]):focus ~ .mdc-checkbox__ripple {
+  opacity: 0 !important;
+}
+
+.mat-mdc-checkbox .mat-mdc-checkbox-ripple .mat-ripple-element {
+  background-color: transparent !important;
+  opacity: 0 !important;
+}
+
+.mat-mdc-checkbox .mat-mdc-focus-indicator::before {
+  opacity: 0 !important;
+}
+
 // ─── mat-menu (MDC) — baseline (align AM14: 14px label, 20px icons, compact padding) ─
 
 .mat-mdc-menu-panel,

@@ -350,9 +350,18 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // Analytics
+  // new Analytics
   {
+    // path: 'project/:projectid/analytics/new',
     path: 'project/:projectid/analytics',
+    loadChildren: () => import('app/analytics-new/analytics-new.module').then(m => m.AnalyticsNewModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
+
+  // Analytics old 
+  {
+    path: 'project/:projectid/analytics/old',
     loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
     canActivate: [AuthGuard, ProjectProfileGuard]
   },

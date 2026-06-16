@@ -26,6 +26,7 @@ import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/m
 import { ModalPreviewSettingsComponent } from './modals/modal-preview-settings/modal-preview-settings.component';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ModalAddNamespaceComponent } from './modals/modal-add-namespace/modal-add-namespace.component';
@@ -106,6 +107,7 @@ const routes: Routes = [
     MatButtonModule,
     MatSliderModule,
     MatSlideToggleModule,
+    MatCheckboxModule,
     MomentModule,
     MatTooltipModule,
     MatDialogModule,

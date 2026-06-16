@@ -274,28 +274,26 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.logger.log('[APP-COMPONENT] router ', router)
 
                 // ------------------------------------------------------------------------------------------
-                // Adds the tiledesk_logOut query parameter to each path change if the "autologin" 
+                // tiledesk_logOut: disabilitato su questo branch (feature per cliente embed/SSO)
+                // Adds the tiledesk_logOut query parameter to each path change if the "autologin"
                 // was performed with tiledesk_logOut=false
-                // ------------------------------------------------------------------------------------------  
-                        
-                const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
-                this.logger.log('[APP-COMPONENT] SSO tiledeskLogOut ', tiledeskLogOut)
-
-                if (!tiledeskLogOut) return;
-
-                const urlTree: UrlTree = this.router.parseUrl(event.url);
-
-                // Aggiungo solo se non esiste già
-                if (!urlTree.queryParams['tiledesk_logOut']) {
-                    urlTree.queryParams['tiledesk_logOut'] = tiledeskLogOut;
-
-                    // Navigazione solo se URL cambia
-                    const newUrl = this.router.serializeUrl(urlTree);
-                    if (newUrl !== event.url) {
-                    this.router.navigateByUrl(newUrl);
-                    }
-                }
-                // ./ --------------------------------------------------------------------------------------- 
+                // ------------------------------------------------------------------------------------------
+                // const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
+                // this.logger.log('[APP-COMPONENT] SSO tiledeskLogOut ', tiledeskLogOut)
+                //
+                // if (!tiledeskLogOut) return;
+                //
+                // const urlTree: UrlTree = this.router.parseUrl(event.url);
+                //
+                // if (!urlTree.queryParams['tiledesk_logOut']) {
+                //     urlTree.queryParams['tiledesk_logOut'] = tiledeskLogOut;
+                //
+                //     const newUrl = this.router.serializeUrl(urlTree);
+                //     if (newUrl !== event.url) {
+                //     this.router.navigateByUrl(newUrl);
+                //     }
+                // }
+                // ./ ---------------------------------------------------------------------------------------
 
                 if (browserRefresh === true) {
                     window.addEventListener('load', () => {

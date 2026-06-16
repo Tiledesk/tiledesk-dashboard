@@ -50,10 +50,18 @@
   display: flex;
   flex-wrap: nowrap; // Prevent wrapping when navbar-header is present
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+  margin-right: 0;
   padding-left: 15px;
   padding-right: 15px;
+}
+
+.navbar .navbar-brand {
+  flex-shrink: 0;
+  margin-right: auto;
 }
 
 .navbar-header {
@@ -66,8 +74,9 @@
   display: flex !important;
   flex-direction: row !important;
   flex-basis: auto;
-  flex-grow: 1; // Take remaining space
-  flex-shrink: 1; // Allow shrinking if needed
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-left: auto;
   align-items: center;
   // height: 60px; // Fixed height to prevent content overflow
   // min-height: 60px;
@@ -80,13 +89,14 @@
 // }
 
 .navbar-nav {
-  width: 100%;
+  width: auto;
   display: flex;
   flex-direction: row; // Ensure horizontal layout
   justify-content: flex-end;
   align-items: center;
   flex-wrap: nowrap; // Prevent wrapping
   margin: 0;
+  margin-left: auto;
   list-style: none;
   padding-left: 0; // Remove default padding
 }
@@ -215,15 +225,14 @@
   }
 }
 
-// Limit navbar width on very large screens to prevent covering content
+// Keep navbar full width on large screens (e.g. 2560px): do not cap/center container-fluid
+// or title and actions appear grouped in the middle of the bar.
 @media (min-width: 2000px) {
-  .navbar-absolute {
-    max-width: 100vw;
-  }
-
-  .container-fluid {
-    max-width: 1920px; // Limit container width on very large screens
-    margin: 0 auto;
+  .navbar .container-fluid {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 

@@ -724,3 +724,45 @@
 //         border: solid 1px #b9b9b9;
 //     }
 // }
+
+.regex-chunking-detail {
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.regex-chunking-input-wpr {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    min-height: 36px;
+    border: 1px solid #d1d9e0;
+    border-radius: 5px;
+    background: #fff;
+    overflow: hidden;
+    margin-top: 2px;
+
+    &.regex-chunking-input-wpr--readonly {
+        background: #f5f5f5;
+    }
+}
+
+.regex-chunking-input-affix {
+    flex-shrink: 0;
+    padding: 0 5px;
+    font-size: 14px;
+    line-height: 1;
+    color: var(--text-color);
+    user-select: none;
+}
+
+.regex-chunking-value {
+    flex: 1;
+    min-width: 0;
+    padding: 8px 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--text-color);
+    word-break: break-all;
+}

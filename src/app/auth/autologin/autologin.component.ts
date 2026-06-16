@@ -74,26 +74,25 @@ export class AutologinComponent implements OnInit {
     // }
 
     // this.logger.log('[AUTOLOGIN] SSO - autologin page');
-    this.getQueryParams()
+    // this.getQueryParams() // tiledesk_logOut: disabilitato su questo branch
     this.detectMobile();
     this.getUserRole()
   }
 
-    getQueryParams() {
-      this.route.queryParams.subscribe((queryParams) => {
-        this.logger.log('[AUTOLOGIN] SSO queryParams:', queryParams);
-        const tiledeskLogOut = queryParams['tiledesk_logOut'];
-        this.logger.log('[AUTOLOGIN] SSO tiledesk_logOut:', tiledeskLogOut);
-
-        if (!tiledeskLogOut) {
-          this.localDbService.removeFromStorage('tiledesk_logOut');
-          this.logger.log('[AUTOLOGIN] SSO tiledesk_logOut rimosso dallo storage');
-        } else {
-          this.logger.log('[AUTOLOGIN] SSO tiledesk_logOut presente:', tiledeskLogOut);
-        }
-      
-      });
-    }
+    // getQueryParams() {
+    //   this.route.queryParams.subscribe((queryParams) => {
+    //     this.logger.log('[AUTOLOGIN] SSO queryParams:', queryParams);
+    //     const tiledeskLogOut = queryParams['tiledesk_logOut'];
+    //     this.logger.log('[AUTOLOGIN] SSO tiledesk_logOut:', tiledeskLogOut);
+    //
+    //     if (!tiledeskLogOut) {
+    //       this.localDbService.removeFromStorage('tiledesk_logOut');
+    //       this.logger.log('[AUTOLOGIN] SSO tiledesk_logOut rimosso dallo storage');
+    //     } else {
+    //       this.logger.log('[AUTOLOGIN] SSO tiledesk_logOut presente:', tiledeskLogOut);
+    //     }
+    //   });
+    // }
 
   getUserRole() {
     this.usersService.project_user_role_bs

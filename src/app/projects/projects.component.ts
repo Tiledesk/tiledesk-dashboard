@@ -345,12 +345,13 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
         }
       }
 
-      if (params['tiledesk_logOut']) { 
-        this.logoutBtnVisible = params['tiledesk_logOut'] == "true" ? true: false
-        this.logger.log('[PROJECTS] params tiledeskLogout', this.logoutBtnVisible);  
-      } else {
-        this.logoutBtnVisible = true
-      }
+      // tiledesk_logOut: disabilitato su questo branch — logout da LOGOUT_ENABLED nel brand
+      // if (params['tiledesk_logOut']) {
+      //   this.logoutBtnVisible = params['tiledesk_logOut'] == "true" ? true: false
+      //   this.logger.log('[PROJECTS] params tiledeskLogout', this.logoutBtnVisible);
+      // } else {
+      //   this.logoutBtnVisible = true
+      // }
     });
   }
 
