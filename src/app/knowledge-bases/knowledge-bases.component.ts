@@ -24,7 +24,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -3302,7 +3302,72 @@ _presentDialogImportContents() {
       this.kbsList = [];
     }
     this.logger.log("[KNOWLEDGE BASES COMP] getListOfKb params", params);
+
+    const typeFilters = expandKbListTypeFilter(parseKbListQueryParam(params, 'type'));
+    if (typeFilters.length > 1) {
+      const requests = typeFilters.map((type) =>
+        this.kbService.getListOfKb(kbListParamsWithType(params, type))
+      );
+      forkJoin(requests).subscribe((responses: any[]) => {
+        const sortField = parseKbListQueryParam(params, 'sortField') || KB_DEFAULT_PARAMS.SORT_FIELD;
+        const direction = Number(parseKbListQueryParam(params, 'direction') ?? KB_DEFAULT_PARAMS.DIRECTION);
+        const mergedKbs = this.mergeKbListResponses(responses, sortField, direction);
+        const mergedCount = responses.reduce((sum, resp) => sum + (Number(resp?.count) || 0), 0);
+        this.applyKbListResponse({ count: mergedCount, kbs: mergedKbs }, params, calledby);
+      }, (error) => {
+        this.handleKbListError(error);
+      }, () => {
+        this.completeKbListLoad();
+      });
+      return;
+    }
+
     this.kbService.getListOfKb(params).subscribe((resp: any) => {
+      this.applyKbListResponse(resp, params, calledby);
+    }, (error) => {
+      this.handleKbListError(error);
+    }, () => {
+      this.completeKbListLoad();
+    });
+  }
+
+  private mergeKbListResponses(responses: any[], sortField: string, direction: number): any[] {
+    const seenIds = new Set<string>();
+    const merged: any[] = [];
+    responses.forEach((resp) => {
+      (resp?.kbs || []).forEach((kb: any) => {
+        const id = kb?._id;
+        if (id && !seenIds.has(id)) {
+          seenIds.add(id);
+          merged.push(kb);
+        }
+      });
+    });
+    return merged.sort((a, b) => this.compareKbListItems(a, b, sortField, direction));
+  }
+
+  private compareKbListItems(a: any, b: any, sortField: string, direction: number): number {
+    const av = a?.[sortField];
+    const bv = b?.[sortField];
+    if (av == null && bv == null) {
+      return 0;
+    }
+    if (av == null) {
+      return 1;
+    }
+    if (bv == null) {
+      return -1;
+    }
+    if (av < bv) {
+      return direction > 0 ? -1 : 1;
+    }
+    if (av > bv) {
+      return direction > 0 ? 1 : -1;
+    }
+    return 0;
+  }
+
+  private applyKbListResponse(resp: any, params: string, calledby?: string): void {
       this.logger.log("[KNOWLEDGE BASES COMP] get kbList resp: ", resp);
       //this.kbs = resp;
       this.kbsListCount = resp.count;
@@ -3319,23 +3384,10 @@ _presentDialogImportContents() {
         this.kbsList = [...resp.kbs];
       } else {
         resp.kbs.forEach((kb: any, i: number) => {
-          // this.kbsList.push(kb);
           const index = this.kbsList.findIndex(objA => objA._id === kb._id);
           if (index !== -1) {
             this.kbsList[index] = kb;
           } else {
-            // FIXED(load-more-after-multi-add): the four call sites that used
-            // to pass 'add-multi-faq' / 'onAddMultiKb' now pass 'after-add',
-            // which is handled by the spread-replace branch above. The
-            // `unshift` path below therefore became dead code after the fix
-            // and is kept commented for archaeological reference (it can be
-            // safely deleted in a follow-up cleanup).
-            //
-            // if (calledby === 'add-multi-faq' || calledby === 'onAddMultiKb') {
-            //   this.kbsList.unshift(kb);
-            // } else {
-            //   this.kbsList.push(kb);
-            // }
             this.kbsList.push(kb);
           }
           this.logger.log('[KNOWLEDGE BASES COMP] loop i ', i)
@@ -3352,21 +3404,21 @@ _presentDialogImportContents() {
       }
 
       this.refreshKbsList = !this.refreshKbsList;
+  }
 
-    }, (error) => {
+  private handleKbListError(error: any): void {
       this.logger.error("[KNOWLEDGE BASES COMP] ERROR GET KB LIST: ", error);
       this.showSpinner = false
       this.showKBTableSpinner = false;
       this.getKbCompleted = false
-    }, () => {
+  }
+
+  private completeKbListLoad(): void {
       this.logger.log("[KNOWLEDGE BASES COMP] GET KB LIST *COMPLETE*");
       this.showSpinner = false;
       this.showKBTableSpinner = false;
 
       // this.presentKBTour()
-
-
-    })
   }
 
 

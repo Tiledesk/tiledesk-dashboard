@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration} from './utils'; // , DeepseekIntegration
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration, ElevenLabsIntegration } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,9 +14,10 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { AppStoreService } from 'app/services/app-store.service';
 import { environment } from 'environments/environment';
+import { AppConfigService } from 'app/services/app-config.service';
+
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
-import { C } from '@angular/cdk/keycodes';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { browserRefresh } from 'app/app.component';
 
@@ -75,6 +76,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   subscriptionIsActive: boolean;
   profileType: string;
   user: any;
+  salesEmail: string;
+  public_Key: string;
+  isVisiblePAY: boolean;
+  overridePay: boolean;
 
   isAuthorized = false;
   permissionChecked = false;
@@ -93,12 +98,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     public prjctPlanService: ProjectPlanService,
     private projectPlanService: ProjectPlanService,
     private appService: AppStoreService,
+    public appConfigService: AppConfigService,
     private roleService: RoleService,
     public rolesService: RolesService
   ) {
     const _brand = this.brand.getBrand();
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
     this.translateparams = _brand;
+    this.salesEmail = _brand['CONTACT_SALES_EMAIL'];
     // this.INTEGRATIONS_CLONE = JSON.parse(JSON.stringify(INTEGRATION_LIST_ARRAY))
 
   }
@@ -106,6 +113,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getCurrentProject();
     this.getLoggedUser()
+    this.getOSCODE();
     this.getProjectPlan();
     this.getBrowserVersion();
     this.listenSidebarIsOpened();
@@ -120,27 +128,27 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
-        console.log("[INTEGRATION-COMP] - PERMISSION_TO_UPDATE Project: ", this.project) ;
-        console.log('[INTEGRATION-COMP] - Role:', status.role);
-        console.log('[INTEGRATION-COMP] - Permissions:', status.matchedPermissions);
+        this.logger.log("[INTEGRATION-COMP] - PERMISSION_TO_UPDATE Project: ", this.project) ;
+        this.logger.log('[INTEGRATION-COMP] - Role:', status.role);
+        this.logger.log('[INTEGRATION-COMP] - Permissions:', status.matchedPermissions);
 
         // PERMISSION TO UPDATE
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
 
           if (status.matchedPermissions.includes(PERMISSIONS.INTEGRATIONS_UPDATE)) {
             this.PERMISSION_TO_UPDATE = true
-            console.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           } else {
             this.PERMISSION_TO_UPDATE = false;
             if (this.PERMISSION_TO_UPDATE === false) {
               this.router.navigate(['project/' + this.projectID + '/integrations/'])
             }
            
-            console.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+            this.logger.log('[INTEGRATION-COMP] - PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
           }
         } else {
           this.PERMISSION_TO_UPDATE = true
-          console.log('[INTEGRATION-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
+          this.logger.log('[INTEGRATION-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
         }
 
 
@@ -160,16 +168,91 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   async checkPermissions() {
     const result = await this.roleService.checkRoleForCurrentProject('integrations')
-    console.log('[INTEGRATION-COMP] result ', result)
+    this.logger.log('[INTEGRATION-COMP] result ', result)
     this.isAuthorized = result === true;
     this.permissionChecked = true;
-    console.log('[INTEGRATION-COMP] isAuthorized ', this.isAuthorized)
-    console.log('[INTEGRATION-COMP] permissionChecked ', this.permissionChecked)
+    this.logger.log('[INTEGRATION-COMP] isAuthorized ', this.isAuthorized)
+    this.logger.log('[INTEGRATION-COMP] permissionChecked ', this.permissionChecked)
   }
 
   // ------------------------------
   // UTILS FUNCTIONS - START
   // ------------------------------
+
+  getOSCODE() {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    this.logger.log('[INTEGRATION-COMP] AppConfigService getAppConfig public_Key', this.public_Key);
+
+    let keys = this.public_Key.split("-");
+    this.logger.log('[INTEGRATION-COMP] PUBLIC-KEY - public_Key keys', keys)
+
+    keys.forEach(key => {
+
+      if (key.includes("PAY")) {
+
+        let pay = key.split(":");
+
+        if (pay[1] === "F") {
+          this.isVisiblePAY = false;
+          this.logger.log('[INTEGRATION-COMP] isVisiblePAY', this.isVisiblePAY)
+        } else {
+          this.isVisiblePAY = true;
+          this.logger.log('[INTEGRATION-COMP] isVisiblePAY', this.isVisiblePAY)
+        }
+      }
+
+      if (key.includes("OVP")) {
+        const ovp = key.split(":");
+        if (ovp[1] === "F") {
+          this.overridePay = false;
+        } else {
+          this.overridePay = true;
+        }
+      }
+    });
+
+    if (!this.public_Key.includes("PAY")) {
+      this.isVisiblePAY = false;
+    }
+    if (!this.public_Key.includes("OVP")) {
+      this.overridePay = false;
+    }
+  }
+
+  getOverridePayValue(): boolean {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    const keys = this.public_Key.split("-");
+    const ovpKey = keys.find((key) => key.startsWith('OVP'));
+    if (ovpKey) {
+      const ovpParts = ovpKey.split(':');
+      return ovpParts[1] !== 'F';
+    }
+    return false;
+  }
+
+  /** Twilio Voice / ElevenLabs visible when PAY is on, or PAY is off but OVP (override pay) is on. */
+  canShowPaidVoiceIntegrations(): boolean {
+    return this.getPayValue() || this.getOverridePayValue();
+  }
+
+  getPayValue(): boolean {
+    this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
+    let keys = this.public_Key.split("-");
+
+    let payKey = keys.find((key) => key.startsWith('PAY'));
+    if (payKey) {
+      let payParts = payKey.split(':');
+      let payValue = payParts[1];
+      if (payValue === 'F') {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    // If PAY key doesn't exist, return false
+    return false;
+  }
 
   getLoggedUser() {
     this.auth.user_bs
@@ -200,8 +283,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
           this.project = project
           this.projectID = project._id
-          console.log("[INTEGRATION-COMP] getCurrentProject Project: ", this.project) ;
-          console.log("[INTEGRATION-COMP] getCurrentProject PERMISSION_TO_UPDATE: ", this.PERMISSION_TO_UPDATE) ;
+          this.logger.log("[INTEGRATION-COMP] getCurrentProject Project: ", this.project) ;
+          this.logger.log("[INTEGRATION-COMP] getCurrentProject PERMISSION_TO_UPDATE: ", this.PERMISSION_TO_UPDATE) ;
            if (this.PERMISSION_TO_UPDATE === false) {
               this.router.navigate(['project/' + this.projectID + '/integrations/'])
            }
@@ -220,21 +303,23 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           this.profile_name = projectProfileData.profile_name;
           this.logger.log('[INTEGRATION-COMP] INTEGRATIONS profile_name ', this.profile_name)
 
-          this.trialExpired = projectProfileData.trial_expired
+         
           this.trialExpired = projectProfileData.trial_expired
           this.profileType = projectProfileData.profile_type
           this.subscriptionIsActive = projectProfileData.subscription_is_active
+          // console.log('subscriptionIsActive', this.subscriptionIsActive)
+          // console.log('profileType', this.profileType)
+          // console.log('trialExpired', this.trialExpired)
 
           this.customization = projectProfileData.customization;
-
-          this.INTEGRATIONS.forEach(integration => {
-            this.manageProBadgeVisibility(integration, projectProfileData)
-          });
 
           await this.getApps();
           //this.manageTelegramVisibility(projectProfileData);
           this.logger.log("[INTEGRATION-COMP] app retrieved")
-          this.manageAppVisibility(projectProfileData)
+          this.manageAppVisibility(projectProfileData);
+          this.INTEGRATIONS.forEach((integration) => {
+            this.manageProBadgeVisibility(integration, projectProfileData);
+          });
           this.getIntegrations();
         }
       }, (error) => {
@@ -286,7 +371,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   getAllIntegrations() {
     return new Promise((resolve, reject) => {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
-        console.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
+        this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
 
         this.showSpinner = false
@@ -303,7 +388,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
     return new Promise((resolve) => {
       this.appService.getApps().subscribe((response: any) => {
-
+      // this.logger.log("[INTEGRATION-COMP] getApps response ", response)
         let whatsappApp = response.apps.find(a => (a.title === APPS_TITLE.WHATSAPP && a.version === "v2"));
         if (environment['whatsappConfigUrl']) {
           if (whatsappApp) {
@@ -318,6 +403,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         } else {
           if (whatsappApp) {
             whatsappApp.channel = "whatsapp";
+          } else if (environment['whatsappApiUrl']) {
+            whatsappApp = {
+              runURL: `${environment['whatsappApiUrl']}/configure`,
+              channel: "whatsapp"
+            };
           }
         }
         this.availableApps.push(whatsappApp);
@@ -443,11 +533,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
 
 
-    console.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
+    this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration", integration)
 
     this.integrationSelectedType = 'none'
     this.integrationLocked = false;
-    this.checkPlan(integration.plan).then(() => {
+    this.checkPlan(integration, integration.plan).then(() => {
       this.integrationSelectedName = integration.key;
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
@@ -456,19 +546,27 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       if (!this.selectedIntegration) {
         this.selectedIntegration = this.initializeIntegration(integration.key);
       }
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration.category", integration.category, ' INTEGRATIONS_CATEGORIES.CHANNEL ', INTEGRATIONS_CATEGORIES.CHANNEL)
-      if (integration && integration.category === INTEGRATIONS_CATEGORIES.CHANNEL) {
-        this.logger.log("[INTEGRATIONS]- OLLa ")
-        // this.integrationSelectedName = "external";
-
-        this.integrationSelectedType = "external";
-        this.showInIframe = true;
-        this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedType", this.integrationSelectedType, ' showInIframe ', this.showInIframe)
+      const usesAppStoreIframe =
+        integration.category === INTEGRATIONS_CATEGORIES.CHANNEL
+        || (integration.category === INTEGRATIONS_CATEGORIES.VOICE
+          && integration.key !== INTEGRATIONS_KEYS.ELEVENLABS);
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration.category", integration.category, ' usesAppStoreIframe ', usesAppStoreIframe)
+      if (integration && usesAppStoreIframe) {
         this.logger.log("[INTEGRATIONS]- availableApps ", this.availableApps)
-        let app = this.availableApps.find(a => a.channel === integration.key);
+        const app = this.availableApps.find((a) => a.channel === integration.key);
         this.logger.log("[INTEGRATIONS]- app ", app)
 
-        this.renderUrl = app.runURL;
+        // Only embed App Store iframe when a matching app exists (e.g. Twilio Voice, VXML). ElevenLabs uses native component.
+        if (app && app.runURL) {
+          this.integrationSelectedType = "external";
+          this.showInIframe = true;
+          this.renderUrl = app.runURL;
+          this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedType", this.integrationSelectedType, ' showInIframe ', this.showInIframe)
+        } else {
+          this.integrationSelectedType = "none";
+          this.showInIframe = false;
+          this.logger.log("[INTEGRATIONS]- onIntegrationSelect no app for channel/voice; skip iframe", integration.key)
+        }
       } else {
         this.showInIframe = false;
       }
@@ -498,7 +596,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   integrationUpdateEvent(data) {
-    console.log('[INTEGRATION-COMP] data', data)
+    this.logger.log('[INTEGRATION-COMP] data', data)
     this.integrationService.saveIntegration(data.integration).subscribe((result) => {
       this.logger.log("[INTEGRATION-COMP] Save integration result: ", result);
       // this.notify.showNotification("Saved successfully", 2, 'done');
@@ -606,7 +704,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   changeRoute(key) {
-    console.log('[INTEGRATION-COMP] browserRefresh', this.browserRefresh)
+    this.logger.log('[INTEGRATION-COMP] browserRefresh', this.browserRefresh)
     this.logger.log("[INTEGRATION-COMP] change route in ", key);
 
     this.router.navigate(['project/' + this.projectID + '/integrations/'], { queryParams: { name: key } })
@@ -658,6 +756,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       return new GroqIntegration();
     }
 
+
     if (key === INTEGRATIONS_KEYS.COHERE) {
       return new CohereIntegration();
     }
@@ -677,6 +776,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     if (key === INTEGRATIONS_KEYS.DEEPSEEK) {
       return new DeepseekIntegration();
     }
+
+    if (key === INTEGRATIONS_KEYS.ELEVENLABS) {
+      return new ElevenLabsIntegration();
+    }
+
 
     if (key === INTEGRATIONS_KEYS.MAKE) {
       return new MakeIntegration();
@@ -859,10 +963,58 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.logger.log('[INTEGRATION-COMP] INTEGRATIONS ', this.INTEGRATIONS)
   }
 
-  checkPlan(integration_plan) {
-    this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
+  checkPlan(integration, integration_plan) {
+    // this.logger.log("INTEGRATIONS_KEYS checkPlan integration: " , integration);
+    // this.logger.log("INTEGRATIONS_KEYS checkPlan profile_name: " + this.profile_name + " integration_plan: " + integration_plan);
+    this.logger.log("INTEGRATIONS_KEYS checkPlan isVisiblePAY: " + this.getPayValue() + " integration_plan: " + integration_plan);
 
     return new Promise((resolve, reject) => {
+      // A = 'Growth',
+      // B = 'Scale',
+      // C = 'Plus',
+      // D = 'Starter',
+      // E = 'Pro', 
+      // EE = 'Business',
+      // F = 'Custom'
+
+      // TWILIO_VOICE: Check trial/subscription status first, then customization
+      // Reject if: trial is expired (profileType === 'free' && trialExpired === true), 
+      //            or subscription is expired (profileType === 'payment' && subscriptionIsActive === false),
+      //            or getPayValue() is false, or customization doesn't exist, or voice_twilio key doesn't exist, or voice_twilio is false
+      // Resolve only if trial/subscription is active, getPayValue() is true, and voice_twilio exists and is true
+      if (integration && integration.key === this.INT_KEYS.TWILIO_VOICE) {
+        if (this.profileType === 'free' && this.trialExpired === true) {
+          reject(false);
+        } else if (this.profileType === 'payment' && this.subscriptionIsActive === false) {
+          reject(false);
+        } else if (!this.getPayValue() && !this.getOverridePayValue()) {
+          reject(false);
+        } else if (!this.customization) {
+          reject(false);
+        } else if (!this.customization.hasOwnProperty(this.INT_KEYS.TWILIO_VOICE) || this.customization[this.INT_KEYS.TWILIO_VOICE] === false) {
+          reject(false);
+        } else {
+          resolve(true);
+        }
+        return;
+      }
+
+      if (integration && integration.key === this.INT_KEYS.ELEVENLABS) {
+        if (this.profileType === 'free' && this.trialExpired === true) {
+          reject(false);
+        } else if (this.profileType === 'payment' && this.subscriptionIsActive === false) {
+          reject(false);
+        } else if (!this.getPayValue() && !this.getOverridePayValue()) {
+          reject(false);
+        } else if (!this.customization) {
+          reject(false);
+        } else if (!this.customization.hasOwnProperty(this.INT_KEYS.ELEVENLABS) || this.customization[this.INT_KEYS.ELEVENLABS] === false) {
+          reject(false);
+        } else {
+          resolve(true);
+        }
+        return;
+      }
 
       // FREE or SANDBOX PLAN
       // if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {
@@ -946,6 +1098,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   manageAppVisibility(projectProfileData) {
+    const showPaidVoiceIntegrations = this.canShowPaidVoiceIntegrations();
+    this.logger.log('[INTEGRATIONS] manageAppVisibility showPaidVoiceIntegrations ', showPaidVoiceIntegrations, ' overridePay ', this.getOverridePayValue())
+
+    // Fresh copies each plan load: avoids mutating shared module arrays and missing items after navigation
+    this.INTEGRATIONS = [...INTEGRATION_LIST_ARRAY_CLONE];
+    this.CATEGORIES = CATEGORIES_LIST.map((c) => ({ ...c }));
 
     if (projectProfileData && projectProfileData.customization) {
 
@@ -963,6 +1121,13 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       }
       if (projectProfileData.customization[this.INT_KEYS.TWILIO_SMS] === false) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      }
+      // Twilio Voice / ElevenLabs: hide when neither PAY nor OVP override is enabled
+      if (!showPaidVoiceIntegrations) {
+        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+        index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.ELEVENLABS);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
@@ -994,24 +1159,24 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       // TWILIO_VOICE
       // -----------------------------
       // Removes "Twilio voice" integration if in not activated in customization
-      if (!projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] || projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false) {
-        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
-      }
+      // if (!projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] || projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === false) {
+      //   let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+      //   if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+      // }
 
       // Restores the "Twilio voice" integration (use case: it was removed from the Integration array in a project where it was not active)
-      if (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] && projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === true) {
-        this.logger.log('[INTEGRATIONS] manageAppVisibility TWILIO_VOICE ')
-        let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-        if (index != -1) {
-          this.logger.log('TWILIO_VOICE index A', index)
-        } else if (index == -1) {
-          this.logger.log('TWILIO_VOICE index B', index)
-          const twilioVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-          this.logger.log('twilioVoiceObjct', twilioVoiceObjct)
-          this.INTEGRATIONS.push(twilioVoiceObjct)
-        }
-      }
+      // if (projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] && projectProfileData.customization[this.INT_KEYS.TWILIO_VOICE] === true) {
+      //   this.logger.log('[INTEGRATIONS] manageAppVisibility TWILIO_VOICE ')
+      //   let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+      //   if (index != -1) {
+      //     this.logger.log('TWILIO_VOICE index A', index)
+      //   } else if (index == -1) {
+      //     this.logger.log('TWILIO_VOICE index B', index)
+      //     const twilioVoiceObjct = INTEGRATION_LIST_ARRAY_CLONE.find(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+      //     this.logger.log('twilioVoiceObjct', twilioVoiceObjct)
+      //     this.INTEGRATIONS.push(twilioVoiceObjct)
+      //   }
+      // }
 
 
       let index = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.CHANNEL);
@@ -1022,16 +1187,65 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
       }
 
+      let voiceIndex = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.VOICE);
+      if (voiceIndex === -1) {
+        let voiceCategoryIdx = this.CATEGORIES.findIndex(c => c.type === INTEGRATIONS_CATEGORIES.VOICE);
+        if (voiceCategoryIdx != -1) {
+          this.CATEGORIES.splice(voiceCategoryIdx, 1);
+        }
+      }
+
     } else {
       let vxml_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
       if (vxml_voice_index != -1) { this.INTEGRATIONS.splice(vxml_voice_index, 1) };
 
-      let twilio_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
-      if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
+      // Remove Twilio Voice / ElevenLabs when neither PAY nor OVP override is enabled
+      if (!showPaidVoiceIntegrations) {
+        let twilio_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+        if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
+        let elevenlabs_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.ELEVENLABS);
+        if (elevenlabs_index != -1) { this.INTEGRATIONS.splice(elevenlabs_index, 1) };
+      }
 
     }
 
     this.integrationListReady = true;
+  }
+
+  /** PAY off + OVP on: voice integrations show Contact us instead of Upgrade plan when locked. */
+  useContactUsForLockedIntegration(): boolean {
+    return !this.getPayValue() && this.getOverridePayValue();
+  }
+
+  showContactUsInsteadOfUpgradeLock(): boolean {
+    if (!this.useContactUsForLockedIntegration()) {
+      return false;
+    }
+    return this.integrationSelectedName === this.INT_KEYS.TWILIO_VOICE
+      || this.integrationSelectedName === this.INT_KEYS.ELEVENLABS;
+  }
+
+  contactUsForLockedIntegration(): void {
+    if (this.integrationSelectedName === this.INT_KEYS.ELEVENLABS) {
+      this.contactUsEvenlabs();
+      return;
+    }
+    if (this.integrationSelectedName === this.INT_KEYS.TWILIO_VOICE) {
+      this.contactUs();
+      return;
+    }
+  }
+
+  contactUs() {
+    window.open(`mailto:${this.salesEmail}?subject=Enable Twilio Voice for project id ${this.projectID}`);
+  }
+
+  contactUsEvenlabs() {
+    window.open(`mailto:${this.salesEmail}?subject=Enable ElevenLabs for project id ${this.projectID}`);
+  }
+
+  contactUsToUpgradePlan(){
+    window.open(`mailto:${this.salesEmail}?subject=Upgrade plan (subscription expired) for project id ${this.projectID}`);
   }
 
   trackSavedIntegration(integrationName, integrationisVerified) {

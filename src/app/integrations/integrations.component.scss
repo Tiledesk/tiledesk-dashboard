@@ -219,6 +219,7 @@ mat-expansion-panel ::ng-deep {
         margin-bottom: 30px;
         max-width: 800px;
         text-align: center;
+        line-height: 1.3;
     }
 }
 
@@ -228,12 +229,13 @@ mat-expansion-panel ::ng-deep {
     //background: #3ea9f5;
     background: linear-gradient(45deg, #3167e2, #3167e2, #a736ff);
     border: none;
-    border-radius: 6px;
+    border-radius: 999px;
     height: 30px;
     font-weight: 500;
-    padding: 0px 8px;
+    padding: 0px 12px;
     opacity: 0.8;
-
+    font-size: 14px;
+  
     &:hover {
         opacity: 1;
     }
