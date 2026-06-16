@@ -335,6 +335,37 @@ export enum KB_DEFAULT_PARAMS {
 
 export const KB_LIMIT_CONTENT = 300;
 
+/** TXT filter includes regex-chunked file imports (`regex_custom`). */
+export function expandKbListTypeFilter(type: string | undefined | null): string[] {
+  const t = type != null ? String(type).trim() : '';
+  if (!t) {
+    return [];
+  }
+  if (t === 'txt') {
+    return ['txt', 'regex_custom'];
+  }
+  return [t];
+}
+
+export function kbListParamsWithType(params: string, type: string): string {
+  const qs = params.trim().startsWith('?') ? params.trim().slice(1) : params.trim();
+  const sp = new URLSearchParams(qs);
+  sp.set('type', type);
+  return '?' + sp.toString();
+}
+
+export function parseKbListQueryParam(params: string | undefined, key: string): string | null {
+  if (params == null || params === '') {
+    return null;
+  }
+  const qs = params.trim().startsWith('?') ? params.trim().slice(1) : params.trim();
+  try {
+    return new URLSearchParams(qs).get(key);
+  } catch {
+    return null;
+  }
+}
+
 // Growth
 export const featuresPlanA = [
     'CRM',

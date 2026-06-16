@@ -2,7 +2,7 @@
 
 
 <div mat-dialog-content>
-    <mat-tab-group>
+    <mat-tab-group [(selectedIndex)]="selectedTabIndex" (selectedIndexChange)="onTabIndexChange($event)">
         <mat-tab [label]="'KbPage.Upload' | translate">
             <div [class.is-hidden]="hideDropZone === true" class="drop-container dropzone" (drop)="drop($event)"
                 (dragover)="allowDrop($event)" (dragleave)="drag($event)" [class.hovering]="isHovering">
@@ -11,7 +11,7 @@
             {{ "DragYuorFileHereOr" | translate }}
         </div>
         <label class="upload-button">
-            <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/pdf, .docx, .txt"
+            <input (change)="onFileChange($event)" id="uploadprivatekey" accept="application/pdf, .docx, .txt, .md"
                 name="uploadprivatekey" type="file">
 
             <div role="button" class="browse--btn">{{ 'Browse' | translate }}</div>
@@ -95,6 +95,36 @@
         </mat-slide-toggle>
         <p class="situated-context-row__desc" style="margin: 0; font-size: 13px; line-height: 1.4; color: rgba(0,0,0,0.65);">
             {{ 'KbPage.SituatedContextDescriptionFaq' | translate }}
+        </p>
+    </div>
+
+    <div class="regex-chunking-section">
+        <mat-checkbox
+            #regexChunkingCheckbox
+            [(ngModel)]="regexChunkingEnabled"
+            [disabled]="regexChunkingDisabled"
+            (ngModelChange)="onRegexChunkingEnabledChange($event)"
+            color="primary">
+            {{ 'KbPage.RegexChunking' | translate }}
+        </mat-checkbox>
+        <div class="regex-chunking-input-wpr"
+            [class.regex-chunking-input-wpr--disabled]="!regexChunkingEnabled">
+            <span class="regex-chunking-input-affix" aria-hidden="true">/</span>
+            <input #chunkRegexInputEl
+                id="chunk-regex-input"
+                class="regex-chunking-input"
+                type="text"
+                name="chunk-regex-input"
+                [(ngModel)]="chunkRegexInput"
+                [readonly]="!regexChunkingEnabled"
+                (input)="onChunkRegexInput($event)"
+                [placeholder]="'KbPage.RegexChunkingPlaceholder' | translate"
+                autocomplete="off"
+                spellcheck="false">
+            <span class="regex-chunking-input-affix" aria-hidden="true">/</span>
+        </div>
+        <p class="regex-chunking-section__desc">
+            {{ 'KbPage.RegexChunkingDescription' | translate }}
         </p>
     </div>
 

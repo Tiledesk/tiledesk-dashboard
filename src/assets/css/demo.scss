@@ -2499,6 +2499,17 @@ footer ul {
   background-color: var(--blue-20) !important;
 }
 
+// overwrite the checkbox background
+.mat-checkbox-checked .mat-checkbox-background,
+.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: var(--blue-20) !important;
+}
+
+// overwrite the ripple overlay on hover and click
+.mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+  background-color: var(--blue-20) !important;
+}
+
 /* Angular radio button 
 /* ****************************** */
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
@@ -4649,7 +4660,7 @@ li.li-active a {
   margin-bottom: 0px;
   font-weight: var(--contact-tag-font-weight);
   // font-size: var(--contact-tag-font-size);
-  line-height: var(--contact-tag-line-height);
+  // line-height: var(--contact-tag-line-height);
   letter-spacing: var(--contact-tag-letter-spacing);
   padding: 3px 5px 4px;
   word-break: break-word;
@@ -4657,6 +4668,7 @@ li.li-active a {
   font-family: var(--header-font-family);
   font-size: 12px;
   color: var(--text-color);
+  line-height: 12px;
 }
 
 

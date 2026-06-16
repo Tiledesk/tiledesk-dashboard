@@ -460,7 +460,7 @@
                                     style="font-size: 16px; color: white">description</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">DOCX</span>
                             </div>
-                            <div *ngIf="kb.type == 'txt'" class="chip"
+                            <div *ngIf="kb.type == 'txt' || kb.type == 'regex_custom'" class="chip"
                                 style="display: flex; align-items: center; justify-content: center; background-color: #00bcd4; color: white; padding: 2px 6px; border-radius: 10px;">
                                 <span id="description" class="material-icons-outlined"
                                     style="font-size: 16px; color: white">description</span>
@@ -610,7 +610,7 @@
 
 
                         <td class="kb-name-col" style="max-width: 100%; display: grid;" (click)="onOpenBaseModalDetail(kb)">
-                            <div [ngClass]="{'imported-file': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && (!kb?.tags || kb?.tags?.length === 0), 'imported-file-with-tags': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx') && kb?.tags?.length > 0}"
+                            <div [ngClass]="{'imported-file': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx' || kb.type === 'regex_custom') && (!kb?.tags || kb?.tags?.length === 0), 'imported-file-with-tags': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx' || kb.type === 'regex_custom') && kb?.tags?.length > 0}"
                                 class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;">
                                 {{ kb.name }}
                             </div>
