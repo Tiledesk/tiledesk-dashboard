@@ -5,7 +5,6 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { UploadImageService } from 'app/services/upload-image.service';
 import { UploadImageNativeService } from 'app/services/upload-image-native.service';
 import { WsRequestsService } from 'app/services/websocket/ws-requests.service';
@@ -115,7 +114,6 @@ export class SidebarUserDetailsComponent implements OnInit {
     private router: Router,
     public appConfigService: AppConfigService,
     private usersService: UsersService,
-    public snackBar: MatSnackBar,
     private uploadImageService: UploadImageService,
     private uploadImageNativeService: UploadImageNativeService,
     public wsRequestsService: WsRequestsService,
@@ -1163,14 +1161,11 @@ export class SidebarUserDetailsComponent implements OnInit {
 
 
   openSnackBar() {
-    let snackBarRef = this.snackBar.open(this.youAreCurrentlySetToUnavailable, 'x', {
-      duration: 9000,
-      verticalPosition: 'top',
-      horizontalPosition: 'center',
-      panelClass: 'my-custom-snackbar',
-    });
-
-    snackBarRef.onAction().subscribe(() => this.snackBar.dismiss());
+    this.notifyService.showWidgetStyleUpdateNotification(
+      this.youAreCurrentlySetToUnavailable,
+      3,
+      'warning'
+    );
   }
 
 

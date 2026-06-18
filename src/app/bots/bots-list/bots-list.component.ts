@@ -24,7 +24,6 @@ import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { SatPopover } from '@ncstate/sat-popover';
@@ -227,7 +226,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     public prjctPlanService: ProjectPlanService,
     public usersService: UsersService,
     private clipboard: Clipboard,
-    private _snackBar: MatSnackBar,
     private webhookService: WebhookService,
     private activatedroute: ActivatedRoute,
     private roleService: RoleService,
@@ -633,11 +631,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.WIDGET_BASE_URL = this.appConfigService.getConfig().WIDGET_BASE_URL;
     const botLink = this.WIDGET_BASE_URL + "assets/twp/chatbot-panel.html?tiledesk_projectid=" + this.currentProjectId + "&tiledesk_participants=bot_" + botid + "&tiledesk_departmentID=" + this.defaultDeptId + "&tiledesk_hideHeaderCloseButton=true&tiledesk_widgetTitle=" + encodeURIComponent(botname) + "&tiledesk_preChatForm=false&td_draft=true"
     this.clipboard.copy(botLink)
-    this._snackBar.open(" Copied to clipboard", null, {
-      duration: 3000,
-      verticalPosition: 'top',
-      panelClass: 'success-snackbar'
-    });
+    this.notify.showWidgetStyleUpdateNotification('Copied to clipboard', 2, 'done');
   }
 
   openTestSiteInPopupWindow(botid) {

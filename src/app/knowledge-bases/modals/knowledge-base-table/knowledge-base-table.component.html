@@ -376,25 +376,25 @@
             <table class="table table-hover kb-table">
                 <thead>
                     <tr>
-                        <th class="column-th-span" style="width:80px; cursor: default; text-align: center;">
+                        <th class="column-th-span kb-th-type">
                             <span>{{ 'KbPage.Type' | translate }}</span>
                         </th>
-                        <th class="column-th-span" style="width:100px; text-align:center; cursor: default;">
+                        <th class="column-th-span kb-th-status">
                             <span>{{ 'KbPage.Status' | translate }}</span>
                         </th>
 
                         <!-- ----------------------- -->
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
-                         <th class="column-th-span" style="width:100px; text-align:center; cursor: default;white-space: nowrap;">
+                         <th class="column-th-span kb-th-refresh-rate">
                             <span>{{ 'KbPage.RefreshRate' | translate }}
-                                <i *ngIf="isAvailableRefreshRateFeature && !refreshRateIsEnabled && payIsVisible"  class="material-icons" style="font-size: 18px; color: #566787; cursor: pointer; vertical-align: middle;"
+                                <!-- <i *ngIf="isAvailableRefreshRateFeature && !refreshRateIsEnabled && payIsVisible"  class="material-icons" style="font-size: 18px; color: #566787; cursor: pointer; vertical-align: middle;"
                                 [satPopoverAnchor]="refresRate"
                                 (mouseenter)="refresRate.open()"
-                                (click)="refresRate.close()"> help_outline </i>
+                                (click)="refresRate.close()"> help_outline </i> -->
 
                             </span>
-                            <sat-popover #refresRate horizontalAlign="center" verticalAlign="above"
+                            <!-- <sat-popover #refresRate horizontalAlign="center" verticalAlign="above"
                                 panelClass="custom-panel-sat-popover" 
                                 closeTransition="1ms ease-in" forceAlignment="true" hasBackdrop="true" (backdropClick)="refresRate.close()">
   
@@ -409,27 +409,28 @@
                                 </div>
     
                                 </div>
-                            </sat-popover>
+                            </sat-popover> -->
                         </th> 
 
-                        <th class="column-th-span" style="width:150px;white-space: nowrap;" (click)="onOrderBy('updatedAt')">
-                            <!-- <span style="margin: 0px;">{{'KbPage.UpdatedAt' | translate }}</span> -->
-                            <span style="margin: 0px;">{{'LastUpdated' | translate }}</span>
-                            <span *ngIf="directionDesc === 1" id="expand_more"
-                                class="th-label material-icons-outlined icon-direction">expand_more</span>
-                            <span *ngIf="directionDesc === -1" id="expand_less"
-                                class="th-label material-icons-outlined icon-direction">expand_less</span>
-                        </th>
-                        <th class="column-th-span" style="width:auto;" (click)="onOrderBy('name')">
-                            <div>
-                                <span style="margin: 0px;">{{'Name' | translate }}</span>
+                        <th class="column-th-span kb-th-updated-at" (click)="onOrderBy('updatedAt')">
+                            <span class="kb-th-label">
+                                <span>{{'LastUpdated' | translate }}</span>
                                 <span *ngIf="directionDesc === 1" id="expand_more"
                                     class="th-label material-icons-outlined icon-direction">expand_more</span>
                                 <span *ngIf="directionDesc === -1" id="expand_less"
                                     class="th-label material-icons-outlined icon-direction">expand_less</span>
-                            </div>
+                            </span>
                         </th>
-                        <th class="column-th-span" style="min-width: 40px; width: 40px; cursor: default;">
+                        <th class="column-th-span kb-th-name" (click)="onOrderBy('name')">
+                            <span class="kb-th-label">
+                                <span>{{'Name' | translate }}</span>
+                                <span *ngIf="directionDesc === 1" id="expand_more"
+                                    class="th-label material-icons-outlined icon-direction">expand_more</span>
+                                <span *ngIf="directionDesc === -1" id="expand_less"
+                                    class="th-label material-icons-outlined icon-direction">expand_less</span>
+                            </span>
+                        </th>
+                        <th class="column-th-span kb-th-actions">
                         </th>
                     </tr>
                 </thead>

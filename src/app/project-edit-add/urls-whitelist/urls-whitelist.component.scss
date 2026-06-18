@@ -1,34 +1,81 @@
+:host {
+  display: block;
+}
+
 .full-width {
-    width: 100%;
+  width: 100%;
 }
 
-// url-input
-
-::ng-deep .mat-list-base[dense] .mat-list-item .mat-list-item-content {
-    padding: 0px !important;
+.url-add-form {
+  display: block;
+  font-size: 14px;
+  width: 100%;
 }
 
-::ng-deep .mat-icon-button {
-    width: 24px;
-    height: 24px;
-    line-height: 14px;
+.url-add-form__row {
+  display: flex;
+  align-items: flex-start;
+  width: 100%;
 }
 
-// ::ng-deep .mat-icon-button:hover {
-//     color: var(--red-color) !important;
-// }
+.url-add-form__row .url-input {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 14px;
+}
 
+.url-add-btn {
+  height: 40px;
+  margin-left: 3px;
+  margin-top: 2px;
+  color: var(--blue-20);
+  flex-shrink: 0;
+}
 
-::ng-deep .mat-icon-button:hover>span>.delete-url-icon {
+.url-list {
+  width: 100%;
+  margin-top: 6px;
+  padding: 0;
+}
+
+.url-list-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 28px;
+  align-items: center;
+  column-gap: 4px;
+  width: 100%;
+}
+
+.url-list-item + .url-list-item {
+  margin-top: 2px;
+}
+
+.url-list-item__delete.mat-mdc-icon-button,
+.url-list-item__delete.mat-icon-button {
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+  padding: 0;
+  justify-self: end;
+
+  .delete-url-icon,
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    color: #647491;
+  }
+
+  &:hover .delete-url-icon,
+  &:hover mat-icon {
     color: var(--red-color) !important;
+  }
 }
 
-::ng-deep .scrollable-list {
+.scrollable-list {
   max-height: 330px;
   overflow-y: auto;
 }
-
-// .show-error outline: material-mdc-overrides.scss (.show-error .mat-mdc-form-field…)
 
 .no-urls-message {
   text-align: center;
@@ -46,23 +93,22 @@
   max-width: 400px !important;
 }
 
-.custom-panel--popover-content-wpr>.custom-panel--popover-title {
+.custom-panel--popover-content-wpr > .custom-panel--popover-title {
   color: #fff;
   font-size: 14px;
   font-weight: 400;
   margin-bottom: 6px;
 }
 
-.custom-panel--popover-content-wpr>.custom-panel--popover-description {
+.custom-panel--popover-content-wpr > .custom-panel--popover-description {
   color: #fff;
   font-size: 12px;
   line-height: 16px;
 }
 
 .dialog-title i {
-  font-size: 18px; 
-  color: #566787; 
-  cursor: pointer; 
+  font-size: 18px;
+  color: #566787;
+  cursor: pointer;
   vertical-align: middle;
 }
-

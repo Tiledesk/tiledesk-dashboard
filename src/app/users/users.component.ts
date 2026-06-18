@@ -21,7 +21,6 @@ import { UserModalComponent } from './user-modal/user-modal.component'
 import { WsRequestsService } from 'app/services/websocket/ws-requests.service'
 import { MessagesStatsModalComponent } from 'app/components/modals/messages-stats-modal/messages-stats-modal.component'
 import { Clipboard } from '@angular/cdk/clipboard';
-import { MatSnackBar } from '@angular/material/snack-bar'
 import * as moment from 'moment';
 import { ProjectUser } from 'app/models/project-user'
 import { RoleService } from 'app/services/role.service'
@@ -178,7 +177,6 @@ export class UsersComponent extends PricingBaseComponent implements OnInit, Afte
     public dialog: MatDialog,
     public wsRequestsService: WsRequestsService,
     private clipboard: Clipboard,
-    private _snackBar: MatSnackBar,
     private roleService: RoleService,
     public rolesService: RolesService,
     private groupService: GroupService,
@@ -1397,11 +1395,7 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
 
 
     this.clipboard.copy(inviteUrl.trim())
-    this._snackBar.open(" Copied to clipboard", null, {
-      duration: 3000,
-      verticalPosition: 'top',
-      panelClass: 'success-snackbar'
-    });
+    this.notify.showWidgetStyleUpdateNotification('Copied to clipboard', 2, 'done');
   }
 
 

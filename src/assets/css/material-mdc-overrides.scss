@@ -126,6 +126,66 @@
   }
 }
 
+// Regex whitelist modal — horizontal padding for / prefix-suffix (scoped, does not affect other fields)
+.regex-slash-field.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  padding: 0 10px;
+}
+
+// Dialog readonly list rows (outline → underline only, no box border)
+.regex-list-field.mat-mdc-form-field.mat-form-field-appearance-outline,
+.url-list-field.mat-mdc-form-field.mat-form-field-appearance-outline {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  margin: 0;
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    margin: 0;
+    background: transparent;
+  }
+
+  .mdc-notched-outline {
+    display: none;
+  }
+
+  .mat-mdc-form-field-flex {
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  }
+
+  .mat-mdc-form-field-infix {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    min-height: 32px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .mat-mdc-form-field-text-prefix,
+  .mat-mdc-form-field-text-suffix {
+    padding: 0;
+    align-self: center;
+  }
+
+  input.mat-mdc-input-element[readonly] {
+    width: 100%;
+    font-size: 14px;
+    cursor: default;
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
+
+.regex-list-field.mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-text-field-wrapper,
+.url-list-field.mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-text-field-wrapper {
+  padding: 0;
+}
+
 // KB add-namespace modal: pill-shaped outline + accent (optional class on mat-form-field)
 .custom-namespace-mat-form-field.mat-mdc-form-field.mat-form-field-appearance-outline {
   .mat-mdc-form-field-infix {
@@ -391,6 +451,82 @@
   border-color: #f44336 !important;
 }
 
+// Calendar popup + toggle (CDK overlay) — theme deeppurple → dashboard blue
+.mat-datepicker-content,
+.mat-mdc-datepicker-content,
+.mat-calendar,
+.mat-mdc-calendar {
+  --mat-datepicker-calendar-date-selected-state-background-color: var(--blue-20);
+  --mat-datepicker-calendar-date-selected-state-text-color: #fff;
+  --mat-datepicker-calendar-date-in-range-state-background-color: rgba(33, 150, 243, 0.2);
+  --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(33, 150, 243, 0.2);
+  --mat-datepicker-calendar-date-preview-state-outline-color: var(--blue-20);
+  --mat-datepicker-calendar-date-today-selected-state-outline-color: var(--blue-20);
+  --mat-datepicker-calendar-date-focus-state-background-color: rgba(33, 150, 243, 0.12);
+  --mat-datepicker-calendar-date-hover-state-background-color: rgba(33, 150, 243, 0.2);
+}
+
+.mat-datepicker-toggle,
+.td-date-range-picker .mat-datepicker-toggle {
+  --mat-datepicker-toggle-icon-color: rgba(0, 0, 0, 0.54);
+  --mat-datepicker-toggle-active-state-icon-color: var(--blue-20);
+
+  // Niente cerchio grigio al passaggio mouse (globale cards-table su .mat-mdc-icon-button:hover)
+  .mat-mdc-icon-button,
+  .mat-icon-button {
+    &:hover {
+      background-color: transparent !important;
+    }
+
+    .mat-mdc-button-persistent-ripple::before,
+    .mat-mdc-button-ripple,
+    .mat-button-ripple {
+      opacity: 0 !important;
+    }
+  }
+}
+
+.mat-datepicker-toggle-active,
+.mat-datepicker-toggle.mat-datepicker-toggle-active,
+.td-date-range-picker .mat-datepicker-toggle.mat-datepicker-toggle-active {
+  color: var(--blue-20) !important;
+
+  .mat-icon,
+  .mat-mdc-button-persistent-ripple::before {
+    color: var(--blue-20) !important;
+  }
+}
+
+.mat-calendar-body-selected,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled) > .mat-calendar-body-cell-content.mat-calendar-body-selected,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled) > .mat-calendar-body-cell-content.mat-calendar-body-comparison-identical {
+  background-color: var(--blue-20) !important;
+  color: #fff !important;
+}
+
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled).mat-calendar-body-in-range::before,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled).mat-calendar-body-range-start::before,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled).mat-calendar-body-range-end::before,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled).mat-calendar-body-in-comparison-range::before {
+  background: rgba(33, 150, 243, 0.2) !important;
+}
+
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled) > .mat-calendar-body-cell-content.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: var(--blue-20);
+}
+
+// Hover/focus: theme uses primary palette at 0.3 opacity (deeppurple → light violet)
+@media (hover: hover) {
+  .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    background-color: rgba(33, 150, 243, 0.2) !important;
+  }
+}
+
+.cdk-keyboard-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
+.cdk-program-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  background-color: rgba(33, 150, 243, 0.2) !important;
+}
+
 // ─── mat-slider (MDC) — modal-preview-settings legacy look ───────────────────
 
 modal-preview-settings .action-wait-slider > mat-slider.wait-slider {
@@ -403,12 +539,32 @@ modal-preview-settings .action-wait-slider > mat-slider.wait-slider {
   --mdc-slider-with-tick-marks-inactive-container-color: #a8afc4;
   --mdc-slider-label-container-color: #1f2b43;
   --mdc-slider-label-label-text-color: #f3f6ff;
-  --mat-mdc-slider-ripple-color: rgba(31, 43, 67, 0.16);
-  --mat-mdc-slider-hover-ripple-color: rgba(31, 43, 67, 0.12);
-  --mat-mdc-slider-focus-ripple-color: rgba(31, 43, 67, 0.18);
+  --mat-mdc-slider-ripple-color: transparent;
+  --mat-mdc-slider-hover-ripple-color: transparent;
+  --mat-mdc-slider-focus-ripple-color: transparent;
   // Keep active and inactive track at identical thickness.
   --mdc-slider-active-track-height: 2px;
   --mdc-slider-inactive-track-height: 2px;
+
+  // Fit the 26px pill (.action-wait-slider); default MDC slider is 48px tall.
+  &.mat-mdc-slider {
+    height: 26px;
+    min-height: 26px;
+    margin-left: 0;
+    margin-right: 0;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  &.mat-mdc-slider .mdc-slider {
+    height: 26px;
+    margin: 0;
+  }
+
+  // Re-center 48px thumb on the 2px track inside the compact host.
+  &.mat-mdc-slider .mdc-slider__thumb {
+    top: calc(50% - 24px);
+  }
 }
 
 modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__track {
@@ -432,6 +588,26 @@ modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slid
   border-width: 0;
   box-shadow: none;
   background-color: #1f2b43;
+}
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb--top .mdc-slider__thumb-knob,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb--top.mdc-slider__thumb:hover .mdc-slider__thumb-knob,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb--top.mdc-slider__thumb--focused .mdc-slider__thumb-knob {
+  border-width: 0;
+  box-sizing: border-box;
+}
+
+// Compact pill sliders: hide MDC square state layer + mat-ripple (no drag halo).
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb::before,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb::after {
+  opacity: 0 !important;
+}
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mat-mdc-slider-visual-thumb .mat-ripple-element,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mat-mdc-slider-focus-ripple,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mat-mdc-slider-hover-ripple,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mat-mdc-slider-active-ripple {
+  opacity: 0 !important;
 }
 
 modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider.mat-mdc-slider-disabled {
@@ -630,6 +806,52 @@ $td-slide-toggle-thumb-shadow:
   opacity: 0 !important;
 }
 
+// ─── mat-radio (MDC) — accent checked = var(--blue-20) ───────────────────────
+// Replaces demo.scss .mat-radio-button.mat-accent (legacy). Default accent in
+// indigo-pink theme is pink (#ff4081) — dashboard uses blue-20 like checkbox.
+// Focus halo / state layer hidden (same as checkbox): avoids persistent blue ring after click.
+
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-selected-focus-icon-color: var(--blue-20);
+  --mdc-radio-selected-hover-icon-color: var(--blue-20);
+  --mdc-radio-selected-icon-color: var(--blue-20);
+  --mdc-radio-selected-pressed-icon-color: var(--blue-20);
+  --mat-mdc-radio-checked-ripple-color: var(--blue-20);
+
+  .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
+    border-color: var(--blue-20) !important;
+  }
+
+  .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__inner-circle {
+    border-color: var(--blue-20) !important;
+    background-color: var(--blue-20) !important;
+  }
+}
+
+.mat-mdc-radio-button .mdc-radio__ripple,
+.mat-mdc-radio-button .mdc-radio:hover .mdc-radio__native-control:not([disabled]) ~ .mdc-radio__ripple,
+.mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:not([disabled]):focus ~ .mdc-radio__ripple {
+  opacity: 0 !important;
+}
+
+.mat-mdc-radio-button .mat-mdc-radio-ripple .mat-ripple-element,
+.mat-mdc-radio-button .mat-radio-ripple .mat-ripple-element {
+  background-color: transparent !important;
+  opacity: 0 !important;
+}
+
+.mat-mdc-radio-button .mat-mdc-focus-indicator::before,
+.mat-mdc-radio-button .mdc-radio__background::before {
+  opacity: 0 !important;
+}
+
+.mat-mdc-radio-button .mdc-form-field > label {
+  font-family: var(--header-font-family);
+  font-weight: 400;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
+
 // ─── mat-menu (MDC) — baseline (align AM14: 14px label, 20px icons, compact padding) ─
 
 .mat-mdc-menu-panel,
@@ -761,6 +983,13 @@ $td-slide-toggle-thumb-shadow:
   overflow: hidden;
 }
 
+// AM14 dialog actions had more bottom breathing room; MDC default padding is tighter.
+.mat-mdc-dialog-container .mdc-dialog__actions,
+.mat-mdc-dialog-container .mat-mdc-dialog-actions,
+.mat-mdc-dialog-container [mat-dialog-actions] {
+  padding: 8px 8px 16px 8px;
+}
+
 .mat-mdc-dialog-container .mdc-dialog__title,
 .mat-mdc-dialog-container .mdc-dialog__content,
 .mat-mdc-dialog-container .mdc-dialog__actions,
@@ -785,9 +1014,10 @@ $td-slide-toggle-thumb-shadow:
 }
 
 // Dialog action buttons (mat-button → mat-mdc-button in M15).
-.mat-mdc-dialog-actions > .mat-dialog-ok-btn,
-.mat-mdc-dialog-actions > .mat-dialog-ok-btn.mat-mdc-button,
-.mat-dialog-actions > .mat-dialog-ok-btn {
+// Descendant selector: many modals wrap buttons in divs (e.g. automation-upload-csv).
+.mat-mdc-dialog-actions .mat-dialog-ok-btn,
+.mat-mdc-dialog-actions .mat-dialog-ok-btn.mat-mdc-button,
+.mat-dialog-actions .mat-dialog-ok-btn {
   background-color: var(--blue-20) !important;
   color: #fff !important;
   border-radius: var(--btn-border-radius) !important;
@@ -797,17 +1027,17 @@ $td-slide-toggle-thumb-shadow:
   }
 }
 
-.mat-mdc-dialog-actions > .mat-dialog-ok-btn.mat-mdc-button-disabled,
-.mat-mdc-dialog-actions > .mat-dialog-ok-btn.mat-button-disabled,
-.mat-mdc-dialog-actions > .mat-dialog-ok-btn[disabled],
-.mat-dialog-actions > .mat-dialog-ok-btn.mat-focus-indicator.mat-button-disabled {
+.mat-mdc-dialog-actions .mat-dialog-ok-btn.mat-mdc-button-disabled,
+.mat-mdc-dialog-actions .mat-dialog-ok-btn.mat-button-disabled,
+.mat-mdc-dialog-actions .mat-dialog-ok-btn[disabled],
+.mat-dialog-actions .mat-dialog-ok-btn.mat-focus-indicator.mat-button-disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.mat-mdc-dialog-actions > .mat-dialog-close-btn,
-.mat-mdc-dialog-actions > .mat-dialog-close-btn.mat-mdc-button,
-.mat-dialog-actions > .mat-dialog-close-btn {
+.mat-mdc-dialog-actions .mat-dialog-close-btn,
+.mat-mdc-dialog-actions .mat-dialog-close-btn.mat-mdc-button,
+.mat-dialog-actions .mat-dialog-close-btn {
   background-color: #647491 !important;
   color: #fff !important;
   border-radius: var(--btn-border-radius) !important;
@@ -817,9 +1047,9 @@ $td-slide-toggle-thumb-shadow:
   }
 }
 
-.mat-mdc-dialog-actions > .mat-dialog-ko-btn,
-.mat-mdc-dialog-actions > .mat-dialog-ko-btn.mat-mdc-button,
-.mat-dialog-actions > .mat-dialog-ko-btn {
+.mat-mdc-dialog-actions .mat-dialog-ko-btn,
+.mat-mdc-dialog-actions .mat-dialog-ko-btn.mat-mdc-button,
+.mat-dialog-actions .mat-dialog-ko-btn {
   background-color: var(--red-color, #e53935) !important;
   color: #fff !important;
   border-radius: var(--btn-border-radius) !important;
@@ -838,16 +1068,32 @@ $td-slide-toggle-thumb-shadow:
   border-radius: var(--btn-border-radius) !important;
 }
 
+// ─── mat-tooltip (MDC) — baseline ─────────────────────────────────────────────
+// Border radius on every tooltip; custom matTooltipClass rules below extend the mixin.
+
+.mat-mdc-tooltip {
+  --mdc-plain-tooltip-container-shape: 2px;
+}
+
+.mat-mdc-tooltip .mdc-tooltip__surface,
+.mat-mdc-tooltip .mat-mdc-tooltip-surface,
+.mat-tooltip {
+  border-radius: 2px !important;
+}
+
 // ─── matTooltipClass registry (centralized from component styles) ─────────────
 // MDC tooltips paint on .mdc-tooltip__surface; matTooltipClass is on the overlay panel.
 
 @mixin td-mat-tooltip-surface($container-color, $text-color) {
   --mdc-plain-tooltip-container-color: #{$container-color};
   --mdc-plain-tooltip-supporting-text-color: #{$text-color};
+  --mdc-plain-tooltip-container-shape: 2px;
 
-  .mdc-tooltip__surface {
+  .mdc-tooltip__surface,
+  .mat-mdc-tooltip-surface {
     background-color: #{$container-color} !important;
     color: #{$text-color} !important;
+    border-radius: 2px !important;
   }
 }
 
@@ -917,6 +1163,9 @@ $td-slide-toggle-thumb-shadow:
 }
 
 .sb-mat-tooltip {
+  // MDC positions right tooltips flush on the 70px sidebar; nudge outside like A14
+  margin-left: 8px !important;
+
   @include td-mat-tooltip-surface(#2d323e, #fff);
 
   .mdc-tooltip__surface {
@@ -1092,6 +1341,22 @@ $td-slide-toggle-thumb-shadow:
   }
 }
 
+// ─── mat-spinner / mat-progress-spinner (MDC) — dashboard blue baseline ───────
+// Default MDC theme primary is deeppurple; align standalone spinners to dashboard blue.
+// Quota pies (.quote, .quota-pie) and *-runned-out variants override below.
+
+mat-spinner,
+mat-progress-spinner,
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: var(--blue-20);
+}
+
+mat-spinner circle,
+mat-progress-spinner circle,
+.mat-mdc-progress-spinner circle {
+  stroke: var(--blue-20) !important;
+}
+
 // ─── mat-progress-spinner (MDC) — quota pies (home .quote, navbar .quota-pie) ─
 // Replaces legacy .mat-progress-spinner rules in demo.scss / component ::ng-deep.
 
@@ -1118,7 +1383,7 @@ $td-slide-toggle-thumb-shadow:
 .quote .mat-mdc-progress-spinner circle,
 .quota-pie mat-progress-spinner circle,
 .quota-pie .mat-mdc-progress-spinner circle {
-  stroke: #2196f2 !important;
+  stroke: var(--blue-20) !important;
 }
 
 .percentage,

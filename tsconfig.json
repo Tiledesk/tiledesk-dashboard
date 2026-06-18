@@ -33,7 +33,6 @@
     "useDefineForClassFields": false
   },
   "angularCompilerOptions": {
-    "enableIvy": true,
     "strictTemplates": false
   }
 }

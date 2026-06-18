@@ -827,6 +827,7 @@ th {
 .btn-outlined:hover {
   box-shadow: unset !important;
   background: var(--outlined-btn-hover-background) !important;
+  border: 1px solid #acb8cb;
 }
 
 /* BTN Blu round
@@ -2517,26 +2518,23 @@ footer ul {
    (.home-settings-checkbox = orange; other accent checkboxes may use theme / add overrides) */
 
 // overwrite the checkbox background
-.mat-checkbox-checked .mat-checkbox-background,
-.mat-checkbox-indeterminate .mat-checkbox-background {
-  background-color: var(--blue-20) !important;
-}
+// .mat-checkbox-checked .mat-checkbox-background,
+// .mat-checkbox-indeterminate .mat-checkbox-background {
+//   background-color: var(--blue-20) !important;
+// }
 
-// overwrite the ripple overlay on hover and click
-.mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
-  background-color: var(--blue-20) !important;
-}
+// // overwrite the ripple overlay on hover and click
+// .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+//   background-color: var(--blue-20) !important;
+// }
 
-/* Angular radio button 
-/* ****************************** */
-.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
-  border-color: var(--blue-20) !important;
-}
-
-.mat-radio-button.mat-accent .mat-radio-inner-circle {
-  background-color: var(--blue-20) !important;
-}
-
+// Angular radio — legacy AM14 (.mat-radio-outer-circle); MDC: material-mdc-overrides.scss
+// .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+//   border-color: var(--blue-20) !important;
+// }
+// .mat-radio-button.mat-accent .mat-radio-inner-circle {
+//   background-color: var(--blue-20) !important;
+// }
 
 // Outline infix padding — MDC: see material-mdc-overrides.scss
 // (legacy .mat-form-field-infix no longer matches on Material 15+)
@@ -3442,66 +3440,7 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
 //   visibility: visible;
 // }
 
-.success-snackbar {
-  font-weight: 400;
-  color: #fff !important;
-  min-width: fit-content !important;
-}
-
-.success-snackbar>div>div>simple-snack-bar>span {
-  margin-left: 22px;
-}
-
-.success-snackbar::before {
-  font-family: "FontAwesome";
-  content: "\f00c";
-  position: absolute;
-  color: #4caf50;
-}
-
-
-.error-snackbar {
-  font-weight: 400;
-  color: #fff !important;
-  min-width: fit-content !important;
-}
-
-.error-snackbar>div>div>simple-snack-bar>span {
-  margin-left: 22px;
-}
-
-.error-snackbar::before {
-  font-family: "FontAwesome";
-  content: "\f06a";
-  position: absolute;
-  color: #f44336;
-}
-
-
-.custom-error-snackbar {
-  // animation: slide-in 0.4s ease-out;
-  background: rgb(253, 243, 209) !important;
-  color: #000 !important;
-  font-weight: 400;
-  min-width: fit-content !important;
-}
-
-.custom-error-snackbar::before {
-  font-family: "FontAwesome";
-  content: "\f071";
-  position: absolute;
-  color: rgb(245, 196, 68);
-}
-
-.custom-error-snackbar>div>div>simple-snack-bar>span {
-  margin-left: 22px;
-}
-
-.custom-error-snackbar>div>div>simple-snack-bar>div>button {
-  color: #000 !important;
-  font-weight: 400;
-}
-
+// MatSnackBar panelClass styles removed — feedback uses ngx-toastr (DashboardToastrService).
 
 
 /*
@@ -4473,18 +4412,6 @@ li.li-active a {
   }
 }
 
-/* Fix Angular Material tabs inside Bootstrap 5 modal */
-#assign-reassign-modal .mat-tab-header,
-#assign-reassign-modal .mat-tab-label-container {
-  overflow: visible !important;
-}
-
-#assign-reassign-modal .mat-tab-header-pagination {
-  z-index: 1060;
-  /* > modal (1055) */
-}
-
-/*
 /* Bootstrap 5 fix
 /* ************************ */
 .td--actions {

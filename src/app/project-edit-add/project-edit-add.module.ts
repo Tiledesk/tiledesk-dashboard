@@ -15,7 +15,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -44,7 +43,6 @@ const routes: Routes = [
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    MatListModule,
     SatPopoverModule,
     NgSelectModule
   ]

@@ -278,54 +278,123 @@ table {
 }
 
 .ellipsis-text {
-    // max-width: calc(100% - 350px);
-    // max-width: 500px;
-    // width: 100%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
     max-width: 100%;
-    display: table-column-group;
-    line-height: normal;
     line-height: 1.6;
 }
 
-// KB table — uniform row height + ellipsis on name column (grid + table-layout: fixed)
+// KB table — ellipsis on name column; table-layout auto (like AM14) for natural column spacing
 table.kb-table {
-  table-layout: fixed;
   width: 100%;
+  table-layout: auto;
 
   // Subtitle line metrics (11px — matches .subtitle in this component)
   $kb-table-title-line: calc(14px * 1.6);
   $kb-table-subtitle-line: calc(11px * 1.3);
 
-  thead th.column-th-span {
-    white-space: normal;
-    line-height: 1.25;
-    vertical-align: bottom;
+  th.kb-th-type {
+    width: 80px;
   }
 
-  // Refresh rate header is long; 100px inline width caused overlap with "Last updated"
-  thead th:nth-child(3) {
-    width: 130px !important;
+  th.kb-th-status {
+    width: 100px;
+  }
+
+  // Long header label — wider than AM14 inline 100px to avoid overlap with "Ultimo aggiornamento"
+  th.kb-th-refresh-rate {
+    width: 150px;
+    min-width: 150px;
+    white-space: nowrap;
+  }
+
+  th.kb-th-updated-at {
+    width: 150px;
+    min-width: 150px;
+    white-space: nowrap;
+  }
+
+  th.kb-th-name {
+    width: auto;
+  }
+
+  th.kb-th-actions {
+    width: 40px;
+    min-width: 40px;
+  }
+
+  thead th.column-th-span {
+    max-width: 100%;
+    white-space: nowrap;
+    line-height: normal;
+    vertical-align: middle;
+    overflow: visible;
+    box-sizing: border-box;
+    padding: 8px 12px 12px !important;
+
+    > span,
+    .kb-th-label > span {
+      margin: 0;
+    }
+  }
+
+  // sat-popover template inside <th> must not inflate header row height
+  thead th > sat-popover {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  thead th .kb-th-label {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+
+  thead th .kb-th-label > span {
+    display: inline;
+    margin: 0;
+  }
+
+  thead th .kb-th-label .icon-direction {
+    flex-shrink: 0;
+    margin-left: 2px;
+  }
+
+  thead th.kb-th-refresh-rate {
+    position: relative;
+  }
+
+  thead th.kb-th-type,
+  thead th.kb-th-status,
+  thead th.kb-th-refresh-rate {
+    text-align: center;
+    cursor: default;
+  }
+
+  thead th.kb-th-actions {
+    cursor: default;
   }
 
   tbody tr {
     td {
       vertical-align: middle;
-      padding-top: 6px;
-      padding-bottom: 6px;
+      padding: 6px 12px;
     }
   }
 
-  // Keep td as table-cell (display:grid on td breaks row height + hover background)
+  // Ellipsis column trick (works with table-layout: auto)
   td.kb-name-col,
   td.kb-name-cell {
     vertical-align: middle;
     overflow: hidden;
-    width: auto;
-    max-width: 100%;
+    width: 100%;
+    max-width: 0;
   }
 
   .kb-name-col-inner {
@@ -449,12 +518,14 @@ td {
 .column-th-span {
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     cursor: pointer;
 
     .th-label {
         display: inline-block;
         opacity: 0;
+        width: 0;
+        overflow: hidden;
+        margin: 0;
         transition: opacity 0.5s ease-in-out;
     }
 
@@ -462,6 +533,8 @@ td {
         .th-label {
             display: inline-block;
             opacity: 1;
+            width: auto;
+            margin-left: 2px;
         }
     }
 }

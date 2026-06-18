@@ -13,7 +13,6 @@ import { Subscription } from 'rxjs';
 
 import { LoggerService } from '../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from 'app/services/app-config.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -58,7 +57,6 @@ export class AuthGuard implements CanActivate {
     private usersService: UsersService,
     private logger: LoggerService,
     public localDbService: LocalDbService,
-    private _snackBar: MatSnackBar,
     public appConfigService: AppConfigService,
     private _httpClient: HttpClient,
   ) {
@@ -217,11 +215,7 @@ export class AuthGuard implements CanActivate {
       this.logger.log('[AUTH-GUARD] error', error.error)
       if (error.error.msg === "you dont belong to the project.") {
 
-        this._snackBar.open("Oops! " + error.error.msg, null, {
-          duration: 5000,
-          verticalPosition: 'top',
-          panelClass: 'error-snackbar'
-        });
+        this.notify.showWidgetStyleUpdateNotification('Oops! ' + error.error.msg, 4, 'report_problem');
       }
 
 

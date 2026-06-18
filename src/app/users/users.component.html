@@ -262,7 +262,7 @@
                               <img *ngIf="projectUser?.hasImage === true && !UPLOAD_ENGINE_IS_FIREBASE"
                                 id="img-{{projectUser?.id_user?._id}}"
                                 src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                                onerror="this.src='assets/img/no_image_user_2.png'" />
+                                onerror="this.src='assets/img/no_image_user_2.png'" loading="lazy" />
 
                               <!-- --------------------------------------------------- -->
                               <!-- USECASE No profile Image -->

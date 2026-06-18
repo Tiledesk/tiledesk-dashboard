@@ -296,26 +296,39 @@
   flex: 1 1 auto;
 }
 
-.cl-card-action-btn-wpr>.mat-icon-button {
-  color: var(--icon-color)
+// mat-icon-button — AM14: .mat-icon-button; AM15 MDC: .mat-mdc-icon-button (different DOM)
+.cl-card-action-btn-wpr > .mat-mdc-icon-button,
+.cl-card-action-btn-wpr > .mat-icon-button {
+  color: var(--icon-color);
+  --mdc-icon-button-icon-size: 18px;
+  --mdc-icon-button-state-layer-size: 40px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
 }
 
-.cl-card-action-btn-wpr>.mat-icon-button>span>mat-icon {
+.cl-card-action-btn-wpr > .mat-mdc-icon-button mat-icon,
+.cl-card-action-btn-wpr > .mat-icon-button > span > mat-icon {
   font-size: 18px;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
 }
 
-.mat-icon-button > span >  .mat-icon {
-  color: var(--text-color)
+.mat-mdc-icon-button .mat-icon,
+.mat-icon-button > span > .mat-icon {
+  color: var(--text-color);
 }
 
-.mat-icon-button:hover > span >  .mat-icon {
-  color: var(--icon-hover-color)
+.mat-mdc-icon-button:hover .mat-icon,
+.mat-icon-button:hover > span > .mat-icon {
+  color: var(--icon-hover-color);
 }
 
+.mat-mdc-icon-button:hover,
 .mat-icon-button:hover {
   background-color: var(--mat-icon-button-hover-background-color);
   border-radius: 50%;
-  // color: var(--icon-hover-color)
 }
 
 .mat-menu-btn>mat-icon {

@@ -22,8 +22,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatListModule } from '@angular/material/list';
-
 
 const routes: Routes = [
   { path: "", component: WidgetSetUp},
@@ -56,8 +54,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatButtonModule,
-    MatListModule
+    MatButtonModule
   ],
    exports: [
     // ColorPickerModule

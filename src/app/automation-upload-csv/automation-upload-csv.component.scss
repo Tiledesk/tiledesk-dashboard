@@ -45,12 +45,20 @@
 .mat-dialog-ok-btn {
     background-color: var(--blue-light);
     color: #fff;
+
+    .mdc-button__label {
+        color: #fff;
+    }
 }
 
 
 .mat-dialog-close-btn {
     background-color: #647491;
     color: #fff;
+
+    .mdc-button__label {
+        color: #fff;
+    }
 }
 
 .download--example-csv-wpr {

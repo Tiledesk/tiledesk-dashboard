@@ -33,7 +33,7 @@
                         <img *ngIf="projectUser?.hasImage && UPLOAD_ENGINE_IS_FIREBASE"
                             src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                             alt="" onerror="this.src='assets/img/no_image_user.png'"
-                            style="width: 45px;height: 45px; border: 1px solid #eee;">
+                            style="width: 45px;height: 45px; border: 1px solid #eee;" loading="lazy">
 
                         <!-- --------------------------------------------------------------- -->
                         <!-- USECASE uploadEngine Native -->
@@ -41,7 +41,7 @@
                         <img *ngIf="projectUser?.hasImage && !UPLOAD_ENGINE_IS_FIREBASE"
                             src="{{baseUrl}}files?path=uploads%2Fusers%2F{{projectUser?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             alt="" onerror="this.src='assets/img/no_image_user.png'"
-                            style="width: 45px;height: 45px; border: 1px solid #eee;">
+                            style="width: 45px;height: 45px; border: 1px solid #eee;" loading="lazy">
                         <!-- --------------------------------------------------------------- -->
                         <!-- AVATAR WITH USER NAME INITIALS IF DOES NOT EXIST PROFILE IMAGE -->
                         <!-- --------------------------------------------------------------- -->

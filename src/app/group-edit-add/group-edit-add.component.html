@@ -230,7 +230,7 @@
                                       src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{projectUser?.id_user?._id}}%2Fphoto.jpg?alt=media"
                                       (load)="firebaseImg.style.display='block'; firebaseImg.parentElement.querySelector('.avatar-initials-text').style.display='none';"
                                       (error)="firebaseImg.style.display='none';"
-                                      style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" />
+                                      style="position: absolute; top: 0; left: 0; display: none; object-fit: cover;" loading="lazy"/>
 
                                     <!-- --------------------------------------------------- -->
                                     <!-- USECASE uploadEngine Native -->
@@ -462,7 +462,7 @@
                             src="{{baseUrl}}files?path=uploads%2Fusers%2F{{project_user?.id_user?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
                             (load)="modalNativeImg.style.display='block'; modalNativeImg.parentElement.querySelector('.avatar-initials-text').style.display='none';"
                             (error)="modalNativeImg.style.display='none';"
-                            style="position: absolute; top: -2px; left: 0; display: none; object-fit: cover;" />
+                            style="position: absolute; top: -2px; left: 0; display: none; object-fit: cover;" loading="lazy" />
 
                           <div
                             class="group-member-status-icon-in-modal"

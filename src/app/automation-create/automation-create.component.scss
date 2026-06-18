@@ -497,67 +497,81 @@ button.icon-only {
 //   z-index: 1;
 // }
 
-.custom-csv-table tr.mat-header-row {
-    height: 40px;
-}
-
-.custom-csv-table tr:hover td {
-  background: #fafafa;
-}
-
-.custom-csv-table td {
+.custom-csv-table {
+  border-collapse: collapse;
+  min-width: 100%;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 200px; // You can adjust
+
+  // A15: .mat-table → .mat-mdc-table; header row uses .mdc-data-table__header-row (56px default)
+  &.mat-mdc-table,
+  &.mat-table {
+    width: max-content !important;
+    min-width: 100%;
+    table-layout: auto;
+    white-space: nowrap;
+  }
+
+  tr.mat-mdc-header-row,
+  tr.mat-header-row,
+  tr.mdc-data-table__header-row {
+    height: 40px;
+    min-height: 40px;
+  }
+
+  th.mat-mdc-header-cell,
+  th.mat-header-cell,
+  th.mdc-data-table__header-cell,
+  td.mat-mdc-cell,
+  td.mat-cell,
+  td.mdc-data-table__cell,
+  th,
+  td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    vertical-align: middle;
+    box-sizing: border-box;
+  }
+
+  th.mat-mdc-header-cell,
+  th.mat-header-cell,
+  th.mdc-data-table__header-cell,
+  th {
+    position: sticky;
+    top: 0;
+    height: 40px;
+    min-height: 40px;
+    line-height: 1.25;
+    font-weight: 600;
+    background: #f5f5f5;
+    z-index: 2;
+  }
+
+  td.mat-mdc-cell,
+  td.mat-cell,
+  td.mdc-data-table__cell,
+  td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+
+  tr.mat-mdc-row:hover td,
+  tr.mat-row:hover td,
+  tr:hover td {
+    background: #fafafa;
+  }
 }
 
-// ------------------------
 .csv-table-scroll-wrapper {
-  max-height: 400px;  /* vertical scroll limit */
+  max-height: 400px;
   overflow-y: auto;
   overflow-x: auto;
   display: block;
-//   border: 1px solid #ccc;
-  white-space: nowrap; /* keep everything in one line */
-  width: 100%;
-  -webkit-overflow-scrolling: touch; /* iOS smooth scrolling */
-}
-
-.custom-csv-table {
-  border-collapse: collapse;
-  min-width: 100%;    /* still fill space if few columns */
-//   min-width: 800px; /* Force horizontal scroll */
-  white-space: nowrap; /* Prevent text from wrapping */
-}
-
-/* Override Angular Material default width:100% on .mat-table */
-.custom-csv-table.mat-table {
-  width: max-content !important; /* allow table to exceed wrapper and enable horizontal scroll */
-  min-width: 100%;
-  table-layout: auto;
   white-space: nowrap;
-}
-
-/* Ensure cells contribute to overall width so table grows beyond container */
-// .custom-csv-table .mat-header-cell,
-// .custom-csv-table .mat-cell {
-//   min-width: 140px; /* adjust as needed */
-// }
-
-.custom-csv-table th,
-.custom-csv-table td {
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-}
-
-.custom-csv-table th {
-  position: sticky;
-  top: 0;
-//   background: white;
-  background:#f5f5f5;
-  z-index: 2;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
 // ------------------------

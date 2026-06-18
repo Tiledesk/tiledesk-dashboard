@@ -9,7 +9,6 @@ import {
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpStatsService } from '../http-stats.service';
 
 interface EndpointStats {
@@ -26,7 +25,6 @@ export class LogRequestsInterceptor implements HttpInterceptor {
 
   constructor(
     private httpStats: HttpStatsService,
-    private snackBar: MatSnackBar
   ) {
    
   }

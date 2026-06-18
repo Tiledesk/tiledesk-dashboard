@@ -53,7 +53,7 @@ export class WebhookAddEditComponent implements OnInit {
     { id: "department.delete", name:"Department Delete"},
     { id: "project_user.invite", name:"Project User Invite"},
     { id: "project_user.update", name:"Project User Update"},
-    { id: "project_user.delete", name:"Project User Deletee"},
+    { id: "project_user.delete", name:"Project User Delete"},
     { id: "group.create", name:"Group Create"},
     { id: "group.update", name:"Group Update"},
     { id: "group.delete", name:"Group Delete"},

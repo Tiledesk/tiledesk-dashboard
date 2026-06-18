@@ -134,17 +134,17 @@
     height: 40px;
 }
 
-::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
-  background-color: var(--blue-20) !important; 
-}
+// ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
+//   background-color: var(--blue-20) !important; 
+// }
 
-::ng-deep .mat-tab-links>a {
-  font-weight: 400;
-}
+// ::ng-deep .mat-tab-links>a {
+//   font-weight: 400;
+// }
 
-::ng-deep .mat-tab-labels {
-justify-content: center;
-}
+// ::ng-deep .mat-tab-labels {
+// justify-content: center;
+// }
 
 
 .file-url-input:focus {

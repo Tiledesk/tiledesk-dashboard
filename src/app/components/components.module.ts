@@ -8,7 +8,6 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user-details.component';
 import {FormsModule} from '@angular/forms';
@@ -31,7 +30,6 @@ import { MomentModule } from 'ngx-moment';
     TranslateModule,
     MatTooltipModule,
     MatSlideToggleModule,
-    MatSnackBarModule,
     MatMenuModule,
     MatButtonModule,
     MatIconModule,

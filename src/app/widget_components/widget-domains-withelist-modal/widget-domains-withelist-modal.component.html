@@ -1,73 +1,60 @@
 <h2 mat-dialog-title>
-  <!-- {{'ManageRegexBlacklist' | translate}} -->
   {{'ManageRegexlist' | translate}}
 </h2>
 
-<mat-dialog-content >
+<mat-dialog-content class="regex-whitelist-dialog">
 
+  <form [formGroup]="regexForm" (ngSubmit)="addPattern()" class="regex-add-form">
+    <div class="regex-add-form__row">
+      <mat-form-field
+        class="full-width regex-pattern-field regex-slash-field"
+        appearance="outline"
+        floatLabel="always"
+        [class.show-error]="submitted && patternControl.invalid">
+        <mat-label>{{'RegexPattern' | translate }}</mat-label>
+        <span matPrefix class="regex-slash">/&nbsp;</span>
+        <input matInput placeholder="e.g. .*facebook\.com" formControlName="pattern" />
+        <span matSuffix class="regex-slash">&nbsp;/</span>
 
-  <form [formGroup]="regexForm" (ngSubmit)="addPattern()" style="display: flex;" style="font-size: 14px;display: flex;">
-    <mat-form-field class="full-width url-input" appearance="outline" floatLabel="always" [class.show-error]="submitted && patternControl.invalid">
-      <mat-label>{{'RegexPattern' | translate }}</mat-label>
-      <span matPrefix style="position: relative; top: -3px;">/&nbsp;</span> <!-- prefix -->
-      <input matInput placeholder="e.g. .*facebook\.com" formControlName="pattern" />
-      <span matSuffix style="position: relative; top: -3px;">&nbsp;/</span> <!-- suffix -->
-      
-      <mat-error *ngIf="submitted && patternControl.hasError('required')">
-  
-         {{'PatternRequired' | translate}}
-      </mat-error>
-      <!-- <mat-error *ngIf="submitted && !urlControl.hasError('required') && patternControl.hasError('invalidRegex')">
-         {{'InvalidDomainFormat' | translate}}
-      </mat-error> -->
-      <mat-error *ngIf="submitted && patternControl.hasError('duplicate')">
-       
-         {{'PatternAlreadyExists' | translate}}
-      </mat-error>
-    </mat-form-field>
-
-    <button mat-button type="submit" style="
-      height: 40px;
-      margin-left: 3px;
-      margin-top: 2px;
-      color: var(--blue-20);">
-      <!-- Add -->
-       {{'AddButton' | translate}}
-    </button>
-  </form>
-
-  <p *ngIf="formArray.length === 0" class="no-urls-message">
-      {{'NoPatternAddedYet' | translate}}
-  </p>
-
-  <mat-list dense class="scrollable-list" *ngIf="formArray.length > 0" >
-    <mat-list-item *ngFor="let ctrl of formArray.controls; let i = index">
-      <mat-form-field class="full-width">
-        <span matPrefix>/&nbsp;</span>
-        <input matInput [formControl]="ctrl" [readonly]="true" />
-        <span matSuffix>&nbsp;/</span>
-        <mat-error *ngIf="ctrl.hasError('required')"> 
-              {{'PatternRequired' | translate}}
+        <mat-error *ngIf="submitted && patternControl.hasError('required')">
+          {{'PatternRequired' | translate}}
         </mat-error>
-        <!-- <mat-error *ngIf="ctrl.hasError('strongUrl')">
-            {{'InvalidDomainFormat' | translate}}
-        </mat-error> -->
+        <mat-error *ngIf="submitted && patternControl.hasError('duplicate')">
+          {{'PatternAlreadyExists' | translate}}
+        </mat-error>
       </mat-form-field>
-      <button mat-icon-button (click)="formArray.removeAt(i)">
-        <mat-icon class="delete-url-icon" style="font-size: 18px; color: #647491">delete</mat-icon>
+
+      <button mat-button type="submit" class="regex-add-btn" style="margin-top: 4px;">
+        {{'AddButton' | translate}}
       </button>
-    </mat-list-item>
-  </mat-list>
-  
+    </div>
+
+    <p *ngIf="formArray.length === 0" class="no-urls-message">
+      {{'NoPatternAddedYet' | translate}}
+    </p>
+
+    <div class="scrollable-list regex-list" *ngIf="formArray.length > 0">
+      <div class="regex-list-item" *ngFor="let ctrl of formArray.controls; let i = index">
+        <mat-form-field class="full-width regex-list-field regex-slash-field" appearance="outline">
+          <span matPrefix class="regex-slash">/&nbsp;</span>
+          <input matInput [formControl]="ctrl" readonly />
+          <span matSuffix class="regex-slash">&nbsp;/</span>
+        </mat-form-field>
+        <button mat-icon-button type="button" class="regex-list-item__delete" (click)="formArray.removeAt(i)">
+          <mat-icon class="delete-url-icon">delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </form>
 
 </mat-dialog-content>
 
 <mat-dialog-actions align="center">
   <button mat-button class="mat-dialog-close-btn" (click)="onNoClick()">
-   {{ 'Cancel' | translate}}
+    {{ 'Cancel' | translate}}
   </button>
-  <button mat-button class="mat-dialog-ok-btn" (click)="onSave()" 
-  [disabled]="formArray.invalid || !hasChanges()">
+  <button mat-button class="mat-dialog-ok-btn" (click)="onSave()"
+    [disabled]="formArray.invalid || !hasChanges()">
     {{'Save' | translate}}
   </button>
 </mat-dialog-actions>
