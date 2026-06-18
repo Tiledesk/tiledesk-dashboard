@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.178-AR
+- Replaces window.open(url, '_top') in the goToRequestMsgs method with window.open(url, '_self')
+
 ### 2.7.177-AR
 - Fixes the bug: Knowledge base statistics links to new analytics don't work
 
