@@ -7967,7 +7967,8 @@ extractUrls(text: string): string[] {
         window.open(url, '_blank');
       } else {
         const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
-        window.open(url, '_top');
+        // window.open(url, '_top');
+        window.open(url, '_self');
       }
     }
   }
