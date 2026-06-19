@@ -1216,6 +1216,9 @@ $td-slide-toggle-thumb-shadow:
 }
 
 .custom-mat-tooltip-in-settings-sidebar {
+  // MDC positions right tooltips flush on the settings sidebar; nudge outside like sb-mat-tooltip
+  margin-left: 8px !important;
+
   @include td-mat-tooltip-surface(
     var(--settings-sidebar-mat-tooltip-background-color),
     var(--settings-sidebar-mat-tooltip-color)

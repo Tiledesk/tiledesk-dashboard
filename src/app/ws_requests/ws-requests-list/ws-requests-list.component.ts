@@ -2248,7 +2248,7 @@ getProjectUserRole() {
 
 
   testWidgetPage() {
-    this.testwidgetbtnRef.nativeElement.blur();
+    // this.testwidgetbtnRef.nativeElement.blur();
     // const url = 'http://support.tiledesk.com/testsite/?projectid=' + this.projectId;
     // + '&projectname=' + this.projectName
     // const url = 'http://testwidget.tiledesk.com/testsitenw3?projectname=' + this.projectName + ' &projectid=' + this.projectId

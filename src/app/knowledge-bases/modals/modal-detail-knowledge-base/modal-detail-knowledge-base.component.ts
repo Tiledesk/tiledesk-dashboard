@@ -75,6 +75,20 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   /** Altezza del container delle tag; 20px quando vuoto così il binding è valido dal primo render */
   tagContainerElementHeight: string = '20px';
 
+  /**
+   * Altezza minima (px) dell'area async mentre caricano i chunks.
+   * Imposta un valore per evitare il salto del modal al termine del load.
+   * Lascia null per usare il default per tipo (`url`: 240, altri: 180).
+   */
+  asyncLoadingMinHeightOverride: number | null = null;
+
+  get asyncLoadingMinHeight(): number {
+    if (this.asyncLoadingMinHeightOverride != null) {
+      return this.asyncLoadingMinHeightOverride;
+    }
+    return this.kb?.type === 'url' ? 265 : 185;
+  }
+
     public hideHelpLink: boolean;
 
   isOpen = false;
@@ -161,6 +175,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
         this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
       } else {
         this.showSpinner = false;
+        this.scheduleTagContainerSetup();
       }
 
     const brand = brandService.getBrand();
@@ -188,12 +203,14 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       this.showSpinner = false;
       this.chunksCount = 0;
       this.getChunksError = true;
+      this.scheduleTagContainerSetup();
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS * COMPLETE *');
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS  Array', this.chunks) 
       this.chunksCount = this.chunks.length;
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CONTENT CHUNCKS  Array', this.chunks) 
       this.showSpinner = false;
+      this.scheduleTagContainerSetup();
     });
 
   }
@@ -212,7 +229,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.initTagContainerObserver();
+    this.scheduleTagContainerSetup();
   }
 
   ngOnDestroy() {
@@ -389,9 +406,21 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     this.isScrapeSettingsOpen = false;
   }
 
-    /**
+  /**
+   * Le tag sono dentro `*ngIf="!showSpinner"`: il container non esiste finché
+   * i chunks non finiscono di caricare, quindi l'observer va avviato solo
+   * quando la sezione è visibile nel DOM.
+   */
+  private scheduleTagContainerSetup(): void {
+    if (this.showSpinner) {
+      return;
+    }
+    setTimeout(() => this.initTagContainerObserver());
+  }
+
+  /**
    * Inizializza l'observer per monitorare i cambiamenti nel container delle tag
-   * L'observer viene creato una sola volta in ngAfterViewInit
+   * L'observer viene creato una sola volta quando il container è nel DOM
    */
   private initTagContainerObserver() {
     if (!this.kbTagsContainer) return;
@@ -427,12 +456,10 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     }
 
     const element = this.kbTagsContainer.nativeElement as HTMLElement;
-    const currentHeight = element.style.height;
-    element.style.height = 'auto';
+    element.style.removeProperty('height');
     void element.offsetHeight;
-    const naturalHeight = element.offsetHeight;
-    element.style.height = currentHeight;
-    this.tagContainerElementHeight = naturalHeight > 0 ? naturalHeight + 'px' : '20px';
+    const naturalHeight = Math.max(element.scrollHeight, 20);
+    this.tagContainerElementHeight = naturalHeight + 'px';
   }
   
  goToKbTagsDoc() {

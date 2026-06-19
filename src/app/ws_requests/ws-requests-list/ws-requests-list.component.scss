@@ -1767,3 +1767,15 @@ span .switch-agent-admin-requests-btn {
   color: var(--blue-20);
   cursor: pointer;
 }
+
+.click-here-to-simulate {
+  line-height:20px;
+  color:var(--accent-text-color); 
+  font-size: 14px;
+  margin-bottom: 16px;
+  cursor: pointer;
+
+  &:hover { 
+    text-decoration: underline;
+  }
+}

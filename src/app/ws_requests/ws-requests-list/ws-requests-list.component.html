@@ -691,16 +691,15 @@
                     </svg>
 
                     <!-- <span *ngIf="!showSpinner"> -->
-                    <span style="display: block; line-height:20px;color:#737376; font-size: 16px;margin-top: 16px;">
+                    <div style="line-height:20px;color:#737376; font-size: 16px;margin-top: 16px;">
                       {{ 'VisitorsPage.NoVisitor' | translate }}
-                    </span>
+                    </div>
 
 
-                    <span
-                      style="display: block; line-height:20px;color:#737376; font-size: 14px;margin-bottom: 16px;text-decoration: underline;cursor: pointer;"
+                    <div class="click-here-to-simulate"
                       (click)="testWidgetPage()">
                       {{ 'VisitorsPage.ClickHereToSimulate' | translate }}
-                    </span>
+                    </div>
 
                   </div>
                 </div>

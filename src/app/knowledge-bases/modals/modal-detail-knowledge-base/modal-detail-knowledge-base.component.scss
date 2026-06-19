@@ -476,6 +476,25 @@
     margin-bottom: 12px;
 }
 
+.kb-detail-async-area {
+    position: relative;
+    width: 100%;
+
+    &--loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__spinner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        padding: 16px 0;
+    }
+}
+
 .refresh-rate-select > .input-label-on-bottom {
     font-size: 12px;
     color: var(--secondary-text-color, #666);
@@ -514,7 +533,6 @@
 .kb-tags-container {
     box-sizing: border-box;
     min-height: 20px;
-    overflow: hidden;
 }
 .kb-tags-container-with-tags {
     margin-bottom: 12px;

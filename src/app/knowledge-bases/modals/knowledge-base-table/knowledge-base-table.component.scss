@@ -352,6 +352,7 @@ table.kb-table {
   thead th .kb-th-label {
     display: inline-flex;
     align-items: center;
+    gap: 2px;
     white-space: nowrap;
     max-width: 100%;
   }
@@ -363,7 +364,27 @@ table.kb-table {
 
   thead th .kb-th-label .icon-direction {
     flex-shrink: 0;
-    margin-left: 2px;
+    margin-left: 0;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+
+  // Sortable headers — always reserve icon width (prevents column shift on hover)
+  thead th.kb-th-updated-at,
+  thead th.kb-th-name {
+    cursor: pointer;
+  }
+
+  thead th .kb-th-label .kb-sort-icon-slot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    min-width: 18px;
+    height: 18px;
+    flex-shrink: 0;
   }
 
   thead th.kb-th-refresh-rate {
@@ -393,7 +414,6 @@ table.kb-table {
   td.kb-name-cell {
     vertical-align: middle;
     overflow: hidden;
-    width: 100%;
     max-width: 0;
   }
 
@@ -404,6 +424,13 @@ table.kb-table {
     min-width: 0;
     width: 100%;
     overflow: hidden;
+    min-height: auto;
+    background-color: transparent;
+  }
+
+  // Two-line min-height only when subtitle or tags are present (not imported-file-only rows)
+  .kb-name-col-inner:has(.subtitle),
+  .kb-name-col-inner:has(.kb-tags-wpr) {
     min-height: calc(#{$kb-table-title-line} + #{$kb-table-subtitle-line});
   }
 
@@ -422,6 +449,7 @@ table.kb-table {
     min-width: 0;
     width: 100%;
     max-width: 100%;
+    background-color: transparent;
   }
 
   td.kb-name-col .subtitle,
@@ -436,11 +464,20 @@ table.kb-table {
     height: auto;
     padding-top: 0;
     padding-bottom: 0;
+    line-height: normal;
+    background-color: transparent;
   }
 
 //   &.table-hover > tbody > tr:hover > td.kb-name-col {
 //     background-color: var(--table-tr-hover, #f5f5f5);
 //   }
+
+  &.table-hover > tbody > tr:hover > td.kb-name-col .kb-name-col-inner,
+  &.table-hover > tbody > tr:hover > td.kb-name-col .ellipsis-text,
+  &.table-hover > tbody > tr:hover > td.kb-name-col .imported-file,
+  &.table-hover > tbody > tr:hover > td.kb-name-col .imported-file-with-tags {
+    background-color: transparent;
+  }
 
   td:last-child {
     vertical-align: middle;
@@ -523,18 +560,13 @@ td {
     .th-label {
         display: inline-block;
         opacity: 0;
-        width: 0;
-        overflow: hidden;
         margin: 0;
         transition: opacity 0.5s ease-in-out;
     }
 
     &:hover {
         .th-label {
-            display: inline-block;
             opacity: 1;
-            width: auto;
-            margin-left: 2px;
         }
     }
 }
@@ -963,12 +995,12 @@ td {
 
 
 .imported-file {
-    padding-top: 9px;
-    padding-bottom: 9px;
-    height: 40px;
+    padding-top: 0;
+    padding-bottom: 0;
+    height: auto;
 }
 .imported-file-with-tags {
-    padding-top: 9px;
+    padding-top: 0;
 }
 
 .kb-welcome-msg {

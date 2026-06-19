@@ -120,9 +120,18 @@
         </div>
 
     </div>
-    <loading-spinner *ngIf="showSpinner"></loading-spinner>
-    
-    <ng-container *ngIf="!showSpinner">
+
+    <!-- Area async (chunks): altezza minima durante il load evita il salto del modal -->
+    <div class="kb-detail-async-area"
+        *ngIf="kb.type !== 'sitemap'"
+        [class.kb-detail-async-area--loading]="showSpinner"
+        [style.min-height.px]="showSpinner ? asyncLoadingMinHeight : null">
+
+        <div *ngIf="showSpinner" class="kb-detail-async-area__spinner">
+            <mat-spinner diameter="28"></mat-spinner>
+        </div>
+
+        <ng-container *ngIf="!showSpinner">
         <!-- || kb.type === 'sitemap' // TODO: add sitemap -->
         <div class="scrape-options-wpr" *ngIf="kb.type === 'url'">
             
@@ -197,11 +206,7 @@
                 </div>
             </div>
         </div>
-    </ng-container>
-    
- 
 
-   <ng-container *ngIf="!showSpinner" >
         <!-- TODO: remove condition sitemap -->
         <div class="content-tags-wpr" style="margin-bottom: 8px;" *ngIf="kb.type !== 'sitemap'">
             
@@ -277,9 +282,8 @@
             </div>
             
         </div>
-    </ng-container>
 
-        <ng-container *ngIf="kb.type !== 'sitemap'  && kb.status === 300">
+        <ng-container *ngIf="kb.type !== 'sitemap' && kb.status === 300">
         <!--
             Chunks are wrapped in a `mat-accordion` so the user can pull them up
             on demand without cluttering the modal. The accordion style mirrors
@@ -287,7 +291,7 @@
             no shadow, slim 38px header) for visual consistency. Collapsed by
             default — that's the whole point of using the accordion here.
         -->
-        <div *ngIf="!showSpinner && kb._id" class="content-chunks-wpr mat-accordion--wpr" style="margin-top: 3px;">
+        <div *ngIf="kb._id" class="content-chunks-wpr mat-accordion--wpr" style="margin-top: 3px;">
 
             <div class="chunk-error" *ngIf="getChunksError">
                 <span class="material-icons-outlined">
@@ -320,19 +324,22 @@
                 </mat-expansion-panel>
             </mat-accordion>
         </div>
-    </ng-container>
+        </ng-container>
 
-    <ng-container *ngIf="kb.type !== 'sitemap' && kb.status !== 300 && kb.status !== 400"> 
-        <div *ngIf="!showSpinner && kb._id" class="chunk-title" style="color: var(--secondary-text-color); font-size: 14px;">
+        <ng-container *ngIf="kb.type !== 'sitemap' && kb.status !== 300 && kb.status !== 400"> 
+        <div *ngIf="kb._id" class="chunk-title" style="color: var(--secondary-text-color); font-size: 14px;">
             {{'KbPage.Indexing' | translate}}...
         </div>
-    </ng-container>
+        </ng-container>
 
-    <ng-container *ngIf="kb.type !== 'sitemap' && kb.status === 400"> 
-        <div *ngIf="!showSpinner && kb._id" class="chunk-title" style="color: var(--error-color); font-size: 14px;">
+        <ng-container *ngIf="kb.type !== 'sitemap' && kb.status === 400"> 
+        <div *ngIf="kb._id" class="chunk-title" style="color: var(--error-color); font-size: 14px;">
            {{'AnErrorHasOccurred' | translate}}
         </div>
-    </ng-container>
+        </ng-container>
+
+        </ng-container>
+    </div>
 
     <ng-container *ngIf="kb.type === 'sitemap'">
   
