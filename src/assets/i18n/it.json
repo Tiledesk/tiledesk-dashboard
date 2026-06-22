@@ -1043,6 +1043,48 @@
         "NewRequest": "Nuova conversazione",
         "RequestResolved": "Conversazione risolta"
     },
+    "ActivitiesOptionsV2": {
+        "AgentAvailabilityOrRoleChange": "Aggiornamento collaboratore",
+        "AgentAvailabilitySelf": "Cambio disponibilità (proprio)",
+        "AgentAvailabilitySystem": "Cambio disponibilità (sistema)",
+        "AgentDeletion": "Cancellazione collaboratore",
+        "AgentInvitation": "Invito collaboratore",
+        "NewRequest": "Nuova conversazione",
+        "RequestResolved": "Conversazione risolta",
+        "RequestAssignedAuto": "Assegnazione automatica conversazione",
+        "RequestAssignedSelf": "Join conversazione (manuale)",
+        "RequestAssignedManual": "Riassegnazione conversazione",
+        "RequestUnassigned": "Rimozione da conversazione"
+    },
+    "ACTIVITY": {
+        "SYSTEM": "Sistema",
+        "SOMEONE": "Qualcuno",
+        "CONVERSATION": "conversazione",
+        "UNKNOWN_AGENT": "agente sconosciuto",
+        "REQUEST_ASSIGNED_SELF": "{{actor}} ha fatto join sulla conversazione {{conversation}}",
+        "REQUEST_ASSIGNED_AUTO_SYSTEM": "All'utente {{assignee}} è stata assegnata la conversazione {{conversation}} dal sistema",
+        "REQUEST_ASSIGNED_AUTO_TRIGGERED": "All'utente {{assignee}} è stata assegnata la conversazione {{conversation}} (assegnazione automatica avviata da {{actor}})",
+        "REQUEST_ASSIGNED_MANUAL": "All'utente {{assignee}} è stata assegnata la conversazione {{conversation}} da {{actor}}",
+        "REQUEST_ASSIGNED_MANUAL_REPLACED": "All'utente {{assignee}} è stata assegnata la conversazione {{conversation}} da {{actor}} (sostituisce {{previous}})",
+        "REQUEST_UNASSIGNED": "{{actor}} ha rimosso {{assignee}} dalla conversazione {{conversation}}",
+        "PROJECT_USER_AVAILABILITY_SELF": "{{targetUser}} ha modificato il suo stato da {{previousStatus}} a {{newStatus}}",
+        "PROJECT_USER_AVAILABILITY_SYSTEM": "Lo stato di {{targetUser}} è stato modificato in {{newStatus}} dal sistema",
+        "REQUEST_CREATE": "{{actor}} ha avviato una nuova conversazione",
+        "REQUEST_CLOSE": "{{actor}} ha chiuso la conversazione {{conversation}}",
+        "PROJECT_USER_INVITE": "{{actor}} ha invitato {{target}} ({{email}}) ad assumere il ruolo di {{role}}",
+        "PROJECT_USER_DELETE": "{{actor}} ha rimosso {{target}} dal progetto",
+        "PROJECT_USER_UPDATE_SELF_AVAILABLE": "{{actor}} ha cambiato il suo stato in disponibile",
+        "PROJECT_USER_UPDATE_SELF_UNAVAILABLE": "{{actor}} ha cambiato il suo stato in non disponibile",
+        "PROJECT_USER_UPDATE_AVAILABILITY": "{{actor}} ha cambiato lo stato di disponibilità di {{target}} in {{status}}",
+        "PROJECT_USER_UPDATE_ROLE_ADMIN": "{{actor}} ha cambiato il ruolo di {{target}} in Amministratore",
+        "PROJECT_USER_UPDATE_ROLE_AGENT": "{{actor}} ha cambiato il ruolo di {{target}} in Agente",
+        "PROJECT_USER_UPDATE_GENERIC": "{{actor}} ha aggiornato {{target}}",
+        "STATUS": {
+            "available": "disponibile",
+            "unavailable": "non disponibile",
+            "inactive": "inattivo"
+        }
+    },
     "UserProfile": {
         "Profile": "Profilo",
         "UploadImage": "Carica immagine",

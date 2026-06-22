@@ -1,0 +1,91 @@
+.column-th-span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f45;
+}
+
+.fontawesome-icon {
+  width: 20px;
+}
+
+.link-to-user-profile {
+  color: #03a5e8;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.highlight {
+  background-color: #FFFF00;
+}
+
+.sorting:before {
+  content: "\f0de";
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+  position: relative;
+  right: -8px;
+}
+
+.sorting_asc:before {
+  opacity: 0.5;
+}
+
+.sorting:after {
+  content: "\f0dd";
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+}
+
+.sorting_desc:after {
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .filter-card {
+    margin-bottom: 8px !important;
+  }
+
+  .activity-label {
+    margin-top: 5px !important;
+  }
+}
+
+.btn-gray-no-boxshadow {
+  border-radius: 999px;
+}
+
+.actvity-btn-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.search-btn > span {
+  color: #fff;
+  padding-right: 3px;
+  position: relative;
+  top: 2px;
+}
+
+.activity-text {
+  margin-bottom: 0;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.activity-date {
+  color: #7695a5;
+  font-weight: 400;
+  line-height: 18px;
+  font-size: 13px;
+}
+
+.activity-request-link {
+  color: #03a5e8;
+  text-decoration: underline;
+  cursor: pointer;
+}

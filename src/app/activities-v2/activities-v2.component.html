@@ -1,0 +1,192 @@
+<div class="main-content" style="padding-top:0px; padding-left: 15px;">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card filter-card" style="margin-bottom: 8px; border-radius: 12px;">
+          <div class="card-content" style="font-size: 14px;">
+
+            <div class="row">
+              <div class="col-sm-4" style="padding-left:0px;padding-right:0px;">
+                <label class="col-12 col-sm-12" style="text-align: left; color:#7695a5;">
+                  {{ 'HistoryPage.DateRange' | translate }}
+                </label>
+                <div class="row">
+                  <div class="col-12 col-sm-12">
+                    <mat-form-field class="activity-date-range-picker" appearance="standard">
+                      <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate (dateChange)="addEventStartDate($event.value)" [(ngModel)]="startDate"
+                          placeholder="{{'StartDate' | translate}}">
+                        <input matEndDate (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDate"
+                          placeholder="{{'EndDate' | translate}}">
+                      </mat-date-range-input>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
+                        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4">
+                <label class="col-12 col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:2px">
+                  {{ 'HistoryPage.Agent' | translate }}
+                </label>
+                <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
+                  <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
+                  <ng-option *ngFor="let agent of agentsList" [value]="agent._id">
+                    {{ agent?.firstname }} {{ agent?.lastname }}
+                  </ng-option>
+                </ng-select>
+              </div>
+
+              <div class="col-sm-4">
+                <label class="col-12 col-sm-12 activity-label"
+                  style="text-align: left; color: #7695a5 !important;padding-left:2px">
+                  {{ 'Activity' | translate }}
+                </label>
+                <ng-select [(ngModel)]="selectedActivities" [clearable]="false" [multiple]="true" [items]="activities"
+                  bindLabel="name" bindValue="id" [closeOnSelect]="false"
+                  placeholder="{{ 'AllActivities' | translate }}">
+                </ng-select>
+              </div>
+            </div>
+
+            <div style="margin-top:15px">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="actvity-btn-wpr">
+                    <button #clearsearchbtn type="submit" class="btn btn-gray-no-boxshadow clearsearchbtn"
+                      (click)="clearSearch()">
+                      {{ 'HistoryPage.ClearSearch' | translate }}
+                    </button>
+                    <button #searchbtn type="submit" class="btn btn-tdblu-no-boxshadow search-btn" (click)="search()">
+                      <span class="material-icons" aria-hidden="true"
+                        style="font-size: 18px; vertical-align: middle;">search</span>
+                      {{'Search' | translate}}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="margin-top: 0px;border-radius: 12px;">
+
+          <div class="sort-by-date" style="text-align:right; padding-top:16px; padding-right:28px; font-size: 14px;">
+            <span style="cursor: pointer" (click)="sortDirection(asc = !asc)">
+              <span style="color:#7695a5; font-weight:400">
+                {{ 'SortByDate' | translate}}
+              </span>
+              <span class="sorting"
+                [ngClass]="{'sorting_desc' : direction === 1, 'sorting_asc': direction === -1}"></span>
+            </span>
+          </div>
+
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:0px; padding-top:0px">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th valign="middle">
+                    <span class="column-th-span">
+                      {{ 'LatestActivities' | translate}}
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr *ngIf="usersActivities?.length === 0">
+                  <td colspan="2" style="text-align: center; padding-top: 16px;">
+                    <p style="font-size:14px; color:#7695a5; font-weight: 400">
+                      {{ 'NoActivities' | translate }}
+                    </p>
+                  </td>
+                </tr>
+
+                <tr *ngFor="let activity of usersActivities">
+                  <td style="width:1%; white-space:nowrap">
+                    <img class="fontawesome-icon" [src]="getIconForVerb(activity?.verb)" [alt]="activity?.verb" />
+                  </td>
+
+                  <td>
+                    <p class="activity-text">
+                      {{ activity?.displayText }}
+
+                      <ng-container *ngIf="activity?.verb === 'REQUEST_CREATE'">
+                        <span *ngIf="activity?.target?.object?.status === 200">
+                          — {{ 'AssignedTo' | translate }}
+                          <span *ngIf="activity?.participant_fullname" class="link-to-user-profile"
+                            (click)="goToMemberProfile(activity?.target?.object?.participants[0])">
+                            {{ activity?.participant_fullname }}
+                          </span>
+                        </span>
+                        <span *ngIf="activity?.target?.object?.status === 100">
+                          — {{ '_unserved' | translate }}
+                        </span>
+                        <span *ngIf="activity?.activity_request_text" class="activity-request-link"
+                          (click)="goToRequestDetails(activity?.requestId)">
+                          <em> {{ activity?.activity_request_text }}</em>
+                        </span>
+                      </ng-container>
+
+                      <ng-container
+                        *ngIf="activity?.verb === 'REQUEST_CLOSE' || activity?.verb === 'REQUEST_ASSIGNED_SELF' || activity?.verb === 'REQUEST_ASSIGNED_AUTO' || activity?.verb === 'REQUEST_ASSIGNED_MANUAL' || activity?.verb === 'REQUEST_UNASSIGNED'">
+                        <span *ngIf="activity?.activity_request_text" class="activity-request-link"
+                          (click)="goToRequestDetails(activity?.requestId)">
+                          — <em>{{ activity?.activity_request_text || activity?.requestId }}</em>
+                        </span>
+                      </ng-container>
+                    </p>
+
+                    <span class="activity-date">
+                      <span style="text-transform:capitalize">{{ activity?.date }}</span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card--footer" style="text-align:center;margin-bottom: 12px;">
+            <div class="input-group-wpr">
+              <div>
+                <div class="input-group">
+                  <span class="input-group-btn left-btn">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-tdblu" type="button"
+                      (click)="decreasePageNumber()">
+                      <span class="material-icons">keyboard_arrow_left</span>
+                    </button>
+                  </span>
+                  <span class="input-group-btn center-btn">
+                    <button class="btn btn-tdblu" type="button">
+                      {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp }}
+                    </button>
+                  </span>
+                  <span class="input-group-btn right-btn">
+                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
+                      class="btn btn-tdblu" type="button" (click)="increasePageNumber()">
+                      <span class="material-icons">keyboard_arrow_right</span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

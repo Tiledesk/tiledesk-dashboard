@@ -4,7 +4,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { Observable } from 'rxjs';
 import { LoggerService } from '../../services/logger/logger.service';
-import { Activity } from '../../models/activity-model';
+import { ActivitiesResponse } from '../../models/activity-model';
 @Injectable()
 export class ActivitiesService {
 
@@ -51,7 +51,7 @@ export class ActivitiesService {
     * @param pagenumber 
     * @returns 
     */
-  public getUsersActivities(querystring: string, pagenumber: number): Observable<Activity[]> {
+  public getUsersActivities(querystring: string, pagenumber: number): Observable<ActivitiesResponse> {
     let _querystring = '&' + querystring
     if (querystring === undefined || !querystring) {
       _querystring = ''
@@ -66,7 +66,7 @@ export class ActivitiesService {
         'Authorization': this.TOKEN
       })
     };
-    return this._httpClient.get<Activity[]>(url, httpOptions);
+    return this._httpClient.get<ActivitiesResponse>(url, httpOptions);
   }
 
 

@@ -1045,6 +1045,48 @@
         "NewRequest": "New conversation",
         "RequestResolved": "Conversation resolved"
     },
+    "ActivitiesOptionsV2": {
+        "AgentAvailabilityOrRoleChange": "Teammate update",
+        "AgentAvailabilitySelf": "Availability change (self)",
+        "AgentAvailabilitySystem": "Availability change (system)",
+        "AgentDeletion": "Teammate deletion",
+        "AgentInvitation": "Teammate invitation",
+        "NewRequest": "New conversation",
+        "RequestResolved": "Conversation resolved",
+        "RequestAssignedAuto": "Conversation auto-assigned",
+        "RequestAssignedSelf": "Conversation join (self)",
+        "RequestAssignedManual": "Conversation reassigned",
+        "RequestUnassigned": "Conversation unassigned"
+    },
+    "ACTIVITY": {
+        "SYSTEM": "System",
+        "SOMEONE": "Someone",
+        "CONVERSATION": "conversation",
+        "UNKNOWN_AGENT": "unknown agent",
+        "REQUEST_ASSIGNED_SELF": "{{actor}} joined conversation {{conversation}}",
+        "REQUEST_ASSIGNED_AUTO_SYSTEM": "Conversation {{conversation}} was automatically assigned to {{assignee}} by the system",
+        "REQUEST_ASSIGNED_AUTO_TRIGGERED": "Conversation {{conversation}} was automatically assigned to {{assignee}} (triggered by {{actor}})",
+        "REQUEST_ASSIGNED_MANUAL": "{{actor}} assigned conversation {{conversation}} to {{assignee}}",
+        "REQUEST_ASSIGNED_MANUAL_REPLACED": "{{actor}} reassigned conversation {{conversation}} to {{assignee}} (replacing {{previous}})",
+        "REQUEST_UNASSIGNED": "{{actor}} unassigned {{assignee}} from conversation {{conversation}}",
+        "PROJECT_USER_AVAILABILITY_SELF": "{{targetUser}} changed availability status from {{previousStatus}} to {{newStatus}}",
+        "PROJECT_USER_AVAILABILITY_SYSTEM": "{{targetUser}} availability status was changed to {{newStatus}} by the system",
+        "REQUEST_CREATE": "{{actor}} started a new conversation",
+        "REQUEST_CLOSE": "{{actor}} closed conversation {{conversation}}",
+        "PROJECT_USER_INVITE": "{{actor}} invited {{target}} ({{email}}) to take on the role of {{role}}",
+        "PROJECT_USER_DELETE": "{{actor}} removed {{target}} from the project",
+        "PROJECT_USER_UPDATE_SELF_AVAILABLE": "{{actor}} changed his status to available",
+        "PROJECT_USER_UPDATE_SELF_UNAVAILABLE": "{{actor}} changed his status to unavailable",
+        "PROJECT_USER_UPDATE_AVAILABILITY": "{{actor}} changed the availability status of {{target}} to {{status}}",
+        "PROJECT_USER_UPDATE_ROLE_ADMIN": "{{actor}} changed the role of {{target}} to Administrator",
+        "PROJECT_USER_UPDATE_ROLE_AGENT": "{{actor}} changed the role of {{target}} to Agent",
+        "PROJECT_USER_UPDATE_GENERIC": "{{actor}} updated {{target}}",
+        "STATUS": {
+            "available": "available",
+            "unavailable": "unavailable",
+            "inactive": "inactive"
+        }
+    },
     "UserProfile": {
         "Profile": "Profile",
         "UploadImage": "Upload image",

@@ -124,6 +124,8 @@ import { UploadImageNativeService } from './services/upload-image-native.service
 import { WidgetService } from './services/widget.service';
 
 import { ActivitiesComponent } from './activities/activities.component';
+import { ActivitiesV2Component } from './activities-v2/activities-v2.component';
+import { ActivityRendererService } from './activities-v2/activity-renderer/activity-renderer.service';
 
 // import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component'; // now lazy
 // import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component'; // now lazy
@@ -540,6 +542,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // ContactDetailsComponent, // now lazy
     // ContactEditComponent, // now lazy
     ActivitiesComponent,
+    ActivitiesV2Component,
     // AnalyticsStaticComponent, // now lazy
     // ActivitiesStaticComponent, // now lazy
     FaqTestTrainBotComponent,
@@ -827,6 +830,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // },
     WsChatbotService,
     ActivitiesService,
+    ActivityRendererService,
     ScriptService,
     WsRequestsService,
     WsMsgsService,

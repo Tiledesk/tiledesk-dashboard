@@ -74,6 +74,7 @@ import { AccountSettingsComponent } from './user-profile/account-settings/accoun
 // import { ResetPswComponent } from './reset-psw/reset-psw.component'; // now lazy
 
 import { ActivitiesComponent } from './activities/activities.component';
+import { ActivitiesV2Component } from './activities-v2/activities-v2.component';
 
 // Andrea
 import { ChatComponent } from './chat/chat.component';
@@ -335,6 +336,12 @@ const routes: Routes = [
   // Activities
   {
     path: 'project/:projectid/activities', component: ActivitiesComponent,
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
+  // Activities v2 (new verb-based rendering)
+  {
+    path: 'project/:projectid/activities-v2', component: ActivitiesV2Component,
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
 
