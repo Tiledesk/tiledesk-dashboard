@@ -5577,6 +5577,28 @@ label {
 .contact--conversations-wpr-chat {
   margin-left: 8px;
   margin-right: 8px;
+
+  .contact--conversations {
+    width: 40px;
+    min-width: 40px;
+    max-width: 40px;
+    padding-left: 4px;
+    padding-right: 4px;
+    vertical-align: top;
+  }
+
+  td:not(.contact--conversations) {
+    width: auto;
+    vertical-align: top;
+    padding-left: 6px;
+    padding-right: 4px;
+  }
+
+  .contact--conversations-first_text {
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    line-height: 1.3;
+  }
 }
 
 .contact--conversations-card {
@@ -5617,7 +5639,24 @@ label {
   font-size: 12px
 }
 
+.contact-request-row--current {
+  opacity: 0.55;
+  cursor: default !important;
+  pointer-events: none;
 
+  .contact--conversations-first_text,
+  .contact--conversations-request-sent-to {
+    color: var(--secondary-text-color);
+  }
+
+  svg {
+    opacity: 0.6;
+  }
+}
+
+.table-hover > tbody > tr.contact-request-row--current:hover {
+  background-color: transparent;
+}
 
 /*
  Attributes Accordion 
