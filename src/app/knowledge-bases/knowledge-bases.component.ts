@@ -2395,7 +2395,9 @@ _presentDialogImportContents() {
       data: {
         hybridIsVisible: this.hybridIsVisible,
         pay: this.payIsVisible,
-        hybridActive: this.isActiveHybrid
+        hybridActive: this.isActiveHybrid,
+        projectId: this.id_project,
+        projectName: this.project_name,
       },
     })
     dialogRef.afterClosed().subscribe(result => {
@@ -2503,13 +2505,21 @@ _presentDialogImportContents() {
     });
   }
 
+  get isDeleteNamespaceDisabled(): boolean {
+    if (!this.PERMISSION_TO_DELETE) {
+      return true;
+    }
+    return this.selectedNamespace?.default === true
+      && (Number(this.kbsContentTotalCount) || 0) === 0;
+  }
+
   onOpenDeleteNamespaceModal() {
     if(!this.PERMISSION_TO_DELETE) {
       this.notify.presentDialogNoPermissionToPermomfAction();
       return;
     }
     this.logger.log("onOpenDeleteNamespaceModal called....")
-    if (this.selectedNamespace.default && this.kbsList.length === 0) {
+    if (this.selectedNamespace.default && (Number(this.kbsContentTotalCount) || 0) === 0) {
       this.presentModalDefautNamespaceCannotBeDeleted()
     } else {
       // this.showDeleteNamespaceModal = true;

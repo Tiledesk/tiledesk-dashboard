@@ -23,15 +23,21 @@ export class ModalAddNamespaceComponent implements OnInit {
     this.hybridActive = data.hybridActive;
 
     const brand = brandService.getBrand();
-    this.salesEmail = brand['CONTACT_SALES_EMAIL'];
-    this.hideHelpLink= brand['DOCS'];
+    this.salesEmail = brand['CONTACT_SALES_EMAIL'] || brand['CONTACT_US_EMAIL'];
+    this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit(): void {
   }
-  
+
   contactUs() {
-    window.open(`mailto:${this.salesEmail}?subject=Increase quotas`);
+    const projectLabel = this.data.projectName
+      ? `${this.data.projectName} (${this.data.projectId})`
+      : this.data.projectId;
+    window.open(
+      `mailto:${this.salesEmail}?subject=${encodeURIComponent('Enable Hybrid Search for project ' + (projectLabel || ''))}`,
+      '_blank'
+    );
   }
 
   onOkPresssed(namespaceName, selectedNamespaceType){

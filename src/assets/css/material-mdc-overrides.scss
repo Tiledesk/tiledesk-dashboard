@@ -186,38 +186,8 @@
   padding: 0;
 }
 
-// KB add-namespace modal: pill-shaped outline + accent (optional class on mat-form-field)
-.custom-namespace-mat-form-field.mat-mdc-form-field.mat-form-field-appearance-outline {
-  .mat-mdc-form-field-infix {
-    padding: 1ex 0 !important;
-  }
-
-  input.mat-mdc-input-element {
-    caret-color: var(--icon-hover-color) !important;
-  }
-
-  &:not(.mat-focused):not(.mat-form-field-invalid) {
-    .mdc-notched-outline__leading,
-    .mdc-notched-outline__notch,
-    .mdc-notched-outline__trailing {
-      border-color: var(--icon-hover-color) !important;
-      border-radius: 20px !important;
-    }
-  }
-
-  &.mat-focused:not(.mat-form-field-invalid) {
-    .mdc-notched-outline__leading,
-    .mdc-notched-outline__notch,
-    .mdc-notched-outline__trailing {
-      border-color: var(--icon-hover-color) !important;
-      border-radius: 28px !important;
-    }
-
-    .mat-mdc-floating-label {
-      color: var(--icon-hover-color) !important;
-    }
-  }
-}
+// KB add-namespace: pill radius on each .mdc-notched-outline__* breaks MDC (doubled outline on A15).
+// Use baseline outline (#e4e4e4 / focus --blue-20) via .cc-mat-form-field only.
 
 // ─── Chip inputs inside outline fields ───────────────────────────────────────
 
@@ -741,6 +711,47 @@ $td-slide-toggle-thumb-shadow:
 
   .mdc-switch__shadow {
     box-shadow: $td-slide-toggle-thumb-shadow !important;
+  }
+}
+
+// Disabled + checked: keep ON affordance (gray thumb, light check, track slightly darker when on).
+// Without this, the block above paints unchecked colors and hides the checkmark on the white thumb.
+.mat-mdc-slide-toggle.mat-disabled.mat-mdc-slide-toggle-checked .mdc-switch.mdc-switch--disabled,
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch.mdc-switch--disabled {
+  --mdc-switch-disabled-selected-handle-color: #9e9e9e;
+  --mdc-switch-disabled-selected-track-color: rgba(0, 0, 0, 0.26);
+  --mdc-switch-disabled-selected-icon-color: #ececec;
+  --mdc-switch-disabled-selected-icon-opacity: 1;
+  --mdc-switch-disabled-handle-opacity: 1;
+
+  .mdc-switch__track {
+    opacity: 1 !important;
+  }
+
+  .mdc-switch__track::before {
+    background: $td-slide-toggle-track-disabled !important;
+  }
+
+  .mdc-switch__track::after {
+    background: rgba(0, 0, 0, 0.26) !important;
+  }
+
+  .mdc-switch__handle::after {
+    background: #9e9e9e !important;
+    opacity: 1 !important;
+  }
+
+  .mdc-switch__icons {
+    opacity: 1 !important;
+  }
+
+  .mdc-switch__icon--on {
+    opacity: 1 !important;
+    fill: #ececec !important;
+
+    path {
+      fill: #ececec !important;
+    }
   }
 }
 

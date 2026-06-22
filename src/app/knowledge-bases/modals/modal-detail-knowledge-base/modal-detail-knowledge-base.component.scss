@@ -7,8 +7,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;    
-    padding-right: 12px;
+    align-items: center;
 }
 
 .m-top-right-icon {
@@ -380,17 +379,6 @@
     margin-top: -6px;
 }
 
-::ng-deep.ng-select.scrape-types-select .ng-select-container {
-    margin-top: 4px;
-    border-radius: 5px;
-    border: solid 1px #e4e4e4 !important;
-    box-shadow: none;
-}
-
-::ng-deep.ng-select.scrape-types-select.ng-select-focused:not(.ng-select-opened) > .ng-select-container {
-    box-shadow: none;
-}
-
 .refresh-rate-wpr {
     display: flex;
     flex-direction: row;
@@ -476,25 +464,6 @@
     margin-bottom: 12px;
 }
 
-.kb-detail-async-area {
-    position: relative;
-    width: 100%;
-
-    &--loading {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    &__spinner {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        padding: 16px 0;
-    }
-}
-
 .refresh-rate-select > .input-label-on-bottom {
     font-size: 12px;
     color: var(--secondary-text-color, #666);
@@ -533,6 +502,7 @@
 .kb-tags-container {
     box-sizing: border-box;
     min-height: 20px;
+    overflow: hidden;
 }
 .kb-tags-container-with-tags {
     margin-bottom: 12px;
@@ -643,6 +613,24 @@
     margin-bottom: 18px;
 }
 
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
+    margin: .25em 0;
+    padding-bottom: 4px;
+}
+
+
+::ng-deep .mat-chip-list-wrapper {
+    max-height: 100px;
+    overflow: scroll;
+
+    .mat-standard-chip {
+        border-radius: 10px;
+        background-color: transparent;
+        border: solid 1px #b9b9b9;
+    }
+}
+
+
 // Scrape option chips styling
 // ::ng-deep .scrape-option-chip {
 //     background-color: white !important;
@@ -726,7 +714,6 @@
 //     padding-bottom: 0;
 // }
 
-// mat-form-field: material-mdc-overrides.scss
 // .scrape-options-accordion ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {
 //     margin: 0.25em 0;
 //     padding-bottom: 4px;
