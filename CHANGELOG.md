@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.9
+- Adds a button to the Analytics page that redirects to legacy Analytics page
+
 ### 2.8.8
 - Fixes the bug: Uploaded files can be modified
 - Improves the TXT contents type filter in the knowledge base table to also include regex_custom  file type upload 
