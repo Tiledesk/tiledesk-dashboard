@@ -156,8 +156,10 @@ export class RoleService {
             if (calledby === 'analytics') {
               this.logger.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
               if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.ANALYTICS_READ)) {
-                // this.router.navigate([`project/${projectId}/unauthorized`])
-                this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+                const analyticsPath = this.router.url.includes('/analytics-legacy')
+                  ? 'analytics-legacy'
+                  : 'analytics';
+                this.router.navigate([`project/${projectId}/${analyticsPath}/no-auth`]);
               }
             }
 
@@ -751,8 +753,10 @@ export class RoleService {
           if (calledby === 'analytics') {
             this.logger.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.ANALYTICS_READ)) {
-              // this.router.navigate([`project/${projectId}/unauthorized`])
-              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+              const analyticsPath = this.router.url.includes('/analytics-legacy')
+                ? 'analytics-legacy'
+                : 'analytics';
+              this.router.navigate([`project/${projectId}/${analyticsPath}/no-auth`]);
             }
           }
 

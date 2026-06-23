@@ -2825,11 +2825,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (!this.PERMISSION_TO_VIEW_ANALYTICS || !this.project?._id) {
       return null;
     }
-    const link: (string | number)[] = ['/project', this.project._id, 'analytics'];
-    if (this.useNewAnalytics) {
-      link.push('new');
-    }
-    return link;
+    return ['/project', this.project._id, 'analytics'];
   }
 
    handleAnalyticsClick(event: MouseEvent): void {

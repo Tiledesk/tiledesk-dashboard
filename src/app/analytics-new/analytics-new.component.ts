@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AnalyticsEmbedService } from 'app/services/analytics-embed.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -31,6 +31,7 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private embedService: AnalyticsEmbedService,
     private route: ActivatedRoute,
+    private router: Router,
     private auth: AuthService,
     private appConfigService: AppConfigService,
     private logger: LoggerService
@@ -93,6 +94,13 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
 
   onAnalyticsIframeLoad(): void {
     this.flushPendingKbChartClickToIframe();
+  }
+
+  goToLegacyAnalytics(): void {
+    if (!this.projectId) {
+      return;
+    }
+    this.router.navigate(['/project', this.projectId, 'analytics-legacy']);
   }
 
   private flushPendingKbChartClickToIframe(): void {

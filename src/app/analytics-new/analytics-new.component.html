@@ -1,4 +1,10 @@
 <div class="analytics-new-page">
+  <div class="analytics-new-toolbar">
+    <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="goToLegacyAnalytics()">
+      Legacy Analytics
+    </button>
+  </div>
+
   <div *ngIf="loading" class="analytics-new-state">
     <mat-spinner diameter="40"></mat-spinner>
     <p>{{ 'AnalyticsNew.Loading' | translate }}</p>

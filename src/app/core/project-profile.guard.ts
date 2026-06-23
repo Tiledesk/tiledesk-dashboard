@@ -302,7 +302,9 @@ export class ProjectProfileGuard implements CanActivate {
       // Append "-demo" to the path breaks multi-segment routes (e.g. /analytics/new → /analytics/new-demo has no route).
       const demoUrl = url.includes('/analytics/new')
         ? url.replace('/analytics/new', '/analytics-demo')
-        : url + '-demo';
+        : url.includes('/analytics-legacy')
+          ? url.replace('/analytics-legacy', '/analytics-demo')
+          : url + '-demo';
       this.router.navigateByUrl(demoUrl);
 
       return false

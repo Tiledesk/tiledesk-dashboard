@@ -13,12 +13,11 @@ import { MetricsComponent } from './metrics/metrics.component';
 import { PanoramicaComponent } from './panoramica/panoramica.component';
 import { RealtimeComponent } from './realtime/realtime.component';
 import { TranslateModule } from '@ngx-translate/core';
-import { RouterModule ,Routes} from '@angular/router';
 import { SharedModule } from 'app/shared/shared.module';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MomentModule } from 'ngx-moment';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgApexchartsModule } from "ng-apexcharts";
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { TagsAnalyticsComponent } from './metrics/tags-analytics/tags-analytics.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -29,9 +28,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-const routes: Routes = [
-  { path: "", component: AnalyticsComponent},
-]; 
+/** Shared declarations/imports for all analytics entry routes. */
 @NgModule({
   declarations: [
     AnalyticsComponent,
@@ -49,7 +46,6 @@ const routes: Routes = [
     TagsAnalyticsComponent,
   ],
   imports: [
-    RouterModule.forChild(routes),
     CommonModule,
     TranslateModule,
     SharedModule,
@@ -65,10 +61,10 @@ const routes: Routes = [
     MatIconModule,
     MatButtonModule,
     MatNativeDateModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   exports: [
-    RouterModule
-  ]
+    AnalyticsComponent,
+  ],
 })
-export class AnalyticsModule { }
+export class AnalyticsModule {}

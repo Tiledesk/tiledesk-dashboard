@@ -346,73 +346,73 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/activities-demo', component: ActivitiesStaticComponent, canActivate: [AuthGuard] }, // now lazy
 
-  // new Analytics
-  {
-    // path: 'project/:projectid/analytics/new',
-    path: 'project/:projectid/analytics',
-    loadChildren: () => import('app/analytics-new/analytics-new.module').then(m => m.AnalyticsNewModule),
-    canActivate: [AuthGuard, ProjectProfileGuard]
-  },
-
-
-  // Analytics old 
-  {
-    path: 'project/:projectid/analytics/old',
-    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
-    canActivate: [AuthGuard, ProjectProfileGuard]
-  },
-  // { path: 'project/:projectid/analytics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
-
-  {
-    path: 'project/:projectid/analytics/metrics',
-    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
-    canActivate: [AuthGuard, ProjectProfileGuard]
-  },
-  // { path: 'project/:projectid/analytics/metrics', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
-
-  {
-    path: 'project/:projectid/analytics/metrics/visitors',
-    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
-    canActivate: [AuthGuard, ProjectProfileGuard]
-  },
-  // { path: 'project/:projectid/analytics/metrics/visitors', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
-
-  {
-    path: 'project/:projectid/analytics/metrics/messages',
-    loadChildren: () => import('app/analytics/analytics.module').then(m => m.AnalyticsModule),
-    canActivate: [AuthGuard, ProjectProfileGuard]
-  },
-  // { path: 'project/:projectid/analytics/metrics/messages', component: AnalyticsComponent, canActivate: [AuthGuard, ProjectProfileGuard] }, // now lazy
-
-  // Analytics demo page
-  {
-    path: 'project/:projectid/analytics-demo',
-    loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
-    canActivate: [AuthGuard]
-  },
-  // { path: 'project/:projectid/analytics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] }, // Now lazy
-
-  {
-    path: 'project/:projectid/analytics/metrics-demo',
-    loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
-    canActivate: [AuthGuard]
-  },
-  // { path: 'project/:projectid/analytics/metrics-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] }, // Now lazy
-
+  // Analytics — specific paths first; generic /analytics last with pathMatch: 'full'
   {
     path: 'project/:projectid/analytics/metrics/visitors-demo',
     loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
     canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/analytics/metrics/visitors-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] }, // Now lazy
 
   {
     path: 'project/:projectid/analytics/metrics/messages-demo',
     loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
     canActivate: [AuthGuard]
   },
-  // { path: 'project/:projectid/analytics/metrics/messages-demo', component: AnalyticsStaticComponent, canActivate: [AuthGuard] }, // Now lazy
 
+  {
+    path: 'project/:projectid/analytics/metrics/visitors',
+    loadChildren: () => import('app/analytics/analytics-metrics-visitors.module').then(m => m.AnalyticsMetricsVisitorsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
+  {
+    path: 'project/:projectid/analytics/metrics/messages',
+    loadChildren: () => import('app/analytics/analytics-metrics-messages.module').then(m => m.AnalyticsMetricsMessagesModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
+  {
+    path: 'project/:projectid/analytics/metrics-demo',
+    loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'project/:projectid/analytics/metrics',
+    loadChildren: () => import('app/analytics/analytics-metrics.module').then(m => m.AnalyticsMetricsModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
+  {
+    path: 'project/:projectid/analytics/old',
+    redirectTo: 'project/:projectid/analytics-legacy',
+    pathMatch: 'full'
+  },
+
+  {
+    path: 'project/:projectid/analytics/new',
+    redirectTo: 'project/:projectid/analytics',
+    pathMatch: 'full'
+  },
+
+  {
+    path: 'project/:projectid/analytics-legacy',
+    loadChildren: () => import('app/analytics/analytics-legacy.module').then(m => m.AnalyticsLegacyModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
+  {
+    path: 'project/:projectid/analytics-demo',
+    loadChildren: () => import('app/static-pages/analytics-static/analytics-static.module').then(m => m.AnalyticsStaticModule),
+    canActivate: [AuthGuard]
+  },
+
+  {
+    path: 'project/:projectid/analytics',
+    pathMatch: 'full',
+    loadChildren: () => import('app/analytics-new/analytics-new.module').then(m => m.AnalyticsNewModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
 
   // { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] }, // doesn't works
   // { path: 'project/:projectid/conversation-analytics', component: RequestsComponent, canActivate: [AuthGuard] }, // doesn't works
