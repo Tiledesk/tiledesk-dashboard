@@ -455,7 +455,7 @@
           matTooltipHideDelay="100">
           <!-- routerLink="project/{{ project._id }}/activities" -->
           <a class="customAncor" 
-          [routerLink]="PERMISSION_TO_VIEW_ACTVITIES ? ['/project', project._id, 'activities'] : null"
+          [routerLink]="PERMISSION_TO_VIEW_ACTVITIES ? ['/project', project._id, 'activities-new'] : null"
           (click)="handleActivitiesClick($event)">     
             <span>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="none">
