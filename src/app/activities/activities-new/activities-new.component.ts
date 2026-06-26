@@ -20,13 +20,13 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { TeammateActivitiesChartModalComponent } from './modals/teammate-activities-chart-modal/teammate-activities-chart-modal.component';
 import { ActivitiesListChartModalComponent } from './modals/activities-list-chart-modal/activities-list-chart-modal.component';
 
-import { ActivitiesService } from '../activities/activities-service/activities.service';
-import { ACTIVITY_FILTER_OPTIONS } from '../activities/utils/activity-verbs.constants';
+import { ActivitiesService } from '../activities-service/activities.service';
+import { ACTIVITY_FILTER_OPTIONS } from '../utils/activity-verbs.constants';
 import {
   buildRequestCloseDisplayContext,
   findEnrichedParticipantName,
   RequestCloseParticipantDisplay,
-} from '../activities/utils/activity-request-close.util';
+} from '../utils/activity-request-close.util';
 import {
   effectiveVerb,
   actorName,
@@ -59,7 +59,7 @@ import {
   shouldLinkParticipant as shouldLinkParticipantFn,
   unassignedParticipantId,
   unassignedParticipantName,
-} from '../activities/utils/activity-message.util';
+} from '../utils/activity-message.util';
 
 @Component({
   selector: 'appdashboard-activities-new',

@@ -1,4 +1,67 @@
-@import '../activities/activities.component.scss';
+.column-th-span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f45;
+}
+
+.fontawesome-icon {
+  width: 20px;
+}
+
+.link-to-user-profile {
+  color: #03a5e8;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.highlight {
+  background-color: #FFFF00;
+}
+
+.sorting:before {
+  content: '\f0de';
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+  position: relative;
+  right: -8px;
+}
+
+.sorting_asc:before {
+  opacity: 0.5;
+}
+
+.sorting:after {
+  content: '\f0dd';
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+}
+
+.sorting_desc:after {
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .filter-card {
+    margin-bottom: 8px !important;
+  }
+
+  .activity-label {
+    margin-top: 5px !important;
+  }
+}
+
+.btn-gray-no-boxshadow {
+  border-radius: 999px;
+}
+
+.search-btn > span {
+  color: #fff;
+  padding-right: 3px;
+  position: relative;
+  top: 2px;
+}
 
 .activities-new-list-header {
   display: flex;

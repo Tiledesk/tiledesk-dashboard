@@ -1843,7 +1843,10 @@
         "DateRange": "Date Range",
         "ClearSearch": "Clear Search",
         "HistoryIsOnlyAvailableForThePast14Days": "History is only available for the past 14 days",
-        "ForUnlimitedChatHistory": "to get unlimited chat history"
+        "ForUnlimitedChatHistory": "to get unlimited chat history",
+        "StartDate": "Start date",
+        "EndDate": "End date",
+        "ActivityType": "Activity type"
     },
     "Trigger": {
         "Trigger": "Triggers",
