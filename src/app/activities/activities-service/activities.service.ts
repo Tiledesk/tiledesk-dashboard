@@ -4,7 +4,8 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { Observable } from 'rxjs';
 import { LoggerService } from '../../services/logger/logger.service';
-import { Activity } from '../../models/activity-model';
+import { ActivitiesListResponse } from '../../models/activity-model';
+
 @Injectable()
 export class ActivitiesService {
 
@@ -13,13 +14,6 @@ export class ActivitiesService {
   TOKEN: string;
   projectID: string;
 
-  /**
-   * 
-   * @param _httpClient 
-   * @param auth 
-   * @param appConfigService 
-   * @param logger 
-   */
   constructor(
     private _httpClient: HttpClient,
     private auth: AuthService,
@@ -31,34 +25,22 @@ export class ActivitiesService {
     this.getCurrentProjectAndBuildUrl();
   }
 
-
-  // -----------------------------------------------------------------------------------------------------
-  // @ Public methods
-  // -----------------------------------------------------------------------------------------------------
   getCurrentProjectAndBuildUrl() {
     this.auth.project_bs.subscribe((project) => {
-
       if (project) {
-        this.projectID = project._id
+        this.projectID = project._id;
         this.ACTIVITIES_URL = this.SERVER_BASE_PATH + project._id + '/activities';
       }
     });
   }
 
-  /**
-    * Get Teammates activities
-    * @param querystring 
-    * @param pagenumber 
-    * @returns 
-    */
-  public getUsersActivities(querystring: string, pagenumber: number): Observable<Activity[]> {
-    let _querystring = '&' + querystring
+  public getUsersActivities(querystring: string, pagenumber: number): Observable<ActivitiesListResponse> {
+    let _querystring = '&' + querystring;
     if (querystring === undefined || !querystring) {
-      _querystring = ''
+      _querystring = '';
     }
 
     const url = this.ACTIVITIES_URL + '?page=' + pagenumber + _querystring;
-
     this.logger.log('[ACTIVITIES-SERV] - GET ACTIVITIES - URL ', url);
     const httpOptions = {
       headers: new HttpHeaders({
@@ -66,8 +48,26 @@ export class ActivitiesService {
         'Authorization': this.TOKEN
       })
     };
-    return this._httpClient.get<Activity[]>(url, httpOptions);
+    return this._httpClient.get<ActivitiesListResponse>(url, httpOptions);
   }
 
+  public downloadActivitiesAsCsv(querystring: string, pagenumber: number, language: string) {
+    let _querystring = '&' + querystring;
+    if (querystring === undefined || !querystring) {
+      _querystring = '';
+    }
 
+    const url = this.ACTIVITIES_URL + '/csv?page=' + pagenumber + _querystring + '&lang=' + language;
+    this.logger.log('[ACTIVITIES-SERV] - DOWNLOAD ACTIVITIES CSV - URL ', url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN,
+      }),
+      responseType: 'text' as 'json'
+    };
+
+    return this._httpClient.get(url, httpOptions);
+  }
 }

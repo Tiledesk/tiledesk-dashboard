@@ -338,6 +338,12 @@ const routes: Routes = [
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
 
+  {
+    path: 'project/:projectid/activities-new',
+    loadChildren: () => import('app/activities-new/activities-new.module').then(m => m.ActivitiesNewModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
   // Activities demo page
   {
     path: 'project/:projectid/activities-demo',

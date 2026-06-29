@@ -1,0 +1,112 @@
+<h1 mat-dialog-title class="teammate-activities-chart-modal__title">
+  {{ 'ActivitiesTeammateChartTitle' | translate:{ name: data.teammateName } }}
+</h1>
+
+<div mat-dialog-content class="teammate-activities-chart-modal__content">
+  <div class="teammate-activities-chart-modal__filters">
+    <label class="teammate-activities-chart-modal__filter-label">
+      {{ 'ActivitiesTeammateChartDateRange' | translate }}
+    </label>
+
+    <div class="teammate-activities-chart-modal__filter-row">
+      <div class="teammate-activities-chart-modal__date-range-wrap">
+        <mat-form-field class="activity-date-range-picker" appearance="standard">
+          <mat-date-range-input [rangePicker]="chartDatePicker" [dateFilter]="chartDateFilter">
+            <input
+              matStartDate
+              [(ngModel)]="startDate"
+              [min]="minStartDate"
+              [max]="endDate"
+              (dateChange)="onStartDateChange($event.value)"
+              (dateInput)="onStartDateInput($event.value)"
+              [placeholder]="'StartDate' | translate">
+            <input
+              matEndDate
+              [(ngModel)]="endDate"
+              [min]="startDate"
+              [max]="maxEndDate"
+              (dateChange)="onEndDateChange($event.value)"
+              [placeholder]="'EndDate' | translate">
+          </mat-date-range-input>
+          <mat-datepicker-toggle matSuffix [for]="chartDatePicker"></mat-datepicker-toggle>
+          <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
+            <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+          </mat-datepicker-toggle>
+          <mat-date-range-picker
+            #chartDatePicker
+            (opened)="onPickerOpened()"
+            (closed)="onPickerClosed()">
+          </mat-date-range-picker>
+        </mat-form-field>
+      </div>
+
+      <button
+        mat-stroked-button
+        type="button"
+        class="teammate-activities-chart-modal__apply-btn"
+        [disabled]="showSpinner || !isDateRangeValid()"
+        (click)="applyDateFilter()">
+        {{ 'ActivitiesTeammateChartApply' | translate }}
+      </button>
+    </div>
+
+    <p class="teammate-activities-chart-modal__date-hint">
+      {{ 'ActivitiesTeammateChartDateRangeHint' | translate }}
+    </p>
+
+    <div class="teammate-activities-chart-modal__info-msg-wrap">
+      <div class="teammate-activities-chart-modal__info-container">
+        <i class="material-icons-outlined teammate-activities-chart-modal__info-icon">help_outline</i>
+        <div class="teammate-activities-chart-modal__info-text">
+          <p>{{ 'ActivitiesTeammateChartDateRangeInfoMsg' | translate:{ count_activities: activities.length } }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p *ngIf="!showSpinner && loadError" class="teammate-activities-chart-modal__empty">
+    {{ 'ActivitiesTeammateChartLoadError' | translate }}
+  </p>
+
+  <p *ngIf="!showSpinner && !loadError && activities.length === 0" class="teammate-activities-chart-modal__empty">
+    {{ 'ActivitiesTeammateChartEmpty' | translate }}
+  </p>
+
+  <div
+    *ngIf="showSpinner || (!loadError && activities.length > 0)"
+    class="teammate-activities-chart-modal__chart-wrap">
+    <div *ngIf="showSpinner" class="teammate-activities-chart-modal__state teammate-activities-chart-modal__state--overlay">
+      <loading-spinner></loading-spinner>
+    </div>
+
+    <div
+      #timelineChart
+      class="teammate-activities-chart-modal__chart"
+      [class.teammate-activities-chart-modal__chart--hidden]="showSpinner || activities.length === 0">
+    </div>
+
+    <div
+      #timelineSlider
+      class="teammate-activities-chart-modal__slider"
+      [class.teammate-activities-chart-modal__chart--hidden]="showSpinner || activities.length === 0">
+    </div>
+
+    <p
+      *ngIf="!showSpinner && !loadError && activities.length > 0 && visibleZoomRangeLabel"
+      class="teammate-activities-chart-modal__zoom-range">
+      {{ visibleZoomRangeLabel }}
+    </p>
+
+    <p
+      *ngIf="!showSpinner && !loadError && activities.length > 0"
+      class="teammate-activities-chart-modal__zoom-hint">
+      {{ 'ActivitiesTeammateChartZoomHint' | translate }}
+    </p>
+  </div>
+</div>
+
+<div mat-dialog-actions align="end">
+  <button mat-button type="button" (click)="close()">
+    {{ 'Close' | translate }}
+  </button>
+</div>
