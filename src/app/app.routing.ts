@@ -339,6 +339,13 @@ const routes: Routes = [
   },
 
   {
+    path: 'project/:projectid/activities-new',
+    loadChildren: () => import('app/activities-new/activities-new.module').then(m => m.ActivitiesNewModule),
+    canActivate: [AuthGuard, ProjectProfileGuard]
+  },
+
+
+  {
     path: 'project/:projectid/activities-demo',
     loadChildren: () => import('app/static-pages/activities-static/activities-static.module').then(m => m.ActivitiesStaticModule),
     canActivate: [AuthGuard]
