@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.233-stage
+- Implements New activities
+
 ### 2.7.232-stage
 - Fixes the bug: Uploaded files can be modified
 - Improves the TXT contents type filter in the knowledge base table to also include regex_custom  file type upload 
