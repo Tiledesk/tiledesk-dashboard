@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.234-stage
+- In panel mode, clicking a row in the Contact conversations tab opens a full-height `MatDialog` with the conversation messages
+
 ### 2.7.232-stage
 - Fixes the bug: Uploaded files can be modified
 - Improves the TXT contents type filter in the knowledge base table to also include regex_custom  file type upload 
