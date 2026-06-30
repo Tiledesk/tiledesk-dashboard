@@ -1,0 +1,148 @@
+<div class="contact-request-messages-dialog">
+  <div class="contact-request-messages-dialog-header">
+    <div class="contact-request-messages-dialog-title">
+      <p class="contact-request-messages-dialog-first-text" [innerHTML]="requestFirstText"></p>
+      <span class="contact-request-messages-dialog-date">
+        {{ 'SentThe' | translate }} {{ request?.createdAt | date: 'dd/MM/yyyy' }}
+      </span>
+    </div>
+    <button type="button" class="contact-request-messages-dialog-close" (click)="onClose()" aria-label="Close">
+      <span class="material-icons">close</span>
+    </button>
+  </div>
+
+  <div mat-dialog-content class="contact-request-messages-dialog-content">
+    <div *ngIf="loading" class="text-center contact-request-messages-dialog-state">
+      <i class="fa fa-spinner fa-spin"></i>
+    </div>
+    <div *ngIf="error" class="text-center text-danger contact-request-messages-dialog-state">
+      {{ 'GroupsAddEditPage.AnErrorHasOccurred' | translate }}
+    </div>
+    <div *ngIf="!loading && !error" class="contact-request-messages-dialog-chat">
+      <div class="chat-body">
+        <div *ngFor="let message of msgsArray">
+          <div
+            *ngIf="message?.attributes?.subtype === 'info' || message?.attributes?.subtype === 'info/support'"
+            class="contact-accordion-info-msg">
+            <p *ngIf="message?.text" class="type-info-msg-text">
+              {{ message?.text }}
+              <span class="contact-accordion-info-msg-time">
+                {{ message?.createdAt | amDateFormat: 'LLL'}}
+              </span>
+            </p>
+          </div>
+
+          <div class="parent"
+            *ngIf="message?.attributes?.subtype !== 'info' && message?.attributes?.subtype !== 'info/support'">
+            <div [ngClass]="{'child' : !isRequesterMessage(message)}">
+              <div class="speech-wrapper">
+                <div *ngIf="isRequesterMessage(message)" class="bubble">
+                  <div class="avatar requester-avatar">
+                    <div class="requester-avatar-wrapper"
+                      [ngStyle]="{'background': 'linear-gradient(rgb(255,255,255) -125%,' + fillColour + ')'}">
+                      <span class="_requester-avatar-inchat">
+                        {{ requester_fullname_initial }}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="txt">
+                    <p class="name" [ngStyle]="{'color': fillColour }">
+                      {{ message.senderFullname }}
+                    </p>
+                    <p *ngIf="isTextOrFileMessage(message)"
+                      class="message ow" [innerHTML]="message?.text | htmlEntitiesEncode | marked ">
+                    </p>
+                    <div *ngIf="isAudioMessage(message)" class="message ow audio">
+                      <audio aria-label="audio-track" controls controlsList="nodownload">
+                        <source [src]="message.metadata?.src" [type]="message.metadata?.type">
+                      </audio>
+                      <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"
+                        style="font-size: 12px; margin-bottom: 0px;"></p>
+                    </div>
+                    <div *ngIf="isImageMessage(message)" class="message ow">
+                      <div class="image-container" (click)="openImage(message?.metadata?.src)">
+                        <img [src]="message?.metadata?.src" class="message-img" alt="" />
+                        <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
+                      </div>
+                    </div>
+                    <div *ngIf="isFrameMessage(message)" class="message ow frame">
+                      <div class="frame-container">
+                        <iframe allowfullscreen class="message-frame"
+                          [src]="message.metadata?.src | sanitizeHtml"></iframe>
+                        <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
+                      </div>
+                    </div>
+                    <span class="timestamp">
+                      {{ message?.createdAt | amDateFormat: 'LLL'}}
+                    </span>
+                  </div>
+                  <div class="bubble-arrow"></div>
+                </div>
+
+                <div *ngIf="!isRequesterMessage(message)"
+                  class="bubble alt" [ngClass]="{'internal-note': message?.attributes?.subtype === 'private'}">
+                  <div class="avatar agent-avatar">
+                    <div class="agent-avatar-inner">
+                      <span *ngIf="message?.sender?.indexOf('bot_') === -1"
+                        class="agent-avatar-initial"
+                        [ngStyle]="{'background': 'linear-gradient(rgb(255,255,255) -125%,' + senderColor(message?.senderFullname) + ')'}">
+                        {{ senderInitial(message?.senderFullname) }}
+                      </span>
+                      <img *ngIf="message?.sender?.indexOf('bot_') !== -1"
+                        class="agent-avatar-img"
+                        src="assets/img/avatar_bot_tiledesk.svg"
+                        alt="" />
+                    </div>
+                  </div>
+                  <div class="txt">
+                    <p class="name alt"
+                      [ngClass]="{'internal-note-': message?.attributes?.subtype === 'private'}"
+                      [ngStyle]="{'color': senderColor(message?.senderFullname)}">
+                      {{ message?.senderFullname }}
+                    </p>
+                    <p *ngIf="isTextOrFileMessage(message)"
+                      class="message ow alt"
+                      [ngClass]="{'internal-note-text-color': message?.attributes?.subtype === 'private'}"
+                      [innerHTML]="message?.text | htmlEntitiesEncode | marked">
+                    </p>
+                    <div *ngIf="isAudioMessage(message)" class="message ow alt audio">
+                      <audio aria-label="audio-track" controls controlsList="nodownload">
+                        <source [src]="message.metadata?.src" [type]="message.metadata?.type">
+                      </audio>
+                      <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"
+                        style="font-size: 12px; margin-bottom: 0px;"></p>
+                    </div>
+                    <div *ngIf="isImageMessage(message)" class="message ow alt">
+                      <div class="image-container" (click)="openImage(message?.metadata?.src)">
+                        <img [src]="message?.metadata?.src" class="message-img" alt="" />
+                        <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
+                        <div *ngIf="message?.metadata?.type && !message?.metadata?.type?.startsWith('image')">
+                          <p [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
+                        </div>
+                      </div>
+                    </div>
+                    <div *ngIf="isFrameMessage(message)" class="message ow alt frame">
+                      <div class="frame-container">
+                        <iframe allowfullscreen class="message-frame"
+                          [src]="message.metadata?.src | sanitizeHtml"></iframe>
+                        <p *ngIf="message?.text" [innerHTML]="message?.text | htmlEntitiesEncode | marked"></p>
+                      </div>
+                    </div>
+                    <span class="timestamp">
+                      {{ message?.createdAt | amDateFormat: 'LLL'}}
+                    </span>
+                  </div>
+                  <div class="bubble-arrow alt"
+                    [ngClass]="{'internal-note': message?.attributes?.subtype === 'private'}"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p *ngIf="!msgsArray?.length" class="text-center text-muted contact-request-messages-dialog-state">
+          {{ 'CHAT_IONIC.LABEL_NO_MSG_HERE' | translate }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
