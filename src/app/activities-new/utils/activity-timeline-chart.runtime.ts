@@ -33,6 +33,8 @@ export class ActivityTimelineChartRuntime {
   private sliderChart?: echarts.ECharts;
   private axisBounds?: TimelineChartBounds;
   private syncingZoom = false;
+  private chartVisibleRange?: { start: number; end: number };
+  private lastAxisLabelSpanMs?: number;
 
   constructor(
     private getActivityMessage: (activity: ActivityRecord) => string,
@@ -89,6 +91,8 @@ export class ActivityTimelineChartRuntime {
     this.chart = undefined;
     this.sliderChart = undefined;
     this.axisBounds = undefined;
+    this.chartVisibleRange = undefined;
+    this.lastAxisLabelSpanMs = undefined;
     this.visibleZoomRangeLabel = '';
   }
 
@@ -120,6 +124,7 @@ export class ActivityTimelineChartRuntime {
     };
 
     this.syncingZoom = true;
+    this.chartVisibleRange = range;
     this.syncChartZoom(this.chart, range);
     this.syncChartZoom(this.sliderChart, range);
     this.updateMainChartAxisLabels(range);
@@ -153,6 +158,7 @@ export class ActivityTimelineChartRuntime {
       const range = this.getVisibleRangeFromChart(this.sliderChart, params);
 
       if (range) {
+        this.chartVisibleRange = range;
         this.syncChartZoom(this.chart, range);
         this.updateMainChartAxisLabels(range);
         this.updateVisibleZoomRangeLabel(range);
@@ -168,9 +174,16 @@ export class ActivityTimelineChartRuntime {
       }
 
       this.syncingZoom = true;
-      const range = this.getVisibleRangeFromChart(this.chart, params);
+      let range = this.getVisibleRangeFromChart(this.chart, params);
 
       if (range) {
+        range = this.normalizePanRange(this.chartVisibleRange, range);
+
+        if (this.rangeChanged(this.chartVisibleRange, range)) {
+          this.syncChartZoom(this.chart, range);
+        }
+
+        this.chartVisibleRange = range;
         this.syncChartZoom(this.sliderChart, range);
         this.updateMainChartAxisLabels(range);
         this.updateVisibleZoomRangeLabel(range);
@@ -202,6 +215,13 @@ export class ActivityTimelineChartRuntime {
     }
 
     const spanMs = Math.abs(range.end - range.start);
+
+    // Avoid setOption while panning: updating xAxis can reset inside dataZoom in ECharts.
+    if (this.lastAxisLabelSpanMs === spanMs) {
+      return;
+    }
+
+    this.lastAxisLabelSpanMs = spanMs;
 
     this.chart.setOption({
       xAxis: {
@@ -271,9 +291,13 @@ export class ActivityTimelineChartRuntime {
       return null;
     }
 
+    const rangeFromOption = this.getVisibleRangeFromDataZoomOption(chart);
+    if (rangeFromOption) {
+      return rangeFromOption;
+    }
+
     const option = chart.getOption() as {
       xAxis?: Array<{ min?: number; max?: number }>;
-      dataZoom?: DataZoomState[];
     };
     const xAxis = option.xAxis?.[0];
     const eventZoom = this.getDataZoomEventState(params);
@@ -291,6 +315,21 @@ export class ActivityTimelineChartRuntime {
       return this.getVisibleRangeFromPercent(xAxis.min, xAxis.max, eventZoom.start, eventZoom.end);
     }
 
+    if (xAxis?.min != null && xAxis?.max != null) {
+      return { start: xAxis.min, end: xAxis.max };
+    }
+
+    return null;
+  }
+
+  private getVisibleRangeFromDataZoomOption(
+    chart: echarts.ECharts,
+  ): { start: number; end: number } | null {
+    const option = chart.getOption() as {
+      xAxis?: Array<{ min?: number; max?: number }>;
+      dataZoom?: DataZoomState[];
+    };
+    const xAxis = option.xAxis?.[0];
     const zoomStates = option.dataZoom || [];
     const zoomWithValues = [...zoomStates].reverse().find(
       (zoom) => zoom.startValue != null && zoom.endValue != null,
@@ -318,11 +357,65 @@ export class ActivityTimelineChartRuntime {
       );
     }
 
-    if (xAxis?.min != null && xAxis?.max != null) {
-      return { start: xAxis.min, end: xAxis.max };
+    return null;
+  }
+
+  private normalizePanRange(
+    previous: { start: number; end: number } | undefined,
+    next: { start: number; end: number },
+  ): { start: number; end: number } {
+    if (!previous) {
+      return this.clampRangeToAxis(next);
     }
 
-    return null;
+    const prevSpan = previous.end - previous.start;
+    const nextSpan = next.end - next.start;
+
+    if (prevSpan <= 0 || Math.abs(nextSpan - prevSpan) <= 1000) {
+      return this.clampRangeToAxis(next);
+    }
+
+    const center = (next.start + next.end) / 2;
+    const halfSpan = prevSpan / 2;
+
+    return this.clampRangeToAxis({
+      start: center - halfSpan,
+      end: center + halfSpan,
+    });
+  }
+
+  private clampRangeToAxis(range: { start: number; end: number }): { start: number; end: number } {
+    if (!this.axisBounds) {
+      return range;
+    }
+
+    const span = range.end - range.start;
+    const { min, max } = this.axisBounds;
+    let start = range.start;
+    let end = range.end;
+
+    if (start < min) {
+      start = min;
+      end = min + span;
+    }
+
+    if (end > max) {
+      end = max;
+      start = max - span;
+    }
+
+    return { start, end };
+  }
+
+  private rangeChanged(
+    previous: { start: number; end: number } | undefined,
+    next: { start: number; end: number },
+  ): boolean {
+    if (!previous) {
+      return true;
+    }
+
+    return Math.abs(previous.start - next.start) > 1 || Math.abs(previous.end - next.end) > 1;
   }
 
   private ensureChart(el: HTMLElement): echarts.ECharts {
