@@ -26,6 +26,12 @@ export interface TimelineAxisBounds {
   span: number;
 }
 
+export interface TimelineChartBounds extends TimelineAxisBounds {
+  dataMin: number;
+  dataMax: number;
+  dataSpan: number;
+}
+
 export function formatActivityChartTimestamp(activity: ActivityRecord): string {
   return moment(activity.updatedAt || activity.createdAt).format('DD/MM/YYYY - HH:mm:ss');
 }
@@ -35,7 +41,14 @@ export function activityTimestampMs(activity: ActivityRecord): number {
 }
 
 export function sortActivitiesByTime(activities: ActivityRecord[]): ActivityRecord[] {
-  return [...activities].sort((left, right) => activityTimestampMs(left) - activityTimestampMs(right));
+  return [...activities].sort((left, right) => {
+    const timeDiff = activityTimestampMs(left) - activityTimestampMs(right);
+    if (timeDiff !== 0) {
+      return timeDiff;
+    }
+
+    return String(left._id || '').localeCompare(String(right._id || ''));
+  });
 }
 
 export function buildActivityTimelinePoints(
@@ -49,17 +62,33 @@ export function buildActivityTimelinePoints(
   }));
 }
 
-export function getTimelineAxisBounds(points: ActivityTimelinePoint[]): TimelineAxisBounds {
-  const dataMinMs = points[0]?.timestampMs ?? Date.now();
-  const dataMaxMs = points[points.length - 1]?.timestampMs ?? dataMinMs;
-  const hasRange = points.length > 1 && dataMaxMs > dataMinMs;
-  const min = hasRange ? dataMinMs : dataMinMs - ONE_HOUR_MS;
-  const max = hasRange ? dataMaxMs : dataMaxMs + ONE_HOUR_MS;
+export function getTimelineChartBounds(
+  points: ActivityTimelinePoint[],
+): TimelineChartBounds {
+  const dataMin = points[0]?.timestampMs ?? Date.now();
+  const dataMax = points[points.length - 1]?.timestampMs ?? dataMin;
+  const dataSpan = Math.max(0, dataMax - dataMin);
+  const hasRange = points.length > 1 && dataSpan > 0;
+
+  const axisMin = hasRange ? dataMin : dataMin - ONE_HOUR_MS;
+  const axisMax = hasRange ? dataMax : dataMax + ONE_HOUR_MS;
 
   return {
-    min,
-    max,
-    span: max - min,
+    min: axisMin,
+    max: axisMax,
+    span: axisMax - axisMin,
+    dataMin,
+    dataMax,
+    dataSpan,
+  };
+}
+
+export function getTimelineAxisBounds(points: ActivityTimelinePoint[]): TimelineAxisBounds {
+  const bounds = getTimelineChartBounds(points);
+  return {
+    min: bounds.min,
+    max: bounds.max,
+    span: bounds.span,
   };
 }
 
@@ -121,12 +150,18 @@ function timelineXAxis(
   };
 }
 
-function timelineInsideDataZoom(minValueSpan = DEFAULT_TIMELINE_MAX_ZOOM_SPAN_MS): EChartsOption['dataZoom'] {
+function timelineInsideDataZoom(
+  bounds: TimelineChartBounds,
+  minValueSpan = DEFAULT_TIMELINE_MAX_ZOOM_SPAN_MS,
+): EChartsOption['dataZoom'] {
   return [
     {
       type: 'inside',
       xAxisIndex: 0,
       filterMode: 'none',
+      rangeMode: ['value', 'value'],
+      startValue: bounds.dataMin,
+      endValue: bounds.dataMax,
       minValueSpan,
       zoomOnMouseWheel: false,
       moveOnMouseMove: true,
@@ -136,12 +171,18 @@ function timelineInsideDataZoom(minValueSpan = DEFAULT_TIMELINE_MAX_ZOOM_SPAN_MS
   ];
 }
 
-function timelineSliderDataZoom(minValueSpan = DEFAULT_TIMELINE_MAX_ZOOM_SPAN_MS): EChartsOption['dataZoom'] {
+function timelineSliderDataZoom(
+  bounds: TimelineChartBounds,
+  minValueSpan = DEFAULT_TIMELINE_MAX_ZOOM_SPAN_MS,
+): EChartsOption['dataZoom'] {
   return [
     {
       type: 'slider',
       xAxisIndex: 0,
       filterMode: 'none',
+      rangeMode: ['value', 'value'],
+      startValue: bounds.dataMin,
+      endValue: bounds.dataMax,
       height: 24,
       bottom: 0,
       minValueSpan,
@@ -166,7 +207,7 @@ export function buildTeammateActivitiesTimelineChartOption(
   minValueSpan = DEFAULT_TIMELINE_MAX_ZOOM_SPAN_MS,
 ): EChartsOption {
   const points = buildActivityTimelinePoints(activities, getTooltipText);
-  const bounds = getTimelineAxisBounds(points);
+  const bounds = getTimelineChartBounds(points);
 
   return {
     color: [TIMELINE_COLOR],
@@ -185,7 +226,7 @@ export function buildTeammateActivitiesTimelineChartOption(
       },
     },
     xAxis: timelineXAxis(bounds),
-    dataZoom: timelineInsideDataZoom(minValueSpan),
+    dataZoom: timelineInsideDataZoom(bounds, minValueSpan),
     yAxis: {
       type: 'value',
       min: 0,
@@ -215,7 +256,7 @@ export function buildTeammateActivitiesTimelineChartOption(
 }
 
 export function buildTeammateActivitiesSliderChartOption(
-  bounds: TimelineAxisBounds,
+  bounds: TimelineChartBounds,
   minValueSpan = DEFAULT_TIMELINE_MAX_ZOOM_SPAN_MS,
 ): EChartsOption {
   return {
@@ -239,6 +280,6 @@ export function buildTeammateActivitiesSliderChartOption(
         silent: true,
       },
     ],
-    dataZoom: timelineSliderDataZoom(minValueSpan),
+    dataZoom: timelineSliderDataZoom(bounds, minValueSpan),
   };
 }

@@ -55,7 +55,9 @@ export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnD
 
   private chartRuntime: ActivityTimelineChartRuntime;
   private viewReady = false;
-  dataReady = false;
+  private dataReady = false;
+  private dialogOpened = false;
+  private renderRetryTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: TeammateActivitiesChartDialogData,
@@ -67,6 +69,10 @@ export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnD
       (activity) => this.data.getActivityMessage(activity),
       this.cdr,
     );
+    this.dialogRef.afterOpened().subscribe(() => {
+      this.dialogOpened = true;
+      this.scheduleChartRender();
+    });
     this.setTodayDateRange();
     this.loadActivities();
   }
@@ -89,6 +95,9 @@ export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnD
   }
 
   ngOnDestroy(): void {
+    if (this.renderRetryTimer) {
+      clearTimeout(this.renderRetryTimer);
+    }
     this.disposeChart();
   }
 
@@ -164,6 +173,7 @@ export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnD
 
   clearDateRange(): void {
     this.setTodayDateRange();
+    this.applyDateFilter();
   }
 
   get maxEndDate(): Date | null {
@@ -289,20 +299,23 @@ export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnD
   }
 
   private scheduleChartRender(): void {
-    if (!this.viewReady || !this.dataReady) {
+    if (!this.viewReady || !this.dataReady || !this.dialogOpened) {
       return;
     }
 
-    this.cdr.detectChanges();
-    this.tryRenderChart();
-
-    if (this.activities.length > 0) {
-      setTimeout(() => this.tryRenderChart());
+    if (this.renderRetryTimer) {
+      clearTimeout(this.renderRetryTimer);
     }
+
+    this.renderRetryTimer = setTimeout(() => {
+      this.renderRetryTimer = undefined;
+      this.cdr.detectChanges();
+      this.tryRenderChart();
+    }, 0);
   }
 
   private tryRenderChart(): void {
-    if (!this.viewReady || !this.dataReady || !this.timelineChartRef?.nativeElement) {
+    if (!this.viewReady || !this.dataReady || !this.dialogOpened || !this.timelineChartRef?.nativeElement) {
       return;
     }
 
@@ -313,23 +326,28 @@ export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnD
 
     const chartEl = this.timelineChartRef.nativeElement;
     if (chartEl.offsetWidth === 0) {
-      setTimeout(() => this.tryRenderChart());
+      this.renderRetryTimer = setTimeout(() => this.tryRenderChart(), 50);
       return;
     }
 
+    const sliderEl = this.timelineSliderRef?.nativeElement;
+    if (sliderEl && sliderEl.offsetWidth === 0) {
+      this.renderRetryTimer = setTimeout(() => this.tryRenderChart(), 50);
+      return;
+    }
+
+    this.showSpinner = false;
+    this.cdr.detectChanges();
+
     this.chartRuntime.render(
       chartEl,
-      this.timelineSliderRef?.nativeElement,
+      sliderEl,
       this.activities,
     );
 
     requestAnimationFrame(() => {
       this.chartRuntime.resize();
-      setTimeout(() => {
-        this.chartRuntime.resize();
-        this.showSpinner = false;
-        this.cdr.detectChanges();
-      }, 150);
+      requestAnimationFrame(() => this.chartRuntime.resize());
     });
   }
 

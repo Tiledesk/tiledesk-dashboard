@@ -109,9 +109,12 @@
 .teammate-activities-chart-modal__chart {
   width: 100%;
   height: 200px;
+  overflow: hidden;
 }
 
 .teammate-activities-chart-modal__slider {
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: 36px;
   margin-top: 4px;

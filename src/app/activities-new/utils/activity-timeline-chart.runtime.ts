@@ -11,9 +11,9 @@ import {
   buildTeammateActivitiesSliderChartOption,
   buildTeammateActivitiesTimelineChartOption,
   DEFAULT_TIMELINE_MAX_ZOOM_SPAN_MS,
-  getTimelineAxisBounds,
+  getTimelineChartBounds,
   getTimelineAxisLabelFormatter,
-  TimelineAxisBounds,
+  TimelineChartBounds,
 } from './activity-timeline-charts.util';
 
 echarts.use([LineChart, GridComponent, TooltipComponent, DataZoomComponent, CanvasRenderer]);
@@ -31,7 +31,7 @@ export class ActivityTimelineChartRuntime {
 
   private chart?: echarts.ECharts;
   private sliderChart?: echarts.ECharts;
-  private axisBounds?: TimelineAxisBounds;
+  private axisBounds?: TimelineChartBounds;
   private syncingZoom = false;
 
   constructor(
@@ -54,10 +54,9 @@ export class ActivityTimelineChartRuntime {
     }
 
     const points = buildActivityTimelinePoints(activities, (activity) => this.getActivityMessage(activity));
-    this.axisBounds = getTimelineAxisBounds(points);
+    this.axisBounds = getTimelineChartBounds(points);
 
-    this.disposeChartOnElement(chartEl);
-    this.chart = echarts.init(chartEl);
+    this.chart = this.ensureChart(chartEl);
     this.chart.setOption(
       buildTeammateActivitiesTimelineChartOption(
         activities,
@@ -69,6 +68,7 @@ export class ActivityTimelineChartRuntime {
 
     this.renderSliderChart(sliderEl);
     this.bindChartHandlers();
+    this.applyInitialZoom();
     this.updateVisibleZoomRangeLabel();
   }
 
@@ -109,13 +109,29 @@ export class ActivityTimelineChartRuntime {
     this.updateVisibleZoomRangeLabel();
   }
 
+  private applyInitialZoom(): void {
+    if (!this.axisBounds) {
+      return;
+    }
+
+    const range = {
+      start: this.axisBounds.dataMin,
+      end: this.axisBounds.dataMax,
+    };
+
+    this.syncingZoom = true;
+    this.syncChartZoom(this.chart, range);
+    this.syncChartZoom(this.sliderChart, range);
+    this.updateMainChartAxisLabels(range);
+    this.syncingZoom = false;
+  }
+
   private renderSliderChart(sliderEl: HTMLElement | undefined): void {
     if (!sliderEl || !this.axisBounds) {
       return;
     }
 
-    this.disposeChartOnElement(sliderEl);
-    this.sliderChart = echarts.init(sliderEl);
+    this.sliderChart = this.ensureChart(sliderEl);
     this.sliderChart.setOption(
       buildTeammateActivitiesSliderChartOption(this.axisBounds, this.maxZoomSpanMs),
       { notMerge: true },
@@ -212,6 +228,41 @@ export class ActivityTimelineChartRuntime {
     this.cdr?.detectChanges();
   }
 
+  private getDataZoomEventState(params?: unknown): DataZoomState | undefined {
+    if (!params || typeof params !== 'object') {
+      return undefined;
+    }
+
+    const payload = params as { batch?: DataZoomState[] } & DataZoomState;
+    if (Array.isArray(payload.batch) && payload.batch.length > 0) {
+      return payload.batch[payload.batch.length - 1];
+    }
+
+    if (
+      payload.start != null
+      || payload.end != null
+      || payload.startValue != null
+      || payload.endValue != null
+    ) {
+      return payload;
+    }
+
+    return undefined;
+  }
+
+  private getVisibleRangeFromPercent(
+    xAxisMin: number,
+    xAxisMax: number,
+    startPercent: number,
+    endPercent: number,
+  ): { start: number; end: number } {
+    const fullSpan = xAxisMax - xAxisMin;
+    return {
+      start: xAxisMin + (startPercent / 100) * fullSpan,
+      end: xAxisMin + (endPercent / 100) * fullSpan,
+    };
+  }
+
   private getVisibleRangeFromChart(
     chart: echarts.ECharts | undefined,
     params?: unknown,
@@ -220,17 +271,25 @@ export class ActivityTimelineChartRuntime {
       return null;
     }
 
-    const eventBatch = (params as { batch?: DataZoomState[] } | undefined)?.batch;
-    const eventZoom = eventBatch?.[eventBatch.length - 1];
+    const option = chart.getOption() as {
+      xAxis?: Array<{ min?: number; max?: number }>;
+      dataZoom?: DataZoomState[];
+    };
+    const xAxis = option.xAxis?.[0];
+    const eventZoom = this.getDataZoomEventState(params);
 
     if (eventZoom?.startValue != null && eventZoom?.endValue != null) {
       return { start: eventZoom.startValue, end: eventZoom.endValue };
     }
 
-    const option = chart.getOption() as {
-      xAxis?: Array<{ min?: number; max?: number }>;
-      dataZoom?: DataZoomState[];
-    };
+    if (
+      xAxis?.min != null
+      && xAxis?.max != null
+      && eventZoom?.start != null
+      && eventZoom?.end != null
+    ) {
+      return this.getVisibleRangeFromPercent(xAxis.min, xAxis.max, eventZoom.start, eventZoom.end);
+    }
 
     const zoomStates = option.dataZoom || [];
     const zoomWithValues = [...zoomStates].reverse().find(
@@ -241,7 +300,6 @@ export class ActivityTimelineChartRuntime {
       return { start: zoomWithValues.startValue, end: zoomWithValues.endValue };
     }
 
-    const xAxis = option.xAxis?.[0];
     const zoomWithPercent = [...zoomStates].reverse().find(
       (zoom) => zoom.start != null && zoom.end != null,
     );
@@ -252,10 +310,12 @@ export class ActivityTimelineChartRuntime {
       && zoomWithPercent?.start != null
       && zoomWithPercent?.end != null
     ) {
-      const fullSpan = xAxis.max - xAxis.min;
-      const start = xAxis.min + (zoomWithPercent.start / 100) * fullSpan;
-      const end = xAxis.min + (zoomWithPercent.end / 100) * fullSpan;
-      return { start, end };
+      return this.getVisibleRangeFromPercent(
+        xAxis.min,
+        xAxis.max,
+        zoomWithPercent.start,
+        zoomWithPercent.end,
+      );
     }
 
     if (xAxis?.min != null && xAxis?.max != null) {
@@ -263,6 +323,10 @@ export class ActivityTimelineChartRuntime {
     }
 
     return null;
+  }
+
+  private ensureChart(el: HTMLElement): echarts.ECharts {
+    return echarts.getInstanceByDom(el) ?? echarts.init(el);
   }
 
   private disposeChartOnElement(el: HTMLElement): void {

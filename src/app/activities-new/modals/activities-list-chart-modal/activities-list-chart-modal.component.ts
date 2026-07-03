@@ -59,6 +59,8 @@ export class ActivitiesListChartModalComponent implements AfterViewInit, OnDestr
   private chartRuntime: ActivityTimelineChartRuntime;
   private viewReady = false;
   private dataReady = false;
+  private dialogOpened = false;
+  private renderRetryTimer?: ReturnType<typeof setTimeout>;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: ActivitiesListChartDialogData,
@@ -75,6 +77,10 @@ export class ActivitiesListChartModalComponent implements AfterViewInit, OnDestr
       this.cdr,
     );
     this.initializeDateRangeFromQuery();
+    this.dialogRef.afterOpened().subscribe(() => {
+      this.dialogOpened = true;
+      this.scheduleChartRender();
+    });
     this.loadActivities(this.data.queryString, this.data.pageNo);
   }
 
@@ -97,6 +103,9 @@ export class ActivitiesListChartModalComponent implements AfterViewInit, OnDestr
   }
 
   ngOnDestroy(): void {
+    if (this.renderRetryTimer) {
+      clearTimeout(this.renderRetryTimer);
+    }
     this.disposeChart();
   }
 
@@ -332,20 +341,23 @@ export class ActivitiesListChartModalComponent implements AfterViewInit, OnDestr
   }
 
   private scheduleChartRender(): void {
-    if (!this.viewReady || !this.dataReady) {
+    if (!this.viewReady || !this.dataReady || !this.dialogOpened) {
       return;
     }
 
-    this.cdr.detectChanges();
-    this.tryRenderChart();
-
-    if (this.activities.length > 0) {
-      setTimeout(() => this.tryRenderChart());
+    if (this.renderRetryTimer) {
+      clearTimeout(this.renderRetryTimer);
     }
+
+    this.renderRetryTimer = setTimeout(() => {
+      this.renderRetryTimer = undefined;
+      this.cdr.detectChanges();
+      this.tryRenderChart();
+    }, 0);
   }
 
   private tryRenderChart(): void {
-    if (!this.viewReady || !this.dataReady || !this.timelineChartRef?.nativeElement) {
+    if (!this.viewReady || !this.dataReady || !this.dialogOpened || !this.timelineChartRef?.nativeElement) {
       return;
     }
 
@@ -356,23 +368,28 @@ export class ActivitiesListChartModalComponent implements AfterViewInit, OnDestr
 
     const chartEl = this.timelineChartRef.nativeElement;
     if (chartEl.offsetWidth === 0) {
-      setTimeout(() => this.tryRenderChart());
+      this.renderRetryTimer = setTimeout(() => this.tryRenderChart(), 50);
       return;
     }
 
+    const sliderEl = this.timelineSliderRef?.nativeElement;
+    if (sliderEl && sliderEl.offsetWidth === 0) {
+      this.renderRetryTimer = setTimeout(() => this.tryRenderChart(), 50);
+      return;
+    }
+
+    this.showSpinner = false;
+    this.cdr.detectChanges();
+
     this.chartRuntime.render(
       chartEl,
-      this.timelineSliderRef?.nativeElement,
+      sliderEl,
       this.activities,
     );
 
     requestAnimationFrame(() => {
       this.chartRuntime.resize();
-      setTimeout(() => {
-        this.chartRuntime.resize();
-        this.showSpinner = false;
-        this.cdr.detectChanges();
-      }, 150);
+      requestAnimationFrame(() => this.chartRuntime.resize());
     });
   }
 
