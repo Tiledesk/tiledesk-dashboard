@@ -219,9 +219,9 @@
                       <mat-date-range-input [rangePicker]="picker">
                         <input (dateChange)="addEventStartDate($event.value)"
                           (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
-                          placeholder="{{'StartDate' | translate}}" style="padding: 0 5px;">
+                          placeholder="{{'HistoryPage.StartDate' | translate}}" style="padding: 0 5px;">
                         <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
-                          placeholder="{{'EndDate' | translate}}" style="padding: 0 5px;">
+                          placeholder="{{'HistoryPage.EndDate' | translate}}" style="padding: 0 5px;">
                       </mat-date-range-input>
                       
                       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

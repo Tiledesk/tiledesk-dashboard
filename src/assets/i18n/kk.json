@@ -1840,7 +1840,11 @@
         "DateRange": "Күн диапазоны",
         "ClearSearch": "Іздеуді тазалау",
         "HistoryIsOnlyAvailableForThePast14Days": "Тарих соңғы 14 күн үшін ғана қолжетімді",
-        "ForUnlimitedChatHistory": "шексіз сөйлесу тарихын алу үшін"
+        "ForUnlimitedChatHistory": "шексіз сөйлесу тарихын алу үшін",
+        "StartDate": "Басталу күні",
+        "EndDate": "Аяқталу күні",
+        "ActivityType": "Әрекет түрі",
+        "AllActivities": "Барлық әрекеттер"
     },
     "Trigger": {
         "Trigger": "Триггерлер",

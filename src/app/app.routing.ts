@@ -73,7 +73,7 @@ import { AccountSettingsComponent } from './user-profile/account-settings/accoun
 // import { HoursComponent } from './hours/hours.component'; // now lazy
 // import { ResetPswComponent } from './reset-psw/reset-psw.component'; // now lazy
 
-import { ActivitiesComponent } from './activities/activities.component';
+
 
 // Andrea
 import { ChatComponent } from './chat/chat.component';
@@ -333,8 +333,9 @@ const routes: Routes = [
   },
 
   // Activities
-  {
-    path: 'project/:projectid/activities', component: ActivitiesComponent,
+   {
+    path: 'project/:projectid/activities',
+    loadChildren: () => import('app/activities-new/activities-new.module').then(m => m.ActivitiesNewModule),
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
 
