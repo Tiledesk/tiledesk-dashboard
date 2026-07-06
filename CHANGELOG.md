@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.236-stage
+- Implements automatic path switching for Analytics pages
+- Fixes the bug: Message retention time does not display the user-set value when changing paths
+- Improves Data Tables
+
 ### 2.7.235-stage
 - Improves new activities
 
