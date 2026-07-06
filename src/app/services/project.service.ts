@@ -171,7 +171,16 @@ export class ProjectService {
     const cachedProject$ = this.projectCacheService.getProjectById(id);
     if (cachedProject$) {
       this.logger.log('[PROJECT-SERV] - GET PROJECT BY ID - Using cached project:', id);
-      return cachedProject$;
+      this.logger.log('[PROJECT-SERV][DEBUG] getProjectById CACHE HIT', { projectId: id });
+      return cachedProject$.pipe(
+        tap((project: any) => {
+          this.logger.log('[PROJECT-SERV][DEBUG] getProjectById CACHE HIT response', {
+            projectId: id,
+            retentionDays: project?.settings?.retentionDays,
+            settings: project?.settings,
+          });
+        }),
+      );
     }
 
     // Se non in cache, fai la chiamata HTTP
@@ -190,6 +199,14 @@ export class ProjectService {
     const project$ = this._httpclient
       .get<Project[]>(url, httpOptions)
       .pipe(
+        tap((project: any) => {
+          this.logger.log('[PROJECT-SERV][DEBUG] getProjectById HTTP response', {
+            projectId: id,
+            url,
+            retentionDays: project?.settings?.retentionDays,
+            settings: project?.settings,
+          });
+        }),
         shareReplay(1) // Condivide il risultato tra più subscriber
       );
 
@@ -1165,6 +1182,13 @@ export class ProjectService {
     
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.retentionDays": retentionDays }, { headers: headers })
         .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.logger.log('[PROJECT-SERV][DEBUG] saveRetentionDays success', {
+            projectId: this.projectID,
+            retentionDays,
+            cacheCleared: true,
+            response: res,
+          });
           resolve(res)
         }).catch((err) => {
           reject(err)
