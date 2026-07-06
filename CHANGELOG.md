@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.8.10
+- Implement automatic path switching for Analytics pages
+- Fixes the bug: Message retention time does not display the user-set value when changing paths.
+
 ### 2.8.9
 - Adds a button to the Analytics page that redirects to legacy Analytics page
 
