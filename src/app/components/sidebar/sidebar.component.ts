@@ -2815,7 +2815,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     if (!this.PERMISSION_TO_VIEW_ANALYTICS || !this.project?._id) {
       return null;
     }
-    return ['/project', this.project._id, 'analytics'];
+
+    const analyticsPath = this.useNewAnalytics ? 'analytics' : 'analytics-legacy';
+    return ['/project', this.project._id, analyticsPath];
   }
 
   isAnalyticsSidebarActive(): boolean {
