@@ -92,7 +92,7 @@
             <div class="dt-toolbar">
               <button  class="btn btn-tdblu-no-boxshadow"
                       (click)="onAddRow()"
-                      [disabled]="!getColumns(selectedTable).length">
+                      [disabled]="!getColumns(selectedTable).length || isTableRowLimitReached">
                 <!-- <mat-icon>add</mat-icon> -->
                 {{ 'DataTables.AddRow' | translate }}
               </button>
@@ -115,14 +115,21 @@
           </div>
 
           <div class="dt-search-bar">
-            <button mat-icon-button
-                    type="button"
-                    class="dt-refresh-btn"
-                    [disabled]="isLoadingRows || !getColumns(selectedTable).length"
-                    (click)="onRefreshTable()"
-                    [attr.aria-label]="('DataTables.RefreshTable' | translate)">
-              <mat-icon>refresh</mat-icon>
-            </button>
+            <div class="dt-search-bar-start">
+              <button mat-icon-button
+                      type="button"
+                      class="dt-refresh-btn"
+                      [disabled]="isLoadingRows || !getColumns(selectedTable).length"
+                      (click)="onRefreshTable()"
+                      [attr.aria-label]="('DataTables.RefreshTable' | translate)">
+                <mat-icon>refresh</mat-icon>
+              </button>
+              <span *ngIf="getColumns(selectedTable).length"
+                    class="dt-row-count"
+                    [class.dt-row-count--limit]="isTableRowLimitReached">
+                {{ totalTableRowCount }} / {{ maxTableRows }}
+              </span>
+            </div>
             <div class="dt-search-input">
               <input type="text"
                      [(ngModel)]="rowSearchQuery"
@@ -418,6 +425,7 @@
                       <button type="button"
                               class="dt-add-row-inline-btn dt-add-row-inline-btn--inline"
                               (click)="onAddRow()"
+                              [disabled]="isTableRowLimitReached"
                               [attr.aria-label]="('DataTables.AddRow' | translate)">
                         <mat-icon>add</mat-icon>
                       </button>

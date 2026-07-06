@@ -69,6 +69,9 @@ export class DataTablesComponent implements OnInit {
   /** UI-only trailing column with row delete action (not part of table schema). */
   readonly showDeleteRowColumn = true;
 
+  /** Maximum rows allowed per data table. */
+  readonly maxTableRows = 200;
+
   tables: DataTable[] = [];
   selectedTable: DataTable | null = null;
   selectedTableId: string | null = null;
@@ -90,6 +93,12 @@ export class DataTablesComponent implements OnInit {
   isDeletingRows = false;
   deletingRowId: string | null = null;
   isDeletingTable = false;
+  /** Total rows in the selected table (not affected by search filters). */
+  totalTableRowCount = 0;
+
+  get isTableRowLimitReached(): boolean {
+    return this.totalTableRowCount >= this.maxTableRows;
+  }
 
   isAddColumnPopoverOpen = false;
   isSavingColumn = false;
@@ -163,9 +172,11 @@ export class DataTablesComponent implements OnInit {
 
   private loadTableRows(table: DataTable, search?: RowSearchRequest): void {
     this.clearRowSelection();
+    const isFullList = !search?.conditions?.length;
 
     if (!table._id) {
       this.rows = this.buildRowsFromLoaded(table.schema, []);
+      this.totalTableRowCount = 0;
       this.maybeFocusFirstColumnCell();
       return;
     }
@@ -174,12 +185,18 @@ export class DataTablesComponent implements OnInit {
     this.dataTablesService.listRows(table._id, search).subscribe({
       next: (loadedRows) => {
         this.rows = this.buildRowsFromLoaded(table.schema, loadedRows || []);
+        if (isFullList) {
+          this.totalTableRowCount = (loadedRows || []).length;
+        }
         this.isLoadingRows = false;
         this.maybeFocusFirstColumnCell();
       },
       error: (err) => {
         this.isLoadingRows = false;
         this.rows = this.buildRowsFromLoaded(table.schema, []);
+        if (isFullList) {
+          this.totalTableRowCount = 0;
+        }
         this.logger.error('[DATA-TABLES] listRows error', err);
         this.maybeFocusFirstColumnCell();
       },
@@ -355,6 +372,7 @@ export class DataTablesComponent implements OnInit {
     this.cancelRenameTableTitle();
     this.cancelRenameColumn();
     this.rowSearchQuery = '';
+    this.totalTableRowCount = 0;
     this.selectedTableId = table._id || null;
     this.selectedTable = table;
     this.persistLastTable(table);
@@ -798,8 +816,9 @@ export class DataTablesComponent implements OnInit {
 
   onAddRow(): void {
     const schema = sortColumns(this.selectedTable?.schema);
-    if (!schema.length) { return; }
+    if (!schema.length || this.isTableRowLimitReached) { return; }
     this.rows = [...this.rows, this.createEmptyRow(schema)];
+    this.totalTableRowCount += 1;
   }
 
   // ─── Row selection ─────────────────────────────────────────────────────
@@ -876,6 +895,7 @@ export class DataTablesComponent implements OnInit {
       this.rows = this.rows.filter((r) => r.localId !== row.localId);
       this.selectedRowIds.delete(row.localId);
       this.selectedRowIds = new Set(this.selectedRowIds);
+      this.totalTableRowCount = Math.max(0, this.totalTableRowCount - 1);
     };
 
     if (!tableId || !row._id) {
@@ -909,6 +929,7 @@ export class DataTablesComponent implements OnInit {
     const removeLocally = (): void => {
       this.rows = this.rows.filter((r) => !removeIds.has(r.localId));
       this.clearRowSelection();
+      this.totalTableRowCount = Math.max(0, this.totalTableRowCount - selected.length);
     };
 
     if (!tableId || !toDeleteOnServer.length) {
