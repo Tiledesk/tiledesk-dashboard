@@ -1,0 +1,709 @@
+<div class="main-content activities-new" style="padding-top:0px; padding-left: 15px;">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card filter-card" style="margin-bottom: 8px; border-radius: 12px;">
+          <div class="card-content" style="font-size: 14px;">
+            <div class="row">
+              <div class="col-sm-4 activities-new-filter__date-col">
+                <label class="col-12 col-sm-12" style="text-align: left; color:#7695a5;">
+                  {{ 'HistoryPage.DateRange' | translate }}
+                </label>
+                <div class="row">
+                  <div class="col-12 col-sm-12">
+                    <mat-form-field class="activity-date-range-picker" appearance="standard">
+                      <mat-date-range-input [rangePicker]="picker">
+                        <input matStartDate (dateChange)="addEventStartDate($event.value)" [(ngModel)]="startDate"
+                          placeholder="{{ 'ActivitiesNew.StartDate' | translate }}">
+                        <input matEndDate (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDate"
+                          placeholder="{{ 'ActivitiesNew.EndDate' | translate }}">
+                      </mat-date-range-input>
+                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                      <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
+                        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
+                      </mat-datepicker-toggle>
+                      <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-sm-4">
+                <label class="col-12 col-sm-12" style="text-align: left; color: #7695a5 !important;padding-left:2px">
+                  {{ 'HistoryPage.Agent' | translate }}
+                </label>
+                <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
+                  <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
+                  <ng-option *ngFor="let agent of agentsList" [value]="agent._id">
+                    {{ agent?.firstname }} {{ agent?.lastname }}
+                  </ng-option>
+                </ng-select>
+              </div>
+
+              <div class="col-sm-4">
+                <label class="col-12 col-sm-12 activity-label"
+                  style="text-align: left; color: #7695a5 !important;padding-left:2px">
+                  {{ 'ActivitiesNew.ActivityType' | translate }}
+                </label>
+                <ng-select [(ngModel)]="selectedActivities" [clearable]="true" [multiple]="true"
+                  [items]="activityFilterOptions" bindLabel="name" bindValue="id" groupBy="group"
+                  [closeOnSelect]="false" placeholder="{{'AllActivities' | translate}}">
+                </ng-select>
+              </div>
+            </div>
+
+            <div style="margin-top:15px">
+              <div class="row">
+                <div class="col-sm-12">
+                  <div class="actvity-btn-wpr">
+                    <button
+                      type="button"
+                      class="btn btn-outlined"
+                      (click)="openActivitiesChart()">
+                      {{ 'ActivitiesNew.ActivitiesViewChart' | translate }}
+                    </button>
+                    <div class="actvity-btn-wpr__actions">
+                      <!-- <button #exportcsvbtn type="button" class="btn btn-gray-no-boxshadow"
+                        (click)="exportActivitiesAsCSV()">
+                        {{ 'ExportToCSV' | translate }}
+                      </button> -->
+                      <button #clearsearchbtn type="submit" class="btn btn-gray-no-boxshadow clearsearchbtn"
+                        (click)="clearSearch()">
+                        {{ 'ClearSearch' | translate }}
+                      </button>
+                      <button #searchbtn type="submit" class="btn btn-tdblu-no-boxshadow search-btn" (click)="search()">
+                        <span class="material-icons" aria-hidden="true"
+                          style="font-size: 18px; vertical-align: middle;">search</span>
+                        {{ 'Search' | translate }}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card" style="margin-top: 0px;border-radius: 12px;">
+          <div class="activities-new-list-header">
+            <div class="activities-new-list-header__icon-spacer"></div>
+            <div class="activities-new-list-header__content">
+              <div class="activities-new-list-header__title-row">
+                <span class="column-th-span">{{ 'LatestActivities' | translate }}</span>
+                <span class="activities-new-sort-by-date" (click)="sortDirection(asc = !asc)">
+                  <span>{{ 'SortByDate' | translate }}</span>
+                  <span class="sorting"
+                    [ngClass]="{'sorting_desc' : direction === 1, 'sorting_asc': direction === -1}"></span>
+                </span>
+              </div>
+              <p class="activities-new-expiration-notice">
+                {{ 'ActivitiesNew.ActivitiesExpirationNotice' | translate: { days: activityExpirationDays } }}
+              </p>
+            </div>
+          </div>
+
+          <loading-spinner *ngIf="showSpinner"></loading-spinner>
+
+          <div *ngIf="!showSpinner" class="card-content table-responsive" style="padding-bottom:0px;">
+            <table class="table table-hover">
+              <tbody>
+                <tr *ngIf="usersActivities?.length === 0">
+                  <td colspan="2" style="text-align: center; padding-top: 16px;">
+                    <p class="activities-new-empty">{{ 'ActivitiesNew.NoActivitiesFound' | translate }}</p>
+                  </td>
+                </tr>
+
+                <tr *ngFor="let activity of usersActivities">
+                  <td class="activities-new-icon-cell">
+                    <img class="fontawesome-icon" [src]="activityIcon(activity)" [alt]="activity?.verb" />
+                  </td>
+
+                  <!-- REQUEST_CLOSE -->
+                  <td *ngIf="activity?.verb === 'REQUEST_CLOSE'">
+                    <p class="activities-new-message">
+                      <ng-container *ngIf="isLegacyRequestCloseActor(activity); else requestCloseActorLed">
+                        The conversation
+                        <span *ngIf="activity?.activity_request_text"
+                          class="link-to-user-profile"
+                          (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                          <em>{{ activity.activity_request_text }}</em>
+                        </span>
+                        <ng-container *ngIf="activity?.request_close_display?.hasAssignmentContext">
+                          <ng-container *ngIf="activity.request_close_display.participants[0]?.type === 'bot'; else requestCloseLegacyAgentsAssignment">
+                            assigned to the
+                            <span>{{ activity.request_close_display.participants[0].subtype }}</span>
+                            <span class="link-to-user-profile"
+                              (click)="goToRequestCloseParticipant(activity.request_close_display.participants[0])">
+                              {{ activity.request_close_display.participants[0].name }}
+                            </span>
+                          </ng-container>
+                          <ng-template #requestCloseLegacyAgentsAssignment>
+                            assigned to
+                            <ng-container
+                              *ngFor="let participant of activity.request_close_display.participants; let last = last">
+                            <activities-teammate-link
+                              [label]="participant.name"
+                              [highlighted]="highlightClass(participant.id)"
+                              [avatarView]="getTeammateAvatarView(participant.id, participant.name)"
+                              [menuTrigger]="teammateMenu"
+                              (linkClick)="handleRequestCloseParticipantClick($event, participant)">
+                            </activities-teammate-link><span *ngIf="!last">, </span>
+                            </ng-container>
+                          </ng-template>
+                          <span *ngIf="activity.request_close_display.assignedAt">
+                            on {{ activity.request_close_display.assignedAt }}
+                          </span>
+                        </ng-container>
+                        was resolved by: <span class="activities-new-system-actor">{{ activity.closed_by_label }}</span><span
+                          *ngIf="activity.request_close_display?.closedAt"> {{ activity.request_close_display.closedAt }}</span>
+                      </ng-container>
+                      <ng-template #requestCloseActorLed>
+                      <span *ngIf="activity.closed_by_contact_id; else requestCloseResolverTeammate"
+                        class="link-to-user-profile"
+                        (click)="goToContactDetails(activity.closed_by_contact_id)">
+                        {{ activity.closed_by_label }}
+                      </span>
+                      <ng-template #requestCloseResolverTeammate>
+                        <activities-teammate-link
+                          *ngIf="activity?.actor?.id && shouldLinkParticipant(activity.actor.id, activity.closed_by_label)"
+                          [label]="activity.closed_by_label"
+                          [highlighted]="highlightClass(activity.actor.id)"
+                          [avatarView]="getTeammateAvatarView(activity.actor.id)"
+                          [menuTrigger]="teammateMenu"
+                          (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id)">
+                        </activities-teammate-link>
+                        <span *ngIf="!activity?.actor?.id || !shouldLinkParticipant(activity.actor.id, activity.closed_by_label)">
+                          {{ activity.closed_by_label }}
+                        </span>
+                      </ng-template>
+                      resolved conversation
+                      <span *ngIf="activity?.activity_request_text"
+                        class="link-to-user-profile"
+                        (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                        <em>'{{ activity.activity_request_text }}'</em>
+                      </span>
+                      <ng-container *ngIf="activity?.request_close_display?.hasAssignmentContext">
+                        <ng-container *ngIf="activity.request_close_display.participants[0]?.type === 'bot'; else requestCloseAgentsAssignment">
+                          assigned to the
+                          <span>{{ activity.request_close_display.participants[0].subtype }}</span>
+                          <span class="link-to-user-profile"
+                            (click)="goToRequestCloseParticipant(activity.request_close_display.participants[0])">
+                            {{ activity.request_close_display.participants[0].name }}
+                          </span>
+                        </ng-container>
+                        <ng-template #requestCloseAgentsAssignment>
+                          assigned to
+                          <ng-container
+                            *ngFor="let participant of activity.request_close_display.participants; let last = last">
+                          <activities-teammate-link
+                            [label]="participant.name"
+                            [highlighted]="highlightClass(participant.id)"
+                            [avatarView]="getTeammateAvatarView(participant.id, participant.name)"
+                            [menuTrigger]="teammateMenu"
+                            (linkClick)="handleRequestCloseParticipantClick($event, participant)">
+                          </activities-teammate-link><span *ngIf="!last">, </span>
+                          </ng-container>
+                        </ng-template>
+                        <span *ngIf="formatRequestCloseAssignedAt(activity) as assignedAt">
+                          on {{ assignedAt }}
+                        </span>
+                      </ng-container>.
+                      </ng-template>
+                    </p>
+                    <span class="activities-new-date">
+                      <span style="text-transform:capitalize">{{ activity?.date }}</span>
+                    </span>
+                  </td>
+
+                  <!-- REQUEST_CREATE -->
+                  <td *ngIf="activity?.verb === 'REQUEST_CREATE'">
+                    <p class="activities-new-message">
+                      <ng-container *ngIf="activity?.target?.object?.status === 100; else requestCreateAssigned">
+                        New unserved conversation:
+                        <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                          (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                          <em>{{ activity.activity_request_text }}</em>
+                        </span>
+                      </ng-container>
+                      <ng-template #requestCreateAssigned>
+                        New conversation:
+                        <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                          (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                          <em>{{ activity.activity_request_text }}</em>
+                        </span>
+                        <ng-container *ngIf="shouldShowRequestCreateAssignee(activity)">
+                          assigned to
+                          <ng-container *ngIf="isRequestCreateAssigneeBot(activity)">chatbot </ng-container>
+                          <activities-teammate-link
+                            [label]="getRequestCreateAssigneeDisplayName(activity)"
+                            [highlighted]="highlightClass(getRequestCreateAssigneeId(activity))"
+                            [avatarView]="getTeammateAvatarView(getRequestCreateAssigneeId(activity))"
+                            [menuTrigger]="isRequestCreateAssigneeBot(activity) ? null : teammateMenu"
+                            (linkClick)="onRequestCreateAssigneeClick($event, activity)">
+                          </activities-teammate-link>
+                        </ng-container>
+                      </ng-template>
+                    </p>
+                    <span class="activities-new-date">
+                      <span style="text-transform:capitalize">{{ activity?.date }}</span>
+                    </span>
+                  </td>
+
+                  <!-- Team verbs without actor.name -->
+                  <td *ngIf="isTeamVerbWithoutActorName(activity)">
+                    <p class="activities-new-message">
+                      <activities-teammate-link
+                        [label]="getTeammateDisplayName(activity?.target?.object?.id_user?._id)"
+                        [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
+                        [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
+                        [menuTrigger]="teammateMenu"
+                        (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id)">
+                      </activities-teammate-link>
+                      <ng-container *ngIf="isSystemAbandonedChatsUpdate(activity?.actionObj)">
+                        's abandoned chats count has been updated to {{ systemAbandonedChatsCount(activity?.actionObj) }}
+                      </ng-container>
+                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && objectKeys(activity?.actionObj)?.[0] === 'user_available'">
+                        's availability status has been changed to
+                        <span style="text-transform: capitalize">{{ availabilityStatusLabel(activity) }}</span>
+                      </ng-container>
+                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && objectKeys(activity?.actionObj)?.[0] !== 'user_available'">
+                        <ng-container *ngFor="let _key of objectKeys(activity?.actionObj); let isFirst = first">
+                          <span *ngIf="!(_key === 'max_assigned_chat' && activity?.actionObj?.[_key] === -1)">
+                            <span *ngIf="!isFirst">, </span>
+                            <code>{{ _key }}</code> has been updated with value:
+                            <code>{{ activity?.actionObj?.[_key] }}</code>
+                          </span>
+                        </ng-container>
+                      </ng-container>
+                    </p>
+                    <span class="activities-new-date">
+                      <span style="text-transform:capitalize">{{ activity?.date }}</span>
+                    </span>
+                  </td>
+
+                  <!-- Team verbs with actor.name -->
+                  <td *ngIf="isTeamVerbWithActorName(activity)">
+                    <p class="activities-new-message">
+                      <activities-teammate-link
+                        *ngIf="activity?.actor?.id && activity?.actor?.type !== 'system'"
+                        [label]="activity.actor.name"
+                        [highlighted]="highlightClass(activity.actor.id)"
+                        [avatarView]="getTeammateAvatarView(activity.actor.id)"
+                        [menuTrigger]="teammateMenu"
+                        (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id)">
+                      </activities-teammate-link>
+                      <span *ngIf="activity?.actor?.id && activity?.actor?.type === 'system'" class="activities-new-system-actor">
+                        {{ systemActorLabel(activity) }}
+                      </span>
+                      <span *ngIf="!activity?.actor?.id"
+                        [ngClass]="{'highlight': highlightClass(activity?.actor?.id)}">
+                        {{ activity.actor.name }}
+                      </span>
+
+                      <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_UPDATE'">
+                        <ng-container *ngIf="isSystemAbandonedChatsUpdate(activity?.actionObj); else projectUserUpdateDefault">
+                          has updated
+                          <span *ngIf="activity?.targetOfActionIsYourself">
+                            their abandoned chats count to {{ systemAbandonedChatsCount(activity?.actionObj) }}
+                          </span>
+                          <span *ngIf="!activity?.targetOfActionIsYourself">
+                            <activities-teammate-link
+                              [label]="getTeammateDisplayName(activity?.target?.object?.id_user?._id)"
+                              [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
+                              [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
+                              [menuTrigger]="teammateMenu"
+                              (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id)">
+                            </activities-teammate-link>'s abandoned chats count to {{ systemAbandonedChatsCount(activity?.actionObj) }}
+                          </span>
+                        </ng-container>
+                        <ng-template #projectUserUpdateDefault>
+                          has changed
+                          <span *ngIf="activity?.targetOfActionIsYourself">their status</span>
+                          <span *ngIf="!activity?.targetOfActionIsYourself">
+                            <span *ngIf="activity?.actionObj?.user_available === true || activity?.actionObj?.user_available === false">
+                              the availability status of
+                            </span>
+                            <span *ngIf="activity?.actionObj?.role">the role of</span>
+                            <activities-teammate-link
+                              [label]="getTeammateDisplayName(activity?.target?.object?.id_user?._id)"
+                              [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
+                              [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
+                              [menuTrigger]="teammateMenu"
+                              (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id)">
+                            </activities-teammate-link>
+                          </span>
+                          to
+                          <span *ngIf="activity?.actionObj?.role">
+                            {{ projectUserUpdateRoleLabel(activity) }}
+                          </span>
+                          <span *ngIf="!activity?.actionObj?.role" style="text-transform: capitalize">
+                            {{ availabilityStatusLabel(activity) }}
+                          </span>
+                        </ng-template>
+                      </ng-container>
+
+                      <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_DELETE'">
+                        removed
+                        <span class="activities-new-removed-teammate">
+                          <activities-teammate-avatar [view]="getProjectUserTargetAvatarView(activity)"></activities-teammate-avatar>
+                          <span class="activities-new-removed-teammate__label">{{ getProjectUserTargetLabel(activity) }}</span>
+                        </span>
+                        from the project
+                      </ng-container>
+
+                      <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_INVITE'">
+                        invited
+                        <ng-container *ngIf="isPendingProjectUserInvite(activity); else projectUserInviteTargetLink">
+                          <em class="activities-new-pending-invitee">{{ getProjectUserTargetLabel(activity) }}</em>
+                        </ng-container>
+                        <ng-template #projectUserInviteTargetLink>
+                          <activities-teammate-link
+                            [label]="getProjectUserTargetLabel(activity)"
+                            [highlighted]="highlightClass(getProjectUserTargetProfileId(activity))"
+                            [avatarView]="getProjectUserTargetAvatarView(activity)"
+                            [menuTrigger]="teammateMenu"
+                            (linkClick)="handleTeammateProfileLinkClick($event, getProjectUserTargetProfileId(activity))">
+                          </activities-teammate-link>
+                          <span *ngIf="activity?.actionObj?.email">
+                            ({{ activity?.actionObj?.email }})
+                          </span>
+                        </ng-template>
+                        <ng-container *ngIf="isRegisteredProjectUserInvite(activity); else projectUserInviteRolePhrase">
+                          with {{ activity?.actionObj?.role }} role
+                        </ng-container>
+                        <ng-template #projectUserInviteRolePhrase>
+                          to take on the role of {{ activity?.actionObj?.role }}
+                          <span *ngIf="activity?.target?.type === 'pendinginvitation'">
+                            <em>(pending invitation)</em>
+                          </span>
+                        </ng-template>
+                      </ng-container>
+
+                      <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_AVAILABILITY_SELF'">
+                        has changed his availability status to
+                        <span style="text-transform: capitalize">{{ availabilityStatusLabel(activity) }}</span>
+                      </ng-container>
+
+                      <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_AVAILABILITY_SYSTEM'">
+                        {{ activityMessage(activity) }}
+                      </ng-container>
+                    </p>
+                    <span class="activities-new-date">
+                      <span style="text-transform:capitalize">{{ activity?.date }}</span>
+                    </span>
+                  </td>
+
+                  <!-- Request assignment verbs -->
+                  <td *ngIf="isRequestAssignmentVerb(activity)">
+                    <p class="activities-new-message">
+                      <ng-container [ngSwitch]="activity?.verb">
+                        <ng-container *ngSwitchCase="'REQUEST_ASSIGNED_AUTO'">
+                          <ng-container *ngIf="activity?.actor?.type === 'system'; else requestAssignedAutoDefault">
+                            <span class="activities-new-system-actor">{{ systemActorLabel(activity) }}</span> automatically assigned the conversation
+                            <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                              (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                              <em>'{{ activity.activity_request_text }}'</em>
+                            </span>
+                            to
+                            <ng-container *ngIf="getAssignmentAssignee(activity) as assignee">
+                              <activities-teammate-link
+                                *ngIf="shouldLinkParticipant(assignee.profileId, assignee.name)"
+                                [label]="assignee.name"
+                                [highlighted]="highlightClass(assignee.profileId)"
+                                [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                              </activities-teammate-link>
+                              <span *ngIf="!shouldLinkParticipant(assignee.profileId, assignee.name)"
+                                [ngClass]="{'highlight': highlightClass(assignee.profileId)}">{{ assignee.name }}</span>
+                            </ng-container>.
+                          </ng-container>
+                          <ng-template #requestAssignedAutoDefault>
+                            The conversation
+                            <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                              (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                              <em>{{ activity.activity_request_text }}</em>
+                            </span>
+                            was automatically assigned to
+                            <ng-container *ngIf="getAssignmentAssignee(activity) as assignee">
+                              <activities-teammate-link
+                                *ngIf="shouldLinkParticipant(assignee.profileId, assignee.name)"
+                                [label]="assignee.name"
+                                [highlighted]="highlightClass(assignee.profileId)"
+                                [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                              </activities-teammate-link>
+                              <span *ngIf="!shouldLinkParticipant(assignee.profileId, assignee.name)"
+                                [ngClass]="{'highlight': highlightClass(assignee.profileId)}">{{ assignee.name }}</span>
+                            </ng-container>
+                          </ng-template>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'REQUEST_ASSIGNED_MANUAL'">
+                          <ng-container *ngIf="usesActorLedManualAssignmentPhrase(activity); else requestAssignedManualDefault">
+                            <ng-container *ngIf="getAssignmentActor(activity) as actor">
+                              <activities-teammate-link
+                                [label]="actor.name"
+                                [highlighted]="highlightClass(actor.profileId)"
+                                [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
+                                [menuTrigger]="isManualAssignmentBotActor(activity) ? null : teammateMenu"
+                                (linkClick)="onManualAssignmentActorClick($event, activity)">
+                              </activities-teammate-link>
+                            </ng-container>
+                            <ng-container>{{ getManualAssignmentActionPhrase(activity) }}</ng-container>
+                            the conversation
+                            <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                              (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                              <em>'{{ activity.activity_request_text }}'</em>
+                            </span>
+                            to
+                            <ng-container *ngIf="isManualAssignmentBotAssignee(activity)">chatbot </ng-container>
+                            <ng-container *ngIf="isManualAssignmentDepartmentAssignee(activity)">department </ng-container>
+                            <ng-container *ngIf="isManualAssignmentUserAssignee(activity)">teammate </ng-container>
+                            <ng-container *ngIf="getAssignmentAssignee(activity) as assignee">
+                              <span *ngIf="isManualAssignmentDepartmentAssignee(activity)" class="link-to-user-profile"
+                                (click)="goToDepartment(assignee.profileId)"
+                                [ngClass]="{'highlight': highlightClass(assignee.profileId)}">
+                                {{ assignee.name }}
+                              </span>
+                              <activities-teammate-link
+                                *ngIf="!isManualAssignmentDepartmentAssignee(activity)"
+                                [label]="assignee.name"
+                                [highlighted]="highlightClass(assignee.profileId)"
+                                [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                              </activities-teammate-link>
+                            </ng-container>.
+                          </ng-container>
+                          <ng-template #requestAssignedManualDefault>
+                          The conversation
+                          <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                            (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                            <em>{{ activity.activity_request_text }}</em>
+                          </span>
+                          <ng-container *ngIf="isManualAssignmentReassign(activity); else manualFirstAssignment">
+                            was reassigned to
+                            <ng-container *ngIf="isManualAssignmentBotAssignee(activity)">chatbot </ng-container>
+                            <ng-container *ngIf="isManualAssignmentDepartmentAssignee(activity)">department </ng-container>
+                            <ng-container *ngIf="isManualAssignmentUserAssignee(activity)">teammate </ng-container>
+                            <ng-container *ngIf="getAssignmentAssignee(activity) as assignee">
+                              <span *ngIf="isManualAssignmentDepartmentAssignee(activity)" class="link-to-user-profile"
+                                (click)="goToDepartment(assignee.profileId)"
+                                [ngClass]="{'highlight': highlightClass(assignee.profileId)}">
+                                {{ assignee.name }}
+                              </span>
+                              <activities-teammate-link
+                                *ngIf="!isManualAssignmentDepartmentAssignee(activity)"
+                                [label]="assignee.name"
+                                [highlighted]="highlightClass(assignee.profileId)"
+                                [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                              </activities-teammate-link>
+                            </ng-container>
+                            by
+                            <ng-container *ngIf="getAssignmentActor(activity) as actor">
+                              <activities-teammate-link
+                                [label]="actor.name"
+                                [highlighted]="highlightClass(actor.profileId)"
+                                [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
+                                [menuTrigger]="isManualAssignmentBotActor(activity) ? null : teammateMenu"
+                                (linkClick)="onManualAssignmentActorClick($event, activity)">
+                              </activities-teammate-link>
+                            </ng-container>
+                          </ng-container>
+                          <ng-template #manualFirstAssignment>
+                            was assigned to
+                            <ng-container *ngIf="isManualAssignmentBotAssignee(activity)">chatbot </ng-container>
+                            <ng-container *ngIf="isManualAssignmentDepartmentAssignee(activity)">department </ng-container>
+                            <ng-container *ngIf="isManualAssignmentUserAssignee(activity)">teammate </ng-container>
+                            <ng-container *ngIf="getAssignmentAssignee(activity) as assignee">
+                              <span *ngIf="isManualAssignmentDepartmentAssignee(activity)" class="link-to-user-profile"
+                                (click)="goToDepartment(assignee.profileId)"
+                                [ngClass]="{'highlight': highlightClass(assignee.profileId)}">
+                                {{ assignee.name }}
+                              </span>
+                              <activities-teammate-link
+                                *ngIf="!isManualAssignmentDepartmentAssignee(activity)"
+                                [label]="assignee.name"
+                                [highlighted]="highlightClass(assignee.profileId)"
+                                [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                              </activities-teammate-link>
+                            </ng-container>
+                            by
+                            <ng-container *ngIf="getAssignmentActor(activity) as actor">
+                              <activities-teammate-link
+                                [label]="actor.name"
+                                [highlighted]="highlightClass(actor.profileId)"
+                                [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
+                                [menuTrigger]="isManualAssignmentBotActor(activity) ? null : teammateMenu"
+                                (linkClick)="onManualAssignmentActorClick($event, activity)">
+                              </activities-teammate-link>
+                            </ng-container>
+                          </ng-template>
+                          </ng-template>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'REQUEST_ASSIGNED_SELF'">
+                          <ng-container *ngIf="getAssignmentActor(activity) as actor; else assignedSelfActorFallback">
+                            <activities-teammate-link
+                              [label]="actor.name"
+                              [highlighted]="highlightClass(actor.profileId)"
+                              [avatarView]="getTeammateAvatarView(actor.profileId)"
+                              [menuTrigger]="teammateMenu"
+                              (linkClick)="handleTeammateProfileLinkClick($event, actor.profileId)">
+                            </activities-teammate-link>
+                          </ng-container>
+                          <ng-template #assignedSelfActorFallback>
+                            <span [ngClass]="{'highlight': highlightClass(activity?.actor?.id)}">
+                              {{ activity.actor?.name || 'Someone' }}
+                            </span>
+                          </ng-template>
+                          joined the conversation:
+                          <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                            (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                            <em>{{ activity.activity_request_text }}</em>
+                          </span>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'REQUEST_UNASSIGNED'">
+                          <ng-container *ngIf="activity?.actor?.type === 'system'; else requestUnassignedDefault">
+                            <span class="activities-new-system-actor">{{ systemActorLabel(activity) }}</span> unassigned
+                            <ng-container *ngIf="getUnassignedParticipant(activity) as participant">
+                              <activities-teammate-link
+                                *ngIf="shouldLinkParticipant(participant.profileId, participant.name)"
+                                [label]="participant.name"
+                                [highlighted]="highlightClass(participant.profileId)"
+                                [avatarView]="participant.avatarView"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, participant.profileId)">
+                              </activities-teammate-link>
+                              <span *ngIf="!shouldLinkParticipant(participant.profileId, participant.name)"
+                                [ngClass]="{'highlight': highlightClass(participant.profileId)}">{{ participant.name }}</span>
+                            </ng-container>
+                            from the conversation
+                            <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                              (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                              <em>'{{ activity.activity_request_text }}'</em>
+                            </span>.
+                          </ng-container>
+                          <ng-template #requestUnassignedDefault>
+                            <ng-container *ngIf="getUnassignedParticipant(activity) as participant">
+                              <activities-teammate-link
+                                *ngIf="shouldLinkParticipant(participant.profileId, participant.name)"
+                                [label]="participant.name"
+                                [highlighted]="highlightClass(participant.profileId)"
+                                [avatarView]="participant.avatarView"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, participant.profileId)">
+                              </activities-teammate-link>
+                              <span *ngIf="!shouldLinkParticipant(participant.profileId, participant.name)"
+                                [ngClass]="{'highlight': highlightClass(participant.profileId)}">{{ participant.name }}</span>
+                            </ng-container>
+                            was unassigned from the conversation
+                            <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                              (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                              <em>'{{ activity.activity_request_text }}'</em>
+                            </span>.
+                          </ng-template>
+                        </ng-container>
+                      </ng-container>
+                    </p>
+                    <span class="activities-new-date">
+                      <span style="text-transform:capitalize">{{ activity?.date }}</span>
+                    </span>
+                  </td>
+
+                  <!-- All other verbs (assignments, chatbot, KB, fallback) -->
+                  <td *ngIf="activity?.verb !== 'REQUEST_CLOSE'
+                    && activity?.verb !== 'REQUEST_CREATE'
+                    && !isRequestAssignmentVerb(activity)
+                    && !isTeamVerbWithActorName(activity)
+                    && !isTeamVerbWithoutActorName(activity)">
+                    <p class="activities-new-message">
+                      <ng-container *ngIf="getActivityParts(activity) as parts">
+                        <activities-teammate-link
+                          *ngIf="parts.actorLink && parts.actorProfileId"
+                          [label]="parts.actorLink"
+                          [highlighted]="highlightClass(parts.actorProfileId)"
+                          [avatarView]="getTeammateAvatarView(parts.actorProfileId)"
+                          [menuTrigger]="teammateMenu"
+                          (linkClick)="handleTeammateProfileLinkClick($event, parts.actorProfileId)">
+                        </activities-teammate-link>
+                        <span>{{ parts.before }}</span>
+                        <span *ngIf="parts.link && parts.requestId" class="link-to-user-profile"
+                          (click)="goToRequestDetails(parts.requestId)">
+                          <em>{{ parts.link }}</em>
+                        </span>
+                        <em *ngIf="parts.kbSource">{{ parts.kbSource }}</em>
+                        <span>{{ parts.after }}</span>
+                        <span *ngIf="parts.chatbotLink && parts.chatbotId" class="link-to-user-profile"
+                          (click)="goToChatbotCds(activity)">
+                          {{ parts.chatbotLink }}
+                        </span>
+                        <span *ngIf="parts.namespaceLink && parts.namespaceId" class="link-to-user-profile"
+                          (click)="goToKnowledgeBaseNamespace(parts.namespaceId, activity)">
+                          {{ parts.namespaceLink }}
+                        </span>
+                        <span>{{ parts.afterNamespace }}</span>
+                      </ng-container>
+                    </p>
+                    <span class="activities-new-date">
+                      <span style="text-transform:capitalize">{{ activity?.date }}</span>
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="card--footer" style="text-align:center;margin-bottom: 12px;">
+            <div class="input-group-wpr" *ngIf="usersActivities?.length > 0">
+              <div>
+                <div class="input-group">
+                  <span class="input-group-btn left-btn">
+                    <button [disabled]="pageNo + 1 === 1" class="btn btn-tdblu" type="button"
+                      (click)="decreasePageNumber()">
+                      <span class="material-icons">keyboard_arrow_left</span>
+                    </button>
+                  </span>
+                  <span class="input-group-btn center-btn">
+                    <button class="btn btn-tdblu" type="button">
+                      {{ pageNo + 1 }} / {{ totalPagesNo_roundToUp || 1 }}
+                    </button>
+                  </span>
+                  <span class="input-group-btn right-btn">
+                    <button [disabled]="pageNo + 1 === totalPagesNo_roundToUp || totalPagesNo_roundToUp === 0"
+                      class="btn btn-tdblu" type="button" (click)="increasePageNumber()">
+                      <span class="material-icons">keyboard_arrow_right</span>
+                    </button>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-menu #teammateMenu="matMenu" class="activities-teammate-menu">
+   <button mat-menu-item type="button" (click)="openTeammateActivitiesChart()">
+    <mat-icon>timeline</mat-icon>
+    <span>{{ 'ActivitiesNew.ActivitiesViewChart' | translate }}</span>
+  </button>
+  <button mat-menu-item type="button" (click)="goToTeammateProfileFromMenu()">
+    <mat-icon>person</mat-icon>
+    <span>{{ 'ActivitiesNew.ActivitiesGoToProfile' | translate }}</span>
+  </button>
+ 
+</mat-menu>

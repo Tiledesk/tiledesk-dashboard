@@ -1,0 +1,32 @@
+:host {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 0;
+  margin-right: 4px;
+}
+
+.activities-teammate-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1;
+  text-transform: uppercase;
+  vertical-align: middle;
+}
+
+:host(.activities-teammate-avatar--menu) {
+  margin-right: 16px;
+  line-height: normal;
+}
+
+:host(.activities-teammate-avatar--menu) .activities-teammate-avatar {
+  width: 24px;
+  height: 24px;
+  font-size: 10px;
+}

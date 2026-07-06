@@ -1,0 +1,19 @@
+<ng-template #linkContent>
+  <activities-teammate-avatar [view]="avatarView"></activities-teammate-avatar><span class="activities-teammate-link__label">{{ label }}</span>
+</ng-template>
+
+<span
+  *ngIf="menuTrigger"
+  class="link-to-user-profile activities-teammate-link"
+  [class.highlight]="highlighted"
+  [matMenuTriggerFor]="menuTrigger"
+  (click)="onClick($event)">
+  <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+</span>
+<span
+  *ngIf="!menuTrigger"
+  class="link-to-user-profile activities-teammate-link"
+  [class.highlight]="highlighted"
+  (click)="onClick($event)">
+  <ng-container *ngTemplateOutlet="linkContent"></ng-container>
+</span>

@@ -1,0 +1,23 @@
+:host {
+  display: inline;
+  vertical-align: baseline;
+}
+
+.activities-teammate-link {
+  display: inline;
+  color: #03a5e8;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: normal;
+}
+
+.activities-teammate-link.highlight {
+  background-color: #ffff00;
+}
+
+.activities-teammate-link__label {
+  color: inherit;
+  text-decoration: underline;
+  vertical-align: baseline;
+  font-weight: 500;
+}

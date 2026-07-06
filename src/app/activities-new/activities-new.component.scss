@@ -1,0 +1,217 @@
+.column-th-span {
+  font-size: 14px;
+  font-weight: 500;
+  color: #353f45;
+}
+
+.fontawesome-icon {
+  width: 20px;
+}
+
+.highlight {
+  background-color: #FFFF00;
+}
+
+.sorting:before {
+  content: '\f0de';
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+  position: relative;
+  right: -8px;
+}
+
+.sorting_asc:before {
+  opacity: 0.5;
+}
+
+.sorting:after {
+  content: '\f0dd';
+  font-family: FontAwesome;
+  display: inline-block;
+  font-weight: 900;
+}
+
+.sorting_desc:after {
+  opacity: 0.5;
+}
+
+@media (max-width: 768px) {
+  .filter-card {
+    margin-bottom: 8px !important;
+  }
+
+  .activity-label {
+    margin-top: 5px !important;
+  }
+}
+
+.btn-gray-no-boxshadow {
+  border-radius: 999px;
+}
+
+.search-btn > span {
+  color: #fff;
+  padding-right: 3px;
+  position: relative;
+  top: 2px;
+}
+
+.activities-new .filter-card .card-content > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.activities-new-filter__date-col {
+  padding-left: 2px;
+  padding-right: 15px;
+}
+
+.activities-new .filter-card .activity-date-range-picker.mat-form-field-type-mat-date-range-input {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+
+  ::ng-deep .mat-form-field-wrapper {
+    width: 100%;
+    margin: 0;
+  }
+
+  ::ng-deep .mat-form-field-wrapper .mat-form-field-flex {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  ::ng-deep .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
+    width: 220px;
+    max-width: 220px;
+    box-sizing: border-box;
+  }
+}
+
+.activities-new-list-header {
+  display: flex;
+  align-items: center;
+  padding: 16px 28px 12px 15px;
+  border-bottom: 1px solid #e4e9ed;
+}
+
+.activities-new-list-header__icon-spacer {
+  width: 15px;
+  flex-shrink: 0;
+}
+
+.activities-new-list-header__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  font-family: var(--header-font-family);
+}
+
+.activities-new-list-header__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.activities-new-sort-by-date {
+  cursor: pointer;
+  flex-shrink: 0;
+  font-size: 14px;
+  color: #7695a5;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.activities-new-expiration-notice {
+  margin: 0;
+  font-size: 13px;
+  color: #7695a5;
+  font-weight: 400;
+}
+
+.activities-new-message {
+  margin-bottom: 0;
+  font-weight: 400;
+  font-size: 13px;
+  color: var(--text-color, #2b2b2b);
+
+  .activities-new-pending-invitee {
+    font-weight: 500;
+    font-style: italic;
+  }
+}
+
+.activities-new-system-actor {
+  font-weight: 500;
+}
+
+.activities-new-removed-teammate {
+  display: inline;
+  vertical-align: baseline;
+  cursor: default;
+}
+
+.activities-new-removed-teammate__label {
+  font-weight: 500;
+  vertical-align: baseline;
+}
+
+.activities-new-date {
+  color: #7695a5;
+  font-weight: 400;
+  line-height: 18px;
+  font-size: 12px;
+}
+
+.activities-new-empty {
+  font-size: 14px;
+  color: var(--secondary-text-color, #7695a5);
+  font-weight: 400;
+  margin: 0;
+}
+
+.activities-new-icon-cell {
+  width: 1%;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: top;
+  padding-top: 14px;
+}
+
+.activities-new .link-to-user-profile {
+  color: #03a5e8;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.activities-teammate-menu .mat-menu-item {
+  font-size: 14px;
+}
+
+.activities-new .activities-new-message:not(.link-to-user-profile) {
+  cursor: default;
+  text-decoration: none;
+  color: var(--text-color, #2b2b2b);
+}
+
+.actvity-btn-wpr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.actvity-btn-wpr__actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}

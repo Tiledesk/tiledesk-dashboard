@@ -2507,6 +2507,17 @@ footer ul {
   background-color: var(--blue-20) !important;
 }
 
+// overwrite the checkbox background
+.mat-checkbox-checked .mat-checkbox-background,
+.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: var(--blue-20) !important;
+}
+
+// overwrite the ripple overlay on hover and click
+.mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+  background-color: var(--blue-20) !important;
+}
+
 /* Angular radio button 
 /* ****************************** */
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {

@@ -168,7 +168,7 @@ export class SidebarUserDetailsComponent implements OnInit {
     // this.setNotificationSound();
     // this.listenToProjectUser()
     // this.checkLogoutVisibility();
-    this.getQueryParams();
+    // this.getQueryParams(); // tiledesk_logOut: disabilitato su questo branch
     this.setupUserDetailsCloseObserver();
   }
 
@@ -242,30 +242,23 @@ export class SidebarUserDetailsComponent implements OnInit {
         });
     }
 
-    getQueryParams() {
-      this.route.queryParamMap
-        .subscribe(params => {
-          // console.log('[SIDEBAR-USER-DETAILS]  queryParams', params['params']);
-          
-          if (params['params']['tiledesk_logOut']) {
-            
-            this.logoutBtnVisible = params['params']['tiledesk_logOut'] == "true" ? true: false
-             this.logger.log('[SIDEBAR-USER-DETAILS] params tiledeskLogout', this.logoutBtnVisible);
-            
-          } else {
-            this.logoutBtnVisible = true
-          }
-        })
-    }
+    // getQueryParams() {
+    //   this.route.queryParamMap
+    //     .subscribe(params => {
+    //       if (params['params']['tiledesk_logOut']) {
+    //         this.logoutBtnVisible = params['params']['tiledesk_logOut'] == "true" ? true: false
+    //         this.logger.log('[SIDEBAR-USER-DETAILS] params tiledeskLogout', this.logoutBtnVisible);
+    //       } else {
+    //         this.logoutBtnVisible = true
+    //       }
+    //     })
+    // }
 
-
-  checkLogoutVisibility(): void {
-    const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
-    this.logger.log('[SIDEBAR] tiledesk_logOut:', tiledeskLogOut);
-
-    // Nasconde il logout solo se tiledesk_logOut === 'false'
-    this.logoutBtnVisible = tiledeskLogOut !== 'false';
-  }
+  // checkLogoutVisibility(): void {
+  //   const tiledeskLogOut = this.localDbService.getFromStorage('tiledesk_logOut');
+  //   this.logger.log('[SIDEBAR] tiledesk_logOut:', tiledeskLogOut);
+  //   this.logoutBtnVisible = tiledeskLogOut !== 'false';
+  // }
 
 
 

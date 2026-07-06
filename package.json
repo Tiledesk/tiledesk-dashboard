@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.7.178",
+  "version": "2.7.235-stage",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --aot",
@@ -53,6 +53,7 @@
     "chart.js": "^2.9.4",
     "chartist": "0.11.0",
     "classlist.js": "^1.1.20150312",
+    "echarts": "^6.1.0",
     "emoji-regex": "^10.4.0",
     "express": "^4.17.3",
     "file-saver": "^2.0.5",
@@ -65,6 +66,7 @@
     "jquery": "^3.5.0",
     "keycloak-js": "^21.1.1",
     "leaflet": "^1.7.1",
+    "libphonenumber-js": "^1.12.10",
     "marked": "^5.1.0",
     "material-icons": "^1.11.2",
     "moment": "^2.29.4",
@@ -91,8 +93,7 @@
     "ua-parser-js": "^0.7.33",
     "uuid": "^3.4.0",
     "web-animations-js": "^2.3.2",
-    "zone.js": "^0.11.4",
-    "libphonenumber-js": "^1.12.10"
+    "zone.js": "^0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.2",

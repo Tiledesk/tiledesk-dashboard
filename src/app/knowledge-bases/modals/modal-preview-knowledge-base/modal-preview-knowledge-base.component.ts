@@ -662,6 +662,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       'use_cache': this.useCache,
       'llm': this.selectedNamespace.preview_settings.llm,
       'tags':this.kbTagsArray
+    };
+    if (this.selectedNamespace.preview_settings.llm === 'vllm' && this.selectedNamespace.preview_settings.vllmServer) {
+      this.body.vllmServer = this.selectedNamespace.preview_settings.vllmServer;
     }
     // this.error_answer = false;
 
@@ -697,9 +700,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.prompt_token_size = response.prompt_token_size;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview prompt_token_size: ", this.prompt_token_size)
       const endTime = performance.now();
-      // this.responseTime = Math.round((endTime - startTime) / 1000);
-      this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
-      this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
+      // Server `duration` measures backend pipeline only; UI shows perceived wait (client-side).
+      // this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
+      this.setResponseTimeFromClient(startTime);
       this.qa = response;
       this.logger.log("[MODAL-PREVIEW-KB] ask gpt preview qa: ", this.qa)
       this.logger.log("ask gpt preview this.qa?.content_chunks: ", this.qa?.content_chunks);
@@ -809,9 +812,8 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       // console.log("ERROR ask gpt message ",  message);
 
       // this.error_answer = true;
-      this.responseTime = 0;
+      this.setResponseTimeFromClient(startTime);
       this.prompt_token_size = 0;
-      this.translateparam = { respTime: this.formatNumberUS(0, true) };
       this.show_answer = true;
       this.searching = false;
     }, () => {
@@ -851,7 +853,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
         this.kbStreamFinalized = true;
         this.searching = false;
         this.show_answer = true;
-        this.handleAskAIError(err);
+        this.handleAskAIError(err, startTime);
       },
       complete: () => {
         if (!this.kbStreamFinalized) {
@@ -861,7 +863,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     });
   }
 
-   private finalizeStreamResponse(response: any, _startTime: number) {
+   private finalizeStreamResponse(response: any, startTime: number) {
     if (this.kbStreamFinalized) {
       return;
     }
@@ -869,8 +871,6 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     if (response) {
       response['ai_model'] = this.selectedModel;
       this.prompt_token_size = response.prompt_token_size;
-      this.responseTime = response.duration != null ? Math.round(response.duration * 100) / 100 : null;
-      this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
       this.qa = response;
       this.contentChunks = this.qa?.content_chunks ?? [];
       this.contentSources = this.extractAllSources(response);
@@ -889,6 +889,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       this.contentChunks = [];
       this.contentSources = [];
     }
+    // Server `duration` measures backend pipeline only; stream UI uses full client wait until done.
+    // this.responseTime = response?.duration != null ? Math.round(response.duration * 100) / 100 : null;
+    this.setResponseTimeFromClient(startTime);
     this.show_answer = true;
     this.searching = false;
     this.aiQuotaExceeded = false;
@@ -899,7 +902,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.logger.log('[MODAL-PREVIEW-KB] askAIStream completed', { qa: this.qa, answerLength: this.answer?.length });
   }
 
-  private handleAskAIError(err: any) {
+  private handleAskAIError(err: any, startTime?: number) {
     this.logger.log('ask gpt preview response error: ', err);
     if (err?.error && typeof err.error === 'string') {
       this.answer = err.error;
@@ -937,10 +940,20 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     } else {
       this.answer = 'An error occurred while processing your request.';
     }
-    this.responseTime = 0;
+    if (startTime != null) {
+      this.setResponseTimeFromClient(startTime);
+    } else {
+      this.responseTime = 0;
+      this.translateparam = { respTime: this.formatNumberUS(0, true) };
+    }
     this.prompt_token_size = 0;
-    this.translateparam = { respTime: this.formatNumberUS(0, true) };
     this.cdr.detectChanges();
+  }
+
+  /** Elapsed seconds from question submit to response complete (perceived wait). */
+  private setResponseTimeFromClient(startTime: number): void {
+    this.responseTime = Math.round((performance.now() - startTime) / 10) / 100;
+    this.translateparam = { respTime: this.formatNumberUS(this.responseTime, true) };
   }
 
   private isValidURL(url) {
