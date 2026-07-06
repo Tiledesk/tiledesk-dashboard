@@ -71,6 +71,8 @@ export class DataTablesComponent implements OnInit {
 
   /** Maximum rows allowed per data table. */
   readonly maxTableRows = 200;
+  readonly rowsPageSize = 40;
+  currentRowsPage = 1;
 
   tables: DataTable[] = [];
   selectedTable: DataTable | null = null;
@@ -98,6 +100,19 @@ export class DataTablesComponent implements OnInit {
 
   get isTableRowLimitReached(): boolean {
     return this.totalTableRowCount >= this.maxTableRows;
+  }
+
+  get totalRowsPages(): number {
+    return Math.max(1, Math.ceil(this.rows.length / this.rowsPageSize));
+  }
+
+  get pagedRows(): EditableRow[] {
+    const start = (this.currentRowsPage - 1) * this.rowsPageSize;
+    return this.rows.slice(start, start + this.rowsPageSize);
+  }
+
+  get showRowsPagination(): boolean {
+    return !this.isLoadingRows && this.rows.length > this.rowsPageSize;
   }
 
   isAddColumnPopoverOpen = false;
@@ -173,6 +188,7 @@ export class DataTablesComponent implements OnInit {
   private loadTableRows(table: DataTable, search?: RowSearchRequest): void {
     this.clearRowSelection();
     const isFullList = !search?.conditions?.length;
+    this.currentRowsPage = 1;
 
     if (!table._id) {
       this.rows = this.buildRowsFromLoaded(table.schema, []);
@@ -188,6 +204,7 @@ export class DataTablesComponent implements OnInit {
         if (isFullList) {
           this.totalTableRowCount = (loadedRows || []).length;
         }
+        this.syncRowsPagination();
         this.isLoadingRows = false;
         this.maybeFocusFirstColumnCell();
       },
@@ -211,7 +228,8 @@ export class DataTablesComponent implements OnInit {
     if (!loaded.length) {
       return [];
     }
-    return loaded.map((item, index) => this.toEditableRow(item, columns, index));
+    // API returns rows by createdAt ascending; show newest first.
+    return [...loaded].reverse().map((item, index) => this.toEditableRow(item, columns, index));
   }
 
   private toEditableRow(item: RowListItem, schema: Column[], index: number): EditableRow {
@@ -373,6 +391,7 @@ export class DataTablesComponent implements OnInit {
     this.cancelRenameColumn();
     this.rowSearchQuery = '';
     this.totalTableRowCount = 0;
+    this.currentRowsPage = 1;
     this.selectedTableId = table._id || null;
     this.selectedTable = table;
     this.persistLastTable(table);
@@ -549,6 +568,10 @@ export class DataTablesComponent implements OnInit {
       return;
     }
     this.shouldFocusFirstColumnCell = false;
+    this.scheduleFocusFirstColumnCell();
+  }
+
+  private scheduleFocusFirstColumnCell(): void {
     this.cdr.detectChanges();
     requestAnimationFrame(() => {
       setTimeout(() => this.focusFirstColumnCell(), 0);
@@ -809,7 +832,7 @@ export class DataTablesComponent implements OnInit {
   }
 
   get isHeaderRowCheckboxDisabled(): boolean {
-    return this.isLoadingRows || this.rows.length === 0;
+    return this.isLoadingRows || this.pagedRows.length === 0;
   }
 
   // ─── Grid actions ───────────────────────────────────────────────────────
@@ -817,8 +840,29 @@ export class DataTablesComponent implements OnInit {
   onAddRow(): void {
     const schema = sortColumns(this.selectedTable?.schema);
     if (!schema.length || this.isTableRowLimitReached) { return; }
-    this.rows = [...this.rows, this.createEmptyRow(schema)];
+    this.rows = [this.createEmptyRow(schema), ...this.rows];
     this.totalTableRowCount += 1;
+    this.currentRowsPage = 1;
+    this.scheduleFocusFirstColumnCell();
+  }
+
+  nextRowsPage(): void {
+    if (this.currentRowsPage * this.rowsPageSize < this.rows.length) {
+      this.currentRowsPage++;
+    }
+  }
+
+  prevRowsPage(): void {
+    if (this.currentRowsPage > 1) {
+      this.currentRowsPage--;
+    }
+  }
+
+  private syncRowsPagination(): void {
+    const maxPage = Math.max(1, Math.ceil(this.rows.length / this.rowsPageSize));
+    if (this.currentRowsPage > maxPage) {
+      this.currentRowsPage = maxPage;
+    }
   }
 
   // ─── Row selection ─────────────────────────────────────────────────────
@@ -840,19 +884,21 @@ export class DataTablesComponent implements OnInit {
   }
 
   isAllRowsSelected(): boolean {
-    return this.rows.length > 0 && this.rows.every((r) => this.selectedRowIds.has(r.localId));
+    return this.pagedRows.length > 0 && this.pagedRows.every((r) => this.selectedRowIds.has(r.localId));
   }
 
   isSomeRowsSelected(): boolean {
-    return this.selectedRowIds.size > 0 && !this.isAllRowsSelected();
+    const selectedOnPage = this.pagedRows.filter((r) => this.selectedRowIds.has(r.localId)).length;
+    return selectedOnPage > 0 && selectedOnPage < this.pagedRows.length;
   }
 
   onToggleSelectAll(checked: boolean): void {
     if (checked) {
-      this.selectedRowIds = new Set(this.rows.map((r) => r.localId));
+      this.pagedRows.forEach((r) => this.selectedRowIds.add(r.localId));
     } else {
-      this.clearRowSelection();
+      this.pagedRows.forEach((r) => this.selectedRowIds.delete(r.localId));
     }
+    this.selectedRowIds = new Set(this.selectedRowIds);
   }
 
   onToggleRowSelection(row: EditableRow, checked: boolean): void {
@@ -896,6 +942,7 @@ export class DataTablesComponent implements OnInit {
       this.selectedRowIds.delete(row.localId);
       this.selectedRowIds = new Set(this.selectedRowIds);
       this.totalTableRowCount = Math.max(0, this.totalTableRowCount - 1);
+      this.syncRowsPagination();
     };
 
     if (!tableId || !row._id) {
@@ -930,6 +977,7 @@ export class DataTablesComponent implements OnInit {
       this.rows = this.rows.filter((r) => !removeIds.has(r.localId));
       this.clearRowSelection();
       this.totalTableRowCount = Math.max(0, this.totalTableRowCount - selected.length);
+      this.syncRowsPagination();
     };
 
     if (!tableId || !toDeleteOnServer.length) {

@@ -257,6 +257,12 @@
   color: #c62828;
 }
 
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
 .dt-refresh-btn {
   width: 40px !important;
   height: 40px !important;

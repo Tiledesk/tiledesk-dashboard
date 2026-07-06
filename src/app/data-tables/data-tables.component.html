@@ -282,7 +282,7 @@
                 </tr>
 
                 <ng-container *ngIf="!isLoadingRows">
-                  <tr *ngFor="let row of rows; let rowIndex = index; trackBy: trackByRowId"
+                  <tr *ngFor="let row of pagedRows; let rowIndex = index; trackBy: trackByRowId"
                       class="dt-data-row"
                       [class.dt-data-row--selected]="isRowSelected(row)">
                     <td *ngIf="showRowSelectionColumn"
@@ -442,6 +442,28 @@
               </tbody>
             </table>
             </form>
+          </div>
+
+          <div class="pagination-controls" *ngIf="showRowsPagination">
+            <button class="btn"
+                    type="button"
+                    (click)="prevRowsPage()"
+                    style="border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important; border-top-left-radius: 9999px !important; border-bottom-left-radius: 9999px !important; box-shadow: unset; background-color: var(--blue-20);"
+                    [disabled]="currentRowsPage === 1">
+              <span class="material-icons">keyboard_arrow_left</span>
+            </button>
+            <button class="btn"
+                    type="button"
+                    style="border-radius: 0px !important; pointer-events: none; box-shadow: unset; background-color: var(--blue-20);">
+              {{ currentRowsPage }} / {{ totalRowsPages }}
+            </button>
+            <button class="btn"
+                    type="button"
+                    (click)="nextRowsPage()"
+                    style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important; border-bottom-right-radius: 9999px !important; box-shadow: unset; background-color: var(--blue-20); border-top-right-radius: 9999px !important;"
+                    [disabled]="currentRowsPage * rowsPageSize >= rows.length">
+              <span class="material-icons">keyboard_arrow_right</span>
+            </button>
           </div>
 
           <div *ngIf="showRowSelectionColumn && hasRowSelection" class="dt-row-selection-bar">
