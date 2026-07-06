@@ -85,6 +85,7 @@
     	"SelectRow": "Zeile auswählen",
     	"Search": "Suchen",
     	"RefreshTable": "Tabelle aktualisieren",
+		"TotalRows": "Nombre total de lignes:",
     	"NoSearchResults": "Keine Übereinstimmungen für die angegebenen Parameter",
     	"Null": "Null"
 	},

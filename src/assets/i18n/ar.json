@@ -38,7 +38,7 @@
     "Hours": "ساعات العمل",
     "KnowledgeBases": "قواعد المعرفة",
     "DataTables": { 
-         "DataTablesBeta": "جداول البيانات (تجريبي)",
+        "DataTablesBeta": "جداول البيانات (تجريبي)",
         "DataTables": "جداول البيانات",
         "YourTables": "الجداول الخاصة بك",
         "CreateTable": "إنشاء جدول",
@@ -86,6 +86,7 @@
         "SelectRow": "تحديد الصف",
         "Search": "بحث",
         "RefreshTable": "تحديث الجدول",
+        "TotalRows": "Total number of rows:",
         "NoSearchResults": "لا توجد نتائج تطابق المعايير المحددة",
         "Null": "فارغ"
     },

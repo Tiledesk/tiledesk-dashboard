@@ -127,7 +127,7 @@
               <span *ngIf="getColumns(selectedTable).length"
                     class="dt-row-count"
                     [class.dt-row-count--limit]="isTableRowLimitReached">
-                {{ totalTableRowCount }} / {{ maxTableRows }}
+                {{ 'DataTables.TotalRows' | translate }} {{ totalTableRowCount }} / {{ maxTableRows }}
               </span>
             </div>
             <div class="dt-search-input">

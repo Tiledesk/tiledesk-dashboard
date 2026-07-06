@@ -86,6 +86,7 @@
         "SelectRow": "Seleccionar fila",
         "Search": "Buscar",
         "RefreshTable": "Actualizar tabla",
+        "TotalRows": "Número total de filas:",
         "NoSearchResults": "No hay coincidencias para los parámetros especificados",
         "Null": "Nulo"
     },

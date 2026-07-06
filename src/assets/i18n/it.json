@@ -37,7 +37,7 @@
     "Resources": "Risorse",
     "Hours": "Orari di attività",
     "KnowledgeBases": "Knowledge Bases",
-        "DataTables": {
+    "DataTables": {
         "DataTablesBeta": "Tabelle dati (BETA)",    
         "DataTables": "Tabelle dati",
         "YourTables": "Le tue tabelle",
@@ -86,6 +86,7 @@
         "SelectRow": "Seleziona riga",
         "Search": "Cerca",
         "RefreshTable": "Aggiorna tabella",
+        "TotalRows": "Numero totale di righe:",
         "NoSearchResults": "Nessuna corrispondenza per i parametri specificati",
         "Null": "Null"
     },

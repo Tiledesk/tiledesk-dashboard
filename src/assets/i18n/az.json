@@ -2508,6 +2508,7 @@
             "SelectRow": "Sətri seç",
             "Search": "Axtar",
             "RefreshTable": "Cədvəli yenilə",
+            "TotalRows": "Número total de filas:",
             "NoSearchResults": "Müəyyən edilmiş parametrlərə uyğun nəticə yoxdur",
             "Null": "Null"
         },
