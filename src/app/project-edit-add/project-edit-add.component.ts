@@ -405,6 +405,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   ngOnInit() {
+    this.logger.log('[PRJCT-EDIT-ADD][DEBUG] ngOnInit', { route: this.router.url });
 
     this.getBrowserVersion()
     this.getCurrentUrlAndSwitchView();
@@ -2172,41 +2173,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
       }
     }
 
-    this.applyRetentionSelectionFromProjectAndPlan();
     this.syncRetentionItemsForPlan();
   }
 
-  /**
-   * Restricted plan: only 1 month (30) selectable; otherwise full list.
-   * When unrestricted and no saved retentionDays, default UI to No retention (-1).
-   * If the server sends a day count not present in `messages_retention` (common on Custom),
-   * ng-select cannot match bindValue — fall back to -1 so the control never stays blank.
- 
-  private applyRetentionSelectionFromProjectAndPlan(): void {
-    const restricted = this.isAvailableRetention === false;
-    this.messages_retention_items = this.messages_retention.map((item) => ({
-      name: item.name,
-      value: item.value,
-      disabled: restricted && item.value !== 30
-    }));
-
-    if (restricted) {
-      this.selectedRetention = 30;
-      return;
-    }
-
-    if (this.retentionDaysLoadedFromServer && this.pendingRetentionSelection !== null) {
-      this.selectedRetention = this.pendingRetentionSelection;
-    } else {
-      this.selectedRetention = -1;
-    }
-
-    const allowedRetentionValues = new Set(this.messages_retention.map((item) => item.value));
-    if (!allowedRetentionValues.has(this.selectedRetention)) {
-      this.selectedRetention = -1;
-    }
-  }   */
-
+  /** Rebuild ng-select items from plan restrictions; does not reset the user selection. */
   private syncRetentionItemsForPlan(): void {
     const restricted = this.isAvailableRetention === false;
     this.messages_retention_items = this.messages_retention.map((item) => ({
@@ -2241,7 +2211,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
       this.selectedRetention = -1;
     }
   }
-
 
   getProjectPlan() {
     this.subscription = this.prjctPlanService.projectPlan$.subscribe((projectProfileData: any) => {
@@ -3446,7 +3415,22 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
    * FROM THE BOT OBJECT IS USED:
    */
   getProjectById() {
+    this.logger.log('[PRJCT-EDIT-ADD][DEBUG] getProjectById called', {
+      projectId: this.id_project,
+      route: this.router.url,
+      selectedRetentionBeforeLoad: this.selectedRetention,
+      pendingRetentionSelectionBeforeLoad: this.pendingRetentionSelection,
+    });
+
     this.projectService.getProjectById(this.id_project).subscribe((project: any) => {
+      this.logger.log('[PRJCT-EDIT-ADD][DEBUG] getProjectById subscribe', {
+        projectId: this.id_project,
+        route: this.router.url,
+        retentionDays: project?.settings?.retentionDays,
+        retentionDaysType: typeof project?.settings?.retentionDays,
+        settings: project?.settings,
+      });
+
       this.logger.log('[PRJCT-EDIT-ADD] - GET PROJECT BY ID - PROJECT OBJECT: ', project);
       if (project) {
         this.projectObject = project;
@@ -3659,9 +3643,18 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
             this.retentionDaysLoadedFromServer = false;
             this.logger.log('[PRJCT-EDIT-ADD] retentionDays no value from server');
           }
-         
           this.syncRetentionItemsForPlan();
           this.applyRetentionFromServer();
+
+          this.logger.log('[PRJCT-EDIT-ADD][DEBUG] retention after applyRetentionFromServer', {
+            route: this.router.url,
+            rawRetentionDays: project.settings.retentionDays,
+            pendingRetentionSelection: this.pendingRetentionSelection,
+            selectedRetention: this.selectedRetention,
+            retentionDaysLoadedFromServer: this.retentionDaysLoadedFromServer,
+            isAvailableRetention: this.isAvailableRetention,
+            messages_retention_items: this.messages_retention_items,
+          });
 
 
           // Automatic unavailable status
@@ -4006,6 +3999,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     this.logger.log('[PRJCT-EDIT-ADD] selectedRetention ', this.selectedRetention);
     this.projectService.saveRetentionDays(this.selectedRetention).then((result) => {
       this.logger.log("[PRJCT-EDIT-ADD] - SAVE RETENTION DAYS result: ", result)
+
+      this.logger.log('[PRJCT-EDIT-ADD][DEBUG] onSelectRetention saved', {
+        selectedRetention: this.selectedRetention,
+        saveResult: result,
+      });
 
       this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
 
