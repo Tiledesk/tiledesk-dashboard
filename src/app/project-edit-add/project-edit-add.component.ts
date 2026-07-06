@@ -2173,6 +2173,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     }
 
     this.applyRetentionSelectionFromProjectAndPlan();
+    this.syncRetentionItemsForPlan();
   }
 
   /**
@@ -2180,7 +2181,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
    * When unrestricted and no saved retentionDays, default UI to No retention (-1).
    * If the server sends a day count not present in `messages_retention` (common on Custom),
    * ng-select cannot match bindValue — fall back to -1 so the control never stays blank.
-   */
+ 
   private applyRetentionSelectionFromProjectAndPlan(): void {
     const restricted = this.isAvailableRetention === false;
     this.messages_retention_items = this.messages_retention.map((item) => ({
@@ -2204,8 +2205,42 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     if (!allowedRetentionValues.has(this.selectedRetention)) {
       this.selectedRetention = -1;
     }
+  }   */
+
+  private syncRetentionItemsForPlan(): void {
+    const restricted = this.isAvailableRetention === false;
+    this.messages_retention_items = this.messages_retention.map((item) => ({
+      name: item.name,
+      value: item.value,
+      disabled: restricted && item.value !== 30,
+    }));
+
+    if (restricted) {
+      this.selectedRetention = 30;
+    }
   }
 
+  /**
+   * Apply retentionDays loaded from getProjectById only.
+   * If the server sends a day count not present in `messages_retention` (common on Custom),
+   * ng-select cannot match bindValue — fall back to -1 so the control never stays blank.
+   */
+  private applyRetentionFromServer(): void {
+    if (this.isAvailableRetention === false) {
+      return;
+    }
+
+    if (this.retentionDaysLoadedFromServer && this.pendingRetentionSelection !== null) {
+      this.selectedRetention = this.pendingRetentionSelection;
+    } else {
+      this.selectedRetention = -1;
+    }
+
+    const allowedRetentionValues = new Set(this.messages_retention.map((item) => item.value));
+    if (!allowedRetentionValues.has(this.selectedRetention)) {
+      this.selectedRetention = -1;
+    }
+  }
 
 
   getProjectPlan() {
@@ -3624,7 +3659,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
             this.retentionDaysLoadedFromServer = false;
             this.logger.log('[PRJCT-EDIT-ADD] retentionDays no value from server');
           }
-          this.applyRetentionSelectionFromProjectAndPlan();
+         
+          this.syncRetentionItemsForPlan();
+          this.applyRetentionFromServer();
 
 
           // Automatic unavailable status
@@ -3657,7 +3694,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
           this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
           this.pendingRetentionSelection = null;
           this.retentionDaysLoadedFromServer = false;
-          this.applyRetentionSelectionFromProjectAndPlan();
+          this.syncRetentionItemsForPlan();
+          this.applyRetentionFromServer();
           this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
           this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
