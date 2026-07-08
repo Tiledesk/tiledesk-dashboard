@@ -47,6 +47,7 @@ import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
+import { ContactRequestMessagesDialogComponent } from './contact-request-messages-dialog/contact-request-messages-dialog.component';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
@@ -268,6 +269,22 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // for accordion Contact conversations
   contact_requests: any
   pageNo = 0;
+
+  isCurrentContactRequest(request: any): boolean {
+    const currentRequestId = this.normalizeRequestId(this.id_request || this.request?.request_id);
+    if (!currentRequestId || !request?.request_id) {
+      return false;
+    }
+    return this.normalizeRequestId(request.request_id) === currentRequestId;
+  }
+
+  private normalizeRequestId(id: string): string {
+    if (!id) {
+      return id;
+    }
+    return id.includes('%2B') ? id.replace(/%2B/g, '+') : id;
+  }
+
   totalPagesNo_roundToUp: number;
   displaysFooterPagination: boolean;
   // HAS_OPENED_APPS: boolean = false;
@@ -7957,20 +7974,38 @@ extractUrls(text: string): string[] {
   }
 
   goToRequestMsgs(request_recipient: string) {
-    const calledFromIframe = (window.self !== window.top);
-   console.log("[WS-REQUESTS-MSGS] goToRequestMsgs calledFromIframe ", calledFromIframe);
-    if (this.CHAT_PANEL_MODE === false) {
-      this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
-    } else if (this.CHAT_PANEL_MODE === true) {
-     if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.CURRENT_USER_ROLE === 'agent') {
-        const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
-        window.open(url, '_blank');
-      } else {
-        const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
-        // window.open(url, '_top');
-        window.open(url, '_self');
-      }
+    this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
+  }
+
+  onContactRequestRowClick(request: any): void {
+    if (this.isCurrentContactRequest(request)) {
+      return;
     }
+    if (this.CHAT_PANEL_MODE) {
+      this.openContactRequestMessagesDialog(request);
+    } else {
+      this.goToRequestMsgs(request?.request_id);
+    }
+  }
+
+  openContactRequestMessagesDialog(request: any): void {
+    this.dialog.open(ContactRequestMessagesDialogComponent, {
+      panelClass: 'contact-request-messages-dialog-panel',
+      width: '100%',
+      maxWidth: '100%',
+      height: 'calc(100vh + 2px)',
+      maxHeight: 'calc(100vh + 2px)',
+      position: { top: '-2px' },
+      autoFocus: false,
+      hasBackdrop: true,
+      data: {
+        request,
+        requester_id: this.requester_id,
+        fillColour: this.fillColour,
+        requester_fullname_initial: this.requester_fullname_initial,
+        requestFirstText: this.getRequestText(request?.first_text),
+      },
+    });
   }
 
   // emailChange(event) {
