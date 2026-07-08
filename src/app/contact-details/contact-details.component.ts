@@ -108,6 +108,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_TAG: boolean;
   PERMISSION_TO_VIEW_CONVS: boolean;
   PERMISSION_TO_TRASH_LEAD: boolean;
+  PERMISSION_TO_READ_LEADS: boolean;
+
+  private contactDataLoaded = false;
 
   private backSub?: Subscription;
   
@@ -149,8 +152,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.roleService.checkRoleForCurrentProject('contact-details')
-    this.getRequesterIdParam_AndThenGetRequestsAndContactById();
+    this.roleService.checkRoleForCurrentProject('contact-details');
     this.getCurrentProject();
     this.getCurrentUser();
     this.getTranslation();
@@ -158,9 +160,8 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
     this.getBrowserVersion();
     this.getOSCODE();
     this.getProjectUserRole();
-    // this.checkPermissions()
-    this.listenToProjectUser()
-    this.listenToGoBack()
+    this.listenToProjectUser();
+    this.listenToGoBack();
   }
 
 
@@ -183,6 +184,24 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       .subscribe(status => {
         console.log('[CONTACTS-DTLS] - Role:', status.role);
         console.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
+
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          this.PERMISSION_TO_READ_LEADS = status.matchedPermissions.includes(PERMISSIONS.LEADS_READ);
+        } else {
+          this.PERMISSION_TO_READ_LEADS = true;
+        }
+
+        if (!this.PERMISSION_TO_READ_LEADS) {
+          if (this.projectId) {
+            this.router.navigate([`project/${this.projectId}/contact-details/no-auth`]);
+          }
+          return;
+        }
+
+        if (!this.contactDataLoaded) {
+          this.contactDataLoaded = true;
+          this.getRequesterIdParam_AndThenGetRequestsAndContactById();
+        }
 
         // --------------------------
         // PERMISSION_TO_VIEW_CONVS

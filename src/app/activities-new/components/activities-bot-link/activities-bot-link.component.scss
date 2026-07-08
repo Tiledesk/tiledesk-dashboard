@@ -1,0 +1,42 @@
+:host {
+  display: inline;
+  vertical-align: baseline;
+}
+
+.activities-bot-link {
+  display: inline;
+  color: #03a5e8;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: normal;
+}
+
+.activities-bot-link.highlight {
+  background-color: #ffff00;
+}
+
+// .activities-bot-link__icon {
+//   display: inline-block;
+//   vertical-align: middle;
+//   width: 18px;
+//   height: 18px;
+//   margin-right: 4px;
+//   line-height: 0;
+//
+//   img {
+//     display: block;
+//     width: 100%;
+//     height: 100%;
+//     border-radius: 50%;
+//     object-fit: cover;
+//     position: relative;
+//     top: -2px;
+//   }
+// }
+
+.activities-bot-link__label {
+  color: inherit;
+  text-decoration: underline;
+  vertical-align: baseline;
+  font-weight: 500;
+}

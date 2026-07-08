@@ -220,15 +220,18 @@
                     <mat-form-field class="custom-date-range-picker" 
                       [ngClass]="{'date-range-error': !areDatesComplete}"
                       appearance="standard">
-                      <mat-date-range-input [rangePicker]="picker">
+                      <mat-date-range-input [rangePicker]="picker" (click)="openDatePicker()">
                         <input (dateChange)="addEventStartDate($event.value)"
                           (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
-                          placeholder="{{'StartDate' | translate}}" style="padding: 0 5px;">
+                          readonly
+                          (click)="openDatePicker()"
+                          placeholder="{{'HistoryPage.StartDate' | translate}}" style="padding: 0 5px;">
                         <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
-                          placeholder="{{'EndDate' | translate}}" style="padding: 0 5px;">
+                          readonly
+                          (click)="openDatePicker()"
+                          placeholder="{{'HistoryPage.EndDate' | translate}}" style="padding: 0 5px;">
                       </mat-date-range-input>
                       
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
                         <mat-icon matDatepickerToggleIcon>clear</mat-icon>
                       </mat-datepicker-toggle>
@@ -236,8 +239,8 @@
                       <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
                     <!-- Info message when dates are not complete -->
-                    <div *ngIf="!areDatesComplete" class="date-validation-message" style="margin-top: -8px; color: #f44336; font-size: 12px;font-weight: 400;">
-                      <i class="material-icons" style="vertical-align: middle; font-size: 16px;position: relative;top: -1px;">info</i>
+                    <div *ngIf="!areDatesComplete" class="date-validation-message">
+                      <i class="material-icons" style="font-size: 16px;position: relative;top: -1px;">info</i>
                       {{ 'PleaseSelectBothDates' | translate }}
                     </div>
                   </div>

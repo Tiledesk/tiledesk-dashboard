@@ -30,6 +30,7 @@
   "pineconeReranking":"${PINECONE_RERANKING}",
   "analyticsApiBase": "${ANALYTICS_API_BASE}",
   "analyticsEmbedBase": "${ANALYTICS_EMBED_BASE}",
+  "activityExpirationTime": "${ACTIVITY_EXPIRATION_TIME}",
   "firebase": {
     "apiKey": "${FIREBASE_APIKEY}",
     "authDomain": "${FIREBASE_AUTHDOMAIN}",

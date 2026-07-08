@@ -50,7 +50,7 @@ export class RoleService {
       const projectId = currentProject._id
 
       const projectUserRole = this.usersService.project_user_role_bs.value
-      const projectUser_bs = this.usersService.projectUser_bs.value
+      let projectUser_bs = this.usersService.projectUser_bs.value
       console.log('[ROLE-SERV] checkRoleForCurrentProject projectUserRole ', projectUserRole)
       console.log('[ROLE-SERV] checkRoleForCurrentProject projectUser_bs ', projectUser_bs)
       this.logger.log('[ROLE-SERV] checkRoleForCurrentProject > projectId ', projectId)
@@ -78,8 +78,10 @@ export class RoleService {
           // Check if projectUser_bs is null before accessing its properties
           if (!projectUser_bs) {
             this.logger.log('[ROLE-SERV] - projectUser_bs is null, fetching from server');
-            // Fall through to else block to fetch from server
-          } else {
+            projectUser_bs = await this.getProjectUser(userId, projectId);
+          }
+
+          if (projectUser_bs) {
             // Monitor & NORT || calledby === 'wsrequest-detail'
             if (calledby === 'wsrequests' || calledby === 'all-conversations') {
               console.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)

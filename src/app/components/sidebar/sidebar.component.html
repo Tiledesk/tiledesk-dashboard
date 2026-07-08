@@ -405,7 +405,7 @@
     <ng-container *ngIf="PERMISSION_TO_VIEW_ACTVITIES">
       <ng-container *ngIf="isVisibleACT">
         <div id="activities" *ngIf="project && USER_ROLE !== 'agent'" routerLinkActive="item-active"
-          [class.item-active]="ACTIVITIES_DEMO_ROUTE_IS_ACTIVE" (click)="stopScroll()" matTooltipClass="sb-mat-tooltip"
+          [class.item-active]="ACTIVITIES_ROUTE_IS_ACTIVE" (click)="stopScroll()" matTooltipClass="sb-mat-tooltip"
           matTooltip="{{ 'Activities' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
           matTooltipHideDelay="100">
           <!-- routerLink="project/{{ project._id }}/activities" -->
