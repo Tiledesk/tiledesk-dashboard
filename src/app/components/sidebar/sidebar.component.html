@@ -62,7 +62,7 @@
     <!-- ------------------------------------------- -->
     <!-- CHAT  -->
     <!-- ------------------------------------------- -->
-    <!-- <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
+    <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100" routerLinkActive="item-active" 
       [class.item-active]="CONVERSATION_DETAIL_ROUTE_IS_ACTIVE">
 
@@ -77,12 +77,12 @@
         <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
           class="new-messages-count">{{new_messages_count}} </span>
       </a>
-    </div> -->
+    </div>
 
     <!-- ------------------------------------------- -->
     <!-- CHAT old no iframe   -->
     <!-- ------------------------------------------- -->
-    <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
+    <!-- <div matTooltipClass="sb-mat-tooltip" matTooltip="Chat" #tooltip="matTooltip" matTooltipPosition='right'
       matTooltipHideDelay="100">
       <a id="openchat-a" #openchatbtn class="customAncor" target="_self" href="{{ CHAT_BASE_URL }}"
         (click)="openChat()">
@@ -104,7 +104,7 @@
         <span *ngIf="new_messages_count !== null && new_messages_count > 0 "
           class="new-messages-count">{{new_messages_count}} </span>
       </a>
-    </div>
+    </div> -->
 
     <!-- ------------------------------------------- -->
     <!-- HOME   (click)="goToHome()"" -->
