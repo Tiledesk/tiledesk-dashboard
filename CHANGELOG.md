@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.179-AR
+- Implements new activities
+- Fixes the bug: in chat, navigating to contact conversations causes agent desktop logout
+
 ### 2.7.178-AR
 - Replaces window.open(url, '_top') in the goToRequestMsgs method with window.open(url, '_self')
 
