@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.180-AR
+- Minor improvements and bug fixing
+
 ### 2.7.179-AR
 - Implements new activities
 - Fixes the bug: in chat, navigating to contact conversations causes agent desktop logout
