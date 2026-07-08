@@ -1,5 +1,5 @@
 import { ActivityRecord } from 'app/models/activity-model';
-import { ACTIVITY_ICON_BY_VERB, DEFAULT_ACTIVITY_ICON, SYSTEM_ASSIGNED_ACTIVITY_ICON, SYSTEM_EDIT_ACTIVITY_ICON, SYSTEM_UNASSIGNED_ACTIVITY_ICON } from './activity-verbs.constants';
+import { ACTIVITY_ICON_BY_VERB, DEFAULT_ACTIVITY_ICON, MANUAL_ASSIGNMENT_BOT_ACTOR_ICON, SYSTEM_ASSIGNED_ACTIVITY_ICON, SYSTEM_EDIT_ACTIVITY_ICON, SYSTEM_UNASSIGNED_ACTIVITY_ICON } from './activity-verbs.constants';
 import { renderRequestCloseMessage, resolveClosedByFromLead } from './activity-request-close.util';
 
 function str(value: unknown): string {
@@ -482,11 +482,16 @@ export function unassignedParticipantName(activity: ActivityRecord): string {
   return fallbackId;
 }
 
+export function isSystemUnassignActivity(activity: ActivityRecord): boolean {
+  return activity.actor?.type === 'system'
+    && str(activity.actionObj?.['assignmentType']) === 'unassign';
+}
+
 export function renderRequestUnassignedMessage(activity: ActivityRecord): string {
   const conversation = conversationLabel(activity);
   const participant = unassignedParticipantName(activity);
-  if (activity.actor?.type === 'system') {
-    return `${systemActorLabel(activity)} unassigned ${participant} from the conversation '${conversation}'.`;
+  if (isSystemUnassignActivity(activity)) {
+    return `${systemActorLabel(activity)} removed ${participant} from the conversation '${conversation}'.`;
   }
   return `${participant} was unassigned from the conversation '${conversation}'.`;
 }
@@ -898,6 +903,9 @@ export function getActivityIcon(verb: string | undefined): string {
 
 export function getActivityIconForActivity(activity: ActivityRecord): string {
   const verb = effectiveVerb(activity);
+  if (verb === 'REQUEST_ASSIGNED_MANUAL' && isManualAssignmentBotActor(activity)) {
+    return MANUAL_ASSIGNMENT_BOT_ACTOR_ICON;
+  }
   if (isSystemActor(activity)) {
     if (verb === 'PROJECT_USER_UPDATE') {
       return SYSTEM_EDIT_ACTIVITY_ICON;

@@ -12,13 +12,16 @@
                 <div class="row">
                   <div class="col-12 col-sm-12">
                     <mat-form-field class="activity-date-range-picker" appearance="standard">
-                      <mat-date-range-input [rangePicker]="picker">
+                      <mat-date-range-input [rangePicker]="picker" (click)="openDatePicker()">
                         <input matStartDate (dateChange)="addEventStartDate($event.value)" [(ngModel)]="startDate"
+                          readonly
+                          (click)="openDatePicker()"
                           placeholder="{{ 'ActivitiesNew.StartDate' | translate }}">
                         <input matEndDate (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDate"
+                          readonly
+                          (click)="openDatePicker()"
                           placeholder="{{ 'ActivitiesNew.EndDate' | translate }}">
                       </mat-date-range-input>
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                       <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
                         <mat-icon matDatepickerToggleIcon>clear</mat-icon>
                       </mat-datepicker-toggle>
@@ -150,7 +153,7 @@
                               [highlighted]="highlightClass(participant.id)"
                               [avatarView]="getTeammateAvatarView(participant.id, participant.name)"
                               [menuTrigger]="teammateMenu"
-                              (linkClick)="handleRequestCloseParticipantClick($event, participant)">
+                              (linkClick)="handleRequestCloseParticipantClick($event, participant, activity)">
                             </activities-teammate-link><span *ngIf="!last">, </span>
                             </ng-container>
                           </ng-template>
@@ -174,7 +177,7 @@
                           [highlighted]="highlightClass(activity.actor.id)"
                           [avatarView]="getTeammateAvatarView(activity.actor.id)"
                           [menuTrigger]="teammateMenu"
-                          (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id)">
+                          (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id, activity)">
                         </activities-teammate-link>
                         <span *ngIf="!activity?.actor?.id || !shouldLinkParticipant(activity.actor.id, activity.closed_by_label)">
                           {{ activity.closed_by_label }}
@@ -204,7 +207,7 @@
                             [highlighted]="highlightClass(participant.id)"
                             [avatarView]="getTeammateAvatarView(participant.id, participant.name)"
                             [menuTrigger]="teammateMenu"
-                            (linkClick)="handleRequestCloseParticipantClick($event, participant)">
+                            (linkClick)="handleRequestCloseParticipantClick($event, participant, activity)">
                           </activities-teammate-link><span *ngIf="!last">, </span>
                           </ng-container>
                         </ng-template>
@@ -261,7 +264,7 @@
                         [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
                         [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
                         [menuTrigger]="teammateMenu"
-                        (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id)">
+                        (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
                       </activities-teammate-link>
                       <ng-container *ngIf="isSystemAbandonedChatsUpdate(activity?.actionObj)">
                         's abandoned chats count has been updated to {{ systemAbandonedChatsCount(activity?.actionObj) }}
@@ -294,7 +297,7 @@
                         [highlighted]="highlightClass(activity.actor.id)"
                         [avatarView]="getTeammateAvatarView(activity.actor.id)"
                         [menuTrigger]="teammateMenu"
-                        (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id)">
+                        (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id, activity)">
                       </activities-teammate-link>
                       <span *ngIf="activity?.actor?.id && activity?.actor?.type === 'system'" class="activities-new-system-actor">
                         {{ systemActorLabel(activity) }}
@@ -316,7 +319,7 @@
                               [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
                               [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
                               [menuTrigger]="teammateMenu"
-                              (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id)">
+                              (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
                             </activities-teammate-link>'s abandoned chats count to {{ systemAbandonedChatsCount(activity?.actionObj) }}
                           </span>
                         </ng-container>
@@ -333,7 +336,7 @@
                               [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
                               [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
                               [menuTrigger]="teammateMenu"
-                              (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id)">
+                              (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
                             </activities-teammate-link>
                           </span>
                           to
@@ -366,7 +369,7 @@
                             [highlighted]="highlightClass(getProjectUserTargetProfileId(activity))"
                             [avatarView]="getProjectUserTargetAvatarView(activity)"
                             [menuTrigger]="teammateMenu"
-                            (linkClick)="handleTeammateProfileLinkClick($event, getProjectUserTargetProfileId(activity))">
+                            (linkClick)="handleTeammateProfileLinkClick($event, getProjectUserTargetProfileId(activity), activity)">
                           </activities-teammate-link>
                           <span *ngIf="activity?.actionObj?.email">
                             ({{ activity?.actionObj?.email }})
@@ -416,7 +419,7 @@
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
                                 [menuTrigger]="teammateMenu"
-                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
                               <span *ngIf="!shouldLinkParticipant(assignee.profileId, assignee.name)"
                                 [ngClass]="{'highlight': highlightClass(assignee.profileId)}">{{ assignee.name }}</span>
@@ -436,7 +439,7 @@
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
                                 [menuTrigger]="teammateMenu"
-                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
                               <span *ngIf="!shouldLinkParticipant(assignee.profileId, assignee.name)"
                                 [ngClass]="{'highlight': highlightClass(assignee.profileId)}">{{ assignee.name }}</span>
@@ -447,11 +450,18 @@
                         <ng-container *ngSwitchCase="'REQUEST_ASSIGNED_MANUAL'">
                           <ng-container *ngIf="usesActorLedManualAssignmentPhrase(activity); else requestAssignedManualDefault">
                             <ng-container *ngIf="getAssignmentActor(activity) as actor">
+                              <activities-bot-link
+                                *ngIf="isManualAssignmentBotActor(activity)"
+                                [label]="actor.name"
+                                [highlighted]="highlightClass(actor.profileId)"
+                                (linkClick)="onManualAssignmentActorClick($event, activity)">
+                              </activities-bot-link>
                               <activities-teammate-link
+                                *ngIf="!isManualAssignmentBotActor(activity)"
                                 [label]="actor.name"
                                 [highlighted]="highlightClass(actor.profileId)"
                                 [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
-                                [menuTrigger]="isManualAssignmentBotActor(activity) ? null : teammateMenu"
+                                [menuTrigger]="teammateMenu"
                                 (linkClick)="onManualAssignmentActorClick($event, activity)">
                               </activities-teammate-link>
                             </ng-container>
@@ -477,7 +487,7 @@
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
                                 [menuTrigger]="teammateMenu"
-                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
                             </ng-container>.
                           </ng-container>
@@ -504,16 +514,23 @@
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
                                 [menuTrigger]="teammateMenu"
-                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
                             </ng-container>
                             by
                             <ng-container *ngIf="getAssignmentActor(activity) as actor">
+                              <activities-bot-link
+                                *ngIf="isManualAssignmentBotActor(activity)"
+                                [label]="actor.name"
+                                [highlighted]="highlightClass(actor.profileId)"
+                                (linkClick)="onManualAssignmentActorClick($event, activity)">
+                              </activities-bot-link>
                               <activities-teammate-link
+                                *ngIf="!isManualAssignmentBotActor(activity)"
                                 [label]="actor.name"
                                 [highlighted]="highlightClass(actor.profileId)"
                                 [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
-                                [menuTrigger]="isManualAssignmentBotActor(activity) ? null : teammateMenu"
+                                [menuTrigger]="teammateMenu"
                                 (linkClick)="onManualAssignmentActorClick($event, activity)">
                               </activities-teammate-link>
                             </ng-container>
@@ -535,16 +552,23 @@
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
                                 [menuTrigger]="teammateMenu"
-                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId)">
+                                (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
                             </ng-container>
                             by
                             <ng-container *ngIf="getAssignmentActor(activity) as actor">
+                              <activities-bot-link
+                                *ngIf="isManualAssignmentBotActor(activity)"
+                                [label]="actor.name"
+                                [highlighted]="highlightClass(actor.profileId)"
+                                (linkClick)="onManualAssignmentActorClick($event, activity)">
+                              </activities-bot-link>
                               <activities-teammate-link
+                                *ngIf="!isManualAssignmentBotActor(activity)"
                                 [label]="actor.name"
                                 [highlighted]="highlightClass(actor.profileId)"
                                 [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
-                                [menuTrigger]="isManualAssignmentBotActor(activity) ? null : teammateMenu"
+                                [menuTrigger]="teammateMenu"
                                 (linkClick)="onManualAssignmentActorClick($event, activity)">
                               </activities-teammate-link>
                             </ng-container>
@@ -559,7 +583,7 @@
                               [highlighted]="highlightClass(actor.profileId)"
                               [avatarView]="getTeammateAvatarView(actor.profileId)"
                               [menuTrigger]="teammateMenu"
-                              (linkClick)="handleTeammateProfileLinkClick($event, actor.profileId)">
+                              (linkClick)="handleTeammateProfileLinkClick($event, actor.profileId, activity)">
                             </activities-teammate-link>
                           </ng-container>
                           <ng-template #assignedSelfActorFallback>
@@ -575,8 +599,8 @@
                         </ng-container>
 
                         <ng-container *ngSwitchCase="'REQUEST_UNASSIGNED'">
-                          <ng-container *ngIf="activity?.actor?.type === 'system'; else requestUnassignedDefault">
-                            <span class="activities-new-system-actor">{{ systemActorLabel(activity) }}</span> unassigned
+                          <ng-container *ngIf="isSystemUnassignActivity(activity); else requestUnassignedDefault">
+                            <span class="activities-new-system-actor">{{ systemActorLabel(activity) }}</span> removed
                             <ng-container *ngIf="getUnassignedParticipant(activity) as participant">
                               <activities-teammate-link
                                 *ngIf="shouldLinkParticipant(participant.profileId, participant.name)"
@@ -584,7 +608,7 @@
                                 [highlighted]="highlightClass(participant.profileId)"
                                 [avatarView]="participant.avatarView"
                                 [menuTrigger]="teammateMenu"
-                                (linkClick)="handleTeammateProfileLinkClick($event, participant.profileId)">
+                                (linkClick)="handleTeammateProfileLinkClick($event, participant.profileId, activity)">
                               </activities-teammate-link>
                               <span *ngIf="!shouldLinkParticipant(participant.profileId, participant.name)"
                                 [ngClass]="{'highlight': highlightClass(participant.profileId)}">{{ participant.name }}</span>
@@ -603,7 +627,7 @@
                                 [highlighted]="highlightClass(participant.profileId)"
                                 [avatarView]="participant.avatarView"
                                 [menuTrigger]="teammateMenu"
-                                (linkClick)="handleTeammateProfileLinkClick($event, participant.profileId)">
+                                (linkClick)="handleTeammateProfileLinkClick($event, participant.profileId, activity)">
                               </activities-teammate-link>
                               <span *ngIf="!shouldLinkParticipant(participant.profileId, participant.name)"
                                 [ngClass]="{'highlight': highlightClass(participant.profileId)}">{{ participant.name }}</span>
@@ -636,7 +660,7 @@
                           [highlighted]="highlightClass(parts.actorProfileId)"
                           [avatarView]="getTeammateAvatarView(parts.actorProfileId)"
                           [menuTrigger]="teammateMenu"
-                          (linkClick)="handleTeammateProfileLinkClick($event, parts.actorProfileId)">
+                          (linkClick)="handleTeammateProfileLinkClick($event, parts.actorProfileId, activity)">
                         </activities-teammate-link>
                         <span>{{ parts.before }}</span>
                         <span *ngIf="parts.link && parts.requestId" class="link-to-user-profile"

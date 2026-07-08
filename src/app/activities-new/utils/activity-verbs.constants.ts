@@ -54,6 +54,7 @@ export const ACTIVITY_ICON_BY_VERB: Record<string, string> = {
 };
 
 export const DEFAULT_ACTIVITY_ICON = 'assets/img/activities/user-edit-solid_v2.svg';
+export const MANUAL_ASSIGNMENT_BOT_ACTOR_ICON = 'assets/img/activities/chatbot-plus.svg';
 export const SYSTEM_EDIT_ACTIVITY_ICON = 'assets/img/activities/system-edit.svg';
 export const SYSTEM_UNASSIGNED_ACTIVITY_ICON = 'assets/img/activities/system-unassigned.svg';
 export const SYSTEM_ASSIGNED_ACTIVITY_ICON = 'assets/img/activities/system-assigned.svg';

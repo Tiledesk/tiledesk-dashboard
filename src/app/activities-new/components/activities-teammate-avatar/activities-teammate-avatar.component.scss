@@ -18,6 +18,8 @@
   line-height: 1;
   text-transform: uppercase;
   vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
 
 :host(.activities-teammate-avatar--menu) {

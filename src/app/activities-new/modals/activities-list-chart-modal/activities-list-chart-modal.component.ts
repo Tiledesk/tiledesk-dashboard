@@ -7,7 +7,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { DateFilterFn } from '@angular/material/datepicker';
+import { DateFilterFn, MatDateRangePicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import moment from 'moment';
 
@@ -36,6 +36,7 @@ export interface ActivitiesListChartDialogData {
 export class ActivitiesListChartModalComponent implements AfterViewInit, OnDestroy {
   @ViewChild('timelineChart') timelineChartRef?: ElementRef<HTMLDivElement>;
   @ViewChild('timelineSlider') timelineSliderRef?: ElementRef<HTMLDivElement>;
+  @ViewChild('chartDatePicker') chartDatePicker?: MatDateRangePicker<Date>;
 
   showSpinner = true;
   loadError = false;
@@ -111,6 +112,10 @@ export class ActivitiesListChartModalComponent implements AfterViewInit, OnDestr
 
   close(): void {
     this.dialogRef.close();
+  }
+
+  openChartDatePicker(): void {
+    this.chartDatePicker?.open();
   }
 
   onStartDateInput(value: Date | null): void {

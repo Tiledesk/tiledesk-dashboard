@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatDateRangePicker } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -24,7 +25,7 @@ import { ActivitiesListChartModalComponent } from './modals/activities-list-char
 import { TeammateAvatarView } from './components/activities-teammate-avatar/activities-teammate-avatar.component';
 
 import { ActivitiesService } from './activities-service/activities.service';
-import { ACTIVITY_FILTER_OPTION_DEFINITIONS, ActivityFilterOption } from './utils/activity-verbs.constants';
+import { ACTIVITY_FILTER_OPTION_DEFINITIONS, ActivityFilterOption, MANUAL_ASSIGNMENT_BOT_ACTOR_ICON } from './utils/activity-verbs.constants';
 import {
   buildRequestCloseDisplayContext,
   findEnrichedParticipantName,
@@ -64,6 +65,7 @@ import {
   isManualAssignmentDepartmentAssignee as isManualAssignmentDepartmentAssigneeFn,
   isManualAssignmentUserAssignee as isManualAssignmentUserAssigneeFn,
   isManualAssignmentReassign as isManualAssignmentReassignFn,
+  isSystemUnassignActivity as isSystemUnassignActivityFn,
   usesActorLedManualAssignmentPhrase as usesActorLedManualAssignmentPhraseFn,
   systemActorLabel as systemActorLabelFn,
   shouldLinkParticipant as shouldLinkParticipantFn,
@@ -84,6 +86,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   @ViewChild('searchbtn', { static: false }) searchbtnRef: ElementRef;
   @ViewChild('clearsearchbtn', { static: false }) clearsearchbtnRef: ElementRef;
   @ViewChild('exportcsvbtn', { static: false }) exportcsvbtnRef: ElementRef;
+  @ViewChild('picker') dateRangePicker?: MatDateRangePicker<Date>;
 
   projectId: string;
   currentUserId: string;
@@ -127,6 +130,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   PERMISSION_TO_READ_KB: boolean;
   browserLang: string;
   teammateMenuParticipantId: string | null = null;
+  teammateMenuActivityDate: Date | null = null;
 
   private unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -287,6 +291,10 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     this.endDateTemp = null;
     this.startDate = null;
     this.endDate = null;
+  }
+
+  openDatePicker(): void {
+    this.dateRangePicker?.open();
   }
 
   getQueryStringValues() {
@@ -587,6 +595,9 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   }
 
   activityIcon(activity: ActivityRecord): string {
+    if (effectiveVerb(activity) === 'REQUEST_ASSIGNED_MANUAL' && this.isManualAssignmentBotActor(activity)) {
+      return MANUAL_ASSIGNMENT_BOT_ACTOR_ICON;
+    }
     return getActivityIconForActivity(activity);
   }
 
@@ -700,8 +711,23 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     user['fillColour'] = 'rgb(98, 100, 167)';
   }
 
-  setTeammateMenuParticipant(participantId: string): void {
+  setTeammateMenuContext(participantId: string, activity?: ActivityRecord): void {
     this.teammateMenuParticipantId = participantId;
+    this.teammateMenuActivityDate = this.resolveActivityDate(activity);
+  }
+
+  private resolveActivityDate(activity?: ActivityRecord): Date | null {
+    if (!activity) {
+      return null;
+    }
+
+    const raw = activity.updatedAt || activity.createdAt;
+    if (!raw) {
+      return null;
+    }
+
+    const parsed = moment(raw);
+    return parsed.isValid() ? parsed.startOf('day').toDate() : null;
   }
 
   buildTeammateChartQueryString(teammateUserId: string): string {
@@ -763,7 +789,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     return getTargetUserId(activity);
   }
 
-  handleTeammateProfileLinkClick(event: MouseEvent, participantId: string): void {
+  handleTeammateProfileLinkClick(event: MouseEvent, participantId: string, activity?: ActivityRecord): void {
     event.stopPropagation();
     if (!participantId) {
       return;
@@ -774,13 +800,17 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.setTeammateMenuParticipant(participantId);
+    this.setTeammateMenuContext(participantId, activity);
   }
 
   formatRequestCloseAssignedAt = formatRequestCloseAssignedAt;
   isLegacyRequestCloseActor = isLegacyRequestCloseActor;
 
-  handleRequestCloseParticipantClick(event: MouseEvent, participant: RequestCloseParticipantDisplay): void {
+  handleRequestCloseParticipantClick(
+    event: MouseEvent,
+    participant: RequestCloseParticipantDisplay,
+    activity: ActivityRecord,
+  ): void {
     event.stopPropagation();
     if (!participant?.id) {
       return;
@@ -791,7 +821,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.handleTeammateProfileLinkClick(event, participant.id);
+    this.handleTeammateProfileLinkClick(event, participant.id, activity);
   }
 
   onRequestCreateAssigneeClick(event: MouseEvent, activity: ActivityRecord): void {
@@ -806,7 +836,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.handleTeammateProfileLinkClick(event, assigneeId);
+    this.handleTeammateProfileLinkClick(event, assigneeId, activity);
   }
 
   goToTeammateProfileFromMenu(): void {
@@ -830,6 +860,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       data: {
         teammateName: this.getTeammateDisplayName(this.teammateMenuParticipantId),
         teammateUserId: this.teammateMenuParticipantId,
+        activityDate: this.teammateMenuActivityDate,
         activitiesFilter: this.arrayOfSelectedActivity || '',
         direction: this.direction,
         enrichActivity: (activity) => this.enrichActivity(activity),
@@ -1109,6 +1140,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   isManualAssignmentUserAssignee = isManualAssignmentUserAssigneeFn;
   isManualAssignmentReassign = isManualAssignmentReassignFn;
   usesActorLedManualAssignmentPhrase = usesActorLedManualAssignmentPhraseFn;
+  isSystemUnassignActivity = isSystemUnassignActivityFn;
   systemActorLabel = systemActorLabelFn;
   shouldLinkParticipant = shouldLinkParticipantFn;
 
@@ -1164,7 +1196,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.handleTeammateProfileLinkClick(event, actor.profileId);
+    this.handleTeammateProfileLinkClick(event, actor.profileId, activity);
   }
 
   private resolveMisclassifiedManualAssignmentBotProfileId(activity: ActivityRecord): string | null {

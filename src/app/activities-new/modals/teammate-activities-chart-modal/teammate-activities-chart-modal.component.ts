@@ -7,7 +7,7 @@ import {
   OnDestroy,
   ViewChild,
 } from '@angular/core';
-import { DateFilterFn } from '@angular/material/datepicker';
+import { DateFilterFn, MatDateRangePicker } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import moment from 'moment';
 
@@ -22,6 +22,7 @@ import {
 export interface TeammateActivitiesChartDialogData {
   teammateName: string;
   teammateUserId: string;
+  activityDate?: Date | null;
   activitiesFilter: string;
   direction: number;
   enrichActivity: (activity: ActivityRecord) => ActivityRecord;
@@ -36,6 +37,7 @@ export interface TeammateActivitiesChartDialogData {
 export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnDestroy {
   @ViewChild('timelineChart') timelineChartRef?: ElementRef<HTMLDivElement>;
   @ViewChild('timelineSlider') timelineSliderRef?: ElementRef<HTMLDivElement>;
+  @ViewChild('chartDatePicker') chartDatePicker?: MatDateRangePicker<Date>;
 
   showSpinner = true;
   loadError = false;
@@ -73,7 +75,12 @@ export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnD
       this.dialogOpened = true;
       this.scheduleChartRender();
     });
-    this.setTodayDateRange();
+    if (this.data.activityDate) {
+      const day = moment(this.data.activityDate).startOf('day').toDate();
+      this.setDateRange(day, day);
+    } else {
+      this.setTodayDateRange();
+    }
     this.loadActivities();
   }
 
@@ -103,6 +110,10 @@ export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnD
 
   close(): void {
     this.dialogRef.close();
+  }
+
+  openChartDatePicker(): void {
+    this.chartDatePicker?.open();
   }
 
   onStartDateInput(value: Date | null): void {
@@ -224,8 +235,12 @@ export class TeammateActivitiesChartModalComponent implements AfterViewInit, OnD
 
   private setTodayDateRange(): void {
     const today = new Date();
-    this.startDate = today;
-    this.endDate = today;
+    this.setDateRange(today, today);
+  }
+
+  private setDateRange(start: Date, end: Date): void {
+    this.startDate = start;
+    this.endDate = end;
     this.syncDateTemps();
   }
 

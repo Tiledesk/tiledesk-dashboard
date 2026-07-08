@@ -73,6 +73,16 @@
   max-width: 100%;
   box-sizing: border-box;
 
+  ::ng-deep .mat-date-range-input {
+    cursor: pointer;
+  }
+
+  ::ng-deep input.mat-start-date,
+  ::ng-deep input.mat-end-date,
+  ::ng-deep .mat-date-range-input-separator {
+    cursor: pointer;
+  }
+
   ::ng-deep .mat-form-field-wrapper {
     width: 100%;
     margin: 0;

@@ -15,6 +15,7 @@ import { SharedModule } from 'app/shared/shared.module';
 import { ActivitiesNewComponent } from './activities-new.component';
 import { ActivitiesTeammateAvatarComponent } from './components/activities-teammate-avatar/activities-teammate-avatar.component';
 import { ActivitiesTeammateLinkComponent } from './components/activities-teammate-link/activities-teammate-link.component';
+import { ActivitiesBotLinkComponent } from './components/activities-bot-link/activities-bot-link.component';
 import { TeammateActivitiesChartModalComponent } from './modals/teammate-activities-chart-modal/teammate-activities-chart-modal.component';
 import { ActivitiesListChartModalComponent } from './modals/activities-list-chart-modal/activities-list-chart-modal.component';
 
@@ -27,6 +28,7 @@ const routes: Routes = [
     ActivitiesNewComponent,
     ActivitiesTeammateAvatarComponent,
     ActivitiesTeammateLinkComponent,
+    ActivitiesBotLinkComponent,
     TeammateActivitiesChartModalComponent,
     ActivitiesListChartModalComponent,
   ],
