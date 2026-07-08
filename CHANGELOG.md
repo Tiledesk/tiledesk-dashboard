@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.181-AR
+- Minor improvements and bug fixing
+
 ### 2.7.180-AR
 - Minor improvements and bug fixing
 
