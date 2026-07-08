@@ -122,7 +122,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_TRASH_LEAD: boolean;
   PERMISSION_TO_READ_LEADS: boolean;
 
-    private contactDataLoaded = false;
+  private contactDataLoaded = false;
 
   private backSub?: Subscription;
   
