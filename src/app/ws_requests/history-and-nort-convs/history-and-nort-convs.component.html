@@ -215,7 +215,6 @@
 
                   <div class="col-sm-12 left-date-picker" >
                     <mat-form-field class="custom-date-range-picker" 
-                      [ngClass]="{'date-range-error': !areDatesComplete}"
                       appearance="standard">
                       <mat-date-range-input [rangePicker]="picker" (click)="openDatePicker()">
                         <input (dateChange)="addEventStartDate($event.value)"
@@ -229,17 +228,12 @@
                           placeholder="{{'HistoryPage.EndDate' | translate}}" style="padding: 0 5px;">
                       </mat-date-range-input>
                       
-                      <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
+                      <mat-datepicker-toggle matSuffix (click)="clearDateRange($event)">
                         <mat-icon matDatepickerToggleIcon>clear</mat-icon>
                       </mat-datepicker-toggle>
 
                       <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
-                    <!-- Info message when dates are not complete -->
-                    <div *ngIf="!areDatesComplete" class="date-validation-message">
-                      <i class="material-icons" style="font-size: 16px;position: relative;top: -1px;">info</i>
-                      {{ 'PleaseSelectBothDates' | translate }}
-                    </div>
                   </div>
                 </div>
 

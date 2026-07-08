@@ -88,6 +88,7 @@
         "SelectRow": "Select row",
         "Search": "Search",
         "RefreshTable": "Refresh table",
+        "TotalRows": "Total number of rows:",
         "NoSearchResults": "No matches for the specified parameters",
         "Null": "Null"
     },

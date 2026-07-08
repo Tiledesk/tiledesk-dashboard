@@ -1,7 +1,18 @@
 # tiledesk-dashboard
 
+### 2.7.236-stage
+- Implements automatic path switching for Analytics pages
+- Fixes the bug: Message retention time does not display the user-set value when changing paths
+- Improves Data Tables
+
+### 2.7.235-stage
+- Improves new activities
+
 ### 2.7.234-stage
 - In panel mode, clicking a row in the Contact conversations tab opens a full-height `MatDialog` with the conversation messages
+
+### 2.7.233-stage
+- Implements new activities
 
 ### 2.7.232-stage
 - Fixes the bug: Uploaded files can be modified

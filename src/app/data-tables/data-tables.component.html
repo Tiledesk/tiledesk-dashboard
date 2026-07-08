@@ -92,7 +92,7 @@
             <div class="dt-toolbar">
               <button  class="btn btn-tdblu-no-boxshadow"
                       (click)="onAddRow()"
-                      [disabled]="!getColumns(selectedTable).length">
+                      [disabled]="!getColumns(selectedTable).length || isTableRowLimitReached">
                 <!-- <mat-icon>add</mat-icon> -->
                 {{ 'DataTables.AddRow' | translate }}
               </button>
@@ -115,14 +115,21 @@
           </div>
 
           <div class="dt-search-bar">
-            <button mat-icon-button
-                    type="button"
-                    class="dt-refresh-btn"
-                    [disabled]="isLoadingRows || !getColumns(selectedTable).length"
-                    (click)="onRefreshTable()"
-                    [attr.aria-label]="('DataTables.RefreshTable' | translate)">
-              <mat-icon>refresh</mat-icon>
-            </button>
+            <div class="dt-search-bar-start">
+              <button mat-icon-button
+                      type="button"
+                      class="dt-refresh-btn"
+                      [disabled]="isLoadingRows || !getColumns(selectedTable).length"
+                      (click)="onRefreshTable()"
+                      [attr.aria-label]="('DataTables.RefreshTable' | translate)">
+                <mat-icon>refresh</mat-icon>
+              </button>
+              <span *ngIf="getColumns(selectedTable).length"
+                    class="dt-row-count"
+                    [class.dt-row-count--limit]="isTableRowLimitReached">
+                {{ 'DataTables.TotalRows' | translate }} {{ totalTableRowCount }} / {{ maxTableRows }}
+              </span>
+            </div>
             <div class="dt-search-input">
               <input type="text"
                      [(ngModel)]="rowSearchQuery"
@@ -275,7 +282,7 @@
                 </tr>
 
                 <ng-container *ngIf="!isLoadingRows">
-                  <tr *ngFor="let row of rows; let rowIndex = index; trackBy: trackByRowId"
+                  <tr *ngFor="let row of pagedRows; let rowIndex = index; trackBy: trackByRowId"
                       class="dt-data-row"
                       [class.dt-data-row--selected]="isRowSelected(row)">
                     <td *ngIf="showRowSelectionColumn"
@@ -418,6 +425,7 @@
                       <button type="button"
                               class="dt-add-row-inline-btn dt-add-row-inline-btn--inline"
                               (click)="onAddRow()"
+                              [disabled]="isTableRowLimitReached"
                               [attr.aria-label]="('DataTables.AddRow' | translate)">
                         <mat-icon>add</mat-icon>
                       </button>
@@ -434,6 +442,28 @@
               </tbody>
             </table>
             </form>
+          </div>
+
+          <div class="pagination-controls" *ngIf="showRowsPagination">
+            <button class="btn"
+                    type="button"
+                    (click)="prevRowsPage()"
+                    style="border-bottom-right-radius: 0px !important; border-top-right-radius: 0px !important; border-top-left-radius: 9999px !important; border-bottom-left-radius: 9999px !important; box-shadow: unset; background-color: var(--blue-20);"
+                    [disabled]="currentRowsPage === 1">
+              <span class="material-icons">keyboard_arrow_left</span>
+            </button>
+            <button class="btn"
+                    type="button"
+                    style="border-radius: 0px !important; pointer-events: none; box-shadow: unset; background-color: var(--blue-20);">
+              {{ currentRowsPage }} / {{ totalRowsPages }}
+            </button>
+            <button class="btn"
+                    type="button"
+                    (click)="nextRowsPage()"
+                    style="border-bottom-left-radius: 0px !important; border-top-left-radius: 0px !important; border-bottom-right-radius: 9999px !important; box-shadow: unset; background-color: var(--blue-20); border-top-right-radius: 9999px !important;"
+                    [disabled]="currentRowsPage * rowsPageSize >= rows.length">
+              <span class="material-icons">keyboard_arrow_right</span>
+            </button>
           </div>
 
           <div *ngIf="showRowSelectionColumn && hasRowSelection" class="dt-row-selection-bar">
