@@ -17,8 +17,7 @@
 
             <div class="flex flex-col sm-flex-row flex-auto sm-items-center min-w-0 my-8 sm:my-12">
               <div class="flex flex-auto items-center min-w-0">
-                <!-- Brand logo on left -->
-                <!-- <div class="flex-0  overflow-hidden">
+                <div class="flex-0  overflow-hidden">
 
                   <svg *ngIf="isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
@@ -44,13 +43,26 @@
                   <div *ngIf="!isVisiblePay && !custom_company_home_logo" class="logo-no--text">
                     <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 35px; height: auto;" />
                   </div>
+                  <!-- <svg *ngIf="!isVisiblePay && !custom_company_home_logo" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
+                    style="enable-background:new 0 0 65.2 65.2;" xml:space="preserve" class="td--logo">
+                    <g>
+                      <path fill="#F18876" d="M54.9,29.8H35.6c-1.7,0-3-1.4-3-3V7.5c0-1.7-1.4-3-3-3H10.3c-1.7,0-3,1.4-3,3v22.3v22.3c0,1.7,1.4,3,3,3H9h3.5
+                      c0.7,0,1.4,0.3,1.9,0.8l2.2,2.2l2.1,2.1c0.7,0.7,1.8,0.7,2.5,0l2.1-2.1l2.2-2.2c0.5-0.5,1.2-0.8,1.9-0.8h27.6c1.7,0,3-1.4,3-3V32.8
+                      C58,31.2,56.6,29.8,54.9,29.8" />
+                    </g>
+                    <g class="running">
+                      <path d="M56.1,25.7H38.5c-1,0-1.8-0.8-1.8-1.8V6.3c0-1,0.8-1.8,1.8-1.8h17.6c1,0,1.8,0.8,1.8,1.8v17.6
+                      C58,24.9,57.1,25.7,56.1,25.7" fill="#E5BBAD" />
+                    </g>
+                  </svg> -->
 
                   <div *ngIf="!isVisiblePay && custom_company_home_logo">
                     <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 35px; height: auto;" />
                   </div>
 
-                </div> -->
-             
+                </div>
+                <!-- style="flex-direction: row !important;" -->
                 <div class="flex flex-col min-w-0 ml-4">
                   <!-- leading-7 -->
                   <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
