@@ -840,6 +840,25 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
         }
 
         // --------------------------------
+        // PERMISSION TO VIEW RETENTION
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always have permission
+          this.PERMISSION_TO_VIEW_RETENTION = true;
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_RETENTION:', this.PERMISSION_TO_VIEW_RETENTION);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_RETENTION = false;
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_RETENTION:', this.PERMISSION_TO_VIEW_RETENTION);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_RETENTION = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_RETENTION_READ);
+          this.logger.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_RETENTION:', this.PERMISSION_TO_VIEW_RETENTION);
+        }
+
+        // --------------------------------
         // PERMISSION TO VIEW ADVANCED
         // ---------------------------------
         if (status.role === 'owner' || status.role === 'admin') {
@@ -1672,15 +1691,14 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   goToProjectSettings_RetentionPolicy() {
-    if (this.PERMISSION_TO_VIEW_RETENTION === false) {  
-      this.notify.presentDialogNoPermissionToViewThisSection()
-      return
-    }
-    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment isVisiblePaymentTab ', this.isVisiblePaymentTab, 'overridePay ', this.overridePay , 'PERMISSION_TO_VIEW_SMART_ASSIGN ' , this.PERMISSION_TO_VIEW_SMART_ASSIGN);
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
-      if (this.USER_ROLE !== 'agent') {
+      if ((this.USER_ROLE === 'owner' || this.USER_ROLE === 'admin') || (this.USER_ROLE !== 'owner' && this.USER_ROLE !== 'admin' && this.USER_ROLE !== 'agent' && this.PERMISSION_TO_VIEW_RETENTION)) {
         this.router.navigate(['project/' + this.id_project + '/project-settings/retention'])
+      } else {
+        this.notify.presentDialogNoPermissionToViewThisSection()
       }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 
@@ -2189,29 +2207,41 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
       }
     }
 
-    this.applyRetentionSelectionFromProjectAndPlan();
+    this.syncRetentionItemsForPlan();
   }
 
-   /**
-   * Restricted plan: only 1 month (30) selectable; otherwise full list.
-   * When unrestricted and no saved retentionDays, default UI to No retention (-1).
-   */
-  private applyRetentionSelectionFromProjectAndPlan(): void {
+  /** Rebuild ng-select items from plan restrictions; does not reset the user selection. */
+  private syncRetentionItemsForPlan(): void {
     const restricted = this.isAvailableRetention === false;
     this.messages_retention_items = this.messages_retention.map((item) => ({
       name: item.name,
       value: item.value,
-      disabled: restricted && item.value !== 30
+      disabled: restricted && item.value !== 30,
     }));
 
     if (restricted) {
       this.selectedRetention = 30;
+    }
+  }
+
+  /**
+   * Apply retentionDays loaded from getProjectById only.
+   * If the server sends a day count not present in `messages_retention` (common on Custom),
+   * ng-select cannot match bindValue — fall back to -1 so the control never stays blank.
+   */
+  private applyRetentionFromServer(): void {
+    if (this.isAvailableRetention === false) {
       return;
     }
 
     if (this.retentionDaysLoadedFromServer && this.pendingRetentionSelection !== null) {
       this.selectedRetention = this.pendingRetentionSelection;
     } else {
+      this.selectedRetention = -1;
+    }
+
+    const allowedRetentionValues = new Set(this.messages_retention.map((item) => item.value));
+    if (!allowedRetentionValues.has(this.selectedRetention)) {
       this.selectedRetention = -1;
     }
   }
@@ -3633,7 +3663,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
             this.retentionDaysLoadedFromServer = false;
             this.logger.log('[PRJCT-EDIT-ADD] retentionDays no value from server');
           }
-          this.applyRetentionSelectionFromProjectAndPlan();
+          this.syncRetentionItemsForPlan();
+          this.applyRetentionFromServer();
 
          
 
@@ -3668,7 +3699,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
           this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
           this.pendingRetentionSelection = null;
           this.retentionDaysLoadedFromServer = false;
-          this.applyRetentionSelectionFromProjectAndPlan();
+          this.syncRetentionItemsForPlan();
+          this.applyRetentionFromServer();
           this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
           this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
@@ -3970,6 +4002,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   onSelectRetention(value: any): void {
+    if (this.isAvailableRetention === false && value !== 30) {
+      this.selectedRetention = 30;
+      return;
+    }
     this.selectedRetention = value;
 
     this.logger.log('[PRJCT-EDIT-ADD] selectedRetention ', this.selectedRetention);
