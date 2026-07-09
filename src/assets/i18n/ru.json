@@ -1825,7 +1825,11 @@
         "DateRange": "Диапазон дат",
         "ClearSearch": "Очистить поиск",
         "HistoryIsOnlyAvailableForThePast14Days": "История доступна только за последние 14 дней",
-        "ForUnlimitedChatHistory": "чтобы получить неограниченную историю чата"
+        "ForUnlimitedChatHistory": "чтобы получить неограниченную историю чата",
+        "StartDate": "Дата начала",
+        "EndDate": "Дата окончания",
+        "ActivityType": "Тип активности",
+        "AllActivities": "Все активности"
     },
     "Trigger": {
         "Trigger": "Триггеры",

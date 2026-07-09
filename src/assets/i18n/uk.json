@@ -1841,7 +1841,11 @@
         "DateRange": "Проміжок часу",
         "ClearSearch": "Очистити пошук",
         "HistoryIsOnlyAvailableForThePast14Days": "Історія доступна лише за останні 14 днів",
-        "ForUnlimitedChatHistory": "щоб отримати необмежену історію чату"
+        "ForUnlimitedChatHistory": "щоб отримати необмежену історію чату",
+        "StartDate": "Дата початку",
+        "EndDate": "Дата закінчення",
+        "ActivityType": "Тип активності",
+        "AllActivities": "Всі активності"
     },
     "Trigger": {
         "Trigger": "Тригери",

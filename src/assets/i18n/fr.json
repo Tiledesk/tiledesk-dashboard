@@ -1824,7 +1824,11 @@
         "DateRange": "Plage de dates",
         "ClearSearch": "Effacer la recherche",
         "HistoryIsOnlyAvailableForThePast14Days": "L'historique n'est disponible que pour les 14 derniers jours",
-        "ForUnlimitedChatHistory": "pour obtenir un historique de chat illimité"
+        "ForUnlimitedChatHistory": "pour obtenir un historique de chat illimité",
+        "StartDate": "Date de début",
+        "EndDate": "Date de fin",
+        "ActivityType": "Type d'activité",
+        "AllActivities": "Toutes les activités"
     },
     "Trigger": {
         "Trigger": "Déclencheurs",

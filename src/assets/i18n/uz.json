@@ -1823,7 +1823,11 @@
         "DateRange": "Sana diapazoni",
         "ClearSearch": "Qidiruvni tozalash",
         "HistoryIsOnlyAvailableForThePast14Days": "Tarix faqat oxirgi 14 kun uchun mavjud",
-        "ForUnlimitedChatHistory": "cheksiz chat tarixini olish uchun"
+        "ForUnlimitedChatHistory": "cheksiz chat tarixini olish uchun",
+        "StartDate": "Boshlanish sanasi",
+        "EndDate": "Tugash sanasi",
+        "ActivityType": "Faoliyat turi",
+        "AllActivities": "Barcha faoliyatlar"
     },
     "Trigger": {
         "Trigger": "Triggerlar",

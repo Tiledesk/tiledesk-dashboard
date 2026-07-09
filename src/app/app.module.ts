@@ -540,7 +540,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // HistoryAndNortConvsComponent, // now lazy
     // ContactDetailsComponent, // now lazy
     // ContactEditComponent, // now lazy
-    ActivitiesComponent,
+    // ActivitiesComponent, // now lazy (activities-new)
     // AnalyticsStaticComponent, // now lazy
     // ActivitiesStaticComponent, // now lazy
     FaqTestTrainBotComponent,

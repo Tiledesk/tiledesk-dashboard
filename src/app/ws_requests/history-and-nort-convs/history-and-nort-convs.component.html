@@ -233,7 +233,6 @@
                     </mat-form-field> -->
 
                     <mat-form-field class="custom-date-range-picker" 
-                      [ngClass]="{'date-range-error': !areDatesComplete}"
                       appearance="standard">
                       <mat-date-range-input [rangePicker]="picker" (click)="openDatePicker()">
                         <input (dateChange)="addEventStartDate($event.value)"

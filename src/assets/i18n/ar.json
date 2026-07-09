@@ -1825,7 +1825,11 @@
         "DateRange": "نطاق الموعد",
         "ClearSearch": "مسح البحث",
         "HistoryIsOnlyAvailableForThePast14Days": "السجل متاح فقط للأيام الـ 14 الماضية",
-        "ForUnlimitedChatHistory": "للحصول على سجل دردشة غير محدود"
+        "ForUnlimitedChatHistory": "للحصول على سجل دردشة غير محدود",
+        "StartDate": "تاريخ البداية",
+        "EndDate": "تاريخ الانتهاء",
+        "ActivityType": "نوع النشاط",
+        "AllActivities": "جميع الأنشطة"
     },
     "Trigger": {
         "Trigger": "محفزات",

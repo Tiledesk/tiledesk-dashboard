@@ -1824,7 +1824,11 @@
         "DateRange": "Período",
         "ClearSearch": "Limpar pesquisa",
         "HistoryIsOnlyAvailableForThePast14Days": "O histórico só está disponível nos últimos 14 dias",
-        "ForUnlimitedChatHistory": "para obter histórico de bate-papo ilimitado"
+        "ForUnlimitedChatHistory": "para obter histórico de bate-papo ilimitado",
+        "StartDate": "Data de início",
+        "EndDate": "Data de fim",
+        "ActivityType": "Tipo de atividade",
+        "AllActivities": "Todas as atividades"
     },
     "Trigger": {
         "Trigger": "Gatilhos",
