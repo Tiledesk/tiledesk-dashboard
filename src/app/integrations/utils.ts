@@ -33,7 +33,8 @@ export enum INTEGRATIONS_KEYS {
     VLLM = 'vllm',
     ELEVENLABS = "elevenlabs",
     CEREBRAS = "cerebras",
-    OPENROUTER = 'openrouter'
+    OPENROUTER = 'openrouter',
+    CONNECTORS = 'connectors'
 }
 
 //  OLLAMA = 'ollama',
@@ -51,6 +52,7 @@ export enum APPS_TITLE {
 export enum INTEGRATIONS_CATEGORIES {
     AI = 'ai',
     MCP = 'mcp',
+    CONNECTOR = 'connector',
     VOICE = 'voice',
     AUTOMATION = "automation",
     CHANNEL = "channel",
@@ -67,6 +69,7 @@ export enum INTEGRATIONS_CATEGORIES {
 export const CATEGORIES_LIST = [
     { type: INTEGRATIONS_CATEGORIES.AI, name: "Artificial Intelligence" },
     { type: INTEGRATIONS_CATEGORIES.MCP, name: "MCP" },
+    { type: INTEGRATIONS_CATEGORIES.CONNECTOR, name: "Connectors" },
     { type: INTEGRATIONS_CATEGORIES.VOICE, name: "Voice" },
     { type: INTEGRATIONS_CATEGORIES.CHANNEL, name: "Channels" },
     //{ type: INTEGRATIONS_CATEGORIES.AUTOMATION, name: "Automation" },
@@ -123,6 +126,7 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "Cohere",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.COHERE,          src_icon: "assets/img/int/cohere_icon.svg",                 src_logo: "assets/img/int/cohere_logo.svg",             pro: true,  plan: 'Pro' },
     { name: "Ollama",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OLLAMA,          src_icon: "assets/img/int/ollama-icon.svg",                 src_logo: "assets/img/int/ollama-logo.png",             pro: true,  plan: 'Pro' },
     { name: "MCP Servers",           category: INTEGRATIONS_CATEGORIES.MCP,              key: INTEGRATIONS_KEYS.MCP,             src_icon: "assets/img/int/mcp-icon.png",                    src_logo: "assets/img/int/mcp-logo.png",                pro: true,  plan: 'Pro' },
+    { name: "Connectors",             category: INTEGRATIONS_CATEGORIES.CONNECTOR,        key: INTEGRATIONS_KEYS.CONNECTORS,      src_icon: "assets/img/int/mcp-icon.png",                    src_logo: "assets/img/int/mcp-logo.png",                pro: true,  plan: 'Pro' },
     { name: "vLLM",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.VLLM,            src_icon: "assets/img/int/vllm-icon.png",                   src_logo: "assets/img/int/vllm-logo.webp",               pro: true,  plan: 'Pro' },
     { name: "Deepseek",              category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.DEEPSEEK,        src_icon: "assets/img/int/deepseek-icon.svg",               src_logo: "assets/img/int/deepseek-logo.svg",           pro: true,  plan: 'Pro' },
     { name: "Qapla'",                category: INTEGRATIONS_CATEGORIES.ECOMMERCE,        key: INTEGRATIONS_KEYS.QAPLA,           src_icon: "assets/img/int/qapla-icon.jpg",                  src_logo: "assets/img/int/qapla-logo.png",              pro: true,  plan: 'Pro' },
@@ -238,6 +242,16 @@ export class McpIntegration extends Integration {
         this.name = INTEGRATIONS_KEYS.MCP;
         this.value = {
             servers: []
+        }
+    }
+}
+
+export class ConnectorsIntegration extends Integration {
+    constructor() {
+        super();
+        this.name = INTEGRATIONS_KEYS.CONNECTORS;
+        this.value = {
+            items: []
         }
     }
 }
