@@ -112,3 +112,137 @@ export function datetimeLocalToIso(value: string): string | null {
   }
   return date.toISOString();
 }
+
+/** Max UTF-8 bytes per string cell (aligned with server payload limit). */
+export const MAX_CELL_TEXT_BYTES = 512_000;
+
+/** Fallback total table size when `defaultTableMaxSizeBytes` is missing or invalid (30 MB). */
+export const DATA_TABLE_MAX_SIZE_FALLBACK_BYTES = 30_000_000;
+
+export function resolveDefaultTableMaxSizeBytes(rawValue: unknown): number {
+  if (rawValue == null || rawValue === '') {
+    return DATA_TABLE_MAX_SIZE_FALLBACK_BYTES;
+  }
+
+  const bytes = typeof rawValue === 'number'
+    ? rawValue
+    : Number(String(rawValue).trim());
+
+  if (!Number.isFinite(bytes) || bytes <= 0) {
+    return DATA_TABLE_MAX_SIZE_FALLBACK_BYTES;
+  }
+
+  return Math.round(bytes);
+}
+
+export function formatTableMaxSizeMegabytes(bytes: number): string {
+  const megabytes = Math.round(bytes / 1024 / 1024);
+  return `${megabytes} MB`;
+}
+
+/** Human-readable total table data size limit (aligned with server TABLE_SIZE_LIMIT_EXCEEDED). */
+export function resolveDataTableMaxSizeLabel(rawValue: unknown): string {
+  return formatTableMaxSizeMegabytes(resolveDefaultTableMaxSizeBytes(rawValue));
+}
+
+export function getUtf8ByteSize(value: string): number {
+  return new TextEncoder().encode(value).length;
+}
+
+export function isStringCellWithinByteLimit(
+  value: unknown,
+  maxBytes: number = MAX_CELL_TEXT_BYTES,
+): boolean {
+  if (value === null || value === undefined || value === '') {
+    return true;
+  }
+  return getUtf8ByteSize(String(value)) <= maxBytes;
+}
+
+function isHttpErrorResponse(value: unknown): boolean {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+  const payload = value as Record<string, unknown>;
+  return payload.status != null && payload.error != null && payload.url != null;
+}
+
+function extractApiErrorBody(value: unknown): Record<string, unknown> | null {
+  if (!value || typeof value !== 'object') {
+    return null;
+  }
+
+  if (isHttpErrorResponse(value)) {
+    const nested = (value as Record<string, unknown>).error;
+    if (nested && typeof nested === 'object' && !Array.isArray(nested)) {
+      return nested as Record<string, unknown>;
+    }
+    return null;
+  }
+
+  if (isApiErrorPayload(value)) {
+    return value as Record<string, unknown>;
+  }
+
+  return null;
+}
+
+function readApiErrorMessage(body: Record<string, unknown> | null): string {
+  if (!body) {
+    return '';
+  }
+  return String(body.err ?? body.error ?? body.message ?? '').toLowerCase();
+}
+
+function readApiErrorCode(body: Record<string, unknown> | null): string {
+  if (!body) {
+    return '';
+  }
+  return String(body.message ?? body.err ?? body.error ?? '').toUpperCase();
+}
+
+export function isTableSizeLimitExceededError(err: unknown): boolean {
+  return readApiErrorCode(extractApiErrorBody(err)) === 'TABLE_SIZE_LIMIT_EXCEEDED';
+}
+
+export function isRequestEntityTooLargeError(err: unknown): boolean {
+  if (isTableSizeLimitExceededError(err)) {
+    return false;
+  }
+
+  const body = extractApiErrorBody(err);
+  const message = readApiErrorMessage(body);
+  if (message.includes('request entity too large')) {
+    return true;
+  }
+
+  return body?.err != null && body?.limit != null;
+}
+
+export function isLikelyPersistedApiErrorText(value: unknown): boolean {
+  if (value == null || value === '') {
+    return false;
+  }
+
+  const text = String(value).toLowerCase();
+  return text.includes('entity too large')
+    || (text.includes('limit') && text.includes('512000'))
+    || text.includes('"err"')
+    || text.includes('request entity too large');
+}
+
+export function isApiErrorPayload(value: unknown): value is Record<string, unknown> {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+  if (isHttpErrorResponse(value)) {
+    return false;
+  }
+  const payload = value as Record<string, unknown>;
+  if (payload._id || payload.data) {
+    return false;
+  }
+  return payload.err != null
+    || payload.error != null
+    || (payload.success === false && payload.message != null);
+}

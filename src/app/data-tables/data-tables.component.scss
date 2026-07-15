@@ -244,17 +244,27 @@
   flex-shrink: 0;
 }
 
+.dt-row-count-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
 .dt-row-count {
   font-size: 13px;
   font-weight: 500;
   color: #667085;
   white-space: nowrap;
-  line-height: 1;
+  line-height: 1.2;
   user-select: none;
 }
 
-.dt-row-count--limit {
-  color: #c62828;
+.dt-row-count-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: #98a2b3;
+  line-height: 1.2;
+  user-select: none;
 }
 
 .pagination-controls {
@@ -296,11 +306,6 @@
     font-size: 14px;
     font-family: var(--header-font-family);
     color: var(--text-color);
-    transition: width 0.2s ease-in-out;
-
-    &:focus {
-      width: 280px;
-    }
 
     &:disabled {
       cursor: not-allowed;

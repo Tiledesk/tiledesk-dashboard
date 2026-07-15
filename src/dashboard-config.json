@@ -30,6 +30,7 @@
   "logoutURL": "${LOGOUT_URL}",
   "analyticsApiBase": "${ANALYTICS_API_BASE}",
   "analyticsEmbedBase": "${ANALYTICS_EMBED_BASE}",
+  "defaultTableMaxSizeBytes": "${DEFAULT_TABLE_MAX_SIZE_BYTES}",
   "firebase": {
       "apiKey": "${FIREBASE_APIKEY}",
       "authDomain": "${FIREBASE_AUTHDOMAIN}",

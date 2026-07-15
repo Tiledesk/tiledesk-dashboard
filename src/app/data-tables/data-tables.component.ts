@@ -5,6 +5,8 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
+import { BrandService } from 'app/services/brand.service';
+import { URL_data_tables_doc } from 'app/utils/util';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -28,16 +30,23 @@ import {
   CreateTableModalData,
   CreateTableModalResult,
 } from './modals/create-table-modal.component';
+import { AppConfigService } from '../services/app-config.service';
 import {
   DATA_TABLE_COLUMN_TYPE_OPTIONS,
   DataTableColumnTypeOption,
   datetimeLocalToIso,
   finalizeNumberCellValue,
   formatNumberCellDisplay,
+  isLikelyPersistedApiErrorText,
+  isRequestEntityTooLargeError,
+  isApiErrorPayload,
+  isTableSizeLimitExceededError,
+  isStringCellWithinByteLimit,
   isValidNumberInputDraft,
   isoToDatetimeLocal,
   normalizeNumberDecimalSeparator,
   parseNumberCellValue,
+  resolveDataTableMaxSizeLabel,
 } from './data-tables-column-types.util';
 
 const Swal = require('sweetalert2');
@@ -66,12 +75,13 @@ export class DataTablesComponent implements OnInit {
   /** Row bulk-delete checkboxes — hidden until feature is ready. */
   readonly showRowSelectionColumn = false;
 
+  public hideHelpLink: boolean;
+
   /** UI-only trailing column with row delete action (not part of table schema). */
   readonly showDeleteRowColumn = true;
 
-  /** Maximum rows allowed per data table. */
-  readonly maxTableRows = 200;
   readonly rowsPageSize = 40;
+  dataTableMaxSizeLabel = '';
   currentRowsPage = 1;
 
   tables: DataTable[] = [];
@@ -97,10 +107,6 @@ export class DataTablesComponent implements OnInit {
   isDeletingTable = false;
   /** Total rows in the selected table (not affected by search filters). */
   totalTableRowCount = 0;
-
-  get isTableRowLimitReached(): boolean {
-    return this.totalTableRowCount >= this.maxTableRows;
-  }
 
   get totalRowsPages(): number {
     return Math.max(1, Math.ceil(this.rows.length / this.rowsPageSize));
@@ -147,6 +153,8 @@ export class DataTablesComponent implements OnInit {
 
   constructor(
     private dialog: MatDialog,
+    private appConfigService: AppConfigService,
+    private brandService: BrandService,
     private dataTablesService: DataTablesService,
     private logger: LoggerService,
     private notify: NotifyService,
@@ -155,9 +163,15 @@ export class DataTablesComponent implements OnInit {
     private route: ActivatedRoute,
     private localDbService: LocalDbService,
     private cdr: ChangeDetectorRef,
-  ) {}
+  ) {
+    const brand = this.brandService.getBrand();
+    this.hideHelpLink = brand['DOCS'];
+  }
 
   ngOnInit(): void {
+    this.dataTableMaxSizeLabel = resolveDataTableMaxSizeLabel(
+      this.appConfigService.getConfig()?.defaultTableMaxSizeBytes,
+    );
     this.id_project = this.route.snapshot.paramMap.get('projectid') || '';
     this.auth.project_bs.subscribe((project) => {
       if (project?._id) {
@@ -165,6 +179,10 @@ export class DataTablesComponent implements OnInit {
       }
     });
     this.loadTables();
+  }
+
+  goToDataTablesDoc(): void {
+    window.open(URL_data_tables_doc, '_blank');
   }
 
   // ─── Data loading ────────────────────────────────────────────────────────
@@ -228,8 +246,11 @@ export class DataTablesComponent implements OnInit {
     if (!loaded.length) {
       return [];
     }
-    // API returns rows by createdAt ascending; show newest first.
-    return [...loaded].reverse().map((item, index) => this.toEditableRow(item, columns, index));
+    return loaded.map((item, index) => {
+      const row = this.toEditableRow(item, columns, index);
+      this.seedCommittedCellValues(row, columns);
+      return row;
+    });
   }
 
   private toEditableRow(item: RowListItem, schema: Column[], index: number): EditableRow {
@@ -266,7 +287,10 @@ export class DataTablesComponent implements OnInit {
   private normalizeRowData(data: RowData, schema: Column[]): RowData {
     const normalized: RowData = {};
     schema.forEach((col) => {
-      const value = data?.[col.name];
+      let value = data?.[col.name];
+      if (col.type === 'string' && isLikelyPersistedApiErrorText(value)) {
+        value = this.defaultCellValue(col.type);
+      }
       normalized[col.name] = value ?? this.defaultCellValue(col.type);
     });
     return normalized;
@@ -308,6 +332,12 @@ export class DataTablesComponent implements OnInit {
       const localValue = local[col.name];
       if (this.cellHasValue(localValue, col.type)) {
         merged[col.name] = localValue;
+        return;
+      }
+
+      // Keep explicit clears (empty/null) instead of stale server values.
+      if (localValue === '' || localValue === null) {
+        merged[col.name] = this.defaultCellValue(col.type);
       }
     });
     return merged;
@@ -839,7 +869,7 @@ export class DataTablesComponent implements OnInit {
 
   onAddRow(): void {
     const schema = sortColumns(this.selectedTable?.schema);
-    if (!schema.length || this.isTableRowLimitReached) { return; }
+    if (!schema.length) { return; }
     this.rows = [this.createEmptyRow(schema), ...this.rows];
     this.totalTableRowCount += 1;
     this.currentRowsPage = 1;
@@ -1019,6 +1049,8 @@ export class DataTablesComponent implements OnInit {
   focusedDatetimeCellKey: string | null = null;
   focusedNumberCellKey: string | null = null;
   private numberCellEditDrafts = new Map<string, string>();
+  private cellEditSnapshots = new Map<string, unknown>();
+  private lastCommittedCellValues = new Map<string, unknown>();
   private datetimeOpenedByPointer = false;
   private datetimePickerOpen = false;
   private datetimeClosingPicker = false;
@@ -1083,6 +1115,21 @@ export class DataTablesComponent implements OnInit {
     this.numberCellEditDrafts.delete(key);
     this.focusedNumberCellKey = null;
     this.onCellBlur(row, columnName);
+  }
+
+  onStringCellFocus(row: EditableRow, columnName: string, event: FocusEvent): void {
+    this.onCellInputFocus(event);
+    const key = this.getCellEditKey(row, columnName);
+    const column = sortColumns(this.selectedTable?.schema).find((col) => col.name === columnName);
+    let current = row.data[columnName];
+    if (column && isLikelyPersistedApiErrorText(current)) {
+      current = this.defaultCellValue(column.type);
+      row.data[columnName] = current;
+    }
+    this.cellEditSnapshots.set(
+      key,
+      current === null || current === undefined ? '' : String(current),
+    );
   }
 
   onCellInputFocus(event: FocusEvent): void {
@@ -1237,6 +1284,13 @@ export class DataTablesComponent implements OnInit {
       row.data[columnName] = finalizeNumberCellValue(row.data[columnName]);
     }
 
+    if (!this.validateRowStringCellLimits(row, schema)) {
+      this.revertCellValue(row, columnName, column);
+      this.showCellValueTooLargeError();
+      this.cdr.detectChanges();
+      return;
+    }
+
     if (row._id) {
       this.updateRowCell(tableId, row, column);
       return;
@@ -1252,13 +1306,173 @@ export class DataTablesComponent implements OnInit {
     this.insertNewRow(tableId, row, schema);
   }
 
+  private getCellEditKey(row: EditableRow, columnName: string): string {
+    return `${row.localId}:${columnName}`;
+  }
+
+  private getCommittedCellKey(row: EditableRow, columnName: string): string {
+    return `${row._id || row.localId}:${columnName}`;
+  }
+
+  private sanitizeStoredCellValue(value: unknown, column?: Column): unknown {
+    if (column?.type === 'string' && isLikelyPersistedApiErrorText(value)) {
+      return '';
+    }
+    return value;
+  }
+
+  private seedCommittedCellValues(row: EditableRow, schema: Column[]): void {
+    schema.forEach((col) => {
+      this.lastCommittedCellValues.set(
+        this.getCommittedCellKey(row, col.name),
+        this.sanitizeStoredCellValue(row.data[col.name], col),
+      );
+    });
+  }
+
+  private commitCellValue(row: EditableRow, columnName: string, value: unknown): void {
+    this.lastCommittedCellValues.set(this.getCommittedCellKey(row, columnName), value);
+  }
+
+  private getCellRevertValue(row: EditableRow, columnName: string, column?: Column): unknown {
+    const editKey = this.getCellEditKey(row, columnName);
+    if (this.cellEditSnapshots.has(editKey)) {
+      return this.sanitizeStoredCellValue(this.cellEditSnapshots.get(editKey), column);
+    }
+
+    const committedKey = this.getCommittedCellKey(row, columnName);
+    if (this.lastCommittedCellValues.has(committedKey)) {
+      return this.sanitizeStoredCellValue(this.lastCommittedCellValues.get(committedKey), column);
+    }
+
+    return column ? this.defaultCellValue(column.type) : '';
+  }
+
+  private revertCellValue(row: EditableRow, columnName: string, column?: Column): void {
+    row.data[columnName] = this.getCellRevertValue(row, columnName, column);
+    this.cellEditSnapshots.delete(this.getCellEditKey(row, columnName));
+  }
+
+  private revertRowData(row: EditableRow, schema: Column[], snapshot: RowData): void {
+    row.data = this.normalizeRowData(snapshot, schema);
+    schema.forEach((col) => {
+      this.cellEditSnapshots.delete(this.getCellEditKey(row, col.name));
+    });
+  }
+
+  private validateRowStringCellLimits(row: EditableRow, schema: Column[]): boolean {
+    return !schema.some(
+      (col) => col.type === 'string' && !isStringCellWithinByteLimit(row.data[col.name]),
+    );
+  }
+
+  private showCellValueTooLargeError(): void {
+    this.notify.showWidgetStyleUpdateNotification(
+      this.translate.instant('DataTables.CellValueTooLarge'),
+      4,
+      'report_problem',
+    );
+  }
+
+  private showCellSaveError(): void {
+    this.notify.showWidgetStyleUpdateNotification(
+      this.translate.instant('DataTables.CellSaveError'),
+      4,
+      'report_problem',
+    );
+  }
+
+  private showTableSizeLimitExceededModal(): void {
+    Swal.fire({
+      title: this.translate.instant('DataTables.TableSizeLimitTitle'),
+      text: this.translate.instant('DataTables.TableSizeLimitMessage'),
+      icon: 'warning',
+      confirmButtonText: this.translate.instant('Ok'),
+    });
+  }
+
+  private showCellSaveFailureFeedback(err: unknown): void {
+    if (isTableSizeLimitExceededError(err)) {
+      this.showTableSizeLimitExceededModal();
+      return;
+    }
+    if (isRequestEntityTooLargeError(err)) {
+      this.showCellValueTooLargeError();
+      return;
+    }
+    this.showCellSaveError();
+  }
+
+  private handleCellSaveHttpError(
+    err: unknown,
+    row: EditableRow,
+    column: Column | undefined,
+    columnName: string,
+    rowSnapshot?: RowData,
+    schema?: Column[],
+  ): void {
+    this.logger.error('[DATA-TABLES] cell save error', err);
+    if (rowSnapshot && schema) {
+      this.revertRowData(row, schema, rowSnapshot);
+    } else if (columnName) {
+      this.revertCellValue(row, columnName, column);
+    }
+    this.showCellSaveFailureFeedback(err);
+    this.cdr.detectChanges();
+  }
+
+  private handleRowSaveSuccess(
+    row: EditableRow,
+    schema: Column[],
+    saved?: RowDocument,
+  ): void {
+    if (isApiErrorPayload(saved)) {
+      schema.forEach((col) => this.revertCellValue(row, col.name, col));
+      this.showCellSaveFailureFeedback(saved);
+      this.cdr.detectChanges();
+      return;
+    }
+
+    if (saved?.data) {
+      row.data = this.normalizeRowData(saved.data, schema);
+    }
+    schema.forEach((col) => {
+      this.commitCellValue(row, col.name, row.data[col.name]);
+      this.clearCellEditSnapshot(row, col.name);
+    });
+  }
+
+  private handleCellSaveSuccess(
+    row: EditableRow,
+    column: Column,
+    saved?: RowDocument,
+    intendedValue?: unknown,
+  ): void {
+    if (isApiErrorPayload(saved)) {
+      this.handleCellSaveHttpError(saved, row, column, column.name);
+      return;
+    }
+
+    row.data[column.name] = intendedValue ?? this.defaultCellValue(column.type);
+    this.commitCellValue(row, column.name, row.data[column.name]);
+    this.clearCellEditSnapshot(row, column.name);
+  }
+
+  private clearCellEditSnapshot(row: EditableRow, columnName: string): void {
+    this.cellEditSnapshots.delete(this.getCellEditKey(row, columnName));
+  }
+
   private updateRowCell(tableId: string, row: EditableRow, column: Column): void {
+    const intendedValue = row.data[column.name];
     this.dataTablesService.updateRow(tableId, {
       id_row: row._id!,
-      data: { [column.name]: this.serializeCellValue(row.data[column.name], column.type) },
+      data: { [column.name]: this.serializeCellValue(intendedValue, column.type) },
     }).subscribe({
+      next: (saved) => {
+        this.handleCellSaveSuccess(row, column, saved, intendedValue);
+      },
       error: (err) => {
-        this.logger.error('[DATA-TABLES] updateRow error', err);
+        this.handleCellSaveHttpError(err, row, column, column.name);
       },
     });
   }
@@ -1270,9 +1484,17 @@ export class DataTablesComponent implements OnInit {
       data: this.serializeRowData(row.data, schema),
     }).subscribe({
       next: (saved: RowDocument) => {
+        if (isApiErrorPayload(saved)) {
+          row.isSaving = false;
+          row.pendingCellSave = false;
+          this.handleCellSaveHttpError(saved, row, undefined, '', localSnapshot, schema);
+          return;
+        }
+
         row._id = saved._id;
         row.data = this.mergeRowDataFromServer(localSnapshot, saved.data, schema);
         row.isSaving = false;
+        this.handleRowSaveSuccess(row, schema, saved);
         if (row.pendingCellSave) {
           row.pendingCellSave = false;
           this.syncFullRow(tableId, row, schema);
@@ -1281,7 +1503,7 @@ export class DataTablesComponent implements OnInit {
       error: (err) => {
         row.isSaving = false;
         row.pendingCellSave = false;
-        this.logger.error('[DATA-TABLES] insertRow error', err);
+        this.handleCellSaveHttpError(err, row, undefined, '', localSnapshot, schema);
       },
     });
   }
@@ -1294,12 +1516,18 @@ export class DataTablesComponent implements OnInit {
       data: this.serializeRowData(row.data, schema),
     }).subscribe({
       next: (saved) => {
+        if (isApiErrorPayload(saved)) {
+          this.handleCellSaveHttpError(saved, row, undefined, '', localSnapshot, schema);
+          return;
+        }
+
         if (saved.data) {
           row.data = this.mergeRowDataFromServer(localSnapshot, saved.data, schema);
         }
+        this.handleRowSaveSuccess(row, schema, saved);
       },
       error: (err) => {
-        this.logger.error('[DATA-TABLES] syncFullRow error', err);
+        this.handleCellSaveHttpError(err, row, undefined, '', localSnapshot, schema);
       },
     });
   }
