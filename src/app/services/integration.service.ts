@@ -224,5 +224,29 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
     return this.http.post(url, body, httpOptions);
   }
 
+  /**
+   * Fetch a connector's manifest via the tiledesk-server proxy (avoids CORS,
+   * keeps a server-side validation point). See routes/connectors.js.
+   * @param connectorUrl Base URL of the connector (e.g. https://my-connector.example.com)
+   * @returns Observable<{ success: boolean, manifest: any }>
+   */
+  getConnectorManifest(connectorUrl: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/connectors/manifest";
+    this.logger.debug('[INTEGRATION.SERV] - get connector manifest URL: ', url);
+    this.logger.debug('[INTEGRATION.SERV] - connector URL: ', connectorUrl);
+
+    const body = {
+      url: connectorUrl
+    };
+
+    return this.http.post(url, body, httpOptions);
+  }
 
 }
