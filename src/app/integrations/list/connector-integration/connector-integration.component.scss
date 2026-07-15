@@ -1,0 +1,27 @@
+.connector-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+
+    .connector-name {
+        font-weight: 600;
+        min-width: 140px;
+    }
+
+    .connector-url {
+        flex: 1;
+        color: rgb(157, 159, 162);
+        font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+}
+
+.manifest-preview {
+    margin: 8px 0;
+    font-size: 12px;
+    color: rgb(157, 159, 162);
+}

@@ -1,0 +1,61 @@
+<div class="content">
+
+    <div class="form-section">
+        <div class="form-header">
+            <h4>{{ 'Integration.AddConnector' | translate }}</h4>
+        </div>
+
+        <div class="input-field">
+            <label>{{ 'Name' | translate }}</label>
+            <input id="connector-name" class="custom-input" type="text" name="connector-name"
+                placeholder="Enter connector name"
+                [(ngModel)]="currentEntry.name" autocomplete="off" style="font-size: 14px;">
+        </div>
+
+        <div class="input-field">
+            <label>URL</label>
+            <input id="connector-url" class="custom-input" type="url" name="connector-url"
+                placeholder="Base URL of the connector (e.g. https://my-connector.example.com)"
+                [(ngModel)]="currentEntry.baseUrl" autocomplete="off" style="font-size: 14px;">
+        </div>
+
+        <div class="manifest-preview" *ngIf="manifestPreview">
+            <span>{{ manifestPreview.connectorName }}: {{ manifestPreview.actionCount }} actions, {{ manifestPreview.triggerCount }} triggers</span>
+        </div>
+
+        <div class="form-actions">
+            <button
+                class="btn btn-tdblu-no-boxshadow"
+                (click)="previewManifest()"
+                [disabled]="isLoadingManifest || !currentEntry.baseUrl">
+                <span *ngIf="!isLoadingManifest || loadingBaseUrl !== currentEntry.baseUrl">
+                    {{ 'Integration.Connect' | translate }}
+                </span>
+                <span *ngIf="isLoadingManifest && loadingBaseUrl === currentEntry.baseUrl" class="loading-state">
+                    <span class="spinner"></span>
+                    {{ 'Integration.LoadingTools' | translate }}
+                </span>
+            </button>
+
+            <button
+                *ngIf="manifestPreview"
+                class="btn btn-tdblu-no-boxshadow"
+                (click)="addConnector()"
+                [disabled]="!currentEntry.name || !currentEntry.baseUrl">
+                {{ 'Add' | translate }}
+            </button>
+        </div>
+    </div>
+
+    <div class="table-section" *ngIf="integration.value.items?.length">
+        <div class="connector-row" *ngFor="let item of integration.value.items">
+            <span class="connector-name">{{ item.name }}</span>
+            <span class="connector-url">{{ item.baseUrl }}</span>
+            <span class="connector-counts">{{ item.actionCount || 0 }} actions, {{ item.triggerCount || 0 }} triggers</span>
+            <button class="btn btn-outlined" (click)="deleteConnector(item)">
+                {{ 'Delete' | translate }}
+            </button>
+        </div>
+    </div>
+
+</div>
