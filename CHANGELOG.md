@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.12
+- Adds data tables
+
 ### 2.8.11
 - Updates the widget installation script on the knowledge base page (adds the default department ID and chatbot ID)
 
