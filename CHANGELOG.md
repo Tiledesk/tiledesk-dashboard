@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.239-stage
+- Improves data tables
+
 ### 2.7.238-stage
 - Updates the widget installation script on the knowledge base page (adds the default department ID and chatbot ID)
 
