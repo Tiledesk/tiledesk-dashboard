@@ -363,7 +363,7 @@
                     </div>
                   </div> -->
 
-                  <div class="kb-stats-charts" *ngIf="selectedNamespace">
+                  <div class="kb-stats-charts" *ngIf="selectedNamespace && isKbStatsChartsEnabled">
                     <div class="kb-stats-chart-card">
                       <div *ngIf="kbChartsLoading" class="kb-stats-chart-card__state">
                         <mat-spinner diameter="28"></mat-spinner>
