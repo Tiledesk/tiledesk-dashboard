@@ -18,6 +18,7 @@ import { ActivitiesTeammateLinkComponent } from './components/activities-teammat
 import { ActivitiesBotLinkComponent } from './components/activities-bot-link/activities-bot-link.component';
 import { TeammateActivitiesChartModalComponent } from './modals/teammate-activities-chart-modal/teammate-activities-chart-modal.component';
 import { ActivitiesListChartModalComponent } from './modals/activities-list-chart-modal/activities-list-chart-modal.component';
+import { ActivitiesTeammateLookupService } from './services/activities-teammate-lookup.service';
 
 const routes: Routes = [
   { path: '', component: ActivitiesNewComponent },
@@ -46,5 +47,6 @@ const routes: Routes = [
     MatButtonModule,
     MatDialogModule,
   ],
+  providers: [ActivitiesTeammateLookupService],
 })
 export class ActivitiesNewModule { }

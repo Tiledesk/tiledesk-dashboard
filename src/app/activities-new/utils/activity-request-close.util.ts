@@ -278,9 +278,39 @@ export function formatRequestCloseAssignedAt(activity: ActivityRecord): string |
   return formatRequestCloseTimestamp(actionObj['assigned_at']);
 }
 
-export function formatRequestCloseAssignmentPhrase(display: RequestCloseDisplayContext): string {
+function normalizeId(id: unknown): string {
+  return str(id).includes('%2B') ? str(id).replace(/%2B/g, '+') : str(id);
+}
+
+export function isRequestCloseAssignedToActorSelf(activity: ActivityRecord): boolean {
+  const actorId = normalizeId(activity.actor?.id);
+  if (!actorId) {
+    return false;
+  }
+
+  const display = activity.request_close_display || buildRequestCloseDisplayContext(activity);
+  if (!display.hasAssignmentContext || display.participants.length !== 1) {
+    return false;
+  }
+
+  const participant = display.participants[0];
+  if (participant.type !== 'agent') {
+    return false;
+  }
+
+  return normalizeId(participant.id) === actorId;
+}
+
+export function formatRequestCloseAssignmentPhrase(
+  display: RequestCloseDisplayContext,
+  activity?: ActivityRecord,
+): string {
   if (!display.hasAssignmentContext) {
     return '';
+  }
+
+  if (activity && isRequestCloseAssignedToActorSelf(activity)) {
+    return 'assigned to themselves';
   }
 
   if (display.participants.length === 1 && display.participants[0].type === 'bot') {
@@ -305,7 +335,7 @@ export function renderLegacyRequestCloseMessage(
   let message = `The conversation ${conversation}`;
 
   if (display.hasAssignmentContext) {
-    message += ` ${formatRequestCloseAssignmentPhrase(display)}`;
+    message += ` ${formatRequestCloseAssignmentPhrase(display, activity)}`;
     if (display.assignedAt) {
       message += ` on ${display.assignedAt}`;
     }
@@ -334,7 +364,7 @@ export function renderRequestCloseMessage(
   let message = `${closedBy} resolved conversation ${quotedConversation}`;
 
   if (display.hasAssignmentContext) {
-    message += ` ${formatRequestCloseAssignmentPhrase(display)}`;
+    message += ` ${formatRequestCloseAssignmentPhrase(display, activity)}`;
     const assignedAt = formatRequestCloseAssignedAt(activity);
     if (assignedAt) {
       message += ` on ${assignedAt}`;

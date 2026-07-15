@@ -38,7 +38,7 @@
                 <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
                   <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
                   <ng-option *ngFor="let agent of agentsList" [value]="agent._id">
-                    {{ agent?.firstname }} {{ agent?.lastname }}
+                    <span>{{ agent?.firstname }} {{ agent?.lastname }}<span *ngIf="agent?.email" class="activities-new-agent-email"> ({{ agent.email }})</span></span>
                   </ng-option>
                 </ng-select>
               </div>
@@ -152,6 +152,7 @@
                               [label]="participant.name"
                               [highlighted]="highlightClass(participant.id)"
                               [avatarView]="getTeammateAvatarView(participant.id, participant.name)"
+                              [participantId]="participant.id"
                               [menuTrigger]="teammateMenu"
                               (linkClick)="handleRequestCloseParticipantClick($event, participant, activity)">
                             </activities-teammate-link><span *ngIf="!last">, </span>
@@ -176,11 +177,12 @@
                           [label]="activity.closed_by_label"
                           [highlighted]="highlightClass(activity.actor.id)"
                           [avatarView]="getTeammateAvatarView(activity.actor.id)"
+                          [participantId]="activity.actor.id"
                           [menuTrigger]="teammateMenu"
                           (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id, activity)">
                         </activities-teammate-link>
                         <span *ngIf="!activity?.actor?.id || !shouldLinkParticipant(activity.actor.id, activity.closed_by_label)">
-                          {{ activity.closed_by_label }}
+                          {{ activity.closed_by_label }}<span *ngIf="getTeammateEmail(activity.actor.id) as email" class="activities-new-agent-email"> ({{ email }})</span>
                         </span>
                       </ng-template>
                       resolved conversation
@@ -199,6 +201,10 @@
                           </span>
                         </ng-container>
                         <ng-template #requestCloseAgentsAssignment>
+                          <ng-container *ngIf="isRequestCloseAssignedToActorSelf(activity); else requestCloseAgentsAssignmentDefault">
+                            assigned to themselves
+                          </ng-container>
+                          <ng-template #requestCloseAgentsAssignmentDefault>
                           assigned to
                           <ng-container
                             *ngFor="let participant of activity.request_close_display.participants; let last = last">
@@ -206,10 +212,12 @@
                             [label]="participant.name"
                             [highlighted]="highlightClass(participant.id)"
                             [avatarView]="getTeammateAvatarView(participant.id, participant.name)"
+                              [participantId]="participant.id"
                             [menuTrigger]="teammateMenu"
                             (linkClick)="handleRequestCloseParticipantClick($event, participant, activity)">
                           </activities-teammate-link><span *ngIf="!last">, </span>
                           </ng-container>
+                          </ng-template>
                         </ng-template>
                         <span *ngIf="formatRequestCloseAssignedAt(activity) as assignedAt">
                           on {{ assignedAt }}
@@ -245,6 +253,7 @@
                             [label]="getRequestCreateAssigneeDisplayName(activity)"
                             [highlighted]="highlightClass(getRequestCreateAssigneeId(activity))"
                             [avatarView]="getTeammateAvatarView(getRequestCreateAssigneeId(activity))"
+                            [participantId]="getRequestCreateAssigneeId(activity)"
                             [menuTrigger]="isRequestCreateAssigneeBot(activity) ? null : teammateMenu"
                             (linkClick)="onRequestCreateAssigneeClick($event, activity)">
                           </activities-teammate-link>
@@ -263,6 +272,7 @@
                         [label]="getTeammateDisplayName(activity?.target?.object?.id_user?._id)"
                         [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
                         [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
+                        [participantId]="activity?.target?.object?.id_user?._id"
                         [menuTrigger]="teammateMenu"
                         (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
                       </activities-teammate-link>
@@ -296,6 +306,7 @@
                         [label]="activity.actor.name"
                         [highlighted]="highlightClass(activity.actor.id)"
                         [avatarView]="getTeammateAvatarView(activity.actor.id)"
+                          [participantId]="activity.actor.id"
                         [menuTrigger]="teammateMenu"
                         (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id, activity)">
                       </activities-teammate-link>
@@ -318,6 +329,7 @@
                               [label]="getTeammateDisplayName(activity?.target?.object?.id_user?._id)"
                               [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
                               [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
+                        [participantId]="activity?.target?.object?.id_user?._id"
                               [menuTrigger]="teammateMenu"
                               (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
                             </activities-teammate-link>'s abandoned chats count to {{ systemAbandonedChatsCount(activity?.actionObj) }}
@@ -335,6 +347,7 @@
                               [label]="getTeammateDisplayName(activity?.target?.object?.id_user?._id)"
                               [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
                               [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
+                        [participantId]="activity?.target?.object?.id_user?._id"
                               [menuTrigger]="teammateMenu"
                               (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
                             </activities-teammate-link>
@@ -368,10 +381,12 @@
                             [label]="getProjectUserTargetLabel(activity)"
                             [highlighted]="highlightClass(getProjectUserTargetProfileId(activity))"
                             [avatarView]="getProjectUserTargetAvatarView(activity)"
+                            [participantId]="getProjectUserTargetProfileId(activity)"
+                            [showEmail]="false"
                             [menuTrigger]="teammateMenu"
                             (linkClick)="handleTeammateProfileLinkClick($event, getProjectUserTargetProfileId(activity), activity)">
                           </activities-teammate-link>
-                          <span *ngIf="activity?.actionObj?.email">
+                          <span *ngIf="activity?.actionObj?.email" class="activities-new-agent-email">
                             ({{ activity?.actionObj?.email }})
                           </span>
                         </ng-template>
@@ -418,6 +433,7 @@
                                 [label]="assignee.name"
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [participantId]="assignee.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
@@ -438,6 +454,7 @@
                                 [label]="assignee.name"
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [participantId]="assignee.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
@@ -461,6 +478,7 @@
                                 [label]="actor.name"
                                 [highlighted]="highlightClass(actor.profileId)"
                                 [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
+                                [participantId]="actor.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="onManualAssignmentActorClick($event, activity)">
                               </activities-teammate-link>
@@ -486,6 +504,7 @@
                                 [label]="assignee.name"
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [participantId]="assignee.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
@@ -513,6 +532,7 @@
                                 [label]="assignee.name"
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [participantId]="assignee.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
@@ -530,6 +550,7 @@
                                 [label]="actor.name"
                                 [highlighted]="highlightClass(actor.profileId)"
                                 [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
+                                [participantId]="actor.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="onManualAssignmentActorClick($event, activity)">
                               </activities-teammate-link>
@@ -551,6 +572,7 @@
                                 [label]="assignee.name"
                                 [highlighted]="highlightClass(assignee.profileId)"
                                 [avatarView]="getTeammateAvatarView(assignee.profileId)"
+                                [participantId]="assignee.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="handleTeammateProfileLinkClick($event, assignee.profileId, activity)">
                               </activities-teammate-link>
@@ -568,6 +590,7 @@
                                 [label]="actor.name"
                                 [highlighted]="highlightClass(actor.profileId)"
                                 [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
+                                [participantId]="actor.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="onManualAssignmentActorClick($event, activity)">
                               </activities-teammate-link>
@@ -582,6 +605,7 @@
                               [label]="actor.name"
                               [highlighted]="highlightClass(actor.profileId)"
                               [avatarView]="getTeammateAvatarView(actor.profileId)"
+                              [participantId]="actor.profileId"
                               [menuTrigger]="teammateMenu"
                               (linkClick)="handleTeammateProfileLinkClick($event, actor.profileId, activity)">
                             </activities-teammate-link>
@@ -607,6 +631,7 @@
                                 [label]="participant.name"
                                 [highlighted]="highlightClass(participant.profileId)"
                                 [avatarView]="participant.avatarView"
+                                [participantId]="participant.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="handleTeammateProfileLinkClick($event, participant.profileId, activity)">
                               </activities-teammate-link>
@@ -626,6 +651,7 @@
                                 [label]="participant.name"
                                 [highlighted]="highlightClass(participant.profileId)"
                                 [avatarView]="participant.avatarView"
+                                [participantId]="participant.profileId"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="handleTeammateProfileLinkClick($event, participant.profileId, activity)">
                               </activities-teammate-link>
@@ -659,6 +685,7 @@
                           [label]="parts.actorLink"
                           [highlighted]="highlightClass(parts.actorProfileId)"
                           [avatarView]="getTeammateAvatarView(parts.actorProfileId)"
+                          [participantId]="parts.actorProfileId"
                           [menuTrigger]="teammateMenu"
                           (linkClick)="handleTeammateProfileLinkClick($event, parts.actorProfileId, activity)">
                         </activities-teammate-link>

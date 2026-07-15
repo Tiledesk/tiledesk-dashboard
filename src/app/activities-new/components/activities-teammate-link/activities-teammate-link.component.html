@@ -1,5 +1,5 @@
 <ng-template #linkContent>
-  <activities-teammate-avatar [view]="avatarView"></activities-teammate-avatar><span class="activities-teammate-link__label">{{ label }}</span>
+  <activities-teammate-avatar [view]="avatarView"></activities-teammate-avatar><span class="activities-teammate-link__label">{{ label }}</span><span *ngIf="displayEmail" class="activities-teammate-link__email"> ({{ displayEmail }})</span>
 </ng-template>
 
 <span

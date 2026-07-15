@@ -25,6 +25,7 @@ import { ActivitiesListChartModalComponent } from './modals/activities-list-char
 import { TeammateAvatarView } from './components/activities-teammate-avatar/activities-teammate-avatar.component';
 
 import { ActivitiesService } from './activities-service/activities.service';
+import { ActivitiesTeammateLookupService } from './services/activities-teammate-lookup.service';
 import { ACTIVITY_FILTER_OPTION_DEFINITIONS, ActivityFilterOption, MANUAL_ASSIGNMENT_BOT_ACTOR_ICON } from './utils/activity-verbs.constants';
 import {
   buildRequestCloseDisplayContext,
@@ -33,6 +34,7 @@ import {
   resolveClosedByLeadContext,
   formatRequestCloseAssignedAt,
   isLegacyRequestCloseActor,
+  isRequestCloseAssignedToActorSelf,
 } from './utils/activity-request-close.util';
 import {
   effectiveVerb,
@@ -148,6 +150,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     public notify: NotifyService,
     private dialog: MatDialog,
     private translate: TranslateService,
+    private teammateLookup: ActivitiesTeammateLookupService,
   ) { }
 
   ngOnInit() {
@@ -223,10 +226,12 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
             }
             return projectUser;
           });
+          this.teammateLookup.syncProjectUsers(this.projectUsersArray);
           this.agentsList = projectUsers.map((user: any) => ({
             _id: user.id_user._id,
             firstname: user.id_user.firstname,
             lastname: user.id_user.lastname,
+            email: user.id_user?.email,
           }));
           console.log('[ActivitiesNewComponent] getAllProjectUsers agentsList', this.agentsList);
 
@@ -469,7 +474,26 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    activity.closed_by_label = activity.actor.name || formatActorIdLabel(actorId);
+    activity.closed_by_label = this.resolveClosedByTeammateLabel(activity, actorId);
+  }
+
+  private resolveClosedByTeammateLabel(activity: ActivityRecord, actorId: string): string {
+    const actorName = str(activity.actor?.name).trim();
+    if (actorName) {
+      return actorName;
+    }
+
+    const fromProjectUser = this.getTeammateDisplayName(actorId);
+    if (fromProjectUser && fromProjectUser !== actorId) {
+      return fromProjectUser;
+    }
+
+    const resolvedParticipant = resolveAgentParticipant(activity, actorId);
+    if (resolvedParticipant?.name && resolvedParticipant.name !== actorId) {
+      return resolvedParticipant.name;
+    }
+
+    return formatActorIdLabel(actorId);
   }
 
   private enrichRequestCreate(activity: ActivityRecord): void {
@@ -751,6 +775,10 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     return name || participantId;
   }
 
+  getTeammateEmail(participantId: string): string {
+    return this.teammateLookup.getEmail(participantId);
+  }
+
   getTargetUserDisplayName(activity: ActivityRecord): string {
     return targetUserName(activity);
   }
@@ -805,6 +833,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
 
   formatRequestCloseAssignedAt = formatRequestCloseAssignedAt;
   isLegacyRequestCloseActor = isLegacyRequestCloseActor;
+  isRequestCloseAssignedToActorSelf = isRequestCloseAssignedToActorSelf;
 
   handleRequestCloseParticipantClick(
     event: MouseEvent,
