@@ -16,7 +16,7 @@
             <label>URL</label>
             <input id="connector-url" class="custom-input" type="url" name="connector-url"
                 placeholder="Base URL of the connector (e.g. https://my-connector.example.com)"
-                [(ngModel)]="currentEntry.baseUrl" autocomplete="off" style="font-size: 14px;">
+                [(ngModel)]="currentEntry.baseUrl" (ngModelChange)="onUrlChange()" autocomplete="off" style="font-size: 14px;">
         </div>
 
         <div class="manifest-preview" *ngIf="manifestPreview">
