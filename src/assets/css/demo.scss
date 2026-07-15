@@ -2447,7 +2447,7 @@ footer ul {
 // }
 
 .custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-separator {
-  margin-bottom: 6px !important;
+  margin-bottom: 0px !important;
 }
 
 .custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-start-wrapper .mat-date-range-input-mirror {
@@ -2535,6 +2535,17 @@ footer ul {
 /* Angular material checkbox 
 /* ****************************** */
 .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: var(--blue-20) !important;
+}
+
+// overwrite the checkbox background
+.mat-checkbox-checked .mat-checkbox-background,
+.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: var(--blue-20) !important;
+}
+
+// overwrite the ripple overlay on hover and click
+.mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
   background-color: var(--blue-20) !important;
 }
 
