@@ -156,8 +156,10 @@ export class RoleService {
             if (calledby === 'analytics') {
               this.logger.log('[ROLE-SERV] - here yes projectUser_bs.rolePermissions', projectUser_bs.rolePermissions)
               if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.ANALYTICS_READ)) {
-                // this.router.navigate([`project/${projectId}/unauthorized`])
-                this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+                const analyticsPath = this.router.url.includes('/analytics-legacy')
+                  ? 'analytics-legacy'
+                  : 'analytics';
+                this.router.navigate([`project/${projectId}/${analyticsPath}/no-auth`]);
               }
             }
 
@@ -408,6 +410,13 @@ export class RoleService {
               return hasPermission;
             }
 
+            // Project settings > Retention
+            if (calledby === 'project-settings-retention') {
+              const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_RETENTION_READ);
+              this.logger.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
+              return hasPermission;
+            }
+
             // Project settings > Advanced
             if (calledby === 'project-settings-advanced') {
               const hasPermission = projectUser_bs.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ);
@@ -645,6 +654,13 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Project settings > Retention
+          if (calledby === 'project-settings-retention') {
+            const hasPermission = projectUserRole === 'owner' || projectUserRole === 'admin'
+            this.logger.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
           // Project settings > Advanced
           if (calledby === 'project-settings-advanced') {
             const hasPermission = projectUserRole === 'owner' || projectUserRole === 'admin'
@@ -751,8 +767,10 @@ export class RoleService {
           if (calledby === 'analytics') {
             this.logger.log('[ROLE-SERV] - here yes 2')
             if (!_projectUser.rolePermissions.includes(PERMISSIONS.ANALYTICS_READ)) {
-              // this.router.navigate([`project/${projectId}/unauthorized`])
-              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+              const analyticsPath = this.router.url.includes('/analytics-legacy')
+                ? 'analytics-legacy'
+                : 'analytics';
+              this.router.navigate([`project/${projectId}/${analyticsPath}/no-auth`]);
             }
           }
 
@@ -1000,6 +1018,13 @@ export class RoleService {
             return hasPermission;
           }
 
+          // Project settings > Retention
+          if (calledby === 'project-settings-retention') {
+            const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_RETENTION_READ);
+            this.logger.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
+            return hasPermission;
+          }
+
           // Project settings > Advanced
           if (calledby === 'project-settings-advanced') {
             const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ);
@@ -1236,6 +1261,13 @@ export class RoleService {
         if (calledby === 'project-settings-banned') {
           const hasPermission = _projectUserRole === 'owner' || _projectUserRole === 'admin';
           this.logger.log('[ROLE-SERV] - project-settings-banned hasPermission ', hasPermission)
+          return hasPermission;
+        }
+
+        // Project settings > Retention
+        if (calledby === 'project-settings-retention') {
+          const hasPermission = _projectUserRole === 'owner' || _projectUserRole === 'admin';
+          this.logger.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
           return hasPermission;
         }
 

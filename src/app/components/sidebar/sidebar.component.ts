@@ -47,6 +47,7 @@ import { environment } from 'environments/environment';
 import { LogoutModalComponent } from 'app/auth/logout-modal/logout-modal.component';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
 
 declare const $: any;
 
@@ -171,6 +172,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   ANALYTICS_DEMO_ROUTE_IS_ACTIVE: boolean;
   /** True when URL is …/analytics/new (badge “new” on sidebar analytics icon). */
   ANALYTICS_NEW_ROUTE_IS_ACTIVE: boolean;
+  ANALYTICS_LEGACY_ROUTE_IS_ACTIVE: boolean;
   WIDGET_ROUTE_IS_ACTIVE: boolean;
   ANALITYCS_ROUTE_IS_ACTIVE: boolean;
   HOME_ROUTE_IS_ACTIVE: boolean;
@@ -1570,6 +1572,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
 
   getCurrentRoute() {
+    this.updateAnalyticsRouteFlags(this.router.url);
     this.router.events.subscribe((event: NavigationEvent) => {
       if (event instanceof NavigationEnd) {
         this.logger.log('[SIDEBAR] NavigationEnd event.url', event.url.substring(event.url.lastIndexOf('/') + 1))
@@ -1631,11 +1634,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE = false;
         }
 
-        if (event.url.indexOf('/analytics/new') !== -1) {
-          this.ANALYTICS_NEW_ROUTE_IS_ACTIVE = true;
-        } else {
-          this.ANALYTICS_NEW_ROUTE_IS_ACTIVE = false;
-        }
+        this.updateAnalyticsRouteFlags(event.url);
 
         if (event.url.indexOf('/widget') !== -1) {
           // this.logger.log('[SIDEBAR] NavigationEnd - THE widget route IS ACTIVE  ', event.url);
@@ -1643,14 +1642,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         } else {
           // this.logger.log('[SIDEBAR] NavigationEnd - THE widget route IS NOT ACTIVE  ', event.url);
           this.WIDGET_ROUTE_IS_ACTIVE = false;
-        }
-
-        if (event.url.indexOf('/analytics') !== -1) {
-          // this.logger.log('[SIDEBAR] NavigationEnd - THE analytics route IS ACTIVE  ', event.url);
-          this.ANALITYCS_ROUTE_IS_ACTIVE = true;
-        } else {
-          // this.logger.log('[SIDEBAR] NavigationEnd - THE analytics route IS NOT ACTIVE  ', event.url);
-          this.ANALITYCS_ROUTE_IS_ACTIVE = false;
         }
 
         if (event.url.indexOf('/home') !== -1) {
@@ -2825,6 +2816,42 @@ export class SidebarComponent implements OnInit, AfterViewInit {
       event.stopPropagation(); // Stops bubbling
       this.notify.presentDialogNoPermissionToViewThisSection()
     }
+  }
+
+  get useNewAnalytics(): boolean {
+    return isNewAnalyticsConfigured(this.appConfigService.getConfig());
+  }
+
+  getAnalyticsRouterLink(): (string | number)[] | null {
+    if (!this.PERMISSION_TO_VIEW_ANALYTICS || !this.project?._id) {
+      return null;
+    }
+
+    const analyticsPath = this.useNewAnalytics ? 'analytics' : 'analytics-legacy';
+    return ['/project', this.project._id, analyticsPath];
+  }
+
+  isAnalyticsSidebarActive(): boolean {
+    return !!(
+      this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE
+      || this.ANALYTICS_LEGACY_ROUTE_IS_ACTIVE
+      || this.ANALYTICS_NEW_ROUTE_IS_ACTIVE
+    );
+  }
+
+  private updateAnalyticsRouteFlags(url: string): void {
+    const path = url.split('?')[0].split('#')[0];
+
+    this.ANALYTICS_LEGACY_ROUTE_IS_ACTIVE =
+      path.includes('/analytics-legacy') || path.includes('/analytics/old');
+
+    this.ANALYTICS_NEW_ROUTE_IS_ACTIVE = /\/analytics$/.test(path);
+
+    this.ANALITYCS_ROUTE_IS_ACTIVE =
+      this.ANALYTICS_LEGACY_ROUTE_IS_ACTIVE
+      || this.ANALYTICS_NEW_ROUTE_IS_ACTIVE
+      || this.ANALYTICS_DEMO_ROUTE_IS_ACTIVE
+      || path.includes('/analytics/metrics');
   }
 
    handleAnalyticsClick(event: MouseEvent): void {

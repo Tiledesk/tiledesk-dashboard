@@ -1,5 +1,53 @@
 # tiledesk-dashboard
 
+### 2.8.11
+- Updates the widget installation script on the knowledge base page (adds the default department ID and chatbot ID)
+
+### 2.8.10
+- Implement automatic path switching for Analytics pages
+- Fixes the bug: Message retention time does not display the user-set value when changing paths.
+
+### 2.8.9
+- Adds a button to the Analytics page that redirects to legacy Analytics page
+
+### 2.8.8
+- Fixes the bug: Uploaded files can be modified
+- Improves the TXT contents type filter in the knowledge base table to also include regex_custom  file type upload 
+
+### 2.8.7
+- Implements a new chunking option using regular expressions in the File upload modal, allowing users to define chunks for TXT and Markdown files
+- Refactors the vLLM integration to manage OpenAI-compatible endpoints and models
+
+### 2.8.6
+- Fixes the bug: the behavior of the switch buttons in the widget set up > advanced section is not aligned with the other ones on the page
+- Removes the query param ?tiledeskLogout
+
+### 2.8.5
+- Minor improvements
+
+### 2.8.4
+- Latest stable
+
+### 2.8.3
+- Fixes the bug: Knowledge base statistics links to new analytics don't work
+
+ ### 2.8.2
+- Adds bar charts for answered and unanswered questions and line charts for answer rate to knowledge base KPIs.
+- Update the format of knowledge base statistics counts
+- Removes links to old analytics
+
+### 2.8.1
+- Implements new analytics
+
+### 2.8.0
+- Changes the ElevenLabs integration value from "voice_streaming" to "elevenlabs"
+
+### 2.7.180
+- Fixes the bug: WhatsApp menu item missing from integrations
+
+### 2.7.179
+- Implements ElevenLabs, Cerebras and OpenRouter in Integrations
+
 ### 2.7.178
 - Implements the new analytics (for test purpose)
 

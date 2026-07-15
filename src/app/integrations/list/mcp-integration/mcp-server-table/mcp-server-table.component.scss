@@ -3,7 +3,7 @@
 }
 
 .filters-card {
-  margin-bottom: 16px;
+  // margin-bottom: 16px;
   border-radius: 8px;
 //   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   box-shadow: unset !important;
@@ -18,16 +18,20 @@
 .fake-input {
   position: relative;
   flex: 1;
+  width: 100%;
   max-width: 500px;
 
   input {
+    box-sizing: border-box;
     width: 100%;
-    padding: 10px 40px 10px 12px;
+    max-width: 500px;
+    padding: 0 40px 0 12px;
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    border-radius: 5px;
     font-size: 14px;
     outline: none;
     transition: border-color 0.2s;
+    height: 36px;
 
     &:focus {
       border-color: #3ea9f5;
@@ -68,8 +72,8 @@
   font-weight: 500;
 
   .count-num {
-    color: #3ea9f5;
-    font-weight: 600;
+    color: #333;
+    font-weight: 500;
   }
 }
 
