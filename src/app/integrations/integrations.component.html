@@ -160,6 +160,13 @@
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </mcp-integration>
+
+                                        <connector-integration *ngIf="integrationSelectedName === INT_KEYS.CONNECTORS"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </connector-integration>
+
                                         <v-llm *ngIf="integrationSelectedName === INT_KEYS.VLLM"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
