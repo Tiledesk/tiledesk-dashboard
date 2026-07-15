@@ -70,6 +70,14 @@ export class ConnectorIntegrationComponent implements OnInit {
 
     this.integrationService.getConnectorManifest(this.currentEntry.baseUrl).subscribe(
       (response: any) => {
+        if (this.currentEntry.baseUrl !== this.loadingBaseUrl) {
+          // The URL field changed while this request was in flight; the response
+          // no longer matches what's displayed, so discard it silently.
+          this.isLoadingManifest = false;
+          this.loadingBaseUrl = '';
+          return;
+        }
+
         const manifest = response && response.manifest;
         if (!manifest || !manifest.connector) {
           this.notify.showWidgetStyleUpdateNotification('No manifest found at this URL', 3, 'warning');
@@ -79,11 +87,11 @@ export class ConnectorIntegrationComponent implements OnInit {
         }
 
         this.manifestPreview = {
-          connectorName: manifest.connector.name || this.currentEntry.baseUrl,
+          connectorName: manifest.connector.name || this.loadingBaseUrl,
           actionCount: Array.isArray(manifest.actions) ? manifest.actions.length : 0,
           triggerCount: Array.isArray(manifest.triggers) ? manifest.triggers.length : 0
         };
-        this.previewedBaseUrl = this.currentEntry.baseUrl;
+        this.previewedBaseUrl = this.loadingBaseUrl;
 
         if (!this.currentEntry.name) {
           this.currentEntry.name = manifest.connector.name;
