@@ -371,5 +371,5 @@ export function renderRequestCloseMessage(
     }
   }
 
-  return `${message}.`;
+  return message;
 }

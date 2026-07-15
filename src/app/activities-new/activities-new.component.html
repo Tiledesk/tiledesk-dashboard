@@ -38,7 +38,7 @@
                 <ng-select name="agent" [(ngModel)]="selectedAgentId" [clearable]="false">
                   <ng-option [value]="''">{{ 'HistoryPage.AllAgents' | translate }}</ng-option>
                   <ng-option *ngFor="let agent of agentsList" [value]="agent._id">
-                    <span>{{ agent?.firstname }} {{ agent?.lastname }}<span *ngIf="agent?.email" class="activities-new-agent-email"> ({{ agent.email }})</span></span>
+                    <span>{{ agent?.firstname }} {{ agent?.lastname }}<span *ngIf="shouldShowTeammateEmail(agent._id) && agent?.email" class="activities-new-agent-email"> ({{ agent.email }})</span></span>
                   </ng-option>
                 </ng-select>
               </div>
@@ -222,7 +222,7 @@
                         <span *ngIf="formatRequestCloseAssignedAt(activity) as assignedAt">
                           on {{ assignedAt }}
                         </span>
-                      </ng-container>.
+                      </ng-container>
                       </ng-template>
                     </p>
                     <span class="activities-new-date">

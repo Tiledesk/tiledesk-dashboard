@@ -776,7 +776,11 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   }
 
   getTeammateEmail(participantId: string): string {
-    return this.teammateLookup.getEmail(participantId);
+    return this.teammateLookup.getDisplayEmail(participantId);
+  }
+
+  shouldShowTeammateEmail(participantId: string): boolean {
+    return this.teammateLookup.shouldShowEmail(participantId);
   }
 
   getTargetUserDisplayName(activity: ActivityRecord): string {

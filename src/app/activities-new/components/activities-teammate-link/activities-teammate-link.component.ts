@@ -14,7 +14,6 @@ export class ActivitiesTeammateLinkComponent {
   @Input() highlighted = false;
   @Input() avatarView: TeammateAvatarView | null = null;
   @Input() participantId = '';
-  @Input() email = '';
   @Input() showEmail = true;
   @Input() menuTrigger: MatMenuPanel | null = null;
   @Output() linkClick = new EventEmitter<MouseEvent>();
@@ -22,11 +21,11 @@ export class ActivitiesTeammateLinkComponent {
   constructor(private teammateLookup: ActivitiesTeammateLookupService) {}
 
   get displayEmail(): string {
-    if (!this.showEmail) {
+    if (!this.showEmail || !this.participantId) {
       return '';
     }
 
-    return (this.email || this.teammateLookup.getEmail(this.participantId)).trim();
+    return this.teammateLookup.getDisplayEmail(this.participantId);
   }
 
   onClick(event: MouseEvent): void {
