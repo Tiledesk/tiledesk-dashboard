@@ -394,6 +394,7 @@ export class AppCreateComponent implements OnInit, OnDestroy {
               this.logger.log("[APP-CREATE] SAVE NEW APP - category persisted via follow-up update");
             }, (error) => {
               this.logger.error('[APP-CREATE] SAVE NEW APP - category update ERROR ', error);
+              this.notify.showWidgetStyleUpdateNotification("App created, but the category could not be saved. Edit the app to set it manually.", 3, 'warning');
             });
         }
 
