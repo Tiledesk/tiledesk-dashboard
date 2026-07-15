@@ -31,6 +31,7 @@ export class AppCreateComponent implements OnInit, OnDestroy {
   app_run_url: string;
   install_action_type: string = "internal"
   app_status: string = "private"
+  app_category: string = ""
   // selectedClient: string = 'dashboard';
   user_id: string;
   // install_action_type: string = "internal"
@@ -184,6 +185,10 @@ export class AppCreateComponent implements OnInit, OnDestroy {
             this.app_status = 'public'
           }
 
+          if (this.currentApp && this.currentApp.category) {
+            this.app_category = this.currentApp.category
+          }
+
           if (this.currentApp && this.currentApp.where) {
 
             if (this.currentApp.where.dashboard === true) {
@@ -324,7 +329,8 @@ export class AppCreateComponent implements OnInit, OnDestroy {
       this.app_learn_more_url,
       this.app_status,
       this.user_id,
-      this.clients)
+      this.clients,
+      this.app_category)
       .subscribe((res) => {
         //  console.log("[APP-CREATE] UPDATE NEW APP RESULT: ", res);
 
@@ -363,9 +369,33 @@ export class AppCreateComponent implements OnInit, OnDestroy {
       this.app_learn_more_url,
       this.app_status,
       this.user_id,
-      this.clients)
-      .subscribe((res) => {
+      this.clients,
+      this.app_category)
+      .subscribe((res: any) => {
         this.logger.log("[APP-CREATE] SAVE NEW APP RESULT: ", res);
+
+        if (this.app_category && res && res._id) {
+          // POST /api/apps drops `category` server-side (vendored package
+          // whitelists fields); PUT does not, so finish the job with an update.
+          this.appStoreService.updateNewApp(
+            res._id,
+            this.app_icon_url,
+            this.app_name,
+            this.app_description,
+            this.install_action_type,
+            this.app_installation_url,
+            this.app_run_url,
+            this.app_learn_more_url,
+            this.app_status,
+            this.user_id,
+            this.clients,
+            this.app_category)
+            .subscribe(() => {
+              this.logger.log("[APP-CREATE] SAVE NEW APP - category persisted via follow-up update");
+            }, (error) => {
+              this.logger.error('[APP-CREATE] SAVE NEW APP - category update ERROR ', error);
+            });
+        }
 
       }, (error) => {
 

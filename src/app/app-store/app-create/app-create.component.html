@@ -133,6 +133,22 @@
 
         <div class="row">
           <label class="col-sm-12 app-create-label">
+            {{ 'AppCategory' | translate }}
+            <span style="color: rgb(157, 159, 162); display: block;font-size: 12px;">
+              {{ 'MarkThisAppAsAConnectorSoItAppearsInDesignStudio' | translate }}
+            </span>
+          </label>
+
+          <div class="col-12 col-sm-8 col-md-8 col-lg-8">
+            <select [(ngModel)]="app_category" class="input" style="margin-bottom: 0px;">
+              <option value="">{{ 'General' | translate }}</option>
+              <option value="connector">{{ 'Connector' | translate }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <label class="col-sm-12 app-create-label">
             {{ 'LearnMoreURL' | translate}}*
           </label>
 
