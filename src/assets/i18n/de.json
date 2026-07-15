@@ -2876,6 +2876,7 @@
         "Delete": "Löschen",
         "Transport": "Transport",
         "AddMCPServer": "MCP-Server hinzufügen",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "MCP-Server bearbeiten",
         "TotalMCPServers": "Gesamt MCP-Server",
         "SearchByNameURLOrType": "Nach Name, URL oder Typ suchen",

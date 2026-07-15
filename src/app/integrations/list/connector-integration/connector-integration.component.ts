@@ -30,6 +30,7 @@ export class ConnectorIntegrationComponent implements OnInit {
   isLoadingManifest: boolean = false;
   manifestPreview: { connectorName: string, actionCount: number, triggerCount: number } | null = null;
   loadingBaseUrl: string = '';
+  private previewedBaseUrl: string = '';
 
   constructor(
     private integrationService: IntegrationService,
@@ -48,6 +49,13 @@ export class ConnectorIntegrationComponent implements OnInit {
   resetForm(): void {
     this.currentEntry = { name: '', baseUrl: '' };
     this.manifestPreview = null;
+    this.previewedBaseUrl = '';
+  }
+
+  onUrlChange(): void {
+    if (this.manifestPreview && this.currentEntry.baseUrl !== this.previewedBaseUrl) {
+      this.manifestPreview = null;
+    }
   }
 
   previewManifest(): void {
@@ -75,6 +83,7 @@ export class ConnectorIntegrationComponent implements OnInit {
           actionCount: Array.isArray(manifest.actions) ? manifest.actions.length : 0,
           triggerCount: Array.isArray(manifest.triggers) ? manifest.triggers.length : 0
         };
+        this.previewedBaseUrl = this.currentEntry.baseUrl;
 
         if (!this.currentEntry.name) {
           this.currentEntry.name = manifest.connector.name;
@@ -114,7 +123,7 @@ export class ConnectorIntegrationComponent implements OnInit {
   deleteConnector(entry: ConnectorEntry): void {
     Swal.fire({
       title: this.translate.instant('AreYouSure'),
-      html: this.translate.instant('Integration.MCPServerWillBeDeleted', { serverName: entry.name }),
+      html: this.translate.instant('Integration.ConnectorWillBeDeleted', { serverName: entry.name }),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: true,
