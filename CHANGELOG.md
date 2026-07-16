@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.240-stage
+- Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically (GA and Rewardful on panel.tiledesk.com; Stripe when PAY is enabled)
+
 ### 2.7.239-stage
 - Improves data tables
 
