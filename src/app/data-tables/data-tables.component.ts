@@ -46,6 +46,7 @@ import {
   isoToDatetimeLocal,
   normalizeNumberDecimalSeparator,
   parseNumberCellValue,
+  formatTableDataSizeLabel,
   resolveDataTableMaxSizeLabel,
 } from './data-tables-column-types.util';
 
@@ -105,8 +106,6 @@ export class DataTablesComponent implements OnInit {
   isDeletingRows = false;
   deletingRowId: string | null = null;
   isDeletingTable = false;
-  /** Total rows in the selected table (not affected by search filters). */
-  totalTableRowCount = 0;
 
   get totalRowsPages(): number {
     return Math.max(1, Math.ceil(this.rows.length / this.rowsPageSize));
@@ -119,6 +118,16 @@ export class DataTablesComponent implements OnInit {
 
   get showRowsPagination(): boolean {
     return !this.isLoadingRows && this.rows.length > this.rowsPageSize;
+  }
+
+  /** Total rows from API `stats.rows` (not affected by search filters). */
+  get totalTableRowCount(): number {
+    const rows = this.selectedTable?.stats?.rows;
+    return typeof rows === 'number' && rows >= 0 ? rows : 0;
+  }
+
+  get dataTableCurrentSizeLabel(): string {
+    return formatTableDataSizeLabel(this.selectedTable?.stats?.sizeBytes);
   }
 
   isAddColumnPopoverOpen = false;
@@ -205,12 +214,10 @@ export class DataTablesComponent implements OnInit {
 
   private loadTableRows(table: DataTable, search?: RowSearchRequest): void {
     this.clearRowSelection();
-    const isFullList = !search?.conditions?.length;
     this.currentRowsPage = 1;
 
     if (!table._id) {
       this.rows = this.buildRowsFromLoaded(table.schema, []);
-      this.totalTableRowCount = 0;
       this.maybeFocusFirstColumnCell();
       return;
     }
@@ -219,9 +226,6 @@ export class DataTablesComponent implements OnInit {
     this.dataTablesService.listRows(table._id, search).subscribe({
       next: (loadedRows) => {
         this.rows = this.buildRowsFromLoaded(table.schema, loadedRows || []);
-        if (isFullList) {
-          this.totalTableRowCount = (loadedRows || []).length;
-        }
         this.syncRowsPagination();
         this.isLoadingRows = false;
         this.maybeFocusFirstColumnCell();
@@ -229,9 +233,6 @@ export class DataTablesComponent implements OnInit {
       error: (err) => {
         this.isLoadingRows = false;
         this.rows = this.buildRowsFromLoaded(table.schema, []);
-        if (isFullList) {
-          this.totalTableRowCount = 0;
-        }
         this.logger.error('[DATA-TABLES] listRows error', err);
         this.maybeFocusFirstColumnCell();
       },
@@ -305,6 +306,14 @@ export class DataTablesComponent implements OnInit {
   }
 
   private serializeCellValue(value: unknown, type: ColumnType): unknown {
+    if (type === 'string') {
+      if (value === null || value === undefined || value === '') {
+        // Partial row updates may ignore null; empty string clears the field on the server.
+        return '';
+      }
+      return value;
+    }
+
     if (value === '' || value === undefined) {
       return null;
     }
@@ -368,6 +377,7 @@ export class DataTablesComponent implements OnInit {
       ...(this.selectedTable || {}),
       ...updated,
       schema: updated.schema || this.selectedTable?.schema,
+      stats: updated.stats !== undefined ? updated.stats : this.selectedTable?.stats,
     };
     const index = this.tables.findIndex((t) => t._id === tableId);
     if (index >= 0) {
@@ -377,6 +387,30 @@ export class DataTablesComponent implements OnInit {
     this.selectedTable = merged;
     this.selectedTableId = merged._id || null;
     return merged;
+  }
+
+  private refreshSelectedTableStats(onComplete?: () => void): void {
+    const tableId = this.selectedTable?._id;
+    if (!tableId) {
+      onComplete?.();
+      return;
+    }
+
+    this.dataTablesService.listTables().subscribe({
+      next: (tables) => {
+        this.tables = tables || [];
+        const updated = this.tables.find((table) => table._id === tableId);
+        if (updated) {
+          this.applyTableUpdate(tableId, updated);
+        }
+        this.cdr.markForCheck();
+        onComplete?.();
+      },
+      error: (err) => {
+        this.logger.error('[DATA-TABLES] refreshSelectedTableStats error', err);
+        onComplete?.();
+      },
+    });
   }
 
   // ─── Sidebar / last-table persistence ───────────────────────────────────
@@ -420,7 +454,6 @@ export class DataTablesComponent implements OnInit {
     this.cancelRenameTableTitle();
     this.cancelRenameColumn();
     this.rowSearchQuery = '';
-    this.totalTableRowCount = 0;
     this.currentRowsPage = 1;
     this.selectedTableId = table._id || null;
     this.selectedTable = table;
@@ -432,7 +465,9 @@ export class DataTablesComponent implements OnInit {
   onRefreshTable(): void {
     const table = this.selectedTable;
     if (!table) { return; }
-    this.loadTableRows(table, this.buildRowSearchRequest());
+    this.refreshSelectedTableStats(() => {
+      this.loadTableRows(table, this.buildRowSearchRequest());
+    });
   }
 
   onRowSearchChange(): void {
@@ -498,6 +533,11 @@ export class DataTablesComponent implements OnInit {
       return table === this.selectedTable;
     }
     return table._id === this.selectedTableId;
+  }
+
+  getTableRowCount(table: DataTable): number {
+    const rows = table.stats?.rows;
+    return typeof rows === 'number' && rows >= 0 ? rows : 0;
   }
 
   trackByTableId = (_: number, t: DataTable): string => t._id || t.name || '';
@@ -584,7 +624,9 @@ export class DataTablesComponent implements OnInit {
     }).subscribe({
       next: () => {
         this.logger.log('[DATA-TABLES] initial row created');
-        this.selectTable(table, { focusFirstColumnCell: true });
+        this.refreshSelectedTableStats(() => {
+          this.selectTable(table, { focusFirstColumnCell: true });
+        });
       },
       error: (err) => {
         this.logger.error('[DATA-TABLES] insertInitialRow error', err);
@@ -868,12 +910,20 @@ export class DataTablesComponent implements OnInit {
   // ─── Grid actions ───────────────────────────────────────────────────────
 
   onAddRow(): void {
+    const tableId = this.selectedTable?._id;
     const schema = sortColumns(this.selectedTable?.schema);
     if (!schema.length) { return; }
-    this.rows = [this.createEmptyRow(schema), ...this.rows];
-    this.totalTableRowCount += 1;
+
+    const row = this.createEmptyRow(schema);
+    this.rows = [row, ...this.rows];
     this.currentRowsPage = 1;
     this.scheduleFocusFirstColumnCell();
+
+    if (!tableId) {
+      return;
+    }
+
+    this.persistNewRow(tableId, row, schema);
   }
 
   nextRowsPage(): void {
@@ -971,7 +1021,6 @@ export class DataTablesComponent implements OnInit {
       this.rows = this.rows.filter((r) => r.localId !== row.localId);
       this.selectedRowIds.delete(row.localId);
       this.selectedRowIds = new Set(this.selectedRowIds);
-      this.totalTableRowCount = Math.max(0, this.totalTableRowCount - 1);
       this.syncRowsPagination();
     };
 
@@ -985,6 +1034,7 @@ export class DataTablesComponent implements OnInit {
       next: () => {
         this.deletingRowId = null;
         removeLocally();
+        this.refreshSelectedTableStats();
         this.logger.log('[DATA-TABLES] row deleted', row._id);
       },
       error: (err) => {
@@ -1006,7 +1056,6 @@ export class DataTablesComponent implements OnInit {
     const removeLocally = (): void => {
       this.rows = this.rows.filter((r) => !removeIds.has(r.localId));
       this.clearRowSelection();
-      this.totalTableRowCount = Math.max(0, this.totalTableRowCount - selected.length);
       this.syncRowsPagination();
     };
 
@@ -1029,6 +1078,7 @@ export class DataTablesComponent implements OnInit {
       .subscribe({
         next: () => {
           removeLocally();
+          this.refreshSelectedTableStats();
           this.logger.log('[DATA-TABLES] selected rows deleted');
         },
         error: (err) => {
@@ -1048,6 +1098,7 @@ export class DataTablesComponent implements OnInit {
 
   focusedDatetimeCellKey: string | null = null;
   focusedNumberCellKey: string | null = null;
+  focusedStringCellKey: string | null = null;
   private numberCellEditDrafts = new Map<string, string>();
   private cellEditSnapshots = new Map<string, unknown>();
   private lastCommittedCellValues = new Map<string, unknown>();
@@ -1117,9 +1168,57 @@ export class DataTablesComponent implements OnInit {
     this.onCellBlur(row, columnName);
   }
 
+  isStringCellOversized(value: unknown): boolean {
+    if (value === null || value === undefined || value === '') {
+      return false;
+    }
+
+    return !isStringCellWithinByteLimit(value);
+  }
+
+  hasStringValue(row: EditableRow, columnName: string): boolean {
+    const value = row.data[columnName];
+    return value !== null && value !== undefined && String(value) !== '';
+  }
+
+  isStringCellFocused(row: EditableRow, columnName: string): boolean {
+    return this.focusedStringCellKey === this.getCellEditKey(row, columnName);
+  }
+
+  clearStringCell(row: EditableRow, column: ColumnView, event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const tableId = this.selectedTable?._id;
+    const schemaColumn = sortColumns(this.selectedTable?.schema).find((col) => col.name === column.name);
+    if (!schemaColumn || schemaColumn.type !== 'string') {
+      return;
+    }
+
+    row.data[column.name] = '';
+    this.focusedStringCellKey = null;
+    const editKey = this.getCellEditKey(row, column.name);
+    this.cellEditSnapshots.set(editKey, '');
+    this.commitCellValue(row, column.name, '');
+
+    if (!tableId || !row._id) {
+      this.cdr.detectChanges();
+      return;
+    }
+
+    this.updateRowCell(tableId, row, schemaColumn);
+    this.cdr.detectChanges();
+  }
+
   onStringCellFocus(row: EditableRow, columnName: string, event: FocusEvent): void {
+    if (this.isStringCellOversized(row.data[columnName])) {
+      (event.target as HTMLInputElement | null)?.blur();
+      return;
+    }
+
     this.onCellInputFocus(event);
     const key = this.getCellEditKey(row, columnName);
+    this.focusedStringCellKey = key;
     const column = sortColumns(this.selectedTable?.schema).find((col) => col.name === columnName);
     let current = row.data[columnName];
     if (column && isLikelyPersistedApiErrorText(current)) {
@@ -1272,6 +1371,15 @@ export class DataTablesComponent implements OnInit {
     this.onCellBlur(row, column.name);
   }
 
+  onStringCellBlur(row: EditableRow, columnName: string, event: FocusEvent): void {
+    const input = event.target as HTMLInputElement | null;
+    if (input) {
+      row.data[columnName] = input.value;
+    }
+    this.focusedStringCellKey = null;
+    this.onCellBlur(row, columnName);
+  }
+
   onCellBlur(row: EditableRow, columnName: string): void {
     const tableId = this.selectedTable?._id;
     const schema = sortColumns(this.selectedTable?.schema);
@@ -1284,7 +1392,7 @@ export class DataTablesComponent implements OnInit {
       row.data[columnName] = finalizeNumberCellValue(row.data[columnName]);
     }
 
-    if (!this.validateRowStringCellLimits(row, schema)) {
+    if (column.type === 'string' && !isStringCellWithinByteLimit(row.data[columnName])) {
       this.revertCellValue(row, columnName, column);
       this.showCellValueTooLargeError();
       this.cdr.detectChanges();
@@ -1292,6 +1400,10 @@ export class DataTablesComponent implements OnInit {
     }
 
     if (row._id) {
+      if (!this.hasCellValueChanged(row, columnName, column)) {
+        this.clearCellEditSnapshot(row, columnName);
+        return;
+      }
       this.updateRowCell(tableId, row, column);
       return;
     }
@@ -1334,6 +1446,29 @@ export class DataTablesComponent implements OnInit {
     this.lastCommittedCellValues.set(this.getCommittedCellKey(row, columnName), value);
   }
 
+  private hasCellValueChanged(row: EditableRow, columnName: string, column: Column): boolean {
+    const committedKey = this.getCommittedCellKey(row, columnName);
+    const committedValue = this.lastCommittedCellValues.has(committedKey)
+      ? this.lastCommittedCellValues.get(committedKey)
+      : this.defaultCellValue(column.type);
+    const currentSerialized = this.serializeCellValue(row.data[columnName], column.type);
+    const committedSerialized = this.serializeCellValue(committedValue, column.type);
+    return currentSerialized !== committedSerialized;
+  }
+
+  private didServerPersistCellValue(
+    serverValue: unknown,
+    intendedValue: unknown | undefined,
+    type: ColumnType,
+  ): boolean {
+    if (!this.cellHasValue(intendedValue, type)) {
+      return !this.cellHasValue(serverValue, type);
+    }
+
+    return this.serializeCellValue(serverValue, type)
+      === this.serializeCellValue(intendedValue, type);
+  }
+
   private getCellRevertValue(row: EditableRow, columnName: string, column?: Column): unknown {
     const editKey = this.getCellEditKey(row, columnName);
     if (this.cellEditSnapshots.has(editKey)) {
@@ -1358,12 +1493,6 @@ export class DataTablesComponent implements OnInit {
     schema.forEach((col) => {
       this.cellEditSnapshots.delete(this.getCellEditKey(row, col.name));
     });
-  }
-
-  private validateRowStringCellLimits(row: EditableRow, schema: Column[]): boolean {
-    return !schema.some(
-      (col) => col.type === 'string' && !isStringCellWithinByteLimit(row.data[col.name]),
-    );
   }
 
   private showCellValueTooLargeError(): void {
@@ -1434,7 +1563,7 @@ export class DataTablesComponent implements OnInit {
     }
 
     if (saved?.data) {
-      row.data = this.normalizeRowData(saved.data, schema);
+      row.data = this.mergeRowDataFromServer(row.data, saved.data, schema);
     }
     schema.forEach((col) => {
       this.commitCellValue(row, col.name, row.data[col.name]);
@@ -1453,9 +1582,23 @@ export class DataTablesComponent implements OnInit {
       return;
     }
 
-    row.data[column.name] = intendedValue ?? this.defaultCellValue(column.type);
-    this.commitCellValue(row, column.name, row.data[column.name]);
+    const resolvedValue = intendedValue ?? this.defaultCellValue(column.type);
+    if (
+      saved?.data
+      && !this.didServerPersistCellValue(saved.data[column.name], intendedValue, column.type)
+    ) {
+      this.logger.warn(
+        '[DATA-TABLES] server returned stale cell value after save',
+        column.name,
+        saved.data[column.name],
+        intendedValue,
+      );
+    }
+
+    row.data[column.name] = resolvedValue;
+    this.commitCellValue(row, column.name, resolvedValue);
     this.clearCellEditSnapshot(row, column.name);
+    this.refreshSelectedTableStats();
   }
 
   private clearCellEditSnapshot(row: EditableRow, columnName: string): void {
@@ -1477,7 +1620,7 @@ export class DataTablesComponent implements OnInit {
     });
   }
 
-  private insertNewRow(tableId: string, row: EditableRow, schema: Column[]): void {
+  private persistNewRow(tableId: string, row: EditableRow, schema: Column[]): void {
     row.isSaving = true;
     const localSnapshot = { ...row.data };
     this.dataTablesService.insertRow(tableId, {
@@ -1487,6 +1630,7 @@ export class DataTablesComponent implements OnInit {
         if (isApiErrorPayload(saved)) {
           row.isSaving = false;
           row.pendingCellSave = false;
+          this.removeRowIfUnpersisted(row);
           this.handleCellSaveHttpError(saved, row, undefined, '', localSnapshot, schema);
           return;
         }
@@ -1495,6 +1639,7 @@ export class DataTablesComponent implements OnInit {
         row.data = this.mergeRowDataFromServer(localSnapshot, saved.data, schema);
         row.isSaving = false;
         this.handleRowSaveSuccess(row, schema, saved);
+        this.refreshSelectedTableStats();
         if (row.pendingCellSave) {
           row.pendingCellSave = false;
           this.syncFullRow(tableId, row, schema);
@@ -1503,9 +1648,23 @@ export class DataTablesComponent implements OnInit {
       error: (err) => {
         row.isSaving = false;
         row.pendingCellSave = false;
+        this.removeRowIfUnpersisted(row);
         this.handleCellSaveHttpError(err, row, undefined, '', localSnapshot, schema);
       },
     });
+  }
+
+  private removeRowIfUnpersisted(row: EditableRow): void {
+    if (row._id) {
+      return;
+    }
+
+    this.rows = this.rows.filter((item) => item.localId !== row.localId);
+    this.syncRowsPagination();
+  }
+
+  private insertNewRow(tableId: string, row: EditableRow, schema: Column[]): void {
+    this.persistNewRow(tableId, row, schema);
   }
 
   private syncFullRow(tableId: string, row: EditableRow, schema: Column[]): void {
@@ -1525,6 +1684,7 @@ export class DataTablesComponent implements OnInit {
           row.data = this.mergeRowDataFromServer(localSnapshot, saved.data, schema);
         }
         this.handleRowSaveSuccess(row, schema, saved);
+        this.refreshSelectedTableStats();
       },
       error: (err) => {
         this.handleCellSaveHttpError(err, row, undefined, '', localSnapshot, schema);

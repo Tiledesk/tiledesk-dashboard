@@ -36,11 +36,17 @@ export interface RenameColumnRequest {
   name: string;
 }
 
+export interface DataTableStats {
+  rows?: number;
+  sizeBytes?: number;
+}
+
 export interface DataTable {
   _id?: string;
   id_project?: string;
   name?: string;
   schema?: Column[];
+  stats?: DataTableStats;
   createdBy?: string;
   createdAt?: string;
   updatedAt?: string;

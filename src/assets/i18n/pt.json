@@ -93,7 +93,8 @@
         "TableSizeLimitTitle": "Limite de armazenamento atingido",
         "TableSizeLimitMessage": "A tabela atingiu a sua capacidade máxima. Reduza ou remova algum conteúdo para continuar.",
         "NoSearchResults": "Não há correspondências para os parâmetros especificados",
-        "Null": "Nulo"
+        "Null": "Nulo",
+        "tableSize": "Table size: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
     },
     "SelectAkB": "Selecione uma Base de Conhecimentos",
     "FirstName": "Primeiro nome",
@@ -903,9 +904,9 @@
     "Emoji": "Emoji",
     "VoiceRecorder": "Gravador de voz",
     "TheConversationWillBeResolved": "A conversa será resolvida",
-    "NoTeammateFoundMatchingCriteria":"Nenhum colega de equipa encontrado correspondente aos seus critérios de pesquisa",
-    "AddTagToConversation":"Adicionar etiqueta à conversa...",
-    "Info":"Info",
+    "NoTeammateFoundMatchingCriteria": "Nenhum colega de equipa encontrado correspondente aos seus critérios de pesquisa",
+    "AddTagToConversation": "Adicionar etiqueta à conversa...",
+    "Info": "Info",
     "AiTokens": "Tokens de IA",
     "YouRunOutOfConversations": "Ficaste sem conversas",
     "YouRunOutOfAiTokens": "Ficaste sem tokens de IA",
@@ -988,14 +989,30 @@
     "ResponseInStreaming": "Quando a transmissão contínua estiver ativada, verá a resposta em tempo real enquanto está a ser gerada",
     "QuestionIsRequired": "A pergunta é obrigatória",
     "TYPE_GPT_MODEL": {
-        "text-davinci-003": { "description": ""},
-        "gpt-3.5-turbo": { "description": ""},
-        "gpt-4": { "description": ""},
-        "gpt-4-turbo-preview": { "description": ""},
-        "gpt-4o": { "description": ""},
-        "gpt-4o-mini": { "description": ""},
-        "o1-mini": { "description": ""},
-        "o1-preview": { "description": ""}
+        "text-davinci-003": {
+            "description": ""
+        },
+        "gpt-3.5-turbo": {
+            "description": ""
+        },
+        "gpt-4": {
+            "description": ""
+        },
+        "gpt-4-turbo-preview": {
+            "description": ""
+        },
+        "gpt-4o": {
+            "description": ""
+        },
+        "gpt-4o-mini": {
+            "description": ""
+        },
+        "o1-mini": {
+            "description": ""
+        },
+        "o1-preview": {
+            "description": ""
+        }
     },
     "Advanced": "Avançado",
     "Standard": "Padrão",
@@ -2377,7 +2394,7 @@
         "ExtractTags": "Extrair etiquetas (obrigatório)",
         "TypeAndPressEnter": "Digite e prima Enter",
         "UnwantedTags": "Tags indesejadas",
-        "UnwantedClassnames":"Nomes de classes indesejados",
+        "UnwantedClassnames": "Nomes de classes indesejados",
         "ScrapingRules": "Regras de Scraping",
         "CopyScrapingRules": "Copiar regras de scraping",
         "ExtractTagsNoMandatory": "Extrair Tags",
@@ -2405,13 +2422,13 @@
         "CloseSettings": "Fechar definições",
         "PasteScrapingRules": "Colar regras de scraping",
         "NoScrapingRulesToPaste": "Nenhuma regra de scraping para colar",
-        "AdvancedContext":"Contexto avançado",
-        "AdvancedContextDesc1":"Aqui tem mais controlo. Tenha cuidado, o aviso nativo será completamente substituído.",
-        "AdvancedContextDesc2":"Certifique-se de que instrui o seu aviso para responder com <NOANS> quando não encontrar uma resposta satisfatória e feche sempre com {context}",
+        "AdvancedContext": "Contexto avançado",
+        "AdvancedContextDesc1": "Aqui tem mais controlo. Tenha cuidado, o aviso nativo será completamente substituído.",
+        "AdvancedContextDesc2": "Certifique-se de que instrui o seu aviso para responder com <NOANS> quando não encontrar uma resposta satisfatória e feche sempre com {context}",
         "GetContentsSources": "Obtenha fontes de conteúdo",
-        "GetContentsSourcesDesc1":"Utilize esta opção para obter fontes precisas de documentos utilizados para gerar a resposta.",
+        "GetContentsSourcesDesc1": "Utilize esta opção para obter fontes precisas de documentos utilizados para gerar a resposta.",
         "GetContentsSourcesDesc2": "Tenha em atenção que isto consome mais tokens e aumenta a latência de resposta em comparação com a recuperação normal da base de conhecimento.",
-        "GetContentsSourcesDesc3":"A quota máxima de tokens será ajustada automaticamente para obter as citações, se necessário.",
+        "GetContentsSourcesDesc3": "A quota máxima de tokens será ajustada automaticamente para obter as citações, se necessário.",
         "ChunksOnly": "Apenas chunks",
         "ChunksOnlyDesc": "Ignora a síntese de IA. Quando habilitado, o sistema retornará apenas as passagens de texto brutas (chunks) recuperadas de seus conteúdos, sem gerar uma resposta. Ideal para verificar a precisão das fontes ou para depuração.",
         "ReRanking": "Reordenação",

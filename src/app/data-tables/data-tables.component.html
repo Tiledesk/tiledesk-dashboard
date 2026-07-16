@@ -24,7 +24,11 @@
             <div class="dt-list-item">
               <span class="material-icons-outlined dt-list-icon">grid_on</span>
               <div class="dt-list-name">{{ t.name }}</div>
-              <mat-icon *ngIf="isTableSelected(t)" class="dt-list-chevron">chevron_right</mat-icon>
+              <div class="counter-badge">{{ getTableRowCount(t) }}</div>
+              <div class="dt-list-chevron-slot">
+                <mat-icon class="dt-list-chevron"
+                          [class.dt-list-chevron--active]="isTableSelected(t)">chevron_right</mat-icon>
+              </div>
             </div>
           </li>
         </ul>
@@ -142,8 +146,11 @@
                 <span class="dt-row-count">
                   {{ 'DataTables.TotalRows' | translate }} {{ totalTableRowCount }}
                 </span>
-                <span class="dt-row-count-hint"
+                <!-- <span class="dt-row-count-hint"
                       [innerHTML]="'DataTables.ShowingUpTo200Rows' | translate:{ data_table_max_size: dataTableMaxSizeLabel }">
+                </span> -->
+                <span class="dt-row-count-hint"
+                      [innerHTML]="'DataTables.tableSize' | translate:{ data_table_size: dataTableCurrentSizeLabel, data_table_max_size: dataTableMaxSizeLabel }">
                 </span>
               </div>
             </div>
@@ -317,25 +324,49 @@
                         [class.dt-data-cell--boolean]="col.type === 'boolean'"
                         [attr.data-dt-first-cell]="rowIndex === 0 && colIndex === 0 ? 'true' : null">
                       <ng-container [ngSwitch]="col.type">
-                        <input *ngSwitchCase="'string'"
-                               type="text"
-                               class="dt-cell-input dt-cell-input--nullable"
-                               readonly
-                               [placeholder]="('DataTables.Null' | translate)"
-                               [attr.autocomplete]="getCellAutocomplete(row, col)"
-                               autocorrect="off"
-                               autocapitalize="off"
-                               spellcheck="false"
-                               [attr.data-lpignore]="true"
-                               [attr.data-1p-ignore]="true"
-                               [attr.data-form-type]="'other'"
-                               [attr.aria-labelledby]="getColumnHeaderId(col)"
-                               [ngModelOptions]="{standalone: true}"
-                               [ngModel]="row.data[col.name] ?? ''"
-                               (ngModelChange)="row.data[col.name] = $event"
-                               (focus)="onStringCellFocus(row, col.name, $event)"
-                               (keydown.enter)="onCellInputEnterKeydown($event)"
-                               (blur)="onCellBlur(row, col.name)">
+                        <div *ngSwitchCase="'string'"
+                             class="dt-cell-string"
+                             (click)="$event.stopPropagation()">
+                          <div *ngIf="isStringCellOversized(row.data[col.name]); else stringCellInput"
+                               class="dt-cell-oversized">
+                            <span class="dt-cell-oversized-label">
+                              {{ 'DataTables.CellValueTooLarge' | translate }}
+                            </span>
+                            <button type="button"
+                                    class="dt-cell-string-clear"
+                                    (mousedown)="clearStringCell(row, col, $event)"
+                                    [attr.aria-label]="('DataTables.ClearCellValue' | translate)">
+                              <mat-icon>close</mat-icon>
+                            </button>
+                          </div>
+                          <ng-template #stringCellInput>
+                            <input type="text"
+                                   class="dt-cell-input dt-cell-input--nullable"
+                                   readonly
+                                   [placeholder]="('DataTables.Null' | translate)"
+                                   [attr.autocomplete]="getCellAutocomplete(row, col)"
+                                   autocorrect="off"
+                                   autocapitalize="off"
+                                   spellcheck="false"
+                                   [attr.data-lpignore]="true"
+                                   [attr.data-1p-ignore]="true"
+                                   [attr.data-form-type]="'other'"
+                                   [attr.aria-labelledby]="getColumnHeaderId(col)"
+                                   [ngModelOptions]="{standalone: true}"
+                                   [ngModel]="row.data[col.name] ?? ''"
+                                   (ngModelChange)="row.data[col.name] = $event"
+                                   (focus)="onStringCellFocus(row, col.name, $event)"
+                                   (keydown.enter)="onCellInputEnterKeydown($event)"
+                                   (blur)="onStringCellBlur(row, col.name, $event)">
+                            <button *ngIf="hasStringValue(row, col.name) && !isStringCellFocused(row, col.name)"
+                                    type="button"
+                                    class="dt-cell-string-clear"
+                                    (mousedown)="clearStringCell(row, col, $event)"
+                                    [attr.aria-label]="('DataTables.ClearCellValue' | translate)">
+                              <mat-icon>close</mat-icon>
+                            </button>
+                          </ng-template>
+                        </div>
                         <input *ngSwitchCase="'number'"
                                type="text"
                                inputmode="decimal"

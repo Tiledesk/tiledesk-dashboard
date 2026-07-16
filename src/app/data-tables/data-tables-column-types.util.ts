@@ -140,6 +140,24 @@ export function formatTableMaxSizeMegabytes(bytes: number): string {
   return `${megabytes} MB`;
 }
 
+/** Human-readable current table data size from API `stats.sizeBytes`. */
+export function formatTableDataSizeLabel(bytes: unknown): string {
+  const value = typeof bytes === 'number' ? bytes : Number(bytes);
+  if (!Number.isFinite(value) || value <= 0) {
+    return '0 B';
+  }
+
+  const rounded = Math.round(value);
+  if (rounded < 1024) {
+    return `${rounded} B`;
+  }
+  if (rounded < 1024 * 1024) {
+    return `${Math.round(rounded / 1024)} KB`;
+  }
+
+  return formatTableMaxSizeMegabytes(rounded);
+}
+
 /** Human-readable total table data size limit (aligned with server TABLE_SIZE_LIMIT_EXCEEDED). */
 export function resolveDataTableMaxSizeLabel(rawValue: unknown): string {
   return formatTableMaxSizeMegabytes(resolveDefaultTableMaxSizeBytes(rawValue));
@@ -156,7 +174,18 @@ export function isStringCellWithinByteLimit(
   if (value === null || value === undefined || value === '') {
     return true;
   }
-  return getUtf8ByteSize(String(value)) <= maxBytes;
+
+  const text = String(value);
+  // UTF-8 is at least 1 byte per JS code unit: skip encode on huge values.
+  if (text.length > maxBytes) {
+    return false;
+  }
+  // Upper bound ~3 UTF-8 bytes per BMP code unit: skip encode when clearly under.
+  if (text.length * 3 <= maxBytes) {
+    return true;
+  }
+
+  return getUtf8ByteSize(text) <= maxBytes;
 }
 
 function isHttpErrorResponse(value: unknown): boolean {
