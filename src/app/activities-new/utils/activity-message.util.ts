@@ -61,6 +61,18 @@ export function getClosedByLabel(activity: ActivityRecord): string {
   return actorName(activity);
 }
 
+function formatIdUserDisplayName(idUser: Record<string, unknown> | undefined | null): string {
+  if (!idUser) {
+    return '';
+  }
+
+  return [idUser['firstname'], idUser['lastname']]
+    .map((part) => str(part).trim())
+    .filter(Boolean)
+    .join(' ')
+    .trim();
+}
+
 export function targetUserName(activity: ActivityRecord): string {
   const participant = targetConversationUserParticipant(activity);
   return participant?.name || 'Unknown user';
@@ -77,7 +89,7 @@ export function targetConversationUserParticipant(activity: ActivityRecord): Act
     return null;
   }
 
-  const name = [user['firstname'], user['lastname']].filter(Boolean).join(' ').trim();
+  const name = formatIdUserDisplayName(user);
   return {
     name: name || profileId,
     profileId,
@@ -89,10 +101,6 @@ export interface ProjectUserTargetDisplay {
   profileId: string;
   avatarSource: string;
   useIdUserName: boolean;
-}
-
-function normalizeEmail(email: unknown): string {
-  return str(email).trim().toLowerCase();
 }
 
 function actionObjHasUserName(actionObj: Record<string, unknown>): boolean {
@@ -107,29 +115,24 @@ export function resolveProjectUserTargetDisplay(activity: ActivityRecord): Proje
   }
 
   const actionObj = activity.actionObj || {};
-  const actionEmail = normalizeEmail(actionObj['email']);
-  const targetEmail = normalizeEmail(idUser?.['email']);
-  const emailsMatch = !!actionEmail && !!targetEmail && actionEmail === targetEmail;
-  const missingActionName = !actionObjHasUserName(actionObj);
+  const actionObjName = actionObjHasUserName(actionObj)
+    ? [str(actionObj['firstname']), str(actionObj['lastname'])]
+      .map((part) => part.trim())
+      .filter(Boolean)
+      .join(' ')
+      .trim() || str(actionObj['name']).trim()
+    : '';
 
-  const firstname = str(idUser?.['firstname']);
-  const lastname = str(idUser?.['lastname']);
-  const fullName = [firstname, lastname].filter(Boolean).join(' ').trim();
-
-  if (missingActionName && emailsMatch && fullName) {
-    return {
-      label: fullName,
-      profileId,
-      avatarSource: firstname || fullName,
-      useIdUserName: true,
-    };
-  }
+  const idUserName = formatIdUserDisplayName(idUser);
+  const firstname = str(idUser?.['firstname']).trim();
+  const label = actionObjName || idUserName || profileId;
+  const useIdUserName = !actionObjName && !!idUserName;
 
   return {
-    label: profileId,
+    label,
     profileId,
-    avatarSource: profileId,
-    useIdUserName: false,
+    avatarSource: useIdUserName ? (firstname || idUserName) : profileId,
+    useIdUserName,
   };
 }
 
@@ -864,14 +867,13 @@ export function renderActivity(activity: ActivityRecord): string {
       }
       if (actionObj['user_available'] === true) {
         return isSelf
-          ? `${actor} changed their status to available`
+          ? `${targetUser || actor}'s availability status has been changed to ${availabilityStatusLabel(actionObj)} by themselves`
           : `${actor} changed the availability status of ${targetUser} to available`;
       }
       if (actionObj['user_available'] === false) {
-        const statusLabel = actionObj['profileStatus'] === 'inactive' ? 'inactive' : 'unavailable';
         return isSelf
-          ? `${actor} changed their status to ${statusLabel}`
-          : `${actor} changed the availability status of ${targetUser} to ${statusLabel}`;
+          ? `${targetUser || actor}'s availability status has been changed to ${availabilityStatusLabel(actionObj)} by themselves`
+          : `${actor} changed the availability status of ${targetUser} to ${availabilityStatusLabel(actionObj).toLowerCase()}`;
       }
       break;
     }

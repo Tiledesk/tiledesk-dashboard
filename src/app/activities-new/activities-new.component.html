@@ -269,10 +269,11 @@
                   <td *ngIf="isTeamVerbWithoutActorName(activity)">
                     <p class="activities-new-message">
                       <activities-teammate-link
-                        [label]="getTeammateDisplayName(activity?.target?.object?.id_user?._id)"
+                        [label]="getProjectUserUpdateTargetName(activity)"
                         [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
-                        [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
+                        [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
                         [participantId]="activity?.target?.object?.id_user?._id"
+                        [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
                         [menuTrigger]="teammateMenu"
                         (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
                       </activities-teammate-link>
@@ -282,6 +283,7 @@
                       <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && objectKeys(activity?.actionObj)?.[0] === 'user_available'">
                         's availability status has been changed to
                         <span style="text-transform: capitalize">{{ availabilityStatusLabel(activity) }}</span>
+                        <ng-container *ngIf="activity?.targetOfActionIsYourself"> by themselves</ng-container>
                       </ng-container>
                       <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && objectKeys(activity?.actionObj)?.[0] !== 'user_available'">
                         <ng-container *ngFor="let _key of objectKeys(activity?.actionObj); let isFirst = first">
@@ -303,10 +305,11 @@
                     <p class="activities-new-message">
                       <activities-teammate-link
                         *ngIf="activity?.actor?.id && activity?.actor?.type !== 'system'"
-                        [label]="activity.actor.name"
+                        [label]="getActivityActorDisplayName(activity)"
                         [highlighted]="highlightClass(activity.actor.id)"
                         [avatarView]="getTeammateAvatarView(activity.actor.id)"
                           [participantId]="activity.actor.id"
+                        [showEmail]="isTeammateInAgentsList(activity.actor.id)"
                         [menuTrigger]="teammateMenu"
                         (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id, activity)">
                       </activities-teammate-link>
@@ -315,7 +318,7 @@
                       </span>
                       <span *ngIf="!activity?.actor?.id"
                         [ngClass]="{'highlight': highlightClass(activity?.actor?.id)}">
-                        {{ activity.actor.name }}
+                        {{ getActivityActorDisplayName(activity) }}
                       </span>
 
                       <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_UPDATE'">
@@ -326,39 +329,50 @@
                           </span>
                           <span *ngIf="!activity?.targetOfActionIsYourself">
                             <activities-teammate-link
-                              [label]="getTeammateDisplayName(activity?.target?.object?.id_user?._id)"
+                              [label]="getProjectUserUpdateTargetName(activity)"
                               [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
-                              [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
+                              [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
                         [participantId]="activity?.target?.object?.id_user?._id"
+                        [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
                               [menuTrigger]="teammateMenu"
                               (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
                             </activities-teammate-link>'s abandoned chats count to {{ systemAbandonedChatsCount(activity?.actionObj) }}
                           </span>
                         </ng-container>
                         <ng-template #projectUserUpdateDefault>
-                          has changed
-                          <span *ngIf="activity?.targetOfActionIsYourself">their status</span>
-                          <span *ngIf="!activity?.targetOfActionIsYourself">
-                            <span *ngIf="activity?.actionObj?.user_available === true || activity?.actionObj?.user_available === false">
-                              the availability status of
-                            </span>
-                            <span *ngIf="activity?.actionObj?.role">the role of</span>
-                            <activities-teammate-link
-                              [label]="getTeammateDisplayName(activity?.target?.object?.id_user?._id)"
-                              [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
-                              [avatarView]="getTeammateAvatarView(activity?.target?.object?.id_user?._id)"
+                          <ng-container *ngIf="activity?.targetOfActionIsYourself
+                            && (activity?.actionObj?.user_available === true || activity?.actionObj?.user_available === false);
+                            else projectUserUpdateChanged">
+                            's availability status has been changed to
+                            <span style="text-transform: capitalize">{{ availabilityStatusLabel(activity) }}</span>
+                            by themselves
+                          </ng-container>
+                          <ng-template #projectUserUpdateChanged>
+                            has changed
+                            <span *ngIf="activity?.targetOfActionIsYourself">their status</span>
+                            <span *ngIf="!activity?.targetOfActionIsYourself">
+                              <span *ngIf="activity?.actionObj?.user_available === true || activity?.actionObj?.user_available === false">
+                                the availability status of
+                              </span>
+                              <span *ngIf="activity?.actionObj?.role">the role of</span>
+                              <activities-teammate-link
+                                [label]="getProjectUserUpdateTargetName(activity)"
+                                [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
+                              [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
                         [participantId]="activity?.target?.object?.id_user?._id"
-                              [menuTrigger]="teammateMenu"
-                              (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
-                            </activities-teammate-link>
-                          </span>
-                          to
-                          <span *ngIf="activity?.actionObj?.role">
-                            {{ projectUserUpdateRoleLabel(activity) }}
-                          </span>
-                          <span *ngIf="!activity?.actionObj?.role" style="text-transform: capitalize">
-                            {{ availabilityStatusLabel(activity) }}
-                          </span>
+                              [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
+                              </activities-teammate-link>
+                            </span>
+                            to
+                            <span *ngIf="activity?.actionObj?.role">
+                              {{ projectUserUpdateRoleLabel(activity) }}
+                            </span>
+                            <span *ngIf="!activity?.actionObj?.role" style="text-transform: capitalize">
+                              {{ availabilityStatusLabel(activity) }}
+                            </span>
+                          </ng-template>
                         </ng-template>
                       </ng-container>
 
@@ -752,7 +766,7 @@
     <mat-icon>timeline</mat-icon>
     <span>{{ 'ActivitiesNew.ActivitiesViewChart' | translate }}</span>
   </button>
-  <button mat-menu-item type="button" (click)="goToTeammateProfileFromMenu()">
+  <button *ngIf="teammateMenuProfileEnabled" mat-menu-item type="button" (click)="goToTeammateProfileFromMenu()">
     <mat-icon>person</mat-icon>
     <span>{{ 'ActivitiesNew.ActivitiesGoToProfile' | translate }}</span>
   </button>

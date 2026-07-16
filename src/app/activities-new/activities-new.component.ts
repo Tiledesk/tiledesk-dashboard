@@ -133,6 +133,8 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   browserLang: string;
   teammateMenuParticipantId: string | null = null;
   teammateMenuActivityDate: Date | null = null;
+  teammateMenuProfileEnabled = true;
+  teammateMenuDisplayName: string | null = null;
 
   private unsubscribe$: Subject<void> = new Subject<void>();
 
@@ -439,10 +441,22 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const actorId = activity.actor?.id;
-    const targetUserId = (activity.target?.object?.['id_user'] as Record<string, unknown> | undefined)?.['_id'];
+    const actorId = String(activity.actor?.id || '').trim();
+    const targetUserId = String(
+      (activity.target?.object?.['id_user'] as Record<string, unknown> | undefined)?.['_id'] || '',
+    ).trim();
     if (actorId && targetUserId) {
       activity.targetOfActionIsYourself = actorId === targetUserId;
+    }
+
+    if (!activity.actor?.name && actorId && activity.actor?.type !== 'system') {
+      const resolvedName = this.getTeammateDisplayName(actorId);
+      if (resolvedName && resolvedName !== actorId) {
+        activity.actor = {
+          ...activity.actor,
+          name: resolvedName,
+        };
+      }
     }
   }
 
@@ -635,6 +649,9 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     ].includes(verb)) {
       return false;
     }
+    if (verb === 'PROJECT_USER_UPDATE' && activity.actor?.id) {
+      return false;
+    }
     return !activity.actor?.name && [
       'PROJECT_USER_UPDATE',
       'PROJECT_USER_DELETE',
@@ -643,16 +660,40 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   }
 
   isTeamVerbWithActorName(activity: ActivityRecord): boolean {
-    if (!activity.actor?.name) {
-      return false;
-    }
-    return [
+    const verb = effectiveVerb(activity);
+    if (![
       'PROJECT_USER_UPDATE',
       'PROJECT_USER_DELETE',
       'PROJECT_USER_INVITE',
       'PROJECT_USER_AVAILABILITY_SELF',
       'PROJECT_USER_AVAILABILITY_SYSTEM',
-    ].includes(effectiveVerb(activity));
+    ].includes(verb)) {
+      return false;
+    }
+
+    if (activity.actor?.name) {
+      return true;
+    }
+
+    return verb === 'PROJECT_USER_UPDATE' && !!activity.actor?.id;
+  }
+
+  getActivityActorDisplayName(activity: ActivityRecord): string {
+    if (activity.actor?.type === 'system') {
+      return this.systemActorLabel(activity);
+    }
+
+    const explicitName = String(activity.actor?.name || '').trim();
+    if (explicitName) {
+      return explicitName;
+    }
+
+    const actorId = String(activity.actor?.id || '').trim();
+    if (actorId) {
+      return this.getTeammateDisplayName(actorId);
+    }
+
+    return 'Someone';
   }
 
   getEffectiveVerb(activity: ActivityRecord): string {
@@ -738,6 +779,11 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   setTeammateMenuContext(participantId: string, activity?: ActivityRecord): void {
     this.teammateMenuParticipantId = participantId;
     this.teammateMenuActivityDate = this.resolveActivityDate(activity);
+    this.teammateMenuProfileEnabled = this.isTeammateInAgentsList(participantId);
+    this.teammateMenuDisplayName = !this.teammateMenuProfileEnabled
+      && activity?.verb === 'PROJECT_USER_UPDATE'
+      ? this.getProjectUserUpdateTargetName(activity)
+      : null;
   }
 
   private resolveActivityDate(activity?: ActivityRecord): Date | null {
@@ -773,6 +819,28 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
 
     const name = [user['firstname'], user['lastname']].filter(Boolean).join(' ').trim();
     return name || participantId;
+  }
+
+  isTeammateInAgentsList(participantId: string): boolean {
+    return !!this.resolveTeammateUser(participantId);
+  }
+
+  getProjectUserUpdateTargetAvatarView(activity: ActivityRecord): TeammateAvatarView | null {
+    return this.getProjectUserTargetAvatarView(activity);
+  }
+
+  getProjectUserUpdateTargetName(activity: ActivityRecord): string {
+    const profileId = getTargetUserId(activity);
+    if (!profileId) {
+      return 'Unknown user';
+    }
+
+    const fromAgentsList = this.getTeammateDisplayName(profileId);
+    if (fromAgentsList && fromAgentsList !== profileId) {
+      return fromAgentsList;
+    }
+
+    return targetUserName(activity);
   }
 
   getTeammateEmail(participantId: string): string {
@@ -873,6 +941,10 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   }
 
   goToTeammateProfileFromMenu(): void {
+    if (!this.teammateMenuProfileEnabled) {
+      return;
+    }
+
     const participantId = this.teammateMenuParticipantId;
     if (!participantId) {
       return;
@@ -891,7 +963,8 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     this.dialog.open(TeammateActivitiesChartModalComponent, {
       ...this.getActivitiesChartDialogConfig(),
       data: {
-        teammateName: this.getTeammateDisplayName(this.teammateMenuParticipantId),
+        teammateName: this.teammateMenuDisplayName
+          || this.getTeammateDisplayName(this.teammateMenuParticipantId),
         teammateUserId: this.teammateMenuParticipantId,
         activityDate: this.teammateMenuActivityDate,
         activitiesFilter: this.arrayOfSelectedActivity || '',
