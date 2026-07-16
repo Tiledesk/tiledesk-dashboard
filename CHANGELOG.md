@@ -1,5 +1,7 @@
 # tiledesk-dashboard
 
+### 2.7.182-AR
+- Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically 
 ### 2.7.181-AR
 - Minor improvements and bug fixing
 
