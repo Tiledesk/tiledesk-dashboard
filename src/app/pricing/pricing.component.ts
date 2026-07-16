@@ -16,6 +16,7 @@ import { additionalFeaturesPlanD, additionalFeaturesPlanE, additionalFeaturesPla
 import { NotifyService } from 'app/core/notify.service';
 import moment from "moment";
 import { PricingBaseComponent } from './pricing-base/pricing-base.component';
+import { StripeLoaderService } from 'app/services/stripe-loader.service';
 declare var Stripe: any;
 
 
@@ -206,7 +207,8 @@ export class PricingComponent implements OnInit, OnDestroy {
     public appConfigService: AppConfigService,
     private translate: TranslateService,
     private router: Router,
-    private notify: NotifyService
+    private notify: NotifyService,
+    private stripeLoader: StripeLoaderService,
   ) {
 
     const brand = brandService.getBrand();
@@ -461,10 +463,17 @@ export class PricingComponent implements OnInit, OnDestroy {
         } else {
           this.isVisiblePAY = true;
           this.logger.log('[PRICING] isVisiblePAY', this.isVisiblePAY)
+          this.stripeLoader.loadStripe().catch((err) => {
+            this.logger.error('[PRICING] Stripe.js preload failed', err);
+          });
         }
       }
 
     });
+  }
+
+  private ensureStripeClient(publishableKey: string): Promise<any> {
+    return this.stripeLoader.loadStripe().then(() => Stripe(publishableKey));
   }
 
   goToPricingFromChat() {
@@ -1182,33 +1191,21 @@ export class PricingComponent implements OnInit, OnDestroy {
     const that = this;
     this.logger.log('[PRICING] - clicked on stripeProPlanPerMonthCheckout (LIVE) ');
 
-    // const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
-    // const stripe = Stripe('pk_live_XcOe1UfJm9GkSgreETF7WGsc');
-    const stripe = Stripe(this.STRIPE_LIVE_PK);
-
-    // ID OF THE TEST MONTHLY PLAN plan_EjFHNnzJXE3jul
-    stripe.redirectToCheckout({
-      items: [{ plan: this.LIVE_PLAN_X_MONTH_PLAN_CODE, quantity: that.operatorNo }],
-
-      clientReferenceId: that.currentUserID + '|' + that.projectId,
-      customerEmail: that.currentUserEmail,
-
-      // successUrl: 'https://your-website.com/success',
-      // cancelUrl: 'https://your-website.com/canceled',
-
-      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
-      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
-
-
-    }).then(function (result) {
-      this.logger.log('[PRICING] - clicked on stripeProPlanPerMonthCheckout (LIVE) result', result);
-
-      if (result.error) {
-        // If `redirectToCheckout` fails due to a browser or network
-        // error, display the localized error message to your customer.
-        that.displayStipeCheckoutError = result.error.message;
-
-      }
+    this.ensureStripeClient(this.STRIPE_LIVE_PK).then((stripe) => {
+      stripe.redirectToCheckout({
+        items: [{ plan: this.LIVE_PLAN_X_MONTH_PLAN_CODE, quantity: that.operatorNo }],
+        clientReferenceId: that.currentUserID + '|' + that.projectId,
+        customerEmail: that.currentUserEmail,
+        successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
+        cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
+      }).then(function (result) {
+        that.logger.log('[PRICING] - clicked on stripeProPlanPerMonthCheckout (LIVE) result', result);
+        if (result.error) {
+          that.displayStipeCheckoutError = result.error.message;
+        }
+      });
+    }).catch((err) => {
+      this.logger.error('[PRICING] Stripe.js not available for monthly checkout', err);
     });
   }
 
@@ -1220,37 +1217,22 @@ export class PricingComponent implements OnInit, OnDestroy {
    */
   stripeProPlanPerYearCheckout() {
     const that = this;
-    // const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
-    const stripe = Stripe(this.STRIPE_LIVE_PK);
-
-    // When the customer clicks on the button, redirect
-    // them to Checkout.
-    // ID OF THE TEST yearly PLAN plan_FHYWzhwbGermkq
-    stripe.redirectToCheckout({
-      items: [{ plan: this.LIVE_PLAN_X_YEAR_PLAN_CODE, quantity: that.operatorNo }],
-      clientReferenceId: that.currentUserID + '|' + that.projectId,
-      customerEmail: that.currentUserEmail,
-
-      // Do not rely on the redirect to the successUrl for fulfilling
-      // purchases, customers may not always reach the success_url after
-      // a successful payment.
-      // Instead use one of the strategies described in
-      // https://stripe.com/docs/payments/checkout/fulfillment
-      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
-      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
-    })
-      .then(function (result) {
-        this.logger.log('[PRICING] - clicked on stripeProPlanPerYearCheckout (LIVE) result', result);
+    this.ensureStripeClient(this.STRIPE_LIVE_PK).then((stripe) => {
+      stripe.redirectToCheckout({
+        items: [{ plan: this.LIVE_PLAN_X_YEAR_PLAN_CODE, quantity: that.operatorNo }],
+        clientReferenceId: that.currentUserID + '|' + that.projectId,
+        customerEmail: that.currentUserEmail,
+        successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
+        cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
+      }).then(function (result) {
+        that.logger.log('[PRICING] - clicked on stripeProPlanPerYearCheckout (LIVE) result', result);
         if (result.error) {
-          // If `redirectToCheckout` fails due to a browser or network
-          // error, display the localized error message to your customer.
-
-          // var displayError = document.getElementById('error-message');
-          // displayError.textContent = result.error.message;
-
           that.displayStipeCheckoutError = result.error.message;
         }
       });
+    }).catch((err) => {
+      this.logger.error('[PRICING] Stripe.js not available for yearly checkout', err);
+    });
   }
 
   /**
@@ -1260,33 +1242,21 @@ export class PricingComponent implements OnInit, OnDestroy {
   */
   stripeLiveProDailyCheckout() {
     const that = this;
-    const stripe = Stripe(this.STRIPE_LIVE_PK);
-
-    // When the customer clicks on the button, redirect
-    // them to Checkout.
-    stripe.redirectToCheckout({
-      items: [{ plan: this.LIVE_PLAN_X_DAY_20CENTS_PLAN_CODE, quantity: that.operatorNo }],
-      clientReferenceId: that.currentUserID + '|' + that.projectId,
-      customerEmail: that.currentUserEmail,
-
-      // Do not rely on the redirect to the successUrl for fulfilling
-      // purchases, customers may not always reach the success_url after
-      // a successful payment.
-      // Instead use one of the strategies described in
-      // https://stripe.com/docs/payments/checkout/fulfillment
-      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
-      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
-    })
-      .then(function (result) {
+    this.ensureStripeClient(this.STRIPE_LIVE_PK).then((stripe) => {
+      stripe.redirectToCheckout({
+        items: [{ plan: this.LIVE_PLAN_X_DAY_20CENTS_PLAN_CODE, quantity: that.operatorNo }],
+        clientReferenceId: that.currentUserID + '|' + that.projectId,
+        customerEmail: that.currentUserEmail,
+        successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
+        cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
+      }).then(function (result) {
         if (result.error) {
-          // If `redirectToCheckout` fails due to a browser or network
-          // error, display the localized error message to your customer.
-
-          // var displayError = document.getElementById('error-message');
-          // displayError.textContent = result.error.message;
           that.displayStipeCheckoutError = result.error.message;
         }
       });
+    }).catch((err) => {
+      this.logger.error('[PRICING] Stripe.js not available for daily checkout', err);
+    });
   }
 
 
@@ -1297,33 +1267,21 @@ export class PricingComponent implements OnInit, OnDestroy {
   */
   stripeProPlanPerDayCheckout() {
     const that = this;
-    const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
-
-    // When the customer clicks on the button, redirect
-    // them to Checkout.
-    stripe.redirectToCheckout({
-      items: [{ plan: 'plan_FiYA1sAElF2aNp', quantity: that.operatorNo }],
-      clientReferenceId: that.currentUserID + '|' + that.projectId,
-      customerEmail: that.currentUserEmail,
-
-      // Do not rely on the redirect to the successUrl for fulfilling
-      // purchases, customers may not always reach the success_url after
-      // a successful payment.
-      // Instead use one of the strategies described in
-      // https://stripe.com/docs/payments/checkout/fulfillment
-      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
-      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
-    })
-      .then(function (result) {
+    this.ensureStripeClient('pk_test_lurAeBj5B7n7JGvE1zIPIFwV').then((stripe) => {
+      stripe.redirectToCheckout({
+        items: [{ plan: 'plan_FiYA1sAElF2aNp', quantity: that.operatorNo }],
+        clientReferenceId: that.currentUserID + '|' + that.projectId,
+        customerEmail: that.currentUserEmail,
+        successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
+        cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
+      }).then(function (result) {
         if (result.error) {
-          // If `redirectToCheckout` fails due to a browser or network
-          // error, display the localized error message to your customer.
-
-          // var displayError = document.getElementById('error-message');
-          // displayError.textContent = result.error.message;
           that.displayStipeCheckoutError = result.error.message;
         }
       });
+    }).catch((err) => {
+      this.logger.error('[PRICING] Stripe.js not available for test daily checkout', err);
+    });
   }
 
 
@@ -1334,33 +1292,21 @@ export class PricingComponent implements OnInit, OnDestroy {
   */
   stripeProPlanPerDayWithTrialCheckout() {
     const that = this;
-    const stripe = Stripe('pk_test_lurAeBj5B7n7JGvE1zIPIFwV');
-
-    // When the customer clicks on the button, redirect
-    // them to Checkout.
-    stripe.redirectToCheckout({
-      items: [{ plan: 'plan_Fn0Jy1ecmNXAjK', quantity: that.operatorNo }],
-      clientReferenceId: that.currentUserID + '|' + that.projectId,
-      customerEmail: that.currentUserEmail,
-
-      // Do not rely on the redirect to the successUrl for fulfilling
-      // purchases, customers may not always reach the success_url after
-      // a successful payment.
-      // Instead use one of the strategies described in
-      // https://stripe.com/docs/payments/checkout/fulfillment
-      successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
-      cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
-    })
-      .then(function (result) {
+    this.ensureStripeClient('pk_test_lurAeBj5B7n7JGvE1zIPIFwV').then((stripe) => {
+      stripe.redirectToCheckout({
+        items: [{ plan: 'plan_Fn0Jy1ecmNXAjK', quantity: that.operatorNo }],
+        clientReferenceId: that.currentUserID + '|' + that.projectId,
+        customerEmail: that.currentUserEmail,
+        successUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/success',
+        cancelUrl: this.dshbrdBaseUrl + '/#/project/' + this.projectId + '/canceled',
+      }).then(function (result) {
         if (result.error) {
-          // If `redirectToCheckout` fails due to a browser or network
-          // error, display the localized error message to your customer.
-
-          // var displayError = document.getElementById('error-message');
-          // displayError.textContent = result.error.message;
           that.displayStipeCheckoutError = result.error.message;
         }
       });
+    }).catch((err) => {
+      this.logger.error('[PRICING] Stripe.js not available for test trial checkout', err);
+    });
   }
 
 

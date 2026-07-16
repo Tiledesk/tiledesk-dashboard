@@ -39,13 +39,14 @@ import { HttpClient } from '@angular/common/http';
 import { SleekplanSsoService } from './services/sleekplan-sso.service';
 import { SleekplanService } from './services/sleekplan.service';
 import { SleekplanApiService } from './services/sleekplan-api.service';
+import { StripeLoaderService } from './services/stripe-loader.service';
+import { RewardfulLoaderService } from './services/rewardful-loader.service';
 import { KeycloakService } from './services/keycloak.service';
 
 // import { UsersService } from './services/users.service';
 
-
-
-declare const gtag: Function;
+const GOOGLE_ANALYTICS_MEASUREMENT_ID = 'G-3DMYV3HG61';
+const PANEL_TILEDESK_HOST = 'panel.tiledesk.com';
 
 @Component({
     selector: 'appdashboard-root',
@@ -57,6 +58,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
     private lastPoppedUrl: string;
     private yScrollStack: number[] = [];
     private sleekPlanObserver: MutationObserver | null = null; // Store observer reference
+    private googleAnalyticsEnabled = false;
 
     route: string;
     LOGIN_PAGE: boolean;
@@ -110,6 +112,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         private sleekplanSsoService: SleekplanSsoService,
         private sleekplanService: SleekplanService,
         private sleekplanApiService: SleekplanApiService,
+        private stripeLoader: StripeLoaderService,
+        private rewardfulLoader: RewardfulLoaderService,
         private keycloakService: KeycloakService,
         private localDbService: LocalDbService
         // public usersService: UsersService,
@@ -117,7 +121,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         
     ) {
 
-      
+        this.initGoogleAnalyticsForHost();
+        this.initRewardfulForHost();
 
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
@@ -130,7 +135,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.stopObservingSleekPlan(); // Disconnect observer when navigating away
                 }
 
-                gtag('config', 'G-3DMYV3HG61', { 'page_path': event.urlAfterRedirects });
+                this.trackGoogleAnalyticsPageView(event.urlAfterRedirects);
 
                 if (event.urlAfterRedirects !== '/projects' && event.urlAfterRedirects !== '/login' && event.urlAfterRedirects !== '/signup' && event.urlAfterRedirects !== '/create-new-project') {
                     this.logger.log('[APP-COMPONENT] ------>  calling GET CURRENT PROJECT ')
@@ -996,6 +1001,91 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
+    /** Google Analytics only on panel.tiledesk.com (not aruba / other hosts). */
+    private initGoogleAnalyticsForHost(): void {
+        if (this.isPanelTiledeskHost()) {
+            this.loadGoogleAnalytics();
+            return;
+        }
+
+        this.clearGoogleAnalyticsCookies();
+        this.logger.log('[APP-COMPONENT] Google Analytics skipped (host is not panel.tiledesk.com)');
+    }
+
+    /** Rewardful affiliate tracking only on panel.tiledesk.com (payments). */
+    private initRewardfulForHost(): void {
+        if (!this.isPanelTiledeskHost()) {
+            this.logger.log('[APP-COMPONENT] Rewardful skipped (host is not panel.tiledesk.com)');
+            return;
+        }
+
+        this.rewardfulLoader.loadRewardful().catch((err) => {
+            this.logger.error('[APP-COMPONENT] Rewardful preload failed', err);
+        });
+    }
+
+    private isPanelTiledeskHost(): boolean {
+        return window.location.hostname === PANEL_TILEDESK_HOST;
+    }
+
+    private loadGoogleAnalytics(): void {
+        if (this.googleAnalyticsEnabled) {
+            return;
+        }
+
+        const win = window as Window & {
+            dataLayer?: unknown[];
+            gtag?: (...args: unknown[]) => void;
+        };
+
+        win.dataLayer = win.dataLayer || [];
+        win.gtag = function gtag(...args: unknown[]) {
+            win.dataLayer.push(args);
+        };
+        win.gtag('js', new Date());
+        this.googleAnalyticsEnabled = true;
+
+        const script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ANALYTICS_MEASUREMENT_ID}`;
+        script.onload = () => {
+            win.gtag('config', GOOGLE_ANALYTICS_MEASUREMENT_ID);
+            this.logger.log('[APP-COMPONENT] Google Analytics loaded for panel.tiledesk.com');
+        };
+        script.onerror = () => {
+            this.logger.error('[APP-COMPONENT] Failed to load Google Analytics');
+        };
+        document.head.appendChild(script);
+    }
+
+    private trackGoogleAnalyticsPageView(pagePath: string): void {
+        if (!this.googleAnalyticsEnabled) {
+            return;
+        }
+
+        const gtagFn = (window as Window & { gtag?: (...args: unknown[]) => void }).gtag;
+        if (typeof gtagFn !== 'function') {
+            return;
+        }
+
+        gtagFn('config', GOOGLE_ANALYTICS_MEASUREMENT_ID, { page_path: pagePath });
+    }
+
+    private clearGoogleAnalyticsCookies(): void {
+        const cookieNames = document.cookie
+            .split(';')
+            .map((part) => part.trim().split('=')[0])
+            .filter((name) => name === '_gcl_au'
+                || name === '_ga'
+                || name === '_gid'
+                || name === '_gat'
+                || name.startsWith('_ga_'));
+
+        cookieNames.forEach((name) => {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        });
+    }
+
     getPAYValue() {
         this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
 
@@ -1016,6 +1106,28 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
 
     }
 
+    /** Clears Sleekplan cookies left by a previous e.js load (not created by the dashboard). */
+    private clearSleekplanCookies(): void {
+        const cookieNames = ['_sleek_product', '_sleek_session'];
+        cookieNames.forEach((name) => {
+            document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+        });
+        if (window['$sleek']) {
+            try {
+                delete window['$sleek'];
+            } catch {
+                window['$sleek'] = null;
+            }
+        }
+        if (window['SLEEK_USER']) {
+            delete window['SLEEK_USER'];
+        }
+        if (window['SLEEK_PRODUCT_ID']) {
+            delete window['SLEEK_PRODUCT_ID'];
+        }
+        this.logger.log('[APP-COMPONENT] cleared leftover Sleekplan cookies/state (PAY disabled)');
+    }
+
     getCurrentUserAndConnectToWs() {
         let isActivePAY = this.getPAYValue()
         this.auth.user_bs.subscribe((user) => {
@@ -1025,6 +1137,9 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             if (user && isActivePAY) {
 
                 this.logger.log('[APP-COMPONENT] before to call sleekplanSso router.url ', this.router.url);
+                this.stripeLoader.loadStripe().catch((err) => {
+                    this.logger.error('[APP-COMPONENT] Stripe.js preload failed', err);
+                });
 
                 const url = window.location.href;
                 const lastPart = url.substring(url.lastIndexOf('/') + 1);
@@ -1034,6 +1149,10 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
                     this.sleekplanSso(user)
                 }
             }
+            // } else if (!isActivePAY) {
+            //     // Leftover cookies from previous sessions when PAY was enabled / e.js loaded.
+            //     this.clearSleekplanCookies();
+            // }
             if (!user) {
                 this.wsInitialized = false;
             }

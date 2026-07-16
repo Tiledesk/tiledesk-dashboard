@@ -8,6 +8,9 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'app/services/project.service';
 import { Project } from 'app/models/project-model';
+import { RewardfulLoaderService } from 'app/services/rewardful-loader.service';
+
+const PANEL_TILEDESK_HOST = 'panel.tiledesk.com';
 
 @Component({
   selector: 'appdashboard-payment-success-page',
@@ -34,6 +37,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
     private prjctPlanService: ProjectPlanService,
     private route: ActivatedRoute,
     public projectService: ProjectService,
+    private rewardfulLoader: RewardfulLoaderService,
   ) {
     const brand = brandService.getBrand();
     this.contact_us_email = brand['CONTACT_US_EMAIL'];
@@ -240,14 +244,7 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
 
         this.logger.log('[PRICING - PAYMENT-SUCCESS] currentUser email ', this.currentUser.email)
 
-        window['rewardful']('ready', () => {
-          // this.logger.log('[PRICING - PAYMENT-SUCCESS] Rewardful Ready!')
-          // this.logger.log('[PRICING - PAYMENT-SUCCESS] window.rewardful.referral', window['rewardful'].referral )
-          // this.logger.log('[PRICING - PAYMENT-SUCCESS] window.rewardful.campaign', window['rewardful'].campaign )
-       
-          window['rewardful']('convert', { email: this.currentUser.email })
-          
-        });
+        this.convertRewardfulIfEnabled();
 
         if (!isDevMode()) {
           if (window['analytics']) {
@@ -272,6 +269,28 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
       }
     });
 
+  }
+
+  /** Affiliate convert only on panel.tiledesk.com (Rewardful is not loaded elsewhere). */
+  private convertRewardfulIfEnabled(): void {
+    if (window.location.hostname !== PANEL_TILEDESK_HOST) {
+      return;
+    }
+
+    this.rewardfulLoader.loadRewardful()
+      .then(() => {
+        const rewardful = window['rewardful'];
+        if (typeof rewardful !== 'function') {
+          return;
+        }
+
+        rewardful('ready', () => {
+          rewardful('convert', { email: this.currentUser.email });
+        });
+      })
+      .catch((err) => {
+        this.logger.error('[PRICING - PAYMENT-SUCCESS] Rewardful load failed', err);
+      });
   }
 
   updateProject(projectid, projectname) {
