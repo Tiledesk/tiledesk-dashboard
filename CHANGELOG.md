@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.14
+- Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically
+
 ### 2.8.12
 - Adds data tables
 
