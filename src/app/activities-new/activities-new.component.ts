@@ -26,7 +26,7 @@ import { TeammateAvatarView } from './components/activities-teammate-avatar/acti
 
 import { ActivitiesService } from './activities-service/activities.service';
 import { ActivitiesTeammateLookupService } from './services/activities-teammate-lookup.service';
-import { ACTIVITY_FILTER_OPTION_DEFINITIONS, ActivityFilterOption, MANUAL_ASSIGNMENT_BOT_ACTOR_ICON } from './utils/activity-verbs.constants';
+import { ACTIVITY_FILTER_OPTION_DEFINITIONS, ActivityFilterOption, MANUAL_ASSIGNMENT_BOT_ACTOR_ICON, REQUEST_CLOSE_BOT_ACTOR_ICON } from './utils/activity-verbs.constants';
 import {
   buildRequestCloseDisplayContext,
   findEnrichedParticipantName,
@@ -50,6 +50,7 @@ import {
   resolveAgentParticipant,
   ActivityParticipantDisplay,
   formatContentAddType,
+  kbContentsAddTypeSuffix,
   availabilityStatusLabel as getAvailabilityStatusLabel,
   projectUserUpdateRoleLabel as projectUserUpdateRoleLabelFn,
   isRegisteredProjectUserInvite as isRegisteredProjectUserInviteFn,
@@ -166,8 +167,8 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     this.selectedAgentId = '';
     this.selectedActivities = [];
     this.queryString = `start_date=&end_date=&agent_id=&activities=&direction=${this.direction}`;
+    // Wait for project before loading activities (avoids empty list on first navigation).
     this.getCurrentProject();
-    this.getActivities();
     this.getCurrentUser();
     this.getAllProjectUsers();
     this.listenToProjectUser();
@@ -270,11 +271,20 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   }
 
   getCurrentProject() {
-    this.subscription = this.auth.project_bs.subscribe((project) => {
-      if (project) {
+    this.subscription = this.auth.project_bs
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((project) => {
+        if (!project?._id) {
+          return;
+        }
+        const previousProjectId = this.projectId;
         this.projectId = project._id;
-      }
-    });
+        // First ready project, or project switch: load activities once URL prerequisites exist.
+        if (previousProjectId !== project._id) {
+          this.pageNo = 0;
+          this.getActivities();
+        }
+      });
   }
 
   getCurrentUser() {
@@ -492,14 +502,24 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   }
 
   private resolveClosedByTeammateLabel(activity: ActivityRecord, actorId: string): string {
-    const actorName = str(activity.actor?.name).trim();
-    if (actorName) {
-      return actorName;
+    return this.resolveActorDisplayName(activity, actorId);
+  }
+
+  /** Resolve a readable actor label: actor name → projectUsers → debugBotsList → participants → id. */
+  private resolveActorDisplayName(activity: ActivityRecord, actorId: string): string {
+    const cleaned = str(activity.actor?.name).replace(/\s*\(chatbot\)\s*$/i, '').trim();
+    if (cleaned && cleaned !== actorId) {
+      return cleaned;
     }
 
     const fromProjectUser = this.getTeammateDisplayName(actorId);
     if (fromProjectUser && fromProjectUser !== actorId) {
       return fromProjectUser;
+    }
+
+    const fromBot = this.getDebugBotDisplayName(actorId);
+    if (fromBot) {
+      return fromBot;
     }
 
     const resolvedParticipant = resolveAgentParticipant(activity, actorId);
@@ -508,6 +528,24 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     }
 
     return formatActorIdLabel(actorId);
+  }
+
+  private getDebugBotDisplayName(userId: string): string | null {
+    if (!userId || !this.debugBotsList?.length) {
+      return null;
+    }
+
+    const normalizedUserId = userId.startsWith('bot_') ? userId.slice(4) : userId;
+    const bot = this.debugBotsList.find((entry) => {
+      const botId = str(entry._id).startsWith('bot_') ? str(entry._id).slice(4) : str(entry._id);
+      return botId === normalizedUserId;
+    });
+    if (!bot) {
+      return null;
+    }
+
+    const name = str(bot.firstname).replace(/\s*\(bot\)\s*$/i, '').trim();
+    return name || null;
   }
 
   private enrichRequestCreate(activity: ActivityRecord): void {
@@ -520,25 +558,22 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     }
 
     const actionObj = activity.actionObj || {};
+    const targetObject = (activity.target?.object || {}) as Record<string, unknown>;
     const assigneeName = str(actionObj['assigneeName'] || actionObj['participantName']);
-    if (assigneeName) {
+    const assigneeId = str(actionObj['assigneeId']);
+    if (assigneeName && assigneeId) {
       activity.participant_fullname = assigneeName;
-      activity.request_create_assignee_id = str(actionObj['assigneeId'] || activity.actor?.id);
+      activity.request_create_assignee_id = assigneeId;
       return;
     }
 
-    const fromActionObj = findEnrichedParticipantName(actionObj);
-    if (fromActionObj) {
-      activity.participant_fullname = fromActionObj.name;
-      activity.request_create_assignee_id = fromActionObj.isBot
-        ? `bot_${fromActionObj.id}`
-        : fromActionObj.id;
-      return;
-    }
-
-    if (activity.actor?.type === 'user' && activity.actor?.name) {
-      activity.participant_fullname = activity.actor.name;
-      activity.request_create_assignee_id = activity.actor.id;
+    const fromParticipants = findEnrichedParticipantName(actionObj)
+      || findEnrichedParticipantName(targetObject);
+    if (fromParticipants) {
+      activity.participant_fullname = fromParticipants.name;
+      activity.request_create_assignee_id = fromParticipants.isBot
+        ? `bot_${fromParticipants.id}`
+        : fromParticipants.id;
     }
   }
 
@@ -570,19 +605,12 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return false;
     }
 
-    return !!(
-      activity.participant_fullname ||
-      activity.actor?.name
-    );
+    return !!activity.participant_fullname;
   }
 
   getRequestCreateAssigneeId(activity: ActivityRecord): string | null {
     if (activity.request_create_assignee_id) {
       return activity.request_create_assignee_id;
-    }
-
-    if (activity.actor?.type === 'user' && activity.actor?.id) {
-      return activity.actor.id;
     }
 
     const participants = activity.target?.object?.['participants'];
@@ -594,7 +622,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   }
 
   getRequestCreateAssigneeDisplayName(activity: ActivityRecord): string {
-    const name = str(activity.participant_fullname || activity.actor?.name);
+    const name = str(activity.participant_fullname);
     return name.replace(/\s*\(chatbot\)\s*$/i, '').trim();
   }
 
@@ -635,6 +663,9 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   activityIcon(activity: ActivityRecord): string {
     if (effectiveVerb(activity) === 'REQUEST_ASSIGNED_MANUAL' && this.isManualAssignmentBotActor(activity)) {
       return MANUAL_ASSIGNMENT_BOT_ACTOR_ICON;
+    }
+    if (effectiveVerb(activity) === 'REQUEST_CLOSE' && this.isActivityBotActor(activity)) {
+      return REQUEST_CLOSE_BOT_ACTOR_ICON;
     }
     return getActivityIconForActivity(activity);
   }
@@ -781,8 +812,10 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     this.teammateMenuActivityDate = this.resolveActivityDate(activity);
     this.teammateMenuProfileEnabled = this.isTeammateInAgentsList(participantId);
     this.teammateMenuDisplayName = !this.teammateMenuProfileEnabled
-      && activity?.verb === 'PROJECT_USER_UPDATE'
-      ? this.getProjectUserUpdateTargetName(activity)
+      && (activity?.verb === 'PROJECT_USER_UPDATE' || activity?.verb === 'PROJECT_USER_DELETE')
+      ? (activity?.verb === 'PROJECT_USER_DELETE'
+        ? this.getProjectUserTargetLabel(activity)
+        : this.getProjectUserUpdateTargetName(activity))
       : null;
   }
 
@@ -1259,35 +1292,40 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    const misclassifiedBotProfileId = this.resolveMisclassifiedManualAssignmentBotProfileId(activity);
+    const actorId = str(activity.actor.id);
+    const displayName = this.resolveActorDisplayName(activity, actorId);
+
+    const misclassifiedBotProfileId = this.resolveMisclassifiedBotActorProfileId(activity);
     if (misclassifiedBotProfileId) {
-      const name = str(activity.actor?.name).replace(/\s*\(chatbot\)\s*$/i, '').trim()
-        || misclassifiedBotProfileId;
-      return { name, profileId: misclassifiedBotProfileId };
+      return { name: displayName, profileId: misclassifiedBotProfileId };
     }
 
     if (activity.actor?.type === 'bot') {
-      const actorId = str(activity.actor.id);
       const profileId = actorId.startsWith('bot_') ? actorId : `bot_${actorId}`;
+      return { name: displayName, profileId };
+    }
+
+    const resolved = resolveAgentParticipant(activity, actorId);
+    if (resolved) {
       return {
-        name: str(activity.actor?.name).replace(/\s*\(chatbot\)\s*$/i, '').trim() || profileId,
-        profileId,
+        name: displayName !== actorId ? displayName : resolved.name,
+        profileId: resolved.profileId || actorId,
       };
     }
 
-    return resolveAgentParticipant(activity, activity.actor.id) || {
-      name: str(activity.actor?.name) || str(activity.actor?.id),
-      profileId: activity.actor.id,
+    return {
+      name: displayName,
+      profileId: actorId,
     };
   }
 
-  /**
-   * Temporary workaround for REQUEST_ASSIGNED_MANUAL actors sent as type "user" but matching a project bot.
-   * Remove once the server sends the correct actor.type.
-   */
-  isManualAssignmentBotActor(activity: ActivityRecord): boolean {
-    return !!this.resolveMisclassifiedManualAssignmentBotProfileId(activity)
+  isActivityBotActor(activity: ActivityRecord): boolean {
+    return !!this.resolveMisclassifiedBotActorProfileId(activity)
       || activity.actor?.type === 'bot';
+  }
+
+  isManualAssignmentBotActor(activity: ActivityRecord): boolean {
+    return this.isActivityBotActor(activity);
   }
 
   onManualAssignmentActorClick(event: MouseEvent, activity: ActivityRecord): void {
@@ -1296,7 +1334,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.isManualAssignmentBotActor(activity)) {
+    if (this.isActivityBotActor(activity)) {
       event.stopPropagation();
       this.goToMemberProfile(actor.profileId);
       return;
@@ -1305,11 +1343,13 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     this.handleTeammateProfileLinkClick(event, actor.profileId, activity);
   }
 
-  private resolveMisclassifiedManualAssignmentBotProfileId(activity: ActivityRecord): string | null {
-    if (effectiveVerb(activity) !== 'REQUEST_ASSIGNED_MANUAL') {
-      return null;
-    }
+  onActivityBotActorClick(event: MouseEvent, profileId: string): void {
+    event.stopPropagation();
+    this.goToMemberProfile(profileId);
+  }
 
+  /** When server sends actor.type "user" but the id belongs to a project bot. */
+  private resolveMisclassifiedBotActorProfileId(activity: ActivityRecord): string | null {
     if (activity.actor?.type !== 'user' || !activity.actor?.id) {
       return null;
     }
@@ -1407,6 +1447,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     kbSource: string | null;
     actorLink: string | null;
     actorProfileId: string | null;
+    actorIsBot: boolean;
     namespaceLink: string | null;
     namespaceId: string | null;
     afterNamespace: string;
@@ -1422,6 +1463,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       kbSource: null as string | null,
       actorLink: null as string | null,
       actorProfileId: null as string | null,
+      actorIsBot: false,
       namespaceLink: null as string | null,
       namespaceId: null as string | null,
       afterNamespace: '',
@@ -1451,6 +1493,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       if (actor && shouldLinkParticipantFn(actor.profileId, actor.name)) {
         parts.actorLink = actor.name;
         parts.actorProfileId = actor.profileId;
+        parts.actorIsBot = this.isActivityBotActor(activity);
         parts.before = actionText;
         return;
       }
@@ -1462,6 +1505,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       const source = kbActivitySource(activity);
       const count = actionObj['count'];
       const contentAddType = formatContentAddType(actionObj['contentAddType']);
+      const typeSuffix = kbContentsAddTypeSuffix(actionObj);
 
       if (count && Number(count) > 1) {
         applyKbActorLink(` added ${count} items (${contentAddType}) `);
@@ -1477,13 +1521,13 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       }
 
       if (source) {
-        applyKbActorLink(' added content ');
+        applyKbActorLink(` added content${typeSuffix} `);
         parts.kbSource = source;
         applyNamespaceLink(' to namespace ');
         return parts;
       }
 
-      applyKbActorLink(' added content ');
+      applyKbActorLink(` added content${typeSuffix} `);
       applyNamespaceLink(' to namespace ');
       return parts;
     }

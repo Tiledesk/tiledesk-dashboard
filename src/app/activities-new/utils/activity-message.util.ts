@@ -301,8 +301,41 @@ export function decodeActivitySource(value: string): string {
   }
 }
 
+/** Last path segment of a file URL/path (e.g. …/mio_file.txt → mio_file.txt). */
+export function kbFileSourceDisplayName(source: string): string {
+  const decoded = decodeActivitySource(source).trim();
+  if (!decoded) {
+    return '';
+  }
+
+  try {
+    const url = new URL(decoded);
+    const pathParam = url.searchParams.get('path');
+    if (pathParam) {
+      const segments = pathParam.split('/').filter(Boolean);
+      return segments[segments.length - 1] || decoded;
+    }
+  } catch {
+    // Not an absolute URL — fall through to path-segment logic.
+  }
+
+  const withoutQuery = decoded.split('?')[0];
+  const segments = withoutQuery.split('/').filter(Boolean);
+  return segments[segments.length - 1] || decoded;
+}
+
 export function kbActivitySource(activity: ActivityRecord): string {
-  return decodeActivitySource(str(activity.actionObj?.['source']));
+  const source = decodeActivitySource(str(activity.actionObj?.['source']));
+  if (!source) {
+    return '';
+  }
+
+  const type = str(activity.actionObj?.['type']).trim().toLowerCase();
+  if (type === 'pdf' || type === 'txt') {
+    return kbFileSourceDisplayName(source);
+  }
+
+  return source;
 }
 
 export function manualAssignmentAssigneeType(activity: ActivityRecord): 'user' | 'bot' | 'department' {
@@ -650,6 +683,39 @@ export function formatContentAddType(contentAddType: unknown): string {
   }
 }
 
+/** Format actionObj.type for KB content messages (faq/txt/pdf → FAQ/TXT/PDF). */
+export function formatKbContentTypeLabel(type: unknown): string {
+  const value = str(type).trim();
+  if (!value) {
+    return '';
+  }
+
+  const lower = value.toLowerCase();
+  if (lower === 'faq' || lower === 'txt' || lower === 'pdf') {
+    return lower.toUpperCase();
+  }
+
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+/**
+ * Parenthetical detail for single KB_CONTENTS_ADD rows:
+ * prefer actionObj.type (Faq), else non-generic contentAddType (URL list, CSV, …).
+ */
+export function kbContentsAddTypeSuffix(actionObj: Record<string, unknown>): string {
+  const typeLabel = formatKbContentTypeLabel(actionObj['type']);
+  if (typeLabel) {
+    return ` (${typeLabel})`;
+  }
+
+  const rawContentAddType = str(actionObj['contentAddType']).trim();
+  if (!rawContentAddType || rawContentAddType === 'content') {
+    return '';
+  }
+
+  return ` (${formatContentAddType(rawContentAddType)})`;
+}
+
 /** Map legacy/API verb aliases to the verbs handled by the dashboard. */
 export function normalizeActivityVerb(verb: string): string {
   switch (verb) {
@@ -757,10 +823,9 @@ export function renderActivity(activity: ActivityRecord): string {
 
     case 'REQUEST_CREATE': {
       const conversation = conversationLabel(activity);
-      const assigneeName = str(
-        activity.participant_fullname ||
-        (activity.actor?.type === 'user' ? activity.actor?.name : '')
-      ).replace(/\s*\(chatbot\)\s*$/i, '').trim();
+      const assigneeName = str(activity.participant_fullname)
+        .replace(/\s*\(chatbot\)\s*$/i, '')
+        .trim();
       const assigneeId = str(activity.request_create_assignee_id);
       const isBotAssignee = assigneeId.includes('bot_');
 
@@ -781,7 +846,7 @@ export function renderActivity(activity: ActivityRecord): string {
     }
 
     case 'PROJECT_USER_AVAILABILITY_SELF':
-      return `${actor} has changed his availability status to ${availabilityStatusLabel(actionObj)}`;
+      return `${actor} has changed their availability status to ${availabilityStatusLabel(actionObj)}`;
 
     case 'PROJECT_USER_AVAILABILITY_SYSTEM':
       return `${targetUser} availability status was changed to ${newStatus} by the system`;
@@ -808,6 +873,7 @@ export function renderActivity(activity: ActivityRecord): string {
     case 'KB_CONTENTS_ADD': {
       const count = actionObj['count'];
       const contentAddType = formatContentAddType(actionObj['contentAddType']);
+      const typeSuffix = kbContentsAddTypeSuffix(actionObj);
       const source = kbActivitySource(activity);
       if (count && Number(count) > 1) {
         return `${actor} added ${count} items (${contentAddType}) to namespace ${namespace}`;
@@ -816,9 +882,9 @@ export function renderActivity(activity: ActivityRecord): string {
         return `${actor} added sitemap ${source} to namespace ${namespace}`;
       }
       if (source) {
-        return `${actor} added content ${source} to namespace ${namespace}`;
+        return `${actor} added content${typeSuffix} ${source} to namespace ${namespace}`;
       }
-      return `${actor} added content to namespace ${namespace}`;
+      return `${actor} added content${typeSuffix} to namespace ${namespace}`;
     }
 
     case 'KB_CONTENTS_DELETE':

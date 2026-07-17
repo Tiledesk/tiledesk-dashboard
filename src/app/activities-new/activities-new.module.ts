@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { SharedModule } from 'app/shared/shared.module';
 import { ActivitiesNewComponent } from './activities-new.component';
@@ -46,6 +47,7 @@ const routes: Routes = [
     MatMenuModule,
     MatButtonModule,
     MatDialogModule,
+    MatTooltipModule,
   ],
   providers: [ActivitiesTeammateLookupService],
 })

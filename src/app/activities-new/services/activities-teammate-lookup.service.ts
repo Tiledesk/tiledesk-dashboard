@@ -12,10 +12,14 @@ function buildDisplayNameKey(firstname: unknown, lastname: unknown): string {
 export class ActivitiesTeammateLookupService {
   private emailsByUserId = new Map<string, string>();
   private userIdsWithDuplicateNames = new Set<string>();
+  private knownUserIds = new Set<string>();
+  private hasSyncedProjectUsers = false;
 
   syncProjectUsers(projectUsers: any[] = []): void {
     this.emailsByUserId.clear();
     this.userIdsWithDuplicateNames.clear();
+    this.knownUserIds.clear();
+    this.hasSyncedProjectUsers = true;
 
     const usersByDisplayNameKey = new Map<string, string[]>();
 
@@ -25,6 +29,8 @@ export class ActivitiesTeammateLookupService {
       if (!userId) {
         continue;
       }
+
+      this.knownUserIds.add(userId);
 
       const email = String(user?.email || '').trim();
       if (email) {
@@ -50,6 +56,25 @@ export class ActivitiesTeammateLookupService {
         this.userIdsWithDuplicateNames.add(userId);
       }
     }
+  }
+
+  /** True when the user is still in the current project_users list. */
+  isInProjectUsers(userId?: string | null): boolean {
+    if (!userId) {
+      return false;
+    }
+    return this.knownUserIds.has(userId);
+  }
+
+  /** Removed badge only after project_users sync (same rule as hiding Go to profile). */
+  shouldShowRemovedBadge(userId?: string | null): boolean {
+    if (!this.hasSyncedProjectUsers || !userId) {
+      return false;
+    }
+    if (userId.includes('bot_') || userId.toLowerCase() === 'system') {
+      return false;
+    }
+    return !this.isInProjectUsers(userId);
   }
 
   shouldShowEmail(userId?: string | null): boolean {

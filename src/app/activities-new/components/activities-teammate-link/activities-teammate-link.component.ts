@@ -20,6 +20,11 @@ export class ActivitiesTeammateLinkComponent {
 
   constructor(private teammateLookup: ActivitiesTeammateLookupService) {}
 
+  /** Same rule as hiding "Go to profile": user not in current project_users. */
+  get showRemovedBadge(): boolean {
+    return this.teammateLookup.shouldShowRemovedBadge(this.participantId);
+  }
+
   get displayEmail(): string {
     if (!this.showEmail || !this.participantId) {
       return '';

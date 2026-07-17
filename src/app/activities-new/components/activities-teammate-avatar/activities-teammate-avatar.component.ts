@@ -12,4 +12,6 @@ export interface TeammateAvatarView {
 })
 export class ActivitiesTeammateAvatarComponent {
   @Input() view: TeammateAvatarView | null = null;
+  /** Shows a minus-in-circle badge when the teammate is no longer in project_users. */
+  @Input() showRemovedBadge = false;
 }

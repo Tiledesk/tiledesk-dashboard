@@ -5,6 +5,13 @@
   margin-right: 4px;
 }
 
+.activities-teammate-avatar-wrap {
+  position: relative;
+  display: inline-block;
+  line-height: 0;
+  vertical-align: middle;
+}
+
 .activities-teammate-avatar {
   display: inline-flex;
   align-items: center;
@@ -22,6 +29,26 @@
   top: -1px;
 }
 
+.activities-teammate-avatar__removed-badge {
+  position: absolute;
+  right: -2px;
+  bottom: 0px;
+  width: 8px;
+  height: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.activities-teammate-avatar__removed-badge svg {
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px #fff;
+}
+
 :host(.activities-teammate-avatar--menu) {
   margin-right: 16px;
   line-height: normal;
@@ -31,4 +58,16 @@
   width: 24px;
   height: 24px;
   font-size: 10px;
+}
+
+:host(.activities-teammate-avatar--menu) .activities-teammate-avatar__removed-badge {
+  right: -2px;
+  bottom: 0;
+  width: 12px;
+  height: 12px;
+}
+
+:host(.activities-teammate-avatar--menu) .activities-teammate-avatar__removed-badge svg {
+  width: 12px;
+  height: 12px;
 }

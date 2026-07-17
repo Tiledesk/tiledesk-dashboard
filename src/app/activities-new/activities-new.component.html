@@ -172,18 +172,28 @@
                         {{ activity.closed_by_label }}
                       </span>
                       <ng-template #requestCloseResolverTeammate>
-                        <activities-teammate-link
-                          *ngIf="activity?.actor?.id && shouldLinkParticipant(activity.actor.id, activity.closed_by_label)"
-                          [label]="activity.closed_by_label"
-                          [highlighted]="highlightClass(activity.actor.id)"
-                          [avatarView]="getTeammateAvatarView(activity.actor.id)"
-                          [participantId]="activity.actor.id"
-                          [menuTrigger]="teammateMenu"
-                          (linkClick)="handleTeammateProfileLinkClick($event, activity.actor.id, activity)">
-                        </activities-teammate-link>
-                        <span *ngIf="!activity?.actor?.id || !shouldLinkParticipant(activity.actor.id, activity.closed_by_label)">
-                          {{ activity.closed_by_label }}<span *ngIf="getTeammateEmail(activity.actor.id) as email" class="activities-new-agent-email"> ({{ email }})</span>
-                        </span>
+                        <ng-container *ngIf="activity?.actor?.id && shouldLinkParticipant(activity.actor.id, activity.closed_by_label); else requestCloseCloserPlain">
+                          <ng-container *ngIf="getAssignmentActor(activity) as closer">
+                            <activities-bot-link
+                              *ngIf="isActivityBotActor(activity)"
+                              [label]="activity.closed_by_label"
+                              [highlighted]="highlightClass(closer.profileId)"
+                              (linkClick)="onActivityBotActorClick($event, closer.profileId)">
+                            </activities-bot-link>
+                            <activities-teammate-link
+                              *ngIf="!isActivityBotActor(activity)"
+                              [label]="activity.closed_by_label"
+                              [highlighted]="highlightClass(closer.profileId)"
+                              [avatarView]="getTeammateAvatarView(closer.profileId, activity.closed_by_label)"
+                              [participantId]="closer.profileId"
+                              [menuTrigger]="teammateMenu"
+                              (linkClick)="handleTeammateProfileLinkClick($event, closer.profileId, activity)">
+                            </activities-teammate-link>
+                          </ng-container>
+                        </ng-container>
+                        <ng-template #requestCloseCloserPlain>
+                          <span>{{ activity.closed_by_label }}<span *ngIf="getTeammateEmail(activity.actor.id) as email" class="activities-new-agent-email"> ({{ email }})</span></span>
+                        </ng-template>
                       </ng-template>
                       resolved conversation
                       <span *ngIf="activity?.activity_request_text"
@@ -352,9 +362,9 @@
                             <span *ngIf="activity?.targetOfActionIsYourself">their status</span>
                             <span *ngIf="!activity?.targetOfActionIsYourself">
                               <span *ngIf="activity?.actionObj?.user_available === true || activity?.actionObj?.user_available === false">
-                                the availability status of
+                                the availability status of{{ ' ' }}
                               </span>
-                              <span *ngIf="activity?.actionObj?.role">the role of</span>
+                              <span *ngIf="activity?.actionObj?.role">the role of{{ ' ' }}</span>
                               <activities-teammate-link
                                 [label]="getProjectUserUpdateTargetName(activity)"
                                 [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
@@ -365,7 +375,7 @@
                                 (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
                               </activities-teammate-link>
                             </span>
-                            to
+                            {{ ' ' }}to{{ ' ' }}
                             <span *ngIf="activity?.actionObj?.role">
                               {{ projectUserUpdateRoleLabel(activity) }}
                             </span>
@@ -377,12 +387,17 @@
                       </ng-container>
 
                       <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_DELETE'">
-                        removed
-                        <span class="activities-new-removed-teammate">
-                          <activities-teammate-avatar [view]="getProjectUserTargetAvatarView(activity)"></activities-teammate-avatar>
-                          <span class="activities-new-removed-teammate__label">{{ getProjectUserTargetLabel(activity) }}</span>
-                        </span>
-                        from the project
+                        removed{{ ' ' }}
+                        <activities-teammate-link
+                          [label]="getProjectUserTargetLabel(activity)"
+                          [highlighted]="highlightClass(getProjectUserTargetProfileId(activity))"
+                          [avatarView]="getProjectUserTargetAvatarView(activity)"
+                          [participantId]="getProjectUserTargetProfileId(activity)"
+                          [showEmail]="false"
+                          [menuTrigger]="teammateMenu"
+                          (linkClick)="handleTeammateProfileLinkClick($event, getProjectUserTargetProfileId(activity), activity)">
+                        </activities-teammate-link>
+                        {{ ' ' }}from the project
                       </ng-container>
 
                       <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_INVITE'">
@@ -416,7 +431,7 @@
                       </ng-container>
 
                       <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_AVAILABILITY_SELF'">
-                        has changed his availability status to
+                        has changed their availability status to
                         <span style="text-transform: capitalize">{{ availabilityStatusLabel(activity) }}</span>
                       </ng-container>
 
@@ -694,11 +709,17 @@
                     && !isTeamVerbWithoutActorName(activity)">
                     <p class="activities-new-message">
                       <ng-container *ngIf="getActivityParts(activity) as parts">
-                        <activities-teammate-link
-                          *ngIf="parts.actorLink && parts.actorProfileId"
+                        <activities-bot-link
+                          *ngIf="parts.actorLink && parts.actorProfileId && parts.actorIsBot"
                           [label]="parts.actorLink"
                           [highlighted]="highlightClass(parts.actorProfileId)"
-                          [avatarView]="getTeammateAvatarView(parts.actorProfileId)"
+                          (linkClick)="onActivityBotActorClick($event, parts.actorProfileId)">
+                        </activities-bot-link>
+                        <activities-teammate-link
+                          *ngIf="parts.actorLink && parts.actorProfileId && !parts.actorIsBot"
+                          [label]="parts.actorLink"
+                          [highlighted]="highlightClass(parts.actorProfileId)"
+                          [avatarView]="getTeammateAvatarView(parts.actorProfileId, parts.actorLink)"
                           [participantId]="parts.actorProfileId"
                           [menuTrigger]="teammateMenu"
                           (linkClick)="handleTeammateProfileLinkClick($event, parts.actorProfileId, activity)">

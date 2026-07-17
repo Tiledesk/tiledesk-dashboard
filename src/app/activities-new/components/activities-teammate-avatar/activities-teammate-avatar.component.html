@@ -1,7 +1,19 @@
-<span
-  *ngIf="view"
-  class="activities-teammate-avatar"
-  [ngStyle]="{ background: view.background }"
-  aria-hidden="true">
-  {{ view.initials }}
+<span *ngIf="view" class="activities-teammate-avatar-wrap">
+  <span
+    class="activities-teammate-avatar"
+    [ngStyle]="{ background: view.background }"
+    aria-hidden="true">
+    {{ view.initials }}
+  </span>
+  <span
+    *ngIf="showRemovedBadge"
+    class="activities-teammate-avatar__removed-badge"
+    [matTooltip]="'ActivitiesNew.RemovedFromProject' | translate"
+    matTooltipPosition="above"
+    [attr.aria-label]="'ActivitiesNew.RemovedFromProject' | translate">
+    <svg viewBox="0 0 12 12" width="10" height="10" aria-hidden="true" focusable="false">
+      <circle cx="6" cy="6" r="6" fill="#64748b"></circle>
+      <path d="M3.25 6h5.5" stroke="#fff" stroke-width="1.6" stroke-linecap="round"></path>
+    </svg>
+  </span>
 </span>
