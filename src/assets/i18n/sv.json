@@ -326,6 +326,7 @@
         "ActivitiesTeammateChartEmpty": "Inga aktiviteter hittades för denna lagkamrat under den valda perioden.",
         "ActivitiesTeammateChartLoadError": "Kunde inte ladda aktiviteter. Försök igen.",
         "NoActivitiesFound": "Inga aktiviteter hittades",
+        "RemovedFromProject": "Borttagen från projektet",
         "StartDate": "Startdatum",
         "EndDate": "Slutdatum",
          "FilterGroup": {

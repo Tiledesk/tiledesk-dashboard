@@ -326,6 +326,7 @@
         "ActivitiesTeammateChartEmpty": "Nenhuma atividade encontrada para este colega de equipa no período selecionado.",
         "ActivitiesTeammateChartLoadError": "Não foi possível carregar as atividades. Tente novamente.",
         "NoActivitiesFound": "Nenhuma atividade encontrada",
+        "RemovedFromProject": "Removido do projeto",
         "StartDate": "Data de início",
         "EndDate": "Data de fim",
         "FilterGroup": {

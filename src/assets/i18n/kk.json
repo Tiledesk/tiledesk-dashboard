@@ -326,6 +326,7 @@
         "ActivitiesTeammateChartEmpty": "Таңдалған кезеңде бұл команда мүшесі үшін ешбір әрекет табылмады.",
         "ActivitiesTeammateChartLoadError": "Әрекеттерді жүктеу мүмкін болмады. Қайталап көріңіз.",
         "NoActivitiesFound": "Ешбір әрекет табылмады",
+        "RemovedFromProject": "Жобадан жойылды",
         "StartDate": "Басталу күні",
         "EndDate": "Аяқталу күні",
         "FilterGroup": {

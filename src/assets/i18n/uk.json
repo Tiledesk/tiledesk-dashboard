@@ -326,6 +326,7 @@
         "ActivitiesTeammateChartEmpty": "Для цього учасника команди у вибраному періоді активності не знайдено.",
         "ActivitiesTeammateChartLoadError": "Не вдалося завантажити активності. Спробуйте ще раз.",
         "NoActivitiesFound": "Активності не знайдено",
+        "RemovedFromProject": "Видалено з проєкту",
         "StartDate": "Дата початку",
         "EndDate": "Дата закінчення",
         "FilterGroup": {

@@ -326,7 +326,8 @@
     	"ActivitiesTeammateChartEmpty": "Für diesen Teammitglied wurden im ausgewählten Zeitraum keine Aktivitäten gefunden.",
     	"ActivitiesTeammateChartLoadError": "Aktivitäten konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
     	"NoActivitiesFound": "Keine Aktivitäten gefunden",
-    	"StartDate": "Startdatum",
+    	"RemovedFromProject": "Aus dem Projekt entfernt",
+		"StartDate": "Startdatum",
     	"EndDate": "Enddatum",
 		"FilterGroup": {
 			"Conversations": "Konversationen",

@@ -326,6 +326,7 @@
         "ActivitiesTeammateChartEmpty": "Seçilmiş dövrdə bu komanda yoldaşı üçün heç bir fəaliyyət tapılmadı.",
         "ActivitiesTeammateChartLoadError": "Fəaliyyətlər yüklənə bilmədi. Yenidən cəhd edin.",
         "NoActivitiesFound": "Heç bir fəaliyyət tapılmadı",
+        "RemovedFromProject": "Layihədən çıxarıldı",
         "StartDate": "Başlanğıc tarixi",
         "EndDate": "Bitmə tarixi",
         "FilterGroup": {

@@ -326,6 +326,7 @@
         "ActivitiesTeammateChartEmpty": "Tanlangan davrda ushbu jamoa a'zosi uchun hech qanday faoliyat topilmadi.",
         "ActivitiesTeammateChartLoadError": "Faoliyatlarni yuklashning imkoni bo'lmadi. Qayta urinib ko'ring.",
         "NoActivitiesFound": "Hech qanday faoliyat topilmadi",
+        "RemovedFromProject": "Loyihadan olib tashlandi",
         "StartDate": "Boshlanish sanasi",
         "EndDate": "Tugash sanasi",
         "FilterGroup": {   
