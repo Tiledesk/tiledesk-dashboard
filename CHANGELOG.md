@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.183-AR
+- Changes the maximum real-time conversations view limit from 100 to 50
+
 ### 2.7.182-AR
 - Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically 
 
