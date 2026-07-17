@@ -80,7 +80,7 @@
     "ngx-mat-timepicker": "^14.0.2",
     "ngx-moment": "^6.0.2",
     "ngx-skeleton-loader": "^6.0.0",
-    "npm": "^8.19.1",
+    "npm": "^12.0.1",
     "perfect-scrollbar": "1.1.0",
     "roboto-fontface": "^0.10.0",
     "rxjs": "^6.5.4",
@@ -96,8 +96,8 @@
     "zone.js": "^0.11.4"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^14.2.2",
-    "@angular/cli": "^14.2.2",
+    "@angular-devkit/build-angular": "^21.2.19",
+    "@angular/cli": "^22.0.7",
     "@angular/compiler-cli": "^14.2.2",
     "@angular/language-service": "^14.0.2",
     "@types/bootstrap": "^5.2.7",
