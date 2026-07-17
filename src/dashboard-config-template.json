@@ -31,6 +31,7 @@
   "analyticsApiBase": "${ANALYTICS_API_BASE}",
   "analyticsEmbedBase": "${ANALYTICS_EMBED_BASE}",
   "activityExpirationTime": "${ACTIVITY_EXPIRATION_TIME}",
+  "defaultTableMaxSizeBytes": "${DEFAULT_TABLE_MAX_SIZE_BYTES}",
   "firebase": {
     "apiKey": "${FIREBASE_APIKEY}",
     "authDomain": "${FIREBASE_AUTHDOMAIN}",

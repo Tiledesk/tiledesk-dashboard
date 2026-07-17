@@ -419,7 +419,7 @@ export class KnowledgeBaseService {
 
         const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
         const url = `${base}/api/v1/${this.project_id}/charts/ai/kb-per-kb-over-time?granularity=day&from=${from}&to=${to}&kb=${namespaceid}`;
-        console.log('[KNOWLEDGE BASE SERVICE] - getAnwseredUnansweredQuestionsForCharts URL ', url);
+        this.logger.log('[KNOWLEDGE BASE SERVICE] - getAnwseredUnansweredQuestionsForCharts URL ', url);
         return this.httpClient.get(url, httpOptions);
       }),
     );

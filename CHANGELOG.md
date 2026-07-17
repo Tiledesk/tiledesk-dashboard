@@ -1,5 +1,14 @@
 # tiledesk-dashboard
 
+### 2.8.14
+- Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically
+
+### 2.8.12
+- Adds data tables
+
+### 2.8.11
+- Updates the widget installation script on the knowledge base page (adds the default department ID and chatbot ID)
+
 ### 2.8.10
 - Implement automatic path switching for Analytics pages
 - Fixes the bug: Message retention time does not display the user-set value when changing paths.

@@ -46,7 +46,7 @@
             </button>
           </div>
 
-          <button *ngIf="PERMISSION_TO_ADD_KB" class="custom-button xs" style="margin: 9px 9px 0 9px; width: calc(100% - 48px); position: relative;left: -10px;height: 42px;" (click)="presentModalAddNewNamespace()">
+          <button *ngIf="PERMISSION_TO_ADD_KB" class="custom-button xs" style="margin: 2px 9px 18px 4px;" (click)="presentModalAddNewNamespace()">
             <mat-icon style="vertical-align: middle;">add</mat-icon>
             <span style="vertical-align: middle;">{{'KbPage.NewNamespace' | translate}}</span>
           </button>
@@ -363,7 +363,7 @@
                     </div>
                   </div> -->
 
-                  <div class="kb-stats-charts" *ngIf="selectedNamespace">
+                  <div class="kb-stats-charts" *ngIf="selectedNamespace && isKbStatsChartsEnabled">
                     <div class="kb-stats-chart-card">
                       <div *ngIf="kbChartsLoading" class="kb-stats-chart-card__state">
                         <mat-spinner diameter="28"></mat-spinner>

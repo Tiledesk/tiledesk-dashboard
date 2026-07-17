@@ -26,6 +26,7 @@ import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
+import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
@@ -327,6 +328,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       return 0;
     }
     return Math.round((1000 * a) / d) / 10;
+  }
+
+  /** KB stats charts require embedded analytics (same gate as new analytics vs legacy). */
+  get isKbStatsChartsEnabled(): boolean {
+    return isNewAnalyticsConfigured(this.appConfigService.getConfig());
   }
 
   
@@ -4735,6 +4741,10 @@ _presentDialogImportContents() {
   }
 
   getAnwseredUnansweredQuestionsForCharts() {
+    if (!this.isKbStatsChartsEnabled) {
+      return;
+    }
+
     const namespaceId = this.selectedNamespace?.id;
     if (!namespaceId) {
       this.kbStatsAnsweredCount = 0;
