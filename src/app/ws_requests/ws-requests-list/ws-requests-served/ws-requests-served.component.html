@@ -7,9 +7,10 @@
         <!-- + countRequestsServedByBotRr -->
         <h4 class="title customh4" style="margin-bottom:2px;">
           <!-- + countRequestsServedByBotRr -->
-          {{ 'VisitorsPage.ServedRequests' | translate }} 
-          <span  *ngIf="(countRequestsServedByHumanRr  + countRequestsUnservedRr) >= 100"> - </span> 
-            <span *ngIf="(countRequestsServedByHumanRr  + countRequestsUnservedRr) >= 100" class="span-link-style"
+          {{ 'VisitorsPage.ServedRequests' | translate }}
+           <!-- {{countRequestsServedByHumanRr  + countRequestsUnservedRr }} -->
+          <span  *ngIf="(countRequestsServedByHumanRr  + countRequestsUnservedRr) >= 50"> - </span> 
+            <span *ngIf="(countRequestsServedByHumanRr  + countRequestsUnservedRr) >= 50" class="span-link-style"
             (click)="goToServedNTR()"> 
               {{'MoreInQueque' | translate}} 
             </span>

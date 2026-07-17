@@ -646,7 +646,8 @@ export class WsRequestsUnservedComponent extends WsSharedComponent implements On
   }
 
   goToUnservedNTR() {
-    this.router.navigate(['project/' + this.projectId + '/all-conversations'], { queryParams: { leftfilter: 100 } });
+    // , { queryParams: { leftfilter: 100 } }
+    this.router.navigate(['project/' + this.projectId + '/all-conversations']);
   }
 
   goToRequestMsgs(request_id: string) {

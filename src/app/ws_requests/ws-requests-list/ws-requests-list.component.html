@@ -59,7 +59,7 @@
           (click)='goToNoRealtimeConversations()'>
           <a attr.aria-label="{{ 'GoToNotRealTimeRequests' | translate }}" href="javascript:;" role="button"
             class="tool_tip" style="cursor: pointer; display: unset;"
-            [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 100 }" matTooltipClass="mat-white-tooltip"
+            [ngClass]="{ 'has-reached-100' : served_unserved_sum >= 50 }" matTooltipClass="mat-white-tooltip"
             matTooltip="{{'ClickHereForMoreAdvancedSearches' | translate}}" #tooltip="matTooltip"
             matTooltipPosition='below' matTooltipHideDelay="100">
             <span aria-hidden="true" class="material-icons">
@@ -67,7 +67,7 @@
             </span>
           </a>
 
-          <span *ngIf="served_unserved_sum >= 100" class="served-unserved-sum">
+          <span *ngIf="served_unserved_sum >= 50" class="served-unserved-sum">
             <span>
               <!-- {{ served_unserved_sum }} -->
               <!--  -->

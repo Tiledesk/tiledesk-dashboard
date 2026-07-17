@@ -3054,7 +3054,7 @@
     "Reopen": "Öppna igen",
     "MostRecentComment": "Senaste kommentaren",
     "ContactConversations": "Kontaktkonversationer",
-    "ClickHereForMoreAdvancedSearches": "Klicka här för mer avancerade sökningar (som biljett-ID, taggar och mer) och för att se alla förfrågningar (den här sidan visar upp till 100 konversationer i realtid)",
+    "ClickHereForMoreAdvancedSearches": "Klicka här för mer avancerade sökningar (som biljett-ID, taggar och mer) och för att se alla förfrågningar (den här sidan visar upp till 50 konversationer i realtid)",
     "ExporTranscriptToCSV": "Exportera avskrift till CSV",
     "ViewAll": "Visa alla",
     "ProOnly": "Endast proffs",

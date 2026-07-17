@@ -636,7 +636,8 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   // }
 
   goToServedNTR() {
-    this.router.navigate(['project/' + this.projectId + '/all-conversations'], { queryParams: { leftfilter: 200 } });
+    // , { queryParams: { leftfilter: 200 } }
+    this.router.navigate(['project/' + this.projectId + '/all-conversations']);
   }
 
 

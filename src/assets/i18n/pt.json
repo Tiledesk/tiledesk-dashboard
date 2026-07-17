@@ -3038,7 +3038,7 @@
     "Reopen": "Reabrir",
     "MostRecentComment": "Comentário mais recente",
     "ContactConversations": "Conversas de contato",
-    "ClickHereForMoreAdvancedSearches": "Clique aqui para pesquisas mais avançadas (como IDs de tickets, tags e mais) e para visualizar todas as solicitações (esta página mostra até 100 conversas em tempo real)",
+    "ClickHereForMoreAdvancedSearches": "Clique aqui para pesquisas mais avançadas (como IDs de tickets, tags e mais) e para visualizar todas as solicitações (esta página mostra até 50 conversas em tempo real)",
     "ExporTranscriptToCSV": "Exportar transcrição para CSV",
     "ViewAll": "Ver tudo",
     "ProOnly": "Apenas Pro",
