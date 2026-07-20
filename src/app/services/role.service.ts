@@ -750,16 +750,16 @@ export class RoleService {
           }
 
           // Leads
-          if (calledby === 'contacts' || calledby === 'contact-details') {
-            console.log('[ROLE-SERV] - here yes 2')
-            if (!_projectUser.rolePermissions.includes(PERMISSIONS.LEADS_READ)) {
-              // this.router.navigate([`project/${projectId}/unauthorized`])
-              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
-            }
+            if (calledby === 'contacts' || calledby === 'contact-details') {
+              console.log('[ROLE-SERV] - here yes 2')
+              if (!_projectUser.rolePermissions.includes(PERMISSIONS.LEADS_READ)) {
+                // this.router.navigate([`project/${projectId}/unauthorized`])
+                this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+              }
             // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.LEADS_READ);
             // console.log('[ROLE-SERV] - contacts & contact-details hasPermission ', hasPermission)
             // return hasPermission;
-          }
+            }
 
           // Analytics
           if (calledby === 'analytics') {
