@@ -207,16 +207,19 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
         this.logger.log('[CONTACTS-DTLS] - Role:', status.role);
         this.logger.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
 
+        // Wait for project user role (skip BehaviorSubject initial empty value), like other pages.
+        if (!status?.role) {
+          return;
+        }
+
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           this.PERMISSION_TO_READ_LEADS = status.matchedPermissions.includes(PERMISSIONS.LEADS_READ);
         } else {
           this.PERMISSION_TO_READ_LEADS = true;
         }
 
+       // Page-level deny is handled by RoleService.checkRoleForCurrentProject('contact-details').
         if (!this.PERMISSION_TO_READ_LEADS) {
-          if (this.projectId) {
-            this.router.navigate([`project/${this.projectId}/contact-details/no-auth`]);
-          }
           return;
         }
 
