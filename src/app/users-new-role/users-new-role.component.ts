@@ -142,6 +142,7 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.REQUEST_LEFT, label: 'Able to leave a conversation to which is joined' },
         { key: PERMISSIONS.REQUEST_TRANSCRIPT_SEND, label: 'Able to send the chat transcript' },
         { key: PERMISSIONS.LEAD_BAN, label: 'Able to ban visitor' },
+        // { key: PERMISSIONS.REQUEST_VIEW_LEAD_HISTORY, label: 'Able to view contacts conversations history' },
       ]
     },
     {

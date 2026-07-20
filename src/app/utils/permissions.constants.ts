@@ -78,6 +78,7 @@ export const PERMISSIONS = {
   LEADS_EXPORT: 'leads_export',
   LEAD_BAN: 'lead_ban',
   LEAD_UNBAN: 'lead_unban',
+  REQUEST_VIEW_LEAD_HISTORY: 'request_view_lead_history',
 
   ANALYTICS_READ: 'analytics_read',
   ACTIVITIES_READ: 'activities_read',
