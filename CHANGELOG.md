@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.8.16
+- Shows the current size of data tables in MB against the maximum allowed size
+- Adds the ability to filter data tables by conditions
+- Adds tooltips in the Knowledge Bases and Data Tables sidebars to show the full name when truncated
+
 ### 2.8.15
 - Implements the new activities
 
