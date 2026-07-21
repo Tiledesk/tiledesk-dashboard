@@ -1,5 +1,6 @@
 import { CHANNELS_NAME, isValidEmail } from './../../utils/util';
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { MatDateRangePicker } from '@angular/material/datepicker';
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
@@ -100,6 +101,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
   // @ViewChild('searchbtn') private searchbtnRef: ElementRef;
   @ViewChild('searchbtnbottom', { static: false }) private searchbtnbottomRef?: ElementRef;
+  @ViewChild('picker') dateRangePicker?: MatDateRangePicker<Date>;
 
   range = new FormGroup({
     start: new FormControl(),
@@ -1161,20 +1163,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  /**
-   * Helper method to preserve tiledesk_logOut query parameter when navigating
-   */
-  private getQueryParamsWithTiledeskLogOut(customParams: any = {}): any {
-    const currentParams = this.route.snapshot.queryParamMap;
-    const tiledeskLogOut = currentParams.get('tiledesk_logOut');
-    
-    const queryParams = { ...customParams };
-    if (tiledeskLogOut) {
-      queryParams['tiledesk_logOut'] = tiledeskLogOut;
-    }
-    
-    return queryParams;
-  }
+  // /**
+  //  * Helper method to preserve tiledesk_logOut query parameter when navigating
+  //  * tiledesk_logOut: disabilitato su questo branch
+  //  */
+  // private getQueryParamsWithTiledeskLogOut(customParams: any = {}): any {
+  //   const currentParams = this.route.snapshot.queryParamMap;
+  //   const tiledeskLogOut = currentParams.get('tiledesk_logOut');
+  //
+  //   const queryParams = { ...customParams };
+  //   if (tiledeskLogOut) {
+  //     queryParams['tiledesk_logOut'] = tiledeskLogOut;
+  //   }
+  //
+  //   return queryParams;
+  // }
 
   goToRequestMsgs(request_recipient: string) {
     // this.logger.log('HERE IN goToRequestMsgs this.requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter)
@@ -2711,6 +2714,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.endDateDefaultValue = null
     this.startDate = null
     this.endDate = null
+  }
+
+  openDatePicker(): void {
+    this.dateRangePicker?.open();
   }
 
   // ------------------------------------------------------------------------------

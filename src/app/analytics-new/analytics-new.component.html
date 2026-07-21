@@ -1,4 +1,11 @@
 <div class="analytics-new-page">
+  <div class="analytics-new-toolbar">
+    <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="goToLegacyAnalytics()" style="position: absolute;top: 31px;margin-right: 7px;">
+      <!-- {{ 'AnalyticsNew.LegacyAnalytics' | translate }} -->
+      Legacy Analytics
+    </button>
+  </div>
+
   <div *ngIf="loading" class="analytics-new-state">
     <mat-spinner diameter="40"></mat-spinner>
     <p>{{ 'AnalyticsNew.Loading' | translate }}</p>
@@ -22,6 +29,7 @@
     title="Analytics"
     frameborder="0"
     allow="clipboard-read; clipboard-write"
+    (load)="onAnalyticsIframeLoad()"
   ></iframe>
 
 </div>

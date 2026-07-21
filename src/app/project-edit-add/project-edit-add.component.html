@@ -74,7 +74,7 @@
                     <a> {{'BannedVisitors' | translate }} </a>
                   </li>
 
-                  <!-- <li (click)="goToProjectSettings_RetentionPolicy()"
+                  <!-- <li *ngIf="PERMISSION_TO_VIEW_RETENTION" (click)="goToProjectSettings_RetentionPolicy()"
                     class="btn-with-border-effect"
                     [ngClass]="{'li-active': PROJECT_SETTINGS_RETENTION, 'border-from-center': PROJECT_SETTINGS_RETENTION === false }">
                     <a> {{'MessageRetention' | translate }} </a>

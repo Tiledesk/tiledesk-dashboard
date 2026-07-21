@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'app/core/auth.service';
 import { AnalyticsEmbedService } from 'app/services/analytics-embed.service';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -31,6 +31,7 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private embedService: AnalyticsEmbedService,
     private route: ActivatedRoute,
+    private router: Router,
     private auth: AuthService,
     private appConfigService: AppConfigService,
     private logger: LoggerService
@@ -88,18 +89,32 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
   }
 
   private setPostMessageTargetFromConfig(): void {
-    const embedBase = this.appConfigService.getConfig()?.analyticsEmbedBase as string | undefined;
-    if (!embedBase) {
+    this.postMessageTargetOrigin = this.embedService.getEmbedPostMessageTargetOrigin();
+  }
+
+  onAnalyticsIframeLoad(): void {
+    this.flushPendingKbChartClickToIframe();
+  }
+
+  goToLegacyAnalytics(): void {
+    if (!this.projectId) {
       return;
     }
-    try {
-      const origin = new URL(embedBase, window.location.origin).origin;
-      if (origin && origin !== 'null') {
-        this.postMessageTargetOrigin = origin;
-      }
-    } catch {
-      // keep '*'
+    this.router.navigate(['/project', this.projectId, 'analytics-legacy']);
+  }
+
+  private flushPendingKbChartClickToIframe(): void {
+    const pending = this.embedService.consumePendingKbChartClick();
+    if (!pending) {
+      return;
     }
+    this.postMessageToEmbed(pending);
+  }
+
+  private postMessageToEmbed(data: object): void {
+    const iframe = this.analyticsIframeRef?.nativeElement;
+    iframe?.contentWindow?.postMessage(data, this.postMessageTargetOrigin);
+    console.log('[AnalyticsNew] postMessage to embed', data);
   }
 
   private getEmbedBase(): string {

@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration} from './utils'; // , DeepseekIntegration
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration, ElevenLabsIntegration, CerebrasIntegration, OpenRouterIntegration } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -374,6 +374,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         } else {
           if (whatsappApp) {
             whatsappApp.channel = "whatsapp";
+          } else if (environment['whatsappApiUrl']) {
+            whatsappApp = {
+              runURL: `${environment['whatsappApiUrl']}/configure`,
+              channel: "whatsapp"
+            };
           }
         }
         this.availableApps.push(whatsappApp);
@@ -512,19 +517,27 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       if (!this.selectedIntegration) {
         this.selectedIntegration = this.initializeIntegration(integration.key);
       }
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration.category", integration.category, ' INTEGRATIONS_CATEGORIES.CHANNEL ', INTEGRATIONS_CATEGORIES.CHANNEL)
-      if (integration && integration.category === INTEGRATIONS_CATEGORIES.CHANNEL) {
-        this.logger.log("[INTEGRATIONS]- OLLa ")
-        // this.integrationSelectedName = "external";
-
-        this.integrationSelectedType = "external";
-        this.showInIframe = true;
-        this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedType", this.integrationSelectedType, ' showInIframe ', this.showInIframe)
+      const usesAppStoreIframe =
+        integration.category === INTEGRATIONS_CATEGORIES.CHANNEL
+        || (integration.category === INTEGRATIONS_CATEGORIES.VOICE
+          && integration.key !== INTEGRATIONS_KEYS.ELEVENLABS);
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect integration.category", integration.category, ' usesAppStoreIframe ', usesAppStoreIframe)
+      if (integration && usesAppStoreIframe) {
         this.logger.log("[INTEGRATIONS]- availableApps ", this.availableApps)
-        let app = this.availableApps.find(a => a.channel === integration.key);
+        const app = this.availableApps.find((a) => a.channel === integration.key);
         this.logger.log("[INTEGRATIONS]- app ", app)
 
-        this.renderUrl = app.runURL;
+        // Only embed App Store iframe when a matching app exists (e.g. Twilio Voice, VXML). ElevenLabs uses native component.
+        if (app && app.runURL) {
+          this.integrationSelectedType = "external";
+          this.showInIframe = true;
+          this.renderUrl = app.runURL;
+          this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedType", this.integrationSelectedType, ' showInIframe ', this.showInIframe)
+        } else {
+          this.integrationSelectedType = "none";
+          this.showInIframe = false;
+          this.logger.log("[INTEGRATIONS]- onIntegrationSelect no app for channel/voice; skip iframe", integration.key)
+        }
       } else {
         this.showInIframe = false;
       }
@@ -714,6 +727,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       return new GroqIntegration();
     }
 
+    if (key === INTEGRATIONS_KEYS.CEREBRAS) {
+      return new CerebrasIntegration();
+    }
+
+    if (key === INTEGRATIONS_KEYS.OPENROUTER) {
+      return new OpenRouterIntegration();
+    }
+
     if (key === INTEGRATIONS_KEYS.COHERE) {
       return new CohereIntegration();
     }
@@ -733,6 +754,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     if (key === INTEGRATIONS_KEYS.DEEPSEEK) {
       return new DeepseekIntegration();
     }
+
+    if (key === INTEGRATIONS_KEYS.ELEVENLABS) {
+      return new ElevenLabsIntegration();
+    }
+
 
     if (key === INTEGRATIONS_KEYS.MAKE) {
       return new MakeIntegration();
@@ -954,6 +980,26 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         return;
       }
 
+      if (integration && integration.key === this.INT_KEYS.ELEVENLABS) {
+        // First check: if trial is expired (free profile with expired trial)
+        if (this.profileType === 'free' && this.trialExpired === true) {
+          reject(false);
+        }
+        // Second check: if subscription is expired (payment profile with inactive subscription)
+        else if (this.profileType === 'payment' && this.subscriptionIsActive === false) {
+          reject(false);
+        } else if (!this.getPayValue()) {
+          reject(false);
+        } else if (!this.customization) {
+          reject(false);
+        } else if (!this.customization.hasOwnProperty(this.INT_KEYS.ELEVENLABS) || this.customization[this.INT_KEYS.ELEVENLABS] === false) {
+          reject(false);
+        } else {
+          resolve(true);
+        }
+        return;
+      }
+
       // FREE or SANDBOX PLAN
       // if (this.profile_name === 'free' || this.profile_name === 'Sandbox') {
       //   if (integration_plan !== 'Sandbox') {
@@ -1061,9 +1107,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_SMS);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
-      // Twilio Voice: keep in list when PAY is on; lock / "Contact us" is handled in checkPlan + template when not enabled in customization
+      // Twilio Voice / ElevenLabs: hide from list when PAY is off; when PAY is on, lock / "Contact us" uses checkPlan + template if not in customization
       if (!isVisiblePAY) {
         let index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
+        if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
+        index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.ELEVENLABS);
         if (index != -1) { this.INTEGRATIONS.splice(index, 1) };
       }
 
@@ -1123,14 +1171,24 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         }
       }
 
+      let voiceIndex = this.INTEGRATIONS.findIndex(i => i.category === INTEGRATIONS_CATEGORIES.VOICE);
+      if (voiceIndex === -1) {
+        let voiceCategoryIdx = this.CATEGORIES.findIndex(c => c.type === INTEGRATIONS_CATEGORIES.VOICE);
+        if (voiceCategoryIdx != -1) {
+          this.CATEGORIES.splice(voiceCategoryIdx, 1);
+        }
+      }
+
     } else {
       let vxml_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.VXML_VOICE);
       if (vxml_voice_index != -1) { this.INTEGRATIONS.splice(vxml_voice_index, 1) };
 
-      // Remove TWILIO_VOICE if getPayValue() is false (even when customization is not present)
+      // Remove Twilio Voice / ElevenLabs if getPayValue() is false (even when customization is not present)
       if (!isVisiblePAY) {
         let twilio_voice_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.TWILIO_VOICE);
         if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
+        let elevenlabs_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.ELEVENLABS);
+        if (elevenlabs_index != -1) { this.INTEGRATIONS.splice(elevenlabs_index, 1) };
       }
 
     }
@@ -1140,6 +1198,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   contactUs() {
     window.open(`mailto:${this.salesEmail}?subject=Enable Twilio Voice for project id ${this.projectID}`);
+  }
+
+  contactUsEvenlabs() {
+    window.open(`mailto:${this.salesEmail}?subject=Enable ElevenLabs for project id ${this.projectID}`);
   }
 
   contactUsToUpgradePlan(){

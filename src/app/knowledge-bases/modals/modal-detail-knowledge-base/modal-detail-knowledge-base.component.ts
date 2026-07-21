@@ -205,6 +205,12 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     
   }
 
+  /** Imported file types are view-only in the detail modal (no Update). */
+  get isImportedFileDetailReadonly(): boolean {
+    const type = this.kb?.type;
+    return type === 'pdf' || type === 'txt' || type === 'docx' || type === 'regex_custom';
+  }
+
   ngAfterViewInit() {
     this.initTagContainerObserver();
   }

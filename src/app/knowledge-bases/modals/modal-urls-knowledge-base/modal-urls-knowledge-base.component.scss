@@ -563,6 +563,14 @@
     align-items: center;
 }
 
+.sitemap-popover__error {
+    margin: 8px 0 0;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #c62445;
+    max-width: 420px;
+}
+
 .sitemap-popover__close {
     background: #f7f8fc;
     border: none;
