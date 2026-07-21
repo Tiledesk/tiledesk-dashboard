@@ -64,6 +64,9 @@
           <ul class="kb-list" *ngIf="!isLoadingNamespaces && namespaces?.length > 0">
             <li *ngFor="let ns of namespaces"
                 (click)="onSelectNamespace(ns)"
+                [matTooltip]="ns.name"
+                matTooltipClass="kb-custom-mat-tooltip"
+                matTooltipPosition="right"
                 [ngClass]="{'active': ns === selectedNamespace}"
                 [style.background]="ns === selectedNamespace ? '#e3e9f6' : 'transparent'"
                 [style.borderLeftColor]="ns === selectedNamespace ? '#0f62ff' : 'transparent'"

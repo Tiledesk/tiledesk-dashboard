@@ -16,8 +16,10 @@ import {
   Column,
   ColumnInput,
   ColumnType,
+  ConditionOperator,
   DataTable,
   isValidColumnName,
+  MatchMode,
   RowData,
   RowDocument,
   RowListItem,
@@ -49,6 +51,12 @@ import {
   formatTableDataSizeLabel,
   resolveDataTableMaxSizeLabel,
 } from './data-tables-column-types.util';
+import {
+  defaultOperatorForColumnType,
+  FilterOperatorOption,
+  operatorNeedsValue,
+  operatorsForColumnType,
+} from './data-tables-filter.util';
 
 const Swal = require('sweetalert2');
 
@@ -64,6 +72,15 @@ interface EditableRow {
   data: RowData;
   isSaving?: boolean;
   pendingCellSave?: boolean;
+}
+
+interface FilterConditionDraft {
+  localId: string;
+  column: string;
+  columnType: ColumnType;
+  operator: ConditionOperator;
+  /** UI draft; serialized on apply */
+  value: string | boolean | null;
 }
 
 @Component({
@@ -106,6 +123,40 @@ export class DataTablesComponent implements OnInit {
   isDeletingRows = false;
   deletingRowId: string | null = null;
   isDeletingTable = false;
+
+  isFilterPopoverOpen = false;
+  filterMustMatch: MatchMode = 'any';
+  filterDraftConditions: FilterConditionDraft[] = [];
+  /** Stable column list for the filter popover (avoid recreating arrays each CD). */
+  filterColumnOptions: ColumnView[] = [];
+  private activeRowFilter: RowSearchRequest | null = null;
+
+  readonly matchModeOptions: Array<{ value: MatchMode; labelKey: string }> = [
+    { value: 'any', labelKey: 'DataTables.MatchAny' },
+    { value: 'all', labelKey: 'DataTables.MatchAll' },
+  ];
+
+  readonly booleanFilterValueOptions: Array<{ value: boolean; labelKey: string }> = [
+    { value: true, labelKey: 'DataTables.BooleanTrue' },
+    { value: false, labelKey: 'DataTables.BooleanFalse' },
+  ];
+
+  readonly filterPopoverPositions: ConnectedPosition[] = [
+    {
+      originX: 'end',
+      originY: 'bottom',
+      overlayX: 'end',
+      overlayY: 'top',
+      offsetY: 8,
+    },
+    {
+      originX: 'start',
+      originY: 'bottom',
+      overlayX: 'start',
+      overlayY: 'top',
+      offsetY: 8,
+    },
+  ];
 
   get totalRowsPages(): number {
     return Math.max(1, Math.ceil(this.rows.length / this.rowsPageSize));
@@ -308,8 +359,7 @@ export class DataTablesComponent implements OnInit {
   private serializeCellValue(value: unknown, type: ColumnType): unknown {
     if (type === 'string') {
       if (value === null || value === undefined || value === '') {
-        // Partial row updates may ignore null; empty string clears the field on the server.
-        return '';
+        return null;
       }
       return value;
     }
@@ -453,6 +503,8 @@ export class DataTablesComponent implements OnInit {
   private selectTable(table: DataTable, options?: { focusFirstColumnCell?: boolean }): void {
     this.cancelRenameTableTitle();
     this.cancelRenameColumn();
+    this.closeFilterPopover();
+    this.clearActiveRowFilter();
     this.rowSearchQuery = '';
     this.currentRowsPage = 1;
     this.selectedTableId = table._id || null;
@@ -477,11 +529,233 @@ export class DataTablesComponent implements OnInit {
     this.rowSearchDebounceTimer = setTimeout(() => {
       const table = this.selectedTable;
       if (!table) { return; }
+      // Text search replaces advanced filters
+      this.clearActiveRowFilter();
       this.loadTableRows(table, this.buildRowSearchRequest());
     }, 300);
   }
 
+  clearRowSearch(): void {
+    if (this.rowSearchDebounceTimer) {
+      clearTimeout(this.rowSearchDebounceTimer);
+      this.rowSearchDebounceTimer = null;
+    }
+    this.rowSearchQuery = '';
+    this.clearActiveRowFilter();
+    const table = this.selectedTable;
+    if (table) {
+      this.loadTableRows(table);
+    }
+  }
+
+  get hasActiveRowFilter(): boolean {
+    return !!this.activeRowFilter?.conditions?.length;
+  }
+
+  get activeRowFilterConditionCount(): number {
+    return this.activeRowFilter?.conditions?.length || 0;
+  }
+
+  toggleFilterPopover(): void {
+    if (this.isFilterPopoverOpen) {
+      this.closeFilterPopover();
+      return;
+    }
+    this.filterColumnOptions = this.getColumns(this.selectedTable);
+    this.syncFilterDraftFromActive();
+    if (!this.filterDraftConditions.length && this.filterColumnOptions.length) {
+      this.addFilterCondition();
+    }
+    this.isFilterPopoverOpen = true;
+  }
+
+  closeFilterPopover(): void {
+    this.isFilterPopoverOpen = false;
+  }
+
+  addFilterCondition(): void {
+    const columns = this.filterColumnOptions.length
+      ? this.filterColumnOptions
+      : this.getColumns(this.selectedTable);
+    if (!columns.length) { return; }
+    const col = columns[0];
+    this.filterDraftConditions = [
+      ...this.filterDraftConditions,
+      {
+        localId: `flt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+        column: col.name,
+        columnType: col.type,
+        operator: defaultOperatorForColumnType(col.type),
+        value: col.type === 'boolean' ? true : '',
+      },
+    ];
+  }
+
+  removeFilterCondition(localId: string): void {
+    this.filterDraftConditions = this.filterDraftConditions.filter((c) => c.localId !== localId);
+  }
+
+  getOperatorsForCondition(condition: FilterConditionDraft): FilterOperatorOption[] {
+    return operatorsForColumnType(condition.columnType || 'string');
+  }
+
+  filterConditionNeedsValue(condition: FilterConditionDraft): boolean {
+    return operatorNeedsValue(condition.operator);
+  }
+
+  onFilterColumnChange(condition: FilterConditionDraft): void {
+    const col = this.filterColumnOptions.find((c) => c.name === condition.column);
+    const type = col?.type || 'string';
+    condition.columnType = type;
+    condition.operator = defaultOperatorForColumnType(type);
+    condition.value = type === 'boolean' ? true : '';
+  }
+
+  onFilterOperatorChange(condition: FilterConditionDraft): void {
+    if (!operatorNeedsValue(condition.operator)) {
+      condition.value = null;
+    } else if (condition.value === null) {
+      condition.value = condition.columnType === 'boolean' ? true : '';
+    }
+  }
+
+  applyFilterPopover(): void {
+    const table = this.selectedTable;
+    if (!table) { return; }
+
+    const conditions = this.serializeFilterDraftConditions();
+    if (!conditions.length) {
+      this.clearActiveRowFilter();
+      this.rowSearchQuery = '';
+      this.closeFilterPopover();
+      this.loadTableRows(table);
+      return;
+    }
+
+    this.activeRowFilter = {
+      must_match: this.filterMustMatch,
+      conditions,
+    };
+    this.rowSearchQuery = '';
+    this.closeFilterPopover();
+    this.loadTableRows(table, this.activeRowFilter);
+  }
+
+  clearFilterPopover(): void {
+    const table = this.selectedTable;
+    this.filterMustMatch = 'any';
+    this.filterDraftConditions = [];
+    this.clearActiveRowFilter();
+    this.rowSearchQuery = '';
+    this.closeFilterPopover();
+    if (table) {
+      this.loadTableRows(table);
+    }
+  }
+
+  private clearActiveRowFilter(): void {
+    this.activeRowFilter = null;
+    this.filterDraftConditions = [];
+    this.filterMustMatch = 'any';
+  }
+
+  private syncFilterDraftFromActive(): void {
+    if (this.activeRowFilter?.conditions?.length) {
+      this.filterMustMatch = this.activeRowFilter.must_match || 'any';
+      this.filterDraftConditions = this.activeRowFilter.conditions.map((c, index) => {
+        const columnType = this.filterColumnOptions.find((col) => col.name === c.column)?.type || 'string';
+        return {
+          localId: `flt_active_${index}_${c.column}`,
+          column: c.column,
+          columnType,
+          operator: c.operator,
+          value: this.conditionValueToDraft(c, columnType),
+        };
+      });
+      return;
+    }
+    this.filterMustMatch = 'any';
+    this.filterDraftConditions = [];
+  }
+
+  private conditionValueToDraft(
+    condition: RowCondition,
+    columnType: ColumnType,
+  ): string | boolean | null {
+    if (!operatorNeedsValue(condition.operator)) {
+      return null;
+    }
+    if (columnType === 'boolean') {
+      return condition.value === true || condition.value === 'true';
+    }
+    if (columnType === 'datetime') {
+      return isoToDatetimeLocal(condition.value);
+    }
+    if (condition.value === null || condition.value === undefined) {
+      return '';
+    }
+    return String(condition.value);
+  }
+
+  private serializeFilterDraftConditions(): RowCondition[] {
+    const schemaNames = new Set(this.filterColumnOptions.map((c) => c.name));
+    const result: RowCondition[] = [];
+
+    for (const draft of this.filterDraftConditions) {
+      if (!draft.column || !schemaNames.has(draft.column)) {
+        continue;
+      }
+      if (!operatorNeedsValue(draft.operator)) {
+        result.push({ column: draft.column, operator: draft.operator });
+        continue;
+      }
+
+      const serialized = this.serializeFilterValue(draft.value, draft.columnType);
+      if (serialized === undefined) {
+        continue;
+      }
+      result.push({
+        column: draft.column,
+        operator: draft.operator,
+        value: serialized,
+      });
+    }
+
+    return result;
+  }
+
+  private serializeFilterValue(
+    value: string | boolean | null,
+    type: ColumnType,
+  ): string | number | boolean | undefined {
+    if (type === 'boolean') {
+      return value === true || value === 'true';
+    }
+    if (value === null || value === undefined) {
+      return undefined;
+    }
+    if (typeof value === 'boolean') {
+      return value;
+    }
+    const trimmed = String(value).trim();
+    if (!trimmed) {
+      return undefined;
+    }
+    if (type === 'number') {
+      const parsed = parseNumberCellValue(trimmed);
+      return typeof parsed === 'number' ? parsed : undefined;
+    }
+    if (type === 'datetime') {
+      return datetimeLocalToIso(trimmed) || undefined;
+    }
+    return trimmed;
+  }
+
   private buildRowSearchRequest(): RowSearchRequest | undefined {
+    if (this.activeRowFilter?.conditions?.length) {
+      return this.activeRowFilter;
+    }
+
     const query = (this.rowSearchQuery || '').trim();
     if (!query) { return undefined; }
 
@@ -519,6 +793,8 @@ export class DataTablesComponent implements OnInit {
     };
   }
 
+  trackByFilterConditionId = (_: number, condition: FilterConditionDraft): string => condition.localId;
+
   private parseSearchNumber(query: string): number | null {
     const parsed = parseNumberCellValue(query);
     return typeof parsed === 'number' ? parsed : null;
@@ -526,6 +802,8 @@ export class DataTablesComponent implements OnInit {
 
   onSelectTable(table: DataTable): void {
     this.selectTable(table);
+    // Refresh /tables so stats (e.g. size) stay up to date when switching tables
+    this.refreshSelectedTableStats();
   }
 
   isTableSelected(table: DataTable): boolean {
@@ -886,7 +1164,7 @@ export class DataTablesComponent implements OnInit {
   }
 
   get hasActiveRowSearch(): boolean {
-    return !!this.rowSearchQuery.trim();
+    return !!this.rowSearchQuery.trim() || this.hasActiveRowFilter;
   }
 
   get showNoSearchResultsState(): boolean {
@@ -1100,6 +1378,7 @@ export class DataTablesComponent implements OnInit {
   focusedNumberCellKey: string | null = null;
   focusedStringCellKey: string | null = null;
   private numberCellEditDrafts = new Map<string, string>();
+  private stringCellEditDrafts = new Map<string, string>();
   private cellEditSnapshots = new Map<string, unknown>();
   private lastCommittedCellValues = new Map<string, unknown>();
   private datetimeOpenedByPointer = false;
@@ -1176,13 +1455,25 @@ export class DataTablesComponent implements OnInit {
     return !isStringCellWithinByteLimit(value);
   }
 
-  hasStringValue(row: EditableRow, columnName: string): boolean {
-    const value = row.data[columnName];
-    return value !== null && value !== undefined && String(value) !== '';
+  /** Oversized placeholder only when not editing — keeps the input alive during large pastes. */
+  shouldShowStringCellOversized(row: EditableRow, columnName: string): boolean {
+    if (this.focusedStringCellKey === this.getCellEditKey(row, columnName)) {
+      return false;
+    }
+    return this.isStringCellOversized(row.data[columnName]);
   }
 
-  isStringCellFocused(row: EditableRow, columnName: string): boolean {
-    return this.focusedStringCellKey === this.getCellEditKey(row, columnName);
+  getStringCellDisplayValue(row: EditableRow, columnName: string): string {
+    const key = this.getCellEditKey(row, columnName);
+    if (this.stringCellEditDrafts.has(key)) {
+      return this.stringCellEditDrafts.get(key) ?? '';
+    }
+    const value = row.data[columnName];
+    return value === null || value === undefined ? '' : String(value);
+  }
+
+  onStringCellChange(row: EditableRow, columnName: string, value: string): void {
+    this.stringCellEditDrafts.set(this.getCellEditKey(row, columnName), value);
   }
 
   clearStringCell(row: EditableRow, column: ColumnView, event: MouseEvent): void {
@@ -1198,6 +1489,7 @@ export class DataTablesComponent implements OnInit {
     row.data[column.name] = '';
     this.focusedStringCellKey = null;
     const editKey = this.getCellEditKey(row, column.name);
+    this.stringCellEditDrafts.delete(editKey);
     this.cellEditSnapshots.set(editKey, '');
     this.commitCellValue(row, column.name, '');
 
@@ -1225,10 +1517,9 @@ export class DataTablesComponent implements OnInit {
       current = this.defaultCellValue(column.type);
       row.data[columnName] = current;
     }
-    this.cellEditSnapshots.set(
-      key,
-      current === null || current === undefined ? '' : String(current),
-    );
+    const draft = current === null || current === undefined ? '' : String(current);
+    this.stringCellEditDrafts.set(key, draft);
+    this.cellEditSnapshots.set(key, draft);
   }
 
   onCellInputFocus(event: FocusEvent): void {
@@ -1372,11 +1663,14 @@ export class DataTablesComponent implements OnInit {
   }
 
   onStringCellBlur(row: EditableRow, columnName: string, event: FocusEvent): void {
+    const key = this.getCellEditKey(row, columnName);
     const input = event.target as HTMLInputElement | null;
-    if (input) {
-      row.data[columnName] = input.value;
-    }
+    const draft = this.stringCellEditDrafts.has(key)
+      ? (this.stringCellEditDrafts.get(key) ?? '')
+      : (input?.value ?? '');
+    this.stringCellEditDrafts.delete(key);
     this.focusedStringCellKey = null;
+    row.data[columnName] = draft;
     this.onCellBlur(row, columnName);
   }
 
@@ -1958,6 +2252,7 @@ export class DataTablesComponent implements OnInit {
             return { ...row, data: this.normalizeRowData(migrated, schema) };
           });
         }
+        this.refreshSelectedTableStats();
         this.logger.log('[DATA-TABLES] column deleted', col.name);
       },
       error: (err) => {

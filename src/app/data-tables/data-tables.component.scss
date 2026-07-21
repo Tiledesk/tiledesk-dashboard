@@ -18,6 +18,16 @@
   max-width: 320px;
 }
 
+::ng-deep .dt-table-sidebar-tooltip {
+    background-color: #2d323e !important;
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    color: #fff;
+}
+
 .sidebar-title {
   color: var(--settings-sidebar-color);
   padding-left: 12px;
@@ -336,6 +346,32 @@
     color: #98a2b3;
     font-size: 20px;
     line-height: 1;
+  }
+}
+
+.dt-search-clear-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #98a2b3;
+  cursor: pointer;
+  line-height: 1;
+
+  .material-icons-outlined {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  &:hover {
+    color: #667085;
+    background: rgba(0, 0, 0, 0.04);
   }
 }
 
@@ -792,9 +828,9 @@
 }
 
 .dt-no-search-results-cell {
-  padding: 48px 12px;
+  padding: 20px 12px;
   text-align: center;
-  font-size: 13px;
+  font-size: 14px;
   color: #888;
   background: #fff;
 }
@@ -878,6 +914,178 @@
 .dt-empty-state-title {
   font-size: 16px;
   font-family: var(--header-font-family);
+}
+
+.dt-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 5px !important;
+  border: 1px solid #ccc !important;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+  }
+}
+
+.dt-filter-btn--active {
+  border-color: var(--blue-light, #1f77ff);
+  color: var(--blue-light, #1f77ff);
+}
+
+.dt-filter-btn-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--blue-light, #1f77ff);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.dt-filter-popover {
+  width: 380px;
+  max-width: calc(100vw - 24px);
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  font-family: var(--header-font-family);
+}
+
+.dt-filter-field {
+  margin-bottom: 12px;
+}
+
+.dt-filter-field--half {
+  flex: 1 1 0;
+  min-width: 0;
+  margin-bottom: 0;
+}
+
+.dt-filter-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin-bottom: 4px;
+}
+
+.dt-filter-column-label {
+  font-size: 14px;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+.dt-filter-section-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-color);
+  margin: 4px 0 10px;
+}
+
+.dt-filter-empty {
+  font-size: 13px;
+  color: #98a2b3;
+  margin-bottom: 12px;
+}
+
+.dt-filter-condition {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 12px;
+  border: 1px solid #e4e7ec;
+  border-radius: 8px;
+  background: #fafbfc;
+}
+
+.dt-filter-condition-delete {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  margin-top: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #667085;
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background: rgba(198, 36, 69, 0.08);
+    color: #c62445;
+  }
+}
+
+.dt-filter-condition-body {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.dt-filter-condition-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.dt-filter-add-condition {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin: 4px 0 4px;
+  padding: 8px 12px;
+  border: none;
+  // border-top: 1px solid #e4e7ec;
+  // border-bottom: 1px solid #e4e7ec;
+  background: transparent;
+  color: var(--blue-light, #1f77ff);
+  font-size: 13px;
+  font-weight: 500;
+  font-family: var(--header-font-family);
+  cursor: pointer;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.dt-filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 // ─── Add Column popover (toolbar) ─────────────────────────────────────────
