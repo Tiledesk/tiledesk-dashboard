@@ -3032,10 +3032,13 @@
                             </td>
                           </tr>
 
-                          <tr *ngFor="let request of contact_requests">
+                          <ng-container *ngFor="let request of contact_requests">
+                          <tr class="contact-request-row"
+                            [ngClass]="{'contact-request-row--current': isCurrentContactRequest(request)}"
+                            (click)="onContactRequestRowClick(request)"
+                            [style.cursor]="isCurrentContactRequest(request) ? 'default' : 'pointer'">
 
-                            <td class="contact--conversations" (click)='goToRequestMsgs(request?.request_id)'
-                              style="cursor:pointer">
+                            <td class="contact--conversations">
 
                               <!-- ------------------------------------- -->
                               <!-- IF IS A CLOSED REQUEST -->
@@ -3297,7 +3300,7 @@
                             <!-- ------------------------------------------------------------- -->
                             <!-- REQUEST FIRST TEXT style="cursor:pointer"  -->
                             <!-- ------------------------------------------------------------- -->
-                            <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                            <td>
                               <p class="contact--conversations-first_text"
                                 [innerHTML]="getRequestText(request?.first_text)">
                               </p>
@@ -3312,6 +3315,7 @@
                               </span>
                             </td>
                           </tr>
+                          </ng-container>
                         </tbody>
                       </table>
                     </div> <!-- ./ card-content table-responsive -->

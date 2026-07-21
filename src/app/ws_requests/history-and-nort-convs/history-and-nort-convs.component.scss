@@ -827,8 +827,79 @@ p.member:hover {
   padding-left: 0px;
   padding-right: 0px;
 }
+
 .left-date-picker {
   font-size: 14px;
+
+  .custom-date-range-picker {
+    display: block;
+    width: 100%;
+
+    ::ng-deep .mat-form-field-wrapper {
+      width: 100%;
+    }
+
+    ::ng-deep .mat-form-field-flex {
+      width: 100%;
+      align-items: center;
+    }
+
+    ::ng-deep .mat-form-field-infix {
+      width: 100%;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    ::ng-deep .mat-form-field-suffix {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      align-self: center;
+    }
+
+    ::ng-deep .mat-form-field-suffix .mat-datepicker-toggle {
+      position: static !important;
+      top: auto !important;
+    }
+
+    ::ng-deep .mat-date-range-input {
+      cursor: pointer;
+      width: 100%;
+    }
+
+    ::ng-deep .mat-date-range-input-container {
+      display: flex;
+      width: 100%;
+      align-items: center;
+    }
+
+    ::ng-deep .mat-date-range-input-start-wrapper,
+    ::ng-deep .mat-date-range-input-end-wrapper {
+      flex: 1 1 0;
+      max-width: none;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    ::ng-deep input.mat-start-date,
+    ::ng-deep input.mat-end-date,
+    ::ng-deep .mat-date-range-input-separator {
+      cursor: pointer;
+    }
+
+    ::ng-deep .mat-date-range-input-separator {
+      margin-bottom: 0 !important;
+    }
+
+    ::ng-deep input.mat-start-date,
+    ::ng-deep input.mat-end-date {
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+      margin-bottom: 0;
+      height: 36px;
+    }
+  }
 }
 
 @media screen and (min-width: 768px) {
@@ -938,27 +1009,6 @@ p.member:hover {
   // margin-top: 8px;
   font-size: 14px;
   line-height: 1.3;
-}
-
-// Date range picker error state
-.custom-date-range-picker.date-range-error {
-  ::ng-deep {
-    .mat-form-field-outline {
-      color: #f44336 !important;
-    }
-    .mat-form-field-outline-thick {
-      color: #f44336 !important;
-    }
-    .mat-form-field-underline {
-      background-color: #f44336 !important;
-    }
-    .mat-form-field-ripple {
-      background-color: #f44336 !important;
-    }
-    input {
-      border-color: #f44336 !important;
-    }
-  }
 }
 
 // applied in the div of the ng-select 'Tag'

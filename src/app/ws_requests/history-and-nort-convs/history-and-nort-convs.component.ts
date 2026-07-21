@@ -1,5 +1,6 @@
 import { CHANNELS_NAME, isValidEmail } from './../../utils/util';
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { MatDateRangePicker } from '@angular/material/datepicker';
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
@@ -100,6 +101,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
   // @ViewChild('searchbtn') private searchbtnRef: ElementRef;
   @ViewChild('searchbtnbottom', { static: false }) private searchbtnbottomRef?: ElementRef;
+  @ViewChild('picker') dateRangePicker?: MatDateRangePicker<Date>;
 
   range = new FormGroup({
     start: new FormControl(),
@@ -1161,20 +1163,21 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  /**
-   * Helper method to preserve tiledesk_logOut query parameter when navigating
-   */
-  private getQueryParamsWithTiledeskLogOut(customParams: any = {}): any {
-    const currentParams = this.route.snapshot.queryParamMap;
-    const tiledeskLogOut = currentParams.get('tiledesk_logOut');
-    
-    const queryParams = { ...customParams };
-    if (tiledeskLogOut) {
-      queryParams['tiledesk_logOut'] = tiledeskLogOut;
-    }
-    
-    return queryParams;
-  }
+  // /**
+  //  * Helper method to preserve tiledesk_logOut query parameter when navigating
+  //  * tiledesk_logOut: disabilitato su questo branch
+  //  */
+  // private getQueryParamsWithTiledeskLogOut(customParams: any = {}): any {
+  //   const currentParams = this.route.snapshot.queryParamMap;
+  //   const tiledeskLogOut = currentParams.get('tiledesk_logOut');
+  //
+  //   const queryParams = { ...customParams };
+  //   if (tiledeskLogOut) {
+  //     queryParams['tiledesk_logOut'] = tiledeskLogOut;
+  //   }
+  //
+  //   return queryParams;
+  // }
 
   goToRequestMsgs(request_recipient: string) {
     // this.logger.log('HERE IN goToRequestMsgs this.requests_status_selected_from_left_filter', this.requests_status_selected_from_left_filter)
@@ -2705,14 +2708,87 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - onChangeStartDate this.startDateDefaultValue', this.startDateDefaultValue);
   }
 
-  clearDateRange() {
+  clearDateRange(event?: MouseEvent): void {
+    event?.stopPropagation();
+    event?.preventDefault();
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR DATE RANGE');
-    this.startDateDefaultValue = null
-    this.endDateDefaultValue = null
-    this.startDate = null
-    this.endDate = null
+    this.startDateDefaultValue = null;
+    this.endDateDefaultValue = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.startDateValue = '';
+    this.endDateValue = '';
+    this.startDateFormatted = null;
+    this.endDateFormatted = null;
+    this.startDateFormatted_temp = null;
+    this.endDateFormatted_temp = null;
+    this.start_date_is_null = true;
+    this.ensureQueryStringForDateSync();
+    this.patchQueryStringDates('', '');
+    this.syncHistoryUrlQueryParams();
   }
 
+  private ensureQueryStringForDateSync(): void {
+    if (this.queryString) {
+      return;
+    }
+
+    const qsParam = this.route.snapshot.queryParamMap.get('qs');
+    if (!qsParam) {
+      return;
+    }
+
+    try {
+      this.queryString = JSON.parse(qsParam);
+    } catch {
+      this.queryString = qsParam;
+    }
+  }
+
+  private patchQueryStringDates(startDate: string, endDate: string): void {
+    if (!this.queryString) {
+      return;
+    }
+
+    let qs = this.queryString;
+    qs = qs.replace(/start_date=[^&]*/, `start_date=${startDate}`);
+    qs = qs.replace(/end_date=[^&]*/, `end_date=${endDate}`);
+
+    if (!startDate || !endDate) {
+      qs = qs.replace(/&timezone=[^&]*/, '');
+    }
+
+    this.queryString = qs;
+  }
+
+  private syncHistoryUrlQueryParams(): void {
+    if (!this.IS_HERE_FOR_HISTORY) {
+      return;
+    }
+
+    const queryParams: Record<string, string | null> = {
+      _preflight: this._preflight.toString(),
+      _rated: this._rated.toString(),
+      pageNo: this.pageNo.toString(),
+      hasOpenedAdvancedSearch: this.showAdvancedSearchOption.toString(),
+    };
+
+    if (this.queryString) {
+      queryParams.qs = JSON.stringify(this.queryString);
+    } else if (this.route.snapshot.queryParamMap.has('qs')) {
+      queryParams.qs = null;
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+    });
+  }
+  
+  openDatePicker(): void {
+    this.dateRangePicker?.open();
+  }
   // ------------------------------------------------------------------------------
   // @ Date - on change start date get selected start date formatted
   // ------------------------------------------------------------------------------

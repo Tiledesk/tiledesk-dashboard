@@ -40,7 +40,6 @@
 
     background-color: rgb(15, 15, 16);
     border: none;
-    // border-radius: 0.25em 0.25em 0px 0px;
     box-shadow: unset !important;
     line-height: 0;
     counter-reset: line;
@@ -48,7 +47,7 @@
     margin-bottom: 0px;
     font-family: monospace !important;
     color: #fafafa;
-    border-radius: 12px !important;
+    border-radius: 12px 12px 0 0 !important;
     font-size: 12px;
 
 
@@ -82,35 +81,47 @@
     text-align: center;
 }
 
-.widget-content-copy {
-    position: absolute;
-    // top: 100px;
-    top: 74px;
-    color: #fafafa;
-    right: 16px;
-    cursor: pointer;
+.script-wrap {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
 }
 
-.widget-content-copy:hover {
-    opacity: .6;
+#copy-js-code-btn {
+    width: 100%;
+    margin: 0;
+    color: var(--blue-20);
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14);
+}
+
+#copy-js-code-btn > span {
+    color: var(--blue-20);
+}
+
+#copy-js-code-btn > span > i {
+    color: var(--blue-20);
+    vertical-align: middle;
+}
+
+.install-panel {
+    width: 100%;
 }
 
 .copied--to--clipboard--tooltip {
     opacity: 0;
     text-align: center;
-    position: absolute;
+    position: relative;
+    top: -78px;
     max-width: 360px;
     left: 50%;
     transform: translateX(-50%);
     padding: 5px;
     background: antiquewhite;
     width: 260px;
-    top: 97px;
     font-weight: 400;
     font-size: 16px;
-    font-weight: 400;
     font-family: var(--header-font-family);
-
 }
 
 .has--copied--text {
@@ -218,20 +229,6 @@
     text-align: center;
 }
 
-.copied--to--clipboard--tooltip {
-    font-size: 18px;
-    font-weight: 400;
-    font-family: var(--header-font-family);
-    // margin-bottom: 12px;
-}
-
-.copy-script-title {
-    font-size: 18px;
-    font-weight: 400;
-    font-family: var(--header-font-family);
-    margin-bottom: 12px;
-}
-
 .link-to-installations {
     font-family: var(--header-font-family);
     font-weight: 400;
@@ -246,7 +243,14 @@
     text-decoration: underline;
 }
 
-.back-to-btns  {
+.copy-script-title {
+    font-size: 18px;
+    font-weight: 400;
+    font-family: var(--header-font-family);
+    margin-bottom: 12px;
+}
+
+.back-to-btns {
     cursor: pointer;
 }
 

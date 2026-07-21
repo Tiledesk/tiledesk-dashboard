@@ -1025,10 +1025,7 @@ li:before {
   display: grid;
   gap: 0px 12px;
   grid-auto-flow: row;
-  // grid-template-columns: 238px 238px 238px 238px;
-  // grid-template-columns: 280px 280px 280px 280px;
-  grid-template-columns: 350px 350px 350px;
-  ;
+  grid-template-columns: 350px 350px;
   padding: 0px;
 }
 

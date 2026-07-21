@@ -70,6 +70,8 @@
                                 mat-icon-button 
                                 (click)="onDelete(server, $event)"
                                 [matTooltip]="'Delete' | translate"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltipHideDelay="100"
                                 [matTooltipPosition]="'after'"
                                 aria-label="Delete"
                                 class="delete-button">
