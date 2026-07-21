@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.241-stage 	
+- Shows the current size of data tables in MB against the maximum allowed size
+- Adds the ability to filter data tables by conditions
+- Adds tooltips in the Knowledge Bases and Data Tables sidebars to show the full name
+
 ### 2.7.240-stage
 - Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically (GA and Rewardful on panel.tiledesk.com; Stripe when PAY is enabled)
 
