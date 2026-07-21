@@ -102,6 +102,7 @@
         "FilterConditions": "Filtervillkor",
         "NoFilterConditions": "Inga villkor ännu",
         "Column": "Kolumn",
+        "SelectColumn": "Välj kolumn",
         "Operator": "Operator",
         "Value": "Värde",
         "AddCondition": "Lägg till villkor",

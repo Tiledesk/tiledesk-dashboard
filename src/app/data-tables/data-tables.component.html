@@ -136,8 +136,18 @@
                       [attr.aria-label]="('DataTables.Filter' | translate)">
                 <mat-icon>filter_list</mat-icon>
                 <span>{{ 'DataTables.Filter' | translate }}</span>
-                <span *ngIf="hasActiveRowFilter" class="dt-filter-btn-badge">
-                  {{ activeRowFilterConditionCount }}
+                <span *ngIf="hasActiveRowFilter"
+                      class="dt-filter-btn-badge"
+                      role="button"
+                      tabindex="0"
+                      [matTooltip]="'DataTables.ClearFilter' | translate"
+                      matTooltipPosition="above"
+                      [attr.aria-label]="('DataTables.ClearFilter' | translate)"
+                      (click)="onResetFilterFromBadge($event)"
+                      (keydown.enter)="onResetFilterFromBadge($event)"
+                      (keydown.space)="onResetFilterFromBadge($event)">
+                  <span class="dt-filter-btn-badge-count">{{ activeRowFilterConditionCount }}</span>
+                  <mat-icon class="dt-filter-btn-badge-close" aria-hidden="true">close</mat-icon>
                 </span>
               </button>
             </div>
@@ -277,7 +287,7 @@
             [cdkConnectedOverlayHasBackdrop]="true"
             (backdropClick)="closeFilterPopover()"
             (detach)="closeFilterPopover()">
-            <div class="dt-filter-popover" (click)="$event.stopPropagation()">
+            <div #filterPopover class="dt-filter-popover" (click)="$event.stopPropagation()">
               <div class="dt-filter-field">
                 <label class="dt-filter-label">{{ 'DataTables.MatchConditions' | translate }}</label>
                 <ng-select class="dt-ng-select"
@@ -315,7 +325,10 @@
                 <div class="dt-filter-condition-body">
                   <div class="dt-filter-condition-row">
                     <div class="dt-filter-field dt-filter-field--half">
-                      <label class="dt-filter-label">{{ 'DataTables.Column' | translate }}</label>
+                      <label class="dt-filter-label">
+                        {{ 'DataTables.Column' | translate }}
+                        <span *ngIf="isFilterColumnMissing(condition)" class="dt-required">*</span>
+                      </label>
                       <ng-select class="dt-ng-select"
                                  appendTo="body"
                                  dropdownPanelClass="dt-type-select-panel"
@@ -325,6 +338,7 @@
                                  bindValue="name"
                                  [clearable]="false"
                                  [searchable]="false"
+                                 [placeholder]="('DataTables.SelectColumn' | translate)"
                                  (ngModelChange)="onFilterColumnChange(condition)">
                         <ng-template ng-label-tmp let-item="item">
                           <span class="dt-type-select-option">
@@ -339,6 +353,11 @@
                           </span>
                         </ng-template>
                       </ng-select>
+                      <div *ngIf="isFilterColumnMissing(condition)"
+                           class="dt-field-hint"
+                           role="alert">
+                        {{ 'DataTables.RequiredField' | translate }}
+                      </div>
                     </div>
                     <div class="dt-filter-field dt-filter-field--half">
                       <label class="dt-filter-label">{{ 'DataTables.Operator' | translate }}</label>
@@ -361,8 +380,11 @@
                     </div>
                   </div>
 
-                  <div *ngIf="filterConditionNeedsValue(condition)" class="dt-filter-field">
-                    <label class="dt-filter-label">{{ 'DataTables.Value' | translate }}</label>
+                  <div class="dt-filter-field">
+                    <label class="dt-filter-label">
+                      {{ 'DataTables.Value' | translate }}
+                      <span *ngIf="showFilterValueRequired(condition)" class="dt-required">*</span>
+                    </label>
 
                     <ng-select *ngIf="condition.columnType === 'boolean'"
                                class="dt-ng-select"
@@ -395,19 +417,25 @@
                            step="1"
                            [(ngModel)]="condition.value">
 
-                    <input *ngIf="condition.columnType === 'string'"
+                    <input *ngIf="!condition.columnType || condition.columnType === 'string'"
                            type="text"
                            class="dt-input"
                            [(ngModel)]="condition.value"
                            [placeholder]="('DataTables.Value' | translate)"
                            autocomplete="off">
+
+                    <div *ngIf="showFilterValueRequired(condition)"
+                         class="dt-field-hint"
+                         role="alert">
+                      {{ 'DataTables.RequiredField' | translate }}
+                    </div>
                   </div>
                 </div>
               </div>
 
               <button type="button"
                       class="dt-filter-add-condition"
-                      [disabled]="!filterColumnOptions.length"
+                      [disabled]="!canAddFilterCondition"
                       (click)="addFilterCondition()">
                 <mat-icon>add</mat-icon>
                 <span>{{ 'DataTables.AddCondition' | translate }}</span>
@@ -421,6 +449,7 @@
                 </button>
                 <button type="button"
                         class="btn btn-tdblu-no-boxshadow"
+                        [disabled]="!canApplyFilter"
                         (click)="applyFilterPopover()">
                   {{ 'DataTables.ApplyFilter' | translate }}
                 </button>

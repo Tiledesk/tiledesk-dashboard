@@ -102,6 +102,7 @@
         "FilterConditions": "Filtrlash shartlari",
         "NoFilterConditions": "Hali shartlar yo'q",
         "Column": "Ustun",
+        "SelectColumn": "Ustunni tanlang",
         "Operator": "Operator",
         "Value": "Qiymat",
         "AddCondition": "Shart qo'shish",

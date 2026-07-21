@@ -102,6 +102,7 @@
         "FilterConditions": "Filtre koşulları",
         "NoFilterConditions": "Henüz koşul yok",
         "Column": "Sütun",
+        "SelectColumn": "Sütun seç",
         "Operator": "Operatör",
         "Value": "Değer",
         "AddCondition": "Koşul ekle",

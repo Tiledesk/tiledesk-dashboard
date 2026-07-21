@@ -102,6 +102,7 @@
         "FilterConditions": "Условия фильтра",
         "NoFilterConditions": "Пока нет условий",
         "Column": "Столбец",
+        "SelectColumn": "Выберите столбец",
         "Operator": "Оператор",
         "Value": "Значение",
         "AddCondition": "Добавить условие",

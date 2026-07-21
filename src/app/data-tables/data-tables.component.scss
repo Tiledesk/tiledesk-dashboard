@@ -917,11 +917,12 @@
 }
 
 .dt-filter-btn {
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
   gap: 6px;
-  height: 36px;
-  padding: 0 12px;
+  height: 36px !important;
+  min-width: 112px;
+  padding: 0 8px 0 12px !important;
   border-radius: 5px !important;
   border: 1px solid #ccc !important;
 
@@ -934,23 +935,58 @@
 }
 
 .dt-filter-btn--active {
-  border-color: var(--blue-light, #1f77ff);
-  color: var(--blue-light, #1f77ff);
+  border-color: var(--blue-light, #1f77ff) !important;
+  color: var(--blue-light, #1f77ff) !important;
 }
 
 .dt-filter-btn-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: 18px;
   min-width: 18px;
   height: 18px;
-  padding: 0 5px;
-  border-radius: 9px;
+  margin-left: auto;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  overflow: hidden;
   background: var(--blue-light, #1f77ff);
   color: #fff;
   font-size: 11px;
   font-weight: 600;
   line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  .dt-filter-btn-badge-count {
+    line-height: 1;
+  }
+
+  .dt-filter-btn-badge-close {
+    display: none;
+    font-size: 12px !important;
+    width: 12px !important;
+    height: 12px !important;
+    line-height: 12px !important;
+    color: #fff;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background: #d32f2f;
+    outline: none;
+
+    .dt-filter-btn-badge-count {
+      display: none;
+    }
+
+    .dt-filter-btn-badge-close {
+      display: inline-flex;
+    }
+  }
 }
 
 .dt-filter-popover {

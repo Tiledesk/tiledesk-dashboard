@@ -106,6 +106,7 @@
         "FilterConditions": "Filter conditions",
         "NoFilterConditions": "No conditions yet",
         "Column": "Column",
+        "SelectColumn": "Select column",
         "Operator": "Operator",
         "Value": "Value",
         "AddCondition": "Add condition",

@@ -104,6 +104,7 @@
         "FilterConditions": "Condizioni filtro",
         "NoFilterConditions": "Ancora nessuna condizione",
         "Column": "Colonna",
+        "SelectColumn": "Seleziona colonna",
         "Operator": "Operatore",
         "Value": "Valore",
         "AddCondition": "Aggiungi condizione",

@@ -102,6 +102,7 @@
         "FilterConditions": "Умови фільтра",
         "NoFilterConditions": "Ще немає умов",
         "Column": "Стовпець",
+        "SelectColumn": "Виберіть стовпець",
         "Operator": "Оператор",
         "Value": "Значення",
         "AddCondition": "Додати умову",

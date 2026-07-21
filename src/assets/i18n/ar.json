@@ -102,6 +102,7 @@
         "FilterConditions": "شروط التصفية",
         "NoFilterConditions": "لا توجد شروط بعد",
         "Column": "العمود",
+        "SelectColumn": "اختر عمودًا",
         "Operator": "العامل",
         "Value": "القيمة",
         "AddCondition": "إضافة شرط",

@@ -101,6 +101,7 @@
 		"FilterConditions": "Filterbedingungen",
 		"NoFilterConditions": "Noch keine Bedingungen",
 		"Column": "Spalte",
+		"SelectColumn": "Spalte auswählen",
 		"Operator": "Operator",
 		"Value": "Wert",
 		"AddCondition": "Bedingung hinzufügen",

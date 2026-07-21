@@ -2540,6 +2540,7 @@
             "FilterConditions": "Filter şərtləri",
             "NoFilterConditions": "Hələ şərt yoxdur",
             "Column": "Sütun",
+            "SelectColumn": "Sütun seçin",
             "Operator": "Operator",
             "Value": "Dəyər",
             "AddCondition": "Şərt əlavə et",

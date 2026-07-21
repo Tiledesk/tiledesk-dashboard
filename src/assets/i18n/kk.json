@@ -102,6 +102,7 @@
         "FilterConditions": "Сүзгі шарттары",
         "NoFilterConditions": "Әлі шарттар жоқ",
         "Column": "Баған",
+        "SelectColumn": "Бағанды таңдаңыз",
         "Operator": "Оператор",
         "Value": "Мән",
         "AddCondition": "Шарт қосу",

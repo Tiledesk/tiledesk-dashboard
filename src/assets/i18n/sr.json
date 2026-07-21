@@ -102,6 +102,7 @@
         "FilterConditions": "Услови филтера",
         "NoFilterConditions": "Још нема услова",
         "Column": "Колона",
+        "SelectColumn": "Изаберите колону",
         "Operator": "Оператор",
         "Value": "Вредност",
         "AddCondition": "Додај услов",

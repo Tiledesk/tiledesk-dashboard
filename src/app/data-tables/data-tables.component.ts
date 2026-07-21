@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { ConnectedPosition } from '@angular/cdk/overlay';
@@ -77,8 +77,8 @@ interface EditableRow {
 interface FilterConditionDraft {
   localId: string;
   column: string;
-  columnType: ColumnType;
-  operator: ConditionOperator;
+  columnType: ColumnType | null;
+  operator: ConditionOperator | null;
   /** UI draft; serialized on apply */
   value: string | boolean | null;
 }
@@ -89,6 +89,8 @@ interface FilterConditionDraft {
   styleUrls: ['./data-tables.component.scss', './data-tables-type-select.shared.scss'],
 })
 export class DataTablesComponent implements OnInit {
+
+  @ViewChild('filterPopover') filterPopoverRef?: ElementRef<HTMLElement>;
 
   /** Row bulk-delete checkboxes — hidden until feature is ready. */
   readonly showRowSelectionColumn = false;
@@ -567,6 +569,7 @@ export class DataTablesComponent implements OnInit {
       this.addFilterCondition();
     }
     this.isFilterPopoverOpen = true;
+    this.scrollFilterPopoverToBottom();
   }
 
   closeFilterPopover(): void {
@@ -574,21 +577,28 @@ export class DataTablesComponent implements OnInit {
   }
 
   addFilterCondition(): void {
-    const columns = this.filterColumnOptions.length
-      ? this.filterColumnOptions
-      : this.getColumns(this.selectedTable);
-    if (!columns.length) { return; }
-    const col = columns[0];
+    if (!this.canAddFilterCondition) { return; }
     this.filterDraftConditions = [
       ...this.filterDraftConditions,
       {
         localId: `flt_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
-        column: col.name,
-        columnType: col.type,
-        operator: defaultOperatorForColumnType(col.type),
-        value: col.type === 'boolean' ? true : '',
+        column: '',
+        columnType: null,
+        operator: 'contains',
+        value: '',
       },
     ];
+    if (this.isFilterPopoverOpen) {
+      this.scrollFilterPopoverToBottom();
+    }
+  }
+
+  private scrollFilterPopoverToBottom(): void {
+    setTimeout(() => {
+      const el = this.filterPopoverRef?.nativeElement;
+      if (!el) { return; }
+      el.scrollTop = el.scrollHeight;
+    });
   }
 
   removeFilterCondition(localId: string): void {
@@ -600,19 +610,73 @@ export class DataTablesComponent implements OnInit {
   }
 
   filterConditionNeedsValue(condition: FilterConditionDraft): boolean {
-    return operatorNeedsValue(condition.operator);
+    return !!condition.operator && operatorNeedsValue(condition.operator);
+  }
+
+  isFilterColumnMissing(condition: FilterConditionDraft): boolean {
+    return !condition.column;
+  }
+
+  showFilterValueRequired(condition: FilterConditionDraft): boolean {
+    if (this.isFilterColumnMissing(condition)) {
+      return true;
+    }
+    return this.isFilterValueMissing(condition);
+  }
+
+  isFilterValueMissing(condition: FilterConditionDraft): boolean {
+    if (!this.filterConditionNeedsValue(condition)) {
+      return false;
+    }
+    if (condition.columnType === 'boolean') {
+      return condition.value !== true && condition.value !== false;
+    }
+    if (condition.value === null || condition.value === undefined) {
+      return true;
+    }
+    return String(condition.value).trim() === '';
+  }
+
+  isFilterConditionComplete(condition: FilterConditionDraft): boolean {
+    if (!condition.column || !condition.operator) {
+      return false;
+    }
+    if (this.filterConditionNeedsValue(condition) && this.isFilterValueMissing(condition)) {
+      return false;
+    }
+    return true;
+  }
+
+  get canAddFilterCondition(): boolean {
+    if (!this.filterColumnOptions.length) {
+      return false;
+    }
+    return this.filterDraftConditions.every((c) => this.isFilterConditionComplete(c));
+  }
+
+  get canApplyFilter(): boolean {
+    if (!this.filterDraftConditions.length) {
+      return true;
+    }
+    return this.filterDraftConditions.every((c) => this.isFilterConditionComplete(c));
   }
 
   onFilterColumnChange(condition: FilterConditionDraft): void {
     const col = this.filterColumnOptions.find((c) => c.name === condition.column);
-    const type = col?.type || 'string';
-    condition.columnType = type;
-    condition.operator = defaultOperatorForColumnType(type);
-    condition.value = type === 'boolean' ? true : '';
+    if (!col) {
+      condition.column = '';
+      condition.columnType = null;
+      condition.operator = 'contains';
+      condition.value = '';
+      return;
+    }
+    condition.columnType = col.type;
+    condition.operator = defaultOperatorForColumnType(col.type);
+    condition.value = col.type === 'boolean' ? true : '';
   }
 
   onFilterOperatorChange(condition: FilterConditionDraft): void {
-    if (!operatorNeedsValue(condition.operator)) {
+    if (!condition.operator || !operatorNeedsValue(condition.operator)) {
       condition.value = null;
     } else if (condition.value === null) {
       condition.value = condition.columnType === 'boolean' ? true : '';
@@ -621,7 +685,7 @@ export class DataTablesComponent implements OnInit {
 
   applyFilterPopover(): void {
     const table = this.selectedTable;
-    if (!table) { return; }
+    if (!table || !this.canApplyFilter) { return; }
 
     const conditions = this.serializeFilterDraftConditions();
     if (!conditions.length) {
@@ -651,6 +715,12 @@ export class DataTablesComponent implements OnInit {
     if (table) {
       this.loadTableRows(table);
     }
+  }
+
+  onResetFilterFromBadge(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.clearFilterPopover();
   }
 
   private clearActiveRowFilter(): void {
@@ -702,11 +772,15 @@ export class DataTablesComponent implements OnInit {
     const result: RowCondition[] = [];
 
     for (const draft of this.filterDraftConditions) {
-      if (!draft.column || !schemaNames.has(draft.column)) {
+      if (!draft.column || !draft.operator || !schemaNames.has(draft.column)) {
         continue;
       }
       if (!operatorNeedsValue(draft.operator)) {
         result.push({ column: draft.column, operator: draft.operator });
+        continue;
+      }
+
+      if (!draft.columnType) {
         continue;
       }
 
