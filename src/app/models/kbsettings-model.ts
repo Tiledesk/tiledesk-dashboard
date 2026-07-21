@@ -31,4 +31,6 @@ export interface KB {
         unwanted_classnames?: string[];
     };
     situated_context?: boolean;
+    /** Custom regex pattern used when `type === 'regex_custom'`. */
+    chunk_regex?: string;
 }

@@ -442,6 +442,7 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.PROJECTSETTINGS_SECURITY_READ, label: 'Able to view Security' },
         { key: PERMISSIONS.PROJECTSETTINGS_BANNED_READ, label: 'Able to view Banned visitors' },
         { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' },
+        { key: PERMISSIONS.PROJECTSETTINGS_RETENTION_READ, label: 'Able to view Messages retention' },
         { key: PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ, label: 'Able to view Advanced' },
       ]
     },

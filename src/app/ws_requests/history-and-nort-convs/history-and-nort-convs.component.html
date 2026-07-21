@@ -216,16 +216,19 @@
                   <div class="col-sm-12 left-date-picker" >
                     <mat-form-field class="custom-date-range-picker" 
                       appearance="standard">
-                      <mat-date-range-input [rangePicker]="picker">
+                      <mat-date-range-input [rangePicker]="picker" (click)="openDatePicker()">
                         <input (dateChange)="addEventStartDate($event.value)"
                           (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
-                          placeholder="{{'StartDate' | translate}}" style="padding: 0 5px;">
+                          readonly
+                          (click)="openDatePicker()"
+                          placeholder="{{'HistoryPage.StartDate' | translate}}" style="padding: 0 5px;">
                         <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
-                          placeholder="{{'EndDate' | translate}}" style="padding: 0 5px;">
+                          readonly
+                          (click)="openDatePicker()"
+                          placeholder="{{'HistoryPage.EndDate' | translate}}" style="padding: 0 5px;">
                       </mat-date-range-input>
                       
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
+                      <mat-datepicker-toggle matSuffix (click)="clearDateRange($event)">
                         <mat-icon matDatepickerToggleIcon>clear</mat-icon>
                       </mat-datepicker-toggle>
 

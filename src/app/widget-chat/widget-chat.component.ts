@@ -31,7 +31,8 @@ export class WidgetChatComponent implements OnInit, OnChanges {
   @Input() IS_ONBOARDING_PAGE: boolean = false;
   @Input() showAttachmentButton: boolean;
   @Input() showEmojiButton: boolean;
-  @Input() showAudioRecorderButton: boolean; // to activate whwn is ready on the widget
+  @Input() showAudioRecorderButton
+  @Input() showVoiceStreamingButton: boolean;
   @Input() footerBrand : string;
   // showAudioRecorderButton: boolean =false;
   
@@ -70,7 +71,7 @@ export class WidgetChatComponent implements OnInit, OnChanges {
     // console.log('[WIDGET-CHAT-COMP] showAttachmentButton ', this.showAttachmentButton)
     // console.log('[WIDGET-CHAT-COMP] showAudioRecorderButton ', this.showAudioRecorderButton)
     // console.log('[WIDGET-CHAT-COMP] LABEL_PLACEHOLDER ', this.LABEL_PLACEHOLDER)
-    console.log('[WIDGET-CHAT-COMP] themeColorOpacity ', this.themeColorOpacity)
+    // console.log('[WIDGET-CHAT-COMP] themeColorOpacity ', this.themeColorOpacity)
     if (this.themeColorOpacity === '0') {
       this.generateLinearGradient(this.primaryColor)
     } else if (this.themeColorOpacity === '1') {

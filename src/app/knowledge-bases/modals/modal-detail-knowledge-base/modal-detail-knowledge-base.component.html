@@ -52,7 +52,7 @@
                   open_in_new
                 </span>
             </a>
-            <input [(ngModel)]="name" type="text" name="name" class="custom-input" [disabled]="kb.sitemap_origin">
+            <input [(ngModel)]="name" type="text" name="name" class="custom-input" [disabled]="kb.sitemap_origin || isImportedFileDetailReadonly">
 
             <!-- ------------------------------------ -->
             <!-- Use cese URL -->
@@ -97,6 +97,15 @@
             <div *ngIf="kb.type === 'text'">
                 <span class="input-label">{{ 'KbPage.FileText' | translate }}</span>
                 <textarea [(ngModel)]="content" type="text" name="content" class="custom-textarea" rows="4"></textarea>
+            </div>
+
+            <div *ngIf="kb.type === 'regex_custom' && kb.chunk_regex" class="regex-chunking-detail">
+                <span class="input-label">{{ 'KbPage.RegexChunking' | translate }}</span>
+                <div class="regex-chunking-input-wpr regex-chunking-input-wpr--readonly">
+                    <span class="regex-chunking-input-affix" aria-hidden="true">/</span>
+                    <span class="regex-chunking-value">{{ kb.chunk_regex }}</span>
+                    <span class="regex-chunking-input-affix" aria-hidden="true">/</span>
+                </div>
             </div>
 
             <!-- ------------------------------------ -->
@@ -200,6 +209,7 @@
                 style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin: 8px 0 12px; max-width: 640px;">
                 <mat-slide-toggle
                     [checked]="situatedContextEnabled"
+                    [disabled]="isImportedFileDetailReadonly"
                     (change)="onSituatedContextSlideToggle($event)"
                     color="primary">
                     {{ 'KbPage.SituatedContext' | translate }}
@@ -215,6 +225,7 @@
                     [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
                     [(ngModel)]="kbTag"  autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
                     style="margin-top: 6px;"
+                    [disabled]="isImportedFileDetailReadonly"
                     [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
                     #trigger="cdkOverlayOrigin"
                     cdkOverlayOrigin
@@ -252,7 +263,7 @@
 
                 <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="tags-btn-wpr">
                     <p  class="kb-tag">{{kbtag}}</p>
-                    <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
+                    <button *ngIf="!isImportedFileDetailReadonly" aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
                         class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;cursor:pointer">
                         <path
@@ -360,7 +371,7 @@
         {{ "Cancel" | translate }}
     </button>  -->
 
-    <button *ngIf="kb._id && (kb.type === 'text' || kb.type === 'faq')" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
+    <button *ngIf="kb._id && kb.type === 'text'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
     </button>
@@ -378,10 +389,10 @@
         {{ "Delete" | translate }}
     </button>
 
-    <button *ngIf="kb._id && (kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx')" class="mat-dialog-ok-btn"
+    <!-- <button *ngIf="kb._id && (kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx')" class="mat-dialog-ok-btn"
         [disabled]="name.length < 3" mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
-    </button>
+    </button> -->
 
     <!-- Pulsante SALVA per nuova KB -->
     <button *ngIf="!kb._id && kb.type === 'faq'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"

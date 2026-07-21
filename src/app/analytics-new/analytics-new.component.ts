@@ -88,18 +88,25 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
   }
 
   private setPostMessageTargetFromConfig(): void {
-    const embedBase = this.appConfigService.getConfig()?.analyticsEmbedBase as string | undefined;
-    if (!embedBase) {
+    this.postMessageTargetOrigin = this.embedService.getEmbedPostMessageTargetOrigin();
+  }
+
+  onAnalyticsIframeLoad(): void {
+    this.flushPendingKbChartClickToIframe();
+  }
+
+  private flushPendingKbChartClickToIframe(): void {
+    const pending = this.embedService.consumePendingKbChartClick();
+    if (!pending) {
       return;
     }
-    try {
-      const origin = new URL(embedBase, window.location.origin).origin;
-      if (origin && origin !== 'null') {
-        this.postMessageTargetOrigin = origin;
-      }
-    } catch {
-      // keep '*'
-    }
+    this.postMessageToEmbed(pending);
+  }
+
+  private postMessageToEmbed(data: object): void {
+    const iframe = this.analyticsIframeRef?.nativeElement;
+    iframe?.contentWindow?.postMessage(data, this.postMessageTargetOrigin);
+    console.log('[AnalyticsNew] postMessage to embed', data);
   }
 
   private getEmbedBase(): string {

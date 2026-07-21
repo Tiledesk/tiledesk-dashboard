@@ -3,7 +3,7 @@ import { PopupService } from './services/popup.service';
 import { MarkerService } from './services/marker.service';
 import { LoggerService } from './services/logger/logger.service';
 import { HomeService } from './services/home.service';
-import { ActivitiesService } from './activities/activities-service/activities.service';
+import { ActivitiesService } from './activities-new/activities-service/activities.service';
 
 
 // import { LoggerInstance } from './services/logger/LoggerInstance';
@@ -123,7 +123,7 @@ import { UploadImageNativeService } from './services/upload-image-native.service
 // import { HistoryAndNortConvsComponent } from './ws_requests/history-and-nort-convs/history-and-nort-convs.component'; // now lazy
 import { WidgetService } from './services/widget.service';
 
-import { ActivitiesComponent } from './activities/activities.component';
+
 
 // import { AnalyticsStaticComponent } from './static-pages/analytics-static/analytics-static.component'; // now lazy
 // import { ActivitiesStaticComponent } from './static-pages/activities-static/activities-static.component'; // now lazy
@@ -539,7 +539,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // HistoryAndNortConvsComponent, // now lazy
     // ContactDetailsComponent, // now lazy
     // ContactEditComponent, // now lazy
-    ActivitiesComponent,
+   // ActivitiesComponent, // replaced by lazy ActivitiesNewModule at /activities
     // AnalyticsStaticComponent, // now lazy
     // ActivitiesStaticComponent, // now lazy
     FaqTestTrainBotComponent,

@@ -6,6 +6,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { ConnectedPosition } from '@angular/cdk/overlay';
+import { TranslateService } from '@ngx-translate/core';
 import { buildDefaultKbScrapeConfig, KbScrapeConfig } from 'app/models/kb-scrape-config-model';
 import { ModalKbScrapeSettingsComponent } from '../modal-kb-scrape-settings/modal-kb-scrape-settings.component';
 
@@ -100,6 +101,9 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   t_params: any;
   salesEmail: string;
   siteMap:string;
+  /** User-facing message when `/kb/sitemap` returns errors or no URLs. */
+  sitemapFetchError: string | null = null;
+  sitemapFetchInProgress = false;
 
   // KB Tags
   kbTag: string = '';
@@ -168,7 +172,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     public brandService: BrandService,
     private kbService: KnowledgeBaseService,
     private dialog: MatDialog,
-  ) { 
+    private translate: TranslateService,
+  ) {
     this.selectedRefreshRate = this.refresh_rate[0].value;
     this.logger.log("[MODALS-URLS] data: ", data);
     if (data ) {
@@ -256,6 +261,9 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
    */
   toggleSitemapInput(): void {
     this.sitemapInputOpen = !this.sitemapInputOpen;
+    if (!this.sitemapInputOpen) {
+      this.sitemapFetchError = null;
+    }
   }
 
   /**
@@ -269,6 +277,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
    */
   closeSitemapInput(): void {
     this.sitemapInputOpen = false;
+    this.sitemapFetchError = null;
   }
 
   /**
@@ -287,54 +296,68 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     });
   }
 
+  onSitemapUrlInput(): void {
+    this.sitemapFetchError = null;
+  }
+
   fetchSiteMap() {
-    this.logger.log('[MODALS-URLS] sitemap: ', this.siteMap);
-    const body = {sitemap: this.siteMap, tags: this.kbTagsArray}
-    this.kbService.addSitemap(body).subscribe((resp: any) => {
-      this.logger.log("[ModalSiteMapComponent] addSitemap:", resp);
-      this.logger.log("[ModalSiteMapComponent] addSitemap sites:", resp.sites);
+    const sitemapUrl = (this.siteMap || '').trim();
+    if (!sitemapUrl) {
+      return;
+    }
 
+    this.sitemapFetchError = null;
+    this.sitemapFetchInProgress = true;
+    const body = { sitemap: sitemapUrl, tags: this.kbTagsArray };
+    this.kbService.addSitemap(body).subscribe({
+      next: (resp: any) => {
+        this.sitemapFetchInProgress = false;
+        this.logger.log('[MODALS-URLS] addSitemap:', resp);
 
-      if(resp.sites.length > 0){
-       
-        this.listOfUrls = resp.sites.join('\n');
-        // this.logger.log('[ModalSiteMapComponent] listOfUrls: ', this.listOfUrls);
-        this.countSitemap = resp.sites.length;
+        const apiErrors = Array.isArray(resp?.errors) ? resp.errors : [];
+        if (apiErrors.length > 0) {
+          this.sitemapFetchError = this.formatSitemapApiErrors(apiErrors);
+          return;
+        }
 
-        if(this.countSitemap > KB_LIMIT_CONTENT) {
-           this.buttonDisabled = true;
-           this.errorLimit = true;
+        const sites = Array.isArray(resp?.sites) ? resp.sites : [];
+        if (sites.length === 0) {
+          this.sitemapFetchError = this.translate.instant('KbPage.SitemapFetchNoUrls');
+          return;
+        }
+
+        this.listOfUrls = sites.join('\n');
+        this.countSitemap = sites.length;
+
+        if (this.countSitemap > KB_LIMIT_CONTENT) {
+          this.buttonDisabled = true;
+          this.errorLimit = true;
         } else {
           this.errorLimit = false;
           this.buttonDisabled = false;
         }
 
-        // Conditional auto-hide: only when the fetch actually populated the
-        // textarea. On error / empty sitemap the panel stays open so the user
-        // can correct the URL without re-opening. The siteMap input is also
-        // cleared so a subsequent re-open starts from a clean state.
+        this.sitemapFetchError = null;
         this.sitemapInputOpen = false;
         this.siteMap = '';
-     }
-      // this.listOfUrls = resp.sites;
-    //   let listSitesOfSitemap = resp.sites.split("\n").filter(function(row) {
-    //   return row.trim() !== '';
-    // });
-    // var lines = resp.sites.split('\n');
-    // if (lines.length > KB_LIMIT_CONTENT) {
-    //   this.errorLimit = true;
-    //   this.buttonDisabled = true;
-    //   this.listOfUrls = lines.slice(0, KB_LIMIT_CONTENT).join('\n');
-    //   // this.logger.log("onChangeInput: ",this.listOfUrls);
-    // } else {
-    //   this.errorLimit = false;
-    //   this.buttonDisabled = false;
-    // }
-    // this.countSitemap = listSitesOfSitemap.length;
+      },
+      error: (err) => {
+        this.sitemapFetchInProgress = false;
+        this.logger.error('[MODALS-URLS] addSitemap error:', err);
+        this.sitemapFetchError = this.translate.instant('KbPage.SitemapFetchFailed');
+      },
+    });
+  }
 
-    })
+  private formatSitemapApiErrors(errors: Array<{ message?: string; type?: string }>): string {
+    this.logger.warn('[MODALS-URLS] sitemap API errors:', errors);
 
-   
+    const primaryType = (errors[0]?.type || '').trim();
+    if (primaryType === 'RequestError') {
+      return this.translate.instant('KbPage.SitemapFetchRequestError');
+    }
+
+    return this.translate.instant('KbPage.SitemapFetchFailed');
   }
 
   /** */
