@@ -8,6 +8,13 @@
   margin-top: 40px;
 }
 
+.analytics-new-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 18px 16px 0;
+  flex-shrink: 0;
+}
+
 .analytics-new-iframe {
   flex: 1;
   width: 100%;

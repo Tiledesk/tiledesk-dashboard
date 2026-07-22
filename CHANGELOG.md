@@ -1,5 +1,29 @@
 # tiledesk-dashboard
 
+### 2.8.16
+- Shows the current size of data tables in MB against the maximum allowed size
+- Adds the ability to filter data tables by conditions
+- Adds tooltips in the Knowledge Bases and Data Tables sidebars to show the full name when truncated
+
+### 2.8.15
+- Implements the new activities
+
+### 2.8.14
+- Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically
+
+### 2.8.12
+- Adds data tables
+
+### 2.8.11
+- Updates the widget installation script on the knowledge base page (adds the default department ID and chatbot ID)
+
+### 2.8.10
+- Implement automatic path switching for Analytics pages
+- Fixes the bug: Message retention time does not display the user-set value when changing paths.
+
+### 2.8.9
+- Adds a button to the Analytics page that redirects to legacy Analytics page
+
 ### 2.8.8
 - Fixes the bug: Uploaded files can be modified
 - Improves the TXT contents type filter in the knowledge base table to also include regex_custom  file type upload 
