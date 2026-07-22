@@ -111,6 +111,7 @@
     "TotalConversationsUsage": "Utilisation totale des conversations",
     "TotalAITokensUsage": "Utilisation totale des Tokens AI",
     "TotalEmailUsage": "Utilisation totale des e-mails",
+    "TotalVoiceUsage": "Utilisation totale de la voix",
     "Email": "E-mail",
     "RequestsForAgent": "Conversations pour l'agent",
     "RequestsForTeammate": "Conversations pour coéquipier",

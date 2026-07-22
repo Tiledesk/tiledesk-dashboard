@@ -112,6 +112,7 @@
     "TotalConversationsUsage": "Toplam konuşma kullanımı",
     "TotalAITokensUsage": "Tokens AI'nın toplam kullanımı",
     "TotalEmailUsage": "Toplam e-posta kullanımı",
+    "TotalVoiceUsage": "Toplam ses kullanımı",
     "Email": "E-posta",
     "RequestsForAgent": "Temsilci için konuşmalar",
     "RequestsForTeammate": "Takım Arkadaşları İçin Konuşmalar",

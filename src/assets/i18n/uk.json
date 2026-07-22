@@ -112,6 +112,7 @@
     "TotalConversationsUsage": "Загальне використання розмов",
     "TotalAITokensUsage": "Загальне використання токенів AI",
     "TotalEmailUsage": "Загальна кількість використання електронної пошти",
+    "TotalVoiceUsage": "Загальне використання голосу",
     "Email": "Електронна пошта",
     "Temporary": "Тимчасовий",
     "RequestsForDept": "Бесіди для кафедри",

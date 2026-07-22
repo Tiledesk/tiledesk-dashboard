@@ -111,6 +111,7 @@
     "TotalConversationsUsage": "Общее использование разговоров",
     "TotalAITokensUsage": "Общее использование AI Tokens",
     "TotalEmailUsage": "Общее использование электронной почты",
+    "TotalVoiceUsage": "Общее использование голоса",
     "Email": "Электронная почта",
     "RequestsForAgent": "Разговоры для агента",
     "RequestsForTeammate": "Разговоры для товарищей по команде",

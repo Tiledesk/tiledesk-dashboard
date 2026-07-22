@@ -787,6 +787,27 @@ $td-slide-toggle-thumb-shadow:
   }
 }
 
+// Home dashlet filter (mat-mini-fab + tune) — MDC no longer wraps icon in span.mat-button-wrapper.
+#dashlet-filter-btn.mat-mdc-mini-fab,
+#dashlet-filter-btn {
+  background-color: #fff;
+  box-shadow: unset;
+  position: relative;
+  top: -1px;
+  color: var(--icon-btn) !important;
+
+  mat-icon,
+  .mat-icon {
+    color: var(--icon-btn) !important;
+    position: relative !important;
+    top: -1px !important;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
 // Label — mirror mat-slide-toggle (Poppins, active/disabled colors).
 .mat-mdc-checkbox .mdc-form-field > label {
   font-family: var(--header-font-family);

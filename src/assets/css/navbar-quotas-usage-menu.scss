@@ -132,8 +132,9 @@
     padding-top: 16px;
   }
 
-  .quota-section-main.last {
-    border-bottom-color: #fff;
+  /* Last quota block before .quota-resets: no divider (Email without Voice, Voice when shown). */
+  .quotas-usage-container > .quota-section-main:nth-last-child(2) {
+    border-bottom: none;
   }
 
   .quota-container-wpr {

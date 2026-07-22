@@ -113,6 +113,7 @@
     "TotalConversationsUsage": "Total conversations usage",
     "TotalAITokensUsage": "Total AI Tokens usage",
     "TotalEmailUsage": "Total email usage",
+    "TotalVoiceUsage": "Total voice usage",
     "Email": "Email",
     "RequestsForAgent": "Conversations for agent",
     "RequestsForTeammate": "Conversations for Teammate",

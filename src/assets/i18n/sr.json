@@ -111,6 +111,7 @@
     "TotalConversationsUsage": "Укупна употреба разговора",
     "TotalAITokensUsage": "Укупна употреба AI Tokens",
     "TotalEmailUsage": "Укупна употреба е-поште",
+    "TotalVoiceUsage": "Укупна употреба гласа",
     "Email": "Емаил",
     "RequestsForAgent": "Разговори за агента",
     "RequestsForTeammate": "Разговори за саиграча",

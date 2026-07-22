@@ -2817,24 +2817,7 @@ img {
   background-color: var(--red-color)!important; //#f44336 !important;
 }
 
-#dashlet-filter-btn {
-  background-color: #fff;
-  color: #fff;
-  box-shadow: unset;
-  position: relative;
-  top: -1px;
-}
-
-#dashlet-filter-btn > ::ng-deep span> .mat-icon{
-  color: var(--icon-btn) !important;
-  position: relative !important;
-  top: -1px !important;
-}
-
-#dashlet-filter-btn:hover {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
+// Dashlet filter (tune): material-mdc-overrides.scss (#dashlet-filter-btn)
 
 .project---name {
   display: flex;

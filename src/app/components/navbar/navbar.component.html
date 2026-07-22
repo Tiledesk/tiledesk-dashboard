@@ -294,7 +294,7 @@
                       </div>
                     </div>
 
-                    <div aria-label="Usage limit for Email" class="quota-section-main" [ngClass]="{'last': !diplayVXMLVoiceQuota}">
+                    <div aria-label="Usage limit for Email" class="quota-section-main">
                       <div class="quota-container-wpr">
                         <div class="quota-container">
                           <div class="quota-left-column-wpr">
@@ -338,8 +338,9 @@
                     <!-- --------------------------------------------- -->
                     <!-- Voice -->
                     <!-- --------------------------------------------- -->
-                    <div *ngIf="diplayVXMLVoiceQuota" aria-label="Usage limit for Voice" class="quota-section-main last"
-                      [ngClass]="{'last': diplayVXMLVoiceQuota}">
+                    <div *ngIf="diplayVXMLVoiceQuota"
+                      aria-label="Usage limit for Voice"
+                      class="quota-section-main">
                       <div class="quota-container-wpr">
                         <div class="quota-container">
                           <div class="quota-left-column-wpr">

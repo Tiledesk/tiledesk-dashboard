@@ -111,6 +111,7 @@
     "TotalConversationsUsage": "Umumiy suhbatlardan foydalanish",
     "TotalAITokensUsage": "Jami AI Tokens foydalanish",
     "TotalEmailUsage": "Jami elektron pochtadan foydalanish",
+    "TotalVoiceUsage": "Ovozdan umumiy foydalanish",
     "Email": "Email",
     "RequestsForAgent": "Agent uchun suhbatlar",
     "RequestsForTeammate": "Jamoadoshlar uchun suhbatlar",

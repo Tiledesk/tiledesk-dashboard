@@ -111,6 +111,7 @@
     "TotalConversationsUsage": "Сөйлесулердің жалпы пайдаланылуы",
     "TotalAITokensUsage": "Токендерді AI толық пайдалануы",
     "TotalEmailUsage": "Электрондық поштаның жалпы пайдаланылуы",
+    "TotalVoiceUsage": "Дауысты жалпы пайдалану",
     "Email": "Электронды пошта",
     "RequestsForAgent": "Агентке арналған әңгімелер",
     "RequestsForTeammate": "Әріптеске арналған әңгімелер",

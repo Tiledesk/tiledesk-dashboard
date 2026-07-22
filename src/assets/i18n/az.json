@@ -113,6 +113,7 @@
     "TotalConversationsUsage": "Ümumi söhbət istifadəsi",
     "TotalAITokensUsage": "Tokens AI-nin ümumi istifadəsi",
     "TotalEmailUsage": "Ümumi e-poçt istifadəsi",
+    "TotalVoiceUsage": "Ümumi səs istifadəsi",
     "Email": "E-poçt",
     "RequestsForDept": "Şöbə üçün söhbətlər",
     "NumberOfRequestsLast7Days": "Son 7 gündə söhbətlərin sayı",
