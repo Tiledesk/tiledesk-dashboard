@@ -75,9 +75,9 @@
                             <div class="td-date-range-picker-row td-date-range-picker-row--analytics">
                                 <mat-form-field class="td-date-range-picker" appearance="fill" floatLabel="never">
                                     <mat-date-range-input [rangePicker]="picker" [min]="minEndDate" [max]="maxEndDate">
-                                        <input matStartDate placeholder="{{'StartDate' | translate}}" [(ngModel)]="startDate"
+                                        <input matStartDate placeholder="{{'HistoryPage.StartDate' | translate}}" [(ngModel)]="startDate"
                                             (dateChange)="onSelectStartDate($event.value)">
-                                        <input matEndDate placeholder="{{'EndDate' | translate}}" [(ngModel)]="endDate"
+                                        <input matEndDate placeholder="{{'HistoryPage.EndDate' | translate}}" [(ngModel)]="endDate"
                                             (dateChange)="onSelectEndDate($event.value)">
                                     </mat-date-range-input>
                                     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
