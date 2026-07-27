@@ -4,8 +4,6 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 
-const Swal = require('sweetalert2');
-
 export interface ConnectorEntry {
   name: string;
   baseUrl: string;
@@ -126,30 +124,6 @@ export class ConnectorIntegrationComponent implements OnInit {
     this.integration.value.items.push(entry);
     this.resetForm();
     this.save();
-  }
-
-  deleteConnector(entry: ConnectorEntry): void {
-    Swal.fire({
-      title: this.translate.instant('AreYouSure'),
-      html: this.translate.instant('Integration.ConnectorWillBeDeleted', { serverName: entry.name }),
-      icon: "warning",
-      showCloseButton: false,
-      showCancelButton: true,
-      showConfirmButton: false,
-      showDenyButton: true,
-      denyButtonText: this.translate.instant('Delete'),
-      cancelButtonText: this.translate.instant('Cancel'),
-      focusConfirm: false,
-      reverseButtons: true,
-    }).then((result) => {
-      if (result.isDenied) {
-        const index = this.integration.value.items.findIndex((i: ConnectorEntry) => i.baseUrl === entry.baseUrl);
-        if (index >= 0) {
-          this.integration.value.items.splice(index, 1);
-          this.save();
-        }
-      }
-    });
   }
 
   private save(): void {
