@@ -335,8 +335,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
 
       if (this.intName) {
-        this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
-        this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
+        const matchedIntegration = this.INTEGRATIONS.find(i => i.key === this.intName);
+        if (matchedIntegration) {
+          this.onIntegrationSelect(matchedIntegration);
+        }
+        this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", matchedIntegration);
       }
     })
   }
