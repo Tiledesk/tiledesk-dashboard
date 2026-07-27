@@ -1360,7 +1360,7 @@ $td-slide-toggle-thumb-shadow:
 
 .mat-mdc-form-field:has(.percentage-input-suffix) input[type='number'] {
   -moz-appearance: textfield;
-
+  appearance: textfield;
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {
     -webkit-appearance: none;

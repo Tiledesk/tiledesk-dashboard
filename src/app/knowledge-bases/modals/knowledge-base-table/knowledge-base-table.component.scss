@@ -489,12 +489,26 @@ table.kb-table {
       align-items: center;
     }
 
+    // Match bots-list / groups (.cl-card-action-btn-wpr): 18px icon, not MDC default 24px
+    .cl-card-action-btn-wpr > .mat-mdc-icon-button,
+    .cl-card-action-btn-wpr > .mat-icon-button,
     .mat-mdc-icon-button,
     .mat-icon-button {
-      width: 36px;
-      height: 36px;
+      --mdc-icon-button-icon-size: 18px;
+      --mdc-icon-button-state-layer-size: 40px;
+      width: 40px;
+      height: 40px;
       padding: 0;
-      line-height: 36px;
+    }
+
+    .cl-card-action-btn-wpr > .mat-mdc-icon-button mat-icon,
+    .cl-card-action-btn-wpr > .mat-icon-button mat-icon,
+    .mat-mdc-icon-button mat-icon,
+    .mat-icon-button mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      line-height: 18px;
     }
   }
 

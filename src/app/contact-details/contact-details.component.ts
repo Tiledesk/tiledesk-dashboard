@@ -124,9 +124,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   private contactDataLoaded = false;
 
-  PERMISSION_TO_READ_LEADS: boolean;
-
-  private contactDataLoaded = false;
+ 
 
   private backSub?: Subscription;
   

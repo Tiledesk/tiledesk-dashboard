@@ -2713,6 +2713,64 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.syncHistoryUrlQueryParams();
   }
 
+  private ensureQueryStringForDateSync(): void {
+    if (this.queryString) {
+      return;
+    }
+
+    const qsParam = this.route.snapshot.queryParamMap.get('qs');
+    if (!qsParam) {
+      return;
+    }
+
+    try {
+      this.queryString = JSON.parse(qsParam);
+    } catch {
+      this.queryString = qsParam;
+    }
+  }
+
+  private patchQueryStringDates(startDate: string, endDate: string): void {
+    if (!this.queryString) {
+      return;
+    }
+
+    let qs = this.queryString;
+    qs = qs.replace(/start_date=[^&]*/, `start_date=${startDate}`);
+    qs = qs.replace(/end_date=[^&]*/, `end_date=${endDate}`);
+
+    if (!startDate || !endDate) {
+      qs = qs.replace(/&timezone=[^&]*/, '');
+    }
+
+    this.queryString = qs;
+  }
+
+  private syncHistoryUrlQueryParams(): void {
+    if (!this.IS_HERE_FOR_HISTORY) {
+      return;
+    }
+
+    const queryParams: Record<string, string | null> = {
+      _preflight: this._preflight.toString(),
+      _rated: this._rated.toString(),
+      pageNo: this.pageNo.toString(),
+      hasOpenedAdvancedSearch: this.showAdvancedSearchOption.toString(),
+    };
+
+    if (this.queryString) {
+      queryParams.qs = JSON.stringify(this.queryString);
+    } else if (this.route.snapshot.queryParamMap.has('qs')) {
+      queryParams.qs = null;
+    }
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+    });
+  }
+
   openDatePicker(): void {
     this.dateRangePicker?.open();
   }
