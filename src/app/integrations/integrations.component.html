@@ -167,6 +167,12 @@
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </connector-integration>
 
+                                        <connector-detail *ngIf="isConnectorItemSelected()"
+                                            [integration]="selectedIntegration"
+                                            [connectorItem]="selectedConnectorItem"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)>
+                                        </connector-detail>
+
                                         <v-llm *ngIf="integrationSelectedName === INT_KEYS.VLLM"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
