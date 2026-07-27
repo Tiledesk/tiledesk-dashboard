@@ -35,9 +35,11 @@
   display: block;
   width: 100%;
   box-sizing: border-box;
-  padding: 8px 12px;
+  height: 36px;
   min-height: 36px;
+  padding: 0 12px;
   font-size: 14px;
+  line-height: 34px;
   font-family: var(--header-font-family);
   color: var(--text-color);
   background: #fff;
@@ -99,29 +101,40 @@
 
 .ct-col-remove {
   margin-top: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 36px !important;
   height: 36px !important;
-  line-height: 43px !important;
+  padding: 0;
+  line-height: 1 !important;
   background: #f7f8fc;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.2s ease-in-out;
-    &:hover {
-      background: #e0e0e0;
-    }
-    &:focus {
-      outline: none;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
-    }
-    &:active {
-      background: #d0d0d0;
-    }
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+
+  &:hover {
+    background: #e0e0e0;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  }
+
+  &:active {
+    background: #d0d0d0;
+  }
 
   span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 18px;
     width: 18px;
     height: 18px;
+    line-height: 18px;
   }
 }
 
@@ -149,7 +162,8 @@
 .ct-ng-select {
   ::ng-deep {
     .ng-select-container {
-      min-height: 36px;
+      height: 36px !important;
+      min-height: 36px !important;
       border-radius: 4px;
       border-color: #d0d5dd;
       font-family: var(--header-font-family);
@@ -157,12 +171,80 @@
     }
 
     .ng-value-container {
+      display: flex;
+      align-items: center;
       padding-left: 8px;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      height: 100%;
+    }
+
+    .ng-value {
+      display: flex;
+      align-items: center;
+      margin: 0 !important;
+      padding: 0 !important;
+      line-height: 1;
+    }
+
+    .dt-type-select-option {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      line-height: 1;
+      height: 100%;
+    }
+
+    .dt-type-select-label {
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .dt-type-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .dt-type-icon-mat {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      // Optical vertical align for Material icons next to 14px text
+      position: relative;
+      top: 0;
+      margin: 0;
+    }
+
+    .ng-input {
+      top: 0 !important;
+      padding: 0 !important;
+      height: 100%;
+      margin: 0;
+
+      > input {
+        height: 100%;
+        line-height: 34px;
+        padding: 0 !important;
+      }
+    }
+
+    .ng-arrow-wrapper {
+      display: flex;
+      align-items: center;
+      height: 100%;
     }
 
     .ng-dropdown-panel {
       font-family: var(--header-font-family);
       font-size: 14px;
+    }
+
+    .ng-option {
+      display: flex;
+      align-items: center;
     }
 
     .ng-option-disabled {

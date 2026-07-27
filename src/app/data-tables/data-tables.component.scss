@@ -466,6 +466,24 @@
 
 .dt-row-checkbox {
   margin: 0 auto;
+
+  // Keep row height near 36px (A14); MDC default touch target inflates the <tr>.
+  ::ng-deep .mdc-checkbox {
+    flex: 0 0 18px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+  }
+
+  ::ng-deep .mat-mdc-checkbox-touch-target {
+    width: 18px;
+    height: 18px;
+  }
+
+  ::ng-deep .mdc-checkbox__background {
+    top: 0;
+    left: 0;
+  }
 }
 
 .dt-data-row--selected {
@@ -477,6 +495,10 @@
   .dt-actions-cell {
     // background: #ede9fe;
     background: rgb(220, 233, 255);
+  }
+
+  .dt-data-cell:focus-within {
+    background: #f5f8ff;
   }
 
   .dt-cell-input {
@@ -643,6 +665,13 @@
 .dt-data-cell {
   padding: 0;
   vertical-align: middle;
+
+  // Focus ring on the whole cell (A14 behavior). Input alone stays 36px while
+  // MDC row chrome (checkbox/actions) can make the <tr> taller.
+  &:focus-within {
+    background: #f5f8ff;
+    box-shadow: inset 0 0 0 1px var(--blue-20, #0f62ff);
+  }
 }
 
 .dt-columns-form {
@@ -657,6 +686,7 @@
   outline: none;
   padding: 8px 12px;
   min-height: 36px;
+  height: 100%;
   font-size: 13px;
   font-family: var(--header-font-family);
   color: var(--text-color);
@@ -710,8 +740,9 @@
   }
 
   &:focus {
-    background: #f5f8ff;
-    box-shadow: inset 0 0 0 1px var(--blue-20, #0f62ff);
+    // Ring/background live on `.dt-data-cell:focus-within` so the focus fills the td.
+    background: transparent;
+    box-shadow: none;
   }
 
   &::placeholder {
@@ -723,9 +754,10 @@
 .dt-cell-datetime {
   position: relative;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
   min-height: 36px;
+  height: 100%;
 }
 
 .dt-cell-oversized {
@@ -790,11 +822,6 @@
 
 .dt-cell-checkbox {
   margin: 0;
-}
-
-.dt-data-cell--boolean:focus-within {
-  background: #f5f8ff;
-  box-shadow: inset 0 0 0 1px var(--blue-20, #0f62ff);
 }
 
 .dt-empty-row {

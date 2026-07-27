@@ -923,7 +923,8 @@ export class DataTablesComponent implements OnInit {
 
   trackByColumnId = (_: number, c: ColumnView): string => c.id || c.name;
 
-  trackByRowId = (_: number, row: EditableRow): string => row._id || row.localId;
+  // Always use localId so assigning server `_id` after insert does not remount the row (loses cell focus).
+  trackByRowId = (_: number, row: EditableRow): string => row.localId;
 
   // ─── Create table modal ─────────────────────────────────────────────────
 
