@@ -20,6 +20,57 @@
     }
 }
 
+.connector-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .connector-detail-icon {
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+    }
+}
+
+.tools-info-section {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.tools-badge-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    .tools-label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #333;
+    }
+
+    .tools-count-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 32px;
+        height: 28px;
+        padding: 0 12px;
+        border-radius: 14px;
+        background-color: #3ea9f5;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+
+        &.tools-count-badge--disabled {
+            background-color: #ccc;
+            cursor: default;
+        }
+    }
+}
+
 .input-field {
     display: flex;
     flex-direction: column;
@@ -46,10 +97,4 @@
     color: rgb(60, 60, 60);
     word-break: break-all;
     margin: 4px 0 0 0;
-}
-
-.manifest-preview {
-    margin: 8px 0;
-    font-size: 12px;
-    color: rgb(157, 159, 162);
 }

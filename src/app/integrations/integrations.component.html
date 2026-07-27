@@ -46,7 +46,7 @@
                                                 [ngClass]="{'element-selected': integrationSelectedName === integration.key }"
                                                 (click)="onIntegrationSelect(integration)">
 
-                                                <img [src]="integration.src_icon" alt="{{integration.name}}">
+                                                <img [src]="integration.src_icon" alt="{{integration.name}}" (error)="onSidebarIconError($event)">
                                                 <!-- dispayBadgeAvaibleFromInAppStore >  {{dispayBadgeAvaibleFromInAppStore}} -->
                                                 <div class="integration-name-and-badge">
                                                     <p>{{ integration.name }}</p>

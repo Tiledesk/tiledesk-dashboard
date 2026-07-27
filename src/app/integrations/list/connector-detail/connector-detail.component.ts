@@ -1,9 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ConnectorEntry } from '../connector-integration/connector-integration.component';
+import { ConnectorItemsModalComponent } from './connector-items-modal/connector-items-modal.component';
 
 const Swal = require('sweetalert2');
+
+const DEFAULT_CONNECTOR_ICON = 'assets/img/int/connector-icon.svg';
 
 @Component({
   selector: 'connector-detail',
@@ -18,8 +22,57 @@ export class ConnectorDetailComponent {
 
   constructor(
     private logger: LoggerService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private dialog: MatDialog
   ) { }
+
+  get iconUrl(): string {
+    return (this.connectorItem && this.connectorItem.icon) || DEFAULT_CONNECTOR_ICON;
+  }
+
+  onIconError(event: Event): void {
+    (event.target as HTMLImageElement).src = DEFAULT_CONNECTOR_ICON;
+  }
+
+  hasActions(): boolean {
+    return !!(this.connectorItem && this.connectorItem.actions && this.connectorItem.actions.length);
+  }
+
+  hasTriggers(): boolean {
+    return !!(this.connectorItem && this.connectorItem.triggers && this.connectorItem.triggers.length);
+  }
+
+  openActionsModal(): void {
+    if (!this.hasActions()) {
+      return;
+    }
+    this.dialog.open(ConnectorItemsModalComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      maxHeight: '80vh',
+      data: {
+        title: this.translate.instant('Actions'),
+        items: this.connectorItem.actions,
+        groups: this.connectorItem.groups
+      }
+    });
+  }
+
+  openTriggersModal(): void {
+    if (!this.hasTriggers()) {
+      return;
+    }
+    this.dialog.open(ConnectorItemsModalComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      maxHeight: '80vh',
+      data: {
+        title: this.translate.instant('Triggers'),
+        items: this.connectorItem.triggers,
+        groups: this.connectorItem.groups
+      }
+    });
+  }
 
   deleteConnector(): void {
     if (!this.connectorItem) {

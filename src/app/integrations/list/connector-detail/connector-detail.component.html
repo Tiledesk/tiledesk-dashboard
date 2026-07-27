@@ -1,7 +1,8 @@
 <div class="content">
 
     <div class="form-section">
-        <div class="form-header">
+        <div class="form-header connector-detail-header">
+            <img [src]="iconUrl" alt="{{ connectorItem?.name }}" class="connector-detail-icon" (error)="onIconError($event)">
             <h4>{{ connectorItem?.name }}</h4>
         </div>
 
@@ -10,8 +11,15 @@
             <p class="connector-detail-value">{{ connectorItem?.baseUrl }}</p>
         </div>
 
-        <div class="manifest-preview" *ngIf="connectorItem">
-            <span>{{ connectorItem.actionCount || 0 }} actions, {{ connectorItem.triggerCount || 0 }} triggers</span>
+        <div class="tools-info-section" *ngIf="connectorItem">
+            <div class="tools-badge-info">
+                <span class="tools-label">{{ 'Actions' | translate }}:</span>
+                <span class="tools-count-badge" [class.tools-count-badge--disabled]="!hasActions()" (click)="openActionsModal()">{{ connectorItem.actionCount || 0 }}</span>
+            </div>
+            <div class="tools-badge-info">
+                <span class="tools-label">{{ 'Triggers' | translate }}:</span>
+                <span class="tools-count-badge" [class.tools-count-badge--disabled]="!hasTriggers()" (click)="openTriggersModal()">{{ connectorItem.triggerCount || 0 }}</span>
+            </div>
         </div>
 
         <div class="form-actions">
