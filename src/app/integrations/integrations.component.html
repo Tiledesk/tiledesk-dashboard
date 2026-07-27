@@ -67,7 +67,7 @@
                             <ng-container *ngIf="!showSpinner">
                                 <div *ngIf="integrationSelectedName !== 'none'" class="menu-container">
 
-                                    <integration-header *ngIf="!showInIframe" 
+                                    <integration-header *ngIf="!showInIframe && !isConnectorItemSelected()"
                                         [integrationModel]="selectedIntegrationModel">
                                     </integration-header>
 

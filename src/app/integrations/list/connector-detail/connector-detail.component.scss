@@ -1,3 +1,46 @@
+.content {
+    padding: 20px;
+}
+
+.form-section {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.form-header {
+    margin-bottom: 20px;
+
+    h4 {
+        margin: 0;
+        font-size: 22px;
+        font-weight: 600;
+        color: #333;
+    }
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0px;
+    max-width: 500px;
+
+    label {
+        color: #7695a5;
+        font-weight: 400;
+        font-size: 14px;
+        padding-bottom: 2px;
+    }
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-top: 16px;
+}
+
 .connector-detail-value {
     font-size: 14px;
     color: rgb(60, 60, 60);
