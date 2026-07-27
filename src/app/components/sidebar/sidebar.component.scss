@@ -1608,3 +1608,24 @@ button.close {
     font-size: 18px;
   }
 }
+
+#data-tables-anchor-wpr {
+  .sidebar-beta-badge-icon {
+    position: absolute;
+    top: 2px;
+    left: 16px;
+    font-weight: 500;
+    font-size: 8px;
+    color: var(--sidebar-icon-color, #fff);
+    pointer-events: none;
+  }
+
+  &:hover .sidebar-beta-badge-icon {
+    color: var(--sidebar-hover-icon-color);
+  }
+
+  &.item-active .sidebar-beta-badge-icon,
+  &.item-active:hover .sidebar-beta-badge-icon {
+    color: var(--sidebar-active-icon);
+  }
+}

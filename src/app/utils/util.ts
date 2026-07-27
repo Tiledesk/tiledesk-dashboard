@@ -1269,5 +1269,5 @@ export const URL_WA_Send_Message = 'https://guide.tiledesk.com/apps-and-integrat
 export const URL_IF_OH_Action = 'https://guide.tiledesk.com/ai-chatbots-and-automation/actions-explained/if-operating-hours#how-to-configure-the-action'
 export const URL_kb_contents_tags = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base#rag-tags-configuration'
 export const URL_kb_synced_Sitemap = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-to-use-synchronized-sitemap-in-knowledge-base'
-
+export const URL_data_tables_doc = "https://guide.tiledesk.com/ai-chatbots-and-automation/actions-explained/data-tables"
 

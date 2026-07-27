@@ -827,6 +827,7 @@ th {
 .btn-outlined:hover {
   box-shadow: unset !important;
   background: var(--outlined-btn-hover-background) !important;
+  border: 1px solid var(--outlined-btn-border-color);
 }
 
 /* BTN Blu round
@@ -1042,6 +1043,37 @@ th {
 
 .c-alert>span>span:hover {
   text-decoration: underline;
+}
+
+// Shared "learn more" docs link (widget set-up, data tables, …)
+.widget-set-up-link-to-docs-wpr {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 6px;
+  line-height: 20px;
+  padding: 7px 0;
+}
+
+.widget-set-up-link-to-docs {
+  margin-left: 8px;
+  vertical-align: middle;
+  color: var(--blue-light, #0f62ff);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.widget-set-up-link-to-docs:hover {
+  text-decoration: underline;
+}
+
+.widget-set-up-link-to-docs-wpr > span > svg {
+  fill: var(--blue-light, #0f62ff);
+  display: block;
+  width: 24px;
+  height: 24px;
 }
 
 .c-alert-x-long-string {
@@ -2416,7 +2448,7 @@ footer ul {
 // }
 
 .custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-separator {
-  margin-bottom: 6px !important;
+  margin-bottom: 0px !important;
 }
 
 .custom-date-range-picker .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix .mat-date-range-input .mat-date-range-input-container .mat-date-range-input-start-wrapper .mat-date-range-input-mirror {

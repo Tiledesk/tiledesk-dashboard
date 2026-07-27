@@ -484,6 +484,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'History';
       this.currentIcon = null;
     }
+    else if (cleanUrl.indexOf('data-tables') !== -1) {
+      this.currentTitle = 'DataTables.DataTablesBeta';
+      this.currentIcon = null;
+    }
     else if (cleanUrl.indexOf('all-conversations') !== -1) {
       this.currentTitle = 'ConversationsNotInRealTime';
       this.currentIcon = this.getSanitizedKeyboardArrowLeft();

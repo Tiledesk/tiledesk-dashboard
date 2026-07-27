@@ -1,5 +1,6 @@
 import { CHANNELS_NAME, isValidEmail } from './../../utils/util';
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { MatDateRangePicker } from '@angular/material/datepicker';
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
@@ -100,6 +101,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   // @ViewChild('advancedoptionbtn') private advancedoptionbtnRef: ElementRef;
   // @ViewChild('searchbtn') private searchbtnRef: ElementRef;
   @ViewChild('searchbtnbottom', { static: false }) private searchbtnbottomRef?: ElementRef;
+  @ViewChild('picker') dateRangePicker?: MatDateRangePicker<Date>;
 
   range = new FormGroup({
     start: new FormControl(),
@@ -2712,6 +2714,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.endDateDefaultValue = null
     this.startDate = null
     this.endDate = null
+  }
+
+  openDatePicker(): void {
+    this.dateRangePicker?.open();
   }
 
   // ------------------------------------------------------------------------------
