@@ -126,7 +126,7 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "Cohere",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.COHERE,          src_icon: "assets/img/int/cohere_icon.svg",                 src_logo: "assets/img/int/cohere_logo.svg",             pro: true,  plan: 'Pro' },
     { name: "Ollama",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OLLAMA,          src_icon: "assets/img/int/ollama-icon.svg",                 src_logo: "assets/img/int/ollama-logo.png",             pro: true,  plan: 'Pro' },
     { name: "MCP Servers",           category: INTEGRATIONS_CATEGORIES.MCP,              key: INTEGRATIONS_KEYS.MCP,             src_icon: "assets/img/int/mcp-icon.png",                    src_logo: "assets/img/int/mcp-logo.png",                pro: true,  plan: 'Pro' },
-    { name: "Connectors",             category: INTEGRATIONS_CATEGORIES.CONNECTOR,        key: INTEGRATIONS_KEYS.CONNECTORS,      src_icon: "assets/img/int/mcp-icon.png",                    src_logo: "assets/img/int/mcp-logo.png",                pro: true,  plan: 'Pro' },
+    { name: "Add connector",          category: INTEGRATIONS_CATEGORIES.CONNECTOR,        key: INTEGRATIONS_KEYS.CONNECTORS,      src_icon: "assets/img/int/mcp-icon.png",                    src_logo: "assets/img/int/mcp-logo.png",                pro: true,  plan: 'Pro' },
     { name: "vLLM",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.VLLM,            src_icon: "assets/img/int/vllm-icon.png",                   src_logo: "assets/img/int/vllm-logo.webp",               pro: true,  plan: 'Pro' },
     { name: "Deepseek",              category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.DEEPSEEK,        src_icon: "assets/img/int/deepseek-icon.svg",               src_logo: "assets/img/int/deepseek-logo.svg",           pro: true,  plan: 'Pro' },
     { name: "Qapla'",                category: INTEGRATIONS_CATEGORIES.ECOMMERCE,        key: INTEGRATIONS_KEYS.QAPLA,           src_icon: "assets/img/int/qapla-icon.jpg",                  src_logo: "assets/img/int/qapla-logo.png",              pro: true,  plan: 'Pro' },
@@ -160,6 +160,20 @@ export function getKeyByValue(value, keys) {
     const indexOfS = Object.values(keys).indexOf(value as unknown as any);
     const key = Object.keys(keys)[indexOfS];
     return key;
+}
+
+export const CONNECTOR_ITEM_KEY_PREFIX = 'connector_item:';
+
+export function buildConnectorItemTiles(items: Array<{ name: string, baseUrl: string }>, baseTile: any): any[] {
+    return items.map((item) => ({
+        name: item.name,
+        category: INTEGRATIONS_CATEGORIES.CONNECTOR,
+        key: CONNECTOR_ITEM_KEY_PREFIX + item.baseUrl,
+        src_icon: baseTile.src_icon,
+        src_logo: baseTile.src_logo,
+        pro: baseTile.pro,
+        plan: baseTile.plan
+    }));
 }
 
 export const automations = ['webhook', 'copilot'];
