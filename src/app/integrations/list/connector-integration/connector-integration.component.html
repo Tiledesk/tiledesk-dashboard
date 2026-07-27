@@ -47,15 +47,4 @@
         </div>
     </div>
 
-    <div class="table-section" *ngIf="integration.value.items?.length">
-        <div class="connector-row" *ngFor="let item of integration.value.items">
-            <span class="connector-name">{{ item.name }}</span>
-            <span class="connector-url">{{ item.baseUrl }}</span>
-            <span class="connector-counts">{{ item.actionCount || 0 }} actions, {{ item.triggerCount || 0 }} triggers</span>
-            <button class="btn btn-outlined" (click)="deleteConnector(item)">
-                {{ 'Delete' | translate }}
-            </button>
-        </div>
-    </div>
-
 </div>
