@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.242-stage 
+- Migrates the dashboard core to Angular 15 (CLI, `@angular/core`, and Material/CDK 15 with MDC)
+- Adapts key UI surfaces to Material MDC (History date range, Knowledge Base actions, Data Tables)
+- Removes unused components (in-app CDS, FAQ test, Native bot, Tilebot UI and more) 
+- Improves Analytics loading feedback  
+- Adds LEAVE_CONVERSATION to the new Activities page
+- Improvements and bug fixing
+
 ### 2.7.241-stage 	
 - Shows the current size of data tables in MB against the maximum allowed size
 - Adds the ability to filter data tables by conditions
