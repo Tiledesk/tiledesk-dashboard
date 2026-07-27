@@ -1,0 +1,24 @@
+<div class="content">
+
+    <div class="form-section">
+        <div class="form-header">
+            <h4>{{ connectorItem?.name }}</h4>
+        </div>
+
+        <div class="input-field">
+            <label>URL</label>
+            <p class="connector-detail-value">{{ connectorItem?.baseUrl }}</p>
+        </div>
+
+        <div class="manifest-preview" *ngIf="connectorItem">
+            <span>{{ connectorItem.actionCount || 0 }} actions, {{ connectorItem.triggerCount || 0 }} triggers</span>
+        </div>
+
+        <div class="form-actions">
+            <button class="btn btn-outlined" (click)="deleteConnector()">
+                {{ 'Delete' | translate }}
+            </button>
+        </div>
+    </div>
+
+</div>
