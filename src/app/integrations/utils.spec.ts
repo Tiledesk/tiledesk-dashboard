@@ -30,7 +30,7 @@ describe('buildConnectorItemTiles', () => {
     expect(tiles[1].key).toBe(CONNECTOR_ITEM_KEY_PREFIX + 'https://salesforce.example.com');
   });
 
-  it('copies category, icon, plan and pro flag from the base tile', () => {
+  it('copies category, icon, plan and pro flag from the base tile when the item has no icon', () => {
     const tiles = buildConnectorItemTiles(
       [{ name: 'Google Services', baseUrl: 'http://localhost:4000' }],
       baseTile
@@ -41,5 +41,15 @@ describe('buildConnectorItemTiles', () => {
     expect(tiles[0].src_logo).toBe(baseTile.src_logo);
     expect(tiles[0].pro).toBe(baseTile.pro);
     expect(tiles[0].plan).toBe(baseTile.plan);
+  });
+
+  it('uses the connector-reported icon instead of the base tile icon when present', () => {
+    const tiles = buildConnectorItemTiles(
+      [{ name: 'Google Services', baseUrl: 'http://localhost:4000', icon: 'http://localhost:4000/assets/connector-icon.svg' }],
+      baseTile
+    );
+
+    expect(tiles[0].src_icon).toBe('http://localhost:4000/assets/connector-icon.svg');
+    expect(tiles[0].src_logo).toBe('http://localhost:4000/assets/connector-icon.svg');
   });
 });

@@ -4,12 +4,27 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 
+export interface ConnectorItemSummary {
+  id: string;
+  name: string;
+  group?: string;
+}
+
+export interface ConnectorGroupSummary {
+  id: string;
+  name: string;
+}
+
 export interface ConnectorEntry {
   name: string;
   baseUrl: string;
   addedAt?: number;
   actionCount?: number;
   triggerCount?: number;
+  icon?: string;
+  actions?: ConnectorItemSummary[];
+  triggers?: ConnectorItemSummary[];
+  groups?: ConnectorGroupSummary[];
 }
 
 @Component({
@@ -26,7 +41,15 @@ export class ConnectorIntegrationComponent implements OnInit {
   currentEntry: ConnectorEntry = { name: '', baseUrl: '' };
 
   isLoadingManifest: boolean = false;
-  manifestPreview: { connectorName: string, actionCount: number, triggerCount: number } | null = null;
+  manifestPreview: {
+    connectorName: string,
+    actionCount: number,
+    triggerCount: number,
+    icon?: string,
+    actions?: ConnectorItemSummary[],
+    triggers?: ConnectorItemSummary[],
+    groups?: ConnectorGroupSummary[]
+  } | null = null;
   loadingBaseUrl: string = '';
   private previewedBaseUrl: string = '';
 
@@ -84,10 +107,24 @@ export class ConnectorIntegrationComponent implements OnInit {
           return;
         }
 
+        const actions: ConnectorItemSummary[] = Array.isArray(manifest.actions)
+          ? manifest.actions.map((a: any) => ({ id: a.id, name: a.name, group: a.group }))
+          : [];
+        const triggers: ConnectorItemSummary[] = Array.isArray(manifest.triggers)
+          ? manifest.triggers.map((t: any) => ({ id: t.id, name: t.name, group: t.group }))
+          : [];
+        const groups: ConnectorGroupSummary[] = Array.isArray(manifest.groups)
+          ? manifest.groups.map((g: any) => ({ id: g.id, name: g.name }))
+          : [];
+
         this.manifestPreview = {
           connectorName: manifest.connector.name || this.loadingBaseUrl,
-          actionCount: Array.isArray(manifest.actions) ? manifest.actions.length : 0,
-          triggerCount: Array.isArray(manifest.triggers) ? manifest.triggers.length : 0
+          actionCount: actions.length,
+          triggerCount: triggers.length,
+          icon: manifest.connector.icon,
+          actions,
+          triggers,
+          groups
         };
         this.previewedBaseUrl = this.loadingBaseUrl;
 
@@ -126,7 +163,11 @@ export class ConnectorIntegrationComponent implements OnInit {
       baseUrl: this.currentEntry.baseUrl,
       addedAt: Date.now(),
       actionCount: this.manifestPreview.actionCount,
-      triggerCount: this.manifestPreview.triggerCount
+      triggerCount: this.manifestPreview.triggerCount,
+      icon: this.manifestPreview.icon,
+      actions: this.manifestPreview.actions,
+      triggers: this.manifestPreview.triggers,
+      groups: this.manifestPreview.groups
     };
 
     this.integration.value.items.push(entry);

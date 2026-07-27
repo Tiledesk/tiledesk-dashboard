@@ -388,6 +388,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     return !!this.integrationSelectedName && this.integrationSelectedName.indexOf(CONNECTOR_ITEM_KEY_PREFIX) === 0;
   }
 
+  onSidebarIconError(event: Event): void {
+    (event.target as HTMLImageElement).src = 'assets/img/int/connector-icon.svg';
+  }
+
   async getApps() {
 
     return new Promise((resolve) => {

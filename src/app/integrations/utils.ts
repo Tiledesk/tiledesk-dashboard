@@ -164,13 +164,13 @@ export function getKeyByValue(value, keys) {
 
 export const CONNECTOR_ITEM_KEY_PREFIX = 'connector_item:';
 
-export function buildConnectorItemTiles(items: Array<{ name: string, baseUrl: string }>, baseTile: any): any[] {
+export function buildConnectorItemTiles(items: Array<{ name: string, baseUrl: string, icon?: string }>, baseTile: any): any[] {
     return items.map((item) => ({
         name: item.name,
         category: INTEGRATIONS_CATEGORIES.CONNECTOR,
         key: CONNECTOR_ITEM_KEY_PREFIX + item.baseUrl,
-        src_icon: baseTile.src_icon,
-        src_logo: baseTile.src_logo,
+        src_icon: item.icon || baseTile.src_icon,
+        src_logo: item.icon || baseTile.src_logo,
         pro: baseTile.pro,
         plan: baseTile.plan
     }));
