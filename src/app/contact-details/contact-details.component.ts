@@ -124,8 +124,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
   private contactDataLoaded = false;
 
- 
-
   private backSub?: Subscription;
   
   constructor(
@@ -207,23 +205,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
       .subscribe(status => {
         this.logger.log('[CONTACTS-DTLS] - Role:', status.role);
         this.logger.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          this.PERMISSION_TO_READ_LEADS = status.matchedPermissions.includes(PERMISSIONS.LEADS_READ);
-        } else {
-          this.PERMISSION_TO_READ_LEADS = true;
-        }
-
-        if (!this.PERMISSION_TO_READ_LEADS) {
-          if (this.projectId) {
-            this.router.navigate([`project/${this.projectId}/contact-details/no-auth`]);
-          }
-          return;
-        }
-
-        if (!this.contactDataLoaded) {
-          this.contactDataLoaded = true;
-          this.getRequesterIdParam_AndThenGetRequestsAndContactById();
-        }
 
         // Wait for project user role (skip BehaviorSubject initial empty value), like other pages.
         if (!status?.role) {
@@ -236,7 +217,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           this.PERMISSION_TO_READ_LEADS = true;
         }
 
-       // Page-level deny is handled by RoleService.checkRoleForCurrentProject('contact-details').
+        // Page-level deny is handled by RoleService.checkRoleForCurrentProject('contact-details').
         if (!this.PERMISSION_TO_READ_LEADS) {
           return;
         }
