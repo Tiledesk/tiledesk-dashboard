@@ -113,6 +113,14 @@ export class ConnectorIntegrationComponent implements OnInit {
       return;
     }
 
+    const alreadyRegistered = (this.integration.value.items || []).some(
+      (item: ConnectorEntry) => item.baseUrl === this.currentEntry.baseUrl
+    );
+    if (alreadyRegistered) {
+      this.notify.showWidgetStyleUpdateNotification('A connector with this URL is already registered', 3, 'error');
+      return;
+    }
+
     const entry: ConnectorEntry = {
       name: this.currentEntry.name,
       baseUrl: this.currentEntry.baseUrl,
