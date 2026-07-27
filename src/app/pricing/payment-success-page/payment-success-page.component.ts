@@ -8,10 +8,10 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from 'app/services/project.service';
 import { Project } from 'app/models/project-model';
-
 import { RewardfulLoaderService } from 'app/services/rewardful-loader.service';
 
 const PANEL_TILEDESK_HOST = 'panel.tiledesk.com';
+
 
 @Component({
   selector: 'appdashboard-payment-success-page',
@@ -245,8 +245,8 @@ export class PaymentSuccessPageComponent implements OnInit, AfterViewInit {
 
         this.logger.log('[PRICING - PAYMENT-SUCCESS] currentUser email ', this.currentUser.email)
 
-       // window['rewardful']('ready', () => {    
-       //  window['rewardful']('convert', { email: this.currentUser.email })   
+       // window['rewardful']('ready', () => {
+       //   window['rewardful']('convert', { email: this.currentUser.email })
        // });
 
         this.convertRewardfulIfEnabled();

@@ -2693,12 +2693,24 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - onChangeStartDate this.startDateDefaultValue', this.startDateDefaultValue);
   }
 
-  clearDateRange() {
+  clearDateRange(event?: MouseEvent): void {
+    event?.stopPropagation();
+    event?.preventDefault();
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR DATE RANGE');
-    this.startDateDefaultValue = null
-    this.endDateDefaultValue = null
-    this.startDate = null
-    this.endDate = null
+    this.startDateDefaultValue = null;
+    this.endDateDefaultValue = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.startDateValue = '';
+    this.endDateValue = '';
+    this.startDateFormatted = null;
+    this.endDateFormatted = null;
+    this.startDateFormatted_temp = null;
+    this.endDateFormatted_temp = null;
+    this.start_date_is_null = true;
+    this.ensureQueryStringForDateSync();
+    this.patchQueryStringDates('', '');
+    this.syncHistoryUrlQueryParams();
   }
 
   openDatePicker(): void {

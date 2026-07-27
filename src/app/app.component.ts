@@ -993,7 +993,7 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
         );
     }
 
-       /** Google Analytics only on panel.tiledesk.com (not aruba / other hosts). */
+    /** Google Analytics only on panel.tiledesk.com (not aruba / other hosts). */
     private initGoogleAnalyticsForHost(): void {
         if (this.isPanelTiledeskHost()) {
             this.loadGoogleAnalytics();
@@ -1126,7 +1126,12 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - LoggedUser ', user);
 
             this.logger.log('% »»» WebSocketJs WF - APP-COMPONENT - isActivePAY ', isActivePAY);
-            if (user && isActivePAY) {
+                
+                if (user && isActivePAY) {
+                    this.stripeLoader.loadStripe().catch((err) => {
+                    this.logger.error('[APP-COMPONENT] Stripe.js preload failed', err);
+                });
+
 
                 this.stripeLoader.loadStripe().catch((err) => {
                     this.logger.error('[APP-COMPONENT] Stripe.js preload failed', err);
