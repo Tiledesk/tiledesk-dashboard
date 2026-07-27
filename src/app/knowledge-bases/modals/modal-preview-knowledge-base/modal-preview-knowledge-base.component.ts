@@ -393,7 +393,7 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
 
     this.isopenasetting = isopenasetting
     this.dialogRefAiSettings = this.dialog.open(ModalPreviewSettingsComponent, {
-      width: '320px',
+      width: '360px',
       position: { left: 'calc(50% + 210px)', top: '60px' },
       autoFocus: false,
       hasBackdrop: false,

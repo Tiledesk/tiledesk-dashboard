@@ -124,20 +124,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
 
   public countOfOverrides = 0
 
-  private hasAlreadyOverridedModel: boolean;
-  private hasAlreadyOverridedMaxTokens: boolean;
-  private hasAlreadyOverridedTemperature: boolean;
-  private hasAlreadyOverridedAlpha: boolean;
-  private hasAlreadyOverridedTopk: boolean;
-  private hasAlreadyOverridedContex: boolean;
-  private hasAlreadyOverrideAdvancedContex: boolean;
-  private hasAlreadyOverrideChunckOnly: boolean;
-  private hasAlreadyOverrideReRanking: boolean;
-  private hasAlreadyOverrideReRankingMultipler: boolean;
-  private hasAlreadyOverrideCitations: boolean;
-  private hasAlreadyOverrideUseHyde: boolean;
-  private hasAlreadyOverrideUseCache: boolean;
-
   public hideHelpLink: boolean;
 
   temperature_slider_disabled: boolean;
@@ -577,6 +563,33 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     if (mv) {
       this.applyMaxTokenSliderFromUtil(mv, { resetMaxTokensToDefault: false });
     }
+
+    // Baseline for override count = effective UI state after init (defaults + max_tokens clamp)
+    this.snapshotOverrideBaseline();
+  }
+
+  /** Freeze current settings as the "no overrides" baseline (preview KB modal). */
+  private snapshotOverrideBaseline(): void {
+    if (!this.selectedNamespace?.preview_settings) {
+      return;
+    }
+    this.selectedNamespaceClone = JSON.parse(JSON.stringify(this.selectedNamespace));
+    const ps = this.selectedNamespaceClone.preview_settings;
+    if (this.selectedModel) {
+      ps.model = this.parseModelValueFromSelectValue(this.selectedModel);
+    }
+    ps.max_tokens = this.max_tokens;
+    ps.temperature = this.temperature;
+    ps.top_k = this.topK;
+    ps.alpha = this.alpha;
+    ps.context = this.context ?? null;
+    ps.chunks_only = !!this.chunkOnly;
+    ps.reranking = !!this.reRanking;
+    ps.reranking_multiplier = this.reRankingMultipler;
+    ps.advancedPrompt = !!this.advancedPrompt;
+    ps.citations = !!this.citations;
+    ps.use_hyde = !!this.useHyde;
+    ps.use_cache = !!this.useCache;
   }
 
   getLlmProviderByModel(modelValue: string): string | null {
@@ -738,39 +751,110 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.logger.log("[MODAL PREVIEW SETTINGS] onSelectModel aiSettingsObject", this.aiSettingsObject)
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
 
-    if (modelValue !== this.selectedNamespace.preview_settings.model) {
-      if (this.hasAlreadyOverridedModel !== true) {
-        this.countOfOverrides = this.countOfOverrides + 1;
-      }
-      this.hasAlreadyOverridedModel = true
-    } else {
-      this.countOfOverrides = this.countOfOverrides - 1;
-    }
-
     this.applyMaxTokenSliderFromUtil(modelValue, { resetMaxTokensToDefault: true });
     this.kbService.hasChagedAiSettings(this.aiSettingsObject);
+    this.recomputeOverrideCount();
+  }
+
+  /**
+   * Count how many preview settings differ from the snapshot taken when the dialog opened.
+   * Used only when opened from the preview KB modal (temporary overrides).
+   * Model change auto-resets max_tokens/temperature: those count only if the user
+   * then moves them away from the new model's auto values.
+   */
+  private recomputeOverrideCount(): void {
+    if (!this.wasOpenedFromThePreviewKBModal || !this.selectedNamespaceClone?.preview_settings) {
+      this.countOfOverrides = 0;
+      return;
+    }
+
+    const baseline = this.selectedNamespaceClone.preview_settings;
+    const currentModel = this.selectedModel
+      ? this.parseModelValueFromSelectValue(this.selectedModel)
+      : this.aiSettingsObject?.[0]?.model;
+    const modelChanged = currentModel !== baseline.model;
+
+    let count = 0;
+    if (modelChanged) {
+      count++;
+    }
+
+    // max_tokens: with a model change, ignore the auto default for the new model
+    const maxTokensDiffersFromBaseline = Number(this.max_tokens) !== Number(baseline.max_tokens);
+    if (maxTokensDiffersFromBaseline) {
+      if (modelChanged) {
+        const autoMaxTokens = this.getAutoMaxTokensForModel(currentModel);
+        if (Number(this.max_tokens) !== Number(autoMaxTokens)) {
+          count++;
+        }
+      } else {
+        count++;
+      }
+    }
+
+    // temperature: with a model change, ignore the auto value (1 for gpt-5, else default)
+    const temperatureDiffersFromBaseline = Number(this.temperature) !== Number(baseline.temperature);
+    if (temperatureDiffersFromBaseline) {
+      if (modelChanged) {
+        const autoTemperature = currentModel?.startsWith('gpt-5') ? 1 : this.temperatureDefaultValue;
+        if (Number(this.temperature) !== Number(autoTemperature)) {
+          count++;
+        }
+      } else {
+        count++;
+      }
+    }
+
+    if (this.diplaySearchTypeSlider && Number(this.alpha) !== Number(baseline.alpha)) {
+      count++;
+    }
+    if (Number(this.topK) !== Number(baseline.top_k)) {
+      count++;
+    }
+    if ((this.context ?? null) !== (baseline.context ?? null)) {
+      count++;
+    }
+    if (!!this.chunkOnly !== !!baseline.chunks_only) {
+      count++;
+    }
+    if (!!this.reRanking !== !!baseline.reranking) {
+      count++;
+    }
+    if (Number(this.reRankingMultipler) !== Number(baseline.reranking_multiplier)) {
+      count++;
+    }
+    if (!!this.advancedPrompt !== !!baseline.advancedPrompt) {
+      count++;
+    }
+    if (!!this.citations !== !!baseline.citations) {
+      count++;
+    }
+    if (!!this.useHyde !== !!baseline.use_hyde) {
+      count++;
+    }
+    if (!!this.useCache !== !!baseline.use_cache) {
+      count++;
+    }
+
+    this.countOfOverrides = count;
+  }
+
+  /** Same clamp/default used when switching model (resetMaxTokensToDefault). */
+  private getAutoMaxTokensForModel(modelValue: string): number {
+    const bounds = getLlmModelTokenBounds(modelValue);
+    const utilMin = bounds?.min_tokens ?? 1;
+    const min = this.citations ? Math.max(utilMin, 1024) : utilMin;
+    const catalogMax = bounds?.max_output_tokens ?? LLM_MAX_TOKENS_SLIDER_UI_CAP;
+    const max = Math.max(min, Math.min(catalogMax, LLM_MAX_TOKENS_SLIDER_UI_CAP));
+    return Math.min(Math.max(getLlmModelDefaultMaxTokens(modelValue), min), max);
   }
 
   updateSliderValue(value, type) {
     // this.logger.log("[MODAL PREVIEW SETTINGS] wasOpenedFromThePreviewKBModal: ", this.wasOpenedFromThePreviewKBModal);
     if (type === "max_tokens") {
-      const previousMaxTokens = this.selectedNamespace.preview_settings.max_tokens;
-      // Sempre aggiorna preview_settings (anche da modal preview), per coerenza con ask e con listenToAiSettingsChanges sul preview KB.
+      // Always update preview_settings (also from preview modal) so ask + preview KB stay in sync.
       this.selectedNamespace.preview_settings.max_tokens = value;
-
-      // if (value !== this.maxTokensDefaultValue) {
-      if (value !== previousMaxTokens) {
-        if (this.hasAlreadyOverridedMaxTokens !== true) {
-          this.countOfOverrides = this.countOfOverrides + 1;
-        }
-        this.hasAlreadyOverridedMaxTokens = true
-      } else {
-        this.countOfOverrides = this.countOfOverrides - 1;
-      }
-
-      // Comunicate to the subscriber "modal-preview-k-b" the change of the max_tokens
       this.aiSettingsObject[0].maxTokens = value
-      // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
@@ -778,20 +862,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       if (!this.wasOpenedFromThePreviewKBModal) {
         this.selectedNamespace.preview_settings.temperature = value
       }
-
-      // if (value !== this.temperatureDefaultValue) {
-      if (value !== this.selectedNamespace.preview_settings.temperature) {
-        if (this.hasAlreadyOverridedTemperature !== true) {
-          this.countOfOverrides = this.countOfOverrides + 1;
-        }
-        this.hasAlreadyOverridedTemperature = true
-      } else {
-        this.countOfOverrides = this.countOfOverrides - 1;
-      }
-
-      // Comunicate to the subscriber "modal-preview-k-b" the change of the temperature
       this.aiSettingsObject[0].temperature = value
-      // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
@@ -800,18 +871,6 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       if (!this.wasOpenedFromThePreviewKBModal) {
         this.selectedNamespace.preview_settings.alpha = value
       }
-
-
-      if (value !== this.selectedNamespace.preview_settings.alpha) {
-        if (this.hasAlreadyOverridedAlpha !== true) {
-          this.countOfOverrides = this.countOfOverrides + 1;
-        }
-        this.hasAlreadyOverridedAlpha = true
-      } else {
-        this.countOfOverrides = this.countOfOverrides - 1;
-      }
-
-      // Comunicate to the subscriber "modal-preview-k-b" the change of the alpha
       this.aiSettingsObject[0].alpha = value
       this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
@@ -821,20 +880,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       if (!this.wasOpenedFromThePreviewKBModal) {
         this.selectedNamespace.preview_settings.top_k = value;
       }
-
-      // if (value !== this.topkDefaultValue) {
-      if (value !== this.selectedNamespace.preview_settings.top_k) {
-        if (this.hasAlreadyOverridedTopk !== true) {
-          this.countOfOverrides = this.countOfOverrides + 1;
-        }
-        this.hasAlreadyOverridedTopk = true
-      } else {
-        this.countOfOverrides = this.countOfOverrides - 1;
-      }
-
-      // Comunicate to the subscriber "modal-preview-k-b" the change of the topK
       this.aiSettingsObject[0].top_k = value
-      // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
       this.kbService.hasChagedAiSettings(this.aiSettingsObject)
     }
 
@@ -842,28 +888,12 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       if (!this.wasOpenedFromThePreviewKBModal) {
         this.selectedNamespace.preview_settings.reranking_multiplier = value;
       }
+      this.aiSettingsObject[0].reRankingMultipler = value
+      this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+    }
 
-      if (value !== this.selectedNamespace.preview_settings.reranking_multiplier) {
-        if (this.hasAlreadyOverrideReRankingMultipler !== true) {
-          this.countOfOverrides = this.countOfOverrides + 1;
-        }
-        this.hasAlreadyOverrideReRankingMultipler = true
-      } else {
-        this.countOfOverrides = this.countOfOverrides - 1;
-      }
-
-    // Comunicate to the subscriber "modal-preview-k-b" the change of the topK
-    this.aiSettingsObject[0].reRankingMultipler = value
-    // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
-    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+    this.recomputeOverrideCount();
   }
-
-    // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue selectedNamespace", this.selectedNamespace)
-  }
-
-
-  
-
 
   onChangeTextInContex(event) {
     // this.logger.log("[MODAL PREVIEW SETTINGS] onChangeTextInContex event: ", event);
@@ -872,21 +902,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.selectedNamespace.preview_settings.context = this.context
     }
 
-    // if (event !== this.contextDefaultValue) {
-    if (event !== this.selectedNamespace.preview_settings.context) {
-      if (this.hasAlreadyOverridedContex !== true) {
-        this.countOfOverrides = this.countOfOverrides + 1;
-      }
-      this.hasAlreadyOverridedContex = true
-    } else {
-      this.countOfOverrides = this.countOfOverrides - 1;
-    }
-    // this.logger.log("[MODAL PREVIEW SETTINGS] onChangeTextInContex selectedNamespace", this.selectedNamespace)
-
-    // Comunicate to the subscriber "modal-preview-k-b" the change of the context
     this.aiSettingsObject[0].context = event
-    // this.logger.log("[MODAL PREVIEW SETTINGS] updateSliderValue aiSettingsObject", this.aiSettingsObject)
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+    this.recomputeOverrideCount();
   }
 
   changeChunkOnly(event) {
@@ -898,23 +916,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.logger.log("[MODAL PREVIEW SETTINGS] changeChunkOnly this.selectedNamespace ", this.selectedNamespace)
     }
 
-    // Comunicate to the subscriber "modal-preview-k-b" the change of the model
     this.aiSettingsObject[0].chunkOnly = event.target.checked
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
-
-    if (this.chunkOnly !== this.selectedNamespace.preview_settings.chunks_only) {   
-      if (this.hasAlreadyOverrideChunckOnly !== true) {
-        this.countOfOverrides = this.countOfOverrides + 1;
-      }
-      this.hasAlreadyOverrideChunckOnly = true
-    } else if (this.chunkOnly === this.selectedNamespace.preview_settings.chunks_only) {
-      this.countOfOverrides = this.countOfOverrides - 1;
-      this.hasAlreadyOverrideChunckOnly = false
-    }
-     this.restoreDialogScrollPosition();
+    this.recomputeOverrideCount();
+    this.restoreDialogScrollPosition();
   }
- 
-
 
   changeReranking(event) {
     this.saveDialogScrollPosition();
@@ -925,45 +931,23 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.logger.log("[MODAL PREVIEW SETTINGS] changeReranking this.selectedNamespace ", this.selectedNamespace)
     }
 
-    // Comunicate to the subscriber "modal-preview-k-b" the change of the model
     this.aiSettingsObject[0].reRanking = event.target.checked
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
-
-    if (this.reRanking !== this.selectedNamespace.preview_settings.reranking) {   
-      if (this.hasAlreadyOverrideReRanking !== true) {
-        this.countOfOverrides = this.countOfOverrides + 1;
-      }
-      this.hasAlreadyOverrideReRanking = true
-    } else if (this.reRanking === this.selectedNamespace.preview_settings.reranking) {
-      this.countOfOverrides = this.countOfOverrides - 1;
-      this.hasAlreadyOverrideReRanking = false
-    }
+    this.recomputeOverrideCount();
     this.restoreDialogScrollPosition();
   }
 
   changeAdvancePrompt(event) {
     this.logger.log("[MODAL PREVIEW SETTINGS] changeAdvancedContext event ", event.target.checked)
     this.advancedPrompt = event.target.checked
-    
 
     if (!this.wasOpenedFromThePreviewKBModal) {
       this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPrompt
       this.logger.log("[MODAL PREVIEW SETTINGS] changeAdvancedContext this.selectedNamespace ", this.selectedNamespace)
     }
-    // Comunicate to the subscriber "modal-preview-k-b" the change of the model
     this.aiSettingsObject[0].advancedPrompt = event.target.checked
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
-
-    if (this.advancedPrompt !== this.selectedNamespace.preview_settings.advancedPrompt) {
-      if (this.hasAlreadyOverrideAdvancedContex !== true) {
-        this.countOfOverrides = this.countOfOverrides + 1;
-      }
-      this.hasAlreadyOverrideAdvancedContex = true
-    } else if (this.advancedPrompt === this.selectedNamespace.preview_settings.advancedPrompt) {
-      this.countOfOverrides = this.countOfOverrides - 1;
-      this.hasAlreadyOverrideAdvancedContex = false
-    }
-
+    this.recomputeOverrideCount();
   }
 
   changeCitations(event) {
@@ -977,29 +961,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
 
     this.aiSettingsObject[0].citations = this.citations;
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
-
-    // if (this.citations !== this.selectedNamespace.preview_settings.citations) {
-    //   if (this.hasAlreadyOverrideCitations !== true) {
-    //     this.countOfOverrides = this.countOfOverrides + 1;
-    //   }
-    //   this.hasAlreadyOverrideCitations = true
-    //   this.logger.log('hasAlreadyOverrideCitations ' , this.hasAlreadyOverrideCitations) 
-    // } else {
-    //   this.logger.log('here y hasAlreadyOverrideCitations' , this.hasAlreadyOverrideCitations) 
-    //   this.countOfOverrides = this.countOfOverrides - 1;
-    // }
-
-    if (this.citations !== this.selectedNamespace.preview_settings.citations) {
-      // if (this.hasAlreadyOverrideCitations !== true) {
-      this.countOfOverrides = this.countOfOverrides + 1;
-      // }
-      this.hasAlreadyOverrideCitations = true
-      this.logger.log('hasAlreadyOverrideCitations ', this.hasAlreadyOverrideCitations)
-    } else if (this.citations === this.selectedNamespace.preview_settings.citations) {
-      this.hasAlreadyOverrideCitations = false
-      this.logger.log('here y hasAlreadyOverrideCitations', this.hasAlreadyOverrideCitations)
-      this.countOfOverrides = this.countOfOverrides - 1;
-    }
+    this.recomputeOverrideCount();
   }
 
   changeUseHyde(event) {
@@ -1012,19 +974,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.logger.log("[MODAL PREVIEW SETTINGS] changeUseHyde this.selectedNamespace ", this.selectedNamespace)
     }
 
-    // Notify "modal-preview-k-b" about the change of the use_hyde flag
     this.aiSettingsObject[0].useHyde = event.target.checked
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
-
-    if (this.useHyde !== this.selectedNamespace.preview_settings.use_hyde) {
-      if (this.hasAlreadyOverrideUseHyde !== true) {
-        this.countOfOverrides = this.countOfOverrides + 1;
-      }
-      this.hasAlreadyOverrideUseHyde = true
-    } else if (this.useHyde === this.selectedNamespace.preview_settings.use_hyde) {
-      this.countOfOverrides = this.countOfOverrides - 1;
-      this.hasAlreadyOverrideUseHyde = false
-    }
+    this.recomputeOverrideCount();
     this.restoreDialogScrollPosition();
   }
 
@@ -1038,19 +990,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.logger.log("[MODAL PREVIEW SETTINGS] changeUseCache this.selectedNamespace ", this.selectedNamespace)
     }
 
-    // Notify "modal-preview-k-b" about the change of the use_cache flag
     this.aiSettingsObject[0].useCache = event.target.checked
     this.kbService.hasChagedAiSettings(this.aiSettingsObject)
-
-    if (this.useCache !== this.selectedNamespace.preview_settings.use_cache) {
-      if (this.hasAlreadyOverrideUseCache !== true) {
-        this.countOfOverrides = this.countOfOverrides + 1;
-      }
-      this.hasAlreadyOverrideUseCache = true
-    } else if (this.useCache === this.selectedNamespace.preview_settings.use_cache) {
-      this.countOfOverrides = this.countOfOverrides - 1;
-      this.hasAlreadyOverrideUseCache = false
-    }
+    this.recomputeOverrideCount();
     this.restoreDialogScrollPosition();
   }
 
@@ -1175,28 +1117,36 @@ private restoreDialogScrollPosition(): void {
   }
 
   reset() {
-
-    this.countOfOverrides = 0;
-    this.hasAlreadyOverridedModel = false;
-    this.hasAlreadyOverridedMaxTokens = false;
-    this.hasAlreadyOverridedTemperature = false;
-    this.hasAlreadyOverridedAlpha = false;
-    this.hasAlreadyOverridedTopk = false;
-    this.hasAlreadyOverridedContex = false;
-    this.hasAlreadyOverrideAdvancedContex = false;
-    this.hasAlreadyOverrideCitations = false;
-    this.hasAlreadyOverrideChunckOnly = false;
-    this.hasAlreadyOverrideReRanking = false;
-    this.hasAlreadyOverrideUseHyde = false;
-    //this.hasAlreadyOverrideReRankingMultipler = false;
-
     const cloneSettings = this.selectedNamespaceClone.preview_settings;
     const modelRow = this.resolveModelRowFromSettings(cloneSettings);
+    const resetModelValue = cloneSettings.model;
+
+    // Restore UI from the snapshot taken when the dialog opened
     this.selectedModel = modelRow?.selectValue ?? this.buildModelSelectValue(
       cloneSettings.model,
       cloneSettings.llm,
       cloneSettings.vllmServer,
     );
+    this.max_tokens = cloneSettings.max_tokens;
+    if (resetModelValue?.startsWith('gpt-5')) {
+      this.temperature = 1;
+      this.temperature_slider_disabled = true;
+    } else {
+      this.temperature = cloneSettings.temperature;
+      this.temperature_slider_disabled = false;
+    }
+    this.topK = cloneSettings.top_k;
+    this.alpha = cloneSettings.alpha;
+    this.context = cloneSettings.context;
+    this.advancedPrompt = !!cloneSettings.advancedPrompt;
+    this.chunkOnly = !!cloneSettings.chunks_only;
+    this.reRanking = !!cloneSettings.reranking;
+    this.reRankingMultipler = cloneSettings.reranking_multiplier;
+    this.citations = !!cloneSettings.citations;
+    this.useHyde = !!cloneSettings.use_hyde;
+    this.useCache = !!cloneSettings.use_cache;
+
+    // Restore live preview_settings (some fields are mutated even in override mode)
     this.selectedNamespace.preview_settings.model = cloneSettings.model;
     this.selectedNamespace.preview_settings.llm = cloneSettings.llm;
     if (cloneSettings.vllmServer) {
@@ -1204,57 +1154,27 @@ private restoreDialogScrollPosition(): void {
     } else {
       delete this.selectedNamespace.preview_settings.vllmServer;
     }
-
-    this.max_tokens = cloneSettings.max_tokens;
-
-    const resetModelValue = cloneSettings.model;
-    if (resetModelValue.startsWith('gpt-5')) {
-      this.temperature = 1
-      this.temperature_slider_disabled = true;
-      //  this.max_tokens_max = 100000
-    } else {
-      this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
-      this.temperature_slider_disabled = false;
-      // this.max_tokens_max = 9999
-      // if (this.max_tokens > 9999 ) {
-      //   this.max_tokens = this.maxTokensDefaultValue;
-      // }
-    }
-
-    // this.temperature = this.selectedNamespaceClone.preview_settings.temperature;
-
-
-    this.topK = this.selectedNamespaceClone.preview_settings.top_k;
-    // this.selectedNamespace.preview_settings.top_k = this.topkDefaultValue;
-
-    this.alpha = this.selectedNamespaceClone.preview_settings.alpha
-
-    this.context = this.selectedNamespaceClone.preview_settings.context;
-
-    this.advancedPrompt = this.selectedNamespaceClone.preview_settings.advancedPrompt;
-
-    this.chunkOnly = this.selectedNamespaceClone.preview_settings.chunks_only;
-
-    this.reRanking = this.selectedNamespaceClone.preview_settings.reranking;
-
-   this.reRankingMultipler = this.selectedNamespaceClone.preview_settings.reranking_multiplier
-
-    this.citations = this.selectedNamespaceClone.preview_settings.citations;
-    this.logger.log('Reset this.citations ', this.citations)
-
-    this.useHyde = this.selectedNamespaceClone.preview_settings.use_hyde;
-    this.logger.log('Reset this.useHyde ', this.useHyde)
-
-    this.useCache = this.selectedNamespaceClone.preview_settings.use_cache;
-    this.logger.log('Reset this.useCache ', this.useCache)
+    this.selectedNamespace.preview_settings.max_tokens = cloneSettings.max_tokens;
+    this.selectedNamespace.preview_settings.temperature = this.temperature;
+    this.selectedNamespace.preview_settings.top_k = this.topK;
+    this.selectedNamespace.preview_settings.alpha = this.alpha;
+    this.selectedNamespace.preview_settings.context = this.context;
+    this.selectedNamespace.preview_settings.advancedPrompt = this.advancedPrompt;
+    this.selectedNamespace.preview_settings.chunks_only = this.chunkOnly;
+    this.selectedNamespace.preview_settings.reranking = this.reRanking;
+    this.selectedNamespace.preview_settings.reranking_multiplier = this.reRankingMultipler;
+    this.selectedNamespace.preview_settings.citations = this.citations;
+    this.selectedNamespace.preview_settings.use_hyde = this.useHyde;
+    this.selectedNamespace.preview_settings.use_cache = this.useCache;
 
     this.applyMaxTokenSliderFromUtil(resetModelValue, { resetMaxTokensToDefault: false });
 
     this.aiSettingsObject[0].model = resetModelValue;
-    this.aiSettingsObject[0].maxTokens = this.max_tokens
+    this.aiSettingsObject[0].maxTokens = this.max_tokens;
     this.aiSettingsObject[0].temperature = this.temperature;
     this.aiSettingsObject[0].top_k = this.topK;
-    this.aiSettingsObject[0].context = this.context
+    this.aiSettingsObject[0].alpha = this.alpha;
+    this.aiSettingsObject[0].context = this.context;
     this.aiSettingsObject[0].advancedPrompt = this.advancedPrompt;
     this.aiSettingsObject[0].citations = this.citations;
     this.aiSettingsObject[0].chunkOnly = this.chunkOnly;
@@ -1262,8 +1182,9 @@ private restoreDialogScrollPosition(): void {
     this.aiSettingsObject[0].reRankingMultipler = this.reRankingMultipler;
     this.aiSettingsObject[0].useHyde = this.useHyde;
     this.aiSettingsObject[0].useCache = this.useCache;
-    this.kbService.hasChagedAiSettings(this.aiSettingsObject)
+    this.kbService.hasChagedAiSettings(this.aiSettingsObject);
 
+    this.recomputeOverrideCount();
   }
 
   resetToDefault() {

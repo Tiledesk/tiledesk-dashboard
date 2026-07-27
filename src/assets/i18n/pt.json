@@ -430,6 +430,7 @@
             "REQUEST_ASSIGNED_SELF": "O agente juntou-se à conversa",
             "REQUEST_ASSIGNED_MANUAL": "Atribuição manual",
             "REQUEST_UNASSIGNED": "Agente não atribuído",
+            "LEAVE_CONVERSATION": "Agente saiu da conversa",
             "PROJECT_USER_INVITE": "Colega de equipa convidado",
             "PROJECT_USER_UPDATE": "Colega de equipa atualizado",
             "PROJECT_USER_DELETE": "Colega de equipa removido",
@@ -1261,6 +1262,9 @@
         "ToManageTheMessages": "para gerenciar as mensagens e ativar as notificações via push",
         "OpenTheChatToActivateNotifications": "Abra o bate-papo para gerenciar as mensagens e ativar as notificações via push",
         "ClickHere": "Clique aqui",
+        "NewMessage": "Nova mensagem",
+        "NewUnassignedChat": "Novo chat não atribuído",
+        "NewUnassignedChats": "{{count}} novos chats não atribuídos",
         "TiledeskLogOut": "{{ BRAND_NAME }} Sair",
         "LogOut": "Sair"
     },

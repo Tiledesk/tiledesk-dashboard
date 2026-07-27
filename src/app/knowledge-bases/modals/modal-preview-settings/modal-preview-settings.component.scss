@@ -84,11 +84,16 @@
     text-align: center;
     transition: width 0.3s ease-in;
     font-size: 14px;
+    // Space between min/max labels and mat-slider (thumb sits on track start, not on labels)
+    gap: 8px;
 }
 
 .action-wait-slider>mat-slider {
     width: 100%;
-    margin-left: 6px;
+    min-width: 0;
+    flex: 1 1 auto;
+    margin-left: 0;
+    margin-right: 0;
 
     &.mat-slider-disabled {
         opacity: .5;
@@ -100,6 +105,10 @@
     color: #506493;
     font-size: 11px;
     font-weight: 500;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    line-height: 1;
 }
 
 .slider-output {
@@ -185,6 +194,7 @@
     color: var(--blue-20);
     cursor: pointer;
     font-weight: 500;
+    margin-left: 24px;
 }
 
 .reset-overrides:hover {

@@ -6,7 +6,7 @@
     </button>
   </div>
 
-  <div *ngIf="loading" class="analytics-new-state">
+  <div *ngIf="loading && !configError && !tokenError" class="analytics-new-state">
     <mat-spinner diameter="40"></mat-spinner>
     <p>{{ 'AnalyticsNew.Loading' | translate }}</p>
   </div>
@@ -14,17 +14,17 @@
   <div *ngIf="!loading && configError" class="analytics-new-state analytics-new-state--error">
     <p>{{ 'AnalyticsNew.ConfigurationMissing' | translate }}</p>
   </div>
- 
- 
 
   <div *ngIf="!loading && tokenError && !configError" class="analytics-new-state analytics-new-state--error">
     <p>{{ 'AnalyticsNew.TokenError' | translate }}</p>
   </div>
- 
+
+  <!-- Keep iframe in DOM while loading so (load) can clear the spinner; hide until ready. -->
   <iframe
-    *ngIf="embedUrl && !loading"
+    *ngIf="embedUrl"
     #analyticsIframe
     class="analytics-new-iframe"
+    [class.analytics-new-iframe--pending]="loading"
     [src]="embedUrl"
     title="Analytics"
     frameborder="0"

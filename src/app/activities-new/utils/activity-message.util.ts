@@ -821,6 +821,11 @@ export function renderActivity(activity: ActivityRecord): string {
     case 'REQUEST_UNASSIGNED':
       return renderRequestUnassignedMessage(activity);
 
+    case 'LEAVE_CONVERSATION': {
+      const conversation = conversationLabel(activity);
+      return `${actor} has left the conversation ${conversation}`;
+    }
+
     case 'REQUEST_CREATE': {
       const conversation = conversationLabel(activity);
       const assigneeName = str(activity.participant_fullname)

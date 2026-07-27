@@ -65,7 +65,6 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.37",
     "ng-apexcharts": "^1.7.1",
-    "ng-image-slider": "7.0.0",
     "ngx-color-picker": "^12.0.1",
     "ngx-logger": "^5.0.11",
     "ngx-moment": "^6.0.2",

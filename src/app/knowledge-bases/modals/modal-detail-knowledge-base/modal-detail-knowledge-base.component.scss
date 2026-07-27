@@ -499,16 +499,6 @@
     // margin-bottom: 4px;
 }
 
-.kb-tags-container {
-    box-sizing: border-box;
-    min-height: 20px;
-    overflow: hidden;
-}
-.kb-tags-container-with-tags {
-    margin-bottom: 12px;
-
-}
-
 .chunk {
     border: 1px solid #ccc;
     cursor: not-allowed;
@@ -607,10 +597,6 @@
 
 ::ng-deep.html-tags--expansion-panel {
     padding: 0px 0px !important;
-}
-
-.kb-tags-container.kb-tags-container-with-tags {
-    margin-bottom: 18px;
 }
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-wrapper {

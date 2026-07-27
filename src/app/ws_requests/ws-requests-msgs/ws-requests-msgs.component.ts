@@ -2275,7 +2275,7 @@ updateTagContainerHeight() {
       )
       .subscribe(async (wsrequest) => {
 
-        console.log('[WS-REQUESTS-MSGS] - sub flow getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
+        this.logger.log('[WS-REQUESTS-MSGS] - sub flow getWsRequestById$ *** wsrequest *** NIKO 2 ', wsrequest)
         this.request = wsrequest;
 
         this.logger.log('[WS-REQUESTS-MSGS] wsrequest status this.request ', this.request.status)
@@ -3163,7 +3163,7 @@ updateTagContainerHeight() {
         if (wsmsgs) {
           this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ WSMSGS lenght', wsmsgs.length)
           this.messagesList = wsmsgs;
-          console.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
+          this.logger.log('[WS-REQUESTS-MSGS] getWsMsgs$ *** this.messagesList *** ', this.messagesList);
 
 
           this.messagesList.forEach(message => {

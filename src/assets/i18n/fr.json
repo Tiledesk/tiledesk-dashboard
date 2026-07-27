@@ -430,6 +430,7 @@
             "REQUEST_ASSIGNED_SELF": "L'agent a rejoint la conversation",
             "REQUEST_ASSIGNED_MANUAL": "Attribution manuelle",
             "REQUEST_UNASSIGNED": "Agent désattribué",
+            "LEAVE_CONVERSATION": "Agent a quitté la conversation",
             "PROJECT_USER_INVITE": "Coéquipier invité",
             "PROJECT_USER_UPDATE": "Coéquipier mis à jour",
             "PROJECT_USER_DELETE": "Coéquipier supprimé",
@@ -1261,6 +1262,9 @@
         "ToManageTheMessages": "pour gérer les messages et activer les notifications push",
         "OpenTheChatToActivateNotifications": "Ouvrez le chat pour gérer les messages et activer les notifications push",
         "ClickHere": "Cliquez ici",
+        "NewMessage": "Nouveau message",
+        "NewUnassignedChat": "Nouveau chat non attribué",
+        "NewUnassignedChats": "{{count}} nouveaux chats non attribués",
         "TiledeskLogOut": "{{ BRAND_NAME }} Déconnexion",
         "LogOut": "Se déconnecter"
     },

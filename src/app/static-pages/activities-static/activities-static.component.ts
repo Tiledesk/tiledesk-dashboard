@@ -56,6 +56,36 @@ export class ActivitiesStaticComponent extends PricingBaseComponent implements O
 
   private backSub?: Subscription;
 
+  imageUrlArray = [
+    { url: 'assets/img/activities-1.png', backgroundSize: 'contain' },
+    { url: 'assets/img/activities-2.png', backgroundSize: 'contain' },
+    { url: 'assets/img/activities-3.png', backgroundSize: 'contain' },
+    { url: 'assets/img/activities-4.png', backgroundSize: 'contain' },
+  ];
+
+  imageObject = [
+    {
+      image: 'assets/img/activities-1.png',
+      thumbImage: 'assets/img/activities-1.png',
+      alt: 'activities demo image'
+    },
+    {
+      image: 'assets/img/activities-2.png',
+      thumbImage: 'assets/img/activities-2.png',
+      alt: 'activities demo image'
+    },
+    {
+      image: 'assets/img/activities-3.png',
+      thumbImage: 'assets/img/activities-3.png',
+      alt: 'activities demo image'
+    },
+    {
+      image: 'assets/img/activities-4.png',
+      thumbImage: 'assets/img/activities-4.png',
+      alt: 'activities demo image'
+    }
+  ];
+
   constructor(
     public translate: TranslateService,
     public auth: AuthService,

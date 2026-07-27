@@ -11,22 +11,26 @@
                 </label>
                 <div class="row">
                   <div class="col-12 col-sm-12">
-                    <mat-form-field class="activity-date-range-picker" appearance="standard">
-                      <mat-date-range-input [rangePicker]="picker" (click)="openDatePicker()">
-                        <input matStartDate (dateChange)="addEventStartDate($event.value)" [(ngModel)]="startDate"
-                          readonly
-                          (click)="openDatePicker()"
-                          placeholder="{{ 'ActivitiesNew.StartDate' | translate }}">
-                        <input matEndDate (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDate"
-                          readonly
-                          (click)="openDatePicker()"
-                          placeholder="{{ 'ActivitiesNew.EndDate' | translate }}">
-                      </mat-date-range-input>
-                      <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
-                        <mat-icon matDatepickerToggleIcon>clear</mat-icon>
-                      </mat-datepicker-toggle>
-                      <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
+                    <div class="td-date-range-picker-row">
+                      <mat-form-field class="td-date-range-picker" appearance="fill" floatLabel="never">
+                        <mat-date-range-input [rangePicker]="picker" (click)="openDatePicker()">
+                          <input matStartDate (dateChange)="addEventStartDate($event.value)" [(ngModel)]="startDate"
+                            readonly
+                            (click)="openDatePicker()"
+                            placeholder="{{ 'ActivitiesNew.StartDate' | translate }}">
+                          <input matEndDate (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDate"
+                            readonly
+                            (click)="openDatePicker()"
+                            placeholder="{{ 'ActivitiesNew.EndDate' | translate }}">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                      </mat-form-field>
+                      <button type="button" class="td-date-range-picker-clear" (click)="clearDateRange()"
+                        aria-label="Clear">
+                        <mat-icon>clear</mat-icon>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -645,6 +649,36 @@
                             </span>
                           </ng-template>
                           joined the conversation:
+                          <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
+                            (click)="goToRequestDetails(activity?.target?.object?.request_id)">
+                            <em>{{ activity.activity_request_text }}</em>
+                          </span>
+                        </ng-container>
+
+                        <ng-container *ngSwitchCase="'LEAVE_CONVERSATION'">
+                          <ng-container *ngIf="getAssignmentActor(activity) as actor; else leaveConversationActorFallback">
+                            <activities-bot-link
+                              *ngIf="isActivityBotActor(activity)"
+                              [label]="actor.name"
+                              [highlighted]="highlightClass(actor.profileId)"
+                              (linkClick)="onActivityBotActorClick($event, actor.profileId)">
+                            </activities-bot-link>
+                            <activities-teammate-link
+                              *ngIf="!isActivityBotActor(activity)"
+                              [label]="actor.name"
+                              [highlighted]="highlightClass(actor.profileId)"
+                              [avatarView]="getTeammateAvatarView(actor.profileId, actor.name)"
+                              [participantId]="actor.profileId"
+                              [menuTrigger]="teammateMenu"
+                              (linkClick)="handleTeammateProfileLinkClick($event, actor.profileId, activity)">
+                            </activities-teammate-link>
+                          </ng-container>
+                          <ng-template #leaveConversationActorFallback>
+                            <span [ngClass]="{'highlight': highlightClass(activity?.actor?.id)}">
+                              {{ activity.actor?.name || 'Someone' }}
+                            </span>
+                          </ng-template>
+                          has left the conversation
                           <span *ngIf="activity?.activity_request_text" class="link-to-user-profile"
                             (click)="goToRequestDetails(activity?.target?.object?.request_id)">
                             <em>{{ activity.activity_request_text }}</em>

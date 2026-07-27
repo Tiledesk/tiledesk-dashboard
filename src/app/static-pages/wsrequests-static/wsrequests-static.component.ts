@@ -36,19 +36,9 @@ export class WsrequestsStaticComponent extends PricingBaseComponent implements O
   payIsVisible: boolean;
   imageObject = [
     {
-      image: 'assets/img/new_analitycs_1_v6.png',
-      thumbImage: 'assets/img/new_analitycs_1_v6.png',
-      alt: 'analitycs demo image'
-    },
-    {
-      image: 'assets/img/new_anlitycs_2.png',
-      thumbImage: 'assets/img/new_anlitycs_2.png',
-      alt: 'analitycs demo image'
-    },
-    {
-      image: 'assets/img/new_analitycs_6.png',
-      thumbImage: 'assets/img/new_analitycs_6.png',
-      alt: 'analitycs demo image '
+      image: 'assets/img/monitor_1.png',
+      thumbImage: 'assets/img/monitor_1.png',
+      alt: 'conversations demo image'
     },
   ];
 

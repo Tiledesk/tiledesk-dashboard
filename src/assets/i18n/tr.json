@@ -431,6 +431,7 @@
             "REQUEST_ASSIGNED_SELF": "Temsilci görüşmeye katıldı",
             "REQUEST_ASSIGNED_MANUAL": "Manuel atama",
             "REQUEST_UNASSIGNED": "Temsilci ataması kaldırıldı",
+            "LEAVE_CONVERSATION": "Temsilci sohbetten ayrıldı",
             "PROJECT_USER_INVITE": "Takım arkadaşı davet edildi",
             "PROJECT_USER_UPDATE": "Takım arkadaşı güncellendi",
             "PROJECT_USER_DELETE": "Takım arkadaşı kaldırıldı",
@@ -1263,6 +1264,9 @@
         "ToManageTheMessages": "mesajları yönetmek ve push bildirimlerini etkinleştirmek için",
         "OpenTheChatToActivateNotifications": "Mesajları yönetmek ve push bildirimlerini etkinleştirmek için sohbeti açın",
         "ClickHere": "Buraya Tıkla",
+        "NewMessage": "Yeni mesaj",
+        "NewUnassignedChat": "Yeni atanmamış sohbet",
+        "NewUnassignedChats": "{{count}} yeni atanmamış sohbet",
         "TiledeskLogOut": "{{ BRAND_NAME }} Oturumu Kapat",
         "LogOut": "Çıkış Yap"
     },

@@ -430,6 +430,7 @@
             "REQUEST_ASSIGNED_SELF": "Агент присоединился к разговору",
             "REQUEST_ASSIGNED_MANUAL": "Ручное назначение",
             "REQUEST_UNASSIGNED": "Агент не назначен",
+            "LEAVE_CONVERSATION": "Агент покинул разговор",
             "PROJECT_USER_INVITE": "Участник команды приглашён",
             "PROJECT_USER_UPDATE": "Участник команды обновлён",
             "PROJECT_USER_DELETE": "Участник команды удалён",
@@ -1262,6 +1263,9 @@
         "ToManageTheMessages": "к управлять сообщениями и активировать push-уведомления",
         "OpenTheChatToActivateNotifications": "Откройте чат, чтобы управлять сообщениями и активировать push-уведомления",
         "ClickHere": "Kликните сюда",
+        "NewMessage": "Новое сообщение",
+        "NewUnassignedChat": "Новый неназначенный чат",
+        "NewUnassignedChats": "{{count}} новых неназначенных чатов",
         "TiledeskLogOut": "{{ BRAND_NAME }} Выйти",
         "LogOut": "Выйти"
     },

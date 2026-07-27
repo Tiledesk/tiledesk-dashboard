@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDateRangePicker } from '@angular/material/datepicker';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TagsService } from 'app/services/tags.service';
 import {
@@ -39,6 +40,7 @@ import { AuthService } from 'app/core/auth.service';
 })
 export class TagsAnalyticsComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
+  @ViewChild('picker') dateRangePicker?: MatDateRangePicker<Date>;
   public chartOptions: Partial<ChartOptions>;
 
   currentUserId: string;
@@ -150,6 +152,10 @@ export class TagsAnalyticsComponent implements OnInit {
     this.endDateTemp = null
     this.minEndDate = null; 
     this.maxEndDate = null; 
+  }
+
+  openDatePicker(): void {
+    this.dateRangePicker?.open();
   }
 
   onSelectStackedColmunsGraphType(areStaked) {

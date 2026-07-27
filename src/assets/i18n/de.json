@@ -430,6 +430,7 @@
 			"REQUEST_ASSIGNED_SELF": "Agent ist der Konversation beigetreten",
 			"REQUEST_ASSIGNED_MANUAL": "Manuelle Zuweisung",
 			"REQUEST_UNASSIGNED": "Agent-Zuweisung aufgehoben",
+			"LEAVE_CONVERSATION": "Agent hat die Unterhaltung verlassen",
 			"PROJECT_USER_INVITE": "Teammitglied eingeladen",
 			"PROJECT_USER_UPDATE": "Teammitglied aktualisiert",
 			"PROJECT_USER_DELETE": "Teammitglied entfernt",
@@ -1261,6 +1262,9 @@
         "ToManageTheMessages": "um Nachrichten zu senden und Benachrichtigungen zu aktivieren",
         "OpenTheChatToActivateNotifications": "Öffnen Sie den Chat um Nachrichten zu verwalten und Push-Benachrichtigungen zu aktivieren",
         "ClickHere": "Hier klicken",
+		"NewMessage": "Neue Nachricht",
+		"NewUnassignedChat": "Neuer nicht zugewiesener Chat",
+    	"NewUnassignedChats": "{{count}} neue nicht zugewiesene Chats",
         "TiledeskLogOut": "{{ BRAND_NAME }} Abmelden",
         "LogOut": "Abmelden"
     },

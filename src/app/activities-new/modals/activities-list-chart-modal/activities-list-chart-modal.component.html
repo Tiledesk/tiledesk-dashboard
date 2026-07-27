@@ -10,40 +10,44 @@
 
     <div class="teammate-activities-chart-modal__filter-row">
       <div class="teammate-activities-chart-modal__date-range-wrap">
-        <mat-form-field class="activity-date-range-picker" appearance="standard">
-          <mat-date-range-input
-            [rangePicker]="chartDatePicker"
-            [dateFilter]="chartDateFilter"
-            (click)="openChartDatePicker()">
-            <input
-              matStartDate
-              [(ngModel)]="startDate"
-              [min]="minStartDate"
-              [max]="endDate"
-              readonly
-              (click)="openChartDatePicker()"
-              (dateChange)="onStartDateChange($event.value)"
-              (dateInput)="onStartDateInput($event.value)"
-              [placeholder]="'ActivitiesNew.StartDate' | translate">
-            <input
-              matEndDate
-              [(ngModel)]="endDate"
-              [min]="startDate"
-              [max]="maxEndDate"
-              readonly
-              (click)="openChartDatePicker()"
-              (dateChange)="onEndDateChange($event.value)"
-              [placeholder]="'ActivitiesNew.EndDate' | translate">
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix (click)="clearDateRange()">
-            <mat-icon matDatepickerToggleIcon>clear</mat-icon>
-          </mat-datepicker-toggle>
-          <mat-date-range-picker
-            #chartDatePicker
-            (opened)="onPickerOpened()"
-            (closed)="onPickerClosed()">
-          </mat-date-range-picker>
-        </mat-form-field>
+        <div class="td-date-range-picker-row">
+          <mat-form-field class="td-date-range-picker" appearance="fill" floatLabel="never">
+            <mat-date-range-input
+              [rangePicker]="chartDatePicker"
+              [dateFilter]="chartDateFilter"
+              (click)="openChartDatePicker()">
+              <input
+                matStartDate
+                [(ngModel)]="startDate"
+                [min]="minStartDate"
+                [max]="endDate"
+                readonly
+                (click)="openChartDatePicker()"
+                (dateChange)="onStartDateChange($event.value)"
+                (dateInput)="onStartDateInput($event.value)"
+                [placeholder]="'ActivitiesNew.StartDate' | translate">
+              <input
+                matEndDate
+                [(ngModel)]="endDate"
+                [min]="startDate"
+                [max]="maxEndDate"
+                readonly
+                (click)="openChartDatePicker()"
+                (dateChange)="onEndDateChange($event.value)"
+                [placeholder]="'ActivitiesNew.EndDate' | translate">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matIconSuffix [for]="chartDatePicker"></mat-datepicker-toggle>
+            <mat-date-range-picker
+              #chartDatePicker
+              (opened)="onPickerOpened()"
+              (closed)="onPickerClosed()">
+            </mat-date-range-picker>
+          </mat-form-field>
+          <button type="button" class="td-date-range-picker-clear" (click)="clearDateRange()"
+            aria-label="Clear">
+            <mat-icon>clear</mat-icon>
+          </button>
+        </div>
       </div>
 
       <button

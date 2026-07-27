@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { Location } from '@angular/common';
 import { LoggerService } from '../services/logger/logger.service';
 import { PLAN_NAME, URL_understanding_default_roles } from './../utils/util';
@@ -365,7 +365,7 @@ export class NotifyService {
       icon: "warning",
       showCloseButton: true,
       showCancelButton: false,
-      confirmButtonText: "OK",
+      confirmButtonText: this.translate.instant("Ok"), 
       // confirmButtonColor: "var(--blue-light)",
       focusConfirm: false,
       // reverseButtons: true,
@@ -546,6 +546,11 @@ export class NotifyService {
 
   showUnservedNotication(sender: string, msg: string, link: string) {
     this.dashboardToastr.showUnservedNotication(sender, msg, link);
+  }
+
+  /** Fires when an unserved toast is actually shown (after burst buffer). */
+  get unservedToastPresented$(): Observable<void> {
+    return this.dashboardToastr.unservedToastPresented$.asObservable();
   }
 
   showWidgetStyleUpdateNotification(message: string, notificationColor: number, icon: string) {

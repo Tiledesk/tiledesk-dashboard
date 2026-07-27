@@ -359,12 +359,15 @@
   min-width: 0;
 }
 
-// Reset stili globali tipo input[type="text"] { border… } (es. History)
+// Reset stili globali / filter-bar tipo input[type="text"] { border, height, margin… } (es. History)
+.td-date-range-picker-row .mat-date-range-input input,
 .td-date-range-picker .mat-date-range-input input,
-.td-date-range-picker input.mat-date-range-input-inner {
+.td-date-range-picker input.mat-date-range-input-inner,
+.td-date-range-picker input {
   height: auto !important;
   width: 100% !important;
   margin: 0 !important;
+  margin-bottom: 0 !important;
   padding: 0 !important;
   border: none !important;
   border-radius: 0 !important;
@@ -372,29 +375,38 @@
   box-shadow: none !important;
   -webkit-appearance: none;
   appearance: none;
-  font-size: 14px;
-  font-weight: 400;
-  color: rgba(0, 0, 0, 0.87);
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.87) !important;
 }
 
 // Placeholder / separatore come Material (fill + label esterno, floatLabel="never")
+.td-date-range-picker-row .mat-date-range-input input::placeholder,
+.td-date-range-picker-row .mat-date-range-input input::-webkit-input-placeholder,
 .td-date-range-picker .mat-date-range-input input::placeholder,
 .td-date-range-picker input.mat-date-range-input-inner::placeholder {
-  color: rgba(0, 0, 0, 0.6);
-  opacity: 1;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.6) !important;
+  opacity: 1 !important;
 }
 
 .td-date-range-picker .mat-date-range-input input::-webkit-input-placeholder,
 .td-date-range-picker input.mat-date-range-input-inner::-webkit-input-placeholder {
-  color: rgba(0, 0, 0, 0.6);
-  opacity: 1;
-  -webkit-text-fill-color: rgba(0, 0, 0, 0.6);
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.6) !important;
 }
 
 .td-date-range-picker .mat-date-range-input input::-moz-placeholder,
 .td-date-range-picker input.mat-date-range-input-inner::-moz-placeholder {
-  color: rgba(0, 0, 0, 0.6);
-  opacity: 1;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+  opacity: 1 !important;
 }
 
 // Comportamento Material: nasconde placeholder end se start ha valore (e viceversa al focus)
@@ -407,9 +419,11 @@
   opacity: 0 !important;
 }
 
+.td-date-range-picker .mat-date-range-input,
+.td-date-range-picker .mat-date-range-input input,
+.td-date-range-picker input.mat-date-range-input-inner,
 .td-date-range-picker .mat-date-range-input-separator {
-  color: rgba(0, 0, 0, 0.87);
-  opacity: 1;
+  cursor: pointer;
 }
 
 .td-date-range-picker.mat-focused.mat-form-field-appearance-fill:not(.date-range-error) .mat-mdc-text-field-wrapper {
@@ -504,11 +518,14 @@ modal-preview-settings .action-wait-slider > mat-slider.wait-slider {
   --mdc-slider-focus-handle-color: #1f2b43;
   --mdc-slider-hover-handle-color: #1f2b43;
   --mdc-slider-active-track-color: #1f2b43;
-  --mdc-slider-inactive-track-color: #a8afc4;
+  // Slightly darker than pill (#e0e3f1) so the full track stays visible at min
+  --mdc-slider-inactive-track-color: #9aa3b8;
   --mdc-slider-with-tick-marks-active-container-color: #1f2b43;
-  --mdc-slider-with-tick-marks-inactive-container-color: #a8afc4;
+  --mdc-slider-with-tick-marks-inactive-container-color: #9aa3b8;
   --mdc-slider-label-container-color: #1f2b43;
   --mdc-slider-label-label-text-color: #f3f6ff;
+  --mdc-slider-handle-width: 14px;
+  --mdc-slider-handle-height: 14px;
   --mat-mdc-slider-ripple-color: transparent;
   --mat-mdc-slider-hover-ripple-color: transparent;
   --mat-mdc-slider-focus-ripple-color: transparent;
@@ -524,16 +541,23 @@ modal-preview-settings .action-wait-slider > mat-slider.wait-slider {
     margin-right: 0;
     min-width: 0;
     flex: 1 1 auto;
+    padding: 0;
+    box-sizing: border-box;
   }
 
+  // Default MDC: margin 0 24px (= half of 48px thumb) so track ends align with thumb
+  // center. We use a 14px knob → margin must be half of that (7px), not 0.
   &.mat-mdc-slider .mdc-slider {
     height: 26px;
-    margin: 0;
+    margin: 0 7px !important;
   }
 
-  // Re-center 48px thumb on the 2px track inside the compact host.
+  // Default thumb is 48x48 with left:-24px. Match the 14px visual knob.
   &.mat-mdc-slider .mdc-slider__thumb {
-    top: calc(50% - 24px);
+    width: 14px !important;
+    height: 14px !important;
+    left: -7px !important;
+    top: calc(50% - 7px) !important;
   }
 }
 
@@ -1135,7 +1159,7 @@ $td-slide-toggle-thumb-shadow:
   .mdc-tooltip__surface {
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: var(--header-font-family);
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
   }
@@ -1185,7 +1209,7 @@ $td-slide-toggle-thumb-shadow:
   .mdc-tooltip__surface {
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: var(--header-font-family);
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     white-space: pre-line !important;
@@ -1203,7 +1227,7 @@ $td-slide-toggle-thumb-shadow:
   .mdc-tooltip__surface {
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
   }
@@ -1217,7 +1241,19 @@ $td-slide-toggle-thumb-shadow:
   .mdc-tooltip__surface {
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.dt-table-sidebar-tooltip {
+  @include td-mat-tooltip-surface(#2d323e, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
   }
@@ -1229,7 +1265,7 @@ $td-slide-toggle-thumb-shadow:
   .mdc-tooltip__surface {
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
   }
@@ -1241,7 +1277,7 @@ $td-slide-toggle-thumb-shadow:
   .mdc-tooltip__surface {
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
   }
@@ -1259,7 +1295,7 @@ $td-slide-toggle-thumb-shadow:
   .mdc-tooltip__surface {
     font-size: var(--settings-sidebar-mat-tooltip-font-size) !important;
     border-radius: var(--settings-sidebar-mat-tooltip-border-radius) !important;
-    font-family: var(--header-font-family);
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     border: var(--settings-sidebar-mat-tooltip-border) !important;
@@ -1273,7 +1309,7 @@ $td-slide-toggle-thumb-shadow:
     font-size: 12px !important;
     line-height: 1.2;
     border-radius: 2px !important;
-    font-family: var(--header-font-family);
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     border: 1px solid #555555 !important;
@@ -1287,7 +1323,7 @@ $td-slide-toggle-thumb-shadow:
   .mdc-tooltip__surface {
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     border: 1px solid #555555 !important;
@@ -1300,7 +1336,7 @@ $td-slide-toggle-thumb-shadow:
   .mdc-tooltip__surface {
     font-size: 12px !important;
     border-radius: 2px !important;
-    font-family: "Poppins", "Roboto", "Arial", sans-serif !important;
+    font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
   }

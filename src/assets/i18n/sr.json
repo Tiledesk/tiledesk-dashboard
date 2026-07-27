@@ -430,6 +430,7 @@
             "REQUEST_ASSIGNED_SELF": "Агент се придружио разговору",
             "REQUEST_ASSIGNED_MANUAL": "Ручна додела",
             "REQUEST_UNASSIGNED": "Агент није додељен",
+            "LEAVE_CONVERSATION": "Агент је напустио разговор",
             "PROJECT_USER_INVITE": "Саиграч позван",
             "PROJECT_USER_UPDATE": "Саиграч ажуриран",
             "PROJECT_USER_DELETE": "Саиграч уклоњен",
@@ -1262,6 +1263,9 @@
         "ToManageTheMessages": "да управљате порукама и активирате пусх обавештења",
         "OpenTheChatToActivateNotifications": "Отворите ћаскање да управљате порукама и активирате пусх обавештења",
         "ClickHere": "Кликните овде",
+        "NewMessage": "Нова порука",
+        "NewUnassignedChat": "Нова недодељена ћаскање",
+        "NewUnassignedChats": "{{count}} нових недодељених ћаскања",
         "TiledeskLogOut": "{{ BRAND_NAME }} Одјавите се",
         "LogOut": "Одјавити се"
     },

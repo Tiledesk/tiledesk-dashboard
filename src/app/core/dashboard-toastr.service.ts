@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardToastrService {
+  /**
+   * Emits when an unserved toast is actually presented on screen
+   * (after burst buffering). Navbar plays the notification sound from this.
+   */
+  readonly unservedToastPresented$: Subject<void> = new Subject<void>();
   notifyArchivingRequest: ActiveToast<any> | null = null;
   private archivingProgressText = '';
   private archivingProgressShownAt = 0;
@@ -31,6 +37,29 @@ export class DashboardToastrService {
     tapToDismiss: false,
     newestOnTop: false,
   };
+
+  /**
+   * Unassigned-chat burst (top-center):
+   * - Buffer arrivals for UNSERVED_BURST_WINDOW_MS without showing yet.
+   * - If count > UNSERVED_MAX_INDIVIDUAL → one aggregate toast (no flash of individuals).
+   * - If count ≤ MAX when the window ends → show the buffered individuals.
+   */
+  private static readonly UNSERVED_BURST_WINDOW_MS = 3000;
+  private static readonly UNSERVED_MAX_INDIVIDUAL = 2;
+  private static readonly UNSERVED_TOAST_VISIBLE_MS = 6000;
+
+  private unservedBurstStartedAt = 0;
+  private unservedBurstCount = 0;
+  private unservedPending: Array<{ sender: string; msg: string; link: string }> = [];
+  private unservedFlushTimer: number | null = null;
+  private unservedAggregateToast: ActiveToast<any> | null = null;
+  private unservedAggregateLink = '';
+  private unservedAggregateDismissTimer: number | null = null;
+  private unservedMode: 'idle' | 'pending' | 'aggregate' = 'idle';
+  /** Set synchronously before scheduling render so a second create cannot race. */
+  private unservedAggregateOpen = false;
+  private unservedAggregateRenderTimer: number | null = null;
+  private unservedAggregatePendingCount = 0;
 
   /** Uscita widget: più lenta dell'entrata (350ms). */
   private static readonly WIDGET_TOAST_EXIT_MS = 800;
@@ -91,9 +120,10 @@ export class DashboardToastrService {
     _requester_avatar_initial?: string,
     _requester_avatar_bckgrnd?: string
   ): void {
+    const header = this.translate.instant('NavBar.NewMessage');
     const html = `
       <div id="foreground-not" class="td-notify-container">
-        <span class="td-notify-foreground-header">New message</span>
+        <span class="td-notify-foreground-header">${header}</span>
         <span class="td-notify-title">${sender}</span>
         <span class="td-notify-message">${msg}</span>
       </div>
@@ -120,10 +150,92 @@ export class DashboardToastrService {
     });
   }
 
+  /**
+   * Buffer arrivals for UNSERVED_BURST_WINDOW_MS so individuals never flash
+   * before an aggregate replaces them. After the window: ≤2 → individuals;
+   * >2 (or already aggregating) → exactly one aggregate toast whose count updates.
+   */
   showUnservedNotication(sender: string, msg: string, link: string): void {
+    const now = Date.now();
+
+    // Aggregate session open: never create another toast — only bump count.
+    if (this.unservedAggregateOpen || this.unservedMode === 'aggregate') {
+      this.unservedMode = 'aggregate';
+      this.unservedAggregateOpen = true;
+      this.unservedBurstCount += 1;
+      this.unservedAggregateLink = link || this.unservedAggregateLink;
+      this.showOrUpdateUnservedAggregateToast(this.unservedBurstCount, link);
+      return;
+    }
+
+    const inPendingWindow =
+      this.unservedMode === 'pending' &&
+      this.unservedBurstStartedAt > 0 &&
+      now - this.unservedBurstStartedAt < DashboardToastrService.UNSERVED_BURST_WINDOW_MS;
+
+    if (!inPendingWindow) {
+      this.clearUnservedFlushTimer();
+      this.unservedPending = [];
+      this.unservedBurstStartedAt = now;
+      this.unservedBurstCount = 0;
+      this.unservedMode = 'pending';
+    }
+
+    this.unservedBurstCount += 1;
+    this.unservedPending.push({ sender, msg, link });
+    this.unservedAggregateLink = link || this.unservedAggregateLink;
+
+    if (this.unservedBurstCount > DashboardToastrService.UNSERVED_MAX_INDIVIDUAL) {
+      this.clearUnservedFlushTimer();
+      this.unservedPending = [];
+      this.unservedMode = 'aggregate';
+      this.unservedAggregateOpen = true; // before show — blocks concurrent creates
+      this.showOrUpdateUnservedAggregateToast(this.unservedBurstCount, link);
+      return;
+    }
+
+    this.scheduleUnservedFlush();
+  }
+
+  private scheduleUnservedFlush(): void {
+    this.clearUnservedFlushTimer();
+    const elapsed = Date.now() - this.unservedBurstStartedAt;
+    const remaining = Math.max(0, DashboardToastrService.UNSERVED_BURST_WINDOW_MS - elapsed);
+    this.unservedFlushTimer = window.setTimeout(() => {
+      this.unservedFlushTimer = null;
+      this.flushUnservedPendingAsIndividuals();
+    }, remaining);
+  }
+
+  private flushUnservedPendingAsIndividuals(): void {
+    if (this.unservedMode !== 'pending') {
+      return;
+    }
+    const pending = this.unservedPending.splice(0);
+    this.unservedMode = 'idle';
+    this.unservedBurstStartedAt = 0;
+    this.unservedBurstCount = 0;
+
+    if (pending.length === 0) {
+      return;
+    }
+
+    // Play sound once, when the first individual toast becomes visible.
+    pending.forEach((item, index) => {
+      this.showUnservedIndividualToast(item.sender, item.msg, item.link, index === 0);
+    });
+  }
+
+  private showUnservedIndividualToast(
+    sender: string,
+    msg: string,
+    link: string,
+    playSoundOnShown = false
+  ): void {
+    const header = this.translate.instant('NavBar.NewUnassignedChat');
     const html = `
       <div class="td-notify-container">
-        <span class="td-notify-header">New unassigned chat</span>
+        <span class="td-notify-header">${header}</span>
         <span class="td-notify-title">${sender}</span>
         <span class="td-notify-message">${msg}</span>
       </div>
@@ -136,15 +248,226 @@ export class DashboardToastrService {
       if (el) {
         el.classList.add('fadeInDown');
       }
+      if (playSoundOnShown) {
+        this.unservedToastPresented$.next();
+      }
     });
 
-    setTimeout(() => this.dismissForegroundToast(toast), 6000);
+    setTimeout(
+      () => this.dismissForegroundToast(toast),
+      DashboardToastrService.UNSERVED_TOAST_VISIBLE_MS
+    );
 
     toast.onTap.subscribe(() => {
       this.dismissForegroundToast(toast, () => {
         window.location.href = link;
       });
     });
+  }
+
+  private buildUnservedAggregateHtml(count: number): string {
+    const header = this.translate.instant('NavBar.NewUnassignedChat');
+    const title = this.translate.instant('NavBar.NewUnassignedChats', { count });
+    return `
+      <div class="td-notify-container">
+        <span class="td-notify-header">${header}</span>
+        <span class="td-notify-title">${title}</span>
+      </div>
+    `;
+  }
+
+  /**
+   * Coalesce rapid burst updates into a single render tick so we never
+   * briefly create a toast at count=3 and another at count=10.
+   */
+  private showOrUpdateUnservedAggregateToast(count: number, link: string): void {
+    this.unservedAggregatePendingCount = count;
+    this.unservedAggregateLink = link || this.unservedAggregateLink;
+    if (this.unservedAggregateRenderTimer != null) {
+      return;
+    }
+    this.unservedAggregateRenderTimer = window.setTimeout(() => {
+      this.unservedAggregateRenderTimer = null;
+      this.flushUnservedAggregateRender();
+    }, 0);
+  }
+
+  private flushUnservedAggregateRender(): void {
+    const count = this.unservedAggregatePendingCount;
+    const html = this.buildUnservedAggregateHtml(count);
+    // Aggregate click → Monitor page (not a single conversation).
+    const monitorLink = this.toUnservedMonitorLink(this.unservedAggregateLink);
+
+    if (this.unservedAggregateToast != null) {
+      this.applyUnservedAggregateHtml(this.unservedAggregateToast, html);
+      this.purgeExtraUnservedAggregateToasts(this.unservedAggregateToast.toastId);
+      this.scheduleUnservedAggregateDismiss();
+      return;
+    }
+
+    // Create exactly one; wipe any leftover aggregates first.
+    this.purgeExtraUnservedAggregateToasts(null);
+
+    const toast = this.toastr.show(html, '', {
+      ...this.foregroundToastConfig,
+      toastClass:
+        'ngx-toastr td-notify-toast td-unserved-aggregate-toast alert alert-minimalist-pooled animated',
+    });
+    this.unservedAggregateToast = toast;
+    this.unservedAggregateOpen = true;
+    this.unservedMode = 'aggregate';
+
+    toast.onShown.subscribe(() => {
+      const el = toast.portal?.location?.nativeElement as HTMLElement | undefined;
+      if (el) {
+        el.classList.add('fadeInDown', 'td-unserved-aggregate-toast');
+      }
+      // First time the aggregate is visible — sync sound with toast.
+      this.unservedToastPresented$.next();
+    });
+
+    this.scheduleUnservedAggregateDismiss();
+
+    toast.onTap.subscribe(() => {
+      this.clearUnservedAggregateDismissTimer();
+      const href = this.toUnservedMonitorLink(this.unservedAggregateLink) || monitorLink;
+      this.dismissForegroundToast(toast, () => {
+        if (href) {
+          window.location.href = href;
+        }
+      });
+    });
+
+    toast.onHidden.subscribe(() => {
+      if (
+        this.unservedAggregateToast != null &&
+        this.unservedAggregateToast.toastId === toast.toastId
+      ) {
+        this.resetUnservedAggregateState();
+      }
+    });
+  }
+
+  /**
+   * Conversation toast link: `#/project/:id/wsrequest/:rid/messages`
+   * Aggregate toast link: `#/project/:id/wsrequests` (Monitor).
+   */
+  private toUnservedMonitorLink(conversationLink: string): string {
+    if (!conversationLink) {
+      return '';
+    }
+    const match = conversationLink.match(/^(#\/project\/[^/?#]+)/);
+    if (match) {
+      return `${match[1]}/wsrequests`;
+    }
+    return conversationLink;
+  }
+
+  /** Remove every aggregate toast except the one we intend to keep (if any). */
+  private purgeExtraUnservedAggregateToasts(keepToastId: number | null): void {
+    for (const t of [...this.toastr.toasts]) {
+      if (keepToastId != null && t.toastId === keepToastId) {
+        continue;
+      }
+      if (this.isUnservedAggregateToast(t)) {
+        this.toastr.remove(t.toastId);
+      }
+    }
+    const keepEl =
+      keepToastId != null && this.unservedAggregateToast != null
+        ? (this.unservedAggregateToast.portal?.location?.nativeElement as HTMLElement | undefined)
+        : null;
+    document.querySelectorAll('.td-unserved-aggregate-toast').forEach((node) => {
+      if (keepEl && node === keepEl) {
+        return;
+      }
+      node.remove();
+    });
+  }
+
+  private isUnservedAggregateToast(t: ActiveToast<any>): boolean {
+    const el = t.portal?.location?.nativeElement as HTMLElement | undefined;
+    if (el?.classList?.contains('td-unserved-aggregate-toast')) {
+      return true;
+    }
+    const msg = typeof t.message === 'string' ? t.message : '';
+    if (
+      msg.includes('td-notify-header') &&
+      !msg.includes('class="td-notify-message"') &&
+      !msg.includes("class='td-notify-message'")
+    ) {
+      const lower = msg.toLowerCase();
+      if (lower.includes('new unassigned chats') || lower.includes('nuove chat non assegnate')) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private applyUnservedAggregateHtml(toast: ActiveToast<any>, html: string): void {
+    toast.message = html;
+    const inst = toast.toastRef?.componentInstance as { message?: string } | undefined;
+    if (inst) {
+      inst.message = html;
+    }
+    try {
+      (toast.portal as any)?.changeDetectorRef?.detectChanges?.();
+    } catch {
+      /* ignore */
+    }
+    const el = toast.portal?.location?.nativeElement as HTMLElement | undefined;
+    if (!el) {
+      return;
+    }
+    let msgEl = el.querySelector('.toast-message') as HTMLElement | null;
+    if (!msgEl) {
+      msgEl = document.createElement('div');
+      msgEl.className = 'toast-message';
+      el.appendChild(msgEl);
+    }
+    msgEl.innerHTML = html;
+  }
+
+  private resetUnservedAggregateState(): void {
+    this.unservedAggregateToast = null;
+    this.unservedAggregateOpen = false;
+    this.unservedMode = 'idle';
+    this.unservedBurstStartedAt = 0;
+    this.unservedBurstCount = 0;
+    this.unservedAggregateLink = '';
+    this.unservedPending = [];
+    this.unservedAggregatePendingCount = 0;
+    if (this.unservedAggregateRenderTimer != null) {
+      window.clearTimeout(this.unservedAggregateRenderTimer);
+      this.unservedAggregateRenderTimer = null;
+    }
+  }
+
+  private scheduleUnservedAggregateDismiss(): void {
+    this.clearUnservedAggregateDismissTimer();
+    this.unservedAggregateDismissTimer = window.setTimeout(() => {
+      const toast = this.unservedAggregateToast;
+      if (toast) {
+        this.dismissForegroundToast(toast, () => this.resetUnservedAggregateState());
+      } else {
+        this.purgeExtraUnservedAggregateToasts(null);
+        this.resetUnservedAggregateState();
+      }
+    }, DashboardToastrService.UNSERVED_TOAST_VISIBLE_MS);
+  }
+
+  private clearUnservedAggregateDismissTimer(): void {
+    if (this.unservedAggregateDismissTimer != null) {
+      window.clearTimeout(this.unservedAggregateDismissTimer);
+      this.unservedAggregateDismissTimer = null;
+    }
+  }
+
+  private clearUnservedFlushTimer(): void {
+    if (this.unservedFlushTimer != null) {
+      window.clearTimeout(this.unservedFlushTimer);
+      this.unservedFlushTimer = null;
+    }
   }
 
   showWidgetStyleUpdateNotification(message: string, notificationColor: number, icon: string): void {

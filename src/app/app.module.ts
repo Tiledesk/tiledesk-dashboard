@@ -277,7 +277,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { MomentModule } from 'ngx-moment';
-import { NgImageSliderModule } from 'ng-image-slider';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -719,7 +718,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     NgApexchartsModule,
     DragDropModule,
     CreditCardDirectivesModule,
-    NgImageSliderModule,
     MomentModule,
     // ColorPickerModule, // moved in WidgetSetUpModule
     MatTooltipModule,

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { BotsStaticComponent } from './bots-static.component';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { NgImageSliderModule } from 'ng-image-slider';
+import { StaticPagesCarouselModule } from '../static-pages-carousel/static-pages-carousel.module';
 
 const routes: Routes = [
   { path: "", component: BotsStaticComponent},
@@ -17,7 +17,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     TranslateModule,
-    NgImageSliderModule
+    StaticPagesCarouselModule,
   ]
 })
 export class BotsStaticModule { }

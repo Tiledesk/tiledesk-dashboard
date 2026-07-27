@@ -2208,6 +2208,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
   notifyLastUnserved() {
+    this.notifyService.unservedToastPresented$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        this.playSoundForUnservedNotifications();
+      });
+
     this.subscription = this.wsRequestsService.wsRequestsList$
       .pipe(
         takeUntil(this.unsubscribe$)
@@ -2222,7 +2228,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.logger.log('[NAVBAR] notifyLastUnserved - unservedCount  ', unservedCount)
         // if (requests) {
         if (unservedCount) {
-          let count = 0;
           // requests.forEach(r => {
           unserved.forEach(r => {
 
@@ -2231,7 +2236,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             // --------------------------------------------------------------------------
             const storedRequest = localStorage.getItem(r.id + '_' + r.status);
             // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
-            count = count + 1;
             // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
             if (r.status === 100 && !storedRequest && this.user !== null) {
 
@@ -2239,28 +2243,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
               // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
               if (this.ROLE_IS_AGENT === true) {
                 if (this.hasmeInAgents(r.agents) === true) {
-
-
-                  this.logger.log('[NAVBAR] notifyLastUnserved - count A ', count)
                   this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count ', unservedCount)
                   this.displayUnservedInAppNotification(r)
-                  if (unservedCount === count) {
-                    this.logger.log('[NAVBAR] notifyLastUnserved - count A HERE', count)
-                    this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count A HERE', unservedCount)
-                    this.playSoundForUnservedNotifications();
-                  }
                 }
               } else {
-
-                this.logger.log('[NAVBAR] notifyLastUnserved - count B', count)
                 this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count B', unservedCount)
                 this.displayUnservedInAppNotification(r)
-
-                if (unservedCount === count) {
-                  this.logger.log('[NAVBAR] notifyLastUnserved - count B HERE', count)
-                  this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count B HERE', unservedCount)
-                  this.playSoundForUnservedNotifications();
-                }
               }
             }
           });

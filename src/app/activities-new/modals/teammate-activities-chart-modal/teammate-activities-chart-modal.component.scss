@@ -32,23 +32,7 @@
   width: 100%;
   max-width: 340px;
   min-width: 240px;
-
-  .activity-date-range-picker {
-    width: 100%;
-    margin: 0;
-    font-size: 14px;
-
-    ::ng-deep .mat-date-range-input {
-      cursor: pointer;
-    }
-
-    ::ng-deep input.mat-start-date,
-    ::ng-deep input.mat-end-date,
-    ::ng-deep .mat-date-range-input-separator {
-      font-size: 14px;
-      cursor: pointer;
-    }
-  }
+  // Date range: material-mdc-overrides.scss (.td-date-range-picker*)
 }
 
 .teammate-activities-chart-modal__apply-btn {

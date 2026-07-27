@@ -75,40 +75,8 @@
 .activities-new-filter__date-col {
   padding-left: 2px;
   padding-right: 15px;
-}
 
-.activities-new .filter-card .activity-date-range-picker.mat-form-field-type-mat-date-range-input {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-
-  ::ng-deep .mat-date-range-input {
-    cursor: pointer;
-  }
-
-  ::ng-deep input.mat-start-date,
-  ::ng-deep input.mat-end-date,
-  ::ng-deep .mat-date-range-input-separator {
-    cursor: pointer;
-  }
-
-  ::ng-deep .mat-form-field-wrapper {
-    width: 100%;
-    margin: 0;
-  }
-
-  ::ng-deep .mat-form-field-wrapper .mat-form-field-flex {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  ::ng-deep .mat-form-field-wrapper .mat-form-field-flex .mat-form-field-infix {
-    width: 220px;
-    max-width: 220px;
-    box-sizing: border-box;
-  }
+  // Date range: material-mdc-overrides.scss (.td-date-range-picker*)
 }
 
 .activities-new-list-header {

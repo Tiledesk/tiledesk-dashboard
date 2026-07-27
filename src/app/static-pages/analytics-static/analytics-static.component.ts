@@ -40,26 +40,26 @@ export class AnalyticsStaticComponent extends PricingBaseComponent implements On
   appSumoProfilefeatureAvailableFromBPlan: string;
 
   imageUrlArray = [
-    { url: 'assets/img/new_analitycs_1_v6.png', backgroundSize: 'contain' },
-    { url: 'assets/img/new_anlitycs_2.png', backgroundSize: 'contain' },
-    { url: 'assets/img/new_analitycs_6.png', backgroundSize: 'contain' },
+    { url: 'assets/img/analytics-1.png', backgroundSize: 'contain' },
+    { url: 'assets/img/analytics-2.png', backgroundSize: 'contain' },
+    { url: 'assets/img/analytics-3.png', backgroundSize: 'contain' },
   ];
 
   imageObject = [
     {
-      image: 'assets/img/new_analitycs_1_v6.png',
-      thumbImage: 'assets/img/new_analitycs_1_v6.png',
-      alt: 'analitycs demo image'
+      image: 'assets/img/analytics-1.png',
+      thumbImage: 'assets/img/analytics-1.png',
+      alt: 'analytics demo image'
     },
     {
-      image: 'assets/img/new_anlitycs_2.png',
-      thumbImage: 'assets/img/new_anlitycs_2.png',
-      alt: 'analitycs demo image'
+      image: 'assets/img/analytics-2.png',
+      thumbImage: 'assets/img/analytics-2.png',
+      alt: 'analytics demo image'
     },
     {
-      image: 'assets/img/new_analitycs_6.png',
-      thumbImage: 'assets/img/new_analitycs_6.png',
-      alt: 'analitycs demo image '
+      image: 'assets/img/analytics-3.png',
+      thumbImage: 'assets/img/analytics-3.png',
+      alt: 'analytics demo image '
     },
   ];
 

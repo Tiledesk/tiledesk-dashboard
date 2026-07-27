@@ -447,18 +447,20 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
    * Rimuove temporaneamente l'altezza forzata per misurare correttamente l'altezza naturale
    */
   private updateTagContainerHeight(): void {
-    if (!this.kbTagsContainer?.nativeElement) return;
+    if (!this.kbTagsContainer) return;
 
-    // Se non ci sono tag, mantieni un'altezza minima fissa (20px)
+    // Keep a fixed min height when empty (same as add-content modals)
     if (this.kbTagsArray.length === 0) {
-      this.tagContainerElementHeight = '20px';
+      this.tagContainerElementHeight = '8px';
       return;
     }
 
     const element = this.kbTagsContainer.nativeElement as HTMLElement;
-    element.style.removeProperty('height');
+    const currentHeight = element.style.height;
+    element.style.height = 'auto';
     void element.offsetHeight;
-    const naturalHeight = Math.max(element.scrollHeight, 20);
+    const naturalHeight = element.offsetHeight;
+    element.style.height = currentHeight;
     this.tagContainerElementHeight = naturalHeight + 'px';
   }
   

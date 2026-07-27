@@ -429,6 +429,7 @@
             "REQUEST_ASSIGNED_SELF": "Agent suhbatga qo'shildi",
             "REQUEST_ASSIGNED_MANUAL": "Qo'lda tayinlash",
             "REQUEST_UNASSIGNED": "Agent tayinlanmadi",
+            "LEAVE_CONVERSATION": "Agent suhbatni tark etdi",
             "PROJECT_USER_INVITE": "Jamoa a'zosi taklif qilindi",
             "PROJECT_USER_UPDATE": "Jamoa a'zosi yangilandi",
             "PROJECT_USER_DELETE": "Jamoa a'zosi olib tashlandi",
@@ -1261,6 +1262,9 @@
         "ToManageTheMessages": "xabarlarni boshqarish va push-bildirishnomalarni faollashtirish uchun",
         "OpenTheChatToActivateNotifications": "Xabarlarni boshqarish va push bildirishnomalarini faollashtirish uchun chatni oching",
         "ClickHere": "bu yerni bosing",
+        "NewMessage": "Yangi xabar",
+        "NewUnassignedChat": "Yangi tayinlanmagan chat",
+        "NewUnassignedChats": "{{count}} yangi tayinlanmagan chat",
         "TiledeskLogOut": "{{ BRAND_NAME }} Chiqish",
         "LogOut": "Chiqish"
     },

@@ -28,13 +28,9 @@ export class AutomationStaticComponent extends PricingBaseComponent implements O
   tparams: any;
   imageObject = [
     {
-      image: 'assets/img/automations-static.jpeg',
-      thumbImage: 'assets/img/automations-static.jpeg'
+      image: 'assets/img/automations-static-v3.png',
+      thumbImage: 'assets/img/automations-static-v3.png'
     },
-    // {
-    //   image: 'assets/img/contacts-static-2.png',
-    //   thumbImage: 'assets/img/contacts-static-2.png'
-    // }
   ];
 
   prjct_profile_type: string;

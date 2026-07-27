@@ -236,7 +236,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
             lastname: user.id_user.lastname,
             email: user.id_user?.email,
           }));
-          console.log('[ActivitiesNewComponent] getAllProjectUsers agentsList', this.agentsList);
+          this.logger.log('[ActivitiesNewComponent] getAllProjectUsers agentsList', this.agentsList);
 
           if (this.usersActivities?.length) {
             this.usersActivities = this.usersActivities.map((activity) => this.enrichActivity(activity));
@@ -260,7 +260,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
         firstname: `${bot.name} (bot)`,
         lastname: '',
       }));
-      console.log('[ActivitiesNewComponent] getAllBots debugBotsList', this.debugBotsList);
+      this.logger.log('[ActivitiesNewComponent] getAllBots debugBotsList', this.debugBotsList);
 
       if (this.usersActivities?.length) {
         this.usersActivities = this.usersActivities.map((activity) => this.enrichActivity(activity));
@@ -1241,6 +1241,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       'REQUEST_ASSIGNED_MANUAL',
       'REQUEST_ASSIGNED_SELF',
       'REQUEST_UNASSIGNED',
+      'LEAVE_CONVERSATION',
     ].includes(effectiveVerb(activity));
   }
 

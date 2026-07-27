@@ -595,12 +595,10 @@
 
                   <p style="color:#7695a5; font-size: 14px;line-height: 1.3;">
                     {{ "BotsPage.ExternabotQuickTips" | translate: tparams }}
-                    <span *ngIf="hideHelpLink" class="link-in-right-sidebar"
+                    <!-- <span *ngIf="hideHelpLink" class="link-in-right-sidebar"
                       (click)="openExternalBotIntegrationTutorial()">
-                      <!-- {{ "HereTheTutorial" | translate: tparams }} -->
                       {{ "HereThe_Tutorial" | translate }}
-
-                    </span>
+                    </span> -->
                   </p>
                 </section>
                 <!-- ./ end section External -->
@@ -915,7 +913,7 @@
         </span>
 
         <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
-          <h4 *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
+          <h4 *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false" style="font-size: 14px;"
             [innerHTML]="'DoYouWantToActivateExtBotForOneOfTheFollowingDepts' | translate: translateparamBotName ">
           </h4>
         </span>
@@ -924,7 +922,7 @@
           <div class="row">
             <div class="col-12">
               <div class="select-dept-without-bot-wpr" *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
-                style="padding-right: 26px; padding-left: 26px;">
+                style="padding-right: 26px; padding-left: 26px; font-size:14px" >
                 <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"
                   placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_bot_id"
                   (change)="onSelectBotId()">
@@ -963,7 +961,7 @@
               <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round"
                 stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
             </svg>
-            <h5 style="color:#73AF55;"> {{'BotSuccessfullyActivated' | translate }}</h5>
+            <h5 style="color:#73AF55; font-size: 14px;margin-top: 12px;margin-bottom: 0px !important;font-weight: 400 !important;"> {{'BotSuccessfullyActivated' | translate }}</h5>
 
           </span>
           <span *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR">
@@ -978,7 +976,7 @@
             </svg>
 
 
-            <h5 style="color:#D06079;"> {{'AnErroOccurredWhileActivatingTheExtBot' | translate }}</h5>
+            <h5 style="color:#D06079;font-size: 14px;margin-top: 12px;margin-bottom: 0px !important;font-weight: 400 !important;"> {{'AnErroOccurredWhileActivatingTheExtBot' | translate }}</h5>
           </span>
         </div>
       </div> <!-- /.modal-body -->

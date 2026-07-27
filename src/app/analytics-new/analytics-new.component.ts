@@ -93,6 +93,8 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
   }
 
   onAnalyticsIframeLoad(): void {
+    // Spinner covers token fetch + iframe boot; clear only when embed has loaded.
+    this.loading = false;
     this.flushPendingKbChartClickToIframe();
   }
 
@@ -146,9 +148,9 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
         console.log('[AnalyticsNew] resp ', resp);
         const sep = embedBase.includes('?') ? '&' : '?';
         const url = `${embedBase}${sep}token=${encodeURIComponent(resp.token)}`;
+        // Keep loading=true until iframe (load); only set URL so the embed can start.
         this.embedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
         console.log('[AnalyticsNew] embedUrl ',  this.embedUrl);
-        this.loading = false;
         if (this.refreshTimer) {
           clearTimeout(this.refreshTimer);
         }

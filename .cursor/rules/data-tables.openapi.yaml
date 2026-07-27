@@ -685,7 +685,7 @@ components:
         _id:
           type: string
       additionalProperties: true
-      description: `_id` + campi schema; mancanti = null
+      description: _id + campi schema; mancanti = null
       example:
         _id: 6a217a72d154149630eac748
         name: John Doe

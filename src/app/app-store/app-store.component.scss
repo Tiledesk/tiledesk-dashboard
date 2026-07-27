@@ -18,9 +18,26 @@
     // border: 1px solid #e5effe;
     margin-top: 15px !important;
     border-radius: 12px !important;
+    height: 253px;
+    max-height: 253px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     // transition: border 0s,box-shadow 0.4s ease-out,transform 0.4s ease-out,opacity 0.4s ease-out;
     // transition-delay: 0.1s;
     // transform: translateZ(0);
+}
+
+.card-app-store > .card-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-app-store > .card-footer-app-store {
+    flex-shrink: 0;
 }
 
 // .card-app-store:hover {
@@ -39,13 +56,16 @@
 .app-store-right-col-btn {
     display: block;
     text-align: center;
-    padding: 10px 0;
+    padding: 0;
+    height: 36px;
+    line-height: 36px;
 }
 
 .app-store-right-col-btn>a {
     color: var(--blue-20);
     font-weight: 400;
     font-family: var(--header-font-family);
+    text-decoration: none;
 }
 
 
@@ -59,7 +79,9 @@
 .app-store-left-col-btn {
     display: block;
     text-align: center;
-    padding: 10px 0;
+    padding: 0;
+    height: 36px;
+    line-height: 36px;
     border-right: 0.5px solid #e5effe;
 }
 
@@ -76,13 +98,36 @@
 }
 
 .card-footer-app-store {
-    margin: 0 15px 0px;
-    padding-top: 0px;
+    margin: 0;
+    padding: 0;
     border-top: 1px solid #e5effe;
     background: #fff;
     font-size: 14px;
-    padding-bottom: 0px;
-    margin: 0px 5px;
+    height: 36px;
+    max-height: 36px;
+    overflow: hidden;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.card-footer-app-store > .row {
+    display: flex !important;
+    height: 36px;
+    margin: 0;
+    width: 100%;
+}
+
+.card-footer-app-store > .row > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+    float: none;
+    flex: 1 1 0;
+    max-width: none;
+    width: auto;
+}
+
+.card-footer-app-store > .row > [class*="col-"]:last-child {
+    border-bottom-right-radius: 12px;
 }
 
 .app-card-icon {
@@ -110,7 +155,8 @@
 
 .app-installed-wpr {
     background-color: #7aeb8d;
-    height: 41px;
+    height: 36px;
+    max-height: 36px;
     border-bottom-right-radius: 12px;
 }
 
@@ -169,7 +215,7 @@
 .card-create-app-icon-wpr {
     color: #f0806f;
     text-align: center;
-    padding-top: 25px;
+    padding-top: 0;
 }
 
 .card-create-app-text {
@@ -184,6 +230,11 @@
 
 .create-app-card {
     cursor: pointer;
+
+    > .card-content {
+        justify-content: center;
+        align-items: center;
+    }
 }
 
 .create-app-card:hover {

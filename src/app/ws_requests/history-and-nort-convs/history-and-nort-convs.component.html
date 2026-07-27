@@ -216,11 +216,15 @@
                   <div class="col-sm-12 left-date-picker">
                     <div class="td-date-range-picker-row">
                       <mat-form-field class="td-date-range-picker" appearance="fill" floatLabel="never">
-                        <mat-date-range-input [rangePicker]="picker">
+                        <mat-date-range-input [rangePicker]="picker" (click)="openDatePicker()">
                           <input (dateChange)="addEventStartDate($event.value)"
                             (ngModelChange)="onChangeStartDate($event)" [(ngModel)]="startDateDefaultValue" matStartDate
+                            readonly
+                            (click)="openDatePicker()"
                             placeholder="{{'StartDate' | translate}}">
                           <input (dateChange)="addEventEndDate($event.value)" [(ngModel)]="endDateDefaultValue" matEndDate
+                            readonly
+                            (click)="openDatePicker()"
                             placeholder="{{'EndDate' | translate}}">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>

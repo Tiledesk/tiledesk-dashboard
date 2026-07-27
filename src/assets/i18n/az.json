@@ -344,6 +344,7 @@
             "REQUEST_ASSIGNED_SELF": "Agent söhbətə qoşuldu",
             "REQUEST_ASSIGNED_MANUAL": "Əl ilə təyinat",
             "REQUEST_UNASSIGNED": "Agentin təyinatı ləğv edildi",
+            "LEAVE_CONVERSATION": "Agent söhbəti tərk etdi",
             "PROJECT_USER_INVITE": "Komanda yoldaşı dəvət edildi",
             "PROJECT_USER_UPDATE": "Komanda yoldaşı yeniləndi",
             "PROJECT_USER_DELETE": "Komanda yoldaşı silindi",
@@ -1176,6 +1177,9 @@
         "ToManageTheMessages": "mesajları idarə etmək və təkan bildirişlərini aktivləşdirmək üçün",
         "OpenTheChatToActivateNotifications": "Mesajları idarə etmək və təkan bildirişlərini aktivləşdirmək üçün söhbəti açın",
         "ClickHere": "Bura basın",
+        "NewMessage": "Yeni mesaj",
+        "NewUnassignedChat": "Yeni təyin edilməmiş söhbət",
+        "NewUnassignedChats": "{{count}} yeni təyin edilməmiş söhbət",
         "TiledeskLogOut": "{{ BRAND_NAME }} Çıxış",
         "LogOut": "Çıxış"
     },

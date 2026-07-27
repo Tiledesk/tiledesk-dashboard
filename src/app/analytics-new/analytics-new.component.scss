@@ -20,6 +20,15 @@
   width: 100%;
   min-height: 0;
   border: 0;
+
+  // Keep real size while token/iframe boot so (load) fires; overlay spinner sits on top.
+  &--pending {
+    visibility: hidden;
+    position: absolute;
+    inset: 0;
+    top: 56px; // below toolbar
+    z-index: 0;
+  }
 }
 
 .analytics-new-state {
@@ -32,6 +41,8 @@
   padding: 24px;
   text-align: center;
   color: #566787;
+  position: relative;
+  z-index: 1;
 }
 
 .analytics-new-state--error {

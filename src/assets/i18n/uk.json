@@ -430,6 +430,7 @@
             "REQUEST_ASSIGNED_SELF": "Агент приєднався до розмови",
             "REQUEST_ASSIGNED_MANUAL": "Ручне призначення",
             "REQUEST_UNASSIGNED": "Агент не призначений",
+            "LEAVE_CONVERSATION": "Агент залишив розмову",
             "PROJECT_USER_INVITE": "Учасника команди запрошено",
             "PROJECT_USER_UPDATE": "Учасника команди оновлено",
             "PROJECT_USER_DELETE": "Учасника команди видалено",
@@ -1262,6 +1263,9 @@
         "ToManageTheMessages": "Керувати повідомленнями та активувати push-повідомлення",
         "OpenTheChatToActivateNotifications": "Відкрийте чат, щоб керувати повідомленнями та активувати push-повідомлення",
         "ClickHere": "Натисніть тут",
+        "NewMessage": "Нове повідомлення",
+        "NewUnassignedChat": "Новий нерозподілений чат",
+        "NewUnassignedChats": "{{count}} нових нерозподілених чатів",
         "TiledeskLogOut": "{{ ім'я компанії}} Вийти",
         "LogOut": "Вийти"
     },

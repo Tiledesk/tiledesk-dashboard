@@ -430,6 +430,7 @@
             "REQUEST_ASSIGNED_SELF": "Агент өтінішке қосылды",
             "REQUEST_ASSIGNED_MANUAL": "Қолмен тағайындау",
             "REQUEST_UNASSIGNED": "Агент тағайындалмады",
+            "LEAVE_CONVERSATION": "Агент әңгімеден шықты",
             "PROJECT_USER_INVITE": "Команда мүшесі шақырылды",
             "PROJECT_USER_UPDATE": "Команда мүшесі жаңартылды",
             "PROJECT_USER_DELETE": "Команда мүшесі жойылды",
@@ -1261,6 +1262,9 @@
         "ToManageTheMessages": "хабарларды басқару және push хабарландыруларын белсендіру",
         "OpenTheChatToActivateNotifications": "Хабарларды басқару және push хабарландыруларын белсендіру үшін чатты ашыңыз",
         "ClickHere": "Мында басыңыз",
+        "NewMessage": "Жаңа хабарлама",
+        "NewUnassignedChat": "Жаңа тағайындалмаған чат",
+        "NewUnassignedChats": "{{count}} жаңа тағайындалмаған чат",
         "TiledeskLogOut": "{{ BRAND_NAME }} Шығу",
         "LogOut": "Шығу"
     },

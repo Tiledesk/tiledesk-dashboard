@@ -1,7 +1,7 @@
 @import "./src/assets/sass/md/_variables.scss";
 
-// Solo filtri avanzati (non date range in .left-date-picker)
-.filter-bar-advanced-options input[type="text"],
+// Solo filtri avanzati (non date range Material in .left-date-picker)
+.filter-bar-advanced-options input[type="text"]:not(.mat-start-date):not(.mat-end-date):not(.mat-date-range-input-inner),
 .filter-bar-advanced-options input[type="email"] {
   height: 36px;
   font-size: 14px;
@@ -273,13 +273,13 @@ input:-webkit-autofill:active {
 }
 
 // PLACEHOLDER CUSTOM FONT-SIZE (esclude date range Material)
-.filter-bar-advanced-options input[type="text"]::placeholder,
+.filter-bar-advanced-options input[type="text"]:not(.mat-start-date):not(.mat-end-date):not(.mat-date-range-input-inner)::placeholder,
 .filter-bar-advanced-options input[type="email"]::placeholder,
 .search-field::placeholder {
   font-size: 0.9em !important;
 }
 
-.filter-bar-advanced-options input[type="text"]::-ms-input-placeholder,
+.filter-bar-advanced-options input[type="text"]:not(.mat-start-date):not(.mat-end-date):not(.mat-date-range-input-inner)::-ms-input-placeholder,
 .filter-bar-advanced-options input[type="email"]::-ms-input-placeholder,
 .search-field::-ms-input-placeholder {
   font-size: 0.9em !important;
@@ -807,31 +807,7 @@ p.member:hover {
 }
 .left-date-picker {
   font-size: 14px;
-
-  // Date range: annulla stili .filter-bar-advanced-options input[…] sopra
-  .td-date-range-picker-row .mat-date-range-input input,
-  .td-date-range-picker input {
-    height: auto !important;
-    width: 100% !important;
-    margin: 0 !important;
-    margin-bottom: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    font-weight: 400 !important;
-    color: rgba(0, 0, 0, 0.87) !important;
-  }
-
-  .td-date-range-picker-row .mat-date-range-input input::placeholder,
-  .td-date-range-picker-row .mat-date-range-input input::-webkit-input-placeholder {
-    font-size: 14px !important;
-    color: rgba(0, 0, 0, 0.6) !important;
-    -webkit-text-fill-color: rgba(0, 0, 0, 0.6) !important;
-    opacity: 1 !important;
-    font-weight: 400 !important;
-  }
+  // Date range input/placeholder: material-mdc-overrides.scss (.td-date-range-picker*)
 }
 
 @media screen and (min-width: 768px) {

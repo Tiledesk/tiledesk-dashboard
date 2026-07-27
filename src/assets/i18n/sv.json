@@ -430,6 +430,7 @@
             "REQUEST_ASSIGNED_SELF": "Agenten gick med i konversationen",
             "REQUEST_ASSIGNED_MANUAL": "Manuell tilldelning",
             "REQUEST_UNASSIGNED": "Agenten inte tilldelad",
+            "LEAVE_CONVERSATION": "Agenten lämnade konversationen",
             "PROJECT_USER_INVITE": "Lagkamrat inbjuden",
             "PROJECT_USER_UPDATE": "Lagkamrat uppdaterad",
             "PROJECT_USER_DELETE": "Lagkamrat borttagen",
@@ -1262,6 +1263,9 @@
         "ToManageTheMessages": "för att hantera meddelanden och aktivera push-meddelanden",
         "OpenTheChatToActivateNotifications": "Öppna chatten för att hantera meddelanden och aktivera push-meddelanden",
         "ClickHere": "Klicka här",
+        "NewMessage": "Nytt meddelande",
+        "NewUnassignedChat": "Ny otilldelad chatt",
+        "NewUnassignedChats": "{{count}} nya otilldelade chattar",
         "TiledeskLogOut": "{{ BRAND_NAME }} Logga ut",
         "LogOut": "Logga ut"
     },

@@ -5,6 +5,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { RouterModule, Routes } from '@angular/router';
+import { StaticPagesCarouselModule } from '../static-pages-carousel/static-pages-carousel.module';
 import { ActivitiesStaticComponent } from './activities-static.component';
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
     MatDatepickerModule,
     NgSelectModule,
     TranslateModule,
+    StaticPagesCarouselModule,
   ]
 })
 export class ActivitiesStaticModule { }

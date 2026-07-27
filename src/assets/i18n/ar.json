@@ -430,6 +430,7 @@
             "REQUEST_ASSIGNED_SELF": "انضم الوكيل إلى المحادثة",
             "REQUEST_ASSIGNED_MANUAL": "تعيين يدوي",
             "REQUEST_UNASSIGNED": "تم إلغاء تعيين الوكيل",
+            "LEAVE_CONVERSATION": "غادر الوكيل المحادثة",
             "PROJECT_USER_INVITE": "تمت دعوة زميل الفريق",
             "PROJECT_USER_UPDATE": "تم تحديث زميل الفريق",
             "PROJECT_USER_DELETE": "تمت إزالة زميل الفريق",
@@ -1261,6 +1262,9 @@
         "ToManageTheMessages": "لإدارة الرسائل وتفعيل دفع الإخطارات",
         "OpenTheChatToActivateNotifications": "افتح الدردشة لإدارة الرسائل وتفعيل دفع الإخطارات",
         "ClickHere": "انقر هنا",
+        "NewMessage": "رسالة جديدة",
+        "NewUnassignedChat": "محادثة جديدة غير معينة",
+        "NewUnassignedChats": "{{count}} محادثات جديدة غير معينة",
         "TiledeskLogOut": "{{ BRAND_NAME }} تسجيل الخروج",
         "LogOut": "تسجيل خروج"
     },

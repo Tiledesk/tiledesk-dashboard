@@ -49,7 +49,7 @@
                 <div class="col-lg-4 col-md-4 col-sm-6">
                   <div class="card card-app-store create-app-card" (click)="goToCreateApp()">
 
-                    <div class="card-content" style="height: 253px;">
+                    <div class="card-content">
 
                       <h3 class="card-create-app-icon-wpr">
                         <i class="material-icons" style="font-size: 48px;">add</i>
@@ -150,7 +150,7 @@
 
                     <div class="card-footer card-footer-app-store">
 
-                      <div class="row" style="display: block;">
+                      <div class="row">
 
                         <div *ngIf="app.version === 'v1'" class="col-6 app-store-left-col-btn"
                           (click)="learnmore(app.learnMore, app._id)">
@@ -192,7 +192,7 @@
 
 
                           <div *ngIf="app.installActionURL !== undefined"
-                            [ngClass]="{'col-3': app.where.appsstore === true && app.installed, 'col-4': ((app.where.appsstore === false || !app.where.appsstore) && app.installed), 'col-6': ((app.where.appsstore === false || !app.where.appsstore) && !app.installed) ||  (app.where.appsstore === true && !app.installed)}"
+                            [ngClass]="{'col-4': app.installed, 'col-6': !app.installed}"
                             class="app-store-left-col-btn" (click)="learnmore(app.learnMore, app._id, app.title)">
                             <a>
                               {{'LearnMore' | translate}}
@@ -216,7 +216,7 @@
                             </a>
                           </div>
                           <div *ngIf="app?.installed && app.installActionURL !== undefined"
-                            [ngClass]="{'col-3': app.where.appsstore === true , 'col-4': app.where.appsstore === false || !app.where.appsstore }"
+                            [ngClass]="{'col-4': app.where.appsstore === true , 'col-6': app.where.appsstore === false || !app.where.appsstore }"
                             class="app-store-right-col-btn uninstall-btn" (click)="unistallApp(app._id, app.title)">
                             <a style="color: white;">
                               {{'Uninstall' | translate}}
@@ -237,7 +237,7 @@
 
                           <div
                             *ngIf="app.where.appsstore === true && app?.installed &&  app.installActionURL !== undefined"
-                            class="col-3 app-store-right-col-btn" (click)="openInAppStoreInstall(app, app.title)"
+                            class="col-4 app-store-right-col-btn" (click)="openInAppStoreInstall(app, app.title)"
                             [ngClass]="{'app-not-installed-wpr': !app?.installed, 'app-installed-wpr': app?.installed}">
                             <a [ngClass]="{'app-not-installed': !app?.installed, 'app-installed': app?.installed}">
                               <!-- <span class="material-icons icon-start-app-in-app-store-istall">
@@ -251,7 +251,7 @@
 
                           <div
                             *ngIf="app.installed && app.where.appsstore === true &&  app.installActionURL !== undefined"
-                            class="col-3 app-store-right-col-btn manage-btn"
+                            class="col-4 app-store-right-col-btn manage-btn"
                             (click)="openConfigureUrlInAppStoreInstall(app,  app.title, app._id)">
                             <a style="color: white;">
                               <!-- {{'Manage' | translate}} -->
@@ -330,7 +330,7 @@
 
                     <div class="card-footer card-footer-app-store">
 
-                      <div class="row" style="display: block;">
+                      <div class="row">
 
                         <div *ngIf="hideExternalChatbotLeranMore" class="col-6 app-store-left-col-btn"
                           (click)="openExternalBotIntegrationTutorial()">
