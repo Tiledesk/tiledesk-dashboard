@@ -1,7 +1,7 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration, ElevenLabsIntegration, CerebrasIntegration, OpenRouterIntegration, ConnectorsIntegration } from './utils';
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration, ElevenLabsIntegration, CerebrasIntegration, OpenRouterIntegration, ConnectorsIntegration, CONNECTOR_ITEM_KEY_PREFIX, buildConnectorItemTiles } from './utils';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -46,12 +46,14 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   integrations = [];
   selectedIntegration: any;
   selectedIntegrationModel: null;
+  selectedConnectorItem: any = null;
   integrationLocked: boolean = false;
   intName: string;
   integrationListReady: boolean = false;
+  lastProjectProfileData: any = null;
 
   INT_KEYS = INTEGRATIONS_KEYS;
-  INTEGRATIONS = INTEGRATION_LIST_ARRAY;
+  INTEGRATIONS: any[] = INTEGRATION_LIST_ARRAY;
 
   CATEGORIES = CATEGORIES_LIST;
 
@@ -282,6 +284,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
           // console.log('trialExpired', this.trialExpired)
 
           this.customization = projectProfileData.customization;
+          this.lastProjectProfileData = projectProfileData;
 
           await this.getApps();
           //this.manageTelegramVisibility(projectProfileData);
@@ -343,6 +346,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.integrationService.getAllIntegrations().subscribe((integrations: Array<any>) => {
         this.logger.log("[INTEGRATION-COMP] Integrations for this project ", integrations)
         this.integrations = integrations;
+        this.rebuildConnectorTiles();
 
         this.showSpinner = false
         resolve(true);
@@ -352,6 +356,33 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         reject()
       })
     })
+  }
+
+  rebuildConnectorTiles() {
+    this.INTEGRATIONS = this.INTEGRATIONS.filter((i) => i.key.indexOf(CONNECTOR_ITEM_KEY_PREFIX) !== 0);
+
+    const connectorsDoc = this.integrations.find((i) => i.name === INTEGRATIONS_KEYS.CONNECTORS);
+    const items = connectorsDoc && connectorsDoc.value && connectorsDoc.value.items ? connectorsDoc.value.items : [];
+    if (!items.length) {
+      return;
+    }
+
+    const addTileIndex = this.INTEGRATIONS.findIndex((i) => i.key === INTEGRATIONS_KEYS.CONNECTORS);
+    const baseTile = addTileIndex !== -1
+      ? this.INTEGRATIONS[addTileIndex]
+      : INTEGRATION_LIST_ARRAY_CLONE.find((i) => i.key === INTEGRATIONS_KEYS.CONNECTORS);
+    const dynamicTiles = buildConnectorItemTiles(items, baseTile);
+
+    if (this.lastProjectProfileData) {
+      dynamicTiles.forEach((tile) => this.manageProBadgeVisibility(tile, this.lastProjectProfileData));
+    }
+
+    const insertAt = addTileIndex === -1 ? this.INTEGRATIONS.length : addTileIndex;
+    this.INTEGRATIONS.splice(insertAt, 0, ...dynamicTiles);
+  }
+
+  isConnectorItemSelected(): boolean {
+    return !!this.integrationSelectedName && this.integrationSelectedName.indexOf(CONNECTOR_ITEM_KEY_PREFIX) === 0;
   }
 
   async getApps() {
@@ -511,11 +542,21 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.integrationSelectedName = integration.key;
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
-      this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
-      this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration)
-      if (!this.selectedIntegration) {
-        this.selectedIntegration = this.initializeIntegration(integration.key);
+      if (integration.key.indexOf(CONNECTOR_ITEM_KEY_PREFIX) === 0) {
+        const baseUrl = integration.key.substring(CONNECTOR_ITEM_KEY_PREFIX.length);
+        const connectorsDoc = this.integrations.find(i => i.name === INTEGRATIONS_KEYS.CONNECTORS);
+        this.selectedIntegration = connectorsDoc;
+        this.selectedConnectorItem = connectorsDoc && connectorsDoc.value && connectorsDoc.value.items
+          ? connectorsDoc.value.items.find((item) => item.baseUrl === baseUrl)
+          : null;
+      } else {
+        this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
+        if (!this.selectedIntegration) {
+          this.selectedIntegration = this.initializeIntegration(integration.key);
+        }
+        this.selectedConnectorItem = null;
       }
+      this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration)
       const usesAppStoreIframe =
         integration.category === INTEGRATIONS_CATEGORIES.CHANNEL
         || (integration.category === INTEGRATIONS_CATEGORIES.VOICE
@@ -550,9 +591,19 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.integrationLocked = true;
       this.plan_require = integration.plan;
       this.integrationSelectedName = integration.key;
-      this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
-      if (!this.selectedIntegration) {
-        this.selectedIntegration = this.initializeIntegration(integration.key);
+      if (integration.key.indexOf(CONNECTOR_ITEM_KEY_PREFIX) === 0) {
+        const baseUrl = integration.key.substring(CONNECTOR_ITEM_KEY_PREFIX.length);
+        const connectorsDoc = this.integrations.find(i => i.name === INTEGRATIONS_KEYS.CONNECTORS);
+        this.selectedIntegration = connectorsDoc;
+        this.selectedConnectorItem = connectorsDoc && connectorsDoc.value && connectorsDoc.value.items
+          ? connectorsDoc.value.items.find((item) => item.baseUrl === baseUrl)
+          : null;
+      } else {
+        this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
+        if (!this.selectedIntegration) {
+          this.selectedIntegration = this.initializeIntegration(integration.key);
+        }
+        this.selectedConnectorItem = null;
       }
       this.selectedIntegrationModel = integration;
       this.changeRoute(integration.key);
