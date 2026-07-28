@@ -1266,7 +1266,10 @@
         "NewUnassignedChat": "Novo chat não atribuído",
         "NewUnassignedChats": "{{count}} novos chats não atribuídos",
         "TiledeskLogOut": "{{ BRAND_NAME }} Sair",
-        "LogOut": "Sair"
+        "LogOut": "Sair",
+        "CloseAll": "Fechar tudo",
+        "ShowLess": "Ver menos",
+        "Close": "Fechar"
     },
     "SideBar": {
         "ViewAllProjects": "Ver todos os projetos",

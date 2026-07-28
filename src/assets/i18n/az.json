@@ -1181,7 +1181,10 @@
         "NewUnassignedChat": "Yeni təyin edilməmiş söhbət",
         "NewUnassignedChats": "{{count}} yeni təyin edilməmiş söhbət",
         "TiledeskLogOut": "{{ BRAND_NAME }} Çıxış",
-        "LogOut": "Çıxış"
+        "LogOut": "Çıxış",
+        "CloseAll": "Hamısını bağla",
+        "ShowLess": "Daha az göstər",
+        "Close": "Bağla"
     },
     "SideBar": {
         "ViewAllProjects": "Bütün layihələrə baxın",

@@ -1266,7 +1266,10 @@
         "NewUnassignedChat": "محادثة جديدة غير معينة",
         "NewUnassignedChats": "{{count}} محادثات جديدة غير معينة",
         "TiledeskLogOut": "{{ BRAND_NAME }} تسجيل الخروج",
-        "LogOut": "تسجيل خروج"
+        "LogOut": "تسجيل خروج",
+        "CloseAll": "إغلاق الكل",
+        "ShowLess": "عرض أقل",
+        "Close": "إغلاق"
     },
     "SideBar": {
         "ViewAllProjects": "عرض جميع المشاريع",

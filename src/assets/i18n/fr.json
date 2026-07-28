@@ -417,7 +417,7 @@
         "StartDate": "Date de début",
         "EndDate": "Date de fin",
         "FilterGroup": {
-             "Conversations": "Conversations",
+            "Conversations": "Conversations",
             "Assignments": "Attributions",
             "Team": "Équipe",
             "Chatbot": "Agent IA",
@@ -1266,7 +1266,10 @@
         "NewUnassignedChat": "Nouveau chat non attribué",
         "NewUnassignedChats": "{{count}} nouveaux chats non attribués",
         "TiledeskLogOut": "{{ BRAND_NAME }} Déconnexion",
-        "LogOut": "Se déconnecter"
+        "LogOut": "Se déconnecter",
+        "CloseAll": "Tout fermer",
+        "ShowLess": "Afficher moins",
+        "Close": "Fermer"
     },
     "SideBar": {
         "ViewAllProjects": "Voir tous les projets",

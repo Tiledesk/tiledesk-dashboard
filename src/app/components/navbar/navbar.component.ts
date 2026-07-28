@@ -15,6 +15,7 @@ import { isDevMode } from '@angular/core';
 import { UploadImageService } from '../../services/upload-image.service';
 import { UploadImageNativeService } from '../../services/upload-image-native.service';
 import { NotifyService } from '../../core/notify.service';
+import { DashboardToastrService } from '../../core/dashboard-toastr.service';
 // import * as moment from 'moment';
 import moment from "moment";
 import { ProjectPlanService } from '../../services/project-plan.service';
@@ -2208,10 +2209,12 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
   notifyLastUnserved() {
-    this.notifyService.unservedToastPresented$
+    // Sound for unserved stack is played by DashboardToastrService (one pling per burst / project enter).
+
+    this.notifyService.unservedRepublish$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
-        this.playSoundForUnservedNotifications();
+        this.publishCurrentUnservedFromWsList();
       });
 
     this.subscription = this.wsRequestsService.wsRequestsList$
@@ -2220,46 +2223,56 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       )
       .subscribe((requests) => {
         this.logger.log('[NAVBAR] notifyLastUnserved - requests  ', requests)
-        const unserved = requests.filter((requests: any) => {
-          return requests.status === 100;
-        });
-
-        const unservedCount = unserved.length
-        this.logger.log('[NAVBAR] notifyLastUnserved - unservedCount  ', unservedCount)
-        // if (requests) {
-        if (unservedCount) {
-          // requests.forEach(r => {
-          unserved.forEach(r => {
-
-            // --------------------------------------------------------------------------
-            // @ get stored request
-            // --------------------------------------------------------------------------
-            const storedRequest = localStorage.getItem(r.id + '_' + r.status);
-            // this.logger.log('[NAVBAR] IN-APP-NOTIFICATION >> get storedRequest served >> ', r.id + '_' + r.updatedAt, ' - ', storedRequest);
-            // if (r.status === 100 && !this.shown_requests[r.id] && this.user !== null) {
-            if (r.status === 100 && !storedRequest && this.user !== null) {
-
-
-              // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
-              if (this.ROLE_IS_AGENT === true) {
-                if (this.hasmeInAgents(r.agents) === true) {
-                  this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count ', unservedCount)
-                  this.displayUnservedInAppNotification(r)
-                }
-              } else {
-                this.logger.log('[NAVBAR] notifyLastUnserved - Unserved count B', unservedCount)
-                this.displayUnservedInAppNotification(r)
-              }
-            }
-          });
-
-
-        }
+        this.publishUnservedFromRequests(requests);
       }, error => {
         this.logger.error('[NAVBAR] notifyLastUnservedRequest * ERROR * ', error)
       }, () => {
         this.logger.log('[NAVBAR] notifyLastUnservedRequest */* COMPLETE */*')
       })
+  }
+
+  /** Re-scan current WS list after project enter (list may not re-emit). */
+  private publishCurrentUnservedFromWsList(): void {
+    const requests = this.wsRequestsService.wsRequestsList$.value || [];
+    this.publishUnservedFromRequests(requests);
+  }
+
+  private publishUnservedFromRequests(requests: any[]): void {
+    if (!this.notifyService.isUnservedPresentationArmed()) {
+      return;
+    }
+    if (!requests || !requests.length) {
+      return;
+    }
+
+    const unserved = requests.filter((r: any) => r.status === 100);
+    const unservedCount = unserved.length;
+    this.logger.log('[NAVBAR] notifyLastUnserved - unservedCount  ', unservedCount);
+    if (!unservedCount) {
+      return;
+    }
+
+    unserved.forEach((r) => {
+      const storageKey = r.id + '_' + r.status;
+      // Opened (permanent) or soft-hidden for this visit.
+      if (
+        DashboardToastrService.isUnservedHandled(storageKey) ||
+        this.notifyService.isUnservedSuppressed(storageKey)
+      ) {
+        return;
+      }
+      if (r.status !== 100 || this.user === null) {
+        return;
+      }
+
+      if (this.ROLE_IS_AGENT === true) {
+        if (this.hasmeInAgents(r.agents) === true) {
+          this.displayUnservedInAppNotification(r);
+        }
+      } else {
+        this.displayUnservedInAppNotification(r);
+      }
+    });
   }
 
   playSoundForUnservedNotifications() {
@@ -2314,17 +2327,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     if (this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
       // Check permission before showing unassigned chat notification
       if (this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS) {
-        this.notifyService.showUnservedNotication(contact_fullname, r.first_text, url)
-
-        // const count = +this.localDbService.getForegrondNotificationsCount();
-        // this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
+        // Do not write localStorage here: flag is set only when the user dismisses /
+        // opens the toast, so undismissed items can reappear after refresh.
+        this.notifyService.showUnservedNotication(
+          contact_fullname,
+          r.first_text,
+          url,
+          r.createdAt,
+          this.projectId,
+          r.id + '_' + r.status
+        )
 
         this.shown_requests[r.id] = true;
-
-        // --------------------------------------------------------------------------
-        // @ set request to store (doUnservedDateDiffAndShowNotification)
-        // --------------------------------------------------------------------------
-        localStorage.setItem(r.id + '_' + r.status, 'true');
       } else {
         this.logger.log('[NAVBAR] - displayUnservedInAppNotification - Permission denied: PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS is false');
       }

@@ -1266,7 +1266,10 @@
         "NewUnassignedChat": "Yangi tayinlanmagan chat",
         "NewUnassignedChats": "{{count}} yangi tayinlanmagan chat",
         "TiledeskLogOut": "{{ BRAND_NAME }} Chiqish",
-        "LogOut": "Chiqish"
+        "LogOut": "Chiqish",
+        "CloseAll": "Hammasini yopish",
+        "ShowLess": "Kamroq ko‘rsatish",
+        "Close": "Yopish"
     },
     "SideBar": {
         "ViewAllProjects": "Barcha loyihalarni ko'rish",

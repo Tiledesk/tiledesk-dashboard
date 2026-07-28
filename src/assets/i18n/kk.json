@@ -1266,7 +1266,10 @@
         "NewUnassignedChat": "Жаңа тағайындалмаған чат",
         "NewUnassignedChats": "{{count}} жаңа тағайындалмаған чат",
         "TiledeskLogOut": "{{ BRAND_NAME }} Шығу",
-        "LogOut": "Шығу"
+        "LogOut": "Шығу",
+        "CloseAll": "Барлығын жабу",
+        "ShowLess": "Қысқарту",
+        "Close": "Жабу"
     },
     "SideBar": {
         "ViewAllProjects": "Барлық жобаларды көру",

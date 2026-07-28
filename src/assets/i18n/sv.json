@@ -1267,7 +1267,10 @@
         "NewUnassignedChat": "Ny otilldelad chatt",
         "NewUnassignedChats": "{{count}} nya otilldelade chattar",
         "TiledeskLogOut": "{{ BRAND_NAME }} Logga ut",
-        "LogOut": "Logga ut"
+        "LogOut": "Logga ut",
+        "CloseAll": "Stäng alla",
+        "ShowLess": "Visa mindre",
+        "Close": "Stäng"
     },
     "SideBar": {
         "ViewAllProjects": "Se alla projekt",

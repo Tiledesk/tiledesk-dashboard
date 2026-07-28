@@ -1266,7 +1266,10 @@
 		"NewUnassignedChat": "Neuer nicht zugewiesener Chat",
     	"NewUnassignedChats": "{{count}} neue nicht zugewiesene Chats",
         "TiledeskLogOut": "{{ BRAND_NAME }} Abmelden",
-        "LogOut": "Abmelden"
+        "LogOut": "Abmelden",
+        "CloseAll": "Alle schließen",
+        "ShowLess": "Weniger anzeigen",
+        "Close": "Schließen"
     },
     "SideBar": {
         "ViewAllProjects": "Alle Projekte anzeigen",

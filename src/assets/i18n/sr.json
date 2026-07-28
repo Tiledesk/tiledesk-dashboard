@@ -1267,7 +1267,10 @@
         "NewUnassignedChat": "Нова недодељена ћаскање",
         "NewUnassignedChats": "{{count}} нових недодељених ћаскања",
         "TiledeskLogOut": "{{ BRAND_NAME }} Одјавите се",
-        "LogOut": "Одјавити се"
+        "LogOut": "Одјавити се",
+        "CloseAll": "Затвори све",
+        "ShowLess": "Прикажи мање",
+        "Close": "Затвори"
     },
     "SideBar": {
         "ViewAllProjects": "Погледајте све пројекте",

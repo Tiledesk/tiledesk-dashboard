@@ -1267,7 +1267,10 @@
         "NewUnassignedChat": "Новый неназначенный чат",
         "NewUnassignedChats": "{{count}} новых неназначенных чатов",
         "TiledeskLogOut": "{{ BRAND_NAME }} Выйти",
-        "LogOut": "Выйти"
+        "LogOut": "Выйти",
+        "CloseAll": "Закрыть все",
+        "ShowLess": "Свернуть",
+        "Close": "Закрыть"
     },
     "SideBar": {
         "ViewAllProjects": "Посмотреть все проекты",

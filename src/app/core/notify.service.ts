@@ -544,11 +544,45 @@ export class NotifyService {
     );
   }
 
-  showUnservedNotication(sender: string, msg: string, link: string) {
-    this.dashboardToastr.showUnservedNotication(sender, msg, link);
+  showUnservedNotication(
+    sender: string,
+    msg: string,
+    link: string,
+    createdAt?: string | number | Date,
+    projectId?: string,
+    storageKey?: string
+  ) {
+    this.dashboardToastr.showUnservedNotication(
+      sender,
+      msg,
+      link,
+      createdAt,
+      projectId,
+      storageKey
+    );
   }
 
-  /** Fires when an unserved toast is actually shown (after burst buffer). */
+  /** Soft-hidden for this visit (auto-dismiss / close) — blocks navbar re-add. */
+  isUnservedSuppressed(storageKey: string): boolean {
+    return this.dashboardToastr.isUnservedSuppressed(storageKey);
+  }
+
+  /** Opened by the user (detail) — never show again. */
+  isUnservedHandled(storageKey: string): boolean {
+    return DashboardToastrService.isUnservedHandled(storageKey);
+  }
+
+  /** False until the user enters a project (blocked on page refresh). */
+  isUnservedPresentationArmed(): boolean {
+    return this.dashboardToastr.isUnservedPresentationArmed();
+  }
+
+  /** Navbar re-scans the current WS unserved list when this emits. */
+  get unservedRepublish$(): Observable<void> {
+    return this.dashboardToastr.unservedRepublish$.asObservable();
+  }
+
+  /** Fires when an unserved notification is added to the persistent stack. */
   get unservedToastPresented$(): Observable<void> {
     return this.dashboardToastr.unservedToastPresented$.asObservable();
   }

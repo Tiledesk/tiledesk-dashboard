@@ -1,0 +1,283 @@
+// Host must stay BELOW .cdk-overlay-container (1050) so MatTooltip (CDK) paints above the stack.
+.td-unserved-host {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1040;
+  width: min(380px, calc(100vw - 40px));
+  max-height: calc(100vh - 80px);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0px;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.td-unserved-host--enter {
+  animation: td-unserved-fade-in-down 0.4s ease both;
+}
+
+@keyframes td-unserved-fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.td-unserved-toolbar,
+.td-unserved-stack,
+.td-unserved-card,
+.td-unserved-stack-close,
+.td-unserved-close,
+.td-unserved-show-less,
+.td-unserved-clear-all {
+  pointer-events: auto;
+}
+
+.td-unserved-toolbar {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 4px 7px 0;
+  margin-left: auto;
+  background: transparent !important;
+}
+
+.td-unserved-show-less {
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(45, 45, 48, 0.96);
+  color: rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  line-height: 1.2;
+  cursor: pointer;
+}
+
+.td-unserved-clear-all,
+.td-unserved-stack-close,
+.td-unserved-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(60, 60, 64, 0.96);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+
+  .material-icons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    line-height: 16px;
+  }
+
+  &:hover {
+    background: rgba(80, 80, 84, 0.98);
+  }
+}
+
+.td-unserved-stack {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+.td-unserved-stack--stacked {
+  min-height: 92px;
+  // Room for overhanging stack-close (top-left) inside the clip box
+  padding-top: 14px;
+  padding-left: 14px;
+  padding-bottom: 18px;
+
+  &:hover .td-unserved-stack-close {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.td-unserved-stack-close {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 20;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.td-unserved-stack--expanded {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: calc(100vh - 120px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  // Padding keeps top-left close buttons inside the scrollport (no clip, no negative margin)
+  padding: 14px 8px 10px 14px;
+  margin: 0;
+  background: transparent !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent !important;
+  }
+}
+
+.td-unserved-card {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(45, 45, 48, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  // box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: visible;
+}
+
+.td-unserved-stack--stacked .td-unserved-card {
+  position: absolute;
+  left: 14px;
+  right: 0;
+  top: 14px;
+}
+
+.td-unserved-stack--stacked .td-unserved-card[data-stack-index='0'] {
+  transform: translateY(0) scale(1);
+}
+
+.td-unserved-stack--stacked .td-unserved-card[data-stack-index='1'] {
+  transform: translateY(8px) scale(0.965);
+  opacity: 0.95;
+}
+
+.td-unserved-stack--stacked .td-unserved-card[data-stack-index='2'] {
+  transform: translateY(16px) scale(0.92);
+  opacity: 0.9;
+}
+
+.td-unserved-stack--stacked .td-unserved-card[data-stack-index='0']:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+// Top-left corner of the card — outside the content hit area for open/detail
+.td-unserved-close {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  z-index: 2;
+}
+
+.td-unserved-card:hover .td-unserved-close {
+  opacity: 1;
+}
+
+.td-unserved-icon {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fff3cd;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+
+  .material-icons {
+    font-size: 20px;
+    color: #ffc107;
+  }
+}
+
+.td-unserved-content {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.td-unserved-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+
+.td-unserved-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.96);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.td-unserved-time {
+  flex: 0 0 auto;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.td-unserved-sender {
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.td-unserved-message {
+  font-size: 12px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}

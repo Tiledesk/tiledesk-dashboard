@@ -1267,7 +1267,10 @@
         "NewUnassignedChat": "Новий нерозподілений чат",
         "NewUnassignedChats": "{{count}} нових нерозподілених чатів",
         "TiledeskLogOut": "{{ ім'я компанії}} Вийти",
-        "LogOut": "Вийти"
+        "LogOut": "Вийти",
+        "CloseAll": "Закрити все",
+        "ShowLess": "Показати менше",
+        "Close": "Закрити"
     },
     "SideBar": {
         "ViewAllProjects": "Переглянути всі проекти",

@@ -1271,7 +1271,10 @@
         "NewUnassignedChat": "New unassigned chat",
         "NewUnassignedChats": "{{count}} new unassigned chats",
         "TiledeskLogOut": "{{ BRAND_NAME }} Log Out",
-        "LogOut": "Log Out"
+        "LogOut": "Log Out",
+        "CloseAll": "Close all",
+        "ShowLess": "Show less",
+        "Close": "Close"
     },
     "SideBar": {
         "ViewAllProjects": "View all projects",

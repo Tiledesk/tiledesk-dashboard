@@ -1269,7 +1269,10 @@
         "NewUnassignedChat": "Nuova chat non assegnata",
         "NewUnassignedChats": "{{count}} nuove chat non assegnate",
         "TiledeskLogOut": "Esci da {{ BRAND_NAME }}",
-        "LogOut": "Esci"
+        "LogOut": "Esci",
+        "CloseAll": "Chiudi tutto",
+        "ShowLess": "Mostra di meno",
+        "Close": "Chiudi"
     },
     "SideBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",

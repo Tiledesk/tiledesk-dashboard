@@ -1268,7 +1268,10 @@
         "NewUnassignedChat": "Yeni atanmamış sohbet",
         "NewUnassignedChats": "{{count}} yeni atanmamış sohbet",
         "TiledeskLogOut": "{{ BRAND_NAME }} Oturumu Kapat",
-        "LogOut": "Çıkış Yap"
+        "LogOut": "Çıkış Yap",
+        "CloseAll": "Tümünü kapat",
+        "ShowLess": "Daha az göster",
+        "Close": "Kapat"
     },
     "SideBar": {
         "ViewAllProjects": "Tüm projeleri görüntüle",
