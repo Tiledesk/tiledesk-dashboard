@@ -307,6 +307,7 @@
         "ActivitiesTeammateChartEmpty": "No se encontraron actividades para este compañero de equipo en el período seleccionado.",
         "ActivitiesTeammateChartLoadError": "No se pudieron cargar las actividades. Inténtelo de nuevo.",
         "NoActivitiesFound": "No se encontraron actividades",
+        "RemovedFromProject": "Eliminado del proyecto",
         "StartDate": "Fecha de inicio",
         "EndDate": "Fecha de finalización",
         "FilterGroup": {
@@ -323,6 +324,7 @@
             "REQUEST_ASSIGNED_SELF": "El agente se unió a la conversación",
             "REQUEST_ASSIGNED_MANUAL": "Asignación manual",
             "REQUEST_UNASSIGNED": "Agente desasignado",
+            "LEAVE_CONVERSATION": "Agente dejó la conversación",
             "PROJECT_USER_INVITE": "Compañero de equipo invitado",
             "PROJECT_USER_UPDATE": "Compañero de equipo actualizado",
             "PROJECT_USER_DELETE": "Compañero de equipo eliminado",
@@ -1095,7 +1097,10 @@
         "OpenTheChatToActivateNotifications": "Abrir el chat para administrar los mensajes y activar las notificaciones push",
         "ClickHere": "Haz clic aquí",
         "TiledeskLogOut": "{{ BRAND_NAME }} Cerrar sesión",
-        "LogOut": "Cerrar sesión"
+        "LogOut": "Cerrar sesión",
+        "CloseAll": "Cerrar todo",
+        "ShowLess": "Ver menos",
+        "Close": "Cerrar"
     },
     "SideBar": {
         "ViewAllProjects": "Ver todos los proyectos",
@@ -2394,6 +2399,11 @@
     "Friday": "Viernes",
     "Saturday": "Sábado",
     "SelectAnOption": "Seleccione una opción",
+    "AnalyticsNew": {
+        "Loading": "Cargando análisis…",
+        "ConfigurationMissing": "La incrustación de análisis no está configurada. Establezca analyticsApiBase y analyticsEmbedBase en la configuración del panel (consulte EMBED-INTEGRATION.md).",
+        "TokenError": "No se pudo obtener un token de incrustación de análisis. Verifique su sesión y que la API de análisis sea accesible."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Estadísticas",
         "HeatMapTitle": "Conversaciones por hora del día",

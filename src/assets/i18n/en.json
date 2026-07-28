@@ -323,6 +323,7 @@
         "ActivitiesTeammateChartEmpty": "No activities found for this teammate in the selected period.",
         "ActivitiesTeammateChartLoadError": "Unable to load activities. Please try again.",
         "NoActivitiesFound": "No activities found",
+        "RemovedFromProject": "Removed from project",
         "StartDate": "Start date",
         "EndDate": "End date",
         "FilterGroup": {
@@ -339,6 +340,7 @@
             "REQUEST_ASSIGNED_SELF": "Agent joined conversation",
             "REQUEST_ASSIGNED_MANUAL": "Manual assignment",
             "REQUEST_UNASSIGNED": "Agent unassigned",
+            "LEAVE_CONVERSATION": "Agent left conversation",
             "PROJECT_USER_INVITE": "Teammate invited",
             "PROJECT_USER_UPDATE": "Teammate updated",
             "PROJECT_USER_DELETE": "Teammate removed",
@@ -1119,7 +1121,10 @@
         "OpenTheChatToActivateNotifications": "Open the chat to manage the messages and activate the push notifications",
         "ClickHere": "Click here",
         "TiledeskLogOut": "{{ BRAND_NAME }} Log Out",
-        "LogOut": "Log Out"
+        "LogOut": "Log Out",
+        "CloseAll": "Close all",
+        "ShowLess": "Show less",
+        "Close": "Close"
     },
     "SideBar": {
         "ViewAllProjects": "View all projects",
@@ -2432,6 +2437,11 @@
     "Friday": "Friday",
     "Saturday": "Saturday",
     "SelectAnOption": "Select an option",
+    "AnalyticsNew": {
+        "Loading": "Loading analytics…",
+        "ConfigurationMissing": "Analytics embedding is not configured. Set analyticsApiBase and analyticsEmbedBase in the dashboard config (see EMBED-INTEGRATION.md).",
+        "TokenError": "Could not obtain an analytics embed token. Check your session and that the analytics API is reachable."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Analytics",
         "HeatMapTitle": "Conversations per hour of day",

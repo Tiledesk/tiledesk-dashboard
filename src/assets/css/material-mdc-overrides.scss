@@ -1,0 +1,1491 @@
+/**
+ * Angular Material 15+ (MDC) — dashboard-wide overrides.
+ * Loaded after prebuilt theme (see angular.json).
+ *
+ * Legacy selectors (.mat-form-field-wrapper, .mat-chip-list-wrapper, …)
+ * no longer apply; use this file instead of scattering ::ng-deep copies.
+ */
+
+// ─── mat-form-field (outline) — baseline ─────────────────────────────────────
+
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker) {
+  font-family: var(--header-font-family);
+  letter-spacing: normal;
+
+  .mat-mdc-floating-label,
+  .mdc-floating-label,
+  .mat-mdc-input-element,
+  textarea.mat-mdc-input-element,
+  .mat-mdc-form-field-input-control,
+  .mat-mdc-select-value,
+  .mat-mdc-select-value-text,
+  .mat-mdc-select-min-line,
+  .mat-mdc-form-field-hint,
+  .mat-mdc-form-field-error {
+    letter-spacing: normal;
+  }
+
+  .mat-mdc-form-field-flex {
+    align-items: center;
+  }
+
+  .mat-mdc-form-field-infix {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    box-sizing: border-box;
+  }
+
+  .mat-mdc-form-field-input-control,
+  input.mat-mdc-input-element,
+  textarea.mat-mdc-input-element {
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    align-self: center;
+  }
+
+  // Label at rest only (MDC adds .mdc-floating-label--float-above on focus / value)
+  .mdc-floating-label:not(.mdc-floating-label--float-above) {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .mat-mdc-text-field-wrapper {
+    margin: 0.25em 0;
+    padding-bottom: 0;
+  }
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker) .mat-mdc-form-field-subscript-wrapper {
+  margin-top: 0.25em;
+}
+
+// Default outline (align with ng-select #e4e4e4 in KB modals)
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker):not(.mat-focused)
+  .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker):not(.mat-focused)
+  .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker):not(.mat-focused)
+  .mdc-notched-outline__trailing {
+  border-color: #e4e4e4;
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker).mat-focused
+  .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker).mat-focused
+  .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker).mat-focused
+  .mdc-notched-outline__trailing {
+  border-color: var(--blue-20) !important;
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker).mat-focused .mat-mdc-floating-label {
+  color: var(--blue-20) !important;
+}
+
+.mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker) input.mat-mdc-input-element {
+  font-size: inherit;
+}
+
+// ─── mat-autocomplete (MDC) ──────────────────────────────────────────────────
+
+.mat-mdc-autocomplete-panel,
+.mat-autocomplete-panel {
+  letter-spacing: normal;
+  font-family: var(--header-font-family);
+
+  .mat-mdc-option,
+  .mat-option {
+    letter-spacing: normal;
+
+    .mdc-list-item__primary-text {
+      letter-spacing: normal;
+    }
+  }
+}
+
+.mat-mdc-option .mdc-list-item__primary-text {
+  letter-spacing: normal;
+}
+
+// Invalid / parent .show-error (replaces legacy .mat-form-field-outline / .mat-mdc-form-field-outline)
+.mat-mdc-form-field.mat-form-field-appearance-outline.mat-form-field-invalid:not(.td-date-range-picker),
+.show-error .mat-mdc-form-field.mat-form-field-appearance-outline:not(.td-date-range-picker) {
+  .mdc-notched-outline__leading,
+  .mdc-notched-outline__notch,
+  .mdc-notched-outline__trailing {
+    border-color: #f44336 !important;
+  }
+
+  .mat-mdc-floating-label {
+    color: #f44336 !important;
+  }
+}
+
+// Regex whitelist modal — horizontal padding for / prefix-suffix (scoped, does not affect other fields)
+.regex-slash-field.mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  padding: 0 10px;
+}
+
+// Dialog readonly list rows (outline → underline only, no box border)
+.regex-list-field.mat-mdc-form-field.mat-form-field-appearance-outline,
+.url-list-field.mat-mdc-form-field.mat-form-field-appearance-outline {
+  display: block;
+  width: 100%;
+  font-size: 14px;
+  margin: 0;
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .mat-mdc-text-field-wrapper {
+    margin: 0;
+    background: transparent;
+  }
+
+  .mdc-notched-outline {
+    display: none;
+  }
+
+  .mat-mdc-form-field-flex {
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.42);
+  }
+
+  .mat-mdc-form-field-infix {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    min-height: 32px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
+
+  .mat-mdc-form-field-text-prefix,
+  .mat-mdc-form-field-text-suffix {
+    padding: 0;
+    align-self: center;
+  }
+
+  input.mat-mdc-input-element[readonly] {
+    width: 100%;
+    font-size: 14px;
+    cursor: default;
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
+
+.regex-list-field.mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-text-field-wrapper,
+.url-list-field.mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-text-field-wrapper {
+  padding: 0;
+}
+
+// KB add-namespace: pill radius on each .mdc-notched-outline__* breaks MDC (doubled outline on A15).
+// Use baseline outline (#e4e4e4 / focus --blue-20) via .cc-mat-form-field only.
+
+// ─── Chip inputs inside outline fields ───────────────────────────────────────
+
+// Chip outline fields: keep default block layout (multi-line chips)
+.kb-chip-field.mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-form-field-infix {
+  display: block;
+  min-height: unset;
+}
+
+.kb-chip-field.mat-mdc-form-field .mat-mdc-chip-set,
+.kb-chip-field.mat-mdc-form-field .mat-mdc-chip-grid {
+  max-height: 100px;
+  overflow: auto;
+}
+
+.kb-chip-field.mat-mdc-form-field .mat-mdc-chip {
+  border-radius: 10px;
+  background-color: transparent;
+  border: solid 1px #b9b9b9;
+}
+
+// ─── Sitemap URL popover (compact single-line field, no hint/error slot) ─────
+
+.sitemap-popover .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.sitemap-popover .mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+// ─── Date range picker (Material fill + matIconSuffix; clear button outside) ───
+
+.td-date-range-picker-row {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 2px;
+  max-width: 100%;
+}
+
+.td-date-range-picker-row--200 .td-date-range-picker.mat-mdc-form-field {
+  width: 240px;
+  max-width: 240px;
+  flex: 0 0 240px;
+}
+
+.td-date-range-picker-row--analytics .td-date-range-picker.mat-mdc-form-field {
+  min-width: 220px;
+  flex: 1 1 auto;
+  width: 100%;
+}
+
+.td-date-range-picker-row:not(.td-date-range-picker-row--200):not(.td-date-range-picker-row--analytics) {
+  width: 100%;
+
+  .td-date-range-picker.mat-mdc-form-field {
+    flex: 1 1 auto;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.td-date-range-picker-clear {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.54);
+  cursor: pointer;
+  border-radius: 50%;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.td-date-range-picker.mat-mdc-form-field {
+  font-size: 14px;
+  margin: 0;
+}
+
+.td-date-range-picker .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+// Compact fill field (~36px), label esterno
+.td-date-range-picker.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper {
+  height: 36px;
+  padding-left: 10px;
+  padding-right: 4px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+// Niente overlay scuro Material al focus (fill)
+.td-date-range-picker.mat-form-field-appearance-fill .mat-mdc-form-field-focus-overlay,
+.td-date-range-picker.mat-form-field-appearance-fill .mat-mdc-form-field-hover-overlay {
+  opacity: 0 !important;
+  background: transparent !important;
+}
+
+.td-date-range-picker.mat-form-field-appearance-fill.mat-focused .mat-mdc-form-field-focus-overlay {
+  opacity: 0 !important;
+}
+
+.td-date-range-picker.mat-form-field-appearance-fill .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+  background-color: transparent;
+}
+
+.td-date-range-picker.mat-form-field-appearance-fill.mat-focused .mat-mdc-text-field-wrapper,
+.td-date-range-picker.mat-form-field-appearance-fill.mat-focused .mdc-text-field--filled {
+  background-color: #fff !important;
+}
+
+// MDC state layer (scurisce il fill al focus/hover)
+.td-date-range-picker.mat-form-field-appearance-fill .mdc-text-field--filled::before,
+.td-date-range-picker.mat-form-field-appearance-fill .mdc-text-field--filled::after {
+  opacity: 0 !important;
+}
+
+.td-date-range-picker.mat-form-field-appearance-fill .mdc-line-ripple {
+  display: none;
+}
+
+.td-date-range-picker.mat-form-field-appearance-fill .mat-mdc-form-field-flex {
+  height: 34px;
+  align-items: center;
+}
+
+.td-date-range-picker.mat-form-field-appearance-fill .mat-mdc-form-field-infix {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  min-height: unset;
+  width: 100%;
+  border: none;
+}
+
+.td-date-range-picker .mat-date-range-input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+// Material: max-width 50% per metà → due “box”; annulla in ogni schermata
+.td-date-range-picker .mat-date-range-input-wrapper,
+.td-date-range-picker .mat-date-range-input-end-wrapper {
+  max-width: none !important;
+  overflow: visible !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+// Reset stili globali / filter-bar tipo input[type="text"] { border, height, margin… } (es. History)
+.td-date-range-picker-row .mat-date-range-input input,
+.td-date-range-picker .mat-date-range-input input,
+.td-date-range-picker input.mat-date-range-input-inner,
+.td-date-range-picker input {
+  height: auto !important;
+  width: 100% !important;
+  margin: 0 !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+
+// Placeholder / separatore come Material (fill + label esterno, floatLabel="never")
+.td-date-range-picker-row .mat-date-range-input input::placeholder,
+.td-date-range-picker-row .mat-date-range-input input::-webkit-input-placeholder,
+.td-date-range-picker .mat-date-range-input input::placeholder,
+.td-date-range-picker input.mat-date-range-input-inner::placeholder {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.6) !important;
+  opacity: 1 !important;
+}
+
+.td-date-range-picker .mat-date-range-input input::-webkit-input-placeholder,
+.td-date-range-picker input.mat-date-range-input-inner::-webkit-input-placeholder {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+  opacity: 1 !important;
+  -webkit-text-fill-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.td-date-range-picker .mat-date-range-input input::-moz-placeholder,
+.td-date-range-picker input.mat-date-range-input-inner::-moz-placeholder {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  color: rgba(0, 0, 0, 0.6) !important;
+  opacity: 1 !important;
+}
+
+// Comportamento Material: nasconde placeholder end se start ha valore (e viceversa al focus)
+.td-date-range-picker .mat-date-range-input-hide-placeholders .mat-date-range-input input::placeholder,
+.td-date-range-picker .mat-date-range-input-hide-placeholders .mat-date-range-input input::-webkit-input-placeholder,
+.td-date-range-picker .mat-date-range-input-hide-placeholders input.mat-date-range-input-inner::placeholder,
+.td-date-range-picker .mat-date-range-input-hide-placeholders input.mat-date-range-input-inner::-webkit-input-placeholder {
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+  opacity: 0 !important;
+}
+
+.td-date-range-picker .mat-date-range-input,
+.td-date-range-picker .mat-date-range-input input,
+.td-date-range-picker input.mat-date-range-input-inner,
+.td-date-range-picker .mat-date-range-input-separator {
+  cursor: pointer;
+}
+
+.td-date-range-picker.mat-focused.mat-form-field-appearance-fill:not(.date-range-error) .mat-mdc-text-field-wrapper {
+  border-color: #ccc !important;
+  background-color: #fff !important;
+}
+
+.td-date-range-picker.date-range-error.mat-form-field-appearance-fill .mat-mdc-text-field-wrapper {
+  border-color: #f44336 !important;
+}
+
+// Calendar popup + toggle (CDK overlay) — theme deeppurple → dashboard blue
+.mat-datepicker-content,
+.mat-mdc-datepicker-content,
+.mat-calendar,
+.mat-mdc-calendar {
+  --mat-datepicker-calendar-date-selected-state-background-color: var(--blue-20);
+  --mat-datepicker-calendar-date-selected-state-text-color: #fff;
+  --mat-datepicker-calendar-date-in-range-state-background-color: rgba(33, 150, 243, 0.2);
+  --mat-datepicker-calendar-date-in-comparison-range-state-background-color: rgba(33, 150, 243, 0.2);
+  --mat-datepicker-calendar-date-preview-state-outline-color: var(--blue-20);
+  --mat-datepicker-calendar-date-today-selected-state-outline-color: var(--blue-20);
+  --mat-datepicker-calendar-date-focus-state-background-color: rgba(33, 150, 243, 0.12);
+  --mat-datepicker-calendar-date-hover-state-background-color: rgba(33, 150, 243, 0.2);
+}
+
+.mat-datepicker-toggle,
+.td-date-range-picker .mat-datepicker-toggle {
+  --mat-datepicker-toggle-icon-color: rgba(0, 0, 0, 0.54);
+  --mat-datepicker-toggle-active-state-icon-color: var(--blue-20);
+
+  // Niente cerchio grigio al passaggio mouse (globale cards-table su .mat-mdc-icon-button:hover)
+  .mat-mdc-icon-button,
+  .mat-icon-button {
+    &:hover {
+      background-color: transparent !important;
+    }
+
+    .mat-mdc-button-persistent-ripple::before,
+    .mat-mdc-button-ripple,
+    .mat-button-ripple {
+      opacity: 0 !important;
+    }
+  }
+}
+
+.mat-datepicker-toggle-active,
+.mat-datepicker-toggle.mat-datepicker-toggle-active,
+.td-date-range-picker .mat-datepicker-toggle.mat-datepicker-toggle-active {
+  color: var(--blue-20) !important;
+
+  .mat-icon,
+  .mat-mdc-button-persistent-ripple::before {
+    color: var(--blue-20) !important;
+  }
+}
+
+.mat-calendar-body-selected,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled) > .mat-calendar-body-cell-content.mat-calendar-body-selected,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled) > .mat-calendar-body-cell-content.mat-calendar-body-comparison-identical {
+  background-color: var(--blue-20) !important;
+  color: #fff !important;
+}
+
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled).mat-calendar-body-in-range::before,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled).mat-calendar-body-range-start::before,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled).mat-calendar-body-range-end::before,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled).mat-calendar-body-in-comparison-range::before {
+  background: rgba(33, 150, 243, 0.2) !important;
+}
+
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled) > .mat-calendar-body-cell-content.mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: var(--blue-20);
+}
+
+// Hover/focus: theme uses primary palette at 0.3 opacity (deeppurple → light violet)
+@media (hover: hover) {
+  .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    background-color: rgba(33, 150, 243, 0.2) !important;
+  }
+}
+
+.cdk-keyboard-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
+.cdk-program-focused .mat-calendar-body-active > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+  background-color: rgba(33, 150, 243, 0.2) !important;
+}
+
+// ─── mat-slider (MDC) — modal-preview-settings legacy look ───────────────────
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider {
+  --mdc-slider-handle-color: #1f2b43;
+  --mdc-slider-focus-handle-color: #1f2b43;
+  --mdc-slider-hover-handle-color: #1f2b43;
+  --mdc-slider-active-track-color: #1f2b43;
+  // Slightly darker than pill (#e0e3f1) so the full track stays visible at min
+  --mdc-slider-inactive-track-color: #9aa3b8;
+  --mdc-slider-with-tick-marks-active-container-color: #1f2b43;
+  --mdc-slider-with-tick-marks-inactive-container-color: #9aa3b8;
+  --mdc-slider-label-container-color: #1f2b43;
+  --mdc-slider-label-label-text-color: #f3f6ff;
+  --mdc-slider-handle-width: 14px;
+  --mdc-slider-handle-height: 14px;
+  --mat-mdc-slider-ripple-color: transparent;
+  --mat-mdc-slider-hover-ripple-color: transparent;
+  --mat-mdc-slider-focus-ripple-color: transparent;
+  // Keep active and inactive track at identical thickness.
+  --mdc-slider-active-track-height: 2px;
+  --mdc-slider-inactive-track-height: 2px;
+
+  // Fit the 26px pill (.action-wait-slider); default MDC slider is 48px tall.
+  &.mat-mdc-slider {
+    height: 26px;
+    min-height: 26px;
+    margin-left: 0;
+    margin-right: 0;
+    min-width: 0;
+    flex: 1 1 auto;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  // Default MDC: margin 0 24px (= half of 48px thumb) so track ends align with thumb
+  // center. We use a 14px knob → margin must be half of that (7px), not 0.
+  &.mat-mdc-slider .mdc-slider {
+    height: 26px;
+    margin: 0 7px !important;
+  }
+
+  // Default thumb is 48x48 with left:-24px. Match the 14px visual knob.
+  &.mat-mdc-slider .mdc-slider__thumb {
+    width: 14px !important;
+    height: 14px !important;
+    left: -7px !important;
+    top: calc(50% - 7px) !important;
+  }
+}
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__track {
+  height: 2px;
+}
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__track--active,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__track--active_fill,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__track--inactive {
+  border-top-width: 2px !important;
+  height: 2px !important;
+}
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__track--active_fill {
+  transform: none !important;
+}
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb-knob {
+  width: 14px;
+  height: 14px;
+  border-width: 0;
+  box-shadow: none;
+  background-color: #1f2b43;
+}
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb--top .mdc-slider__thumb-knob,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb--top.mdc-slider__thumb:hover .mdc-slider__thumb-knob,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb--top.mdc-slider__thumb--focused .mdc-slider__thumb-knob {
+  border-width: 0;
+  box-sizing: border-box;
+}
+
+// Compact pill sliders: hide MDC square state layer + mat-ripple (no drag halo).
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb::before,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mdc-slider__thumb::after {
+  opacity: 0 !important;
+}
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mat-mdc-slider-visual-thumb .mat-ripple-element,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mat-mdc-slider-focus-ripple,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mat-mdc-slider-hover-ripple,
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider .mat-mdc-slider-active-ripple {
+  opacity: 0 !important;
+}
+
+modal-preview-settings .action-wait-slider > mat-slider.wait-slider.mat-mdc-slider.mat-mdc-slider-disabled {
+  opacity: 0.55;
+}
+
+modal-preview-settings
+  .action-wait-slider
+  > mat-slider.wait-slider.mat-mdc-slider.mat-mdc-slider-disabled
+  .mdc-slider__thumb-knob {
+  background-color: #7e889f;
+}
+
+// ─── mat-slide-toggle (MDC switch) — pre-MDC migration colors ───────────────
+// Legacy selectors (.mat-slide-toggle-bar / .mat-slide-toggle-thumb) no longer apply.
+
+$td-slide-toggle-thumb-checked: rgb(3, 150, 243);
+$td-slide-toggle-track-checked: rgba(33, 150, 243, 0.54);
+$td-slide-toggle-thumb-unchecked: #fafafa;
+$td-slide-toggle-track-unchecked: rgba(0, 0, 0, 0.38);
+// AM14 disabled bar: lighter than enabled unchecked (MDC fades track; do not reuse .38).
+$td-slide-toggle-track-disabled: rgba(0, 0, 0, 0.12);
+$td-slide-toggle-thumb-shadow:
+  0px 2px 1px -1px rgba(0, 0, 0, 0.2),
+  0px 1px 1px 0px rgba(0, 0, 0, 0.14),
+  0px 1px 3px 0px rgba(0, 0, 0, 0.12);
+
+@mixin td-mdc-switch-palette($handle, $track) {
+  --mdc-switch-selected-handle-color: #{$handle};
+  --mdc-switch-selected-hover-handle-color: #{$handle};
+  --mdc-switch-selected-focus-handle-color: #{$handle};
+  --mdc-switch-selected-pressed-handle-color: #{$handle};
+  --mdc-switch-selected-hover-state-layer-color: #{$handle};
+  --mdc-switch-selected-focus-state-layer-color: #{$handle};
+  --mdc-switch-selected-pressed-state-layer-color: #{$handle};
+
+  --mdc-switch-selected-track-color: #{$track};
+  --mdc-switch-selected-hover-track-color: #{$track};
+  --mdc-switch-selected-focus-track-color: #{$track};
+  --mdc-switch-selected-pressed-track-color: #{$track};
+}
+
+@mixin td-mdc-switch-palette-unselected($handle, $track) {
+  --mdc-switch-unselected-handle-color: #{$handle};
+  --mdc-switch-unselected-hover-handle-color: #{$handle};
+  --mdc-switch-unselected-focus-handle-color: #{$handle};
+  --mdc-switch-unselected-pressed-handle-color: #{$handle};
+  --mdc-switch-unselected-hover-state-layer-color: #{$handle};
+  --mdc-switch-unselected-focus-state-layer-color: #{$handle};
+  --mdc-switch-unselected-pressed-state-layer-color: #{$handle};
+
+  --mdc-switch-unselected-track-color: #{$track};
+  --mdc-switch-unselected-hover-track-color: #{$track};
+  --mdc-switch-unselected-focus-track-color: #{$track};
+  --mdc-switch-unselected-pressed-track-color: #{$track};
+}
+
+// AM14 disabled: lighter track + faded thumb (not the same look as enabled unchecked).
+@mixin td-mdc-switch-palette-disabled($handle, $track) {
+  --mdc-switch-disabled-unselected-handle-color: #{$handle};
+  --mdc-switch-disabled-unselected-track-color: #{$track};
+  --mdc-switch-disabled-selected-handle-color: #{$handle};
+  --mdc-switch-disabled-selected-track-color: #{$track};
+  // Keep MDC track fade (0.12) on .mdc-switch__track; thumb fade (0.38) on handle — do not force to 1.
+}
+
+.mat-mdc-slide-toggle {
+  @include td-mdc-switch-palette-unselected($td-slide-toggle-thumb-unchecked, $td-slide-toggle-track-unchecked);
+  @include td-mdc-switch-palette($td-slide-toggle-thumb-checked, $td-slide-toggle-track-checked);
+  @include td-mdc-switch-palette-disabled($td-slide-toggle-thumb-unchecked, $td-slide-toggle-track-disabled);
+}
+
+.mat-mdc-slide-toggle .mdc-switch {
+  @include td-mdc-switch-palette-unselected($td-slide-toggle-thumb-unchecked, $td-slide-toggle-track-unchecked);
+  @include td-mdc-switch-palette($td-slide-toggle-thumb-checked, $td-slide-toggle-track-checked);
+  @include td-mdc-switch-palette-disabled($td-slide-toggle-thumb-unchecked, $td-slide-toggle-track-disabled);
+}
+
+// Label — AM14: font-weight 400; disabled text via color (equiv. to ~38% opacity), not bold.
+.mat-mdc-slide-toggle .mdc-form-field > label {
+  font-family: var(--header-font-family);
+  font-weight: 400;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.mat-mdc-slide-toggle .mdc-switch.mdc-switch--disabled + label {
+  font-weight: 400;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+// Thumb elevation (legacy .mat-slide-toggle-thumb box-shadow) — enabled only.
+.mat-mdc-slide-toggle:not(.mat-disabled) .mdc-switch:not(.mdc-switch--disabled) .mdc-switch__shadow {
+  box-shadow: $td-slide-toggle-thumb-shadow;
+}
+
+// Direct paint on track/handle layers (fallback when theme tokens win over CSS variables).
+.mat-mdc-slide-toggle:not(.mat-mdc-slide-toggle-checked):not(.mat-disabled) .mdc-switch__handle::after {
+  background: $td-slide-toggle-thumb-unchecked !important;
+}
+
+.mat-mdc-slide-toggle:not(.mat-mdc-slide-toggle-checked):not(.mat-disabled) .mdc-switch__track::before {
+  background: $td-slide-toggle-track-unchecked !important;
+}
+
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__handle::after {
+  background: $td-slide-toggle-thumb-checked !important;
+}
+
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__track::after {
+  background: $td-slide-toggle-track-checked !important;
+}
+
+// Disabled — AM14: faint bar (not rgba(0,0,0,.38)), thumb #fafafa at reduced opacity, label via theme.
+.mat-mdc-slide-toggle.mat-disabled .mdc-switch.mdc-switch--disabled,
+.mat-mdc-slide-toggle .mdc-switch.mdc-switch--disabled {
+  // Track color already at 12% black; do not stack MDC's extra 0.12 track opacity.
+  .mdc-switch__track {
+    opacity: 1 !important;
+  }
+
+  .mdc-switch__track::before,
+  .mdc-switch__track::after {
+    background: $td-slide-toggle-track-disabled !important;
+  }
+
+  .mdc-switch__handle::after {
+    background: $td-slide-toggle-thumb-unchecked !important;
+  }
+
+  .mdc-switch__shadow {
+    box-shadow: $td-slide-toggle-thumb-shadow !important;
+  }
+}
+
+// Disabled + checked: keep ON affordance (gray thumb, light check, track slightly darker when on).
+// Without this, the block above paints unchecked colors and hides the checkmark on the white thumb.
+.mat-mdc-slide-toggle.mat-disabled.mat-mdc-slide-toggle-checked .mdc-switch.mdc-switch--disabled,
+.mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch.mdc-switch--disabled {
+  --mdc-switch-disabled-selected-handle-color: #9e9e9e;
+  --mdc-switch-disabled-selected-track-color: rgba(0, 0, 0, 0.26);
+  --mdc-switch-disabled-selected-icon-color: #ececec;
+  --mdc-switch-disabled-selected-icon-opacity: 1;
+  --mdc-switch-disabled-handle-opacity: 1;
+
+  .mdc-switch__track {
+    opacity: 1 !important;
+  }
+
+  .mdc-switch__track::before {
+    background: $td-slide-toggle-track-disabled !important;
+  }
+
+  .mdc-switch__track::after {
+    background: rgba(0, 0, 0, 0.26) !important;
+  }
+
+  .mdc-switch__handle::after {
+    background: #9e9e9e !important;
+    opacity: 1 !important;
+  }
+
+  .mdc-switch__icons {
+    opacity: 1 !important;
+  }
+
+  .mdc-switch__icon--on {
+    opacity: 1 !important;
+    fill: #ececec !important;
+
+    path {
+      fill: #ececec !important;
+    }
+  }
+}
+
+// ─── mat-checkbox (MDC) — checked = var(--blue-20) ─────────────────────────
+// Replaces demo.scss .mat-checkbox-checked.mat-accent (legacy).
+
+@mixin td-mdc-checkbox-blue-20-selected() {
+  --mdc-checkbox-selected-checkmark-color: #fff;
+  --mdc-checkbox-selected-focus-icon-color: var(--blue-20);
+  --mdc-checkbox-selected-hover-icon-color: var(--blue-20);
+  --mdc-checkbox-selected-icon-color: var(--blue-20);
+  --mdc-checkbox-selected-pressed-icon-color: var(--blue-20);
+  --mdc-checkbox-selected-focus-state-layer-color: var(--blue-20);
+  --mdc-checkbox-selected-hover-state-layer-color: var(--blue-20);
+  --mdc-checkbox-selected-pressed-state-layer-color: var(--blue-20);
+
+  &.mat-mdc-checkbox-checked .mdc-checkbox__background {
+    background-color: var(--blue-20) !important;
+    border-color: var(--blue-20) !important;
+  }
+
+  &.mat-mdc-checkbox-checked .mdc-checkbox__checkmark-path {
+    stroke: #fff !important;
+  }
+}
+
+.mat-mdc-checkbox.mat-accent,
+.home-settings-checkbox.mat-mdc-checkbox {
+  @include td-mdc-checkbox-blue-20-selected();
+
+  .mdc-checkbox__background {
+    border-radius: 2px;
+  }
+}
+
+// Home dashlet filter (mat-mini-fab + tune) — MDC no longer wraps icon in span.mat-button-wrapper.
+#dashlet-filter-btn.mat-mdc-mini-fab,
+#dashlet-filter-btn {
+  background-color: #fff;
+  box-shadow: unset;
+  position: relative;
+  top: -1px;
+  color: var(--icon-btn) !important;
+
+  mat-icon,
+  .mat-icon {
+    color: var(--icon-btn) !important;
+    position: relative !important;
+    top: -1px !important;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Label — mirror mat-slide-toggle (Poppins, active/disabled colors).
+.mat-mdc-checkbox .mdc-form-field > label {
+  font-family: var(--header-font-family);
+  font-weight: 400;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+.mat-mdc-checkbox.mat-mdc-checkbox-disabled .mdc-form-field > label {
+  font-weight: 400;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.38);
+}
+
+// No grey ripple/focus halo (history/NORT uses plain form-check-input without MDC state layer).
+.mat-mdc-checkbox .mdc-checkbox__ripple,
+.mat-mdc-checkbox .mdc-checkbox:hover .mdc-checkbox__native-control:not([disabled]) ~ .mdc-checkbox__ripple,
+.mat-mdc-checkbox .mdc-checkbox .mdc-checkbox__native-control:not([disabled]):focus ~ .mdc-checkbox__ripple {
+  opacity: 0 !important;
+}
+
+.mat-mdc-checkbox .mat-mdc-checkbox-ripple .mat-ripple-element {
+  background-color: transparent !important;
+  opacity: 0 !important;
+}
+
+.mat-mdc-checkbox .mat-mdc-focus-indicator::before {
+  opacity: 0 !important;
+}
+
+// ─── mat-radio (MDC) — accent checked = var(--blue-20) ───────────────────────
+// Replaces demo.scss .mat-radio-button.mat-accent (legacy). Default accent in
+// indigo-pink theme is pink (#ff4081) — dashboard uses blue-20 like checkbox.
+// Focus halo / state layer hidden (same as checkbox): avoids persistent blue ring after click.
+
+.mat-mdc-radio-button.mat-accent {
+  --mdc-radio-selected-focus-icon-color: var(--blue-20);
+  --mdc-radio-selected-hover-icon-color: var(--blue-20);
+  --mdc-radio-selected-icon-color: var(--blue-20);
+  --mdc-radio-selected-pressed-icon-color: var(--blue-20);
+  --mat-mdc-radio-checked-ripple-color: var(--blue-20);
+
+  .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
+    border-color: var(--blue-20) !important;
+  }
+
+  .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__inner-circle {
+    border-color: var(--blue-20) !important;
+    background-color: var(--blue-20) !important;
+  }
+}
+
+.mat-mdc-radio-button .mdc-radio__ripple,
+.mat-mdc-radio-button .mdc-radio:hover .mdc-radio__native-control:not([disabled]) ~ .mdc-radio__ripple,
+.mat-mdc-radio-button .mdc-radio .mdc-radio__native-control:not([disabled]):focus ~ .mdc-radio__ripple {
+  opacity: 0 !important;
+}
+
+.mat-mdc-radio-button .mat-mdc-radio-ripple .mat-ripple-element,
+.mat-mdc-radio-button .mat-radio-ripple .mat-ripple-element {
+  background-color: transparent !important;
+  opacity: 0 !important;
+}
+
+.mat-mdc-radio-button .mat-mdc-focus-indicator::before,
+.mat-mdc-radio-button .mdc-radio__background::before {
+  opacity: 0 !important;
+}
+
+.mat-mdc-radio-button .mdc-form-field > label {
+  font-family: var(--header-font-family);
+  font-weight: 400;
+  letter-spacing: normal;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+// ─── mat-menu (MDC) — baseline (align AM14: 14px label, 20px icons, compact padding) ─
+
+.mat-mdc-menu-panel,
+.mat-menu-panel {
+  --mat-menu-item-label-text-size: 14px;
+  --mat-menu-item-label-text-tracking: normal;
+  font-family: var(--header-font-family);
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-content,
+.mat-menu-panel .mat-menu-content {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-item,
+.mat-mdc-menu-panel .mat-menu-item,
+.mat-menu-panel .mat-menu-item {
+  letter-spacing: normal !important;
+  font-size: 14px;
+  font-family: var(--header-font-family);
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-item .mat-mdc-menu-item-text,
+.mat-mdc-menu-panel .mat-mdc-menu-item .mdc-list-item__primary-text,
+.mat-menu-panel .mat-menu-item {
+  font-size: 14px;
+  letter-spacing: normal !important;
+}
+
+.mat-mdc-menu-panel .mat-mdc-menu-item mat-icon,
+.mat-mdc-menu-panel .mat-mdc-menu-item .mat-icon,
+.mat-menu-panel .mat-menu-item mat-icon,
+.mat-menu-panel .mat-menu-item .mat-icon {
+  height: 20px;
+  width: 20px;
+  font-size: 20px;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+// ─── mat-menu — home dashlet (checkbox rows) ─────────────────────────────────
+
+.mat-mdc-menu-panel.home-dashlet-menu .mat-mdc-menu-item:has(.home-settings-checkbox),
+.mat-mdc-menu-panel:has(.home-settings-checkbox) .mat-mdc-menu-item:has(.home-settings-checkbox) {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .home-settings-checkbox {
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  // Label testo è <span> fratello della checkbox, non figlio di mat-checkbox
+  > span {
+    font-size: 14px;
+    letter-spacing: normal !important;
+  }
+}
+
+// ─── mat-tab-group / mat-tab-nav-bar (MDC tabs) — primary accent ─────────────
+
+.mat-mdc-tab-group,
+.mat-mdc-tab-nav-bar {
+  --mat-tab-header-active-label-text-color: var(--blue-20);
+  --mat-tab-header-active-ripple-color: var(--blue-20);
+  --mat-tab-header-inactive-ripple-color: var(--blue-20);
+  --mat-tab-header-active-focus-indicator-color: var(--blue-20);
+  --mat-tab-header-inactive-focus-indicator-color: var(--blue-20);
+  --mdc-tab-indicator-active-indicator-color: var(--blue-20);
+}
+
+.mat-mdc-tab-group .mdc-tab__text-label,
+.mat-mdc-tab-nav-bar .mdc-tab__text-label {
+  letter-spacing: normal;
+}
+
+.mat-mdc-tab-group .mdc-tab--active .mdc-tab__text-label,
+.mat-mdc-tab-nav-bar .mdc-tab--active .mdc-tab__text-label {
+  color: var(--blue-20) !important;
+  font-weight: 500;
+}
+
+// Ripple/focus (theme primary is violet #3f51b5 — override to dashboard blue).
+.mat-mdc-tab-group .mat-mdc-tab .mat-ripple-element,
+.mat-mdc-tab-group .mdc-tab .mdc-tab__ripple::before,
+.mat-mdc-tab-nav-bar .mat-mdc-tab-link .mat-ripple-element,
+.mat-mdc-tab-nav-bar .mdc-tab .mdc-tab__ripple::before {
+  background-color: var(--blue-20) !important;
+}
+
+.mat-mdc-tab-group .mdc-tab-indicator__content--underline,
+.mat-mdc-tab-nav-bar .mdc-tab-indicator__content--underline {
+  border-color: var(--blue-20) !important;
+}
+
+// ─── mat-mdc-button — letter-spacing + horizontal padding (AM14 mat-button look) ─
+
+.mat-mdc-button.mat-mdc-button-base:not(.mat-mdc-icon-button),
+.mat-mdc-unelevated-button.mat-mdc-button-base:not(.mat-mdc-icon-button),
+.mat-mdc-raised-button.mat-mdc-button-base:not(.mat-mdc-icon-button),
+.mat-mdc-outlined-button.mat-mdc-button-base:not(.mat-mdc-icon-button) {
+  --mdc-text-button-label-text-tracking: normal;
+  --mdc-filled-button-label-text-tracking: normal;
+  --mdc-outlined-button-label-text-tracking: normal;
+  letter-spacing: normal;
+  padding: 0 14px;
+
+  .mdc-button__label {
+    letter-spacing: normal;
+  }
+}
+
+// ─── mat-dialog (MDC) — migrated from demo.scss (legacy .mat-dialog-container) ─
+// Surface is .mdc-dialog__surface inside mat-mdc-dialog-container (not the host).
+
+.mat-mdc-dialog-container,
+.mat-dialog-container {
+  --mdc-dialog-subhead-tracking: normal;
+  --mdc-dialog-supporting-text-tracking: normal;
+  font-family: var(--header-font-family) !important;
+  letter-spacing: normal;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface,
+.mat-mdc-dialog-container .mat-mdc-dialog-surface {
+  border-radius: var(--dialog-border-radius) !important;
+  overflow: hidden;
+}
+
+// AM14 dialog actions had more bottom breathing room; MDC default padding is tighter.
+.mat-mdc-dialog-container .mdc-dialog__actions,
+.mat-mdc-dialog-container .mat-mdc-dialog-actions,
+.mat-mdc-dialog-container [mat-dialog-actions] {
+  padding: 8px 8px 16px 8px;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__title,
+.mat-mdc-dialog-container .mdc-dialog__content,
+.mat-mdc-dialog-container .mdc-dialog__actions,
+.mat-mdc-dialog-container [mat-dialog-title],
+.mat-mdc-dialog-container .mat-mdc-dialog-title,
+.mat-mdc-dialog-container h1[mat-dialog-title],
+.mat-mdc-dialog-container h2[mat-dialog-title],
+.mat-mdc-dialog-container [mat-dialog-content],
+.mat-mdc-dialog-container .mat-mdc-dialog-content,
+.mat-mdc-dialog-container .mat-mdc-dialog-actions,
+.mat-mdc-dialog-container [mat-dialog-actions],
+.mat-dialog-container [mat-dialog-title],
+.mat-dialog-container [mat-dialog-content],
+.mat-dialog-container [mat-dialog-actions] {
+  letter-spacing: normal;
+}
+
+.mat-mdc-dialog-container [mat-dialog-title],
+.mat-mdc-dialog-container .mat-mdc-dialog-title,
+.mat-dialog-container .mat-dialog-title {
+  font-family: var(--header-font-family) !important;
+}
+
+// Dialog action buttons (mat-button → mat-mdc-button in M15).
+// Descendant selector: many modals wrap buttons in divs (e.g. automation-upload-csv).
+.mat-mdc-dialog-actions .mat-dialog-ok-btn,
+.mat-mdc-dialog-actions .mat-dialog-ok-btn.mat-mdc-button,
+.mat-dialog-actions .mat-dialog-ok-btn {
+  background-color: var(--blue-20) !important;
+  color: #fff !important;
+  border-radius: var(--btn-border-radius) !important;
+
+  .mdc-button__label {
+    color: #fff !important;
+  }
+}
+
+.mat-mdc-dialog-actions .mat-dialog-ok-btn.mat-mdc-button-disabled,
+.mat-mdc-dialog-actions .mat-dialog-ok-btn.mat-button-disabled,
+.mat-mdc-dialog-actions .mat-dialog-ok-btn[disabled],
+.mat-dialog-actions .mat-dialog-ok-btn.mat-focus-indicator.mat-button-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.mat-mdc-dialog-actions .mat-dialog-close-btn,
+.mat-mdc-dialog-actions .mat-dialog-close-btn.mat-mdc-button,
+.mat-dialog-actions .mat-dialog-close-btn {
+  background-color: #647491 !important;
+  color: #fff !important;
+  border-radius: var(--btn-border-radius) !important;
+
+  .mdc-button__label {
+    color: #fff !important;
+  }
+}
+
+.mat-mdc-dialog-actions .mat-dialog-ko-btn,
+.mat-mdc-dialog-actions .mat-dialog-ko-btn.mat-mdc-button,
+.mat-dialog-actions .mat-dialog-ko-btn {
+  background-color: var(--red-color, #e53935) !important;
+  color: #fff !important;
+  border-radius: var(--btn-border-radius) !important;
+
+  .mdc-button__label {
+    color: #fff !important;
+  }
+}
+
+.mat-mdc-dialog-actions > .mat-mdc-button,
+.mat-mdc-dialog-actions > .mat-button,
+.mat-mdc-dialog-actions > div > .mat-mdc-button,
+.mat-mdc-dialog-actions > div > .mat-button,
+.mat-dialog-actions > .mat-button,
+.mat-dialog-actions > div > .mat-button {
+  border-radius: var(--btn-border-radius) !important;
+}
+
+// ─── mat-tooltip (MDC) — baseline ─────────────────────────────────────────────
+// Border radius on every tooltip; custom matTooltipClass rules below extend the mixin.
+
+.mat-mdc-tooltip {
+  --mdc-plain-tooltip-container-shape: 2px;
+}
+
+.mat-mdc-tooltip .mdc-tooltip__surface,
+.mat-mdc-tooltip .mat-mdc-tooltip-surface,
+.mat-tooltip {
+  border-radius: 2px !important;
+}
+
+// ─── matTooltipClass registry (centralized from component styles) ─────────────
+// MDC tooltips paint on .mdc-tooltip__surface; matTooltipClass is on the overlay panel.
+
+@mixin td-mat-tooltip-surface($container-color, $text-color) {
+  --mdc-plain-tooltip-container-color: #{$container-color};
+  --mdc-plain-tooltip-supporting-text-color: #{$text-color};
+  --mdc-plain-tooltip-container-shape: 2px;
+
+  .mdc-tooltip__surface,
+  .mat-mdc-tooltip-surface {
+    background-color: #{$container-color} !important;
+    color: #{$text-color} !important;
+    border-radius: 2px !important;
+  }
+}
+
+.custom-mat-tooltip {
+  @include td-mat-tooltip-surface(var(--dark-background), var(--text-color-on-dark));
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.mat-white-tooltip {
+  @include td-mat-tooltip-surface(#fff, #000);
+
+  .mdc-tooltip__surface {
+    font-size: 11px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    border: 1px solid #ccc !important;
+    font-weight: 400 !important;
+  }
+}
+
+.conv-custom-mat-tooltip {
+  @include td-mat-tooltip-surface(#2d323e, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.convs-custom-mat-tooltip {
+  @include td-mat-tooltip-surface(#2d323e, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 11px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+  }
+}
+
+.conv-dtls-custom-mat-tooltip {
+  @include td-mat-tooltip-surface(var(--dark-background), var(--text-color-on-dark));
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    white-space: pre-line !important;
+    text-align: center !important;
+    line-height: 17px !important;
+  }
+}
+
+.sb-mat-tooltip {
+  // MDC positions right tooltips flush on the 70px sidebar; nudge outside like A14
+  margin-left: 8px !important;
+
+  @include td-mat-tooltip-surface(#2d323e, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.sb-busy-mat-tooltip {
+  margin-left: 51px !important;
+
+  @include td-mat-tooltip-surface(#2d323e, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.dt-table-sidebar-tooltip {
+  @include td-mat-tooltip-surface(#2d323e, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.kb-custom-mat-tooltip {
+  @include td-mat-tooltip-surface(#2d323e, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.custom-mat-tooltip-navbar {
+  @include td-mat-tooltip-surface(#2d323e, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.custom-mat-tooltip-in-settings-sidebar {
+  // MDC positions right tooltips flush on the settings sidebar; nudge outside like sb-mat-tooltip
+  margin-left: 8px !important;
+
+  @include td-mat-tooltip-surface(
+    var(--settings-sidebar-mat-tooltip-background-color),
+    var(--settings-sidebar-mat-tooltip-color)
+  );
+
+  .mdc-tooltip__surface {
+    font-size: var(--settings-sidebar-mat-tooltip-font-size) !important;
+    border-radius: var(--settings-sidebar-mat-tooltip-border-radius) !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    border: var(--settings-sidebar-mat-tooltip-border) !important;
+  }
+}
+
+.custom-mat-tooltip-in-widget-setup {
+  @include td-mat-tooltip-surface(#555555, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    line-height: 1.2;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    border: 1px solid #555555 !important;
+    white-space: pre-line;
+  }
+}
+
+.custom-mat-tooltip-in-faq-table {
+  @include td-mat-tooltip-surface(#555555, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    border: 1px solid #555555 !important;
+  }
+}
+
+.h-custom-mat-tooltip {
+  @include td-mat-tooltip-surface(#2d323e, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+}
+
+.h-custom-mat-tooltip-error {
+  @include td-mat-tooltip-surface(#f44336, #fff);
+
+  .mdc-tooltip__surface {
+    font-size: 12px !important;
+    border-radius: 2px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    line-height: 1.3;
+  }
+}
+
+// ─── mat-form-field — percentage suffix (% before steppers) ─────────────────
+// Native number spinners sit inside the input, after matSuffix — hide them and use custom buttons.
+
+.mat-mdc-form-field:has(.percentage-input-suffix) input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+  &::-webkit-outer-spin-button,
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+.percentage-input-suffix {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  margin-right: 2px;
+}
+
+.percentage-input-suffix__symbol {
+  font-size: 14px;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.87)
+}
+
+.percentage-input-suffix__spinners {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 28px;
+}
+
+.percentage-step-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.54);
+  line-height: 1;
+  height: 14px;
+  width: 20px;
+
+  .material-icons-outlined {
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  &:hover {
+    color: rgba(0, 0, 0, 0.87);
+  }
+}
+
+// ─── mat-spinner / mat-progress-spinner (MDC) — dashboard blue baseline ───────
+// Default MDC theme primary is deeppurple; align standalone spinners to dashboard blue.
+// Quota pies (.quote, .quota-pie) and *-runned-out variants override below.
+
+mat-spinner,
+mat-progress-spinner,
+.mat-mdc-progress-spinner {
+  --mdc-circular-progress-active-indicator-color: var(--blue-20);
+}
+
+mat-spinner circle,
+mat-progress-spinner circle,
+.mat-mdc-progress-spinner circle {
+  stroke: var(--blue-20) !important;
+}
+
+// ─── mat-progress-spinner (MDC) — quota pies (home .quote, navbar .quota-pie) ─
+// Replaces legacy .mat-progress-spinner rules in demo.scss / component ::ng-deep.
+
+.quote,
+.quota-pie {
+  position: relative;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+}
+
+.quote mat-progress-spinner,
+.quote .mat-mdc-progress-spinner,
+.quota-pie mat-progress-spinner,
+.quota-pie .mat-mdc-progress-spinner {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  box-shadow: 0 0 0 4px #e8e9ed inset;
+  border-radius: 50%;
+}
+
+.quote mat-progress-spinner circle,
+.quote .mat-mdc-progress-spinner circle,
+.quota-pie mat-progress-spinner circle,
+.quota-pie .mat-mdc-progress-spinner circle {
+  stroke: var(--blue-20) !important;
+}
+
+.percentage,
+.quota-pie-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.percentage {
+  font-weight: 600;
+}
+
+.quota-pie-label {
+  font-weight: 500;
+}
+
+.mat-progress-spinner-conversations-runned-out circle,
+.mat-progress-spinner-token-runned-out circle,
+.mat-progress-spinner-email-runned-out circle,
+.mat-progress-spinner-voice-runned-out circle,
+.mat-mdc-progress-spinner.mat-progress-spinner-conversations-runned-out circle,
+.mat-mdc-progress-spinner.mat-progress-spinner-token-runned-out circle,
+.mat-mdc-progress-spinner.mat-progress-spinner-email-runned-out circle,
+.mat-mdc-progress-spinner.mat-progress-spinner-voice-runned-out circle {
+  stroke: #f55a4e !important;
+}

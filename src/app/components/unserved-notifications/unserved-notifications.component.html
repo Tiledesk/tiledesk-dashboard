@@ -1,0 +1,57 @@
+<div class="td-unserved-host" *ngIf="canShow && items.length > 0"
+  [class.td-unserved-host--expanded]="expanded"
+  [class.td-unserved-host--enter]="enterAnimating">
+  <div class="td-unserved-toolbar" *ngIf="showExpandedToolbar">
+    <button type="button" class="td-unserved-show-less" (click)="onShowLess($event)">
+      {{ 'NavBar.ShowLess' | translate }}
+    </button>
+    <button type="button" class="td-unserved-clear-all" (click)="onClearAll($event)"
+      [matTooltip]="'NavBar.CloseAll' | translate"
+      matTooltipPosition="above"
+      matTooltipClass="custom-mat-tooltip">
+      <i class="material-icons">close</i>
+    </button>
+  </div>
+
+  <div class="td-unserved-stack"
+    [class.td-unserved-stack--stacked]="isStacked"
+    [class.td-unserved-stack--expanded]="expanded || items.length === 1">
+
+    <button *ngIf="isStacked" type="button" class="td-unserved-stack-close"
+      (click)="onClearAll($event)"
+      [matTooltip]="'NavBar.CloseAll' | translate"
+      matTooltipPosition="above"
+      matTooltipClass="custom-mat-tooltip">
+      <i class="material-icons">close</i>
+    </button>
+
+    <div class="td-unserved-card"
+      *ngFor="let item of visibleItems; let i = index; trackBy: trackById"
+      [style.zIndex]="visibleItems.length - i"
+      [attr.data-stack-index]="i"
+      (click)="onStackOrCardClick(item, $event)">
+
+      <!-- Close stays on the top-left corner (outside content) so open/detail clicks are not accidental closes -->
+      <button *ngIf="!isStacked" type="button" class="td-unserved-close"
+        (click)="onDismissOne(item, $event)"
+        [matTooltip]="'NavBar.Close' | translate"
+        matTooltipPosition="above"
+        matTooltipClass="custom-mat-tooltip">
+        <i class="material-icons">close</i>
+      </button>
+
+      <div class="td-unserved-icon" aria-hidden="true">
+        <i class="material-icons">feedback</i>
+      </div>
+
+      <div class="td-unserved-content">
+        <div class="td-unserved-top">
+          <span class="td-unserved-title">{{ 'NavBar.NewUnassignedChat' | translate }}</span>
+          <span class="td-unserved-time">{{ item.createdAt | amTimeAgo }}</span>
+        </div>
+        <div class="td-unserved-sender">{{ item.sender }}</div>
+        <div class="td-unserved-message">{{ item.msg }}</div>
+      </div>
+    </div>
+  </div>
+</div>

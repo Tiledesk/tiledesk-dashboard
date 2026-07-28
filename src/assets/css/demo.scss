@@ -4762,3 +4762,324 @@ li.li-active a {
 //   border-bottom: 3px solid rgba(30, 136, 229, 1) !important;
 //   color:black !important;
 // }
+
+/* ngx-toastr styles */
+/* ********************************** */
+
+/* positionClass is on #toast-container, not on each toast */
+#toast-container.toast-top-center {
+  top: 66px !important;
+  right: 0;
+  width: 100%;
+}
+
+/* New message toast: top-right — match unserved card width (host 380px − 14px stack inset) */
+#toast-container.toast-top-right .ngx-toastr.td-notify-toast {
+  box-sizing: border-box;
+  width: min(366px, calc(100vw - 54px)) !important;
+  max-width: min(366px, calc(100vw - 54px));
+  margin: 0 0 10px !important;
+  padding: 12px 14px !important;
+  background-image: none !important;
+  background-position: initial;
+  background: rgba(45, 45, 48, 0.96) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: none !important;
+  z-index: 1051 !important;
+  border-radius: 16px;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+  position: relative !important;
+  display: block !important;
+  color: #fff;
+  cursor: pointer;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-notify-toast.animated {
+  animation-duration: 0.4s;
+  animation-fill-mode: both;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-notify-toast .toast-message {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  word-wrap: normal;
+}
+
+/* New message toast — same macOS card look as unserved (no close button) */
+.td-notify-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.td-notify-icon {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #0a84ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+
+  .material-icons {
+    font-size: 20px;
+    color: #fff;
+  }
+}
+
+.td-notify-content {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.td-notify-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.96);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+  max-width: 100% !important;
+}
+
+.td-notify-foreground-header {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.96);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+  max-width: 100% !important;
+  background: transparent !important;
+  padding: 0;
+  height: auto;
+}
+
+.td-notify-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  padding: 0;
+}
+
+.td-notify-message {
+  display: block;
+  font-size: 12px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+  padding: 0;
+}
+
+/* banner basso centro (showToast): fadeInUp / fadeOutDown */
+#toast-container.toast-bottom-center {
+  bottom: 20px !important;
+  left: 0;
+  right: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast {
+  width: auto !important;
+  max-width: min(90vw, 640px);
+  margin: 0 auto 10px !important;
+  padding: 10px 50px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25) !important;
+  z-index: 1051 !important;
+  text-align: center;
+  pointer-events: auto;
+  border: none;
+}
+
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+@keyframes tdToastFadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast.fadeInUp {
+  animation-name: tdToastFadeInUp;
+}
+
+.td-center-toast-body {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+}
+
+.td-center-toast-icon {
+  font-size: 20px;
+  color: #fff;
+  vertical-align: middle;
+}
+
+.td-center-toast-message {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 15px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 1.35;
+}
+
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast.alert-warning .td-center-toast-icon,
+#toast-container.toast-bottom-center .ngx-toastr.td-center-toast.alert-warning .td-center-toast-message {
+  color: rgb(66, 77, 87);
+}
+
+/* widget / operazioni: alto a destra, fadeInDown / fadeOutUp */
+#toast-container.toast-top-right {
+  top: 20px !important;
+  right: 20px !important;
+  left: auto !important;
+  width: auto;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-widget-notify-toast {
+  width: 100% !important;
+  max-width: 360px;
+  min-width: 280px;
+  margin: 0 0 10px !important;
+  padding: 8px 12px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1051 !important;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-widget-notify-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+/* cambio / eliminazione progetto: alto a destra, colori Bootstrap come widget toast */
+#toast-container.toast-top-right .ngx-toastr.td-change-project-notify-toast {
+  width: 100% !important;
+  max-width: 360px;
+  min-width: 280px;
+  margin: 0 0 10px !important;
+  padding: 8px 12px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1051 !important;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-change-project-notify-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-change-project-notify-toast .td-widget-notify-message {
+  font-size: 14px;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-verify-email-toast {
+  width: 100% !important;
+  max-width: 360px;
+  min-width: 280px;
+  margin: 0 0 10px !important;
+  padding: 8px 12px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1051 !important;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-verify-email-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-verify-email-toast .toast-close-button {
+  display: none !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast {
+  width: 100% !important;
+  max-width: 360px;
+  min-width: 280px;
+  margin: 0 0 10px !important;
+  padding: 8px 12px !important;
+  background-image: none !important;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1051 !important;
+  text-align: left;
+  pointer-events: auto;
+  overflow: visible !important;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast.animated {
+  animation-duration: 0.35s;
+  animation-fill-mode: both;
+}
+
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast .toast-close-button {
+  display: none !important;
+}
+
+/* archiviazione: sfondo Bootstrap invariato (alert-info / alert-success), solo testo */
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast .toast-message,
+#toast-container.toast-top-right .ngx-toastr.td-archiving-notify-toast .td-widget-notify-message {
+  color: #fff !important;
+  font-size: 14px;
+}
+
+.td-widget-notify-body {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.td-widget-notify-icon .material-icons {
+  vertical-align: middle;
+  padding: 3px;
+  border-radius: 50%;
+  font-size: 16px;
+  color: #fff;
+}
+
+.td-widget-notify-message {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 14px;
+  flex: 1;
+  min-width: 0;
+}

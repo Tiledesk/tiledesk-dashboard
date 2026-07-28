@@ -324,6 +324,7 @@
         "ActivitiesTeammateChartEmpty": "لم يتم العثور على أنشطة لهذا العضو في الفريق خلال الفترة المحددة.",
         "ActivitiesTeammateChartLoadError": "تعذر تحميل الأنشطة. حاول مرة أخرى.",
         "NoActivitiesFound": "لم يتم العثور على أنشطة",
+        "RemovedFromProject": "تمت إزالته من المشروع",
         "StartDate": "تاريخ البداية",
         "EndDate": "تاريخ الانتهاء",
         "FilterGroup": {
@@ -340,6 +341,7 @@
             "REQUEST_ASSIGNED_SELF": "انضم الوكيل إلى المحادثة",
             "REQUEST_ASSIGNED_MANUAL": "تعيين يدوي",
             "REQUEST_UNASSIGNED": "تم إلغاء تعيين الوكيل",
+            "LEAVE_CONVERSATION": "غادر الوكيل المحادثة",
             "PROJECT_USER_INVITE": "تمت دعوة زميل الفريق",
             "PROJECT_USER_UPDATE": "تم تحديث زميل الفريق",
             "PROJECT_USER_DELETE": "تمت إزالة زميل الفريق",
@@ -1121,7 +1123,10 @@
         "OpenTheChatToActivateNotifications": "افتح الدردشة لإدارة الرسائل وتفعيل دفع الإخطارات",
         "ClickHere": "انقر هنا",
         "TiledeskLogOut": "{{ BRAND_NAME }} تسجيل الخروج",
-        "LogOut": "تسجيل خروج"
+        "LogOut": "تسجيل خروج",
+        "CloseAll": "إغلاق الكل",
+        "ShowLess": "عرض أقل",
+        "Close": "إغلاق"
     },
     "SideBar": {
         "ViewAllProjects": "عرض جميع المشاريع",
@@ -2422,6 +2427,11 @@
     "Friday": "جمعة",
     "Saturday": "السبت",
     "SelectAnOption": "حدد خيارا",
+    "AnalyticsNew": {
+        "Loading": "جاري تحميل التحليلات…",
+        "ConfigurationMissing": "لم يتم تكوين تضمين التحليلات. قم بتعيين analyticsApiBase و analyticsEmbedBase في إعدادات لوحة التحكم (راجع EMBED-INTEGRATION.md).",
+        "TokenError": "تعذر الحصول على رمز تضمين التحليلات. تحقق من جلستك وتأكد من إمكانية الوصول إلى واجهة برمجة تطبيقات التحليلات."
+    },
     "Analytics": {
         "AnalyticsTITLE": "تحليلات",
         "HeatMapTitle": "المحادثات في الساعة من اليوم",

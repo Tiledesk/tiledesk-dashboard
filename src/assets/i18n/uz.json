@@ -324,6 +324,7 @@
         "ActivitiesTeammateChartEmpty": "Tanlangan davrda ushbu jamoa a'zosi uchun hech qanday faoliyat topilmadi.",
         "ActivitiesTeammateChartLoadError": "Faoliyatlarni yuklashning imkoni bo'lmadi. Qayta urinib ko'ring.",
         "NoActivitiesFound": "Hech qanday faoliyat topilmadi",
+        "RemovedFromProject": "Loyihadan olib tashlandi",
         "StartDate": "Boshlanish sanasi",
         "EndDate": "Tugash sanasi",
         "FilterGroup": {   
@@ -339,6 +340,7 @@
             "REQUEST_ASSIGNED_SELF": "Agent suhbatga qo'shildi",
             "REQUEST_ASSIGNED_MANUAL": "Qo'lda tayinlash",
             "REQUEST_UNASSIGNED": "Agent tayinlanmadi",
+            "LEAVE_CONVERSATION": "Agent suhbatni tark etdi",
             "PROJECT_USER_INVITE": "Jamoa a'zosi taklif qilindi",
             "PROJECT_USER_UPDATE": "Jamoa a'zosi yangilandi",
             "PROJECT_USER_DELETE": "Jamoa a'zosi olib tashlandi",
@@ -1120,7 +1122,10 @@
         "OpenTheChatToActivateNotifications": "Xabarlarni boshqarish va push bildirishnomalarini faollashtirish uchun chatni oching",
         "ClickHere": "bu yerni bosing",
         "TiledeskLogOut": "{{ BRAND_NAME }} Chiqish",
-        "LogOut": "Chiqish"
+        "LogOut": "Chiqish",
+        "CloseAll": "Hammasini yopish",
+        "ShowLess": "Kamroq ko‘rsatish",
+        "Close": "Yopish"
     },
     "SideBar": {
         "ViewAllProjects": "Barcha loyihalarni ko'rish",
@@ -2420,6 +2425,11 @@
     "Friday": "Juma",
     "Saturday": "shanba",
     "SelectAnOption": "Variantni tanlang",
+    "AnalyticsNew": {
+        "Loading": "Analitika yuklanmoqda…",
+        "ConfigurationMissing": "Analitika joylashtirilishi sozlanmagan. Dashboard sozlamalarida analyticsApiBase va analyticsEmbedBase ni o'rnating (EMBED-INTEGRATION.md ga qarang).",
+        "TokenError": "Analitika joylashtirish tokenini olishning imkoni bo'lmadi. Sessiyangizni va analitika API manziliga yetib borish mumkinligini tekshiring."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Analitika",
         "HeatMapTitle": "Kunning bir soatiga suhbatlar",

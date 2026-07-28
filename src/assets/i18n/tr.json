@@ -325,6 +325,7 @@
         "ActivitiesTeammateChartEmpty": "Seçilen dönemde bu takım arkadaşı için hiçbir aktivite bulunamadı.",
         "ActivitiesTeammateChartLoadError": "Aktiviteler yüklenemedi. Lütfen tekrar deneyin.",
         "NoActivitiesFound": "Hiçbir aktivite bulunamadı",
+        "RemovedFromProject": "Projeden kaldırıldı",
         "StartDate": "Başlangıç tarihi",
         "EndDate": "Bitiş tarihi",
         "FilterGroup": {
@@ -341,6 +342,7 @@
             "REQUEST_ASSIGNED_SELF": "Temsilci görüşmeye katıldı",
             "REQUEST_ASSIGNED_MANUAL": "Manuel atama",
             "REQUEST_UNASSIGNED": "Temsilci ataması kaldırıldı",
+            "LEAVE_CONVERSATION": "Temsilci sohbetten ayrıldı",
             "PROJECT_USER_INVITE": "Takım arkadaşı davet edildi",
             "PROJECT_USER_UPDATE": "Takım arkadaşı güncellendi",
             "PROJECT_USER_DELETE": "Takım arkadaşı kaldırıldı",
@@ -1122,7 +1124,10 @@
         "OpenTheChatToActivateNotifications": "Mesajları yönetmek ve push bildirimlerini etkinleştirmek için sohbeti açın",
         "ClickHere": "Buraya Tıkla",
         "TiledeskLogOut": "{{ BRAND_NAME }} Oturumu Kapat",
-        "LogOut": "Çıkış Yap"
+        "LogOut": "Çıkış Yap",
+        "CloseAll": "Tümünü kapat",
+        "ShowLess": "Daha az göster",
+        "Close": "Kapat"
     },
     "SideBar": {
         "ViewAllProjects": "Tüm projeleri görüntüle",
@@ -2422,6 +2427,12 @@
     "Friday": "Cuma",
     "Saturday": "Cumartesi",
     "SelectAnOption": "Bir seçenek seçin",
+    
+    "AnalyticsNew": {
+        "Loading": "Analitik yükleniyor…",
+        "ConfigurationMissing": "Analitik yerleştirme yapılandırılmamış. Pano yapılandırmasında analyticsApiBase ve analyticsEmbedBase değerlerini ayarlayın (EMBED-INTEGRATION.md dosyasına bakın).",
+        "TokenError": "Bir analitik yerleştirme jetonu alınamadı. Oturumunuzu ve analitik API'sine erişilebildiğini kontrol edin."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Analitik",
         "HeatMapTitle": "Günün saatine göre konuşma",

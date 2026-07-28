@@ -324,6 +324,7 @@
         "ActivitiesTeammateChartEmpty": "Для цього учасника команди у вибраному періоді активності не знайдено.",
         "ActivitiesTeammateChartLoadError": "Не вдалося завантажити активності. Спробуйте ще раз.",
         "NoActivitiesFound": "Активності не знайдено",
+        "RemovedFromProject": "Видалено з проєкту",
         "StartDate": "Дата початку",
         "EndDate": "Дата закінчення",
         "FilterGroup": {
@@ -340,6 +341,7 @@
             "REQUEST_ASSIGNED_SELF": "Агент приєднався до розмови",
             "REQUEST_ASSIGNED_MANUAL": "Ручне призначення",
             "REQUEST_UNASSIGNED": "Агент не призначений",
+            "LEAVE_CONVERSATION": "Агент залишив розмову",
             "PROJECT_USER_INVITE": "Учасника команди запрошено",
             "PROJECT_USER_UPDATE": "Учасника команди оновлено",
             "PROJECT_USER_DELETE": "Учасника команди видалено",
@@ -1137,7 +1139,10 @@
         "OpenTheChatToActivateNotifications": "Відкрийте чат, щоб керувати повідомленнями та активувати push-повідомлення",
         "ClickHere": "Натисніть тут",
         "TiledeskLogOut": "{{ ім'я компанії}} Вийти",
-        "LogOut": "Вийти"
+        "LogOut": "Вийти",
+        "CloseAll": "Закрити все",
+        "ShowLess": "Показати менше",
+        "Close": "Закрити"
     },
     "SideBar": {
         "ViewAllProjects": "Переглянути всі проекти",
@@ -2438,6 +2443,11 @@
     "Friday": "п'ятниця",
     "Saturday": "субота",
     "SelectAnOption": "Виберіть опцію",
+     "AnalyticsNew": {
+        "Loading": "Завантаження аналітики…",
+        "ConfigurationMissing": "Вбудовування аналітики не налаштовано. Встановіть analyticsApiBase та analyticsEmbedBase у конфігурації панелі керування (див. EMBED-INTEGRATION.md).",
+        "TokenError": "Не вдалося отримати токен для вбудовування аналітики. Перевірте свою сесію та доступність API аналітики."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Аналітика",
         "HeatMapTitle": "Розмови за годину дня",

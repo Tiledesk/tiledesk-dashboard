@@ -324,6 +324,7 @@
         "ActivitiesTeammateChartEmpty": "Таңдалған кезеңде бұл команда мүшесі үшін ешбір әрекет табылмады.",
         "ActivitiesTeammateChartLoadError": "Әрекеттерді жүктеу мүмкін болмады. Қайталап көріңіз.",
         "NoActivitiesFound": "Ешбір әрекет табылмады",
+        "RemovedFromProject": "Жобадан жойылды",
         "StartDate": "Басталу күні",
         "EndDate": "Аяқталу күні",
         "FilterGroup": {
@@ -340,6 +341,7 @@
             "REQUEST_ASSIGNED_SELF": "Агент өтінішке қосылды",
             "REQUEST_ASSIGNED_MANUAL": "Қолмен тағайындау",
             "REQUEST_UNASSIGNED": "Агент тағайындалмады",
+            "LEAVE_CONVERSATION": "Агент әңгімеден шықты",
             "PROJECT_USER_INVITE": "Команда мүшесі шақырылды",
             "PROJECT_USER_UPDATE": "Команда мүшесі жаңартылды",
             "PROJECT_USER_DELETE": "Команда мүшесі жойылды",
@@ -1136,7 +1138,10 @@
         "OpenTheChatToActivateNotifications": "Хабарларды басқару және push хабарландыруларын белсендіру үшін чатты ашыңыз",
         "ClickHere": "Мында басыңыз",
         "TiledeskLogOut": "{{ BRAND_NAME }} Шығу",
-        "LogOut": "Шығу"
+        "LogOut": "Шығу",
+        "CloseAll": "Барлығын жабу",
+        "ShowLess": "Қысқарту",
+        "Close": "Жабу"
     },
     "SideBar": {
         "ViewAllProjects": "Барлық жобаларды көру",
@@ -2437,6 +2442,11 @@
     "Friday": "жұма",
     "Saturday": "сенбі",
     "SelectAnOption": "Опцияны таңдаңыз",
+    "AnalyticsNew": {
+        "Loading": "Аналитика жүктелуде…",
+        "ConfigurationMissing": "Аналитиканы ендіру конфигурацияланбаған. Dashboard конфигурациясында analyticsApiBase және analyticsEmbedBase мәндерін орнатыңыз (EMBED-INTEGRATION.md қараңыз).",
+        "TokenError": "Аналитиканы ендіру токенін алу мүмкін болмады. Сеансыңызды және аналитика API қолжетімді екенін тексеріңіз."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Аналитика",
         "HeatMapTitle": "Тәулігіне бір сағатта сөйлесу",

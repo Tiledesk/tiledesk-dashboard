@@ -324,6 +324,7 @@
         "ActivitiesTeammateChartEmpty": "Aucune activité trouvée pour ce coéquipier dans la période sélectionnée.",
         "ActivitiesTeammateChartLoadError": "Impossible de charger les activités. Veuillez réessayer.",
         "NoActivitiesFound": "Aucune activité trouvée",
+        "RemovedFromProject": "Supprimé du projet",
         "StartDate": "Date de début",
         "EndDate": "Date de fin",
         "FilterGroup": {
@@ -340,6 +341,7 @@
             "REQUEST_ASSIGNED_SELF": "L'agent a rejoint la conversation",
             "REQUEST_ASSIGNED_MANUAL": "Attribution manuelle",
             "REQUEST_UNASSIGNED": "Agent désattribué",
+            "LEAVE_CONVERSATION": "Agent a quitté la conversation",
             "PROJECT_USER_INVITE": "Coéquipier invité",
             "PROJECT_USER_UPDATE": "Coéquipier mis à jour",
             "PROJECT_USER_DELETE": "Coéquipier supprimé",
@@ -1120,7 +1122,10 @@
         "OpenTheChatToActivateNotifications": "Ouvrez le chat pour gérer les messages et activer les notifications push",
         "ClickHere": "Cliquez ici",
         "TiledeskLogOut": "{{ BRAND_NAME }} Déconnexion",
-        "LogOut": "Se déconnecter"
+        "LogOut": "Se déconnecter",
+        "CloseAll": "Tout fermer",
+        "ShowLess": "Afficher moins",
+        "Close": "Fermer"
     },
     "SideBar": {
         "ViewAllProjects": "Voir tous les projets",
@@ -2421,6 +2426,11 @@
     "Friday": "Vendredi",
     "Saturday": "Samedi",
     "SelectAnOption": "Sélectionnez une option",
+    "AnalyticsNew": {
+        "Loading": "Chargement des analyses…",
+        "ConfigurationMissing": "L'intégration d'analyse n'est pas configurée. Définissez analyticsApiBase et analyticsEmbedBase dans la configuration du tableau de bord (voir EMBED-INTEGRATION.md).",
+        "TokenError": "Impossible d'obtenir un jeton d'intégration d'analyse. Vérifiez votre session et que l'API d'analyse est accessible."
+    },
     "Analytics": {
         "AnalyticsTITLE": "Analytique",
         "HeatMapTitle": "Conversations par heure de la journée",

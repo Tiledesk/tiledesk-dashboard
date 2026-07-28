@@ -324,6 +324,7 @@
     	"ActivitiesTeammateChartEmpty": "Für diesen Teammitglied wurden im ausgewählten Zeitraum keine Aktivitäten gefunden.",
     	"ActivitiesTeammateChartLoadError": "Aktivitäten konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
     	"NoActivitiesFound": "Keine Aktivitäten gefunden",
+		"RemovedFromProject": "Aus dem Projekt entfernt",
     	"StartDate": "Startdatum",
     	"EndDate": "Enddatum",
 		"FilterGroup": {
@@ -340,6 +341,7 @@
 			"REQUEST_ASSIGNED_SELF": "Agent ist der Konversation beigetreten",
 			"REQUEST_ASSIGNED_MANUAL": "Manuelle Zuweisung",
 			"REQUEST_UNASSIGNED": "Agent-Zuweisung aufgehoben",
+			"LEAVE_CONVERSATION": "Agent hat die Unterhaltung verlassen",
 			"PROJECT_USER_INVITE": "Teammitglied eingeladen",
 			"PROJECT_USER_UPDATE": "Teammitglied aktualisiert",
 			"PROJECT_USER_DELETE": "Teammitglied entfernt",
@@ -1120,7 +1122,10 @@
 		"OpenTheChatToActivateNotifications": "Öffnen Sie den Chat um Nachrichten zu verwalten und Push-Benachrichtigungen zu aktivieren",
 		"ClickHere": "Hier klicken",
 		"TiledeskLogOut": "{{ BRAND_NAME }} Abmelden",
-		"LogOut": "Abmelden"
+		"LogOut": "Abmelden",
+        "CloseAll": "Alle schließen",
+        "ShowLess": "Weniger anzeigen",
+        "Close": "Schließen"
 	},
 	"SideBar": {
 		"ViewAllProjects": "Alle Projekte anzeigen",
@@ -2421,6 +2426,11 @@
 	"Friday": "Freitag",
 	"Saturday": "Samstag",
 	"SelectAnOption": "Wählen Sie eine Option",
+	"AnalyticsNew": {
+        "Loading": "Analytics werden geladen…",
+        "ConfigurationMissing": "Die Analytics-Einbettung ist nicht konfiguriert. Setzen Sie analyticsApiBase und analyticsEmbedBase in der Dashboard-Konfiguration (siehe EMBED-INTEGRATION.md).",
+        "TokenError": "Ein Analytics-Einbettungstoken konnte nicht abgerufen werden. Überprüfen Sie Ihre Sitzung und stellen Sie sicher, dass die Analytics-API erreichbar ist."
+    },
 	"Analytics": {
 		"AnalyticsTITLE": "Analytik",
 		"PanoramicaComponentTitle": "Überblick",
