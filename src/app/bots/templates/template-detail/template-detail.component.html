@@ -1,33 +1,23 @@
-<!-- <h2 mat-dialog-title>Install Angular</h2> -->
-<mat-dialog-actions align="end" style="min-height: 13px;">
+ <h1 mat-dialog-title>{{template?.name}}</h1> 
+<!-- <mat-dialog-actions align="end" style="min-height: 13px;">
     <button mat-button mat-dialog-close
         style="position: relative;top: -16px; min-width: 36px; padding: 0px;border-radius: 50%;">
         <span class="material-icons">
             close
         </span>
     </button>
-    <!-- <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button> -->
-</mat-dialog-actions>
+</mat-dialog-actions> -->
 <mat-dialog-content class="mat-typography" style="min-height: 30px;">
     <div class="template-detail">
-        <div class="template-detail-header">
+        <!-- <div class="template-detail-header">
             <div class="template-detail-img-wpr">
-
-                <!-- <span *ngIf="!template?.bigImage">
-                    <img *ngIf="UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
-                        src="https://firebasestorage.googleapis.com/v0/b/{{storageBucket}}/o/profiles%2F{{template._id}}%2Fphoto.jpg?alt=media"
-                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
-                    <img *ngIf="!UPLOAD_ENGINE_IS_FIREBASE" style="width: 40px; height: 40px;"
-                        src="{{baseUrl}}files?path=uploads%2Fusers%2F{{template?._id}}%2Fimages%2Fthumbnails_200_200-photo.jpg"
-                        onerror="this.src='assets/img/avatar_bot_tiledesk.svg'">
-                </span> -->
 
                 <img *ngIf="template?.bigImage" style="width: auto; height: 40px; margin-right: 12px;" src="{{template.bigImage}}">
             </div>
             <div class="template-detail-name-wpr">
                 <h2 weight="bold" class="template-detail-name">{{template?.name}}</h2>
             </div>
-        </div>
+        </div> -->
         <div class="template-detail-btns-wpr">
             <!-- btn-new btn-size-l btn--primary -->
             <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="importTempalte()">
@@ -206,6 +196,12 @@
     </div>
 
 </mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button tabindex="-1" mat-button mat-dialog-close class="mat-dialog-close-btn">
+        {{'Cancel' | translate}}
+    </button>
+</mat-dialog-actions>
 
 <!-- MODAL - CREATE BOT INFO WINDOWS -->
 <!-- <div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display': displayInfoModal }"
