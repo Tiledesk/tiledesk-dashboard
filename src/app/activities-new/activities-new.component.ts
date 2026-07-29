@@ -58,6 +58,13 @@ import {
   resolveProjectUserInviteTargetLabel as resolveProjectUserInviteTargetLabelFn,
   isSystemAbandonedChatsUpdate as isSystemAbandonedChatsUpdateFn,
   systemAbandonedChatsCount as systemAbandonedChatsCountFn,
+  isMaxAssignedChatUpdate as isMaxAssignedChatUpdateFn,
+  maxAssignedChatValue as maxAssignedChatValueFn,
+  isAvailabilityStatusUpdate as isAvailabilityStatusUpdateFn,
+  isProjectUserUpdateSelf as isProjectUserUpdateSelfFn,
+  detectProjectUserUpdateKind as detectProjectUserUpdateKindFn,
+  projectUserUpdateTagsLabel as projectUserUpdateTagsLabelFn,
+  ProjectUserUpdateKind,
   chatbotName,
   faqKbCreateChatbotName,
   chatbotSubtypeLabel,
@@ -410,6 +417,10 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     this.getActivities();
   }
 
+  onRefreshActivities(): void {
+    this.getActivities();
+  }
+
   getActivities() {
     this.showSpinner = true;
     this.activitiesService.getUsersActivities(this.queryString, this.pageNo)
@@ -451,13 +462,21 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const actionObj = activity.actionObj || {};
     const actorId = String(activity.actor?.id || '').trim();
     const targetUserId = String(
       (activity.target?.object?.['id_user'] as Record<string, unknown> | undefined)?.['_id'] || '',
     ).trim();
-    if (actorId && targetUserId) {
+    if (isProjectUserUpdateSelfFn(actionObj)) {
+      activity.targetOfActionIsYourself = true;
+    } else if (actorId && targetUserId) {
       activity.targetOfActionIsYourself = actorId === targetUserId;
     }
+
+    activity.projectUserUpdateKind = detectProjectUserUpdateKindFn(
+      actionObj,
+      activity.target?.object as Record<string, unknown> | undefined,
+    );
 
     if (!activity.actor?.name && actorId && activity.actor?.type !== 'system') {
       const resolvedName = this.getTeammateDisplayName(actorId);
@@ -739,9 +758,39 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   isPendingProjectUserInvite = isPendingProjectUserInviteFn;
   isSystemAbandonedChatsUpdate = isSystemAbandonedChatsUpdateFn;
   systemAbandonedChatsCount = systemAbandonedChatsCountFn;
+  isMaxAssignedChatUpdate = isMaxAssignedChatUpdateFn;
+  maxAssignedChatValue = maxAssignedChatValueFn;
+  isAvailabilityStatusUpdate = isAvailabilityStatusUpdateFn;
+  isProjectUserUpdateSelf = isProjectUserUpdateSelfFn;
 
   projectUserUpdateRoleLabel(activity: ActivityRecord): string {
     return projectUserUpdateRoleLabelFn(activity.actionObj || {});
+  }
+
+  projectUserUpdateTagsLabel(activity: ActivityRecord): string {
+    return projectUserUpdateTagsLabelFn(
+      activity?.actionObj || {},
+      activity?.target?.object as Record<string, unknown> | undefined,
+    );
+  }
+
+  /** Self update via updateType, with actor===target fallback. */
+  isProjectUserUpdateSelfActivity(activity: ActivityRecord): boolean {
+    const actionObj = activity?.actionObj || {};
+    if (isProjectUserUpdateSelfFn(actionObj)) {
+      return true;
+    }
+    return !!activity?.targetOfActionIsYourself;
+  }
+
+  projectUserUpdateKind(activity: ActivityRecord): ProjectUserUpdateKind {
+    if (activity?.projectUserUpdateKind) {
+      return activity.projectUserUpdateKind;
+    }
+    return detectProjectUserUpdateKindFn(
+      activity?.actionObj || {},
+      activity?.target?.object as Record<string, unknown> | undefined,
+    );
   }
 
   decreasePageNumber() {

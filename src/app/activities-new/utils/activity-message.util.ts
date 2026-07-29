@@ -638,6 +638,158 @@ export function systemAbandonedChatsCount(actionObj: Record<string, unknown> = {
   return str(attributes['abandoned_chats']);
 }
 
+/** True when actionObj itself carries max_assigned_chat (not target.object snapshot). */
+export function isMaxAssignedChatUpdate(actionObj: Record<string, unknown> = {}): boolean {
+  return actionObj['max_assigned_chat'] !== undefined && actionObj['max_assigned_chat'] !== null;
+}
+
+export function maxAssignedChatValue(actionObj: Record<string, unknown> = {}): string {
+  const value = actionObj['max_assigned_chat'];
+  if (value === -1) {
+    return 'unlimited';
+  }
+  return str(value);
+}
+
+export function isAvailabilityStatusUpdate(actionObj: Record<string, unknown> = {}): boolean {
+  if (str(actionObj['newStatus'])) {
+    return true;
+  }
+  if (typeof actionObj['user_available'] === 'boolean') {
+    return true;
+  }
+  if (str(actionObj['profileStatus'])) {
+    return true;
+  }
+  return false;
+}
+
+export function isProjectUserUpdateSelf(actionObj: Record<string, unknown> = {}): boolean {
+  return str(actionObj['updateType']) === 'self';
+}
+
+export type ProjectUserUpdateKind =
+  | 'abandoned'
+  | 'availability'
+  | 'role'
+  | 'max_assigned_chat'
+  | 'role_and_max_assigned_chat'
+  | 'tags'
+  | 'unknown';
+
+/**
+ * Classify PROJECT_USER_UPDATE from actionObj shape (and optional target.object).
+ *
+ * - updateType "self": never a role change (teammate cannot change own role in UI).
+ *   max_assigned_chat: -1 is the default echoed on profile save — not "set to unlimited".
+ *   On that save: prefer tags from target.object when present, else availability.
+ *   A numeric max_assigned_chat (not -1) → max chats.
+ * - tags in actionObj → tags (newStatus can be noise).
+ * - availability (admin): availability fields present without role/max/tags.
+ * - admin PUT often sends role + max_assigned_chat together → combined when both present.
+ */
+export function detectProjectUserUpdateKind(
+  actionObj: Record<string, unknown> = {},
+  targetObject?: Record<string, unknown> | null,
+): ProjectUserUpdateKind {
+  if (isSystemAbandonedChatsUpdate(actionObj)) {
+    return 'abandoned';
+  }
+
+  const isSelf = isProjectUserUpdateSelf(actionObj);
+  const hasRole = !!str(actionObj['role']);
+  const hasMax = isMaxAssignedChatUpdate(actionObj);
+  const hasAvailability = isAvailabilityStatusUpdate(actionObj);
+  const hasTagsInAction = isProjectUserTagsUpdate(actionObj);
+
+  // Tags in actionObj win over newStatus noise (admin/tag PUT).
+  if (hasTagsInAction) {
+    return 'tags';
+  }
+
+  // Self updates: role in payload is contextual noise — teammate cannot change own role.
+  if (isSelf) {
+    const maxRaw = actionObj['max_assigned_chat'];
+    // -1 = default on profile save, not a deliberate "unlimited" change.
+    const hasMeaningfulMax = maxRaw !== undefined && maxRaw !== null && maxRaw !== -1;
+
+    if (hasMeaningfulMax) {
+      return 'max_assigned_chat';
+    }
+
+    if (maxRaw === -1) {
+      const targetTags = targetObject?.['tags'];
+      if (Array.isArray(targetTags) && targetTags.length > 0) {
+        return 'tags';
+      }
+      if (hasAvailability) {
+        return 'availability';
+      }
+      return 'unknown';
+    }
+
+    if (hasAvailability) {
+      return 'availability';
+    }
+    return 'unknown';
+  }
+
+  // Admin / other: classify by which fields are present.
+  // Availability only when there is no role/max (those belong to the role+maxchat PUT).
+  if (hasAvailability && !hasRole && !hasMax) {
+    return 'availability';
+  }
+
+  if (hasRole && hasMax) {
+    return 'role_and_max_assigned_chat';
+  }
+  if (hasRole) {
+    return 'role';
+  }
+  if (hasMax) {
+    return 'max_assigned_chat';
+  }
+  if (hasAvailability) {
+    return 'availability';
+  }
+
+  return 'unknown';
+}
+
+/** True when actionObj carries a tags array (tag set/update). */
+export function isProjectUserTagsUpdate(actionObj: Record<string, unknown> = {}): boolean {
+  return Array.isArray(actionObj['tags']);
+}
+
+function formatProjectUserTagsList(tags: unknown): string {
+  if (!Array.isArray(tags) || !tags.length) {
+    return '';
+  }
+  return tags
+    .map((t) => {
+      if (t && typeof t === 'object') {
+        return str((t as Record<string, unknown>)['tag']);
+      }
+      return str(t);
+    })
+    .filter(Boolean)
+    .join(', ');
+}
+
+/**
+ * Tag names for phrases: actionObj.tags first, else target.object.tags
+ * (self profile save often omits tags from actionObj).
+ */
+export function projectUserUpdateTagsLabel(
+  actionObj: Record<string, unknown> = {},
+  targetObject?: Record<string, unknown> | null,
+): string {
+  return (
+    formatProjectUserTagsList(actionObj['tags']) ||
+    formatProjectUserTagsList(targetObject?.['tags'])
+  );
+}
+
 export function formatNewStatus(actionObj: Record<string, unknown> = {}): string {
   const newStatus = str(actionObj['newStatus']);
   if (newStatus) {
@@ -921,30 +1073,53 @@ export function renderActivity(activity: ActivityRecord): string {
       const targetUserId = normalizeId(
         (activity.target?.object?.['id_user'] as Record<string, unknown> | undefined)?.['_id']
       );
-      const isSelf = actorId && targetUserId && actorId === targetUserId;
+      const isSelf =
+        isProjectUserUpdateSelf(actionObj) ||
+        !!(actorId && targetUserId && actorId === targetUserId);
       const roleLabel = projectUserUpdateRoleLabel(actionObj);
+      const maxValue = maxAssignedChatValue(actionObj);
+      const targetObject = activity.target?.object as Record<string, unknown> | undefined;
+      const kind =
+        activity.projectUserUpdateKind ||
+        detectProjectUserUpdateKind(actionObj, targetObject);
 
-      if (isSystemAbandonedChatsUpdate(actionObj)) {
+      if (kind === 'abandoned') {
         const count = systemAbandonedChatsCount(actionObj);
         return isSelf
           ? `${actor} has updated their abandoned chats count to ${count}`
           : `${actor} has updated ${targetUser}'s abandoned chats count to ${count}`;
       }
 
-      if (roleLabel) {
+      if (kind === 'availability') {
+        const statusLabel = availabilityStatusLabel(actionObj);
+        return isSelf
+          ? `${actor} changed their availability status to ${statusLabel}`
+          : `${actor} changed ${targetUser}'s availability status to ${statusLabel}`;
+      }
+
+      if (kind === 'tags') {
+        const tagsLabel = projectUserUpdateTagsLabel(actionObj, targetObject);
+        return isSelf
+          ? `${actor} set their tags to ${tagsLabel}`
+          : `${actor} set ${targetUser}'s tags to ${tagsLabel}`;
+      }
+
+      if (kind === 'max_assigned_chat') {
+        return isSelf
+          ? `${actor} changed their maximum assigned chats to ${maxValue}`
+          : `${actor} changed ${targetUser}'s maximum assigned chats to ${maxValue}`;
+      }
+
+      if (kind === 'role') {
         return isSelf
           ? `${actor} changed their role to ${roleLabel}`
-          : `${actor} changed the role of ${targetUser} to ${roleLabel}`;
+          : `${actor} changed ${targetUser}'s role to ${roleLabel}`;
       }
-      if (actionObj['user_available'] === true) {
+
+      if (kind === 'role_and_max_assigned_chat') {
         return isSelf
-          ? `${targetUser || actor}'s availability status has been changed to ${availabilityStatusLabel(actionObj)} by themselves`
-          : `${actor} changed the availability status of ${targetUser} to available`;
-      }
-      if (actionObj['user_available'] === false) {
-        return isSelf
-          ? `${targetUser || actor}'s availability status has been changed to ${availabilityStatusLabel(actionObj)} by themselves`
-          : `${actor} changed the availability status of ${targetUser} to ${availabilityStatusLabel(actionObj).toLowerCase()}`;
+          ? `${actor} updated their role to ${roleLabel} and maximum assigned chats to ${maxValue}`
+          : `${actor} updated ${targetUser}'s role to ${roleLabel} and maximum assigned chats to ${maxValue}`;
       }
       break;
     }
