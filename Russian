@@ -201,6 +201,7 @@
     "TotalConversationsUsage": "Total conversations usage",
     "TotalAITokensUsage": "Total AI Tokens usage",
     "TotalEmailUsage": "Total email usage",
+    "TotalVoiceUsage": "Total voice usage",
     "Email": "Email",
     "RequestsForAgent": "Разговоры для агента",
     "RequestsForTeammate": "Conversations for Teammate",
@@ -433,6 +434,7 @@
             "REQUEST_ASSIGNED_SELF": "Agent joined conversation",
             "REQUEST_ASSIGNED_MANUAL": "Manual assignment",
             "REQUEST_UNASSIGNED": "Agent unassigned",
+            "LEAVE_CONVERSATION": "Agent left conversation",
             "PROJECT_USER_INVITE": "Teammate invited",
             "PROJECT_USER_UPDATE": "Teammate updated",
             "PROJECT_USER_DELETE": "Teammate removed",
@@ -1265,8 +1267,14 @@
         "ToManageTheMessages": "к управлять сообщениями и активировать push-уведомления",
         "OpenTheChatToActivateNotifications": "Откройте чат, чтобы управлять сообщениями и активировать push-уведомления",
         "ClickHere": "Kликните сюда",
+        "NewMessage": "New message",
+        "NewUnassignedChat": "New unassigned chat",
+        "NewUnassignedChats": "{{count}} new unassigned chats",
         "TiledeskLogOut": "{{ BRAND_NAME }} Log Out",
-        "LogOut": "Выйти"
+        "LogOut": "Выйти",
+        "CloseAll": "Close all",
+        "ShowLess": "Show less",
+        "Close": "Close"
     },
     "SideBar": {
         "ViewAllProjects": "Посмотреть все проекты",
