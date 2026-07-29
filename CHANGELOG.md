@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.8.18
+- Migrates the dashboard core to Angular 15 (CLI, @angular/core, and Material/CDK 15 with MDC)
+- Adapts key UI surfaces to Material MDC (History date range, Knowledge Base actions, Data Tables …)
+- Removes unused components 
+- Improvements and bug fixing
+
 ### 2.8.16
 - Shows the current size of data tables in MB against the maximum allowed size
 - Adds the ability to filter data tables by conditions
