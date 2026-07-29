@@ -51,6 +51,8 @@ export class DashboardToastrService {
   private unservedPresentationArmed = false;
   /** Navbar re-scans current WS unserved list when this emits. */
   readonly unservedRepublish$: Subject<void> = new Subject<void>();
+  /** After refresh: arm for live toasts; navbar should seed shown_requests without toasting. */
+  readonly unservedLiveArm$: Subject<void> = new Subject<void>();
 
   /** True if the user opened this unserved toast (detail) — do not show again. */
   static isUnservedHandled(storageKey: string): boolean {
@@ -79,11 +81,23 @@ export class DashboardToastrService {
    * Restores parked toasts and asks navbar to republish current unserved.
    */
   armUnservedPresentationOnProjectEnter(projectId: string): void {
+    // Drop soft suppressions from refresh hydrate / auto-dismiss so intentional
+    // enter can republish the current backlog (handled keys still block).
+    this.suppressedUnservedKeys.clear();
     this.unservedPresentationArmed = true;
     if (projectId) {
       this.restoreParkedUnservedNotifications(projectId);
     }
     this.unservedRepublish$.next();
+  }
+
+  /**
+   * After refresh while already in a project: allow *new* live unserved toasts
+   * without republishing the existing backlog (navbar seeds shown_requests on this signal).
+   */
+  armUnservedPresentationForLiveEvents(): void {
+    this.unservedPresentationArmed = true;
+    this.unservedLiveArm$.next();
   }
 
   /**

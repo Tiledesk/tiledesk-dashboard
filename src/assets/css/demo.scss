@@ -2151,14 +2151,13 @@ span.navbar-brand-title {
 // }
 
 // Stacking layer for all Material/CDK overlays (dialogs, menus, tooltips).
-// Keep at 1050 (Bootstrap modal tier, in prod since 2022). Do not raise globally:
-// ng-select with appendTo="body" uses ~1050 and would disappear behind a higher container.
+// Keep at 1050 (Bootstrap modal tier). Sidebar is 1052 so accidental overhang
+// does not cover nav; request-preview tooltip is clamped right of the sidebar.
 .cdk-overlay-container {
   position: fixed;
   z-index: 1050 !important;
 }
 
-// Order panes inside the overlay container only (not vs sidebar 1052).
 .cdk-overlay-pane.td-request-preview-overlay,
 .cdk-overlay-pane.custom-ng2-tooltip {
   z-index: 1061 !important;
@@ -2192,17 +2191,19 @@ span.navbar-brand-title {
   font-weight: 400;
   text-align: left !important;
   min-width: 470px;
+  max-width: min(560px, calc(100vw - 80px));
+  box-sizing: border-box;
   padding: 16px;
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 
-  /* Tooltip tail on the white container (points to first_text below) */
+  /* Tooltip tail — left set by directive so it still points at first_text when clamped */
   &::before,
   &::after {
     content: "";
     position: absolute;
-    left: 50%;
+    left: var(--td-preview-tooltip-arrow-left, 50%);
     transform: translateX(-50%);
     width: 0;
     height: 0;
@@ -2297,6 +2298,8 @@ span.navbar-brand-title {
   font-weight: 400;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 12px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .ng2-most-recent-comment-section-title {
@@ -2340,6 +2343,8 @@ span.navbar-brand-title {
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 10px;
   margin-bottom: 0px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .ng2-latest-comment>p {

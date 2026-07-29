@@ -789,7 +789,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               }
             }
 
-            if (paramArray[0] === 'start_date' && paramArray[1] !== '') {
+            if (paramArray[0] === 'start_date') {
               const start_date_value = paramArray[1]
               this.logger.log('[HISTORY & NORT-CONVS] queryParams start_date_value ', start_date_value)
               if (start_date_value) {
@@ -803,11 +803,18 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
                 this.startDateDefaultValue = new Date(start_date_value_segment[1] + '/' + start_date_value_segment[0] + '/' + start_date_value_segment[2])
                 this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > startDateDefaultValue:', this.startDateDefaultValue)
+              } else {
+                this.startDate = null;
+                this.startDateDefaultValue = null;
+                this.startDateFormatted_temp = null;
+                this.startDateFormatted = null;
+                this.startDateValue = '';
+                this.start_date_is_null = true;
               }
             }
 
 
-            if (paramArray[0] === 'end_date' && paramArray[1] !== '') {
+            if (paramArray[0] === 'end_date') {
               const end_date = paramArray[1]
               this.logger.log('[HISTORY & NORT-CONVS] queryParams end_date', end_date)
               if (end_date) {
@@ -819,6 +826,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
                 this.logger.log('[HISTORY & NORT-CONVS] queryParams qsString > _enddate', end_date_segment)
                 this.endDateDefaultValue = new Date(end_date_segment[1] + '/' + end_date_segment[0] + '/' + end_date_segment[2])
                 this.logger.log('[HISTORY & NORT-CONVS]  queryParams qsString > endDateDefaultValue:', this.endDateDefaultValue)
+              } else {
+                this.endDate = null;
+                this.endDateDefaultValue = null;
+                this.endDateFormatted_temp = null;
+                this.endDateFormatted = null;
+                this.endDateValue = '';
               }
             }
 
@@ -2660,6 +2673,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   addEventStartDate(value) {
     this.logger.log('[HISTORY & NORT-CONVS] - startDateSelected value', value);
+    if (!value) {
+      this.start_date_is_null = true;
+      this.startDate = null;
+      this.startDateFormatted_temp = null;
+      return;
+    }
     this.startDateFormatted_temp = moment(value).format('DD/MM/YYYY')
     this.logger.log('[HISTORY & NORT-CONVS] - startDateFormatted_temp', this.startDateFormatted_temp);
 
@@ -2669,36 +2688,52 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - startDate', this.startDate);
     } else {
       this.start_date_is_null = true;
-      this.startDate = ''
-      this.endDate = ''
-
+      this.startDate = null
+      this.endDate = null
     }
   }
 
   addEventEndDate(value) {
     this.logger.log('[HISTORY & NORT-CONVS] - endDateSelected value', value);
+    if (!value) {
+      this.endDate = null;
+      this.endDateFormatted_temp = null;
+      return;
+    }
     this.endDateFormatted_temp = moment(value).format('DD/MM/YYYY')
 
     this.logger.log('[HISTORY & NORT-CONVS] - endDateFormatted_temp', this.endDateFormatted_temp);
     if (!this.endDateFormatted_temp) {
-      this.endDate = ''
+      this.endDate = null
     } else {
       this.endDate = this.endDateFormatted_temp
       this.logger.log('[HISTORY & NORT-CONVS] - endDate', this.endDate);
     }
   }
+
   onChangeStartDate($event) {
+    // Keep mat-datepicker ngModel as Date | null — do not overwrite with a formatted string.
     this.logger.log('[HISTORY & NORT-CONVS] - onChangeStartDate event', $event);
-    this.startDateDefaultValue = moment($event).format('DD/MM/YYYY')
-    this.logger.log('[HISTORY & NORT-CONVS] - onChangeStartDate this.startDateDefaultValue', this.startDateDefaultValue);
   }
 
   clearDateRange() {
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR DATE RANGE');
-    this.startDateDefaultValue = null
-    this.endDateDefaultValue = null
-    this.startDate = null
-    this.endDate = null
+    this.startDateDefaultValue = null;
+    this.endDateDefaultValue = null;
+    this.startDate = null;
+    this.endDate = null;
+    this.startDateFormatted_temp = null;
+    this.endDateFormatted_temp = null;
+    this.startDateFormatted = null;
+    this.endDateFormatted = null;
+    this.startDateValue = '';
+    this.endDateValue = '';
+    this.start_date_is_null = true;
+
+    // Re-run search so applied filters, queryString and URL qs drop the date range.
+    if (this.has_searched) {
+      this.search('clear-date-range');
+    }
   }
 
   openDatePicker(): void {
@@ -3086,16 +3121,29 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - QUERY STRING ', this.queryString);
     
     if (this.IS_HERE_FOR_HISTORY) {
-       // Update URL with _preflight, pageNo and hasOpenedAdvancedSearch
+       // Keep URL qs in sync with the active search (otherwise clearing a filter
+       // leaves stale start_date/end_date in the URL and the queryParams
+       // subscription restores them).
       const queryParams = {
         _preflight: this._preflight.toString(),
         _rated: this._rated.toString(),
         pageNo: this.pageNo.toString(),
-        hasOpenedAdvancedSearch: this.showAdvancedSearchOption.toString()
+        hasOpenedAdvancedSearch: this.showAdvancedSearchOption.toString(),
+        qs: JSON.stringify(this.queryString)
       };
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: queryParams,
+        queryParamsHandling: 'merge'
+      });
+    } else {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          pageNo: this.pageNo.toString(),
+          hasOpenedAdvancedSearch: this.showAdvancedSearchOption.toString(),
+          qs: JSON.stringify(this.queryString)
+        },
         queryParamsHandling: 'merge'
       });
     }

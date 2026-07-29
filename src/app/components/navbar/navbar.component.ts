@@ -101,6 +101,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   notify: any;
   private shown_requests = {};
   private shown_my_requests = {};
+  /** After refresh live-arm: next list publish only seeds shown_requests (no toast). */
+  private pendingLiveArmSeed = false;
+  /**
+   * After project enter: keep forcing a full unserved publish until the WS list
+   * for the new project actually has data (republish often races an empty list).
+   */
+  private forceNextUnservedPublish = false;
   salesEmail: string;
 
   project: Project;
@@ -2214,7 +2221,22 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.notifyService.unservedRepublish$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
+        this.pendingLiveArmSeed = false;
+        this.forceNextUnservedPublish = true;
         this.publishCurrentUnservedFromWsList();
+      });
+
+    this.notifyService.unservedLiveArm$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        // Seed current backlog as already-seen; if list not ready yet, first publish will seed.
+        this.forceNextUnservedPublish = false;
+        this.pendingLiveArmSeed = true;
+        const requests = this.wsRequestsService.wsRequestsList$.value || [];
+        if (requests.length) {
+          this.seedShownUnservedFromRequests(requests);
+          this.pendingLiveArmSeed = false;
+        }
       });
 
     this.subscription = this.wsRequestsService.wsRequestsList$
@@ -2234,22 +2256,57 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   /** Re-scan current WS list after project enter (list may not re-emit). */
   private publishCurrentUnservedFromWsList(): void {
     const requests = this.wsRequestsService.wsRequestsList$.value || [];
-    this.publishUnservedFromRequests(requests);
+    this.publishUnservedFromRequests(requests, { ignoreShown: true });
   }
 
-  private publishUnservedFromRequests(requests: any[]): void {
-    if (!this.notifyService.isUnservedPresentationArmed()) {
-      return;
-    }
+  private seedShownUnservedFromRequests(requests: any[]): void {
+    (requests || [])
+      .filter((r: any) => r?.status === 100 && r?.id)
+      .forEach((r: any) => {
+        this.shown_requests[r.id] = true;
+      });
+  }
+
+  private publishUnservedFromRequests(
+    requests: any[],
+    options?: { ignoreShown?: boolean }
+  ): void {
     if (!requests || !requests.length) {
       return;
     }
 
     const unserved = requests.filter((r: any) => r.status === 100);
+
+    // While disarmed (e.g. refresh hydrate): remember current unserved so that
+    // arming for live events later does not flood with the pre-existing backlog.
+    if (!this.notifyService.isUnservedPresentationArmed()) {
+      this.seedShownUnservedFromRequests(unserved);
+      return;
+    }
+
+    // First emission after refresh live-arm: seed only, do not toast backlog.
+    if (
+      this.pendingLiveArmSeed &&
+      options?.ignoreShown !== true &&
+      !this.forceNextUnservedPublish
+    ) {
+      this.seedShownUnservedFromRequests(unserved);
+      this.pendingLiveArmSeed = false;
+      return;
+    }
+
     const unservedCount = unserved.length;
     this.logger.log('[NAVBAR] notifyLastUnserved - unservedCount  ', unservedCount);
     if (!unservedCount) {
+      // Keep forceNextUnservedPublish so the next non-empty list after project
+      // switch still presents (WS often reconnects after republish).
       return;
+    }
+
+    const ignoreShown =
+      options?.ignoreShown === true || this.forceNextUnservedPublish;
+    if (this.forceNextUnservedPublish) {
+      this.forceNextUnservedPublish = false;
     }
 
     unserved.forEach((r) => {
@@ -2262,6 +2319,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         return;
       }
       if (r.status !== 100 || this.user === null) {
+        return;
+      }
+      // Skip backlog already seen (unless project-enter republish).
+      if (!ignoreShown && this.shown_requests[r.id]) {
         return;
       }
 

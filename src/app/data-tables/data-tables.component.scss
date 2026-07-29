@@ -292,10 +292,7 @@
 }
 
 .dt-refresh-btn {
-  width: 40px !important;
-  height: 40px !important;
-  line-height: 40px !important;
-  padding: 0 !important;
+  // Shared look/centering: material-mdc-overrides.scss (.dt-refresh-btn)
   color: #667085;
 
   &:disabled {

@@ -346,7 +346,7 @@
                             <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - SUBSCRIPTION ACTIVE  -->
                             <!-- -------------------------------------------------------------------------------- -->
                             <!-- SUBSCRIPTION_BUFFER_DAYS {{SUBSCRIPTION_BUFFER_DAYS}} - subscription_is_active {{ subscription_is_active }} -->
-                            <span class="subscription-status" style="font-weight: 400;">
+                            <span class="subscription-status" style="font-weight: 400; font: size 14px;">
                               <span style="display: flex;align-items: center;font-size: 14px;"
                                 *ngIf="prjct_profile_type === 'payment' && subscription_is_active === true">
                                 <i *ngIf="!SUBSCRIPTION_BUFFER_DAYS" class="material-icons"
@@ -421,7 +421,7 @@
                               <!-- -------------------------------------------------------------------------------------  -->
                               <!-- SUBSCRIPTION STATUS - PROFILE TYPE:  FREE   -->
                               <!-- -------------------------------------------------------------------------------------  -->
-                              <span style="display: flex;" *ngIf="prjct_profile_type !== 'payment'">
+                              <span style="display: flex; align-items: center;" *ngIf="prjct_profile_type !== 'payment'">
                                 <i class="material-icons"
                                   style="color:#3ea9f5; vertical-align: middle; padding-right: 8px">
                                   info
@@ -429,7 +429,7 @@
                                 <!-- -------------------------------------------------------------------------------------  -->
                                 <!-- SUBSCRIPTION STATUS - PROFILE TYPE: FREE + TRIAL NOT EXPIRED  -->
                                 <!-- -------------------------------------------------------------------------------------  -->
-                                <span *ngIf="prjct_trial_expired === false">
+                                <span *ngIf="prjct_trial_expired === false" style="font-weight:400; font-size: 14px;">
                                   {{ "Pricing.Your" | translate }}
 
                                   <span style="font-weight:400">

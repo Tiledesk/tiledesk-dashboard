@@ -75,6 +75,15 @@ export interface ActivityRecord {
   /** Assignee user/bot id for REQUEST_CREATE link navigation */
   request_create_assignee_id?: string;
   targetOfActionIsYourself?: boolean;
+  /** Client-side: which PROJECT_USER_UPDATE field(s) actually changed. */
+  projectUserUpdateKind?:
+    | 'abandoned'
+    | 'availability'
+    | 'role'
+    | 'max_assigned_chat'
+    | 'role_and_max_assigned_chat'
+    | 'tags'
+    | 'unknown';
   request_close_display?: RequestCloseDisplayContext;
   unassigned_participant_display?: UnassignedParticipantDisplay;
   /** Set client-side when REQUEST_ASSIGNED_MANUAL actor is a bot. */

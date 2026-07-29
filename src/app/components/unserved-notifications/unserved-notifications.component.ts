@@ -78,9 +78,10 @@ export class UnservedNotificationsComponent implements OnInit, OnDestroy {
 
         if (!wasShow && this.canShow && this.currentProjectId) {
           if (this.skipNextVisibilityEnter) {
-            // Initial NavigationEnd after refresh — do not show.
+            // Initial NavigationEnd after refresh — do not present backlog,
+            // but arm so subsequent live unserved still toast.
             this.skipNextVisibilityEnter = false;
-            this.dashboardToastr.disarmUnservedPresentation();
+            this.dashboardToastr.armUnservedPresentationForLiveEvents();
             this.applyProjectFilter();
             return;
           }
@@ -96,19 +97,24 @@ export class UnservedNotificationsComponent implements OnInit, OnDestroy {
         const projectChanged = prevId !== this.currentProjectId;
 
         if (!this.projectHydrated) {
-          // First non-null project (or settling null→project) after refresh: never present.
+          // First non-null project (or settling null→project) after refresh: never present backlog.
           if (this.currentProjectId) {
             this.projectHydrated = true;
           }
           this.dashboardToastr.disarmUnservedPresentation();
           this.applyProjectFilter();
+          // Already inside a project route: allow new live toasts after hydrate.
+          if (this.canShow && this.currentProjectId) {
+            this.dashboardToastr.armUnservedPresentationForLiveEvents();
+          }
           return;
         }
 
         this.applyProjectFilter();
 
-        // Real project switch A→B only (not null→project from hydrate).
-        if (projectChanged && prevId && this.currentProjectId && this.canShow) {
+        // After hydrate: A→B switch, or null→project when leaving /projects and entering one.
+        // (Hydrate's first null→project is handled above and must not present backlog.)
+        if (projectChanged && this.currentProjectId && this.canShow) {
           this.presentOnProjectEnter(this.currentProjectId);
         }
       });

@@ -577,9 +577,19 @@ export class NotifyService {
     return this.dashboardToastr.isUnservedPresentationArmed();
   }
 
+  /** Allow live unserved toasts after refresh without republishing backlog. */
+  armUnservedPresentationForLiveEvents(): void {
+    this.dashboardToastr.armUnservedPresentationForLiveEvents();
+  }
+
   /** Navbar re-scans the current WS unserved list when this emits. */
   get unservedRepublish$(): Observable<void> {
     return this.dashboardToastr.unservedRepublish$.asObservable();
+  }
+
+  /** After refresh live-arm: seed shown_requests without toasting backlog. */
+  get unservedLiveArm$(): Observable<void> {
+    return this.dashboardToastr.unservedLiveArm$.asObservable();
   }
 
   /** Fires when an unserved notification is added to the persistent stack. */
