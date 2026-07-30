@@ -356,6 +356,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.listenToOnClickedBackdrop()
     this.listenToHasClickedInsideModalPreviewKb()
     this.getVllmModels()
+    this.getAgentPlatformModels()
     this.getOllamaModels()
     this.loadModelGroups();
   }
@@ -410,7 +411,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
         this.logger.log('[MODAL PREVIEW SETTINGS] - NEW_MODELS:', res);
 
         const vllmProvider = LLM_MODEL.find(p => p.value === 'vllm');
-        const modelOptions = this.extractVllmModelsFromServers(res);
+        const modelOptions = this.extractServerModelsFromIntegration(res);
 
         if (vllmProvider && modelOptions.length) {
           vllmProvider.models = modelOptions.map((item) => ({
@@ -438,8 +439,42 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     });
   }
 
+  getAgentPlatformModels() {
+    const integrationName = 'agentplatform';
+    this.integrationService.getIntegrationByName(integrationName).subscribe({
+      next: (res: any) => {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - AGENTPLATFORM MODELS:', res);
+
+        const agentPlatformProvider = LLM_MODEL.find(p => p.value === 'agentplatform');
+        const modelOptions = this.extractServerModelsFromIntegration(res);
+
+        if (agentPlatformProvider && modelOptions.length) {
+          agentPlatformProvider.models = modelOptions.map((item) => ({
+            name: item.name,
+            value: item.value,
+            description: '',
+            status: 'active' as const,
+            agentplatformServer: item.serverName,
+          })) as any;
+
+          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI agentplatform:', agentPlatformProvider.models);
+        } else {
+          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per Gemini Agent Platform');
+        }
+
+        this.loadModelGroups();
+      },
+      error: (err) => {
+         this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getAgentPlatformModels:', err);
+      },
+      complete: () => {
+         this.logger.log('[MODAL PREVIEW SETTINGS] - AGENTPLATFORM REQUEST * COMPLETE *');
+      }
+    });
+  }
+
   /** Builds display labels from value.servers[] (name = "Server ・ model", value = model only). */
-  private extractVllmModelsFromServers(integration: any): Array<{ name: string; value: string; serverName: string }> {
+  private extractServerModelsFromIntegration(integration: any): Array<{ name: string; value: string; serverName: string }> {
     const servers = integration?.value?.servers;
     if (!Array.isArray(servers)) {
       return [];
@@ -465,6 +500,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     });
 
     return models;
+  }
+
+  /** @deprecated kept for reference; use extractServerModelsFromIntegration */
+  private extractVllmModelsFromServers(integration: any): Array<{ name: string; value: string; serverName: string }> {
+    return this.extractServerModelsFromIntegration(integration);
   }
 
   getOllamaModels() {
@@ -527,13 +567,16 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       return group.models.map(model => {
         const llmValue = provider ? provider.value : null;
         const vllmServer = (model as any).vllmServer;
+        const agentplatformServer = (model as any).agentplatformServer;
+        const serverName = vllmServer || agentplatformServer;
         return {
           ...model,
           providerName: group.providerName,
           llmValue,
           llmSrc: provider ? provider.src : null,
           vllmServer,
-          selectValue: this.buildModelSelectValue(model.value, llmValue, vllmServer),
+          agentplatformServer,
+          selectValue: this.buildModelSelectValue(model.value, llmValue, serverName),
         };
       });
     });
@@ -545,7 +588,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.selectedModel = modelRow?.selectValue ?? this.buildModelSelectValue(
       settings.model,
       settings.llm,
-      settings.vllmServer,
+      settings.vllmServer || settings.agentplatformServer,
     );
     this.applyPreviewSettingsLlmFromModel(modelRow);
     if (!settings.llm && modelRow?.llmValue) {
@@ -558,6 +601,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.logger.log("[MODAL PREVIEW SETTINGS] selectedModel on init", this.selectedModel)
     this.logger.log("[MODAL PREVIEW SETTINGS] preview_settings.llm", settings.llm)
     this.logger.log("[MODAL PREVIEW SETTINGS] preview_settings.vllmServer", settings.vllmServer)
+    this.logger.log("[MODAL PREVIEW SETTINGS] preview_settings.agentplatformServer", settings.agentplatformServer)
 
     const mv = settings?.model;
     if (mv) {
@@ -597,9 +641,9 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     return found ? found.llmValue : null;
   }
 
-  private buildModelSelectValue(modelValue: string, llmValue?: string | null, vllmServer?: string): string {
-    if (llmValue === 'vllm' && vllmServer) {
-      return `${vllmServer}${ModalPreviewSettingsComponent.VLLM_SELECT_VALUE_SEP}${modelValue}`;
+  private buildModelSelectValue(modelValue: string, llmValue?: string | null, server?: string): string {
+    if ((llmValue === 'vllm' || llmValue === 'agentplatform') && server) {
+      return `${server}${ModalPreviewSettingsComponent.VLLM_SELECT_VALUE_SEP}${modelValue}`;
     }
     return modelValue;
   }
@@ -636,6 +680,15 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       }
     }
 
+    if (settings.llm === 'agentplatform' && settings.agentplatformServer) {
+      const byServer = this.flattenedModels.find(
+        m => m.value === settings.model && m.llmValue === 'agentplatform' && m.agentplatformServer === settings.agentplatformServer,
+      );
+      if (byServer) {
+        return byServer;
+      }
+    }
+
     const matches = this.flattenedModels.filter(m => m.value === settings.model);
     if (settings.llm) {
       const byLlm = matches.find(m => m.llmValue === settings.llm);
@@ -655,8 +708,13 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.selectedNamespace.preview_settings.llm = modelRow.llmValue;
     if (modelRow.llmValue === 'vllm' && modelRow.vllmServer) {
       this.selectedNamespace.preview_settings.vllmServer = modelRow.vllmServer;
+      delete this.selectedNamespace.preview_settings.agentplatformServer;
+    } else if (modelRow.llmValue === 'agentplatform' && modelRow.agentplatformServer) {
+      this.selectedNamespace.preview_settings.agentplatformServer = modelRow.agentplatformServer;
+      delete this.selectedNamespace.preview_settings.vllmServer;
     } else {
       delete this.selectedNamespace.preview_settings.vllmServer;
+      delete this.selectedNamespace.preview_settings.agentplatformServer;
     }
   }
 
@@ -1125,7 +1183,7 @@ private restoreDialogScrollPosition(): void {
     this.selectedModel = modelRow?.selectValue ?? this.buildModelSelectValue(
       cloneSettings.model,
       cloneSettings.llm,
-      cloneSettings.vllmServer,
+      cloneSettings.vllmServer || cloneSettings.agentplatformServer,
     );
     this.max_tokens = cloneSettings.max_tokens;
     if (resetModelValue?.startsWith('gpt-5')) {
@@ -1153,6 +1211,11 @@ private restoreDialogScrollPosition(): void {
       this.selectedNamespace.preview_settings.vllmServer = cloneSettings.vllmServer;
     } else {
       delete this.selectedNamespace.preview_settings.vllmServer;
+    }
+    if (cloneSettings.agentplatformServer) {
+      this.selectedNamespace.preview_settings.agentplatformServer = cloneSettings.agentplatformServer;
+    } else {
+      delete this.selectedNamespace.preview_settings.agentplatformServer;
     }
     this.selectedNamespace.preview_settings.max_tokens = cloneSettings.max_tokens;
     this.selectedNamespace.preview_settings.temperature = this.temperature;
@@ -1197,6 +1260,7 @@ private restoreDialogScrollPosition(): void {
     if (!defaultModelRow) {
       this.selectedNamespace.preview_settings.llm = 'openai';
       delete this.selectedNamespace.preview_settings.vllmServer;
+      delete this.selectedNamespace.preview_settings.agentplatformServer;
     }
 
     this.logger.log('[MODAL PREVIEW SETTINGS] RESET TO DEFAULT selectedModel', this.selectedModel)

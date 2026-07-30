@@ -33,7 +33,8 @@ export enum INTEGRATIONS_KEYS {
     VLLM = 'vllm',
     ELEVENLABS = "elevenlabs",
     CEREBRAS = "cerebras",
-    OPENROUTER = 'openrouter'
+    OPENROUTER = 'openrouter',
+    AGENTPLATFORM = 'agentplatform'
 }
 
 //  OLLAMA = 'ollama',
@@ -117,6 +118,7 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "HubSpot",               category: INTEGRATIONS_CATEGORIES.CRM,              key: INTEGRATIONS_KEYS.HUBSPOT,         src_icon: "assets/img/int/hubspot-icon.png",                src_logo: "assets/img/int/hubspot-logo.svg",            pro: true,  plan: 'Pro' },
     { name: "OpenAI",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENAI,          src_icon: "assets/img/int/openai-icon.svg",                 src_logo: "assets/img/int/openai-logo.svg",             pro: true,  plan: 'Pro' },
     { name: "Google Gemini",         category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GOOGLE,          src_icon: "assets/img/int/google-gemini-icon.svg",          src_logo: "assets/img/int/google_gemini_logo.svg",      pro: true,  plan: 'Pro' },
+    { name: "Gemini Agent Platform", category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.AGENTPLATFORM,  src_icon: "assets/img/int/google-cloud-icon.png",           src_logo: "assets/img/int/google-cloud-logo.svg",       pro: true,  plan: 'Pro' },
     // { name: "Claude",                category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.ANTHROPIC,       src_icon: "assets/img/int/claude-icon.svg",                 src_logo: "assets/img/int/claude_logo.svg",             pro: true,  plan: 'Pro' },
     { name: "Anthropic",             category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.ANTHROPIC,       src_icon: "assets/img/int/anthropic-icon.svg",              src_logo: "assets/img/int/anthropic-logo.svg",             pro: true,  plan: 'Pro' },
     { name: "Groq",                  category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.GROQ,            src_icon: "assets/img/int/groq-icon.svg",                   src_logo: "assets/img/int/groq_logo.svg",               pro: true,  plan: 'Pro' },
@@ -246,6 +248,16 @@ export class vLLMIntegration extends Integration {
     constructor() {
         super();
         this.name = INTEGRATIONS_KEYS.VLLM;
+        this.value = {
+            servers: []
+        }
+    }
+}
+
+export class AgentPlatformIntegration extends Integration {
+    constructor() {
+        super();
+        this.name = INTEGRATIONS_KEYS.AGENTPLATFORM;
         this.value = {
             servers: []
         }

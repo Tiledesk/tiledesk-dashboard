@@ -666,6 +666,9 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     if (this.selectedNamespace.preview_settings.llm === 'vllm' && this.selectedNamespace.preview_settings.vllmServer) {
       this.body.vllmServer = this.selectedNamespace.preview_settings.vllmServer;
     }
+    if (this.selectedNamespace.preview_settings.llm === 'agentplatform' && this.selectedNamespace.preview_settings.agentplatformServer) {
+      this.body.agentplatformServer = this.selectedNamespace.preview_settings.agentplatformServer;
+    }
     // this.error_answer = false;
 
     // Salva la question solo se non è vuota
