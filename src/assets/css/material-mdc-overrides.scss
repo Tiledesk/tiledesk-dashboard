@@ -908,6 +908,84 @@ $td-slide-toggle-thumb-shadow:
   color: rgba(0, 0, 0, 0.87);
 }
 
+// ─── users-new-role — compact checkbox / radio (AM14 density) ───────────────
+// MDC pads the control with (state-layer-size − icon) / 2 (default layer 40px).
+// Match layer to icon size so rows collapse to AM14 density; leave label text alone.
+
+.new-role-page-content {
+  .mat-mdc-checkbox {
+    @include td-mdc-checkbox-blue-20-selected();
+    --mdc-checkbox-state-layer-size: 18px;
+
+    &.mat-mdc-checkbox-indeterminate .mdc-checkbox__background {
+      background-color: var(--blue-20) !important;
+      border-color: var(--blue-20) !important;
+    }
+
+    .mdc-checkbox {
+      // Cancel Material padding calc; layer size already = 18px icon.
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .mdc-checkbox__background {
+      border-radius: 2px;
+    }
+
+    .mat-mdc-checkbox-touch-target {
+      width: 28px;
+      height: 28px;
+    }
+
+    .mdc-form-field {
+      align-items: center;
+    }
+
+    .mdc-form-field > label {
+      padding-left: 8px;
+      line-height: 20px;
+    }
+
+    margin: 2px 0;
+  }
+
+  .mat-mdc-radio-button {
+    --mdc-radio-state-layer-size: 20px;
+    --mdc-radio-selected-focus-icon-color: var(--blue-20);
+    --mdc-radio-selected-hover-icon-color: var(--blue-20);
+    --mdc-radio-selected-icon-color: var(--blue-20);
+    --mdc-radio-selected-pressed-icon-color: var(--blue-20);
+
+    .mdc-radio {
+      padding: 0 !important;
+    }
+
+    .mat-mdc-radio-touch-target {
+      width: 28px;
+      height: 28px;
+    }
+
+    .mdc-form-field {
+      align-items: center;
+    }
+
+    .mdc-form-field > label {
+      padding-left: 8px;
+      line-height: 20px;
+    }
+
+    .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__outer-circle {
+      border-color: var(--blue-20) !important;
+    }
+
+    .mdc-radio__native-control:enabled:checked + .mdc-radio__background .mdc-radio__inner-circle {
+      border-color: var(--blue-20) !important;
+    }
+
+    margin: 2px 0;
+  }
+}
+
 // ─── mat-menu (MDC) — baseline (align AM14: 14px label, 20px icons, compact padding) ─
 
 .mat-mdc-menu-panel,
@@ -1091,6 +1169,36 @@ $td-slide-toggle-thumb-shadow:
   cursor: not-allowed;
 }
 
+// Preview KB — "reuse last question": keep secondary grey (not MDC primary) + muted when disabled.
+.mat-mdc-dialog-actions .mat-dialog-reuse-last-question-btn,
+.mat-mdc-dialog-actions .mat-dialog-reuse-last-question-btn.mat-mdc-button,
+.mat-dialog-actions .mat-dialog-reuse-last-question-btn {
+  color: #30373f !important;
+  background-color: rgba(25, 29, 34, 0.08) !important;
+  border-radius: var(--btn-border-radius) !important;
+  --mdc-text-button-label-text-color: #30373f;
+  --mdc-text-button-disabled-label-text-color: rgba(48, 55, 63, 0.45);
+
+  .mdc-button__label {
+    color: #30373f !important;
+  }
+}
+
+.mat-mdc-dialog-actions .mat-dialog-reuse-last-question-btn.mat-mdc-button-disabled,
+.mat-mdc-dialog-actions .mat-dialog-reuse-last-question-btn.mat-button-disabled,
+.mat-mdc-dialog-actions .mat-dialog-reuse-last-question-btn[disabled],
+.mat-dialog-actions .mat-dialog-reuse-last-question-btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  color: rgba(48, 55, 63, 0.55) !important;
+  background-color: rgba(25, 29, 34, 0.06) !important;
+  --mdc-text-button-label-text-color: rgba(48, 55, 63, 0.45);
+
+  .mdc-button__label {
+    color: rgba(48, 55, 63, 0.55) !important;
+  }
+}
+
 .mat-mdc-dialog-actions .mat-dialog-close-btn,
 .mat-mdc-dialog-actions .mat-dialog-close-btn.mat-mdc-button,
 .mat-dialog-actions .mat-dialog-close-btn {
@@ -1256,6 +1364,42 @@ $td-slide-toggle-thumb-shadow:
     font-family: var(--header-font-family) !important;
     padding-top: 8px !important;
     padding-bottom: 8px !important;
+  }
+}
+
+// Shared refresh icon-button (data-tables + activities-new).
+// MDC mat-icon-button: keep icon optically centered in the circular hit area.
+.dt-refresh-btn.mat-mdc-icon-button,
+.dt-refresh-btn.mat-icon-button {
+  width: 40px !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  flex-shrink: 0;
+  color: #667085;
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  .mat-mdc-button-touch-target {
+    width: 100%;
+    height: 100%;
+  }
+
+  .mat-icon,
+  mat-icon {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    line-height: 1 !important;
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 24px !important;
   }
 }
 

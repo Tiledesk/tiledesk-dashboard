@@ -8,8 +8,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { AuthGuard } from '../../core/auth.guard';
 import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router';
 
-declare var $: any;
-
 import { Project } from '../../models/project-model';
 import { UsersService } from '../../services/users.service';
 
@@ -17,8 +15,8 @@ import { isDevMode } from '@angular/core';
 import { UploadImageService } from '../../services/upload-image.service';
 import { UploadImageNativeService } from '../../services/upload-image-native.service';
 import { NotifyService } from '../../core/notify.service';
-// import * as moment from 'moment';
 import { DashboardToastrService } from '../../core/dashboard-toastr.service';
+// import * as moment from 'moment';
 import moment from "moment";
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { ProjectService } from '../../services/project.service';
@@ -53,7 +51,7 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RolesService } from 'app/services/roles.service';
 import { NavigationService } from 'app/services/navigation.service';
 
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 @Component({
@@ -103,6 +101,13 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   notify: any;
   private shown_requests = {};
   private shown_my_requests = {};
+  /** After refresh live-arm: next list publish only seeds shown_requests (no toast). */
+  private pendingLiveArmSeed = false;
+  /**
+   * After project enter: keep forcing a full unserved publish until the WS list
+   * for the new project actually has data (republish often races an empty list).
+   */
+  private forceNextUnservedPublish = false;
   salesEmail: string;
 
   project: Project;
@@ -141,7 +146,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   prjc_trial_days_left: number;
   prjc_trial_days_left_percentage: number;
-  browserLang: string;
+  browserLang!: string;
   subscription_end_date: any;
   subscription_is_active: boolean;
   HOME_ROUTE_IS_ACTIVE: boolean;
@@ -222,6 +227,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   endSlot: string;
   /** Data fine periodo quota da POST /quotes (`slot.endDate`), formattata per il menu usage. */
   quotaResetEndDateLabel: string | null = null;
+
   newChangelogCount: boolean;
   // lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
   PERMISSION_TO_CHANGE_PROJECT: boolean;
@@ -322,10 +328,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.hidePendingEmailNotification();
     this.detectRouteAndInitSleekPlan();
 
-    this.checkUserImageUploadIsComplete();
+    // this.checkUserImageUploadIsComplete();
 
     // used when the page is refreshed
-    this.checkUserImageExist();
+    // this.checkUserImageExist();
 
     this.getFromLocalStorageHasOpenedTheChat();
     this.getFromNotifyServiceHasOpenedChat();
@@ -363,7 +369,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   listenSidebarIsOpened() {
     this.auth.settingSidebarIsOpned.subscribe((isopened) => {
-     console.log('[NAVBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
+    this.logger.log('[NAVBAR] SETTINGS-SIDEBAR isopened (FROM SUBSCRIPTION) ', isopened)
     this.IS_OPEN_SETTINGS_SIDEBAR = isopened
     });
   }
@@ -381,7 +387,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   private updateTitle(url: string) {
     const cleanUrl = url.split('?')[0];
-    console.log('[NAVBAR] Clean URL:', cleanUrl);
+    this.logger.log('[NAVBAR] Clean URL:', cleanUrl);
 
     // Reset currentIcon all'inizio per evitare che rimanga impostato da route precedenti
     this.currentIcon = null;
@@ -424,13 +430,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.currentTitle = 'WhatsAppBroadcasts';
         } else if (callingPage === 'new-broadcast') {
           this.currentTitle = 'NewBroadcast';
+
         } else {
           // Fallback: usa il callingPage stesso
           this.currentTitle = callingPage;
         }
         // Non mostrare l'icona keyboard_arrow_left per le pagine /no-auth
         this.currentIcon = null;
-        console.log('[NAVBAR] Title set to:', this.currentTitle);
+        this.logger.log('[NAVBAR] Title set to:', this.currentTitle);
         return; // Esci subito per evitare che altri controlli sovrascrivano il titolo
       }
     }
@@ -483,6 +490,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentTitle = 'History';
       this.currentIcon = null;
     }
+    else if (cleanUrl.indexOf('data-tables') !== -1) {
+      this.currentTitle = 'DataTables.DataTablesBeta';
+      this.currentIcon = null;
+    }
     else if (cleanUrl.indexOf('all-conversations') !== -1) {
       this.currentTitle = 'ConversationsNotInRealTime';
       this.currentIcon = this.getSanitizedKeyboardArrowLeft();
@@ -522,19 +533,19 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }
     else if (cleanUrl.indexOf('/user-profile') !== -1) {
       this.currentTitle = 'UserProfile.Profile';
-      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+      this.currentIcon = null // this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.indexOf('/password/change') !== -1) {
       this.currentTitle = 'ChangePsw.ChangePsw';
-      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+      this.currentIcon = null // this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.includes('/user/') && cleanUrl.includes('/settings')) {
       this.currentTitle = 'Settings';
-      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+      this.currentIcon = null //this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.includes('/user/') && cleanUrl.includes('/notifications')) {
       this.currentTitle = 'Notification';
-      this.currentIcon = this.getSanitizedKeyboardArrowLeft();
+      this.currentIcon = null // this.getSanitizedKeyboardArrowLeft();
     }
     else if (cleanUrl.indexOf('/analytics-demo') !== -1) {
       this.currentTitle = 'Analytics.AnalyticsTITLE';
@@ -551,6 +562,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     else if (cleanUrl.indexOf('/activities') !== -1) {
       this.currentTitle = 'Activities';
       this.currentIcon = null;
+    } else if (cleanUrl.indexOf('/support') !== -1) {
+      this.currentTitle = 'Support';
+      this.currentIcon = null;  
     }
     // else if (
     //   cleanUrl.indexOf('/bots/') !== -1 &&
@@ -632,7 +646,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.currentIcon = null;
     }
 
-    console.log('[NAVBAR] Title set to:', this.currentTitle);
+    this.logger.log('[NAVBAR] Title set to:', this.currentTitle);
   }
 
   /**
@@ -741,22 +755,22 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.rolesService.getUpdateRequestPermission()
         .pipe(takeUntil(this.unsubscribe$))
         .subscribe(status => {
-          console.log('[NAVBAR] - Role:', status.role);
-          console.log('[NAVBAR] - Permissions:', status.matchedPermissions);
+          this.logger.log('[NAVBAR] - Role:', status.role);
+          this.logger.log('[NAVBAR] - Permissions:', status.matchedPermissions);
   
           // PERMISSION_TO_CHANGE_PROJCT
           if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
             if (status.matchedPermissions.includes(PERMISSIONS.CHANGE_PROJECT)) {
   
               this.PERMISSION_TO_CHANGE_PROJECT = true
-              console.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
             } else {
               this.PERMISSION_TO_CHANGE_PROJECT = false
-              console.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
             }
           } else {
             this.PERMISSION_TO_CHANGE_PROJECT = true
-            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
+            this.logger.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_CHANGE_PROJECT ', this.PERMISSION_TO_CHANGE_PROJECT);
           }
 
           // PERMISSION_TO_SIMULATE_CONVERSATION
@@ -764,14 +778,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             if (status.matchedPermissions.includes(PERMISSIONS.SIMULATE_CONV)) {
   
               this.PERMISSION_TO_SIMULATE_CONVERSATION = true
-              console.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
             } else {
               this.PERMISSION_TO_SIMULATE_CONVERSATION = false
-              console.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
             }
           } else {
             this.PERMISSION_TO_SIMULATE_CONVERSATION = true
-            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
+            this.logger.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_SIMULATE_CONVERSATION ', this.PERMISSION_TO_SIMULATE_CONVERSATION);
           }
 
         // -------------------------------
@@ -781,14 +795,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             if (status.matchedPermissions.includes(PERMISSIONS.QUOTA_USAGE_READ)) {
   
               this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
-              console.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
             } else {
               this.PERMISSION_TO_VIEW_QUOTA_USAGE = false
-              console.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
             }
           } else {
             this.PERMISSION_TO_VIEW_QUOTA_USAGE = true
-            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
+            this.logger.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_QUOTA_USAGE ', this.PERMISSION_TO_VIEW_QUOTA_USAGE);
           }
 
           // -------------------------------------------
@@ -798,14 +812,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UNASSIGNED_NOTIFICATION_READ)) {
   
               this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = true
-              console.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
             } else {
               this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = false
-              console.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
+              this.logger.log('[NAVBAR] - PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
             }
           } else {
             this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = true
-            console.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
+            this.logger.log('[NAVBAR] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS ', this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS);
           }
 
         
@@ -951,6 +965,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
       this.logger.log("[NAVBAR] project_limits: ", project_limits)
       this.logger.log("[NAVBAR] resp.quotes: ", resp.quotes)
+      // this.quotaResetEndDateLabel = this.formatQuotaSlotEndDate(resp?.slot?.endDate);
       if(resp?.slot?.endDate) {
         this.quotaResetEndDateLabel = resp?.slot?.endDate
       }
@@ -1425,7 +1440,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   ngAfterViewInit() {
     const navbar: HTMLElement = this.element.nativeElement;
     this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
-    console.log('[NAVBAR] toggleButton ', this.toggleButton)
+    this.logger.log('[NAVBAR] toggleButton ', this.toggleButton)
     
     // Check if Bootstrap 5 is loaded and let it handle dropdowns automatically
     setTimeout(() => {
@@ -1436,23 +1451,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         // Let Bootstrap 5 handle dropdowns automatically via data-bs-toggle
         // But add event listeners to debug
         const dropdownElements = navbar.querySelectorAll('[data-bs-toggle="dropdown"]');
-        console.log('[NAVBAR] Found dropdown elements:', dropdownElements.length);
+        this.logger.log('[NAVBAR] Found dropdown elements:', dropdownElements.length);
         
         dropdownElements.forEach((element) => {
           // Listen for click events to debug
           element.addEventListener('click', (e) => {
-            console.log('[NAVBAR] Dropdown clicked:', element.id || element.className, e);
+            this.logger.log('[NAVBAR] Dropdown clicked:', element.id || element.className, e);
           });
           
           // Listen for Bootstrap dropdown events
           element.addEventListener('show.bs.dropdown', () => {
-            console.log('[NAVBAR] Dropdown show event:', element.id || element.className);
+            this.logger.log('[NAVBAR] Dropdown show event:', element.id || element.className);
           });
           
           element.addEventListener('shown.bs.dropdown', () => {
-            console.log('[NAVBAR] Dropdown shown event:', element.id || element.className);
+            this.logger.log('[NAVBAR] Dropdown shown event:', element.id || element.className);
             const parent = element.closest('.dropdown');
-            console.log('[NAVBAR] Parent classes:', parent?.className);
+            this.logger.log('[NAVBAR] Parent classes:', parent?.className);
           });
         });
       } else {
@@ -2200,13 +2215,28 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
 
 
-   notifyLastUnserved() {
+  notifyLastUnserved() {
     // Sound for unserved stack is played by DashboardToastrService (one pling per burst / project enter).
 
     this.notifyService.unservedRepublish$
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => {
+        this.pendingLiveArmSeed = false;
+        this.forceNextUnservedPublish = true;
         this.publishCurrentUnservedFromWsList();
+      });
+
+    this.notifyService.unservedLiveArm$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => {
+        // Seed current backlog as already-seen; if list not ready yet, first publish will seed.
+        this.forceNextUnservedPublish = false;
+        this.pendingLiveArmSeed = true;
+        const requests = this.wsRequestsService.wsRequestsList$.value || [];
+        if (requests.length) {
+          this.seedShownUnservedFromRequests(requests);
+          this.pendingLiveArmSeed = false;
+        }
       });
 
     this.subscription = this.wsRequestsService.wsRequestsList$
@@ -2226,22 +2256,57 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   /** Re-scan current WS list after project enter (list may not re-emit). */
   private publishCurrentUnservedFromWsList(): void {
     const requests = this.wsRequestsService.wsRequestsList$.value || [];
-    this.publishUnservedFromRequests(requests);
+    this.publishUnservedFromRequests(requests, { ignoreShown: true });
   }
 
-  private publishUnservedFromRequests(requests: any[]): void {
-    if (!this.notifyService.isUnservedPresentationArmed()) {
-      return;
-    }
+  private seedShownUnservedFromRequests(requests: any[]): void {
+    (requests || [])
+      .filter((r: any) => r?.status === 100 && r?.id)
+      .forEach((r: any) => {
+        this.shown_requests[r.id] = true;
+      });
+  }
+
+  private publishUnservedFromRequests(
+    requests: any[],
+    options?: { ignoreShown?: boolean }
+  ): void {
     if (!requests || !requests.length) {
       return;
     }
 
     const unserved = requests.filter((r: any) => r.status === 100);
+
+    // While disarmed (e.g. refresh hydrate): remember current unserved so that
+    // arming for live events later does not flood with the pre-existing backlog.
+    if (!this.notifyService.isUnservedPresentationArmed()) {
+      this.seedShownUnservedFromRequests(unserved);
+      return;
+    }
+
+    // First emission after refresh live-arm: seed only, do not toast backlog.
+    if (
+      this.pendingLiveArmSeed &&
+      options?.ignoreShown !== true &&
+      !this.forceNextUnservedPublish
+    ) {
+      this.seedShownUnservedFromRequests(unserved);
+      this.pendingLiveArmSeed = false;
+      return;
+    }
+
     const unservedCount = unserved.length;
     this.logger.log('[NAVBAR] notifyLastUnserved - unservedCount  ', unservedCount);
     if (!unservedCount) {
+      // Keep forceNextUnservedPublish so the next non-empty list after project
+      // switch still presents (WS often reconnects after republish).
       return;
+    }
+
+    const ignoreShown =
+      options?.ignoreShown === true || this.forceNextUnservedPublish;
+    if (this.forceNextUnservedPublish) {
+      this.forceNextUnservedPublish = false;
     }
 
     unserved.forEach((r) => {
@@ -2254,6 +2319,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         return;
       }
       if (r.status !== 100 || this.user === null) {
+        return;
+      }
+      // Skip backlog already seen (unless project-enter republish).
+      if (!ignoreShown && this.shown_requests[r.id]) {
         return;
       }
 
@@ -2276,9 +2345,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
     this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed before', this.hasPlayed)
     if (this.NOTIFICATION_SOUND === 'enabled' && this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false && !this.hasPlayed) {
-      // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed ', this.hasPlayed)
-      // if (this.hasPlayed === false) {
-      // this.logger.log('[NAVBAR] NOTIFICATION_SOUND (showNotification) hasPlayed (HERE IN IF)', this.hasPlayed)
+
       this.audio = new Audio();
 
       this.audio.src = 'assets/pling.mp3';
@@ -2321,7 +2388,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     if (this.IS_REQUEST_FOR_PANEL_ROUTE === false && this.IS_UNSERVEDREQUEST_FOR_PANEL_ROUTE === false) {
       // Check permission before showing unassigned chat notification
       if (this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS) {
-        
         // Do not write localStorage here: flag is set only when the user dismisses /
         // opens the toast, so undismissed items can reappear after refresh.
         this.notifyService.showUnservedNotication(
@@ -2333,17 +2399,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           r.id + '_' + r.status
         )
 
-        // const count = +this.localDbService.getForegrondNotificationsCount();
-        // this.wsRequestsService.publishAndStoreForegroundRequestCount(count)
-
         this.shown_requests[r.id] = true;
-
-        // --------------------------------------------------------------------------
-        // @ set request to store (doUnservedDateDiffAndShowNotification)
-        // --------------------------------------------------------------------------
-        //localStorage.setItem(r.id + '_' + r.status, 'true');
       } else {
-        console.log('[NAVBAR] - displayUnservedInAppNotification - Permission denied: PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS is false');
+        this.logger.log('[NAVBAR] - displayUnservedInAppNotification - Permission denied: PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS is false');
       }
     }
 
@@ -2674,7 +2732,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   getTitle() {
     var titlee = this.location.prepareExternalUrl(this.location.path());
-    console.log('[NAVBAR] sidebarToggle titlee ', titlee)
+    this.logger.log('[NAVBAR] sidebarToggle titlee ', titlee)
     if (titlee.charAt(0) === '#') {
       titlee = titlee.slice(2);
     }

@@ -1,819 +1,316 @@
-import { Component, OnInit, Input, OnChanges, OnDestroy, SimpleChanges, AfterViewInit } from '@angular/core';
-import { Request } from '../../../models/request-model';
-import { WsSharedComponent } from '../../ws-shared/ws-shared.component';
-import { BotLocalDbService } from '../../../services/bot-local-db.service';
-import { AuthService } from '../../../core/auth.service';
-import { LocalDbService } from '../../../services/users-local-db.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AppConfigService } from '../../../services/app-config.service';
-import { WsRequestsService } from '../../../services/websocket/ws-requests.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
+import { NavigationEnd, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators'
-import { UsersService } from '../../../services/users.service';
-import { browserRefresh } from '../../../app.component';
-import { FaqKbService } from '../../../services/faq-kb.service';
-import { DepartmentService } from '../../../services/department.service';
-import { NotifyService } from '../../../core/notify.service';
-import { TranslateService } from '@ngx-translate/core';
-import { Subscription } from 'rxjs';
-import { LoggerService } from '../../../services/logger/logger.service';
-import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
-// import scrollToWithAnimation from 'scrollto-with-animation'
-import { CHANNELS_NAME } from 'app/utils/util';
-import { RolesService } from 'app/services/roles.service';
-import { PERMISSIONS } from 'app/utils/permissions.constants';
-const swal = require('sweetalert');
-const Swal = require('sweetalert2')
+import { filter, takeUntil } from 'rxjs/operators';
+import {
+  DashboardToastrService,
+  UnservedNotificationItem,
+} from 'app/core/dashboard-toastr.service';
+import { AuthService } from 'app/core/auth.service';
 
 @Component({
-  selector: 'appdashboard-ws-requests-unserved',
-  templateUrl: './ws-requests-unserved.component.html',
-  styleUrls: ['./ws-requests-unserved.component.scss']
+  selector: 'appdashboard-unserved-notifications',
+  templateUrl: './unserved-notifications.component.html',
+  styleUrls: ['./unserved-notifications.component.scss'],
 })
-export class WsRequestsUnservedComponent extends WsSharedComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
+export class UnservedNotificationsComponent implements OnInit, OnDestroy {
+  /** Auto-dismiss window for the unserved stack. */
+  private static readonly AUTO_DISMISS_MS = 10000;
 
-  @Input() wsRequestsUnserved: Request[];
-  @Input() ws_requests_length: number
-  @Input() requestCountResp: any;
-  CHAT_PANEL_MODE: boolean = false
+  /** All stored notifications (any project). */
+  private allItems: UnservedNotificationItem[] = [];
+  /** Notifications for the current project only. */
+  items: UnservedNotificationItem[] = [];
+  expanded = false;
+  /** False on login / signup / projects list / panel routes (same idea as old toast hide). */
+  canShow = false;
+  currentProjectId: string | null = null;
+  /** Entrance animation class toggle (fadeInDown). */
+  enterAnimating = false;
 
-  countRequestsServedByHumanRr: number
-  countRequestsServedByBotRr: number
-  countRequestsUnservedRr: number
+  private readonly destroy$ = new Subject<void>();
+  /**
+   * After refresh, project_bs often emits null then the project — that must not
+   * count as "project enter". Only present after a real leave→enter or A→B switch.
+   */
+  private projectHydrated = false;
+  /**
+   * True only when the app boots already inside a project route (refresh).
+   * The first visibility enter must not show toasts in that case.
+   */
+  private skipNextVisibilityEnter = false;
+  private enterAnimationTimer: number | null = null;
+  /** Auto-dismiss timer; paused while the stack is expanded. */
+  private autoDismissTimer: number | null = null;
 
-  wsOndataRequestArray: Array<any>
-  projectId: string;
-  id_request_to_archive: string;
-  displayArchiveRequestModal: string;
-  showSpinner = true;
-  totalOf_unservedRequests: number;
-  ROLE_IS_AGENT: boolean;
-  private unsubscribe$: Subject<any> = new Subject<any>();
-  timeout: any;
-  public browserRefresh: boolean;
-  displayNoRequestString = false;
-  depts: any;
+  constructor(
+    private dashboardToastr: DashboardToastrService,
+    private auth: AuthService,
+    private router: Router,
+    private location: Location,
+  ) {}
 
-  archivingRequestNoticationMsg: string;
-  archivingRequestErrorNoticationMsg: string;
-  requestHasBeenArchivedNoticationMsg_part1: string;
-  requestHasBeenArchivedNoticationMsg_part2: string;
-  currentUserID: string;
-  subscription: Subscription;
-  USER_ROLE: string;
+  ngOnInit(): void {
+    this.updateRouteVisibility(this.location.path());
+    // Refresh while already on a project page: ignore the first "enter" signal.
+    if (this.canShow) {
+      this.skipNextVisibilityEnter = true;
+      this.dashboardToastr.disarmUnservedPresentation();
+    }
 
-  areYouSureMsg: string;
-  cancelMsg: string;
-  conversationWillBeAssignedToYourselfMsg: string;
+    this.router.events
+      .pipe(
+        filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        const wasShow = this.canShow;
+        this.updateRouteVisibility(this.location.path());
 
-  requests_selected = [];
-  allChecked = false;
-  allConversationsaveBeenArchivedMsg: string;
-  scrollEl: any;
-  scrollYposition: any;
-  storedRequestId: string
-  CHANNELS_NAME = CHANNELS_NAME;
+        if (wasShow && !this.canShow) {
+          // Left project UI (e.g. /projects): park and block until next enter.
+          this.dashboardToastr.disarmUnservedPresentation(this.currentProjectId || undefined);
+          this.applyProjectFilter();
+          this.skipNextVisibilityEnter = false;
+          return;
+        }
 
-  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
-  PERMISSION_TO_JOIN_REQUEST: boolean;
+        if (!wasShow && this.canShow && this.currentProjectId) {
+          if (this.skipNextVisibilityEnter) {
+            // Initial NavigationEnd after refresh — do not present backlog,
+            // but arm so subsequent live unserved still toast.
+            this.skipNextVisibilityEnter = false;
+            this.dashboardToastr.armUnservedPresentationForLiveEvents();
+            this.applyProjectFilter();
+            return;
+          }
+          this.presentOnProjectEnter(this.currentProjectId);
+        }
+      });
+
+    this.auth.project_bs
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((project) => {
+        const prevId = this.currentProjectId;
+        this.currentProjectId = project?._id || null;
+        const projectChanged = prevId !== this.currentProjectId;
+
+        if (!this.projectHydrated) {
+          // First non-null project (or settling null→project) after refresh: never present backlog.
+          if (this.currentProjectId) {
+            this.projectHydrated = true;
+          }
+          this.dashboardToastr.disarmUnservedPresentation();
+          this.applyProjectFilter();
+          // Already inside a project route: allow new live toasts after hydrate.
+          if (this.canShow && this.currentProjectId) {
+            this.dashboardToastr.armUnservedPresentationForLiveEvents();
+          }
+          return;
+        }
+
+        this.applyProjectFilter();
+
+        // After hydrate: A→B switch, or null→project when leaving /projects and entering one.
+        // (Hydrate's first null→project is handled above and must not present backlog.)
+        if (projectChanged && this.currentProjectId && this.canShow) {
+          this.presentOnProjectEnter(this.currentProjectId);
+        }
+      });
+
+    this.dashboardToastr.unservedNotifications$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((items) => {
+        this.allItems = items;
+        this.applyProjectFilter();
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.enterAnimationTimer != null) {
+      window.clearTimeout(this.enterAnimationTimer);
+    }
+    this.clearAutoDismiss();
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  get visibleItems(): UnservedNotificationItem[] {
+    if (this.expanded || this.items.length <= 1) {
+      return this.items;
+    }
+    return this.items.slice(0, 3);
+  }
+
+  get isStacked(): boolean {
+    return !this.expanded && this.items.length > 1;
+  }
+
+  get showExpandedToolbar(): boolean {
+    return this.expanded && this.items.length > 1;
+  }
+
+  onStackOrCardClick(item: UnservedNotificationItem, event: MouseEvent): void {
+    const target = event.target as HTMLElement | null;
+    if (target?.closest('.td-unserved-close, .td-unserved-stack-close, .td-unserved-toolbar')) {
+      return;
+    }
+
+    if (this.isStacked) {
+      this.expanded = true;
+      this.syncAutoDismiss();
+      return;
+    }
+
+    this.openDetail(item);
+  }
+
+  onDismissOne(item: UnservedNotificationItem, event: MouseEvent): void {
+    event.stopPropagation();
+    // Same as open detail: permanent handled — do not bring back on project re-enter.
+    this.dashboardToastr.dismissUnservedNotification(item.id, true);
+  }
+
+  onClearAll(event?: MouseEvent): void {
+    event?.stopPropagation();
+    // User "close all": permanent handled (not soft park).
+    this.dashboardToastr.dismissAllUnservedPermanently(this.currentProjectId || undefined);
+    this.expanded = false;
+    this.clearAutoDismiss();
+  }
+
+  onShowLess(event: MouseEvent): void {
+    event.stopPropagation();
+    this.expanded = false;
+    this.syncAutoDismiss();
+  }
+
+  trackById(_index: number, item: UnservedNotificationItem): string {
+    return item.id;
+  }
+
+  private presentOnProjectEnter(projectId: string): void {
+    this.dashboardToastr.armUnservedPresentationOnProjectEnter(projectId);
+    this.applyProjectFilter();
+    if (this.items.length > 0) {
+      this.dashboardToastr.notifyUnservedPresentedOnce(true);
+      this.triggerEnterAnimation();
+    }
+  }
+
+  private applyProjectFilter(): void {
+    if (!this.currentProjectId) {
+      this.items = [];
+      this.expanded = false;
+      this.clearAutoDismiss();
+      return;
+    }
+    this.items = this.allItems
+      .filter((item) => item.projectId === this.currentProjectId)
+      .sort((a, b) => b.createdAt - a.createdAt);
+    if (this.items.length <= 1) {
+      this.expanded = false;
+    }
+    this.syncAutoDismiss();
+  }
 
   /**
-   * Constructor
-   * @param botLocalDbService 
-   * @param auth 
-   * @param usersLocalDbService 
-   * @param router 
-   * @param appConfigService 
-   * @param wsRequestsService 
-   * @param usersService 
-   * @param faqKbService 
-   * @param departmentService 
-   * @param notify 
-   * @param translate 
-   * @param logger 
+   * Hide unserved toasts on auth / projects / panel / onboarding routes
+   * (aligned with app.component LOGIN_PAGE / navbar hidePendingEmailNotification).
    */
-  constructor(
-    public botLocalDbService: BotLocalDbService,
-    public auth: AuthService,
-    public usersLocalDbService: LocalDbService,
-    public router: Router,
-    public appConfigService: AppConfigService,
-    public wsRequestsService: WsRequestsService,
-    public usersService: UsersService,
-    public faqKbService: FaqKbService,
-    private departmentService: DepartmentService,
-    public notify: NotifyService,
-    public translate: TranslateService,
-    public logger: LoggerService,
-    private wsMsgsService: WsMsgsService,
-    public route: ActivatedRoute,
-    public rolesService: RolesService
-  ) {
-
-    super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate);
-
-    this.getRouteParams()
-  }
-
-
-  getRouteParams() {
-    this.scrollEl = <HTMLElement>document.querySelector('.main-panel');
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] oninit scrollEl', this.scrollEl)
-    this.route.params.subscribe((params) => {
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - GET ROUTE PARAMS ', params);
-      if (params.scrollposition) {
-        this.scrollYposition = params.scrollposition;
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - scrollYposition', +this.scrollYposition);
-      }
-    })
-  }
-
-  // -------------------------------------------------------------
-  // @ Lifehooks
-  // -------------------------------------------------------------
-  ngOnInit() {
-    this.getCurrentProject();
-    // this.getDepartments();
-    this.detectBrowserRefresh();
-    this.getTranslations();
-    this.getLoggedUser();
-    this.getProjectUserRole();
-    this.listenToProjectUser() 
-  }
-
-  listenToProjectUser() {
-    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
-    this.rolesService.getUpdateRequestPermission()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(status => {
-        
-        console.log('[WS-REQUESTS-LIST] - ROLE:', status.role);
-        console.log('[WS-REQUESTS-LIST] - PERMISSIONS', status.matchedPermissions);
-        
-        // PERMISSION_TO_ARCHIVE_REQUEST
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
-            console.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
-            
-            this.PERMISSION_TO_ARCHIVE_REQUEST = true
-            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
-          } else {
-            this.PERMISSION_TO_ARCHIVE_REQUEST = false
-            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_ARCHIVE_REQUEST 2', this.PERMISSION_TO_ARCHIVE_REQUEST);
-          }
-        } else {
-          this.PERMISSION_TO_ARCHIVE_REQUEST = true
-          console.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_ARCHIVE_REQUEST ', this.PERMISSION_TO_ARCHIVE_REQUEST);
-        }
-
-        // PERMISSION_TO_JOIN_REQUEST
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
-            console.log('[WS-REQUEST-UNSERVED] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
-            
-            this.PERMISSION_TO_JOIN_REQUEST = true
-            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
-          } else {
-            this.PERMISSION_TO_JOIN_REQUEST = false
-            console.log('[WS-REQUEST-UNSERVED] - PERMISSION_TO_JOIN_REQUEST 2', this.PERMISSION_TO_JOIN_REQUEST);
-          }
-        } else {
-          this.PERMISSION_TO_JOIN_REQUEST = true
-          console.log('[WS-REQUEST-UNSERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
-        }
-
-
-        
-
-      
-      });
-  }
-
-
-  ngAfterViewInit(): void {
-    // setTimeout(() => {
-    //   scrollToWithAnimation(
-    //     this.scrollEl, // element to scroll
-    //     'scrollTop', // direction to scroll
-    //     +this.scrollYposition, // target scrollY (0 means top of the page)
-    //     500, // duration in ms
-    //     'easeInOutCirc',
-    //     // Can be a name of the list of 'Possible easing equations' or a callback
-    //     // that defines the ease. # http://gizma.com/easing/
-
-    //     () => { // callback function that runs after the animation (optional)
-    //       this.logger.log('done!')
-    //       this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-    //     }
-    //   );
-    // }, 100);
-  }
-
-
-
-  ngOnChanges(changes: SimpleChanges) {
-    this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved', this.wsRequestsUnserved)
-    this.logger.log('[WS-REQUEST-UNSERVED] from @Input »»» WebSocketJs WF - wsRequestsUnserved length', this.wsRequestsUnserved.length)
-    this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges changes', changes)
-    // this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges requestCountResp', this.requestCountResp)
-
-
-    if (this.requestCountResp) {
-      this.countRequestsServedByHumanRr = this.requestCountResp.assigned;
-      this.countRequestsServedByBotRr = this.requestCountResp.bot_assigned;
-      this.countRequestsUnservedRr = this.requestCountResp.unassigned;
-
-      // this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges countRequestsServedByHumanRr', this.countRequestsServedByHumanRr)
-      // this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges countRequestsServedByBotRr', this.countRequestsServedByBotRr)
-      // this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges countRequestsUnservedRr', this.countRequestsUnservedRr)
+  private updateRouteVisibility(path: string): void {
+    const route = (path || '').split('?')[0];
+    if (!route) {
+      this.canShow = false;
+      this.syncAutoDismiss();
+      return;
     }
 
+    const hidden =
+      route === '/login' ||
+      route === '/signup' ||
+      route === '/projects' ||
+      route === '/forgotpsw' ||
+      route === '/create-project' ||
+      route.indexOf('/signup') !== -1 ||
+      route.indexOf('/signup-on-invitation') !== -1 ||
+      route.indexOf('/projects') !== -1 ||
+      route.indexOf('/verify') !== -1 ||
+      route.indexOf('/resetpassword') !== -1 ||
+      route.indexOf('/pricing') !== -1 ||
+      route.indexOf('/chat-pricing') !== -1 ||
+      route.indexOf('/success') !== -1 ||
+      route.indexOf('/canceled') !== -1 ||
+      route.indexOf('/create-new-project') !== -1 ||
+      route.indexOf('/configure-widget') !== -1 ||
+      route.indexOf('/onboarding') !== -1 ||
+      route.indexOf('/install-widget') !== -1 ||
+      route.indexOf('/handle-invitation') !== -1 ||
+      route.indexOf('/activate-product') !== -1 ||
+      route.indexOf('/request-for-panel') !== -1 ||
+      route.indexOf('/projects-for-panel') !== -1 ||
+      route.indexOf('/project-for-panel') !== -1 ||
+      route.indexOf('/unserved-request-for-panel') !== -1 ||
+      route.indexOf('/autologin') !== -1 ||
+      route.indexOf('/get-chatbot') !== -1 ||
+      route.indexOf('/install-template') !== -1 ||
+      route.indexOf('/unauthorized') !== -1 ||
+      route.indexOf('/invalid-token') !== -1 ||
+      route.indexOf('/desktop-access') !== -1 ||
+      route.indexOf('/desktop--access') !== -1;
 
-    if (changes?.current_selected_prjct || changes?.ws_requests_length && changes?.ws_requests_length?.previousValue === 0 || changes?.ws_requests_length?.previousValue === undefined) {
-      // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.current_selected_prjct ', changes.current_selected_prjct)
-      // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes.ws_requests_length.previousValue ', changes.ws_requests_length.previousValue)
-      this.logger.log('[WS-REQUEST-UNSERVED] ngOnChanges here 1', changes)
+    this.canShow = !hidden;
+    this.syncAutoDismiss();
+  }
 
-      
+  /**
+   * Auto-dismiss the current project stack after AUTO_DISMISS_MS.
+   * Paused while expanded; full timer restarts when the stack is collapsed again.
+   * Soft-parks only (unlike user close / close-all) so they can return on project re-enter.
+   */
+  private syncAutoDismiss(): void {
+    this.clearAutoDismiss();
+    if (!this.canShow || this.expanded || this.items.length === 0) {
+      return;
     }
-
-  }
-
-  ngOnDestroy() {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
-
-  // -------------------------------------------------------------
-  // @ Subscribe to project user role
-  // -------------------------------------------------------------
-
-  // listeToChatPostMsg() {
-  //   window.addEventListener("message", (event) => {
-  //     this.logger.log("wS-REQUEST-UNSERVED message event ", event);
-
-  //     if (event && event.data && event.data.action && event.data.parameter) {
-  //       // if (event.data.action === 'joinConversation' ) {
-  //       //   this.logger.log("[REQUEST-DTLS-X-PANEL] message event ", event.data.action);
-  //       //   this.logger.log("[REQUEST-DTLS-X-PANEL] message parameter ", event.data.parameter);
-  //       //   this.logger.log("[REQUEST-DTLS-X-PANEL] currentUserID ", this.currentUserID);
-
-  //       // }
-  //     }
-  //   })
-  // }
-
-  overfirstTextGetRequestMsg(request) {
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED]] overfirstText request_id', request);
-    this.getRequestMsg(request)
-  }
-
-  getRequestMsg(request) {
-    this.wsMsgsService.geRequestMsgs(request.request_id).subscribe((msgs: any) => {
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] -  GET REQUESTS MSGS - RES: ', msgs);
-      if (msgs) {
-        const msgsArray = [];
-        msgs.forEach((msgs, index) => {
-          if ((msgs)) {
-            if ((msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info') || (msgs['attributes'] && msgs['attributes']['subtype'] && msgs['attributes']['subtype'] === 'info/support')) {
-              // this.logger.log('>>>> msgs subtype does not push ', msgs['attributes']['subtype'])
-            } else {
-              msgsArray.push(msgs)
-            }
-          }
-          request['msgsArray'] = msgsArray.sort(function compare(a, b) {
-            if (a['createdAt'] > b['createdAt']) {
-              return -1;
-            }
-            if (a['createdAt'] < b['createdAt']) {
-              return 1;
-            }
-            return 0;
-          });
-        });
+    this.autoDismissTimer = window.setTimeout(() => {
+      this.autoDismissTimer = null;
+      if (this.currentProjectId) {
+        this.dashboardToastr.parkUnservedNotifications(this.currentProjectId);
+      } else {
+        this.dashboardToastr.parkUnservedNotifications();
       }
-      // this.logger.log('[WS-REQUESTS-MSGS] -  GET REQUESTS MSGS - request: ', request);
-    }, (err) => {
-      this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - GET REQUESTS MSGS - ERROR: ', err);
+      this.expanded = false;
+    }, UnservedNotificationsComponent.AUTO_DISMISS_MS);
+  }
 
-    }, () => {
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] * COMPLETE *');
+  private clearAutoDismiss(): void {
+    if (this.autoDismissTimer != null) {
+      window.clearTimeout(this.autoDismissTimer);
+      this.autoDismissTimer = null;
+    }
+  }
 
+  private triggerEnterAnimation(): void {
+    if (this.enterAnimationTimer != null) {
+      window.clearTimeout(this.enterAnimationTimer);
+    }
+    this.enterAnimating = false;
+    window.requestAnimationFrame(() => {
+      this.enterAnimating = true;
+      this.enterAnimationTimer = window.setTimeout(() => {
+        this.enterAnimating = false;
+        this.enterAnimationTimer = null;
+      }, 450);
     });
   }
 
-
-  // -------------------------------------------------------------
-  // @ Subscribe to project user role
-  // -------------------------------------------------------------
-  getProjectUserRole() {
-    this.usersService.project_user_role_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user_role) => {
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GET PROJECT-USER ROLE ', user_role);
-        if (user_role) {
-          this.USER_ROLE = user_role;
-          if (user_role === 'agent') {
-            this.ROLE_IS_AGENT = true
-          } else {
-            this.ROLE_IS_AGENT = false
-          }
-        }
-      });
-  }
-
-  // -------------------------------------------------------------
-  // @ Subscribe to current user
-  // -------------------------------------------------------------
-  getLoggedUser() {
-    this.auth.user_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((user) => {
-        this.logger.log('WS-REQUESTS UNSERVED ', user)
-
-        if (user) {
-          this.currentUserID = user._id;
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GET CURRENT USER - currentUser ID', this.currentUserID);
-        }
-      });
-  }
-
-  getTranslations() {
-    this.translateArchivingRequestErrorMsg();
-    this.translateArchivingRequestMsg();
-    this.translateRequestHasBeenArchivedNoticationMsg_part1();
-    this.translateRequestHasBeenArchivedNoticationMsg_part2();
-    this.translateAreYouSure();
-    this.translateCancel();
-    this.conversationWillBeAssignedToYourself()
-  }
-
-  // -----------------------------------------------
-  // @ Translate strings
-  // -----------------------------------------------
-  translateAreYouSure() {
-    this.translate.get('AreYouSure')
-      .subscribe((text: string) => {
-        this.areYouSureMsg = text;
-      });
-  }
-
-  translateCancel() {
-    this.translate.get('Cancel')
-      .subscribe((text: string) => {
-        this.cancelMsg = text;
-      });
-  }
-  conversationWillBeAssignedToYourself() {
-    this.translate.get('ByPressingOkTheConversationWillBeAssignedToYourself')
-      .subscribe((text: string) => {
-        this.conversationWillBeAssignedToYourselfMsg = text;
-      });
-  }
-
-  translateAllConversationsHaveBeenArchived() {
-    this.translate.get('AllConversationsaveBeenArchived')
-      .subscribe((text: string) => {
-        this.allConversationsaveBeenArchivedMsg = text
-      })
-
-  }
-
-  selectAll(e) {
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] > Is checked: ", e.target.checked)
-    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] **++ checkbox Indeterminate: ", checkbox.indeterminate);
-
-
-    if (e.target.checked == true) {
-      this.logger.log('SELECT ALL e.target.checked ', e.target.checked)
-      this.allChecked = true;
-      for (let request of this.wsRequestsUnserved) {
-        // this.logger.log('SELECT ALL request ', request)
-
-
-        const index = this.requests_selected.indexOf(request.request_id);
-        if (index > -1) {
-          this.logger.log("[WS-REQUESTS-LIST][UNSERVED]] **++ Already present in requests_selected")
-        } else {
-          this.logger.log("[WS-REQUESTS-LIST][UNSERVED] *+*+ Request Selected: ", request.request_id);
-          this.requests_selected.push(request.request_id);
-        }
-
-        if (request['isSelected'] === true) {
-          this.logger.log("[WS-REQUESTS-LIST][UNSERVED]] **++ Already selected")
-        } else {
-          request['isSelected'] = true
-
-        }
-      }
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
-    } else if (e.target.checked == false) {
-      for (let request of this.wsRequestsUnserved) {
-        // this.logger.log('SELECT ALL request ', request)
-        // const index = this.requests_selected.indexOf(request.request_id);
-        if (request.hasOwnProperty('isSelected')) {
-          if (request['isSelected'] === true) {
-            request['isSelected'] = false
-
-          } else {
-            request['isSelected'] = false
-          }
-        }
-      }
-      // else {
-      //   request['isSelected'] = true
-      // }
-      this.allChecked = false;
-      this.requests_selected = [];
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length)
-    }
-
-  }
-
-  change(request) {
-    var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-    if (checkbox) {
-      this.logger.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
-      if (this.requests_selected.length === 0) {
-        checkbox.indeterminate = false
-      }
-    }
-
-
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox request: ", request);
-    if (request.hasOwnProperty('isSelected')) {
-      if (request.isSelected === true) {
-        request.isSelected = false
-      } else if (request.isSelected === false) {
-        request.isSelected = true
-      }
-    } else {
-      request.isSelected = true
-    }
-
-
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - change - SELECTED REQUEST ID: ', request.request_id);
-    const index = this.requests_selected.indexOf(request.request_id);
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - request selected INDEX: ", index);
-
-    if (index > -1) {
-      this.requests_selected.splice(index, 1);
-      if (checkbox) {
-        checkbox.indeterminate = true;
-        this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
-      }
-      if (this.requests_selected.length == 0) {
-        if (checkbox) {
-          checkbox.indeterminate = false;
-          this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
-        }
-        this.allChecked = false;
-      }
-    } else {
-      this.requests_selected.push(request.request_id);
-      if (checkbox) {
-        checkbox.indeterminate = true;
-        this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
-      }
-      if (this.requests_selected.length == this.wsRequestsUnserved.length) {
-        if (checkbox) {
-          checkbox.indeterminate = false;
-          this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - change - checkbox Indeterminate: ", checkbox.indeterminate);
-        }
-        this.allChecked = true;
-      }
-    }
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST ', this.requests_selected);
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - ARRAY OF SELECTED REQUEST lenght ', this.requests_selected.length);
-  }
-
-  archiveSelected() {
-    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
-      let count = 0;
-      this.requests_selected.forEach((requestid, index) => {
-        this.wsRequestsService.closeSupportGroup(requestid)
-          .subscribe((data: any) => {
-            //  this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
-
-
-            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveSelected) - requestid ', requestid);
-
-            this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveSelected) - storedRequestId ', this.storedRequestId);
-
-            if (requestid === this.storedRequestId) {
-              this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveSelected) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
-              this.usersLocalDbService.removeFromStorage('last-selection-id')
-            }
-            // this.allChecked = false;
-            // this.requests_selected = []
-            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - requests_selected ', this.requests_selected);
-          }, (err) => {
-            this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
-
-
-            //  NOTIFY ERROR 
-            // this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-          }, () => {
-
-            this.usersLocalDbService.removeFromStorage('last-selection-id')
-            // this.ngOnInit();
-            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
-            count = count + 1;
-            //  NOTIFY SUCCESS
-            // this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-            const index = this.requests_selected.indexOf(requestid);
-            if (index > -1) {
-              this.requests_selected.splice(index, 1);
-
-            }
-            this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg + count + '/' + this.requests_selected.length);
-
-            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - this.requests_selected.length ', this.requests_selected.length);
-            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - requests_selected array ', this.requests_selected);
-
-            if (this.requests_selected.length === 0) {
-              this.allChecked = false;
-              var checkbox = <HTMLInputElement>document.getElementById("allCheckbox");
-              this.notify.showAllRequestHaveBeenArchivedNotification(this.allConversationsaveBeenArchivedMsg)
-              this.logger.log("[WS-REQUESTS-LIST][UNSERVED] -  change - checkbox Indeterminate: ", checkbox.indeterminate);
-              if (checkbox) {
-                checkbox.indeterminate = false;
-
-              }
-            }
-
-          });
-      })
-
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
+  private openDetail(item: UnservedNotificationItem): void {
+    // Opened by the user: permanent handled — do not bring back on project re-enter.
+    this.dashboardToastr.dismissUnservedNotification(item.id, true);
+    if (item.link) {
+      window.location.href = item.link;
     }
   }
-
-
-  // -------------------------------------------------------------
-  // @ Get depts
-  // -------------------------------------------------------------
-  getDepartments() {
-    this.departmentService.getDeptsByProjectId().subscribe((_departments: any) => {
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - GET DEPTS RES ', _departments);
-      this.depts = _departments;
-
-    }, error => {
-      this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - GET DEPTS - ERROR: ', error);
-    }, () => {
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - GET DEPTS * COMPLETE *')
-    });
-  }
-
-  // --------------------------------------------------
-  // @ Detect browser refresh
-  // --------------------------------------------------
-  detectBrowserRefresh() {
-
-    this.browserRefresh = browserRefresh;
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - ngOnInit browserRefresh ", this.browserRefresh);
-
-    if (this.wsRequestsUnserved.length === 0 && browserRefresh === false) {
-      this.displayNoRequestString = true;
-    }
-  }
-
-  // --------------------------------------------------
-  // @ Tags - display more tags
-  // --------------------------------------------------
-  displayMoreTags(requestid) {
-    // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- served ----- displayMoreTags - id request ", requestid);
-    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - displayMoreTags - hiddenTagsElem ", hiddenTagsElem);
-    hiddenTagsElem.style.display = "inline-block";
-
-    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - displayMoreTags - moreTagsBtn ", moreTagsBtn);
-    moreTagsBtn.style.display = "none";
-
-  }
-
-  // --------------------------------------------------
-  // @ Tags - display less tags
-  // --------------------------------------------------
-  displayLessTag(requestid) {
-    const hiddenTagsElem = <HTMLElement>document.querySelector(`#more_tags_for_request_${requestid}`);
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - displayLessTag - hiddenTagsElem ', hiddenTagsElem);
-    hiddenTagsElem.style.display = "none";
-
-    const moreTagsBtn = <HTMLElement>document.querySelector(`#more_tags_btn_for_request_${requestid}`);
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] - displayLessTag - moreTagsBtn ", moreTagsBtn);
-    moreTagsBtn.style.display = "inline-block";
-
-  }
-
-  // --------------------------------------------------
-  // @ Toogle tooltip
-  // --------------------------------------------------
-  toggleTooltip(index) {
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] toggleTooltip index", index);
-    const tooltipElem = <HTMLElement>document.querySelector(`#tooltip_${index}`);
-    this.logger.log("[WS-REQUESTS-LIST][UNSERVED] toggleTooltip tooltipElem", tooltipElem);
-    tooltipElem.classList.toggle("tooltip-fixed");
-  }
-
-
-  // --------------------------------------------------
-  // @ Subscribe to current project
-  // --------------------------------------------------
-  getCurrentProject() {
-    this.auth.project_bs
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe((project) => {
-        // this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - project', project)
-        if (project) {
-          this.projectId = project._id;
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - GET CURRENT PROJECT - PROJECT ID ', this.projectId)
-        }
-      });
-  }
-
-  goToUnservedNTR() {
-    // , { queryParams: { leftfilter: 100 } }
-    this.router.navigate(['project/' + this.projectId + '/all-conversations']);
-  }
-
-  goToRequestMsgs(request_id: string) {
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] GO TO REQUEST MSGS scrollEl scrollTop', this.scrollEl.scrollTop)
-    // this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/messages']);
-    this.router.navigate(['project/' + this.projectId + '/wsrequest/' + request_id + '/1' + '/messages/' + this.scrollEl.scrollTop]);
-    this.usersLocalDbService.setInStorage('last-selection-id', request_id)
-  }
-
-
-  archiveRequest(request_id: string, request: any) {
-    if (this.PERMISSION_TO_ARCHIVE_REQUEST) {
-      this.notify.showArchivingRequestNotification(this.archivingRequestNoticationMsg);
-      this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - HAS CLICKED ARCHIVE CONV (CLOSE SUPPORT GROUP) - CONV: ', request);
-
-
-      this.wsRequestsService.closeSupportGroup(request_id)
-        .subscribe((data: any) => {
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - DATA ', data);
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - request_id ', request_id);
-
-          this.storedRequestId = this.usersLocalDbService.getFromStorage('last-selection-id')
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - storedRequestId ', this.storedRequestId);
-
-          if (request_id === this.storedRequestId) {
-            this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP (archiveRequest) - REMOVE FROM STOREGAE storedRequestId ', this.storedRequestId);
-            this.usersLocalDbService.removeFromStorage('last-selection-id')
-          }
-
-        }, (err) => {
-          this.logger.error('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - ERROR ', err);
-
-          //  NOTIFY ERROR 
-          this.notify.showWidgetStyleUpdateNotification(this.archivingRequestErrorNoticationMsg, 4, 'report_problem');
-        }, () => {
-          this.usersLocalDbService.removeFromStorage('last-selection-id')
-          this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - CLOSE SUPPORT GROUP - COMPLETE');
-
-          //  NOTIFY SUCCESS
-          this.notify.showRequestIsArchivedNotification(this.requestHasBeenArchivedNoticationMsg_part1);
-        });
-    } else {
-      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-    }
-  }
-
-
-  trackByFn(index, request) {
-    // this.logger.log('% »»» WebSocketJs WF WS-RL - trackByFn ', request );
-    if (!request) return null
-    return index; // unique id corresponding to the item
-  }
-
-  // ------------------------------------------
-  // Join request
-  // ------------------------------------------
-  joinRequest(request_id: string) {
-    if (!this.PERMISSION_TO_JOIN_REQUEST) {
-      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE)
-      return
-    }  
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest request_id', request_id);
-    this.logger.log('[WS-REQUESTS-LIST][UNSERVED] - joinRequest currentUserID', this.currentUserID);
-
-    this.displayModalAreyouSureYouWantToTakeChargeOfTheConversation(request_id, this.currentUserID);
-      // this.onJoinHandled(request_id, this.currentUserID);
-    
-  }
-
-  displayModalAreyouSureYouWantToTakeChargeOfTheConversation(requestid, currentuserid) {
-    Swal.fire({
-      title: this.areYouSureMsg,
-      text: this.conversationWillBeAssignedToYourselfMsg,
-      icon: "info",
-      showCloseButton: false,
-      showCancelButton: true,
-      confirmButtonText: this.translate.instant('Ok'),
-      cancelButtonText: this.cancelMsg,
-      // confirmButtonColor: "var(--blue-light)",
-      focusConfirm: true,
-      reverseButtons: true,
-
-
-      // title: this.areYouSureMsg,
-      // text: this.conversationWillBeAssignedToYourselfMsg,
-      // icon: "info",
-      // buttons: {
-      //   cancel: this.cancelMsg,
-      //   catch: {
-      //     text: 'OK',
-      //     value: "catch",
-      //   },
-      // },
-      // dangerMode: false,
-    })
-      .then((result) => {
-        this.logger.log('[WS-REQUESTS-LIST][UNSERVED] ARE YOU SURE TO JOIN THIS CHAT ... value', result)
-
-        if (result.isConfirmed) {
-          this.onJoinHandled(requestid, currentuserid);
-        }
-      })
-
-  }
-
-  // -----------------------------------------------
-  // @ Translate strings
-  // -----------------------------------------------
-  translateArchivingRequestMsg() {
-    this.translate.get('ArchivingRequestNoticationMsg')
-      .subscribe((text: string) => {
-        this.archivingRequestNoticationMsg = text;
-        // this.logger.log('+ + + ArchivingRequestNoticationMsg', text)
-      });
-  }
-
-  // TRANSLATION
-  translateArchivingRequestErrorMsg() {
-    this.translate.get('ArchivingRequestErrorNoticationMsg')
-      .subscribe((text: string) => {
-
-        this.archivingRequestErrorNoticationMsg = text;
-        // this.logger.log('+ + + ArchivingRequestErrorNoticationMsg', text)
-      });
-  }
-
-  // TRANSLATION
-  translateRequestHasBeenArchivedNoticationMsg_part1() {
-    // this.translate.get('RequestHasBeenArchivedNoticationMsg_part1')
-    this.translate.get('RequestSuccessfullyClosed')
-      .subscribe((text: string) => {
-        this.requestHasBeenArchivedNoticationMsg_part1 = text;
-        // this.logger.log('+ + + RequestHasBeenArchivedNoticationMsg_part1', text)
-      });
-  }
-
-  // TRANSLATION
-  translateRequestHasBeenArchivedNoticationMsg_part2() {
-    this.translate.get('RequestHasBeenArchivedNoticationMsg_part2')
-      .subscribe((text: string) => {
-        this.requestHasBeenArchivedNoticationMsg_part2 = text;
-        // this.logger.log('+ + + RequestHasBeenArchivedNoticationMsg_part2', text)
-      });
-  }
-
-
-  // IS USED WHEN IS GET A NEW MESSAGE (INN THIS CASE THE ONINIT IS NOT CALLED)
-  // getWsRequestsUnservedLength() {
-  //   if (this.ws_requests_length > 0) {
-  //     this.showSpinner = false;
-  //   }
-  //   this.logger.log('% »»» WebSocketJs WF - onData (ws-requests-unserved) ws_requests_length ', this.ws_requests_length)
-  // }
-
-  // goToWsRequestsNoRealtimeUnserved() {
-  //   this.router.navigate(['project/' + this.projectId + '/wsrequests-all/' + '100']);
-  // } 
-
-
-  // dept_replace(deptid) {
-  //   if (this.depts) {
-  //     const foundDept = this.depts.filter((obj: any) => {
-  //       return obj._id === deptid;
-  //     });
-  //     return deptid = foundDept[0]['name'];
-  //   }
-  // }
-
 }

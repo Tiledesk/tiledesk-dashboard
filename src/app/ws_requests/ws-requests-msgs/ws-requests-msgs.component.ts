@@ -6521,18 +6521,45 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
 
 
 
-extractUrls(text: string): string[] {
-  // Rileva URL con o senza protocollo (http/https)
-  const urlRegex = /\b((https?:\/\/)?(www\.)?[a-z0-9.-]+\.[a-z]{2,})(\/[^\s]*)?/gi;
-  const matches = text.match(urlRegex) || [];
-  // Normalizza: aggiunge https:// se manca, così il parsing con new URL() funziona
-  return matches.map((url) => {
-    if (!/^https?:\/\//i.test(url)) {
-      return 'https://' + url;
-    }
-    return url;
-  });
-}
+ extractUrls(text: string): string[] {
+-  // Rileva URL con o senza protocollo (http/https)
++  // Detect URLs with or without protocol. Filename-like tokens (report.pdf) must not
++  // count as domains — they break attachment sends when URL whitelist is enabled.
++  const FILE_EXT_AS_TLD = new Set([
++    'pdf', 'txt', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'csv', 'rtf', 'odt',
++    'png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp', 'ico', 'heic',
++    'zip', 'rar', '7z', 'tar', 'gz',
++    'mp3', 'mp4', 'wav', 'avi', 'mov', 'mkv', 'webm',
++    'json', 'xml', 'html', 'htm', 'css', 'js', 'ts', 'map', 'log',
++  ]);
++
+   const urlRegex = /\b((https?:\/\/)?(www\.)?[a-z0-9.-]+\.[a-z]{2,})(\/[^\s]*)?/gi;
+   const matches = text.match(urlRegex) || [];
+-  // Normalizza: aggiunge https:// se manca, così il parsing con new URL() funziona
+-  return matches.map((url) => {
+-    if (!/^https?:\/\//i.test(url)) {
+-      return 'https://' + url;
+-    }
+-    return url;
+-  });
++
++  return matches
++    .map((url) => url.replace(/[)\]>,.;:!?'"]+$/g, ''))
++    .filter((url) => {
++      const withoutProtocol = url.replace(/^https?:\/\//i, '');
++      const host = withoutProtocol.split('/')[0];
++      const tld = host.split('.').pop()?.toLowerCase();
++      const hasExplicitScheme =
++        /^https?:\/\//i.test(url) || /^www\./i.test(withoutProtocol);
++      // Bare "name.pdf" / "photo.png" are not URLs
++      if (!hasExplicitScheme && tld && FILE_EXT_AS_TLD.has(tld)) {
++        return false;
++      }
++      return true;
++    })
++    .map((url) => (/^https?:\/\//i.test(url) ? url : 'https://' + url));
+ }
+
 
 
 

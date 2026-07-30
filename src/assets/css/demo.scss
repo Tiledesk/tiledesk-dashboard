@@ -2050,10 +2050,20 @@ span.navbar-brand-title {
 //     top: 0px;
 // }
 
-.cdk-overlay-container {
-  position: fixed;
-  z-index: 1050 !important;
+// Stacking layer for all Material/CDK overlays (dialogs, menus, tooltips).
+// Keep at 1050 (Bootstrap modal tier). Sidebar is 1052 so accidental overhang
+// does not cover nav; request-preview tooltip is clamped right of the sidebar.
+ .cdk-overlay-container {
+   position: fixed;
+   z-index: 1050 !important;
+ }
+
+.cdk-overlay-pane.td-request-preview-overlay,
+.cdk-overlay-pane.custom-ng2-tooltip {
+  z-index: 1061 !important;
 }
+
+
 
 .disable-dropdown-menu-btn {
   pointer-events: none;
@@ -2061,20 +2071,63 @@ span.navbar-brand-title {
   cursor: not-allowed;
 }
 
-.custom-ng2-tooltip {
-  font-family: "Poppins", "Roboto", "Arial", sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  letter-spacing: normal;
-  font-stretch: normal;
-  font-variant: normal;
-  font-weight: 400;
-  text-align: left !important;
-  min-width: 470px;
-  padding: 16px !important;
-  // margin-left: 60px;
-  z-index: 1052 !important;
+/* CDK pane: positioning only — do not override position (CDK uses absolute + transform) */
+.cdk-overlay-pane.custom-ng2-tooltip,
+.cdk-overlay-pane.td-request-preview-overlay {
+  pointer-events: none !important;
+  overflow: visible;
+  background: transparent;
+  box-shadow: none;
+  padding: 0 !important;
 }
+
+ .td-request-preview-tooltip {
+   position: relative;
+   pointer-events: none;
+   font-family: "Poppins", "Roboto", "Arial", sans-serif;
+   font-size: 14px;
+   font-style: normal;
+   letter-spacing: normal;
+   font-stretch: normal;
+   font-variant: normal;
+   font-weight: 400;
+   text-align: left !important;
+   min-width: 470px;
+  max-width: min(560px, calc(100vw - 80px));
+  box-sizing: border-box;
+   padding: 16px;
+   background: #fff;
+   border-radius: 4px;
+   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+ 
+  /* Tooltip tail on the white container (points to first_text below) */
+ /* Tooltip tail — left set by directive so it still points at first_text when clamped */
+   &::before,
+   &::after {
+     content: "";
+     position: absolute;
+    left: 50%;
+    left: var(--td-preview-tooltip-arrow-left, 50%);
+     transform: translateX(-50%);
+     width: 0;
+     height: 0;
+     border-style: solid;
+     pointer-events: none;
+   }
+ 
+   &::before {
+     bottom: -11px;
+     border-width: 11px 11px 0 11px;
+     border-color: rgba(0, 0, 0, 0.12) transparent transparent transparent;
+   }
+ 
+   &::after {
+     bottom: -10px;
+     border-width: 10px 10px 0 10px;
+     border-color: #fff transparent transparent transparent;
+   }
+ }
+
 
 .ng2-tooltip-header {
   margin-bottom: 12px;
@@ -2150,7 +2203,10 @@ span.navbar-brand-title {
   font-weight: 400;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 12px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
+
 
 .ng2-most-recent-comment-section-title {
   font-weight: 400;
@@ -2193,7 +2249,10 @@ span.navbar-brand-title {
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 10px;
   margin-bottom: 0px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
+
 
 .ng2-latest-comment>p {
   margin-bottom: 0px;
