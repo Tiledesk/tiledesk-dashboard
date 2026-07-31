@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.243-stage 
+- Adds Gemini Agent Platform integration
+
 ### 2.7.242-stage 
 - Migrates the dashboard core to Angular 15 (CLI, `@angular/core`, and Material/CDK 15 with MDC)
 - Adapts key UI surfaces to Material MDC (History date range, Knowledge Base actions, Data Tables)
