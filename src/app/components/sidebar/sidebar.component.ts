@@ -635,6 +635,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ,
                 PERMISSIONS.PROJECTSETTINGS_SECURITY_READ,
                 PERMISSIONS.PROJECTSETTINGS_BANNED_READ,
+                PERMISSIONS.PROJECTSETTINGS_RETENTION_READ,
                 PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ
             ];
             

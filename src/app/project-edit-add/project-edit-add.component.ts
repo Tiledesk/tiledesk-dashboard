@@ -840,6 +840,25 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
         }
 
         // --------------------------------
+        // PERMISSION TO VIEW RETENTION
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_VIEW_RETENTION = true;
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_RETENTION:', this.PERMISSION_TO_VIEW_RETENTION);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_RETENTION = false;
+          this.logger.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_RETENTION:', this.PERMISSION_TO_VIEW_RETENTION);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_RETENTION = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_RETENTION_READ);
+          this.logger.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_RETENTION:', this.PERMISSION_TO_VIEW_RETENTION);
+        }
+
+        // --------------------------------
         // PERMISSION TO VIEW ADVANCED
         // ---------------------------------
         if (status.role === 'owner' || status.role === 'admin') {
