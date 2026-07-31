@@ -30,6 +30,8 @@ import { DeepseekIntegrationComponent } from './list/deepseek-integration/deepse
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 import { VLLMComponent } from './list/v-llm/v-llm.component';
 import { VllmEndpointTableComponent } from './list/v-llm/vllm-endpoint-table/vllm-endpoint-table.component';
+import { GeminiAgentPlatformIntegrationComponent } from './list/geminiagentplatform-integration/geminiagentplatform-integration.component';
+import { AgentPlatformEndpointTableComponent } from './list/geminiagentplatform-integration/agentplatform-endpoint-table/agentplatform-endpoint-table.component';
 import { McpIntegrationComponent } from './list/mcp-integration/mcp-integration.component';
 import { McpServerTableComponent } from './list/mcp-integration/mcp-server-table/mcp-server-table.component';
 import { McpToolsModalComponent } from './list/mcp-integration/mcp-tools-modal/mcp-tools-modal.component';
@@ -67,6 +69,8 @@ const routes: Routes = [
     McpToolsModalComponent,
     VLLMComponent,
     VllmEndpointTableComponent,
+    GeminiAgentPlatformIntegrationComponent,
+    AgentPlatformEndpointTableComponent,
     ElevenlabsIntegrationComponent,
     CerebrasIntegrationComponent,
     OpenRouterIntegrationComponent

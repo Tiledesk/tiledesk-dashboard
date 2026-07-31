@@ -1,0 +1,108 @@
+<div class="content">
+
+    <div class="form-section">
+        <div class="form-header">
+            <h4 *ngIf="!isEditing">{{ 'Integration.AddAgentPlatformEndpoint' | translate }}</h4>
+            <h4 *ngIf="isEditing">{{ 'Integration.EditAgentPlatformEndpoint' | translate }}</h4>
+        </div>
+
+        <div class="input-field">
+            <label>{{ 'Name' | translate }}</label>
+            <input id="agentplatform-name" class="custom-input" type="text" name="agentplatform-name"
+                placeholder="{{ 'Integration.VllmEndpointNamePlaceholder' | translate }}"
+                [(ngModel)]="currentEndpoint.name" autocomplete="off" style="font-size: 14px;">
+        </div>
+
+        <div class="input-field">
+            <label>URL</label>
+            <input id="agentplatform-url" class="custom-input" type="url" name="agentplatform-url"
+                placeholder="{{ 'Integration.AgentPlatformEndpointUrlPlaceholder' | translate }}"
+                [ngModel]="currentEndpoint.url"
+                (ngModelChange)="onUrlChange($event)"
+                [ngClass]="{'input-error': showInvalidUrlError}"
+                autocomplete="off" style="font-size: 14px;">
+            <p *ngIf="showInvalidUrlError" class="field-error">
+                {{ invalidUrlErrorKey | translate }}
+            </p>
+        </div>
+
+        <div class="input-field">
+            <label>{{ 'Integration.ApiKey' | translate }} ({{ 'Optional' | translate }})</label>
+            <div class="password-input">
+                <input id="api-key-input" type="text"
+                    name="api-key-input"
+                    placeholder="{{ 'Integration.YourApikey' | translate }}"
+                    [value]="getDisplayValue()"
+                    (input)="handleInput($event)"
+                    (keydown.backspace)="handleBackspace()"
+                    autocomplete="off" #maskedInput style="font-size: 14px;">
+                <div class="show-hide-button">
+                    <button type="button" class="eye-btn" (click)="toggleMask(maskedInput)">
+                        <span *ngIf="isMasked === true" class="material-icons-outlined">visibility_off</span>
+                        <span *ngIf="isMasked === false" class="material-icons-outlined">visibility</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-field" style="margin-bottom: 10px;">
+            <label>{{ 'Models' | translate }}</label>
+            <div class="fake--input">
+                <div class="fake--input-inner">
+                    <input id="agentplatform-models" class="custom-input" name="agentplatform-models"
+                        placeholder="{{ 'Integration.VllmModelsPlaceholder' | translate }}" type="text"
+                        [(ngModel)]="newModelName" (ngModelChange)="onEnterModel($event)" autocomplete="off"
+                        (keyup.enter)="addModel(newModelName)" style="font-size: 14px;">
+                    <div id="enter-button" class="enter-button" [style.display]="showEnterButton ? 'inline-block' : 'none'"
+                        (click)="addModel(newModelName)">{{ 'KbPage.Enter' | translate }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="agentplatform-models--container">
+            <span aria-label="models" *ngFor="let model of currentEndpoint.models" class="agentplatform-model-tag-wpr">
+                <p weight="400" class="agentplatform-model-tag-label">{{ model }}</p>
+                <button type="button" class="agentplatform-model-tag-delete-btn" (click)="removeModel(model)">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                        class="agentplatform-model-tag-delete-icon" style="min-width: 12px; min-height: 12px; margin-right: 0px;">
+                        <path
+                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                        </path>
+                        <path d="M0 0h24v24H0z" fill="none"></path>
+                    </svg>
+                </button>
+            </span>
+        </div>
+
+        <div class="form-actions">
+            <button
+                *ngIf="!isEditing"
+                type="button"
+                class="btn btn-tdblu-no-boxshadow"
+                (click)="addOrUpdateEndpoint()"
+                [disabled]="!canSubmit()">
+                {{ 'Add' | translate }}
+            </button>
+
+            <button
+                *ngIf="isEditing"
+                type="button"
+                class="btn btn-tdblu-no-boxshadow"
+                (click)="addOrUpdateEndpoint()"
+                [disabled]="!canSubmit()">
+                {{ 'Update' | translate }}
+            </button>
+
+            <button *ngIf="isEditing" type="button" class="btn btn-outlined" (click)="resetForm()">
+                {{ 'Cancel' | translate }}
+            </button>
+        </div>
+    </div>
+
+    <agentplatform-endpoint-table
+        [endpoints]="integration?.value?.servers || []"
+        (onSelectEndpoint)="onSelectEndpoint($event)"
+        (onDeleteEndpoint)="onDeleteEndpoint($event)">
+    </agentplatform-endpoint-table>
+
+</div>

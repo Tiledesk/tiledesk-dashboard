@@ -119,6 +119,12 @@
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </google-integration>
 
+                                        <geminiagentplatform-integration *ngIf="integrationSelectedName === INT_KEYS.AGENTPLATFORM"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </geminiagentplatform-integration>
+
                                         <anthropic-integration *ngIf="integrationSelectedName === INT_KEYS.ANTHROPIC"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)

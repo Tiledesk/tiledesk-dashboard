@@ -937,10 +937,13 @@ export var OLLAMA_MODEL: Array<{ name: string, value: string, description:string
 ]
 export var VLLM_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
 ]
+export var AGENTPLATFORM_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
+]
 
 export const LLM_MODEL: Array<{name: string, value: string, description: string, src: string, status: "active" | "inactive", models: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> }> = [
   { name: "Cohere",         value: "cohere",            description: "",      src:"assets/images/icons/ai_prompt/cohere.svg",      status: "active",   models: COHERE_MODEL        },
   { name: "Google",         value: "google",            description: "",      src:"assets/images/icons/ai_prompt/google.svg",      status: "active",   models: GOOGLE_MODEL        },
+  { name: "Gemini Agent Platform", value: "agentplatform", description: "", src:"assets/images/icons/ai_prompt/google.svg",      status: "active",   models: AGENTPLATFORM_MODEL },
   { name: "Anthropic",      value: "anthropic",         description: "",      src:"assets/images/icons/ai_prompt/anthropic.svg",   status: "active",   models: ANTHROPIC_MODEL     },
   { name: "Groq",           value: "groq",              description: "",      src:"assets/images/icons/ai_prompt/groq.svg",        status: "active",   models: GROQ_MODEL          },
   { name: "Deepseek",       value: "deepseek",          description: "",      src:"assets/images/icons/ai_prompt/deepseek.svg",    status: "active",   models: DEEPSEEK_MODEL      },

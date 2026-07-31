@@ -61,7 +61,8 @@
             margin-right: 8px;
             border-radius: 4px;
             width: 20px;
-            height: 20px;
+            height: auto;
+            max-height: 20px;
         }
 
         &:hover {
