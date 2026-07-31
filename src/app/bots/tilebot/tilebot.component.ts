@@ -1451,11 +1451,11 @@ export class TilebotComponent extends BotsBaseComponent implements OnInit {
     }, (error) => {
       this.logger.error('[TILEBOT] DELETE FAQ ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      this.notify.showNotification(this.errorDeletingAnswerMsg, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.errorDeletingAnswerMsg, 4, 'report_problem');
     }, () => {
       this.logger.log('[TILEBOT] DELETE FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
-      this.notify.showNotification(this.answerSuccessfullyDeleted, 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.answerSuccessfullyDeleted, 2, 'done');
     });
 
   }

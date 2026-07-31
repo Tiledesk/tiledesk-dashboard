@@ -352,6 +352,10 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
     alert(`Click on Action 2 for ${item.name}`);
   }
 
+  onRequestPreviewLoad = (request: any): void => {
+    this.overfirstTextGetRequestMsg(request);
+  };
+
   overfirstTextGetRequestMsg(request) {
     this.logger.log('[WS-REQUESTS-LIST][SERVED] overfirstText request_id', request);
     this.getRequestMsg(request)

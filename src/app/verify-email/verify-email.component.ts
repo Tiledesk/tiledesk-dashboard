@@ -168,7 +168,7 @@ export class VerifyEmailComponent implements OnInit {
       // const error_body = JSON.parse(error._body);
       // this.logger.error('[VERIFY-EMAIL] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
       // if (error_body['success'] === false) {
-        this.notify.showNotification('An error has occurred sending verification link', 4, 'report_problem')
+        this.notify.showWidgetStyleUpdateNotification('An error has occurred sending verification link', 4, 'report_problem')
       // }
     }, () => {
       this.logger.log('[VERIFY-EMAIL] - RESEND VERIFY EMAIL * COMPLETE *');

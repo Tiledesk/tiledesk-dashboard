@@ -1562,11 +1562,11 @@ export class FaqComponent extends BotsBaseComponent implements OnInit {
     }, (error) => {
       this.logger.error('[FAQ-COMP] DELETE FAQ ERROR ', error);
       // =========== NOTIFY ERROR ===========
-      this.notify.showNotification(this.translationsMap.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer'), 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('FaqPage.AnErrorOccurredWhilDeletingTheAnswer'), 4, 'report_problem');
     }, () => {
       this.logger.log('[FAQ-COMP] DELETE FAQ * COMPLETE *');
       // =========== NOTIFY SUCCESS===========
-      this.notify.showNotification(this.translationsMap.get('FaqPage.AnswerSuccessfullyDeleted'), 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('FaqPage.AnswerSuccessfullyDeleted'), 2, 'done');
     });
 
   }

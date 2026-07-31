@@ -251,7 +251,7 @@ export class NotificationMessageComponent extends PricingBaseComponent implement
       }
     }, error => {
       this.logger.error('[NOTIFICATION-MSG] - cancelSubscription - ERROR: ', error);
-      this.notify.showNotification(this.subscriptionCanceledError, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.subscriptionCanceledError, 4, 'report_problem');
 
       this.notify.cancelSubscriptionCompleted(true)
     }, () => {

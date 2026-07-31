@@ -118,7 +118,7 @@ export class TriggerComponent implements OnInit {
     }, (error) => {
       this.logger.error('[TRIGGER] - GET ALL TRIGGER - ERROR ', error);
 
-      this.notify.showNotification(this.messageServerError, 4, 'report_problem')
+      this.notify.showWidgetStyleUpdateNotification(this.messageServerError, 4, 'report_problem')
       this.showSpinner = false;
 
     }, () => {
@@ -170,10 +170,10 @@ export class TriggerComponent implements OnInit {
       this.logger.log('[TRIGGER] - DELETE TRIGGER -  RES ', res);
 
     }, (error) => {
-      this.notify.showNotification(this.messageDeleteTriggerError, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.messageDeleteTriggerError, 4, 'report_problem');
       this.logger.error('[TRIGGER] - DELETE TRIGGER - ERROR ', error);
     }, () => {
-      this.notify.showNotification(this.messageTriggerSuccessDelete, 2, 'done');
+      this.notify.showWidgetStyleUpdateNotification(this.messageTriggerSuccessDelete, 2, 'done');
       this.getAllTrigger();
       this.logger.log('[TRIGGER] - DELETE TRIGGER * COMPLETE *');
 

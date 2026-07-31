@@ -1,0 +1,51 @@
+.td-static-carousel {
+  width: 100%;
+  max-width: 766px;
+  margin: 0 auto;
+}
+
+.td-static-carousel__viewport {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 766 / 410;
+  overflow: hidden;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.td-static-carousel__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  pointer-events: none;
+}
+
+.td-static-carousel__slide--active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.td-static-carousel__dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.td-static-carousel__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #c5cdd8;
+  cursor: pointer;
+}
+
+.td-static-carousel__dot--active {
+  background: #1e88e5;
+}

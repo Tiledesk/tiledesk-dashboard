@@ -89,7 +89,7 @@ export class FaqTestTrainBotComponent implements OnInit {
           this.logger.log('[FAQ-TEST-TRAIN-BOT] - CREATED FAQ * COMPLETE *');
           // =========== NOTIFY SUCCESS===========
           this.answer = '';
-          this.notify.showNotification(this.answerSuccessfullyAdded, 2, 'done');
+          this.notify.showWidgetStyleUpdateNotification(this.answerSuccessfullyAdded, 2, 'done');
 
           //  SET A TIMEOUT TO AVOID THAT REMOTE FAQ ARE NOT UPDATED
           this.showSpinner = true;

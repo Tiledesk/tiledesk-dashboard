@@ -897,7 +897,7 @@ export class UserProfileComponent extends PricingBaseComponent implements OnInit
       const error_body = JSON.parse(error._body);
       this.logger.error('[USER-PROFILE] - RESEND VERIFY EMAIL - ERROR BODY', error_body);
       if (error_body['success'] === false) {
-        this.notify.showNotification(this.translationsMap.get('AnErrorHasOccurredSendingVerificationLink'), 4, 'report_problem')
+        this.notify.showWidgetStyleUpdateNotification(this.translationsMap.get('AnErrorHasOccurredSendingVerificationLink'), 4, 'report_problem')
       }
     }, () => {
       this.logger.log('[USER-PROFILE] - RESEND VERIFY EMAIL * COMPLETE *');

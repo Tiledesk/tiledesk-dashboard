@@ -1766,6 +1766,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   //     });
   // }
 
+  onRequestPreviewLoad = (request: any): void => {
+    this.overfirstTextGetRequestMsg(request);
+  };
+
   overfirstTextGetRequestMsg(request) {
     this.logger.log('[HISTORY & NORT-CONVS] overfirstText request_id', request);
     this.getRequestMsg(request)

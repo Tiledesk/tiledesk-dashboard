@@ -260,20 +260,16 @@ import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component';
 
 // import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component'; // now lazy
 
-import { CutomTooltipOptions } from './utils/util';
 // import { WsSidebarAppsComponent } from './ws_requests/ws-requests-msgs/ws-sidebar-apps/ws-sidebar-apps.component'; // now lazy
 import { ImageViewerComponent } from './ws_requests/ws-requests-msgs/image-viewer/image-viewer.component';
 // import { WidgetInstallationComponent } from './widget-installation/widget-installation.component'; // now lazy
 import { AutofocusDirective } from './_directives/autofocus.directive';
-
-import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
 
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule, MAT_DATE_LOCALE, DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-moment-adapter';
 // import { ColorPickerModule } from 'ngx-color-picker';
-import { NgxMatTimepickerModule } from 'ngx-mat-timepicker';
 
 
 import { MatButtonModule } from '@angular/material/button';
@@ -290,7 +286,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { MomentModule } from 'ngx-moment';
-import { NgImageSliderModule } from 'ng-image-slider';
 import { CreditCardDirectivesModule } from 'angular-cc-library';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -410,6 +405,7 @@ import { KeycloakService } from './services/keycloak.service';
 import { HttpStatsService } from './services/http-stats.service';
 import { HttpStatsDashboardComponent } from './http-stats-dashboard/http-stats-dashboard.component';
 import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
+import { ToastrModule } from 'ngx-toastr';
 
 
 
@@ -739,13 +735,17 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // ModalChatbotNameComponent
   ],
   imports: [
-    TooltipModule.forRoot(CutomTooltipOptions as TooltipOptions),
+    ToastrModule.forRoot({
+      positionClass: 'toast-top-center',
+      newestOnTop: false,
+      easeTime: 350,
+      easing: 'ease-out',
+      preventDuplicates: false,
+    }),
     NgApexchartsModule,
     DragDropModule,
     CreditCardDirectivesModule,
-    NgImageSliderModule,
     MomentModule,
-    NgxMatTimepickerModule,
     // ColorPickerModule, // moved in WidgetSetUpModule
     MatTooltipModule,
     MatDatepickerModule,

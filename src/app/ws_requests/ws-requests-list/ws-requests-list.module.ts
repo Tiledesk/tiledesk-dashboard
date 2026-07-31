@@ -4,8 +4,6 @@ import { WsRequestsListComponent } from './ws-requests-list.component';
 import { WsRequestsServedComponent } from './ws-requests-served/ws-requests-served.component';
 import { WsRequestsUnservedComponent } from './ws-requests-unserved/ws-requests-unserved.component';
 import { RouterModule ,Routes} from '@angular/router';
-import { TooltipModule, TooltipOptions } from 'ng2-tooltip-directive';
-import { CutomTooltipOptions } from 'app/utils/util';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
@@ -33,7 +31,6 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forChild(routes),
-    TooltipModule,
     CommonModule,
     MatTooltipModule,
     TranslateModule,

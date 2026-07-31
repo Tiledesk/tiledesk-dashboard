@@ -46,7 +46,6 @@ import { UnservedNotificationsComponent } from './unserved-notifications/unserve
     MatSortModule,
     MatInputModule,
     MomentModule,
-    UnservedNotificationsComponent,
   ],
   declarations: [
     FooterComponent,
@@ -55,6 +54,7 @@ import { UnservedNotificationsComponent } from './unserved-notifications/unserve
     SmallSidebarComponent,
     NavbarForPanelComponent,
     SidebarUserDetailsComponent,
+    UnservedNotificationsComponent,
   ],
   exports: [
     FooterComponent,

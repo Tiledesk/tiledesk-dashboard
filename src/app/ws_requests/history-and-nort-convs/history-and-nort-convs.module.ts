@@ -9,7 +9,6 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SharedModule } from 'app/shared/shared.module';
 import { RouterModule ,Routes} from '@angular/router';
 import { MomentModule } from 'ngx-moment';
-import { TooltipModule } from 'ng2-tooltip-directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -23,7 +22,6 @@ const routes: Routes = [
   ],
   imports: [
     RouterModule.forChild(routes),
-    TooltipModule,
     CommonModule,
     MatTooltipModule,
     TranslateModule,

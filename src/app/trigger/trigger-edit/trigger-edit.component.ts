@@ -149,7 +149,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
 
     }, (error) => {
       this.logger.error('[TRIGGER-EDIT] -  GET TRIGGER DETAIL REQUESTS  - ERROR ', error);
-      this.notify.showNotification(this.messageServerError, 4, 'report_problem')
+      this.notify.showWidgetStyleUpdateNotification(this.messageServerError, 4, 'report_problem')
       this.showSpinner = false;
     }, () => {
       this.logger.log('[TRIGGER-EDIT] GET TRIGGER DETAIL REQUESTS  - COMPLETED ');
@@ -443,7 +443,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     this.logger.log('[TRIGGER-EDIT] - REMOVE CONDITION ARRAY BY index:', rowIndex);
     this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
     if (this.conditions.length === 1 && rowIndex === 0) {
-      this.notify.showNotification(this.messageCondition, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.messageCondition, 4, 'report_problem');
     } else {
       this.conditions.removeAt(rowIndex);
     }
@@ -461,7 +461,7 @@ export class TriggerEditComponent extends BasetriggerComponent implements OnInit
     this.actions = this.triggerForm.get('actions') as FormArray;
     // check if exist at least 1 action to do for trigger
     if (this.actions.length === 1 && rowIndex === 0) {
-      this.notify.showNotification(this.messageAction, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.messageAction, 4, 'report_problem');
     } else {
       this.actions.removeAt(rowIndex);
     }

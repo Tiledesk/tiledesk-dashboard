@@ -1236,12 +1236,12 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
         this.logger.error('[CONTACTS-COMP] - DELETE REQUEST - ERROR ', error);
         // =========== NOTIFY ERROR ===========
         // this.notify.showNotification('An error occurred while deleting contact', 4, 'report_problem');
-        this.notify.showNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.deleteLeadErrorNoticationMsg, 4, 'report_problem');
       }, () => {
         this.logger.log('[CONTACTS-COMP] - DELETE REQUEST * COMPLETE *');
         // =========== NOTIFY SUCCESS===========
         // this.notify.showNotification('Contact successfully deleted', 2, 'done');
-        this.notify.showNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
+        this.notify.showWidgetStyleUpdateNotification(this.deleteLeadSuccessNoticationMsg, 2, 'done');
       });
 
   }

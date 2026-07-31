@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { WsrequestsStaticComponent } from './wsrequests-static.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { StaticPagesCarouselModule } from '../static-pages-carousel/static-pages-carousel.module';
 
 const routes: Routes = [
   { path: "", component: WsrequestsStaticComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     CommonModule,
     TranslateModule,
+    StaticPagesCarouselModule,
   ]
 })
 export class WsrequestsStaticModule { }

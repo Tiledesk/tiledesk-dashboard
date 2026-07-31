@@ -208,7 +208,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     this.logger.log('[TRIGGER-ADD] - Remove CONDITION ARRAY with index:', rowIndex);
     this.conditions = this.triggerForm.get(this.conditionType) as FormArray;
     if (this.conditions.length === 1 && rowIndex === 0) {
-      this.notify.showNotification(this.messageCondition, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.messageCondition, 4, 'report_problem');
     } else {
       this.conditions.removeAt(rowIndex);
     }
@@ -226,7 +226,7 @@ export class TriggerAddComponent extends BasetriggerComponent implements OnInit 
     this.actions = this.triggerForm.get('actions') as FormArray;
     // check if exist at least 1 action to do for trigger
     if (this.actions.length === 1 && rowIndex === 0) {
-      this.notify.showNotification(this.messageAction, 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.messageAction, 4, 'report_problem');
     } else {
       this.actions.removeAt(rowIndex);
     }

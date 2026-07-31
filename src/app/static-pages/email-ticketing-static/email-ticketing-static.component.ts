@@ -41,6 +41,14 @@ export class EmailTicketingStaticComponent extends PricingBaseComponent implemen
   public_Key: any;
   payIsVisible: boolean;
 
+  imageObject = [
+    {
+      image: 'assets/img/email_ticketing_1.png',
+      thumbImage: 'assets/img/email_ticketing_1.png',
+      alt: 'email ticketing demo image'
+    },
+  ];
+
 
   constructor(
     private router: Router,

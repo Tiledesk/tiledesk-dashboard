@@ -1,0 +1,20 @@
+<div class="td-static-carousel"
+     (mouseenter)="onMouseEnter()"
+     (mouseleave)="onMouseLeave()">
+  <div class="td-static-carousel__viewport">
+    <img *ngFor="let img of images; let i = index"
+         class="td-static-carousel__slide"
+         [class.td-static-carousel__slide--active]="i === activeIndex"
+         [src]="img.image"
+         [alt]="img.alt || ''">
+  </div>
+  <div class="td-static-carousel__dots" *ngIf="images?.length > 1">
+    <button type="button"
+            *ngFor="let img of images; let i = index"
+            class="td-static-carousel__dot"
+            [class.td-static-carousel__dot--active]="i === activeIndex"
+            [attr.aria-label]="'Slide ' + (i + 1)"
+            (click)="goToSlide(i)">
+    </button>
+  </div>
+</div>
