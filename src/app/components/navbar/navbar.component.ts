@@ -424,6 +424,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.currentTitle = 'Webhooks';
         } else if (callingPage === 'analytics') {
           this.currentTitle = 'Analytics.AnalyticsTITLE';
+        } else if (callingPage === 'datatables') {
+          this.currentTitle = 'DataTables.DataTablesBeta';
         } else if (callingPage === 'activities') {
           this.currentTitle = 'Activities';
         } else if (callingPage === 'automations') {
