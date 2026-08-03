@@ -1,0 +1,8 @@
+<span class="dt-type-icon"
+      [class.dt-type-icon--md]="size === 'md'"
+      [attr.aria-hidden]="true">
+  <mat-icon *ngIf="type === 'string'" class="dt-type-icon-mat">text_fields</mat-icon>
+  <mat-icon *ngIf="type === 'number'" class="dt-type-icon-mat">numbers</mat-icon>
+  <mat-icon *ngIf="type === 'boolean'" class="dt-type-icon-mat">check_box</mat-icon>
+  <mat-icon *ngIf="type === 'datetime'" class="dt-type-icon-mat">calendar_today</mat-icon>
+</span>

@@ -1044,6 +1044,37 @@ th {
   text-decoration: underline;
 }
 
+// Shared "learn more" docs link (widget set-up, data tables, …)
+.widget-set-up-link-to-docs-wpr {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 400;
+  margin-bottom: 6px;
+  line-height: 20px;
+  padding: 7px 0;
+}
+
+.widget-set-up-link-to-docs {
+  margin-left: 8px;
+  vertical-align: middle;
+  color: var(--blue-light, #0f62ff);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.widget-set-up-link-to-docs:hover {
+  text-decoration: underline;
+}
+
+.widget-set-up-link-to-docs-wpr > span > svg {
+  fill: var(--blue-light, #0f62ff);
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
 .c-alert-x-long-string {
   background-color: #fff;
   border: 1px solid #e8f0f5;
