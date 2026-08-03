@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.19
+- Adds permissions to Data tables
+
 ### 2.8.18
 - Migrates the dashboard core to Angular 15 (CLI, @angular/core, and Material/CDK 15 with MDC)
 - Adapts key UI surfaces to Material MDC (History date range, Knowledge Base actions, Data Tables …)
