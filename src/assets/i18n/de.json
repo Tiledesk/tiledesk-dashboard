@@ -36,6 +36,7 @@
     "HumanTeammates": "Menschliche Teamkollegen",
     "Resources": "Ressourcen",
     "Hours": "Öffnungszeiten",
+    "KnowledgeBases": "Knowledge Bases",
     "DataTables": {
         "DataTablesBeta": "Datentabellen (BETA)",
         "DataTables": "Datentabellen",
@@ -122,7 +123,6 @@
 		"OperatorNotExists": "Nicht vorhanden",
         "tableSize": "Tabellengröße: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
     },
-    "KnowledgeBases": "Knowledge Bases",
     "SelectAkB": "Wählen Sie eine Knowledge Base aus",
     "FirstName": "Vorname",
     "LastName": "Nachname",
