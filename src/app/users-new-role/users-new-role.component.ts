@@ -247,7 +247,7 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.DATATABLES_READ, label: 'Able to view' },
+        { key: PERMISSIONS.DATATABLES_READ, label: 'Able to view, create & edit' },
         // { key: PERMISSIONS.AUTOMATIONSLOG_CREATE, label: 'Able to create' },
         // { key: PERMISSIONS.AUTOMATIONSLOG_EDIT, label: 'Able to edit' }
       ]
