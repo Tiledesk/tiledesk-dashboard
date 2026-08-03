@@ -70,6 +70,8 @@ export class UnauthorizedForSidebarComponent implements OnInit, OnDestroy {
       this.pageName = 'Analytics.AnalyticsTITLE'
     } else if (callingPage === 'activities') {
       this.pageName = 'Activities'
+    } else if (callingPage === 'datatables') {
+      this.pageName = 'DataTables.DataTablesBeta'
     } else if (callingPage === 'automations') {
       this.pageName = 'WhatsAppBroadcasts'
     } else if (callingPage === 'new-broadcast') {

@@ -419,6 +419,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.currentTitle = 'Analytics.AnalyticsTITLE';
         } else if (callingPage === 'activities') {
           this.currentTitle = 'Activities';
+        } else if (callingPage === 'datatables') {
+          this.currentTitle = 'DataTables.DataTablesBeta';
         } else if (callingPage === 'automations') {
           this.currentTitle = 'WhatsAppBroadcasts';
         } else if (callingPage === 'new-broadcast') {
@@ -480,6 +482,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }
     else if (cleanUrl.indexOf('history') !== -1) {
       this.currentTitle = 'History';
+      this.currentIcon = null;
+    }
+    else if (cleanUrl.indexOf('data-tables') !== -1) {
+      this.currentTitle = 'DataTables.DataTablesBeta';
       this.currentIcon = null;
     }
     else if (cleanUrl.indexOf('all-conversations') !== -1) {
