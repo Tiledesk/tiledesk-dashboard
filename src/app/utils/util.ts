@@ -766,65 +766,65 @@ export function loadTokenMultiplier(ai_models) {
 
 
 export const COHERE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
-{ 
-    name: "Command A+ (05-2026)",             
-    value: "command-a-plus-05-2026",       
-    description: "TYPE_GPT_MODEL.text-davinci-003.description",    
-    status: "active",    
-    min_tokens: 1,  
-    max_output_tokens: 64000,  
-    reasoning: true  
-},  
-{ 
-    name: "Command A (03-2025)",              
-    value: "command-a-03-2025",            
-    description: "TYPE_GPT_MODEL.text-davinci-003.description",    
-    status: "active",    
-    min_tokens: 1,  
-    max_output_tokens: 8000,  
-    reasoning: false  
-}, 
-{ 
-    name: "Command R7B (12-2024)",            
-    value: "command-r7b-12-2024",          
-    description: "TYPE_GPT_MODEL.text-davinci-003.description",    
-    status: "active",    
-    min_tokens: 1,  
-    max_output_tokens: 4000,    
-    reasoning: true   
-},
-{ 
-    name: "Command A Vision (07-2025)",       
-    value: "command-a-vision-07-2025",     
-    description: "TYPE_GPT_MODEL.text-davinci-003.description",    
-    status: "active",    
-    min_tokens: 1,  
-    max_output_tokens: 8000,  
-    reasoning: false  
-},
-{ 
-    name: "Command R+ (08-2024)",             
-    value: "command-r-plus-08-2024",       
-    description: "TYPE_GPT_MODEL.text-davinci-003.description",    
-    status: "active",    
-    min_tokens: 1,  
-    max_output_tokens: 128000,  
-    reasoning: false  
-},
-{ 
-    name: "Command A Reasoning (08-2025)",    
-    value: "command-a-reasoning-08-2025",  
-    description: "TYPE_GPT_MODEL.text-davinci-003.description",    
-    status: "active",    
-    min_tokens: 1,  
-    max_output_tokens: 32000,  
-    reasoning: true   
-},
+    { 
+        name: "Command A+ (05-2026)",             
+        value: "command-a-plus-05-2026",       
+        description: "TYPE_GPT_MODEL.text-davinci-003.description",    
+        status: "active",    
+        min_tokens: 1,  
+        max_output_tokens: 64000,  
+        reasoning: true  
+    },  
+    { 
+        name: "Command A (03-2025)",              
+        value: "command-a-03-2025",            
+        description: "TYPE_GPT_MODEL.text-davinci-003.description",    
+        status: "active",    
+        min_tokens: 1,  
+        max_output_tokens: 8000,  
+        reasoning: false  
+    }, 
+    { 
+        name: "Command R7B (12-2024)",            
+        value: "command-r7b-12-2024",          
+        description: "TYPE_GPT_MODEL.text-davinci-003.description",    
+        status: "active",    
+        min_tokens: 1,  
+        max_output_tokens: 4000,    
+        reasoning: true   
+    },
+    { 
+        name: "Command A Vision (07-2025)",       
+        value: "command-a-vision-07-2025",     
+        description: "TYPE_GPT_MODEL.text-davinci-003.description",    
+        status: "active",    
+        min_tokens: 1,  
+        max_output_tokens: 8000,  
+        reasoning: false  
+    },
+    { 
+        name: "Command R+ (08-2024)",             
+        value: "command-r-plus-08-2024",       
+        description: "TYPE_GPT_MODEL.text-davinci-003.description",    
+        status: "active",    
+        min_tokens: 1,  
+        max_output_tokens: 128000,  
+        reasoning: false  
+    },
+    { 
+        name: "Command A Reasoning (08-2025)",    
+        value: "command-a-reasoning-08-2025",  
+        description: "TYPE_GPT_MODEL.text-davinci-003.description",    
+        status: "active",    
+        min_tokens: 1,  
+        max_output_tokens: 32000,  
+        reasoning: true   
+    },
 
-  { name: "Command R",                        value: "command-r",                    description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 4096,    reasoning: false  },
-  { name: "Command R+",                       value: "command-r-plus",               description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
-  { name: "Command R+ (04-2024)",             value: "command-r-plus-04-2024",       description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
-]
+    { name: "Command R",                        value: "command-r",                    description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 4096,    reasoning: false  },
+    { name: "Command R+",                       value: "command-r-plus",               description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
+    { name: "Command R+ (04-2024)",             value: "command-r-plus-04-2024",       description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
+    ]
 
 export const GOOGLE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
     { 
