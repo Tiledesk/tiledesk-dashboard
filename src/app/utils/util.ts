@@ -824,7 +824,7 @@ export const COHERE_MODEL: Array<{ name: string, value: string, description:stri
     { name: "Command R",                        value: "command-r",                    description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 4096,    reasoning: false  },
     { name: "Command R+",                       value: "command-r-plus",               description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
     { name: "Command R+ (04-2024)",             value: "command-r-plus-04-2024",       description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
-    ]
+]
 
 export const GOOGLE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
     { 
