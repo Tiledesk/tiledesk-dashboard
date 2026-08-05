@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.20
+- Updates LLM models
+
 ### 2.8.19
 - Adds permissions to Data tables
 
