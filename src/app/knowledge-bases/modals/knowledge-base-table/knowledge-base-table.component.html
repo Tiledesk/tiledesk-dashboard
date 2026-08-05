@@ -296,7 +296,7 @@
                              regardless of how many contents are loaded
                              (1, 173, 12345...). Avoids the button "jumping"
                              after every add/import. -->
-                        <span class="contents-count-num">{{ kbsListCount }}</span>
+                        <span class="contents-count-num">{{ kbsListCount | number:'1.0-0' }}</span>
                     </div>
 
                     <!-- ---------------------------------------- -->

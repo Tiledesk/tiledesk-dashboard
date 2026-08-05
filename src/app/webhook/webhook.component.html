@@ -255,11 +255,11 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content custom--modal-content">
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="closeModal_ConfirmDeleteModal()">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="closeModal_ConfirmDeleteModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
         <h4 class="modal-title warning">
-          <span class="modal-header-icon-wpr">
+          <span class="modal-header-icon-wpr" style="font-size: 14px;">
             <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="none">
               <path
                 d="m40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67l-324.67 560ZM482.78-238q14.22 0 23.72-9.62 9.5-9.61 9.5-23.83 0-14.22-9.62-23.72-9.61-9.5-23.83-9.5-14.22 0-23.72 9.62-9.5 9.62-9.5 23.83 0 14.22 9.62 23.72 9.62 9.5 23.83 9.5Zm-33.45-114H516v-216h-66.67v216ZM480-466.67Z" />
@@ -270,7 +270,7 @@
           </span>
         </h4>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="font-size: 14px;">
         <p class="modal-body--content">
           {{ "Webhook.ConfirmSubscriptionDeleteBody" | translate }}
         </p>
@@ -279,7 +279,7 @@
         <button class="btn btn-gray-no-boxshadow" (click)="closeModal_ConfirmDeleteModal()">
           {{ "Webhook.CancelButton" | translate }}
         </button>
-        <button class="btn btn-red" (click)="deleteSubscription()">
+        <button class="btn btn-red" (click)="deleteSubscription()" style="margin-bottom: 0px;margin-left: 12px;">
           {{ "Webhook.ConfirmButton" | translate }}
         </button>
 

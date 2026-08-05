@@ -179,6 +179,7 @@ export class ModalUnansweredQuestionsComponent implements OnInit, OnChanges, OnD
   }
 
   onRowClick(ev: MouseEvent, q: UnansweredQuestion): void {
+    this.logger.log('[MODAL-UNANSWERED-QUESTIONS-COMP] onRowClick event', ev, q)
     if ((ev.target as HTMLElement).closest('button')) {
       return;
     }
