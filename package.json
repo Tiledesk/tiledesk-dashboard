@@ -82,7 +82,7 @@
     "sass": "^1.54.9",
     "scrollto-with-animation": "^3.0.4",
     "sweetalert": "^2.1.2",
-    "sweetalert2": "^11.10.6",
+    "sweetalert2": "^11.26.25",
     "terser": "^5.15.0",
     "tslib": "^2.3.1",
     "ua-parser-js": "^0.7.33",
