@@ -86,7 +86,9 @@ export class KbScrapeSettingsComponent implements OnInit {
         this.config.unwanted_classnames.push(value);
       }
     }
-    if (event.input) {
+    if (event.chipInput) {
+      event.chipInput.clear();
+    } else if (event.input) {
       event.input.value = '';
     }
   }

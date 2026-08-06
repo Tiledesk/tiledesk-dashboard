@@ -425,7 +425,7 @@
                                   <mat-icon>more_vert</mat-icon>
                                 </button>
 
-                                <mat-menu #moreactions="matMenu">
+                                <mat-menu #moreactions="matMenu" xPosition="before">
 
                                   <button class="mat-menu-btn" mat-menu-item (click)='goToEditUser(projectUser?._id)'>
                                     <mat-icon>edit</mat-icon>
@@ -578,7 +578,7 @@
                                   <mat-icon>more_vert</mat-icon>
                                 </button>
 
-                                <mat-menu #moreactionspi="matMenu">
+                                <mat-menu #moreactionspi="matMenu" xPosition="before">
                                   <button class="mat-menu-btn"
                                     *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
                                     mat-menu-item (click)='openCancelInvitationModal(projectUser?._id, projectUser?.email )'>
@@ -699,7 +699,7 @@
                                   <mat-icon>more_vert</mat-icon>
                                 </button>
 
-                                <mat-menu #moreactionspi="matMenu">
+                                <mat-menu #moreactionspi="matMenu" xPosition="before">
                                   <button class="mat-menu-btn"
                                     *ngIf="projectUser?.role !== 'owner' && CURRENT_USER_ID !== projectUser?.id_user?._id"
                                     mat-menu-item (click)='openCancelInvitationModal(invites?._id, invites?.email )'>

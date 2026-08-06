@@ -814,7 +814,7 @@
                                 matTooltipHideDelay="100">
                                 <mat-icon>share</mat-icon>
                               </button>
-                              <mat-menu #menu="matMenu">
+                              <mat-menu #menu="matMenu" xPosition="before">
                                 <button class="mat-menu-btn" mat-menu-item
                                   (click)='PERMISSION_TO_SHARE_FLOW && shareWithLink(faqkb._id, faqkb?.name)'
                                    [disabled]="!PERMISSION_TO_SHARE_FLOW">
@@ -848,7 +848,7 @@
                                 #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
                                 <mat-icon>more_vert</mat-icon>
                               </button>
-                              <mat-menu #sharemenu="matMenu">
+                              <mat-menu #sharemenu="matMenu" xPosition="before">
 
                                 <!-- <button class="mat-menu-btn" 
                                   mat-menu-item 

@@ -1,20 +1,20 @@
-import { AfterViewInit, Component, OnInit, SecurityContext } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, SecurityContext } from '@angular/core';
 import { Location } from '@angular/common';
 import { ProjectService } from '../../services/project.service';
 import { DomSanitizer } from '@angular/platform-browser'
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
-import PerfectScrollbar from 'perfect-scrollbar';
 import { LoggerService } from '../../services/logger/logger.service';
 import { NotifyService } from '../../core/notify.service';
 
-declare const $: any;
+const IFRAME_PREVIEW_ID = 'iframe-email-template-preview';
+
 @Component({
   selector: 'appdashboard-notification-email',
   templateUrl: './notification-email.component.html',
   styleUrls: ['./notification-email.component.scss']
 })
-export class NotificationEmailComponent implements OnInit, AfterViewInit {
+export class NotificationEmailComponent implements OnInit, AfterViewInit, OnDestroy {
 
   emailTemplate: any;
   iframe: any;
@@ -31,6 +31,8 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   emailTemplateUpdatedSuccessfullyMsg: string;
   isChromeVerGreaterThan100: boolean;
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
+  private iframePreviewLoadListener: (() => void) | null = null;
+
   constructor(
     public location: Location,
     public projectService: ProjectService,
@@ -42,7 +44,6 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    // this.setPerfectScrollbar();
     // this.showSpinner = true
     // this.getAssignedRequestTemplate();
     this.subscribeToCurrentProjectAndGetProjectById()
@@ -161,13 +162,34 @@ export class NotificationEmailComponent implements OnInit, AfterViewInit {
       });
   }
 
-  disableIframeLinks() {
-    $("iframe").on('load', function () {
-      $("iframe").contents().find("a").each(function (index) {
-        $(this).on("click", function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-        });
+  disableIframeLinks(): void {
+    const iframe = document.getElementById(IFRAME_PREVIEW_ID) as HTMLIFrameElement | null;
+    if (!iframe) {
+      return;
+    }
+
+    this.iframePreviewLoadListener = () => this.blockLinksInsideIframe(iframe);
+    iframe.addEventListener('load', this.iframePreviewLoadListener);
+  }
+
+  ngOnDestroy(): void {
+    const iframe = document.getElementById(IFRAME_PREVIEW_ID) as HTMLIFrameElement | null;
+    if (iframe && this.iframePreviewLoadListener) {
+      iframe.removeEventListener('load', this.iframePreviewLoadListener);
+      this.iframePreviewLoadListener = null;
+    }
+  }
+
+  private blockLinksInsideIframe(iframe: HTMLIFrameElement): void {
+    const doc = iframe.contentDocument;
+    if (!doc) {
+      return;
+    }
+
+    doc.querySelectorAll('a').forEach((anchor) => {
+      anchor.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
       });
     });
   }

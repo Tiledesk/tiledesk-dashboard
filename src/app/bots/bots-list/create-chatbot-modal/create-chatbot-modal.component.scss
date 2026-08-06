@@ -1,8 +1,11 @@
+// Outline: material-mdc-overrides.scss (baseline mat-mdc-form-field appearance-outline)
 .cc-mat-form-field {
   width: 100%;
 }
 
 
+// Autocomplete borders: demo.scss (.mat-autocomplete-panel); letter-spacing: material-mdc-overrides.scss
+::ng-deep .mat-mdc-autocomplete-panel.mat-autocomplete-visible,
 ::ng-deep .mat-autocomplete-panel.mat-autocomplete-visible {
   border-left: unset !important;
   border-right: unset !important;
@@ -13,7 +16,7 @@
 .btn--get-feature-no-boxshadow {
     margin-top: 0px;
     font-size: 12px;
-    letter-spacing: 1px;
+    letter-spacing: normal;
     background: transparent;
     border: 1px solid #d1d9e0;
     color: #2196f3; // var(--btn-get-feature-color); 

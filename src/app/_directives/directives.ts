@@ -1,17 +1,15 @@
 import { NgModule } from '@angular/core';
 
-import { PerfectScrollbarTdDirective } from './td-perfect-scrollbar/perfect-scrollbar-td.directive';
+import { CheckboxMaterialMarkupDirective } from './checkbox-material-markup/checkbox-material-markup.directive';
 
 
 @NgModule({
     declarations: [
-        PerfectScrollbarTdDirective,
-    
+        CheckboxMaterialMarkupDirective,
     ],
     imports     : [],
     exports     : [
-        PerfectScrollbarTdDirective,
-      
+        CheckboxMaterialMarkupDirective,
     ]
 })
 export class DirectivesModule

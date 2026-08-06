@@ -140,8 +140,9 @@
         <div class="field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">{{ formatMaxTokensRangeLabel(max_tokens_min) }}</div>
-                <mat-slider class="wait-slider max-tokens-slider" thumbLabel step="1" [min]="max_tokens_min" [max]="max_tokens_max" [(ngModel)]="max_tokens"
-                    (input)="max_tokens = $event.value" (change)="updateSliderValue($event.value, 'max_tokens')" [displayWith]="formatMaxTokens" aria-label="units">
+                <mat-slider class="wait-slider max-tokens-slider" thumbLabel step="1" [min]="max_tokens_min" [max]="max_tokens_max"
+                    [displayWith]="formatMaxTokens" aria-label="units">
+                    <input matSliderThumb [(ngModel)]="max_tokens" (ngModelChange)="updateSliderValue($event, 'max_tokens')">
                 </mat-slider>
                 <div class="action-wait-range">{{ formatMaxTokensRangeLabel(max_tokens_catalog_max) }}</div>
             </div>
@@ -218,9 +219,10 @@
         <div class="field-box  max-tokens-field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">0</div>
-                <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" [(ngModel)]="temperature"
-                    (change)="updateSliderValue($event.value, 'temperature')" aria-label="units" [disabled]="temperature_slider_disabled"
+                <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1"
+                    aria-label="units" [disabled]="temperature_slider_disabled"
                     [ngClass]="{'mat-slider-disabled': temperature_slider_disabled}">
+                    <input matSliderThumb [(ngModel)]="temperature" (ngModelChange)="updateSliderValue($event, 'temperature')">
                 </mat-slider>
                 <div class="action-wait-range">1</div>
             </div>
@@ -308,8 +310,8 @@
         <div class="field-box  max-tokens-field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">0</div>
-                <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" [(ngModel)]="alpha"
-                    (change)="updateSliderValue($event.value, 'alpha')" aria-label="units">
+                <mat-slider class="wait-slider" thumbLabel step="0.05" min="0" max="1" aria-label="units">
+                    <input matSliderThumb [(ngModel)]="alpha" (ngModelChange)="updateSliderValue($event, 'alpha')">
                 </mat-slider>
                 <div class="action-wait-range">1</div>
             </div>
@@ -392,8 +394,8 @@
         <div class="field-box">
             <div class="action-wait-slider">
                 <div class="action-wait-range">1</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" min="0" max="40" [(ngModel)]="topK"
-                    (change)="updateSliderValue($event.value, 'top_k')" aria-label="units">
+                <mat-slider class="wait-slider" thumbLabel step="1" min="0" max="40" aria-label="units">
+                    <input matSliderThumb [(ngModel)]="topK" (ngModelChange)="updateSliderValue($event, 'top_k')">
                 </mat-slider>
                 <div class="action-wait-range">40</div>
             </div>
@@ -539,8 +541,8 @@
         <div class="field-box" style="margin-bottom: 6px !important;">
             <div class="action-wait-slider">
                 <div class="action-wait-range">2</div>
-                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="50" [(ngModel)]="reRankingMultipler"
-                    (change)="updateSliderValue($event.value, 're_ranking_multipler')" aria-label="units">
+                <mat-slider class="wait-slider" thumbLabel step="1" min="2" max="50" aria-label="units">
+                    <input matSliderThumb [(ngModel)]="reRankingMultipler" (ngModelChange)="updateSliderValue($event, 're_ranking_multipler')">
                 </mat-slider>
                 <div class="action-wait-range">50</div>
             </div>

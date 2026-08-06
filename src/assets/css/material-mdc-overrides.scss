@@ -986,7 +986,7 @@ $td-slide-toggle-thumb-shadow:
   }
 }
 
-// ─── mat-menu (MDC) — baseline (align AM14: 14px label, 20px icons, compact padding) ─
+// ─── mat-menu (MDC) — baseline (align AM14: 14px label, 18px icons, compact padding) ─
 
 .mat-mdc-menu-panel,
 .mat-menu-panel {
@@ -1003,27 +1003,41 @@ $td-slide-toggle-thumb-shadow:
 
 .mat-mdc-menu-panel .mat-mdc-menu-item,
 .mat-mdc-menu-panel .mat-menu-item,
-.mat-menu-panel .mat-menu-item {
+.mat-mdc-menu-panel .mat-menu-btn,
+.mat-menu-panel .mat-menu-item,
+.mat-menu-panel .mat-menu-btn {
   letter-spacing: normal !important;
-  font-size: 14px;
-  font-family: var(--header-font-family);
+  font-size: 14px !important;
+  line-height: 20px !important;
+  font-family: var(--header-font-family) !important;
+  min-height: 40px;
 }
 
 .mat-mdc-menu-panel .mat-mdc-menu-item .mat-mdc-menu-item-text,
 .mat-mdc-menu-panel .mat-mdc-menu-item .mdc-list-item__primary-text,
-.mat-menu-panel .mat-menu-item {
-  font-size: 14px;
+.mat-mdc-menu-panel .mat-mdc-menu-item > span,
+.mat-mdc-menu-panel .mat-menu-btn > span,
+.mat-menu-panel .mat-menu-item > span,
+.mat-menu-panel .mat-menu-btn > span {
+  font-size: 14px !important;
   letter-spacing: normal !important;
+  font-family: var(--header-font-family) !important;
 }
 
 .mat-mdc-menu-panel .mat-mdc-menu-item mat-icon,
 .mat-mdc-menu-panel .mat-mdc-menu-item .mat-icon,
+.mat-mdc-menu-panel .mat-menu-btn mat-icon,
+.mat-mdc-menu-panel .mat-menu-btn .mat-icon,
 .mat-menu-panel .mat-menu-item mat-icon,
-.mat-menu-panel .mat-menu-item .mat-icon {
-  height: 20px;
-  width: 20px;
-  font-size: 20px;
-  margin-right: 6px;
+.mat-menu-panel .mat-menu-item .mat-icon,
+.mat-menu-panel .mat-menu-btn mat-icon,
+.mat-menu-panel .mat-menu-btn .mat-icon {
+  height: 18px !important;
+  width: 18px !important;
+  font-size: 18px !important;
+  line-height: 18px !important;
+  margin-right: 6px !important;
+  margin-top: 0 !important;
   flex-shrink: 0;
 }
 

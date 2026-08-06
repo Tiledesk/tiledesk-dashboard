@@ -17,7 +17,6 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-declare const $: any;
 // const swal = require('sweetalert');
 const Swal = require('sweetalert2')
 
@@ -167,15 +166,6 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getTrashedContactsCount();
     // this.getActiveContactsCount();
 
-    // ----------------------------------------
-    //  Bootstrap 3.0 - Keep Dropdown Open
-    //  http://jsfiddle.net/KyleMit/ZS4L7/
-    // ----------------------------------------
-    $('.dropdown.keep-open').on({
-      "shown.bs.dropdown": function () { this.closable = false; },
-      "click": function () { this.closable = true; },
-      "hide.bs.dropdown": function () { return this.closable; }
-    });
     this.getBrowserVersion();
 
     // this.checkPermissions();

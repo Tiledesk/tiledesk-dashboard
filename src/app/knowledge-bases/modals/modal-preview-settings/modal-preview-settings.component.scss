@@ -82,11 +82,16 @@
     text-align: center;
     transition: width 0.3s ease-in;
     font-size: 14px;
+    // Space between min/max labels and mat-slider (thumb sits on track start, not on labels)
+    gap: 8px;
 }
 
 .action-wait-slider>mat-slider {
     width: 100%;
-    margin-left: 6px;
+    min-width: 0;
+    flex: 1 1 auto;
+    margin-left: 0;
+    margin-right: 0;
 
     &.mat-slider-disabled {
         opacity: .5;
@@ -98,6 +103,10 @@
     color: #506493;
     font-size: 11px;
     font-weight: 500;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    line-height: 1;
 }
 
 .slider-output {
@@ -107,25 +116,6 @@
     border-radius: 16px;
     text-align: center;
     font-weight: 400;
-}
-
-.action-wait-slider ::ng-deep {
-
-    .mat-accent .mat-slider-track-fill {
-        background-color: #1e293b !important;
-    }
-
-    .mat-slider-thumb-label {
-        background-color: #1e293b !important;
-    }
-
-    .mat-slider-thumb-label-text {
-        color: #e5eaf5 !important;
-    }
-
-    .mat-slider-thumb {
-        background-color: #1e293b !important;
-    }
 }
 
 .context-texarea {
@@ -166,6 +156,8 @@
 
 .m-top-right-icon {
     cursor: pointer;
+    padding-right: 12px;
+    padding-top: 16px;
 }
 
 .m-top-right-icon>span {
@@ -189,6 +181,7 @@
     margin-bottom: 6px;
     font-size: 12px;
     font-weight: 400;
+    padding-left: 25px;
 }
 
 .no-overrides {
@@ -329,9 +322,8 @@
 }
 
 // AI settings checkboxes: compact hit-area so a click never falls onto the next row.
-// `bootstrap-material-design/material.min.js` auto-injects `<span class="checkbox-material">`
-// after each `<input type="checkbox">` inside `.checkbox`, so we must NOT add it in the template.
-// The injected `.checkbox-material:before` is a 46x46px invisible ripple circle (`transform: scale3d(2.3, 2.3, 1)`)
+// `.checkbox-material` is injected by `CheckboxMaterialMarkupDirective` (ex `$.material.checkbox()`).
+// The `.checkbox-material:before` pseudo is a large invisible ripple circle (`transform: scale3d(2.3, 2.3, 1)`)
 // that, with `opacity: 0`, still intercepts pointer events and reaches the row above/below.
 :host ::ng-deep {
     .checkbox-container .checkbox,

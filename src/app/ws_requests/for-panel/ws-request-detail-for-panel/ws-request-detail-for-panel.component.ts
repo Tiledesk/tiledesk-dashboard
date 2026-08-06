@@ -18,7 +18,6 @@ import { FaqKbService } from '../../../services/faq-kb.service';
 import { UsersService } from '../../../services/users.service';
 import { NotifyService } from '../../../core/notify.service';
 
-import PerfectScrollbar from 'perfect-scrollbar';
 import { ContactsService } from '../../../services/contacts.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 // import * as moment from 'moment';
@@ -137,8 +136,6 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.onInitChatContentHeight();
     this.getTranslations();
 
-    // chat-messages-container
-    this.setPerfectScrollbar()
     this.listenToParentPostMessage();
     this.getProjectUserRole();
     this.setMomentLocale();
@@ -377,14 +374,6 @@ export class WsRequestDetailForPanelComponent extends WsSharedComponent implemen
     this.wsRequestsService.unsubscribeToWS_RequesterPresence(requester_id);
   }
 
-
-  setPerfectScrollbar() {
-    const messages_container = <HTMLElement>document.querySelector('.chat-messages-container');
-    this.logger.log('[REQUEST-DTLS-X-PANEL] setPerfectScrollbar messages_container', messages_container);
-    let ps = new PerfectScrollbar(messages_container, {
-      suppressScrollX: true
-    });
-  }
 
   subscribeToWs_RequestById(id_request) {
     this.logger.log('[REQUEST-DTLS-X-PANEL] CALLING SUBSCRIBE TO Request-By-Id: ', id_request)

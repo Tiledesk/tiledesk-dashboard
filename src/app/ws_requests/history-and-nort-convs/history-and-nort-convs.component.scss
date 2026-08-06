@@ -1101,27 +1101,13 @@ p.member:hover {
   padding: 0px 2px;
 }
 
-::ng-deep .convs-custom-mat-tooltip {
-  background-color: #2d323e !important;
-  font-size: 11px !important;
-  border-radius: 2px !important;
-  font-family:  var(--header-font-family) !important;
-  padding-top: 6px !important;
-  padding-bottom: 6px !important;
-}
+// Tooltip style moved to src/assets/css/material-mdc-overrides.scss
+// (.convs-custom-mat-tooltip)
 
-::ng-deep .mat-white-tooltip {
-  background-color: #fff !important;
-  font-size: 11px !important;
-  border-radius: 2px !important;
-  font-family: var(--header-font-family) !important;
-  padding-top: 5px !important;
-  padding-bottom: 5px !important;
-  border: 1px solid #ccc;
-  color: #000 !important;
-  font-weight: 400 !important;
-  line-height: 1.5em;
-}
+
+// Tooltip style moved to src/assets/css/material-mdc-overrides.scss
+// (.mat-white-tooltip)
+
 
 
 .pro-only-badge {
@@ -1275,7 +1261,5 @@ p.member:hover {
   cursor: default;
 }
 
-/* Riduce la distanza del tooltip dal pulsante Export CSV (position="below" nel template) */
-::ng-deep .mat-white-tooltip.export-csv-tooltip {
-  transform: translateY(16px) !important;
-}
+// Tooltip style moved to src/assets/css/material-mdc-overrides.scss
+// (.mat-white-tooltip / .export-csv-tooltip)

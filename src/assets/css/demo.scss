@@ -1867,6 +1867,96 @@ div.card-content > div > div > div > div > div > div > div.txt > div > div > p >
 // --------------------------------------
 // NAVBAR BRAND IN SIDEBAR SETTINGS
 // --------------------------------------
+// Sidebar column: opaque background (overscroll must not reveal white body).
+.wrapper > .sidebar {
+  background-color: var(--sidebar-background-color, #1e2129);
+  overflow: hidden;
+}
+
+// Native scroll (replaces perfect-scrollbar). Sidebar: thin bar in component SCSS.
+.main-panel,
+.main-content-projects-for-panel,
+.chat-messages-container,
+#chat-wpr {
+  scrollbar-width: thin;
+  scrollbar-color: #b9b9b9 transparent;
+}
+
+.main-panel::-webkit-scrollbar,
+.main-content-projects-for-panel::-webkit-scrollbar,
+.chat-messages-container::-webkit-scrollbar,
+#chat-wpr::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+.main-panel::-webkit-scrollbar-track,
+.main-content-projects-for-panel::-webkit-scrollbar-track,
+.chat-messages-container::-webkit-scrollbar-track,
+#chat-wpr::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main-panel::-webkit-scrollbar-thumb,
+.main-content-projects-for-panel::-webkit-scrollbar-thumb,
+.chat-messages-container::-webkit-scrollbar-thumb,
+#chat-wpr::-webkit-scrollbar-thumb {
+  background-color: #b9b9b9;
+  border-radius: 3px;
+}
+
+.main-panel::-webkit-scrollbar-thumb:hover,
+.main-content-projects-for-panel::-webkit-scrollbar-thumb:hover,
+.chat-messages-container::-webkit-scrollbar-thumb:hover,
+#chat-wpr::-webkit-scrollbar-thumb:hover,
+.main-panel::-webkit-scrollbar-thumb:active,
+.main-content-projects-for-panel::-webkit-scrollbar-thumb:active,
+.chat-messages-container::-webkit-scrollbar-thumb:active,
+#chat-wpr::-webkit-scrollbar-thumb:active {
+  background-color: #727272;
+}
+
+.main-panel:hover::-webkit-scrollbar,
+.main-panel:focus-within::-webkit-scrollbar,
+.main-content-projects-for-panel:hover::-webkit-scrollbar,
+.main-content-projects-for-panel:focus-within::-webkit-scrollbar,
+.chat-messages-container:hover::-webkit-scrollbar,
+.chat-messages-container:focus-within::-webkit-scrollbar,
+#chat-wpr:hover::-webkit-scrollbar,
+#chat-wpr:focus-within::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+// -----
+.main-panel-chat-panel-mode::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+.main-panel-chat-panel-mode::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.main-panel-chat-panel-mode::-webkit-scrollbar-thumb {
+  background-color: #b9b9b9;
+  border-radius: 3px;
+}
+
+.main-panel-chat-panel-mode::-webkit-scrollbar-thumb:hover,
+.main-panel-chat-panel-mode::-webkit-scrollbar-thumb:active {
+  background-color: #727272;
+}
+
+.main-panel-chat-panel-mode:hover::-webkit-scrollbar,
+.main-panel-chat-panel-mode:focus-within::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+// --------------------------------------
+// NAVBAR BRAND IN SIDEBAR SETTINGS
+// --------------------------------------
 span.navbar-brand-sidebar-settings {
   z-index: 1050;
   position: relative;
@@ -3431,28 +3521,8 @@ appdashboard-app-store>div>div>div>div>div>div.card-content>div.available-from-b
   line-height: 0.7;
 }
 
-::ng-deep .conv-dtls-custom-mat-tooltip {
-  background-color: var(--dark-background);
-  color: var(--text-color-on-dark);
-  font-size: 12px !important;
-  border-radius: 2px !important;
-  font-family: var(--header-font-family);
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-  white-space: pre-line !important;
-  text-align: center !important;
-  line-height: 17px !important;
-}
-
-.custom-mat-tooltip {
-  background-color: var(--dark-background) !important;
-  font-size: 12px !important;
-  border-radius: 2px !important;
-  font-family: var(--header-font-family);
-  padding-top: 8px !important;
-  padding-bottom: 8px !important;
-  color: var(--text-color-on-dark);
-}
+/* Tooltip styles centralized in src/assets/css/material-mdc-overrides.scss
+   (.conv-dtls-custom-mat-tooltip, .custom-mat-tooltip) */
 
 
 .demopage-title {

@@ -165,24 +165,24 @@
         <ng-container *ngIf="project && isVisibleQuoteBtn && PERMISSION_TO_VIEW_QUOTA_USAGE">
           <li id="usage-stats">
 
-            <!-- mat-mini-fab -->
-            <button mat-button aria-label="trend icon" [matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()"
-              class="quote-modal-btn" [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free', 'quote-modal-btn-active':isOpenCurrentUsageMenu}"
+            <!-- nav-link (not mat-button): same typography as project dropdown — MDC mat-button alters weight/rendering at 400 -->
+            <a class="nav-link quote-modal-btn" href="javascript:void(0)" role="button" aria-label="trend icon"
+              [matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()"
+              [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free', 'quote-modal-btn-active': isOpenCurrentUsageMenu}"
               (click)="onOpenQuoteMenu()">
-              <!-- [ngClass]="{'data-usage-icon-resource-limit-reached': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
               <mat-icon class="data-usage-icon" [ngClass]="{'data-usage-icon-active': isOpenCurrentUsageMenu}">
-                data_usage
+                donut_large
               </mat-icon>
-              <span>{{'CurrentUsage' | translate}}</span>
-              <mat-icon style="color: #555555"
-                [ngClass]="{'mat-munu-arrow-down': !isOpenCurrentUsageMenu, 'mat-munu-arrow-up': isOpenCurrentUsageMenu}">
+              <span>{{ 'CurrentUsage' | translate }}</span>
+              <mat-icon class="quote-caret-icon" [class.quote-caret-icon--up]="isOpenCurrentUsageMenu"
+                aria-hidden="true">
                 arrow_drop_down
               </mat-icon>
-            </button>
+            </a>
           
-            <mat-menu #menu="matMenu" class="quotas-usage-menu" xPosition="before"
-              style="margin-top: 6px !important; width: 280px !important;">
+            <mat-menu #menu="matMenu" class="quotas-usage-menu" xPosition="before">
 
+              <ng-template matMenuContent>
               <div class="menu-container">
 
                 <div aria-label="Quotas usage" class="quotas-usage-container-wpr">
@@ -391,6 +391,7 @@
                 </div>
 
               </div>
+              </ng-template>
 
             </mat-menu>
           </li>
