@@ -1221,6 +1221,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   onOpenQuestionConversation(event: { requestId: string; listMode: 'answered' | 'unanswered' }): void {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] onOpenQuestionConversation event', event)
     if (!event?.requestId || !this.id_project) {
       return;
     }

@@ -827,11 +827,11 @@
     <div class="modal-content custom--modal-content">
 
       <div class="modal-header">
-        <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
+        <!-- <button type="button" class="close" aria-label="Close" (click)="onCloseModal()">
           <span aria-hidden="true">&times;</span>
-        </button>
+        </button> -->
 
-        <h4 class="modal-title warning">
+        <h4 class="modal-title warning" style="font-size: 14px;">
           <!-- Delete department with id: -->
           <!-- <i class="material-icons" style="vertical-align: middle;">report_problem</i> -->
           <span class="modal-header-icon-wpr">
@@ -851,7 +851,7 @@
         </h4> -->
       </div>
 
-      <div class="modal-body">
+      <div class="modal-body" style="font-size: 14px;">
 
         <p class="modal-body--content">
           {{ "DepartmentsPage.AreYouSure" | translate }}
@@ -866,7 +866,7 @@
 
           {{ "Cancel" | translate }}
         </button>
-        <button type="button" class="btn btn-red" (click)="onCloseDeleteModalHandled()">
+        <button type="button" class="btn btn-red" (click)="onCloseDeleteModalHandled()" style="margin-bottom: 0px;margin-left: 12px;">
           {{ "DepartmentsPage.Confirm" | translate }}
         </button>
       </div>

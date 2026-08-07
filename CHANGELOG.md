@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.184-AR
+- Implements Data tables
+- Updates LLM models
+
 ### 2.7.183-AR
 - Changes the maximum real-time conversations view limit from 100 to 50
 

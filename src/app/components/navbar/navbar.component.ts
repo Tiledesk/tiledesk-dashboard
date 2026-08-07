@@ -426,6 +426,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           this.currentTitle = 'Analytics.AnalyticsTITLE';
         } else if (callingPage === 'activities') {
           this.currentTitle = 'Activities';
+        } else if (callingPage === 'datatables') {
+          this.currentTitle = 'DataTables.DataTablesBeta';
         } else if (callingPage === 'automations') {
           this.currentTitle = 'WhatsAppBroadcasts';
         } else if (callingPage === 'new-broadcast') {

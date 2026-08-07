@@ -241,6 +241,19 @@ export class UsersNewRoleComponent implements OnInit {
     },
 
     {
+      key: 'DataTablesManagement',
+      title: 'Data Tables',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.DATATABLES_READ, label: 'Able to view, create & edit' },
+        // { key: PERMISSIONS.AUTOMATIONSLOG_CREATE, label: 'Able to create' },
+        // { key: PERMISSIONS.AUTOMATIONSLOG_EDIT, label: 'Able to edit' }
+      ]
+    },
+
+    {
       key: 'WhatsAppBroadcasts',
       title: 'WhatsApp Broadcasts',
       parentLabel: 'Select all',
@@ -443,6 +456,7 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.PROJECTSETTINGS_SECURITY_READ, label: 'Able to view Security' },
         { key: PERMISSIONS.PROJECTSETTINGS_BANNED_READ, label: 'Able to view Banned visitors' },
         { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' },
+        // { key: PERMISSIONS.PROJECTSETTINGS_RETENTION_READ, label: 'Able to view Messages retention' },
         { key: PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ, label: 'Able to view Advanced' },
       ]
     },
