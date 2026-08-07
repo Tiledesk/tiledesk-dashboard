@@ -122,7 +122,7 @@ import { LoadingPageComponent } from './loading-page/loading-page.component';
 // import { WebhookComponent } from './webhook/webhook.component'; // now lazy
 import { NotificationSettingsComponent } from './user-profile/notification-settings/notification-settings.component';
 // import { NativeBotComponent } from './bots/native-bot/native-bot.component'; // No more used
-import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
+// import { NativeBotSelectTypeComponent } from './bots/native-bot-select-type/native-bot-select-type.component';
 // import { RasaBotComponent } from './bots/rasa-bot/rasa-bot.component'; // No more used
 // import { EmailTicketingComponent } from './email-ticketing/email-ticketing.component'; // now lazy
 // import { WidgetInstallationComponent } from './widget-installation/widget-installation.component'; // now lazy
@@ -298,29 +298,31 @@ const routes: Routes = [
   },
   // { path: 'project/:projectid/canceled', component: PaymentCanceledPageComponent, canActivate: [AuthGuard] }, // now Lazy
 
-  // CDS
-  {
-    path: 'project/:projectid/cds/:faqkbid',
-    loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+  // CDS - Deleted
+  // {
+  //   path: 'project/:projectid/cds/:faqkbid',
+  //   loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   // { path: 'project/:projectid/cds/:faqkbid', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
 
-  {
-    path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
-    loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+  // Deleted
+  // {
+  //   path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
+  //   loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
 
-  {
-    path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
-    loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
-    canActivate: [AuthGuard, RoleGuard],
-    data: [{ roles: ['owner', 'admin'] }]
-  },
+  // Deleted
+  // {
+  //   path: 'project/:projectid/cds/:faqkbid/intent/:intent_id',
+  //   loadChildren: () => import('app/chatbot-design-studio/chatbot-design-studio.module').then(m => m.ChatbotDesignStudioModule),
+  //   canActivate: [AuthGuard, RoleGuard],
+  //   data: [{ roles: ['owner', 'admin'] }]
+  // },
   // { path: 'project/:projectid/cds/:faqkbid/intent/:intent_id/:calledby', component: CdsDashboardComponent, canActivate: [AuthGuard] }, // now Lazy
 
 

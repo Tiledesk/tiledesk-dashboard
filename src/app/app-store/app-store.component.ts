@@ -20,7 +20,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-// const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-app-store',

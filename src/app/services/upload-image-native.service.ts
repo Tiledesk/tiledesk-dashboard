@@ -156,56 +156,35 @@ export class UploadImageNativeService {
 
 
   // @nicola_74 when you upload by bot (or otherwise not the current user) you have to use this: 
-  uploadBotPhotoProfile_Native(file: File, id: string): Observable<any> {
-    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD BOT PHOTO PROFILE NATIVE file ', file)
-    const headers = new HttpHeaders({
-      Authorization: this.TOKEN,
-      // 'Content-Type': 'multipart/form-data',
-    });
-    const requestOptions = { headers: headers };
-    const formData = new FormData();
+    uploadBotPhotoProfile_Native(userId: string, upload: File): Promise<any> {
+        this.logger.log('[NATIVE UPLOAD] - upload new photo profile  ... upload', upload)
+        const headers = new HttpHeaders({
+          Authorization: this.TOKEN,
+          // 'Content-Type': 'multipart/form-data',
+        });
+        const requestOptions = { headers: headers };
+        const formData = new FormData();
+        formData.append('file', upload);
 
-    // for (const file of this.files) {
-    formData.append('file', file);
-    this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] - UPLOAD BOT PHOTO PROFILE formData ', formData)
-    // }
-    // formData.append('file', file, file.name);
-
-    // USE IMAGE API
-    const BASE_URL_IMAGES = this.BASE_URL + 'images'
-    return this._httpClient
-      .put<any>(BASE_URL_IMAGES + `/users/photo?force=true&bot_id=${id}`, formData, requestOptions)
-      .pipe(map((res: any) => {
-        this.logger.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES ', res);
-        if (res && res.message) {
-          console.log('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - RES MSG ', res.message);
-          if (res.message === 'Image uploded successfully') {
-
-            this.botImageWasUploaded_Native.next(true);
-          } else {
-            this.botImageWasUploaded_Native.next(false);
-            this.logger.error('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PHOTO PROFILE - ERROR RES MSG ', res.message);
-          }
-        }
-        // const downloadURL = BASE_URL_IMAGES + '?path=' + res['filename'];
-        const downloadURL = BASE_URL_IMAGES + '?path=' + res['thumbnail'];
-
-        this.botImageDownloadUrl_Native.next(downloadURL);
-        return downloadURL
-      }),
-      catchError((error: any) => {
-        this.logger.error('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PROFILE ERROR: ', error);
-        this.logger.error('[UPLOAD-IMAGE-NATIVE.SERV] UPLOAD BOT PROFILE ERROR: ', error);
-
-        
-        this.botImageWasUploaded_Native.next(false);
-        this.manageUploadError(error)
-
-        // Return an observable with an error message
-        return throwError(() => new Error('File upload failed. Please try again.'));
-      })
-    );
-  }
+        // USE IMAGE API
+        const that = this;
+        const queryString = userId?.startsWith('bot_') ? `?bot_id=${encodeURIComponent(userId.substring('bot_'.length))}` : ''
+        // const url = this.URL_TILEDESK_FILE + `/users/photo${queryString}`
+        const BASE_URL_IMAGES = this.BASE_URL + this.projectId + '/files'
+        const url =  BASE_URL_IMAGES + `/users/photo${queryString}`
+        return new Promise((resolve, reject) => {
+            that._httpClient.post(url, formData, requestOptions).subscribe({
+                next: (data) => {
+                    const downloadURL = this.BASE_URL + 'files?path=' + data['thumbnail'];
+                    resolve(downloadURL)
+                    this.botImageWasUploaded_Native.next(true);                },
+                error: (error) => {
+                    reject(error)
+                    this.botImageWasUploaded_Native.next(false);
+                }
+            });
+        });
+    }
 
 
 

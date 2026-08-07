@@ -7,8 +7,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { TranslateModule } from '@ngx-translate/core';
 import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
-import { NavbarForPanelComponent } from './navbar-for-panel/navbar-for-panel.component';
-import { NavbarForPanelService } from './navbar-for-panel/navbar-for-panel.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -52,7 +50,6 @@ import { UnservedNotificationsComponent } from './unserved-notifications/unserve
     NavbarComponent,
     SidebarComponent,
     SmallSidebarComponent,
-    NavbarForPanelComponent,
     SidebarUserDetailsComponent,
     UnservedNotificationsComponent,
   ],
@@ -62,13 +59,8 @@ import { UnservedNotificationsComponent } from './unserved-notifications/unserve
     SidebarComponent,
     SidebarUserDetailsComponent,
     SmallSidebarComponent,
-    NavbarForPanelComponent,
     UnservedNotificationsComponent,
     TranslateModule
-  ],
-  providers: [
-    NavbarForPanelService
-
   ]
 })
 export class ComponentsModule { }

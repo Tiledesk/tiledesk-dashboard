@@ -32,13 +32,37 @@
   font-family: var(--header-font-family);
   color: var(--secondary-text-color);
   font-size: var(--order-by-label-font-size);
+  line-height: 20px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.page--actions .order-by-dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  line-height: 20px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  vertical-align: middle;
 }
 
 .order-by-selected-value {
   color: var(--text-color);
   font-weight: var(--order-by-selectet-value-font-weight);
   font-family: var(--header-font-family);
-  font-size: var(--order-by-selectet-value-font-size)
+  font-size: var(--order-by-selectet-value-font-size);
+  line-height: 20px;
+}
+
+.order-by-dropdown-caret {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+  line-height: 20px !important;
+  color: var(--text-color);
+  flex-shrink: 0;
 }
 
 .dropdown-caret {

@@ -915,13 +915,13 @@
 
         <span *ngIf="!DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
           <h4 *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false" style="padding-left: 12px; padding-right: 12px;"
-            [innerHTML]="'DoYouWantToActivateTheBotForNewConversations' | translate: translateparamBotName "> </h4>
+            [innerHTML]="'DoYouWantToActivateTheBotForNewConversations' | translate: translateparamBotName" style="font-size: 14px;"> </h4>
           <!-- <h3> {{ 'DoYouWantToActivateTheBotForNewVonversations' | translate: translateparamBotName }} </h3> -->
         </span>
 
         <span *ngIf="DISPLAY_SELECT_DEPTS_WITHOUT_BOT">
           <h4 *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
-            [innerHTML]="'DoYouWantToActivateExtBotForOneOfTheFollowingDepts' | translate: translateparamBotName ">
+            [innerHTML]="'DoYouWantToActivateExtBotForOneOfTheFollowingDepts' | translate: translateparamBotName" style="font-size: 14px;">
           </h4>
         </span>
 
@@ -929,7 +929,7 @@
           <div class="row">
             <div class="col-12">
               <div class="select-dept-without-bot-wpr" *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
-                style="padding-right: 26px; padding-left: 26px;">
+                style="padding-right: 26px; padding-left: 26px; font-size: 14px;">
                 <ng-select [items]="depts_without_bot_array" bindValue="id" bindLabel="name"
                   placeholder="{{'SelectDepartment'|translate}}" [(ngModel)]="selected_bot_id"
                   (change)="onSelectBotId()">
@@ -968,7 +968,7 @@
               <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round"
                 stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 " />
             </svg>
-            <h5 style="color:#73AF55;"> {{'BotSuccessfullyActivated' | translate }}</h5>
+            <h5 style="color:#73AF55; font-size: 14px;"> {{'BotSuccessfullyActivated' | translate }}</h5>
 
           </span>
           <span *ngIf="HAS_COMPLETED_HOOK_BOOT_TO_DEPT_ERROR">
@@ -983,7 +983,7 @@
             </svg>
 
 
-            <h5 style="color:#D06079;"> {{'AnErroOccurredWhileActivatingTheExtBot' | translate }}</h5>
+            <h5 style="color:#D06079; font-size: 14px;"> {{'AnErroOccurredWhileActivatingTheExtBot' | translate }}</h5>
           </span>
         </div>
       </div> <!-- /.modal-body -->
@@ -1007,7 +1007,7 @@
           </button>
 
           <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true"
-            class="btn btn-tdblu-no-boxshadow" (click)="goTo_EditBot()" style="margin-right: 8px;">
+            class="btn btn-tdblu-no-boxshadow" (click)="goTo_EditBot()" style="margin-right: 8px; font-size: 14px;">
             <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
           </button>
 
@@ -1026,13 +1026,13 @@
           </button>
 
           <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === false"
-            class="btn btn-tdblu-no-boxshadow" style="margin-right: 8px;">
+            class="btn btn-tdblu-no-boxshadow" style="margin-right: 8px; font-size: 14px;">
             <i class="fa fa-spinner fa-spin"></i>
             {{'Processing' | translate}}
           </button>
 
           <button *ngIf="HAS_CLICKED_HOOK_BOOT_TO_DEPT === true && HAS_COMPLETED_HOOK_BOOT_TO_DEPT === true"
-            class="btn btn-tdblu-no-boxshadow" (click)="goTo_EditBot()" style="margin-right: 8px;">
+            class="btn btn-tdblu-no-boxshadow" (click)="goTo_EditBot()" style="margin-right: 8px; font-size: 14px;">
             <span> {{ "BotsAddEditPage.Continue" | translate }} </span>
           </button>
 

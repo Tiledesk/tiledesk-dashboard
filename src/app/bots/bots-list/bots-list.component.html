@@ -141,21 +141,20 @@
                   </div>
                   <!-- faqkbList length  {{ faqkbList?.length}} -->
                   <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0">
-                    <span class="order-by-label">{{'OrderBy' | translate}} </span>
+                    <span class="order-by-label">{{'OrderBy' | translate}}</span>
 
                     <div class="dropdown">
-                      <a href="#" 
-                        class="dropdown-toggle" 
+                      <a href="#"
+                        class="dropdown-toggle order-by-dropdown-toggle"
                         id="orderByDropdown"
                         role="button"
-                        data-bs-toggle="dropdown" 
+                        data-bs-toggle="dropdown"
                         aria-expanded="false"
                         style="text-decoration: none;">
-                        <span class="order-by-selected-value" *ngIf="orderBylastUpdated">{{'LastUpdated' | translate }}
-                        </span>
-                        <span class="order-by-selected-value" *ngIf="orderByCreationDate">{{'CreationDate' | translate}}
-                        </span>
-                        <span class="order-by-selected-value" *ngIf="orderByChatbotName">{{'Name' | translate}} </span>
+                        <span class="order-by-selected-value" *ngIf="orderBylastUpdated">{{'LastUpdated' | translate}}</span>
+                        <span class="order-by-selected-value" *ngIf="orderByCreationDate">{{'CreationDate' | translate}}</span>
+                        <span class="order-by-selected-value" *ngIf="orderByChatbotName">{{'Name' | translate}}</span>
+                        <mat-icon class="order-by-dropdown-caret" aria-hidden="true">arrow_drop_down</mat-icon>
                       </a>
                       <ul class="dropdown-menu">
                         <li>
