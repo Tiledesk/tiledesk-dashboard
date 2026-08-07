@@ -18,7 +18,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
-// import scrollToWithAnimation from 'scrollto-with-animation'
 import { CHANNELS_NAME } from 'app/utils/util';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';

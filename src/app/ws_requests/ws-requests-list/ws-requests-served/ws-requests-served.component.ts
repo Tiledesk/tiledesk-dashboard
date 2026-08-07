@@ -25,7 +25,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
-// import scrollToWithAnimation from 'scrollto-with-animation'
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
