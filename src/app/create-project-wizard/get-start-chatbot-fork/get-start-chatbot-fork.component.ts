@@ -18,7 +18,7 @@ import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 @Component({

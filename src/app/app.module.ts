@@ -290,7 +290,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 // import { PrestashopInstallationComponent } from './components/widget-installations/prestashop-installation/prestashop-installation.component'; //no lazy
 // import { JoomlaInstallationComponent } from './components/widget-installations/joomla-installation/joomla-installation.component'; //no lazy
 import { SatPopoverModule } from '@ncstate/sat-popover';
-import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 
 import { ModalDeleteComponent } from './components/modals/modal-delete/modal-delete.component';
@@ -756,7 +755,6 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     RouterModule,
     HttpClientModule,
     SatPopoverModule,
-    NgxSkeletonLoaderModule,
     // CreditCardDirectivesModule,
     // MomentModule,
     // AmazingTimePickerModule,

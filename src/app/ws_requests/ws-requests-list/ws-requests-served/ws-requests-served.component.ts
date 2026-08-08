@@ -23,7 +23,7 @@ import { CHANNELS_NAME, goToCDSVersion } from 'app/utils/util';
 import { MatMenuTrigger } from '@angular/material/menu';
 // import { Location, PopStateEvent } from '@angular/common';
 
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';

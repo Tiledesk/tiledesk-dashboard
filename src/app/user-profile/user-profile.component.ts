@@ -22,7 +22,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { BrandService } from 'app/services/brand.service';
 import { NavigationService } from 'app/services/navigation.service';
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 

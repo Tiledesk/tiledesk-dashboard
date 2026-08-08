@@ -18,10 +18,10 @@
     *ngIf="embedUrl && !loading"
     #analyticsIframe
     class="analytics-new-iframe"
-    [src]="embedUrl"
     title="Analytics"
     frameborder="0"
     allow="clipboard-read; clipboard-write"
+    [src]="embedUrl"
     (load)="onAnalyticsIframeLoad()"
   ></iframe>
 

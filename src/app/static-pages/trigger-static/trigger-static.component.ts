@@ -9,7 +9,7 @@ import { UsersService } from '../../services/users.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { PLAN_NAME } from 'app/utils/util';
-const swal = require('sweetalert');
+
 
 @Component({
   selector: 'appdashboard-trigger-static',

@@ -16,7 +16,6 @@ import { Location } from '@angular/common';
 import { RoleService } from 'app/services/role.service';
 import { NavigationService } from 'app/services/navigation.service';
 
-const swal = require('sweetalert');
 
 @Component({
   selector: 'appdashboard-analytics-static',

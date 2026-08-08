@@ -39,8 +39,8 @@
 
         <loading-spinner class="stretchspinner_in_app_install" *ngIf="showSpinner"></loading-spinner>
 
-        <iframe *ngIf="URL" allow="camera; microphone" id="i_frame" [src]="URL" style="width:100%;" frameBorder="0"
-          allowfullscreen [ngStyle]="{ 'height': iframeHeight }">
+        <iframe *ngIf="URL" allow="camera; microphone" allowfullscreen id="i_frame" style="width:100%;" frameBorder="0"
+          [src]="URL" [ngStyle]="{ 'height': iframeHeight }">
         </iframe>
 
         <!-- showSpinner = {{ showSpinner}} -->

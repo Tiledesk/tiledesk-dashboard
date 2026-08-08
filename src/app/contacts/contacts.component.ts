@@ -17,7 +17,7 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-// const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 @Component({

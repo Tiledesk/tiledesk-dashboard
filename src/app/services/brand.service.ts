@@ -6,8 +6,7 @@ import { environment } from '../../environments/environment';
 // import * as brand from 'assets/brand/brand.json';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../services/logger/logger.service';
-
-const swal = require('sweetalert');
+import Swal from 'sweetalert2';
 
 @Injectable()
 export class BrandService {
@@ -225,13 +224,16 @@ export class BrandService {
     }
   }
 
-  displaySwalAlert(err) {
-    swal({
+   displaySwalAlert(err) {
+    Swal.fire({
       title: this.warning,
       text: 'An error occurred while uploading your brand. Error code: ' + err.status,
       icon: "warning",
-      button: true,
-      dangerMode: false,
+      // button: true,
+      // dangerMode: false,
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
     })
   }
 

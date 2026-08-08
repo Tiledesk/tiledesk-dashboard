@@ -11,7 +11,8 @@ import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/wi
 import { WidgetService } from 'app/services/widget.service';
 import { NotifyService } from 'app/core/notify.service';
 import { UsersService } from 'app/services/users.service';
-const swal = require('sweetalert');
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'appdashboard-activate-appsumo-product',
@@ -345,16 +346,19 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
     })
   }
 
-  presentModalErrorOccured() {
-    const el = document.createElement('div')
-    el.innerHTML = 'There was an error. Please contact us to' + `<a href=mailto:${this.contactSalesEmail} target='_blank'>`+ " Sales support </a>"
-   
-    swal({
-      content: el,
-      icon: "warning",
-      button: "OK",
-      dangerMode: true,
-    })
+ presentModalErrorOccured() {
+    const el = document.createElement('div');
+    el.innerHTML =
+      'There was an error. Please contact us to' +
+      `<a href="mailto:${this.contactSalesEmail}" target="_blank">` +
+      ' Sales support </a>';
+
+    Swal.fire({
+      html: el,
+      icon: 'warning',
+      confirmButtonText: 'OK',
+      confirmButtonColor: '#d33',
+    });
   }
 
 

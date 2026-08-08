@@ -53,7 +53,7 @@ import { RoleService } from 'app/services/role.service';
 import { isOnlyEmoji, removeEmojis } from 'app/utils/utils-message';
 import { NavigationService } from 'app/services/navigation.service';
 
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 // './ws-requests-msgs.component.html',
 @Component({
@@ -4130,7 +4130,14 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
     this.usersLocalDbService.storeIsOpenAppSidebar(true)
 
     if (this.CHAT_PANEL_MODE === false) {
-      this.navbarBrand.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+      // #navbarBrand was removed/commented from the template; keep optional + fallback scroll target
+      if (this.navbarBrand?.nativeElement) {
+        this.navbarBrand.nativeElement.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+      } else {
+        const conversationMain = <HTMLElement>document.querySelector('#conversation-detail-main-content')
+          || elemMainContent;
+        conversationMain?.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+      }
     } else {
       this.appStoreService.hasOpenAppsSidebar(true);
       // _elemMainPanel.scrollIntoView();

@@ -23,7 +23,7 @@ import { skip, takeUntil } from 'rxjs/operators'
 import { browserRefresh } from '../../../app.component';
 import { Location } from '@angular/common';
 // import { fadeInAnimation } from '../../../_animations/index';
-const swal = require('sweetalert');
+
 import { ContactsService } from '../../../services/contacts.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { WebSocketJs } from 'app/services/websocket/websocket-js';

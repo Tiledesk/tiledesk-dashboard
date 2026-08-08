@@ -16,7 +16,7 @@ import { RolesService } from 'app/services/roles.service';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { NavigationService } from 'app/services/navigation.service';
-// const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-contact-details',

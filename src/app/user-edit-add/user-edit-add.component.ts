@@ -23,7 +23,7 @@ import { GroupService } from 'app/services/group.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { avatarPlaceholder, getColorBck } from 'app/utils/util';
 import { CachePuService } from 'app/services/cache/cache-pu.service';
-const swal = require('sweetalert');
+
 
 @Component({
   selector: 'app-user-edit-add',

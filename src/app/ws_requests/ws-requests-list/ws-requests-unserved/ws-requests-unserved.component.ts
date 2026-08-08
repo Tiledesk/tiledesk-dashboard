@@ -21,7 +21,7 @@ import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { CHANNELS_NAME } from 'app/utils/util';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-const swal = require('sweetalert');
+
 const Swal = require('sweetalert2')
 
 @Component({
