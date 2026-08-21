@@ -1271,7 +1271,10 @@
         "NewUnassignedChat": "New unassigned chat",
         "NewUnassignedChats": "{{count}} new unassigned chats",
         "TiledeskLogOut": "{{ BRAND_NAME }} Log Out",
-        "LogOut": "Log Out"
+        "LogOut": "Log Out",
+        "CloseAll": "Close all",
+        "ShowLess": "Show less",
+        "Close": "Close"
     },
     "SideBar": {
         "ViewAllProjects": "View all projects",
@@ -2893,6 +2896,7 @@
         "Delete": "Delete",
         "Transport": "Transport",
         "AddMCPServer": "Add MCP Server",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "Edit MCP Server",
         "TotalMCPServers": "Total MCP Servers",
         "SearchByNameURLOrType": "Search by name, URL or type",
@@ -2908,6 +2912,7 @@
         "Tools": "Tools",
         "ViewTools": "View tools",
         "MCPServerWillBeDeleted": "The MCP server <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "The MCP server has been deleted successfully.",
         "AddOpenAICompatibleEndpoint": "Add OpenAI-Compatible Endpoint",
         "EditOpenAICompatibleEndpoint": "Edit OpenAI-Compatible Endpoint",
@@ -3305,6 +3310,9 @@
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "This attribute specifies the URL address of the page to embed in the app via an iframe",
     "AppRenderURL": "App render URL",
     "ShortDescription": "Short description",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "Learn more URL",
     "EnableYourAppFor": "Enable your app for",
     "ConversationsArchivedCannotBeReopened": "Conversations archived for more than ten days cannot be reopened",

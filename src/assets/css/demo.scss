@@ -2151,14 +2151,13 @@ span.navbar-brand-title {
 // }
 
 // Stacking layer for all Material/CDK overlays (dialogs, menus, tooltips).
-// Keep at 1050 (Bootstrap modal tier, in prod since 2022). Do not raise globally:
-// ng-select with appendTo="body" uses ~1050 and would disappear behind a higher container.
+// Keep at 1050 (Bootstrap modal tier). Sidebar is 1052 so accidental overhang
+// does not cover nav; request-preview tooltip is clamped right of the sidebar.
 .cdk-overlay-container {
   position: fixed;
   z-index: 1050 !important;
 }
 
-// Order panes inside the overlay container only (not vs sidebar 1052).
 .cdk-overlay-pane.td-request-preview-overlay,
 .cdk-overlay-pane.custom-ng2-tooltip {
   z-index: 1061 !important;
@@ -2192,17 +2191,19 @@ span.navbar-brand-title {
   font-weight: 400;
   text-align: left !important;
   min-width: 470px;
+  max-width: min(560px, calc(100vw - 80px));
+  box-sizing: border-box;
   padding: 16px;
   background: #fff;
   border-radius: 4px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 
-  /* Tooltip tail on the white container (points to first_text below) */
+  /* Tooltip tail — left set by directive so it still points at first_text when clamped */
   &::before,
   &::after {
     content: "";
     position: absolute;
-    left: 50%;
+    left: var(--td-preview-tooltip-arrow-left, 50%);
     transform: translateX(-50%);
     width: 0;
     height: 0;
@@ -2297,6 +2298,8 @@ span.navbar-brand-title {
   font-weight: 400;
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 12px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .ng2-most-recent-comment-section-title {
@@ -2340,6 +2343,8 @@ span.navbar-brand-title {
   font-family: "Poppins", "Roboto", "Arial", sans-serif;
   font-size: 10px;
   margin-bottom: 0px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .ng2-latest-comment>p {
@@ -4745,84 +4750,125 @@ li.li-active a {
 /* ********************************** */
 
 /* positionClass is on #toast-container, not on each toast */
-/* come bootstrap-notify: offset 20, spacing 10 */
 #toast-container.toast-top-center {
-  top: 20px !important;
+  top: 66px !important;
   right: 0;
   width: 100%;
 }
 
-#toast-container.toast-top-center .ngx-toastr.td-notify-toast {
-  width: 100% !important;
-  max-width: 300px;
-  margin: 0 auto 10px !important;
-  padding: 0 !important;
+/* New message toast: top-right — match unserved card width (host 380px − 14px stack inset) */
+#toast-container.toast-top-right .ngx-toastr.td-notify-toast {
+  box-sizing: border-box;
+  width: min(366px, calc(100vw - 54px)) !important;
+  max-width: min(366px, calc(100vw - 54px));
+  margin: 0 0 10px !important;
+  padding: 12px 14px !important;
   background-image: none !important;
   background-position: initial;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4) !important;
+  background: rgba(45, 45, 48, 0.96) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: none !important;
   z-index: 1051 !important;
-  border-radius: 3px;
+  border-radius: 16px;
   text-align: left;
   pointer-events: auto;
   overflow: visible !important;
   position: relative !important;
   display: block !important;
+  color: #fff;
+  cursor: pointer;
 }
 
-#toast-container.toast-top-center .ngx-toastr.td-notify-toast.animated {
-  animation-duration: 0.35s;
+#toast-container.toast-top-right .ngx-toastr.td-notify-toast.animated {
+  animation-duration: 0.4s;
   animation-fill-mode: both;
 }
 
-/* contenuto interno (stile alert-minimalist-pooled) */
+#toast-container.toast-top-right .ngx-toastr.td-notify-toast .toast-message {
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  word-wrap: normal;
+}
+
+/* New message toast — same macOS card look as unserved (no close button) */
 .td-notify-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.td-notify-icon {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #0a84ff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1px;
+
+  .material-icons {
+    font-size: 20px;
+    color: #fff;
+  }
+}
+
+.td-notify-content {
+  min-width: 0;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: column;
 }
 
-
-
 .td-notify-header {
-  height: 25px;
-  font-size: 14px;
-  font-weight: 400;
-  background-color: #ffc107;
-  color: #fff;
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
-  padding: 3px 16px;
-  max-width: 100% !important;
-}
-
-.td-notify-title {
-  color: rgb(51, 51, 51);
-  display: block;
-  font-weight: bold;
-  font-size: 14px;
-  margin: 5px 6px;
-  padding: 0 10px;
-}
-
-.td-notify-message {
-  font-size: 14px;
-  color: rgb(51, 51, 51);
-  margin: 0 6px 10px;
-  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.96);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 2px;
+  max-width: 100% !important;
 }
 
 .td-notify-foreground-header {
-  height: 25px;
-  font-size: 14px;
-  font-weight: 400;
-  background-color: #0d6efd !important;
-  color: #fff;
-  border-top-right-radius: 3px;
-  border-top-left-radius: 3px;
-  padding: 3px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.96);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
   max-width: 100% !important;
+  background: transparent !important;
+  padding: 0;
+  height: auto;
+}
+
+.td-notify-title {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  padding: 0;
+}
+
+.td-notify-message {
+  display: block;
+  font-size: 12px;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.72);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+  padding: 0;
 }
 
 /* banner basso centro (showToast): fadeInUp / fadeOutDown */

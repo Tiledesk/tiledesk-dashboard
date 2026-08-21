@@ -308,6 +308,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_KB: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
   PERMISSION_TO_VIEW_ACTVITIES: boolean;
+  PERMISSION_TO_VIEW_DATATABLES: boolean;
   PERMISSION_TO_VIEW_WA_BRODCAST: boolean;
   PERMISSION_TO_VIEW_SETTING: boolean;
   isTiledeskDomain = false;
@@ -580,6 +581,25 @@ export class SidebarComponent implements OnInit, AfterViewInit {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_ACTVITIES = status.matchedPermissions.includes(PERMISSIONS.ACTIVITIES_READ);
           this.logger.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_ACTVITIES:', this.PERMISSION_TO_VIEW_ACTVITIES);
+        }
+
+        // -----------------------------
+        // PERMISSION_TO_VIEW_DATATABLES
+        // -----------------------------
+         if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and admin always has permission
+          this.PERMISSION_TO_VIEW_DATATABLES = true;
+          this.logger.log('[SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_DATATABLES:', this.PERMISSION_TO_VIEW_DATATABLES);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_VIEW_DATATABLES = false;
+          this.logger.log('[SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_DATATABLES:', this.PERMISSION_TO_VIEW_DATATABLES);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_VIEW_DATATABLES = status.matchedPermissions.includes(PERMISSIONS.DATATABLES_READ);
+          this.logger.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_DATATABLES:', this.PERMISSION_TO_VIEW_DATATABLES);
         }
 
         // -------------------------------

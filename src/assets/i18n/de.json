@@ -36,6 +36,7 @@
     "HumanTeammates": "Menschliche Teamkollegen",
     "Resources": "Ressourcen",
     "Hours": "Öffnungszeiten",
+    "KnowledgeBases": "Knowledge Bases",
     "DataTables": {
         "DataTablesBeta": "Datentabellen (BETA)",
         "DataTables": "Datentabellen",
@@ -122,7 +123,6 @@
 		"OperatorNotExists": "Nicht vorhanden",
         "tableSize": "Tabellengröße: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
     },
-    "KnowledgeBases": "Knowledge Bases",
     "SelectAkB": "Wählen Sie eine Knowledge Base aus",
     "FirstName": "Vorname",
     "LastName": "Nachname",
@@ -1266,7 +1266,10 @@
 		"NewUnassignedChat": "Neuer nicht zugewiesener Chat",
     	"NewUnassignedChats": "{{count}} neue nicht zugewiesene Chats",
         "TiledeskLogOut": "{{ BRAND_NAME }} Abmelden",
-        "LogOut": "Abmelden"
+        "LogOut": "Abmelden",
+        "CloseAll": "Alle schließen",
+        "ShowLess": "Weniger anzeigen",
+        "Close": "Schließen"
     },
     "SideBar": {
         "ViewAllProjects": "Alle Projekte anzeigen",
@@ -2873,6 +2876,7 @@
         "Delete": "Löschen",
         "Transport": "Transport",
         "AddMCPServer": "MCP-Server hinzufügen",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "MCP-Server bearbeiten",
         "TotalMCPServers": "Gesamt MCP-Server",
         "SearchByNameURLOrType": "Nach Name, URL oder Typ suchen",
@@ -3284,8 +3288,11 @@
     "TheEndpointURLMustBeValidHTTPSURL": "Die Endpunkt-URL muss eine gültige HTTPS-URL sein",
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Dieses Attribut gibt die URL-Adresse der Seite an, die über einen Iframe in die App eingebettet werden soll",
     "AppRenderURL": "App-Rendering-URL",
-    "ShortDescription": "Kurze Beschreibung",
-    "LearnMoreURL": "Mehr erfahren URL",
+	"ShortDescription": "Kurze Beschreibung",
+	"AppCategory": "App Category",
+	"MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+	"Connector": "Connector",
+	"LearnMoreURL": "Mehr erfahren URL",
     "EnableYourAppFor": "Aktivieren Sie Ihre App für",
     "ConversationsArchivedCannotBeReopened": "Konversationen, die länger als zehn Tage archiviert wurden, können nicht wieder geöffnet werden",
     "ClickToEdit": "Zum Bearbeiten anklicken",

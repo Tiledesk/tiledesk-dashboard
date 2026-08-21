@@ -1,15 +1,119 @@
 import { Injectable } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+
+export interface UnservedNotificationItem {
+  id: string;
+  /** localStorage key used by navbar: `${request.id}_${status}` */
+  storageKey: string;
+  projectId: string;
+  sender: string;
+  msg: string;
+  link: string;
+  createdAt: number;
+}
 
 @Injectable({ providedIn: 'root' })
 export class DashboardToastrService {
   /**
-   * Emits when an unserved toast is actually presented on screen
-   * (after burst buffering). Navbar plays the notification sound from this.
+   * Emits when an unserved notification is added to the stack.
+   * Navbar plays the notification sound from this.
    */
   readonly unservedToastPresented$: Subject<void> = new Subject<void>();
+
+  private static readonly UNSERVED_STACK_STORAGE_KEY = 'td-unserved-notifications';
+  /** New "user handled" flag — do not reuse the legacy `${id}_${status}` show-once key. */
+  private static readonly UNSERVED_HANDLED_PREFIX = 'td-unserved-handled:';
+  /** Play notification sound at most once per burst of stack adds. */
+  private static readonly UNSERVED_SOUND_COALESCE_MS = 1500;
+  private unservedSoundTimer: number | null = null;
+
+  /**
+   * In-memory only (not restored on refresh). Unserved toasts are shown on
+   * project enter, not on page reload.
+   */
+  private readonly unservedNotificationsSubject = new BehaviorSubject<UnservedNotificationItem[]>([]);
+  readonly unservedNotifications$ = this.unservedNotificationsSubject.asObservable();
+
+  /**
+   * Soft-hidden for the current visit (auto-dismiss / close). Restored when
+   * the project UI becomes visible again. Not written to localStorage.
+   */
+  private readonly parkedUnservedByProject = new Map<string, UnservedNotificationItem[]>();
+  /** Blocks navbar re-add while items are parked for this visit. */
+  private readonly suppressedUnservedKeys = new Set<string>();
+
+  /**
+   * Gate: false after refresh / until the user enters a project.
+   * While false, showUnservedNotication is a no-op.
+   */
+  private unservedPresentationArmed = false;
+  /** Navbar re-scans current WS unserved list when this emits. */
+  readonly unservedRepublish$: Subject<void> = new Subject<void>();
+  /** After refresh: arm for live toasts; navbar should seed shown_requests without toasting. */
+  readonly unservedLiveArm$: Subject<void> = new Subject<void>();
+
+  /** True if the user opened this unserved toast (detail) — do not show again. */
+  static isUnservedHandled(storageKey: string): boolean {
+    if (!storageKey) {
+      return false;
+    }
+    try {
+      return localStorage.getItem(DashboardToastrService.UNSERVED_HANDLED_PREFIX + storageKey) === 'true';
+    } catch {
+      return false;
+    }
+  }
+
+  /** True while the toast is soft-hidden (auto-dismiss / close) for this visit. */
+  isUnservedSuppressed(storageKey: string): boolean {
+    return !!storageKey && this.suppressedUnservedKeys.has(storageKey);
+  }
+
+  /** Whether navbar / showUnserved may add toasts (armed after project enter). */
+  isUnservedPresentationArmed(): boolean {
+    return this.unservedPresentationArmed;
+  }
+
+  /**
+   * Call when the user enters a project (not on refresh hydrate).
+   * Restores parked toasts and asks navbar to republish current unserved.
+   */
+  armUnservedPresentationOnProjectEnter(projectId: string): void {
+    // Drop soft suppressions from refresh hydrate / auto-dismiss so intentional
+    // enter can republish the current backlog (handled keys still block).
+    this.suppressedUnservedKeys.clear();
+    this.unservedPresentationArmed = true;
+    if (projectId) {
+      this.restoreParkedUnservedNotifications(projectId);
+    }
+    this.unservedRepublish$.next();
+  }
+
+  /**
+   * After refresh while already in a project: allow *new* live unserved toasts
+   * without republishing the existing backlog (navbar seeds shown_requests on this signal).
+   */
+  armUnservedPresentationForLiveEvents(): void {
+    this.unservedPresentationArmed = true;
+    this.unservedLiveArm$.next();
+  }
+
+  /**
+   * Call when leaving project UI (e.g. /projects). Parks current toasts and
+   * blocks new shows until the next project enter.
+   * Without projectId (e.g. page refresh hydrate): clear the in-memory stack.
+   */
+  disarmUnservedPresentation(projectId?: string): void {
+    if (projectId) {
+      this.parkUnservedNotifications(projectId);
+    } else {
+      this.publishUnservedStack([]);
+    }
+    this.unservedPresentationArmed = false;
+  }
+
   notifyArchivingRequest: ActiveToast<any> | null = null;
   private archivingProgressText = '';
   private archivingProgressShownAt = 0;
@@ -27,39 +131,16 @@ export class DashboardToastrService {
   private static readonly VERIFY_EMAIL_UPDATE_MS = 2000;
   private static readonly VERIFY_EMAIL_SUCCESS_VISIBLE_MS = 3000;
 
-  /** Stesso comportamento di bootstrap-notify: stack verticale, fadeInDown / fadeOutUp. */
+  /** New message: top-right (same size as unserved), fadeInDown / fadeOutUp. */
   private readonly foregroundToastConfig: Partial<IndividualConfig> = {
     enableHtml: true,
     disableTimeOut: true,
-    positionClass: 'toast-top-center',
-    toastClass: 'ngx-toastr td-notify-toast alert alert-minimalist-pooled animated',
+    positionClass: 'toast-top-right',
+    toastClass: 'ngx-toastr td-notify-toast animated',
     closeButton: false,
     tapToDismiss: false,
-    newestOnTop: false,
+    newestOnTop: true,
   };
-
-  /**
-   * Unassigned-chat burst (top-center):
-   * - Buffer arrivals for UNSERVED_BURST_WINDOW_MS without showing yet.
-   * - If count > UNSERVED_MAX_INDIVIDUAL → one aggregate toast (no flash of individuals).
-   * - If count ≤ MAX when the window ends → show the buffered individuals.
-   */
-  private static readonly UNSERVED_BURST_WINDOW_MS = 3000;
-  private static readonly UNSERVED_MAX_INDIVIDUAL = 2;
-  private static readonly UNSERVED_TOAST_VISIBLE_MS = 6000;
-
-  private unservedBurstStartedAt = 0;
-  private unservedBurstCount = 0;
-  private unservedPending: Array<{ sender: string; msg: string; link: string }> = [];
-  private unservedFlushTimer: number | null = null;
-  private unservedAggregateToast: ActiveToast<any> | null = null;
-  private unservedAggregateLink = '';
-  private unservedAggregateDismissTimer: number | null = null;
-  private unservedMode: 'idle' | 'pending' | 'aggregate' = 'idle';
-  /** Set synchronously before scheduling render so a second create cannot race. */
-  private unservedAggregateOpen = false;
-  private unservedAggregateRenderTimer: number | null = null;
-  private unservedAggregatePendingCount = 0;
 
   /** Uscita widget: più lenta dell'entrata (350ms). */
   private static readonly WIDGET_TOAST_EXIT_MS = 800;
@@ -111,7 +192,14 @@ export class DashboardToastrService {
   constructor(
     private toastr: ToastrService,
     private translate: TranslateService,
-  ) {}
+  ) {
+    // Drop legacy persisted stack (unserved are in-memory only now).
+    try {
+      localStorage.removeItem(DashboardToastrService.UNSERVED_STACK_STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+  }
 
   showForegroungPushNotification(
     sender: string,
@@ -121,17 +209,23 @@ export class DashboardToastrService {
     _requester_avatar_bckgrnd?: string
   ): void {
     const header = this.translate.instant('NavBar.NewMessage');
+    // Same macOS card look as unserved toasts — no close button; auto-dismiss kept.
     const html = `
       <div id="foreground-not" class="td-notify-container">
-        <span class="td-notify-foreground-header">${header}</span>
-        <span class="td-notify-title">${sender}</span>
-        <span class="td-notify-message">${msg}</span>
+        <div class="td-notify-icon" aria-hidden="true">
+          <i class="material-icons">chat_bubble</i>
+        </div>
+        <div class="td-notify-content">
+          <span class="td-notify-foreground-header">${header}</span>
+          <span class="td-notify-title">${sender}</span>
+          <span class="td-notify-message">${msg}</span>
+        </div>
       </div>
     `;
 
     const toast = this.toastr.show(html, '', {
       ...this.foregroundToastConfig,
-      toastClass: 'ngx-toastr td-notify-toast alert alert-minimalist animated',
+      toastClass: 'ngx-toastr td-notify-toast animated',
     });
 
     toast.onShown.subscribe(() => {
@@ -151,323 +245,334 @@ export class DashboardToastrService {
   }
 
   /**
-   * Buffer arrivals for UNSERVED_BURST_WINDOW_MS so individuals never flash
-   * before an aggregate replaces them. After the window: ≤2 → individuals;
-   * >2 (or already aggregating) → exactly one aggregate toast whose count updates.
+   * Unassigned chats: macOS-style stack (no aggregate toast).
+   * Shown only after project enter (not on refresh). Newest first.
    */
-  showUnservedNotication(sender: string, msg: string, link: string): void {
-    const now = Date.now();
-
-    // Aggregate session open: never create another toast — only bump count.
-    if (this.unservedAggregateOpen || this.unservedMode === 'aggregate') {
-      this.unservedMode = 'aggregate';
-      this.unservedAggregateOpen = true;
-      this.unservedBurstCount += 1;
-      this.unservedAggregateLink = link || this.unservedAggregateLink;
-      this.showOrUpdateUnservedAggregateToast(this.unservedBurstCount, link);
-      return;
-    }
-
-    const inPendingWindow =
-      this.unservedMode === 'pending' &&
-      this.unservedBurstStartedAt > 0 &&
-      now - this.unservedBurstStartedAt < DashboardToastrService.UNSERVED_BURST_WINDOW_MS;
-
-    if (!inPendingWindow) {
-      this.clearUnservedFlushTimer();
-      this.unservedPending = [];
-      this.unservedBurstStartedAt = now;
-      this.unservedBurstCount = 0;
-      this.unservedMode = 'pending';
-    }
-
-    this.unservedBurstCount += 1;
-    this.unservedPending.push({ sender, msg, link });
-    this.unservedAggregateLink = link || this.unservedAggregateLink;
-
-    if (this.unservedBurstCount > DashboardToastrService.UNSERVED_MAX_INDIVIDUAL) {
-      this.clearUnservedFlushTimer();
-      this.unservedPending = [];
-      this.unservedMode = 'aggregate';
-      this.unservedAggregateOpen = true; // before show — blocks concurrent creates
-      this.showOrUpdateUnservedAggregateToast(this.unservedBurstCount, link);
-      return;
-    }
-
-    this.scheduleUnservedFlush();
-  }
-
-  private scheduleUnservedFlush(): void {
-    this.clearUnservedFlushTimer();
-    const elapsed = Date.now() - this.unservedBurstStartedAt;
-    const remaining = Math.max(0, DashboardToastrService.UNSERVED_BURST_WINDOW_MS - elapsed);
-    this.unservedFlushTimer = window.setTimeout(() => {
-      this.unservedFlushTimer = null;
-      this.flushUnservedPendingAsIndividuals();
-    }, remaining);
-  }
-
-  private flushUnservedPendingAsIndividuals(): void {
-    if (this.unservedMode !== 'pending') {
-      return;
-    }
-    const pending = this.unservedPending.splice(0);
-    this.unservedMode = 'idle';
-    this.unservedBurstStartedAt = 0;
-    this.unservedBurstCount = 0;
-
-    if (pending.length === 0) {
-      return;
-    }
-
-    // Play sound once, when the first individual toast becomes visible.
-    pending.forEach((item, index) => {
-      this.showUnservedIndividualToast(item.sender, item.msg, item.link, index === 0);
-    });
-  }
-
-  private showUnservedIndividualToast(
+  showUnservedNotication(
     sender: string,
     msg: string,
     link: string,
-    playSoundOnShown = false
+    createdAt?: string | number | Date,
+    projectId?: string,
+    storageKey?: string
   ): void {
-    const header = this.translate.instant('NavBar.NewUnassignedChat');
-    const html = `
-      <div class="td-notify-container">
-        <span class="td-notify-header">${header}</span>
-        <span class="td-notify-title">${sender}</span>
-        <span class="td-notify-message">${msg}</span>
-      </div>
-    `;
-
-    const toast = this.toastr.show(html, '', this.foregroundToastConfig);
-
-    toast.onShown.subscribe(() => {
-      const el = toast.portal?.location?.nativeElement as HTMLElement | undefined;
-      if (el) {
-        el.classList.add('fadeInDown');
-      }
-      if (playSoundOnShown) {
-        this.unservedToastPresented$.next();
-      }
-    });
-
-    setTimeout(
-      () => this.dismissForegroundToast(toast),
-      DashboardToastrService.UNSERVED_TOAST_VISIBLE_MS
-    );
-
-    toast.onTap.subscribe(() => {
-      this.dismissForegroundToast(toast, () => {
-        window.location.href = link;
-      });
-    });
-  }
-
-  private buildUnservedAggregateHtml(count: number): string {
-    const header = this.translate.instant('NavBar.NewUnassignedChat');
-    const title = this.translate.instant('NavBar.NewUnassignedChats', { count });
-    return `
-      <div class="td-notify-container">
-        <span class="td-notify-header">${header}</span>
-        <span class="td-notify-title">${title}</span>
-      </div>
-    `;
-  }
-
-  /**
-   * Coalesce rapid burst updates into a single render tick so we never
-   * briefly create a toast at count=3 and another at count=10.
-   */
-  private showOrUpdateUnservedAggregateToast(count: number, link: string): void {
-    this.unservedAggregatePendingCount = count;
-    this.unservedAggregateLink = link || this.unservedAggregateLink;
-    if (this.unservedAggregateRenderTimer != null) {
-      return;
-    }
-    this.unservedAggregateRenderTimer = window.setTimeout(() => {
-      this.unservedAggregateRenderTimer = null;
-      this.flushUnservedAggregateRender();
-    }, 0);
-  }
-
-  private flushUnservedAggregateRender(): void {
-    const count = this.unservedAggregatePendingCount;
-    const html = this.buildUnservedAggregateHtml(count);
-    // Aggregate click → Monitor page (not a single conversation).
-    const monitorLink = this.toUnservedMonitorLink(this.unservedAggregateLink);
-
-    if (this.unservedAggregateToast != null) {
-      this.applyUnservedAggregateHtml(this.unservedAggregateToast, html);
-      this.purgeExtraUnservedAggregateToasts(this.unservedAggregateToast.toastId);
-      this.scheduleUnservedAggregateDismiss();
+    if (!this.unservedPresentationArmed) {
       return;
     }
 
-    // Create exactly one; wipe any leftover aggregates first.
-    this.purgeExtraUnservedAggregateToasts(null);
+    const resolvedProjectId = (projectId || '').trim();
+    if (!resolvedProjectId) {
+      return;
+    }
 
-    const toast = this.toastr.show(html, '', {
-      ...this.foregroundToastConfig,
-      toastClass:
-        'ngx-toastr td-notify-toast td-unserved-aggregate-toast alert alert-minimalist-pooled animated',
-    });
-    this.unservedAggregateToast = toast;
-    this.unservedAggregateOpen = true;
-    this.unservedMode = 'aggregate';
+    const resolvedStorageKey = (storageKey || '').trim();
+    if (
+      resolvedStorageKey &&
+      (DashboardToastrService.isUnservedHandled(resolvedStorageKey) ||
+        this.isUnservedSuppressed(resolvedStorageKey))
+    ) {
+      return;
+    }
 
-    toast.onShown.subscribe(() => {
-      const el = toast.portal?.location?.nativeElement as HTMLElement | undefined;
-      if (el) {
-        el.classList.add('fadeInDown', 'td-unserved-aggregate-toast');
-      }
-      // First time the aggregate is visible — sync sound with toast.
-      this.unservedToastPresented$.next();
-    });
+    const id = this.unservedNotificationId(link, sender, msg, resolvedStorageKey);
+    const current = this.unservedNotificationsSubject.value;
+    if (
+      current.some(
+        (item) =>
+          item.id === id ||
+          (link && item.link === link) ||
+          (resolvedStorageKey && item.storageKey === resolvedStorageKey)
+      )
+    ) {
+      return;
+    }
 
-    this.scheduleUnservedAggregateDismiss();
-
-    toast.onTap.subscribe(() => {
-      this.clearUnservedAggregateDismissTimer();
-      const href = this.toUnservedMonitorLink(this.unservedAggregateLink) || monitorLink;
-      this.dismissForegroundToast(toast, () => {
-        if (href) {
-          window.location.href = href;
-        }
-      });
-    });
-
-    toast.onHidden.subscribe(() => {
-      if (
-        this.unservedAggregateToast != null &&
-        this.unservedAggregateToast.toastId === toast.toastId
-      ) {
-        this.resetUnservedAggregateState();
-      }
-    });
+    const next = this.mergeUnservedNewestFirst(current, [
+      {
+        id,
+        storageKey: resolvedStorageKey,
+        projectId: resolvedProjectId,
+        sender: sender || '',
+        msg: msg || '',
+        link: link || '',
+        createdAt: this.resolveUnservedCreatedAt(createdAt),
+      },
+    ]);
+    this.publishUnservedStack(next);
+    this.scheduleUnservedSoundOnce();
   }
 
   /**
-   * Conversation toast link: `#/project/:id/wsrequest/:rid/messages`
-   * Aggregate toast link: `#/project/:id/wsrequests` (Monitor).
+   * Coalesce rapid stack adds into a single sound trigger.
+   * Plays pling here (not via navbar) so project-enter / bursts are not blocked by
+   * navbar hasPlayed / panel-route flags.
+   * @param force reset the coalesce window (e.g. project enter must always beep once)
    */
-  private toUnservedMonitorLink(conversationLink: string): string {
-    if (!conversationLink) {
-      return '';
+  notifyUnservedPresentedOnce(force = false): void {
+    if (force && this.unservedSoundTimer != null) {
+      window.clearTimeout(this.unservedSoundTimer);
+      this.unservedSoundTimer = null;
     }
-    const match = conversationLink.match(/^(#\/project\/[^/?#]+)/);
-    if (match) {
-      return `${match[1]}/wsrequests`;
-    }
-    return conversationLink;
+    this.scheduleUnservedSoundOnce();
   }
 
-  /** Remove every aggregate toast except the one we intend to keep (if any). */
-  private purgeExtraUnservedAggregateToasts(keepToastId: number | null): void {
-    for (const t of [...this.toastr.toasts]) {
-      if (keepToastId != null && t.toastId === keepToastId) {
-        continue;
-      }
-      if (this.isUnservedAggregateToast(t)) {
-        this.toastr.remove(t.toastId);
-      }
+  private scheduleUnservedSoundOnce(): void {
+    if (this.unservedSoundTimer != null) {
+      return;
     }
-    const keepEl =
-      keepToastId != null && this.unservedAggregateToast != null
-        ? (this.unservedAggregateToast.portal?.location?.nativeElement as HTMLElement | undefined)
-        : null;
-    document.querySelectorAll('.td-unserved-aggregate-toast').forEach((node) => {
-      if (keepEl && node === keepEl) {
+    this.playUnservedPling();
+    this.unservedToastPresented$.next();
+    this.unservedSoundTimer = window.setTimeout(() => {
+      this.unservedSoundTimer = null;
+    }, DashboardToastrService.UNSERVED_SOUND_COALESCE_MS);
+  }
+
+  private playUnservedPling(): void {
+    try {
+      const preference = localStorage.getItem('dshbrd----sound');
+      if (preference === 'disabled') {
         return;
       }
-      node.remove();
-    });
-  }
-
-  private isUnservedAggregateToast(t: ActiveToast<any>): boolean {
-    const el = t.portal?.location?.nativeElement as HTMLElement | undefined;
-    if (el?.classList?.contains('td-unserved-aggregate-toast')) {
-      return true;
-    }
-    const msg = typeof t.message === 'string' ? t.message : '';
-    if (
-      msg.includes('td-notify-header') &&
-      !msg.includes('class="td-notify-message"') &&
-      !msg.includes("class='td-notify-message'")
-    ) {
-      const lower = msg.toLowerCase();
-      if (lower.includes('new unassigned chats') || lower.includes('nuove chat non assegnate')) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  private applyUnservedAggregateHtml(toast: ActiveToast<any>, html: string): void {
-    toast.message = html;
-    const inst = toast.toastRef?.componentInstance as { message?: string } | undefined;
-    if (inst) {
-      inst.message = html;
-    }
-    try {
-      (toast.portal as any)?.changeDetectorRef?.detectChanges?.();
+      const audio = new Audio('assets/pling.mp3');
+      audio.play().catch(() => {
+        /* autoplay policies / missing file — ignore */
+      });
     } catch {
       /* ignore */
     }
-    const el = toast.portal?.location?.nativeElement as HTMLElement | undefined;
-    if (!el) {
+  }
+
+  /**
+   * @param permanent true when the user opens detail / closes one — never show again.
+   *                  false parks for this visit (auto-dismiss) — can restore on re-enter.
+   */
+  dismissUnservedNotification(id: string, permanent = false): void {
+    const current = this.unservedNotificationsSubject.value;
+    const dismissed = current.find((item) => item.id === id);
+    if (!dismissed) {
       return;
     }
-    let msgEl = el.querySelector('.toast-message') as HTMLElement | null;
-    if (!msgEl) {
-      msgEl = document.createElement('div');
-      msgEl.className = 'toast-message';
-      el.appendChild(msgEl);
+    if (permanent) {
+      this.markUnservedAsHandled(dismissed.storageKey);
+      this.unsuppressUnservedKeys([dismissed.storageKey]);
+      this.removeFromParked(dismissed);
+    } else {
+      this.parkItems([dismissed]);
     }
-    msgEl.innerHTML = html;
+    this.publishUnservedStack(current.filter((item) => item.id !== id));
   }
 
-  private resetUnservedAggregateState(): void {
-    this.unservedAggregateToast = null;
-    this.unservedAggregateOpen = false;
-    this.unservedMode = 'idle';
-    this.unservedBurstStartedAt = 0;
-    this.unservedBurstCount = 0;
-    this.unservedAggregateLink = '';
-    this.unservedPending = [];
-    this.unservedAggregatePendingCount = 0;
-    if (this.unservedAggregateRenderTimer != null) {
-      window.clearTimeout(this.unservedAggregateRenderTimer);
-      this.unservedAggregateRenderTimer = null;
+  /**
+   * User "close all": mark handled permanently so they do not return on project re-enter.
+   */
+  dismissAllUnservedPermanently(projectId?: string): void {
+    const current = this.unservedNotificationsSubject.value;
+    if (!projectId) {
+      current.forEach((item) => {
+        this.markUnservedAsHandled(item.storageKey);
+        this.unsuppressUnservedKeys([item.storageKey]);
+        this.removeFromParked(item);
+      });
+      this.publishUnservedStack([]);
+      return;
     }
-  }
-
-  private scheduleUnservedAggregateDismiss(): void {
-    this.clearUnservedAggregateDismissTimer();
-    this.unservedAggregateDismissTimer = window.setTimeout(() => {
-      const toast = this.unservedAggregateToast;
-      if (toast) {
-        this.dismissForegroundToast(toast, () => this.resetUnservedAggregateState());
+    const kept: UnservedNotificationItem[] = [];
+    current.forEach((item) => {
+      if (item.projectId === projectId) {
+        this.markUnservedAsHandled(item.storageKey);
+        this.unsuppressUnservedKeys([item.storageKey]);
+        this.removeFromParked(item);
       } else {
-        this.purgeExtraUnservedAggregateToasts(null);
-        this.resetUnservedAggregateState();
+        kept.push(item);
       }
-    }, DashboardToastrService.UNSERVED_TOAST_VISIBLE_MS);
+    });
+    this.publishUnservedStack(kept);
   }
 
-  private clearUnservedAggregateDismissTimer(): void {
-    if (this.unservedAggregateDismissTimer != null) {
-      window.clearTimeout(this.unservedAggregateDismissTimer);
-      this.unservedAggregateDismissTimer = null;
+  /**
+   * Soft-hide (park) all notifications for a project — used by auto-dismiss only.
+   * They reappear when re-entering the same project (newest first), except handled ones.
+   */
+  parkUnservedNotifications(projectId?: string): void {
+    const current = this.unservedNotificationsSubject.value;
+    if (!projectId) {
+      this.parkItems(current);
+      this.publishUnservedStack([]);
+      return;
+    }
+    const toPark = current.filter((item) => item.projectId === projectId);
+    const kept = current.filter((item) => item.projectId !== projectId);
+    this.parkItems(toPark);
+    this.publishUnservedStack(kept);
+  }
+
+  /**
+   * Restore soft-hidden toasts when the user re-opens a project (newest first).
+   * Skips items the user already opened (permanent handled).
+   * @returns number of items restored
+   */
+  restoreParkedUnservedNotifications(projectId: string): number {
+    if (!projectId) {
+      return 0;
+    }
+    const parked = this.parkedUnservedByProject.get(projectId);
+    if (!parked?.length) {
+      return 0;
+    }
+    this.parkedUnservedByProject.delete(projectId);
+    const eligible = parked.filter(
+      (item) => !item.storageKey || !DashboardToastrService.isUnservedHandled(item.storageKey)
+    );
+    const keys = eligible.map((item) => item.storageKey).filter(Boolean);
+    this.unsuppressUnservedKeys(keys);
+    if (!eligible.length) {
+      return 0;
+    }
+    const next = this.mergeUnservedNewestFirst(
+      this.unservedNotificationsSubject.value,
+      eligible
+    );
+    this.publishUnservedStack(next);
+    return eligible.length;
+  }
+
+  /** @deprecated prefer parkUnservedNotifications — kept for any legacy callers */
+  clearUnservedNotifications(projectId?: string): void {
+    this.parkUnservedNotifications(projectId);
+  }
+
+  private parkItems(items: UnservedNotificationItem[]): void {
+    if (!items.length) {
+      return;
+    }
+    items.forEach((item) => {
+      if (item.storageKey) {
+        this.suppressedUnservedKeys.add(item.storageKey);
+      }
+      const projectId = item.projectId;
+      if (!projectId) {
+        return;
+      }
+      const existing = this.parkedUnservedByProject.get(projectId) || [];
+      this.parkedUnservedByProject.set(
+        projectId,
+        this.mergeUnservedNewestFirst(existing, [item])
+      );
+    });
+  }
+
+  private removeFromParked(item: UnservedNotificationItem): void {
+    if (!item.projectId) {
+      return;
+    }
+    const parked = this.parkedUnservedByProject.get(item.projectId);
+    if (!parked?.length) {
+      return;
+    }
+    const next = parked.filter((p) => p.id !== item.id);
+    if (next.length) {
+      this.parkedUnservedByProject.set(item.projectId, next);
+    } else {
+      this.parkedUnservedByProject.delete(item.projectId);
     }
   }
 
-  private clearUnservedFlushTimer(): void {
-    if (this.unservedFlushTimer != null) {
-      window.clearTimeout(this.unservedFlushTimer);
-      this.unservedFlushTimer = null;
+  private markUnservedAsHandled(storageKey: string): void {
+    if (!storageKey) {
+      return;
     }
+    try {
+      localStorage.setItem(
+        DashboardToastrService.UNSERVED_HANDLED_PREFIX + storageKey,
+        'true'
+      );
+    } catch {
+      /* ignore quota / private mode */
+    }
+  }
+
+  private unsuppressUnservedKeys(keys: string[]): void {
+    keys.forEach((key) => {
+      if (key) {
+        this.suppressedUnservedKeys.delete(key);
+      }
+    });
+  }
+
+  /** Deduplicate by id / storageKey / link; newest createdAt first. */
+  private mergeUnservedNewestFirst(
+    existing: UnservedNotificationItem[],
+    incoming: UnservedNotificationItem[]
+  ): UnservedNotificationItem[] {
+    const byId = new Map<string, UnservedNotificationItem>();
+    const remember = (item: UnservedNotificationItem) => {
+      const prev = byId.get(item.id);
+      if (!prev || item.createdAt >= prev.createdAt) {
+        byId.set(item.id, item);
+      }
+    };
+    existing.forEach(remember);
+    incoming.forEach(remember);
+
+    // Drop older duplicates that share storageKey or link but different id
+    const list = Array.from(byId.values());
+    const seenKeys = new Set<string>();
+    const seenLinks = new Set<string>();
+    const deduped: UnservedNotificationItem[] = [];
+    list
+      .sort((a, b) => b.createdAt - a.createdAt)
+      .forEach((item) => {
+        if (item.storageKey && seenKeys.has(item.storageKey)) {
+          return;
+        }
+        if (item.link && seenLinks.has(item.link)) {
+          return;
+        }
+        if (item.storageKey) {
+          seenKeys.add(item.storageKey);
+        }
+        if (item.link) {
+          seenLinks.add(item.link);
+        }
+        deduped.push(item);
+      });
+    return deduped;
+  }
+
+  private publishUnservedStack(items: UnservedNotificationItem[]): void {
+    this.unservedNotificationsSubject.next(items);
+  }
+
+  private resolveUnservedCreatedAt(createdAt?: string | number | Date): number {
+    if (createdAt instanceof Date) {
+      const ms = createdAt.getTime();
+      return Number.isNaN(ms) ? Date.now() : ms;
+    }
+    if (typeof createdAt === 'number' && Number.isFinite(createdAt)) {
+      return createdAt;
+    }
+    if (typeof createdAt === 'string' && createdAt.trim()) {
+      const ms = Date.parse(createdAt);
+      if (!Number.isNaN(ms)) {
+        return ms;
+      }
+    }
+    return Date.now();
+  }
+
+  private unservedNotificationId(
+    link: string,
+    sender: string,
+    msg: string,
+    storageKey: string
+  ): string {
+    if (storageKey) {
+      return storageKey;
+    }
+    if (link) {
+      return link;
+    }
+    return `unserved-${Date.now()}-${sender}-${msg}`.slice(0, 180);
   }
 
   showWidgetStyleUpdateNotification(message: string, notificationColor: number, icon: string): void {

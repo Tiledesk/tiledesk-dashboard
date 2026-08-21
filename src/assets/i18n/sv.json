@@ -1267,7 +1267,10 @@
         "NewUnassignedChat": "Ny otilldelad chatt",
         "NewUnassignedChats": "{{count}} nya otilldelade chattar",
         "TiledeskLogOut": "{{ BRAND_NAME }} Logga ut",
-        "LogOut": "Logga ut"
+        "LogOut": "Logga ut",
+        "CloseAll": "Stäng alla",
+        "ShowLess": "Visa mindre",
+        "Close": "Stäng"
     },
     "SideBar": {
         "ViewAllProjects": "Se alla projekt",
@@ -2875,6 +2878,7 @@
         "Delete": "Radera",
         "Transport": "Transport",
         "AddMCPServer": "Lägg till MCP Server",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "Redigera MCP Server",
         "TotalMCPServers": "Totalt MCP Servrar",
         "SearchByNameURLOrType": "Sök efter namn, URL eller typ",
@@ -2890,6 +2894,7 @@
         "Tools": "Tools",
         "ViewTools": "Visa tools",
         "MCPServerWillBeDeleted": "MCP-servern <b>{{ serverName }}</b> kommer att raderas. Denna åtgärd kan inte ångras.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "MCP-servern har raderats framgångsrikt.",
         "AddOpenAICompatibleEndpoint": "Lägg till OpenAI-kompatibel endpoint",
         "EditOpenAICompatibleEndpoint": "Redigera OpenAI-kompatibel endpoint",
@@ -3286,6 +3291,9 @@
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Det här attributet anger URL-adressen till sidan som ska bäddas in i appen via en iframe",
     "AppRenderURL": "App-renderings-URL",
     "ShortDescription": "Kort beskrivning",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "Läs mer URL",
     "EnableYourAppFor": "Aktivera din app för",
     "ConversationsArchivedCannotBeReopened": "Konversationer som har arkiverats i mer än tio dagar kan inte öppnas igen",

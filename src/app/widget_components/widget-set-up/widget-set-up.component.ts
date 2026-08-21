@@ -1354,22 +1354,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   // all'init della pagina nn può stare nel base compo
 
 
-  // scroll to multilanguage section
+  // scroll to multilanguage section (open the accordion for the given header, not a hardcoded index)
   scroll(el: HTMLElement) {
     el.scrollIntoView();
-    var acc = document.getElementsByClassName("widget-section-accordion");
-    // this.logger.log('[WIDGET-SET-UP] ACCORDION', acc);
-    var i;
-    for (i = 0; i < acc.length; i++) {
-      var lastAccordion = acc[5];
-      var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
-      lastAccordion.classList.add("active");
-      lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
-
-      var arrow_icon_div = lastAccordion.children[1];
-      var arrow_icon = arrow_icon_div.children[0]
-      arrow_icon.classList.add("arrow-up");
-    }
+    this.openWidgetSectionAccordion(el);
   }
 
   getWidgetUrl() {
@@ -1820,21 +1808,30 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
 
   scrollToMultilanguageSection() {
-    this.multilanguageRef.nativeElement.scrollIntoView({ behavior: "smooth", block: "start" });
-
-    var acc = document.getElementsByClassName("widget-section-accordion");
-    // this.logger.log('WIDGET DESIGN ACCORDION', acc);
-    var i: number;
-    for (i = 0; i < acc.length; i++) {
-      var lastAccordion = acc[6];
-      var lastPanel = <HTMLElement>lastAccordion.nextElementSibling;
-      lastAccordion.classList.add("active");
-      lastPanel.style.maxHeight = lastPanel.scrollHeight + "px";
-      var arrow_icon_div = lastAccordion.children[1];
-      var arrow_icon = arrow_icon_div.children[0]
-      arrow_icon.classList.add("arrow-up");
+    const el = this.multilanguageRef?.nativeElement as HTMLElement;
+    if (!el) {
+      return;
     }
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+    this.openWidgetSectionAccordion(el);
+  }
 
+  /** Expand a widget-section accordion header (avoids brittle hard-coded indices). */
+  private openWidgetSectionAccordion(accordionBtn: HTMLElement) {
+    if (!accordionBtn) {
+      return;
+    }
+    const panel = accordionBtn.nextElementSibling as HTMLElement | null;
+    if (!panel) {
+      return;
+    }
+    accordionBtn.classList.add("active");
+    panel.style.maxHeight = panel.scrollHeight + "px";
+    const arrowIconDiv = accordionBtn.children[1];
+    const arrowIcon = arrowIconDiv?.children?.[0];
+    if (arrowIcon) {
+      arrowIcon.classList.add("arrow-up");
+    }
   }
 
 

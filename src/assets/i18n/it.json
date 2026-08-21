@@ -1269,7 +1269,10 @@
         "NewUnassignedChat": "Nuova chat non assegnata",
         "NewUnassignedChats": "{{count}} nuove chat non assegnate",
         "TiledeskLogOut": "Esci da {{ BRAND_NAME }}",
-        "LogOut": "Esci"
+        "LogOut": "Esci",
+        "CloseAll": "Chiudi tutto",
+        "ShowLess": "Mostra di meno",
+        "Close": "Chiudi"
     },
     "SideBar": {
         "ViewAllProjects": "Visualizza tutti i progetti",
@@ -2889,6 +2892,7 @@
         "Delete": "Elimina",
         "Transport": "Trasporto",
         "AddMCPServer": "Aggiungi Server MCP",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "Modifica Server MCP",
         "TotalMCPServers": "Totale Server MCP",
         "SearchByNameURLOrType": "Cerca per nome, URL o tipo",
@@ -2904,6 +2908,7 @@
         "Tools": "Tools",
         "ViewTools": "Visualizza tools",
         "MCPServerWillBeDeleted": "Il server MCP <b>{{ serverName }}</b> verrà eliminato. Questa azione non può essere annullata.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "Il server MCP è stato eliminato con successo.",
         "AddOpenAICompatibleEndpoint": "Aggiungi Endpoint OpenAI-Compatible",
         "EditOpenAICompatibleEndpoint": "Modifica Endpoint OpenAI-Compatible",
@@ -3301,6 +3306,9 @@
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Questo attributo specifica l'indirizzo URL della pagina da incorporare nell'app tramite un iframe",
     "AppRenderURL": "URL di rendering dell'app",
     "ShortDescription": "Breve descrizione",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "Ulteriori informazioni URL",
     "EnableYourAppFor": "Abilita la tua app per",
     "ConversationsArchivedCannotBeReopened": "Le conversazioni archiviate per più di dieci giorni non possono essere riaperte",

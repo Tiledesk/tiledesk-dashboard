@@ -1268,7 +1268,10 @@
         "NewUnassignedChat": "Yeni atanmamış sohbet",
         "NewUnassignedChats": "{{count}} yeni atanmamış sohbet",
         "TiledeskLogOut": "{{ BRAND_NAME }} Oturumu Kapat",
-        "LogOut": "Çıkış Yap"
+        "LogOut": "Çıkış Yap",
+        "CloseAll": "Tümünü kapat",
+        "ShowLess": "Daha az göster",
+        "Close": "Kapat"
     },
     "SideBar": {
         "ViewAllProjects": "Tüm projeleri görüntüle",
@@ -2875,6 +2878,7 @@
         "Delete": "Silmek",
         "Transport": "Taşıma",
         "AddMCPServer": "MCP Sunucusu Ekle",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "MCP Sunucusunu Düzenle",
         "TotalMCPServers": "Toplam MCP Sunucuları",
         "SearchByNameURLOrType": "Ad, URL veya türe göre ara",
@@ -2890,6 +2894,7 @@
         "Tools": "Tools",
         "ViewTools": "Tools'u Görüntüle",
         "MCPServerWillBeDeleted": "MCP sunucusu <b>{{ serverName }}</b> silinecek. Bu işlem geri alınamaz.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "MCP sunucusu başarıyla silindi.",
         "AddOpenAICompatibleEndpoint": "OpenAI uyumlu uç nokta ekle",
         "EditOpenAICompatibleEndpoint": "OpenAI uyumlu uç noktayı düzenle",
@@ -3285,6 +3290,9 @@
     "TheEndpointURLMustBeValidHTTPSURL": "Uç nokta URL'si geçerli bir HTTPS URL'si olmalıdır",
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Bu özellik, bir iframe aracılığıyla uygulamaya yerleştirilecek sayfanın URL adresini belirtir",
     "ShortDescription": "Kısa Açıklama",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "Daha fazla bilgi edinin URL",
     "EnableYourAppFor": "Için uygulamanızı etkinleştirin",
     "AppRenderURL": "Uygulama görüntüleme URL'si",

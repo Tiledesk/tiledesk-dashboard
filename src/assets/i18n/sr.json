@@ -1267,7 +1267,10 @@
         "NewUnassignedChat": "Нова недодељена ћаскање",
         "NewUnassignedChats": "{{count}} нових недодељених ћаскања",
         "TiledeskLogOut": "{{ BRAND_NAME }} Одјавите се",
-        "LogOut": "Одјавити се"
+        "LogOut": "Одјавити се",
+        "CloseAll": "Затвори све",
+        "ShowLess": "Прикажи мање",
+        "Close": "Затвори"
     },
     "SideBar": {
         "ViewAllProjects": "Погледајте све пројекте",
@@ -2875,6 +2878,7 @@
         "Delete": "Избриши",
         "Transport": "Транспорт",
         "AddMCPServer": "Додај MCP Сервер",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "Уреди MCP Сервер",
         "TotalMCPServers": "Укупно MCP Сервера",
         "SearchByNameURLOrType": "Претрага по имену, URL или типу",
@@ -2890,6 +2894,7 @@
         "Tools": "Tools",
         "ViewTools": "Погледај tools",
         "MCPServerWillBeDeleted": "MCP сервер <b>{{ serverName }}</b> ће бити обрисан. Ова радња се не може поништити.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "MCP сервер је успешно обрисан.",
         "AddOpenAICompatibleEndpoint": "Додај OpenAI-компатибилни endpoint",
         "EditOpenAICompatibleEndpoint": "Уреди OpenAI-компатибилни endpoint",
@@ -3286,6 +3291,9 @@
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Овај атрибут наводи УРЛ адресу странице за уградњу у апликацију преко ифраме-а",
     "AppRenderURL": "УРЛ рендеровања апликације",
     "ShortDescription": "Кратак опис",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "Сазнајте више УРЛ",
     "EnableYourAppFor": "Омогућите своју апликацију за",
     "ConversationsArchivedCannotBeReopened": "Разговори архивирани дуже од десет дана не могу се поново отворити",

@@ -1266,7 +1266,10 @@
         "NewUnassignedChat": "Novo chat não atribuído",
         "NewUnassignedChats": "{{count}} novos chats não atribuídos",
         "TiledeskLogOut": "{{ BRAND_NAME }} Sair",
-        "LogOut": "Sair"
+        "LogOut": "Sair",
+        "CloseAll": "Fechar tudo",
+        "ShowLess": "Ver menos",
+        "Close": "Fechar"
     },
     "SideBar": {
         "ViewAllProjects": "Ver todos os projetos",
@@ -2874,6 +2877,7 @@
         "Delete": "Excluir",
         "Transport": "Transporte",
         "AddMCPServer": "Adicionar Servidor MCP",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "Editar Servidor MCP",
         "TotalMCPServers": "Total Servidores MCP",
         "SearchByNameURLOrType": "Pesquisar por nome, URL ou tipo",
@@ -2889,6 +2893,7 @@
         "Tools": "Tools",
         "ViewTools": "Ver tools",
         "MCPServerWillBeDeleted": "O servidor MCP <b>{{ serverName }}</b> será excluído. Esta ação não pode ser desfeita.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "O servidor MCP foi excluído com sucesso.",
         "AddOpenAICompatibleEndpoint": "Adicionar endpoint compatível com OpenAI",
         "EditOpenAICompatibleEndpoint": "Editar endpoint compatível com OpenAI",
@@ -3286,6 +3291,9 @@
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Este atributo especifica o endereço URL da página a ser incorporada ao aplicativo por meio de um iframe",
     "AppRenderURL": "URL de renderização do aplicativo",
     "ShortDescription": "Descrição resumida",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "Saiba mais URL",
     "EnableYourAppFor": "Habilite seu aplicativo para",
     "ConversationsArchivedCannotBeReopened": "Conversas arquivadas por mais de dez dias não podem ser reabertas",

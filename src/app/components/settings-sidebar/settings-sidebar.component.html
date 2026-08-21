@@ -330,8 +330,12 @@
     <!-- -------------------------------------------------------- -->
     <!--  Integrations  -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="PERMISSION_TO_VIEW_INTEGRATIONS"> 
-      <ng-container *ngIf="isVisibleINT && USER_ROLE !== 'agent'">
+    <ng-container *ngIf="PERMISSION_TO_VIEW_INTEGRATIONS">
+      <!-- isVisibleINT is a plan-based feature flag parsed from a remote-fetched
+           public_Key string that's never populated in local dev (same class of
+           gap as other CHANGEIT-style broken remote configs in this branch) —
+           gate on USER_ROLE alone instead, like the other settings-sidebar items. -->
+      <ng-container *ngIf="USER_ROLE !== 'agent'">
         <li [ngClass]="{'active-item': INTEGRATIONS_ROUTE_IS_ACTIVE}" (click)="goToIntegrations()"
           matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="Integrations" #tooltip="matTooltip"
           matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">

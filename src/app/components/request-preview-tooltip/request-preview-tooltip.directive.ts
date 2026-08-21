@@ -7,9 +7,14 @@ import {
   Input,
   OnDestroy,
 } from '@angular/core';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { ConnectedPosition, Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { RequestPreviewTooltipComponent } from './request-preview-tooltip.component';
+
+/** Gap between sidebar right edge and tooltip left edge (A14-like). */
+const SIDEBAR_GAP_PX = 8;
+const TOOLTIP_MIN_WIDTH = 470;
+const TOOLTIP_MAX_WIDTH = 560;
 
 @Directive({
   selector: '[tdRequestPreviewTooltip]',
@@ -55,26 +60,17 @@ export class RequestPreviewTooltipDirective implements OnDestroy {
       return;
     }
 
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo(this.elementRef)
-      .withFlexibleDimensions(false)
-      .withPush(false)
-      .withPositions([
-        {
-          originX: 'center',
-          originY: 'top',
-          overlayX: 'center',
-          overlayY: 'bottom',
-          offsetY: -10,
-        },
-      ]);
+    const maxWidth = Math.min(
+      TOOLTIP_MAX_WIDTH,
+      Math.max(TOOLTIP_MIN_WIDTH, window.innerWidth - this.getMinLeft() - 24)
+    );
 
     this.overlayRef = this.overlay.create({
-      positionStrategy,
+      positionStrategy: this.buildPositionStrategy(maxWidth),
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
       panelClass: ['custom-ng2-tooltip', 'td-request-preview-overlay'],
-      minWidth: 470,
+      minWidth: TOOLTIP_MIN_WIDTH,
+      maxWidth,
     });
 
     const portal = new ComponentPortal(
@@ -86,6 +82,125 @@ export class RequestPreviewTooltipDirective implements OnDestroy {
     this.tooltipComponentRef = componentRef;
     this.tooltipComponent = componentRef.instance;
     this.syncRequestToTooltip();
+
+    // After layout, clamp again if real width differs from estimate and sync arrow.
+    requestAnimationFrame(() => this.finalizePlacement());
+  }
+
+  private buildPositionStrategy(estimatedWidth: number) {
+    const originRect = this.elementRef.nativeElement.getBoundingClientRect();
+    const minLeft = this.getMinLeft();
+    const idealLeft =
+      originRect.left + originRect.width / 2 - estimatedWidth / 2;
+    // Push right so the tooltip stays in the main panel (never over the sidebar).
+    const offsetX = Math.max(0, minLeft - idealLeft);
+
+    const positions: ConnectedPosition[] = [
+      {
+        originX: 'center',
+        originY: 'top',
+        overlayX: 'center',
+        overlayY: 'bottom',
+        offsetY: -10,
+        offsetX,
+      },
+      {
+        originX: 'start',
+        originY: 'top',
+        overlayX: 'start',
+        overlayY: 'bottom',
+        offsetY: -10,
+        offsetX: Math.max(0, minLeft - originRect.left),
+      },
+      {
+        originX: 'end',
+        originY: 'top',
+        overlayX: 'end',
+        overlayY: 'bottom',
+        offsetY: -10,
+      },
+    ];
+
+    return this.overlay
+      .position()
+      .flexibleConnectedTo(this.elementRef)
+      .withFlexibleDimensions(false)
+      .withPush(true)
+      .withViewportMargin(8)
+      .withPositions(positions);
+  }
+
+  private finalizePlacement(): void {
+    if (!this.overlayRef?.hasAttached()) {
+      return;
+    }
+
+    const pane = this.overlayRef.overlayElement;
+    const minLeft = this.getMinLeft();
+    const rect = pane.getBoundingClientRect();
+
+    if (rect.left < minLeft - 0.5) {
+      const originRect = this.elementRef.nativeElement.getBoundingClientRect();
+      const measuredOffsetX = Math.max(
+        0,
+        minLeft - (originRect.left + originRect.width / 2 - rect.width / 2)
+      );
+      this.overlayRef.updatePositionStrategy(
+        this.overlay
+          .position()
+          .flexibleConnectedTo(this.elementRef)
+          .withFlexibleDimensions(false)
+          .withPush(true)
+          .withViewportMargin(8)
+          .withPositions([
+            {
+              originX: 'center',
+              originY: 'top',
+              overlayX: 'center',
+              overlayY: 'bottom',
+              offsetY: -10,
+              offsetX: measuredOffsetX,
+            },
+          ])
+      );
+      this.overlayRef.updatePosition();
+    }
+
+    this.syncArrowToOrigin();
+  }
+
+  private syncArrowToOrigin(): void {
+    if (!this.overlayRef?.hasAttached()) {
+      return;
+    }
+    const pane = this.overlayRef.overlayElement;
+    const tooltipEl = pane.querySelector(
+      '.td-request-preview-tooltip'
+    ) as HTMLElement | null;
+    if (!tooltipEl) {
+      return;
+    }
+
+    const originRect = this.elementRef.nativeElement.getBoundingClientRect();
+    const tooltipRect = tooltipEl.getBoundingClientRect();
+    const originCenter = originRect.left + originRect.width / 2;
+    const arrowLeft = Math.min(
+      Math.max(originCenter - tooltipRect.left, 16),
+      tooltipRect.width - 16
+    );
+    tooltipEl.style.setProperty(
+      '--td-preview-tooltip-arrow-left',
+      `${arrowLeft}px`
+    );
+  }
+
+  /** Left bound of the main panel (sidebar right edge + gap). */
+  private getMinLeft(): number {
+    const sidebar = document.querySelector('.sidebar') as HTMLElement | null;
+    if (sidebar) {
+      return Math.ceil(sidebar.getBoundingClientRect().right) + SIDEBAR_GAP_PX;
+    }
+    return 60 + SIDEBAR_GAP_PX;
   }
 
   private syncRequestToTooltip(): void {

@@ -21,6 +21,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { MomentModule } from 'ngx-moment';
+import { UnservedNotificationsComponent } from './unserved-notifications/unserved-notifications.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { MomentModule } from 'ngx-moment';
     SidebarComponent,
     SmallSidebarComponent,
     SidebarUserDetailsComponent,
+    UnservedNotificationsComponent,
   ],
   exports: [
     FooterComponent,
@@ -55,6 +57,7 @@ import { MomentModule } from 'ngx-moment';
     SidebarComponent,
     SidebarUserDetailsComponent,
     SmallSidebarComponent,
+    UnservedNotificationsComponent,
     TranslateModule
   ],
   providers: [

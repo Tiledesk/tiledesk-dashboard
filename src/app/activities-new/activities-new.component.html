@@ -97,7 +97,14 @@
       <div class="col-md-12">
         <div class="card" style="margin-top: 0px;border-radius: 12px;">
           <div class="activities-new-list-header">
-            <div class="activities-new-list-header__icon-spacer"></div>
+            <button mat-icon-button
+                    type="button"
+                    class="dt-refresh-btn"
+                    [disabled]="showSpinner"
+                    (click)="onRefreshActivities()"
+                    [attr.aria-label]="'Refresh' | translate">
+              <mat-icon>refresh</mat-icon>
+            </button>
             <div class="activities-new-list-header__content">
               <div class="activities-new-list-header__title-row">
                 <span class="column-th-span">{{ 'LatestActivities' | translate }}</span>
@@ -294,12 +301,25 @@
                       <ng-container *ngIf="isSystemAbandonedChatsUpdate(activity?.actionObj)">
                         's abandoned chats count has been updated to {{ systemAbandonedChatsCount(activity?.actionObj) }}
                       </ng-container>
-                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && objectKeys(activity?.actionObj)?.[0] === 'user_available'">
+                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && projectUserUpdateKind(activity) === 'max_assigned_chat'">
+                        's maximum assigned chats has been updated to {{ maxAssignedChatValue(activity?.actionObj) }}
+                      </ng-container>
+                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && projectUserUpdateKind(activity) === 'availability'">
                         's availability status has been changed to
                         <span style="text-transform: capitalize">{{ availabilityStatusLabel(activity) }}</span>
-                        <ng-container *ngIf="activity?.targetOfActionIsYourself"> by themselves</ng-container>
+                        <ng-container *ngIf="isProjectUserUpdateSelfActivity(activity)"> by themselves</ng-container>
                       </ng-container>
-                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && objectKeys(activity?.actionObj)?.[0] !== 'user_available'">
+                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && projectUserUpdateKind(activity) === 'role'">
+                        's role has been updated to {{ projectUserUpdateRoleLabel(activity) }}
+                      </ng-container>
+                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && projectUserUpdateKind(activity) === 'role_and_max_assigned_chat'">
+                        's role has been updated to {{ projectUserUpdateRoleLabel(activity) }}
+                        and maximum assigned chats to {{ maxAssignedChatValue(activity?.actionObj) }}
+                      </ng-container>
+                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && projectUserUpdateKind(activity) === 'tags'">
+                        's tags have been set to {{ projectUserUpdateTagsLabel(activity) }}
+                      </ng-container>
+                      <ng-container *ngIf="!isSystemAbandonedChatsUpdate(activity?.actionObj) && projectUserUpdateKind(activity) === 'unknown'">
                         <ng-container *ngFor="let _key of objectKeys(activity?.actionObj); let isFirst = first">
                           <span *ngIf="!(_key === 'max_assigned_chat' && activity?.actionObj?.[_key] === -1)">
                             <span *ngIf="!isFirst">, </span>
@@ -336,58 +356,119 @@
                       </span>
 
                       <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_UPDATE'">
-                        <ng-container *ngIf="isSystemAbandonedChatsUpdate(activity?.actionObj); else projectUserUpdateDefault">
-                          has updated
-                          <span *ngIf="activity?.targetOfActionIsYourself">
-                            their abandoned chats count to {{ systemAbandonedChatsCount(activity?.actionObj) }}
-                          </span>
-                          <span *ngIf="!activity?.targetOfActionIsYourself">
-                            <activities-teammate-link
-                              [label]="getProjectUserUpdateTargetName(activity)"
-                              [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
-                              [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
-                        [participantId]="activity?.target?.object?.id_user?._id"
-                        [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
-                              [menuTrigger]="teammateMenu"
-                              (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
-                            </activities-teammate-link>'s abandoned chats count to {{ systemAbandonedChatsCount(activity?.actionObj) }}
-                          </span>
-                        </ng-container>
-                        <ng-template #projectUserUpdateDefault>
-                          <ng-container *ngIf="activity?.targetOfActionIsYourself
-                            && (activity?.actionObj?.user_available === true || activity?.actionObj?.user_available === false);
-                            else projectUserUpdateChanged">
-                            's availability status has been changed to
-                            <span style="text-transform: capitalize">{{ availabilityStatusLabel(activity) }}</span>
-                            by themselves
-                          </ng-container>
-                          <ng-template #projectUserUpdateChanged>
-                            has changed
-                            <span *ngIf="activity?.targetOfActionIsYourself">their status</span>
-                            <span *ngIf="!activity?.targetOfActionIsYourself">
-                              <span *ngIf="activity?.actionObj?.user_available === true || activity?.actionObj?.user_available === false">
-                                the availability status of{{ ' ' }}
-                              </span>
-                              <span *ngIf="activity?.actionObj?.role">the role of{{ ' ' }}</span>
+                        <ng-container [ngSwitch]="projectUserUpdateKind(activity)">
+                          <ng-container *ngSwitchCase="'abandoned'">
+                            has updated
+                            <span *ngIf="isProjectUserUpdateSelfActivity(activity)">
+                              their abandoned chats count to {{ systemAbandonedChatsCount(activity?.actionObj) }}
+                            </span>
+                            <span *ngIf="!isProjectUserUpdateSelfActivity(activity)">
                               <activities-teammate-link
                                 [label]="getProjectUserUpdateTargetName(activity)"
                                 [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
-                              [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
-                        [participantId]="activity?.target?.object?.id_user?._id"
-                              [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
+                                [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
+                                [participantId]="activity?.target?.object?.id_user?._id"
+                                [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
                                 [menuTrigger]="teammateMenu"
                                 (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
-                              </activities-teammate-link>
+                              </activities-teammate-link>'s abandoned chats count to {{ systemAbandonedChatsCount(activity?.actionObj) }}
                             </span>
-                            {{ ' ' }}to{{ ' ' }}
-                            <span *ngIf="activity?.actionObj?.role">
-                              {{ projectUserUpdateRoleLabel(activity) }}
+                          </ng-container>
+
+                          <ng-container *ngSwitchCase="'availability'">
+                            <span *ngIf="isProjectUserUpdateSelfActivity(activity)">
+                              changed their availability status to
+                              <span style="text-transform: capitalize">{{ availabilityStatusLabel(activity) }}</span>
                             </span>
-                            <span *ngIf="!activity?.actionObj?.role" style="text-transform: capitalize">
-                              {{ availabilityStatusLabel(activity) }}
+                            <span *ngIf="!isProjectUserUpdateSelfActivity(activity)">
+                              changed{{ ' ' }}
+                              <activities-teammate-link
+                                [label]="getProjectUserUpdateTargetName(activity)"
+                                [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
+                                [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
+                                [participantId]="activity?.target?.object?.id_user?._id"
+                                [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
+                              </activities-teammate-link>'s availability status to
+                              <span style="text-transform: capitalize">{{ availabilityStatusLabel(activity) }}</span>
                             </span>
-                          </ng-template>
-                        </ng-template>
+                          </ng-container>
+
+                          <ng-container *ngSwitchCase="'max_assigned_chat'">
+                            <span *ngIf="isProjectUserUpdateSelfActivity(activity)">
+                              changed their maximum assigned chats to {{ maxAssignedChatValue(activity?.actionObj) }}
+                            </span>
+                            <span *ngIf="!isProjectUserUpdateSelfActivity(activity)">
+                              changed{{ ' ' }}
+                              <activities-teammate-link
+                                [label]="getProjectUserUpdateTargetName(activity)"
+                                [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
+                                [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
+                                [participantId]="activity?.target?.object?.id_user?._id"
+                                [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
+                              </activities-teammate-link>'s maximum assigned chats to {{ maxAssignedChatValue(activity?.actionObj) }}
+                            </span>
+                          </ng-container>
+
+                          <ng-container *ngSwitchCase="'role'">
+                            <span *ngIf="isProjectUserUpdateSelfActivity(activity)">
+                              changed their role to {{ projectUserUpdateRoleLabel(activity) }}
+                            </span>
+                            <span *ngIf="!isProjectUserUpdateSelfActivity(activity)">
+                              changed{{ ' ' }}
+                              <activities-teammate-link
+                                [label]="getProjectUserUpdateTargetName(activity)"
+                                [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
+                                [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
+                                [participantId]="activity?.target?.object?.id_user?._id"
+                                [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
+                              </activities-teammate-link>'s role to {{ projectUserUpdateRoleLabel(activity) }}
+                            </span>
+                          </ng-container>
+
+                          <ng-container *ngSwitchCase="'role_and_max_assigned_chat'">
+                            <span *ngIf="isProjectUserUpdateSelfActivity(activity)">
+                              updated their role to {{ projectUserUpdateRoleLabel(activity) }}
+                              and maximum assigned chats to {{ maxAssignedChatValue(activity?.actionObj) }}
+                            </span>
+                            <span *ngIf="!isProjectUserUpdateSelfActivity(activity)">
+                              updated{{ ' ' }}
+                              <activities-teammate-link
+                                [label]="getProjectUserUpdateTargetName(activity)"
+                                [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
+                                [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
+                                [participantId]="activity?.target?.object?.id_user?._id"
+                                [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
+                              </activities-teammate-link>'s role to {{ projectUserUpdateRoleLabel(activity) }}
+                              and maximum assigned chats to {{ maxAssignedChatValue(activity?.actionObj) }}
+                            </span>
+                          </ng-container>
+
+                          <ng-container *ngSwitchCase="'tags'">
+                            <span *ngIf="isProjectUserUpdateSelfActivity(activity)">
+                              set their tags to {{ projectUserUpdateTagsLabel(activity) }}
+                            </span>
+                            <span *ngIf="!isProjectUserUpdateSelfActivity(activity)">
+                              set{{ ' ' }}
+                              <activities-teammate-link
+                                [label]="getProjectUserUpdateTargetName(activity)"
+                                [highlighted]="highlightClass(activity?.target?.object?.id_user?._id)"
+                                [avatarView]="getProjectUserUpdateTargetAvatarView(activity)"
+                                [participantId]="activity?.target?.object?.id_user?._id"
+                                [showEmail]="isTeammateInAgentsList(activity?.target?.object?.id_user?._id)"
+                                [menuTrigger]="teammateMenu"
+                                (linkClick)="handleTeammateProfileLinkClick($event, activity?.target?.object?.id_user?._id, activity)">
+                              </activities-teammate-link>'s tags to {{ projectUserUpdateTagsLabel(activity) }}
+                            </span>
+                          </ng-container>
+                        </ng-container>
                       </ng-container>
 
                       <ng-container *ngIf="getEffectiveVerb(activity) === 'PROJECT_USER_DELETE'">

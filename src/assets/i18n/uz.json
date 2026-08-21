@@ -1266,7 +1266,10 @@
         "NewUnassignedChat": "Yangi tayinlanmagan chat",
         "NewUnassignedChats": "{{count}} yangi tayinlanmagan chat",
         "TiledeskLogOut": "{{ BRAND_NAME }} Chiqish",
-        "LogOut": "Chiqish"
+        "LogOut": "Chiqish",
+        "CloseAll": "Hammasini yopish",
+        "ShowLess": "Kamroq ko‘rsatish",
+        "Close": "Yopish"
     },
     "SideBar": {
         "ViewAllProjects": "Barcha loyihalarni ko'rish",
@@ -2873,6 +2876,7 @@
         "Delete": "Oʻchirish",
         "Transport": "Transport",
         "AddMCPServer": "MCP Server Qoʻshish",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "MCP Serverni Tahrirlash",
         "TotalMCPServers": "Jami MCP Serverlar",
         "SearchByNameURLOrType": "Nom, URL yoki tur boʻyicha qidirish",
@@ -2888,6 +2892,7 @@
         "Tools": "Tools",
         "ViewTools": "Tools Koʻrish",
         "MCPServerWillBeDeleted": "MCP server <b>{{ serverName }}</b> oʻchiriladi. Bu amalni bekor qilish mumkin emas.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "MCP server muvaffaqiyatli oʻchirildi.",
         "AddOpenAICompatibleEndpoint": "OpenAI bilan mos keladigan endpoint qo'shish",
         "EditOpenAICompatibleEndpoint": "OpenAI bilan mos keladigan endpointni tahrirlash",
@@ -3284,6 +3289,9 @@
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Bu atribut iframe orqali ilovaga joylashtirish uchun sahifaning URL manzilini belgilaydi",
     "AppRenderURL": "Ilova render URL",
     "ShortDescription": "Qisqa Tasvir",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "Ko'proq ma'lumot olish URL",
     "EnableYourAppFor": "Ilovangizni yoqing",
     "ConversationsArchivedCannotBeReopened": "O'n kundan ortiq arxivlangan suhbatlarni qayta ochib bo'lmaydi",

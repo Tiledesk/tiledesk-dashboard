@@ -1,20 +1,25 @@
 # tiledesk-dashboard
 
-### 2.7.244-stage 
+### 2.8.20
+- Adds the connector plugin registry: register project-scoped connectors from a manifest URL and manage them from the Integrations page
+- Renders one Integrations tile per registered connector, alongside a static "Add connector" tile
+- Adds a connector detail view listing the connector's actions and triggers, using the connector's own icon, with the ability to delete it
+- Adds an optional category field to app registration, marking connector-type apps
 - Updates LLM models
-
-### 2.7.243-stage 
 - Adds Gemini Agent Platform integration
 
-### 2.7.242-stage 
+### 2.8.19
+- Adds permissions to Data tables
+
+### 2.8.18
 - Migrates the dashboard core to Angular 15 (CLI, `@angular/core`, and Material/CDK 15 with MDC)
 - Adapts key UI surfaces to Material MDC (History date range, Knowledge Base actions, Data Tables)
-- Removes unused components (in-app CDS, FAQ test, Native bot, Tilebot UI and more) 
-- Improves Analytics loading feedback  
+- Removes unused components (in-app CDS, FAQ test, Native bot, Tilebot UI and more)
+- Improves Analytics loading feedback
 - Adds LEAVE_CONVERSATION to the new Activities page
 - Improvements and bug fixing
 
-### 2.7.241-stage 	
+### 2.8.16
 - Shows the current size of data tables in MB against the maximum allowed size
 - Adds the ability to filter data tables by conditions
 - Adds tooltips in the Knowledge Bases and Data Tables sidebars to show the full name

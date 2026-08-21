@@ -417,7 +417,7 @@
         "StartDate": "Date de début",
         "EndDate": "Date de fin",
         "FilterGroup": {
-             "Conversations": "Conversations",
+            "Conversations": "Conversations",
             "Assignments": "Attributions",
             "Team": "Équipe",
             "Chatbot": "Agent IA",
@@ -1266,7 +1266,10 @@
         "NewUnassignedChat": "Nouveau chat non attribué",
         "NewUnassignedChats": "{{count}} nouveaux chats non attribués",
         "TiledeskLogOut": "{{ BRAND_NAME }} Déconnexion",
-        "LogOut": "Se déconnecter"
+        "LogOut": "Se déconnecter",
+        "CloseAll": "Tout fermer",
+        "ShowLess": "Afficher moins",
+        "Close": "Fermer"
     },
     "SideBar": {
         "ViewAllProjects": "Voir tous les projets",
@@ -2874,6 +2877,7 @@
         "Delete": "Supprimer",
         "Transport": "Transport",
         "AddMCPServer": "Ajouter Serveur MCP",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "Modifier Serveur MCP",
         "TotalMCPServers": "Total Serveurs MCP",
         "SearchByNameURLOrType": "Rechercher par nom, URL ou type",
@@ -2889,6 +2893,7 @@
         "Tools": "Tools",
         "ViewTools": "Voir les tools",
         "MCPServerWillBeDeleted": "Le serveur MCP <b>{{ serverName }}</b> sera supprimé. Cette action ne peut pas être annulée.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "Le serveur MCP a été supprimé avec succès.",
         "AddOpenAICompatibleEndpoint": "Ajouter un endpoint compatible OpenAI",
         "EditOpenAICompatibleEndpoint": "Modifier l'endpoint compatible OpenAI",
@@ -3286,6 +3291,9 @@
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Cet attribut spécifie l'adresse URL de la page à intégrer dans l'application via une iframe",
     "AppRenderURL": "URL d'affichage de l'application",
     "ShortDescription": "Brève description",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "En savoir plus URL",
     "EnableYourAppFor": "Activez votre application pour",
     "ConversationsArchivedCannotBeReopened": "Les conversations archivées depuis plus de dix jours ne peuvent pas être rouvertes",

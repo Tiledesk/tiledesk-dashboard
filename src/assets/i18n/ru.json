@@ -1267,7 +1267,10 @@
         "NewUnassignedChat": "Новый неназначенный чат",
         "NewUnassignedChats": "{{count}} новых неназначенных чатов",
         "TiledeskLogOut": "{{ BRAND_NAME }} Выйти",
-        "LogOut": "Выйти"
+        "LogOut": "Выйти",
+        "CloseAll": "Закрыть все",
+        "ShowLess": "Свернуть",
+        "Close": "Закрыть"
     },
     "SideBar": {
         "ViewAllProjects": "Посмотреть все проекты",
@@ -2874,6 +2877,7 @@
         "Delete": "Удалить",
         "Transport": "Транспорт",
         "AddMCPServer": "Добавить MCP Сервер",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "Редактировать MCP Сервер",
         "TotalMCPServers": "Всего MCP Серверов",
         "SearchByNameURLOrType": "Поиск по имени, URL или типу",
@@ -2889,6 +2893,7 @@
         "Tools": "Tools",
         "ViewTools": "Просмотреть tools",
         "MCPServerWillBeDeleted": "MCP сервер <b>{{ serverName }}</b> будет удален. Это действие нельзя отменить.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "MCP сервер успешно удален.",
         "AddOpenAICompatibleEndpoint": "Добавить endpoint, совместимый с OpenAI",
         "EditOpenAICompatibleEndpoint": "Редактировать endpoint, совместимый с OpenAI",
@@ -3285,6 +3290,9 @@
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Этот атрибут указывает URL-адрес страницы для встраивания в приложение через iframe",
     "AppRenderURL": "URL-адрес рендеринга приложения",
     "ShortDescription": "Краткое описание",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "Узнать больше URL",
     "EnableYourAppFor": "Включите ваше приложение для",
     "ConversationsArchivedCannotBeReopened": "Разговоры, заархивированные более десяти дней, не могут быть повторно открыты",

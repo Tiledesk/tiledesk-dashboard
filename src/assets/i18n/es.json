@@ -1252,7 +1252,10 @@
         "NewUnassignedChat": "New unassigned chat",
         "NewUnassignedChats": "{{count}} new unassigned chats",
         "TiledeskLogOut": "{{ BRAND_NAME }} Cerrar sesión",
-        "LogOut": "Cerrar sesión"
+        "LogOut": "Cerrar sesión",
+        "CloseAll": "Cerrar todo",
+        "ShowLess": "Ver menos",
+        "Close": "Cerrar"
     },
     "SideBar": {
         "ViewAllProjects": "Ver todos los proyectos",
@@ -2858,6 +2861,7 @@
         "Delete": "Borrar",
         "Transport": "Transporte",
         "AddMCPServer": "Agregar Servidor MCP",
+        "AddConnector": "Add Connector",
         "EditMCPServer": "Editar Servidor MCP",
         "TotalMCPServers": "Total Servidores MCP",
         "SearchByNameURLOrType": "Buscar por nombre, URL o tipo",
@@ -2873,6 +2877,7 @@
         "Tools": "Tools",
         "ViewTools": "Ver tools",
         "MCPServerWillBeDeleted": "El servidor MCP <b>{{ serverName }}</b> será eliminado. Esta acción no se puede deshacer.",
+        "ConnectorWillBeDeleted": "The connector <b>{{ serverName }}</b> will be deleted. This action cannot be undone.",
         "MCPServerHasBeenDeleted": "El servidor MCP ha sido eliminado correctamente.",
         "AddOpenAICompatibleEndpoint": "Agregar endpoint compatible con OpenAI",
         "EditOpenAICompatibleEndpoint": "Editar endpoint compatible con OpenAI",
@@ -3270,6 +3275,9 @@
     "ThisAttributeSpecifiesTheURLOfThePageToEmbedInTheApp": "Este atributo especifica la dirección URL de la página para incrustar en la aplicación a través de un iframe",
     "AppRenderURL": "URL de representación de la aplicación",
     "ShortDescription": "Breve descripción",
+    "AppCategory": "App Category",
+    "MarkThisAppAsAConnectorSoItAppearsInDesignStudio": "Mark this app as a connector so it appears in Design Studio",
+    "Connector": "Connector",
     "LearnMoreURL": "Obtenga más información URL",
     "EnableYourAppFor": "Activa tu aplicación para",
     "ConversationsArchivedCannotBeReopened": "Las conversaciones archivadas durante más de diez días no se pueden reabrir",

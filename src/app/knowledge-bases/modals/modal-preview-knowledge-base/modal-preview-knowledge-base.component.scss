@@ -380,8 +380,19 @@
 .mat-dialog-reuse-last-question-btn {
     // background-color: #647491;
     // color: #fff;
+    // Host styles; label color for MDC is in material-mdc-overrides.scss
     color: #30373f;
     background-color: #191d2214;
+    --mdc-text-button-label-text-color: #30373f;
+    --mdc-text-button-disabled-label-text-color: rgba(48, 55, 63, 0.45);
+
+    &.mat-mdc-button-disabled,
+    &.mat-button-disabled,
+    &[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+      background-color: rgba(25, 29, 34, 0.06);
+    }
 }
 
 
