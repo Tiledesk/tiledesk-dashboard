@@ -332,6 +332,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_PROJECT_SETTING_NOTIFICATION: boolean;
   PERMISSION_TO_VIEW_PROJECT_SETTING_SECURITY: boolean;
   PERMISSION_TO_VIEW_PROJECT_SETTING_BANNED: boolean;
+  PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION: boolean;
   PERMISSION_TO_VIEW_PROJECT_SETTING_ADVANCED: boolean;
   PERMISSION_TO_VIEW_HOME: boolean;
 
@@ -872,6 +873,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                   PERMISSIONS.PROJECTSETTINGS_NOTIFICATION_READ,
                   PERMISSIONS.PROJECTSETTINGS_SECURITY_READ,
                   PERMISSIONS.PROJECTSETTINGS_BANNED_READ,
+                  PERMISSIONS.PROJECTSETTINGS_RETENTION_READ,
                   PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ
               ];
               
@@ -995,6 +997,25 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_VIEW_PROJECT_SETTING_BANNED = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_BANNED_READ);
             this.logger.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_PROJECT_SETTING_BANNED:', this.PERMISSION_TO_VIEW_PROJECT_SETTING_BANNED);
+          }
+
+          // --------------------------------------------------
+          // PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION
+          // -------------------------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION = true;
+            this.logger.log('[SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION:', this.PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION = false;
+            this.logger.log('[SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION:', this.PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_RETENTION_READ);
+            this.logger.log('[SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION:', this.PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION);
           }
 
           // --------------------------------------------------
@@ -2989,6 +3010,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
       this.goToProjectSettings_BannedVisitors()
 
+    } else if (this.PERMISSION_TO_VIEW_PROJECT_SETTING_RETENTION) {
+
+      this.goToProjectSettings_Retention()
+
     } else if (this.PERMISSION_TO_VIEW_PROJECT_SETTING_ADVANCED)  {
         
       this.goToProjectSettings_Advanced()
@@ -3022,6 +3047,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   goToProjectSettings_BannedVisitors() {
     this.router.navigate(['project/' + this.project._id + '/project-settings/banned'])
+  }
+
+  goToProjectSettings_Retention() {
+    this.router.navigate(['project/' + this.project._id + '/project-settings/retention'])
   }
 
   goToProjectSettings_Advanced() {
