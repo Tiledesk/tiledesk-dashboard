@@ -1198,7 +1198,7 @@ getProjectUserRole() {
     Swal.fire({
       html: el,
       icon: 'info',
-      confirmButtonText: 'OK',
+      confirmButtonText: this.translate.instant('Ok'),
     });
   }
 
