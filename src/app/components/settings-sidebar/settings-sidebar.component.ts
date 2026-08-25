@@ -1101,7 +1101,7 @@ export class SettingsSidebarComponent implements OnInit {
      this.goToProjectSettingsSecurity()
     } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_BANNED_READ) {
      this.goToProjectSettingsBanned()
-     else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ) {
+    } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ) {
      this.goToProjectSettingsRetention()
     } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_ADVANCED_READ) {
      this.goToProjectSettingsAdvanced()
