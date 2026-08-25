@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.21
+- Fixes the bug: FAQ content cannot be updated
+
 ### 2.8.20
 - Updates LLM models
 
