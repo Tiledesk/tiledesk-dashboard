@@ -42,6 +42,7 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { sortChatbotsByLastUpdated } from 'app/utils/chatbot-sort.util';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -285,6 +286,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   allQuotas
 
   PERMISSION_TO_VIEW_FLOWS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_TEST_FLOW: boolean;
   PERMISSION_TO_VIEW_KB: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
   PERMISSION_TO_VIEW_WA_BRODCAST: boolean;
@@ -295,6 +298,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   PERMISSION_TO_VIEW_OP: boolean;
   PERMISSION_TO_VIEW_WIDGET_SETUP: boolean;
   PERMISSION_TO_VIEW_QUOTA_USAGE: boolean;
+  PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS: boolean;
+  PERMISSION_TO_VIEW_MONITOR: boolean;
 
   constructor(
     public auth: AuthService,
@@ -476,6 +481,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
         }
 
+        // ---------------------------------
+        // PERMISSION TO EDIT FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+        } else {
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+        }
+
+        // ---------------------------------
+        // PERMISSION TO TEST FLOW
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_TEST_FLOW = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_TEST_FLOW = false;
+        } else {
+          this.PERMISSION_TO_TEST_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_TEST);
+        }
+
         // -------------------------------
         // PERMISSION TO VIEW KB
         // -------------------------------
@@ -590,8 +617,30 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
         }
 
-        
-        
+        // -------------------------------------------
+        // PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS
+        // -------------------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = false;
+        } else {
+          this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = status.matchedPermissions.includes(
+            PERMISSIONS.REQUEST_UNASSIGNED_NOTIFICATION_READ,
+          );
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_MONITOR
+        // -------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_VIEW_MONITOR = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_VIEW_MONITOR = true;
+        } else {
+          this.PERMISSION_TO_VIEW_MONITOR = status.matchedPermissions.includes(PERMISSIONS.INBOX_READ);
+        }
+
       });
   }
 
@@ -1185,35 +1234,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.chatbots = faqKb
+      this.chatbots = sortChatbotsByLastUpdated(faqKb);
       this.logger.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
 
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
-      // if(!this.displayKbHeroSection) {
       this.showskeleton = false;
-      // } else {
-      //   setTimeout(() => {
-      //     this.showskeleton = false;
-      //     this.logger.log('[HOME] - GET FAQKB - showskeleton ', this.showskeleton);
-      //   }, 500);
-      // }
-
-      this.delayNewsFeedSkeleton()
-
+      this.delayNewsFeedSkeleton();
 
     }, () => {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
-      // if(!this.displayKbHeroSection) {
       this.showskeleton = false;
-      // } else {
-      //   setTimeout(() => {
-
-      //     this.showskeleton = false;
-      //     this.logger.log('[HOME] - GET FAQKB COMPLETE - showskeleton ', this.showskeleton);
-      //   }, 3000);
-      // }
-      this.delayNewsFeedSkeleton()
+      this.delayNewsFeedSkeleton();
 
     });
   }

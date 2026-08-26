@@ -1144,7 +1144,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.faqKbService.getFaqKbByProjectId()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe((faqKb: any) => {
-     this.logger.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
+     console.log('[BOTS-LIST] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
 
         this.faqkbList = faqKb;

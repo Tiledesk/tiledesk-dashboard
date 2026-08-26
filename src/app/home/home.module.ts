@@ -21,6 +21,8 @@ import { HomeCustomizeWidgetComponent } from 'app/home-components/home-customize
 import { HomeCreateTeammateComponent } from 'app/home-components/home-create-teammate/home-create-teammate.component';
 import { HomeKbComponent } from 'app/home-components/home-kb/home-kb.component';
 import { HomeCdsComponent } from 'app/home-components/home-cds/home-cds.component';
+import { HomeFlowComponent } from 'app/home-components/home-flow/home-flow.component';
+import { HomeQuickCardsComponent } from 'app/home-components/home-quick-cards/home-quick-cards.component';
 import { HomeGoToChatComponent } from 'app/home-components/home-go-to-chat/home-go-to-chat.component';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MomentModule } from 'ngx-moment';
@@ -42,6 +44,8 @@ const routes: Routes = [
     HomeCreateTeammateComponent,
     HomeKbComponent,
     HomeCdsComponent,
+    HomeFlowComponent,
+    HomeQuickCardsComponent,
     HomeGoToChatComponent
   ],
   imports: [

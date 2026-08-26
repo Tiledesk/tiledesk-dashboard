@@ -52,6 +52,22 @@
                 </div> -->
              
                 <div class="flex flex-col min-w-0 ml-4">
+                  <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
+                    (click)="goToSubscription()">
+                    <div *ngIf="isVisiblePay" class="home-project-plan-badge" [ngClass]="{
+                        'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
+                        'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
+                        'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
+                        'bb-plan-badge': project?.plan_badge_background_type === 'bb_plan_badge', 
+                        'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
+                        'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
+                        }">
+                        <!-- style="border-bottom: 1px dotted #3ea9f5;" -->
+                        <span >
+                          {{ prjct_profile_name }}
+                        </span>
+                    </div>
+                  </div>
                   <!-- leading-7 -->
                   <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
                     <span style="font-family: 'Poppins', Arial, sans-serif;">
@@ -63,22 +79,10 @@
                       mode_edit
                     </span>
                   </div>
-                  <!-- (click)="goToSubscriptionOrOpenModalSubsExpired()" -->
-                  <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
-                    (click)="goToSubscription()">
-                    <div *ngIf="isVisiblePay" class="home-project-plan-badge" [ngClass]="{
-                      'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
-                      'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
-                      'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
-                      'bb-plan-badge': project?.plan_badge_background_type === 'bb_plan_badge', 
-                      'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
-                      'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
-                      }">
-                      <span style="border-bottom: 1px dotted #3ea9f5;">
-                        {{ prjct_profile_name }}
-                      </span>
-                    </div>
+                  <div class="home-quota-resets">
+                    {{ 'QuotasReset' | translate }}: {{ quotaResetEndDateLabel | amDateFormat: 'LL' }}
                   </div>
+                  
                 </div>
               </div>
               <!-- ---------------------------------- -->
@@ -241,6 +245,7 @@
         <!-- QUOTA Banner -->
         <!--  *ngIf="!displayQuotaSkeleton"-->
         <!-- <div class="test">  -->
+        <div class="home-dashboard-inset">
         <ng-container *ngIf="isVisibleQuoteSection">
           <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner"
             [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}">
@@ -364,9 +369,7 @@
               </div>
             </div>
 
-            <div class="home-quota-resets">
-              {{ 'QuotasReset' | translate }}: {{ quotaResetEndDateLabel | amDateFormat: 'LL' }}
-            </div>
+            
 
             <div class="home-quotas-banner-footer" *ngIf="conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut || voiceRunnedOut">
               <div class="home-quota-banner-icon">
@@ -397,6 +400,20 @@
               </span>
             </div>
           </div>
+
+          <home-quick-cards
+            *ngIf="!displayQuotaSkeleton && USER_ROLE !== 'agent'"
+            [projectId]="projectId"
+            [userRole]="USER_ROLE"
+            [permissionToViewFlows]="PERMISSION_TO_VIEW_FLOWS"
+            [permissionToEditFlows]="PERMISSION_TO_EDIT_FLOWS"
+            [permissionToViewKb]="PERMISSION_TO_VIEW_KB"
+            [permissionToViewTeammates]="PERMISSION_TO_VIEW_TEAMMATES"
+            [permissionToInviteTeammates]="PERMISSION_TO_INVITE"
+            [permissionToViewUnassignedNotifications]="PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS"
+            [permissionToViewMonitor]="PERMISSION_TO_VIEW_MONITOR">
+          </home-quick-cards>
+
           <!--  *ngIf="displayQuotaSkeleton" -->
           <div *ngIf="displayQuotaSkeleton" class="first-card is-loading" style="height: 68px;">
 
@@ -640,6 +657,16 @@
 
             <span *ngIf="USER_ROLE !== 'agent'">
               <ng-container *ngIf="areVisibleChatbot">
+                <home-flow
+                  [chatbots]="chatbots"
+                  [project]="project"
+                  [USER_ROLE]="USER_ROLE"
+                  [PERMISSION_TO_VIEW_FLOWS]="PERMISSION_TO_VIEW_FLOWS"
+                  [PERMISSION_TO_EDIT_FLOWS]="PERMISSION_TO_EDIT_FLOWS"
+                  [PERMISSION_TO_TEST_FLOW]="PERMISSION_TO_TEST_FLOW"
+                  (goToCreateChatbot)="goToCreateChatbot()">
+                </home-flow>
+
                 <home-cds (goToCreateChatbot)="goToCreateChatbot()" 
                   [chatbots]="chatbots" 
                   [project]="project"
@@ -799,6 +826,7 @@
               </div>
             </span>
           </ng-container>
+        </div>
         </div>
 
         <ng-container *ngIf="displayNewsAndDocumentation && USER_ROLE !== 'agent'">

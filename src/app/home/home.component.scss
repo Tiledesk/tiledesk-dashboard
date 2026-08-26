@@ -2484,6 +2484,8 @@ print {
   display: flex;
   flex: 1 1 auto;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .flex {
@@ -2505,7 +2507,7 @@ print {
 .bg-card {
   opacity: 1;
   background-color: #fff;
-  margin-top: 52px;
+  margin-top: 71px;
   // border-bottom: 1px solid rgb(226, 232, 240);
   height: 80px;
     // background: beige;
@@ -2649,7 +2651,7 @@ img {
 .text-2xl {
   // font-size: 1.25rem !important;
   // font-size: 36px !important;
-  font-size: 26px !important;
+  font-size: 32px !important;
   // height: 40px;
 }
 
@@ -2788,11 +2790,11 @@ img {
 .home-project-plan-badge {
   width: fit-content;
   // color: #fff;
-  text-transform: capitalize;
-  font-size: 11px;
+  text-transform: uppercase;
+  font-size: 12px;
   font-weight: 500;
   font-family: var(--header-font-family); // "Poppins", "Roboto", "Arial", sans-serif;
-  line-height: 1; // nk
+  // line-height: 1; // nk
   // border-radius: 999px;
   // padding: 2px 8px;
 }
@@ -2894,16 +2896,53 @@ img {
   // background: rgb(241, 245, 249);
   background: #fff;
   min-height: calc(100% - 70px) !important;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+}
 
+.home-dashboard-inset {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  @media (max-width: 1400px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
 }
 
 .home-blocks-wpr {
   margin-top: -1px;
   // padding: 45px 80px 18px;
-  padding: 6px 80px 18px;
-  max-width: 994px;
+  padding: 6px 0 18px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   display: flex;
-  align-self: center;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.home-blocks-wpr home-flow,
+.home-blocks-wpr home-cds,
+.home--blocks {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1400px) {
+  .padding-l-r {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }
 
 @media (max-width: 868px) {
@@ -3232,7 +3271,7 @@ img {
 }
 
 .home-quota-banner-alert {
-  background: #fefae6;
+  // background: #fefae6;
   padding-top: 0px !important;
   // border: 6px solid #f55a4e;
   // padding-bottom: 12px;
@@ -3309,17 +3348,19 @@ img {
   border-radius: 8px;
   overflow: hidden;
   background: #fff;
-  // max-width: 960px;
-  margin: 0 15px;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
 }
 
 .home-quota-resets {
   text-align: center;
   font-family: var(--header-font-family);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   color: #566787;
-  padding: 3px 12px 3px;
+  padding: 3px 0px;
+  width: fit-content;
 }
 
 .home-quote-container {

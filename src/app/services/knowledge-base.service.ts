@@ -425,6 +425,153 @@ export class KnowledgeBaseService {
     );
   }
 
+  /** AI model usage over time for a chatbot agent (Home test — move to dedicated service if stable). */
+  tokenUsagePerAgentOverTime(agentId: string, range?: { from: string; to: string }) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for AI model usage chart'));
+    }
+    if (!agentId) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing agent id for AI model usage chart'));
+    }
+
+    const { from, to } = range ?? this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const url = `${base}/api/v1/${this.project_id}/charts/ai/agent-tokens-over-time?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&granularity=day&agent=${encodeURIComponent(agentId)}`;
+        console.log('[KNOWLEDGE BASE SERVICE] - aiModelUsageOverTime URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+  
+
+  /** AI model call counts and token totals KPI for a chatbot agent (Home test). */
+  aiModelCallCountsAndTokenTotals(agentId: string) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for AI model KPI'));
+    }
+    if (!agentId) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing agent id for AI model KPI'));
+    }
+
+    const { from, to } = this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const url = `${base}/api/v1/${this.project_id}/kpi/ai/models?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&agent=${encodeURIComponent(agentId)}`;
+        console.log('[KNOWLEDGE BASE SERVICE] - aiModelCallCountsAndTokenTotals URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+
+  /** Agent intent completion distribution KPI (Home — most engaged chatbot). */
+  agentDistribution(range?: { from: string; to: string }) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for agent distribution KPI'));
+    }
+
+    const { from, to } = range ?? this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const url = `${base}/api/v1/${this.project_id}/kpi/agent/intents-duration?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
+        console.log('[KNOWLEDGE BASE SERVICE] - agentDistribution URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+
+  /** Agent conversations ops over time (Home test). */
+  agentConversazionsOverTime(agentId?: string, range?: { from: string; to: string }) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for agent ops chart'));
+    }
+
+    const { from, to } = range ?? this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const agentQuery = agentId ? `&agent=${encodeURIComponent(agentId)}` : '';
+        const url = `${base}/api/v1/${this.project_id}/charts/agent/ops-over-time?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&granularity=day${agentQuery}`;
+        console.log('[KNOWLEDGE BASE SERVICE] - agentConversazionsOverTime URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+
+  /** UTC range for the 10 calendar days immediately before the current chart window. */
+  getPrevious10DaysChartRange(): { from: string; to: string } {
+    const { from: currentFrom } = this.getLast10DaysChartRange();
+    const currentFromDate = new Date(currentFrom);
+    const toDate = new Date(currentFromDate);
+    toDate.setUTCDate(toDate.getUTCDate() - 1);
+    toDate.setUTCHours(23, 59, 59, 0);
+    const fromDate = new Date(toDate);
+    fromDate.setUTCDate(fromDate.getUTCDate() - 9);
+    fromDate.setUTCHours(0, 0, 0, 0);
+    return {
+      from: fromDate.toISOString(),
+      to: toDate.toISOString(),
+    };
+  }
+
+  /** UTC range for the last 10 calendar days (from start of day to end of today). */
+  private getLast10DaysChartRange(): { from: string; to: string } {
+    const now = new Date();
+    const toDate = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), 23, 59, 59, 0));
+    const fromDate = new Date(toDate);
+    fromDate.setUTCDate(fromDate.getUTCDate() - 9);
+    fromDate.setUTCHours(0, 0, 0, 0);
+    return {
+      from: fromDate.toISOString(),
+      to: toDate.toISOString(),
+    };
+  }
+
+     
+
   // DEPRECATED FUNCTIONS - END
 
 

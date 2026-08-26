@@ -215,7 +215,7 @@ export class QuotesService {
     if (project.profile.quotes) {
       let profile_quotes = project?.profile?.quotes;
       const merged_quotes = Object.assign({}, limits, profile_quotes);
-      this.logger.log('merged_quotes ', merged_quotes)
+      console.log('merged_quotes ', merged_quotes)
       return merged_quotes;
     } else {
       this.logger.log('merged_quotes ', limits)
