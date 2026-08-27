@@ -395,7 +395,7 @@
     "SortByDate": "sortera efter datum",
     "SelectActivities": "Välj aktiviteter",
     "AllActivities": "Alla aktiviteter",
-    "ActivitiesNew": {   
+    "ActivitiesNew": {
         "ActivityType": "Aktivitetstyp",
         "ActivitiesGoToProfile": "Gå till profil",
         "ActivitiesViewChart": "Visa diagram",
@@ -416,7 +416,7 @@
         "RemovedFromProject": "Borttagen från projektet",
         "StartDate": "Startdatum",
         "EndDate": "Slutdatum",
-         "FilterGroup": {
+        "FilterGroup": {
             "Conversations": "Konversationer",
             "Assignments": "Tilldelningar",
             "Team": "Team",
@@ -981,7 +981,7 @@
     "ThisRoleIsCurrentlyAssignedTo": "Denna roll är för närvarande tilldelad {{total_associations}} {{association_type}}",
     "ReassignDifferentRoleBeforeDeleting": "Tilldela {{pronoun}} en annan roll innan du tar bort denna",
     "RoleCannotBeDeleted": "Rollen kan inte tas bort",
-    "MaxAllowedSize":"Maximal tillåten storlek {{file_size_limit}} MB",
+    "MaxAllowedSize": "Maximal tillåten storlek {{file_size_limit}} MB",
     "Attachments": "Bilagor",
     "Emoji": "Emoji",
     "VoiceRecorder": "Röstinspelare",
@@ -2909,7 +2909,8 @@
         "VllmDuplicateUrl": "En endpoint med denna URL finns redan",
         "VllmEndpointWillBeDeleted": "Endpointen <b>{{ endpointName }}</b> kommer att raderas. Denna åtgärd kan inte ångras.",
         "VllmEndpointHasBeenDeleted": "Endpointen har raderats.",
-        "ApiKey": "API Key"
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Klistra in din nya API-nyckel"
     },
     "ViewTeammates": "Se lagkamrater",
     "AddNewTeammate": "Lägg till ny lagkamrat",

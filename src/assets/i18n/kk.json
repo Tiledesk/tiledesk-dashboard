@@ -980,7 +980,7 @@
     "ThisRoleIsCurrentlyAssignedTo": "Бұл рөл қазіргі уақытта {{total_associations}} {{association_type}} тағайындалған",
     "ReassignDifferentRoleBeforeDeleting": "Бұны жоюдың алдында {{pronoun}} басқа рөлге тағайындаңыз",
     "RoleCannotBeDeleted": "Рөлді жою мүмкін емес",
-    "MaxAllowedSize":"Рұқсат етілген максималды өлшем {{file_size_limit}} МБ",
+    "MaxAllowedSize": "Рұқсат етілген максималды өлшем {{file_size_limit}} МБ",
     "Attachments": "Тіркелген файлдар",
     "Emoji": "Эмоджи",
     "VoiceRecorder": "Дыбыс жазушы",
@@ -2908,7 +2908,8 @@
         "VllmDuplicateUrl": "Бұл URL-мен endpoint бұрыннан бар",
         "VllmEndpointWillBeDeleted": "<b>{{ endpointName }}</b> endpoint-ы жойылады. Бұл әрекетті кері қайтару мүмкін емес.",
         "VllmEndpointHasBeenDeleted": "Endpoint сәтті жойылды.",
-        "ApiKey": "API Key"
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Жаңа API кілтін қойыңыз"
     },
     "ViewTeammates": "Командаластарды көру",
     "AddNewTeammate": "Жаңа командалас қосыңыз",

@@ -423,7 +423,7 @@
             "Chatbot": "Agente IA",
             "KnowledgeBase": "Knowledge Base"
         },
-        "FilterVerb": { 
+        "FilterVerb": {
             "REQUEST_CREATE": "Nova conversa",
             "REQUEST_CLOSE": "Conversa fechada",
             "REQUEST_ASSIGNED_AUTO": "Atribuição automática",
@@ -2908,7 +2908,8 @@
         "VllmDuplicateUrl": "Já existe um endpoint com esta URL",
         "VllmEndpointWillBeDeleted": "O endpoint <b>{{ endpointName }}</b> será eliminado. Esta ação não pode ser desfeita.",
         "VllmEndpointHasBeenDeleted": "O endpoint foi eliminado com sucesso.",
-        "ApiKey": "API Key"
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Cole sua nova API key"
     },
     "ViewTeammates": "Ver companheiros de equipe",
     "AddNewTeammate": "Adicionar novo companheiro de equipe",

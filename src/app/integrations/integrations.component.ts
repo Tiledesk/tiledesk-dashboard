@@ -569,7 +569,22 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.logger.log('[INTEGRATION-COMP] data', data)
     this.integrationService.saveIntegration(data.integration).subscribe((result) => {
       this.logger.log("[INTEGRATION-COMP] Save integration result: ", result);
-      // this.notify.showNotification("Saved successfully", 2, 'done');
+
+      // Prefer the server value (typically masked apikey) when the API returns the saved doc.
+      const saved: any = result;
+      if (saved && saved.value && saved.value.apikey != null && this.selectedIntegration) {
+        if (this.selectedIntegration.name === (saved.name || data.integration.name)) {
+          this.selectedIntegration = {
+            ...this.selectedIntegration,
+            ...saved,
+            value: {
+              ...(this.selectedIntegration.value || {}),
+              ...(saved.value || {}),
+            }
+          };
+        }
+      }
+
       this.reloadSelectedIntegration(data.integration);
       // if (data.isVerified === true) {
       //   this.notify.showWidgetStyleUpdateNotification("Saved successfully", 2, 'done');

@@ -423,7 +423,7 @@
             "Chatbot": "الوكيل الذكي",
             "KnowledgeBase": "Knowledge Base"
         },
-        "FilterVerb": { 
+        "FilterVerb": {
             "REQUEST_CREATE": "محادثة جديدة",
             "REQUEST_CLOSE": "تم إغلاق المحادثة",
             "REQUEST_ASSIGNED_AUTO": "تعيين تلقائي",
@@ -891,12 +891,12 @@
     "DisableAttachments": "تعطيل المرفقات",
     "WhenEnabledAttachments": "عند تمكين هذه الميزة، يمكن للمستخدمين إرسال المرفقات. وعند تعطيلها، سيتم إخفاء زر المرفقات",
     "DisableEmoji": "تعطيل الرموز التعبيرية",
-    "WhenEnabledEmoji":"عند تمكينه، يمكن للمستخدمين إرسال الرموز التعبيرية. عند تعطيله، سيتم إخفاء زر الرموز التعبيرية",
-    "DisableVoiceRecoder":"تعطيل مسجل الصوت",
-    "WhenEnabledVoiceRecoder":"عند تمكينه، يمكن للمستخدمين تسجيل الرسائل الصوتية. عند تعطيله، سيتم إخفاء زر تسجيل الصوت ولن يتمكن المستخدم إلا من إرسال رسالة نصية",
+    "WhenEnabledEmoji": "عند تمكينه، يمكن للمستخدمين إرسال الرموز التعبيرية. عند تعطيله، سيتم إخفاء زر الرموز التعبيرية",
+    "DisableVoiceRecoder": "تعطيل مسجل الصوت",
+    "WhenEnabledVoiceRecoder": "عند تمكينه، يمكن للمستخدمين تسجيل الرسائل الصوتية. عند تعطيله، سيتم إخفاء زر تسجيل الصوت ولن يتمكن المستخدم إلا من إرسال رسالة نصية",
     "VoiceStreamingMode": "وضع البث الصوتي المباشر",
     "VoiceStreamingModeDesc": "إذا تم التمكين، يمكن للمستخدم إرسال الصوت في الوقت الفعلي أثناء التحدث. إذا تم التعطيل، لن يكون الزر مرئيًا.",
-    "UploadLogo":"قم بتحميل شعارك",
+    "UploadLogo": "قم بتحميل شعارك",
     "FileTooLarge": "الملف كبير جدًا بحيث لا يمكن تحميله. الحد الأقصى لحجم الملف {{file_size}}",
     "ImagePreview": "معاينة الصورة",
     "Flows": "التدفقات",
@@ -2555,7 +2555,7 @@
         "SituatedContextDescription": "يُضيف سياقًا موقفيًا إلى أجزاء المحتوى الخاصة بك لاسترجاع أكثر دقة (استهلاك أعلى للرموز ومتاح فقط مع استخراج المحتوى التلقائي).",
         "SituatedContextDescriptionFaq": "يُضيف سياقًا موقفيًا إلى أجزاء المحتوى الخاصة بك لاسترجاع أكثر دقة (استهلاك أعلى للرموز).",
         "RegexChunking": "تقسيم Regex",
-        "RegexChunkingDescription": "استخدم Regex لتحديد الـ chunks الخاصة بك (ملفات TXT و Markdown فقط)",  
+        "RegexChunkingDescription": "استخدم Regex لتحديد الـ chunks الخاصة بك (ملفات TXT و Markdown فقط)",
         "RegexChunkingPlaceholder": "نمط Regex",
         "RegexChunkingPlaceholderDescription": "أدخل نمط Regex لتحديد الـ chunks الخاصة بك",
         "UseCache": "استخدام التخزين المؤقت",
@@ -2908,7 +2908,8 @@
         "VllmDuplicateUrl": "نقطة نهاية بهذا URL موجودة بالفعل",
         "VllmEndpointWillBeDeleted": "سيتم حذف نقطة النهاية <b>{{ endpointName }}</b>. لا يمكن التراجع عن هذا الإجراء.",
         "VllmEndpointHasBeenDeleted": "تم حذف نقطة النهاية بنجاح.",
-        "ApiKey": "API Key"
+        "ApiKey": "API Key",
+        "PasteNewApikey": "الصق مفتاح API الجديد"
     },
     "ViewTeammates": "عرض زملائه",
     "AddNewTeammate": "أضف زميلًا جديدًا في الفريق",
