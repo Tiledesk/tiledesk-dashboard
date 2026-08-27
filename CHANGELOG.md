@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.21
+- Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
+
 ### 2.8.20
 - Adds the connector plugin registry: register project-scoped connectors from a manifest URL and manage them from the Integrations page
 - Renders one Integrations tile per registered connector, alongside a static "Add connector" tile
