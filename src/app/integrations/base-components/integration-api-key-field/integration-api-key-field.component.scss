@@ -1,0 +1,60 @@
+.integration-api-key-field {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+
+  label {
+    color: #7695a5;
+    font-weight: 400;
+    font-size: 14px;
+    padding-bottom: 2px;
+  }
+}
+
+.api-key-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 500px;
+}
+
+.password-input {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  border-radius: 5px;
+  border: solid 1px #d9d9d9;
+  height: 36px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  background-color: #fff !important;
+  color: #000000de;
+  font-weight: 300;
+  font-size: 14px;
+
+  &.is-readonly {
+    background-color: #f7f7f7 !important;
+  }
+
+  input {
+    width: 100%;
+    border: none;
+    background: none;
+    font-weight: 300;
+    font-size: 14px;
+    outline: none;
+
+    &[readonly] {
+      cursor: default;
+      color: #555;
+    }
+  }
+}
+
+.api-key-action-btn {
+  flex-shrink: 0;
+  height: 36px;
+  min-width: 88px;
+  padding: 0 12px !important;
+  margin: 0;
+}

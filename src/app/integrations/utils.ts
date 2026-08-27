@@ -313,3 +313,10 @@ export class N8nIntegration extends Integration {
         this.value = {};
     }
 }
+
+/** True when the server returned a partially obscured API key (not usable for provider checks). */
+export function isMaskedApikey(apikey: string | null | undefined): boolean {
+  const value = String(apikey || '');
+  return /[*•●]/.test(value);
+}
+

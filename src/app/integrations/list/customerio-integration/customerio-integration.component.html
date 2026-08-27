@@ -37,35 +37,11 @@
             placeholder="Your site ID">
     </div>
 
-    <div class="input-field">
-        <label>Api Key</label>
-        <!-- <div class="password-input">
-            <input id="api-key-input" type="password" placeholder="Your api key"
-                [(ngModel)]="integration.value.key"  autocomplete="new-password">
-            <div class="show-hide-button">
-                <span *ngIf="keyVisibile === false" class="material-icons-outlined"
-                    (click)="showHideKey()">visibility</span>
-                <span *ngIf="keyVisibile === true" class="material-icons-outlined"
-                    (click)="showHideKey()">visibility_off</span>
-            </div>
-        </div> -->
-
-        <div class="password-input">
-            <input id="api-key-input" type="text" name="api-key-input" placeholder="{{ 'Integration.YourApikey' | translate }}"
-            id="maskedInput"
-            [value]="getDisplayValue()"
-            (input)="handleInput($event)"
-            (keydown.backspace)="handleBackspace()"
-            autocomplete="off" >
-            <div class="show-hide-button">
-                <button type="button" class="eye-btn" (click)="toggleMask(maskedInput)" #maskedInput>
-                    <span *ngIf="isMasked === true" class="material-icons-outlined">visibility_off</span>
-                    <span *ngIf="isMasked === false" class="material-icons-outlined">visibility</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
+    <integration-api-key-field
+        [storedApikey]="integration.value.apikey"
+        (apikeyChange)="onApikeyChange($event)"
+        (canSaveChange)="apiKeyCanSave = $event">
+    </integration-api-key-field>
 
     <div class="integration-footer">
         <!-- custom-danger-button -->
@@ -77,7 +53,7 @@
             {{ 'Integration.Clear' | translate }}
         </button>
         <!-- custom-primary-button -->
-        <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">
+        <button class="btn btn-tdblu-no-boxshadow" [disabled]="!apiKeyCanSave" (click)="saveIntegration()">
             {{ 'Integration.Save' | translate }}
         </button>
        
