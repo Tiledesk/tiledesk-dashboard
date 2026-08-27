@@ -395,7 +395,7 @@
     "SortByDate": "trier par date",
     "SelectActivities": "Sélectionnez des activités",
     "AllActivities": "L'ensemble des Activités",
-    "ActivitiesNew": { 
+    "ActivitiesNew": {
         "ActivityType": "Type d'activité",
         "ActivitiesGoToProfile": "Aller au profil",
         "ActivitiesViewChart": "Voir le graphique",
@@ -423,7 +423,7 @@
             "Chatbot": "Agent IA",
             "KnowledgeBase": "Knowledge Base"
         },
-        "FilterVerb": { 
+        "FilterVerb": {
             "REQUEST_CREATE": "Nouvelle conversation",
             "REQUEST_CLOSE": "Conversation fermée",
             "REQUEST_ASSIGNED_AUTO": "Attribution automatique",
@@ -665,7 +665,7 @@
     "DragAFileHereOr": "Faites glisser votre fichier d'informations d'identification .json ici ou",
     "DragYuorFileHereOr": "Faites glisser votre fichier ici ou",
     "Browse": "feuilleter",
-    "SupportedFileTypesPdfTxtDocx":  "Types de fichiers pris en charge : pdf, txt, docx, md - {{file_size_limit}} MB max.",
+    "SupportedFileTypesPdfTxtDocx": "Types de fichiers pris en charge : pdf, txt, docx, md - {{file_size_limit}} MB max.",
     "SupportedFileTypesPdfDocx": "Types de fichiers pris en charge: pdf et docx - {{file_size_limit}} MB max.",
     "FileSizeExceedsFileSizeLimitMb": "La taille du fichier dépasse {{file_size_limit}} MB.",
     "FileTypeNotSupported": "Type de fichier non pris en charge",
@@ -891,12 +891,12 @@
     "DisableAttachments": "Désactiver les pièces jointes",
     "WhenEnabledAttachments": "Lorsque cette option est activée, les utilisateurs peuvent envoyer des pièces jointes. Lorsqu'elle est désactivée, le bouton de pièce jointe est masqué.",
     "DisableEmoji": "Désactiver les emojis",
-    "WhenEnabledEmoji":"Lorsque cette option est activée, les utilisateurs peuvent envoyer des émoticônes. Lorsqu'elle est désactivée, le bouton émoticônes est masqué.",
-    "DisableVoiceRecoder":"Désactiver l'enregistreur vocal",
-    "WhenEnabledVoiceRecoder":"Lorsque cette option est activée, les utilisateurs peuvent enregistrer des messages vocaux. Lorsqu'elle est désactivée, le bouton de l'enregistreur vocal est masqué et l'utilisateur ne peut envoyer que des messages texte.",
+    "WhenEnabledEmoji": "Lorsque cette option est activée, les utilisateurs peuvent envoyer des émoticônes. Lorsqu'elle est désactivée, le bouton émoticônes est masqué.",
+    "DisableVoiceRecoder": "Désactiver l'enregistreur vocal",
+    "WhenEnabledVoiceRecoder": "Lorsque cette option est activée, les utilisateurs peuvent enregistrer des messages vocaux. Lorsqu'elle est désactivée, le bouton de l'enregistreur vocal est masqué et l'utilisateur ne peut envoyer que des messages texte.",
     "VoiceStreamingMode": "Mode de streaming vocal",
     "VoiceStreamingModeDesc": "Si activé, l'utilisateur peut transmettre la voix en temps réel pendant qu'il parle. Si désactivé, le bouton ne sera pas visible.",
-    "UploadLogo":"Charger le logo",
+    "UploadLogo": "Charger le logo",
     "FileTooLarge": "Le fichier est trop volumineux pour être téléchargé. Taille maximale du fichier: {{file_size}}",
     "ImagePreview": "Aperçu de l'image",
     "Flows": "Flux",
@@ -980,7 +980,7 @@
     "ThisRoleIsCurrentlyAssignedTo": "Ce rôle est actuellement attribué à {{total_associations}} {{association_type}}",
     "ReassignDifferentRoleBeforeDeleting": "Réaffectez {{pronoun}} à un rôle différent avant de supprimer celui-ci",
     "RoleCannotBeDeleted": "Le rôle ne peut pas être supprimé",
-    "MaxAllowedSize":"Taille maximale autorisée {{file_size_limit}} MB",
+    "MaxAllowedSize": "Taille maximale autorisée {{file_size_limit}} MB",
     "Attachments": "Pièces jointes",
     "Emoji": "Émoji",
     "VoiceRecorder": "Enregistreur vocal",
@@ -2910,7 +2910,7 @@
         "VllmDuplicateUrl": "Un endpoint avec cette URL existe déjà",
         "VllmEndpointWillBeDeleted": "L'endpoint <b>{{ endpointName }}</b> sera supprimé. Cette action ne peut pas être annulée.",
         "VllmEndpointHasBeenDeleted": "L'endpoint a été supprimé avec succès.",
-                "AddAgentPlatformEndpoint": "Ajouter un endpoint Gemini Agent Platform",
+        "AddAgentPlatformEndpoint": "Ajouter un endpoint Gemini Agent Platform",
         "EditAgentPlatformEndpoint": "Modifier l'endpoint Gemini Agent Platform",
         "TotalAgentPlatformEndpoints": "Total des endpoints",
         "NoAgentPlatformEndpoints": "Aucun endpoint",
@@ -2918,7 +2918,8 @@
         "AgentPlatformEndpointUrlPlaceholder": "https://.../v1/projects/.../locations/.../models/...:generateContent",
         "AgentPlatformInvalidUrlFormat": "URL non valide",
         "AgentPlatformInvalidUrl": "URL Gemini Agent Platform non valide : projet, emplacement et modèle (ou endpoint) introuvables",
-        "ApiKey": "API Key"
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Collez votre nouvelle clé API"
     },
     "ViewTeammates": "Voir les coéquipiers",
     "AddNewTeammate": "Ajouter un nouveau coéquipier",

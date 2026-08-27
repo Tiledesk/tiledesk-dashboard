@@ -980,7 +980,7 @@
     "ThisRoleIsCurrentlyAssignedTo": "Бұл рөл қазіргі уақытта {{total_associations}} {{association_type}} тағайындалған",
     "ReassignDifferentRoleBeforeDeleting": "Бұны жоюдың алдында {{pronoun}} басқа рөлге тағайындаңыз",
     "RoleCannotBeDeleted": "Рөлді жою мүмкін емес",
-    "MaxAllowedSize":"Рұқсат етілген максималды өлшем {{file_size_limit}} МБ",
+    "MaxAllowedSize": "Рұқсат етілген максималды өлшем {{file_size_limit}} МБ",
     "Attachments": "Тіркелген файлдар",
     "Emoji": "Эмоджи",
     "VoiceRecorder": "Дыбыс жазушы",
@@ -2918,7 +2918,8 @@
         "AgentPlatformEndpointUrlPlaceholder": "https://.../v1/projects/.../locations/.../models/...:generateContent",
         "AgentPlatformInvalidUrlFormat": "Жарамсыз URL",
         "AgentPlatformInvalidUrl": "Gemini Agent Platform URL жарамсыз: жоба, орын және модель (немесе endpoint) табылмады",
-        "ApiKey": "API Key"
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Жаңа API кілтін қойыңыз"
     },
     "ViewTeammates": "Командаластарды көру",
     "AddNewTeammate": "Жаңа командалас қосыңыз",

@@ -20,24 +20,15 @@
                 [(ngModel)]="currentEndpoint.url" autocomplete="off" style="font-size: 14px;">
         </div>
 
-        <div class="input-field">
-            <label>{{ 'Integration.ApiKey' | translate }} ({{ 'Optional' | translate }})</label>
-            <div class="password-input">
-                <input id="api-key-input" type="text"
-                    name="api-key-input"
-                    placeholder="{{ 'Integration.YourApikey' | translate }}"
-                    [value]="getDisplayValue()"
-                    (input)="handleInput($event)"
-                    (keydown.backspace)="handleBackspace()"
-                    autocomplete="off" #maskedInput style="font-size: 14px;">
-                <div class="show-hide-button">
-                    <button type="button" class="eye-btn" (click)="toggleMask(maskedInput)">
-                        <span *ngIf="isMasked === true" class="material-icons-outlined">visibility_off</span>
-                        <span *ngIf="isMasked === false" class="material-icons-outlined">visibility</span>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <integration-api-key-field
+            [storedApikey]="endpointStoredApikey"
+            [optional]="true"
+            [showOptionalHint]="true"
+            [resetKey]="apiKeyFieldReset"
+            (apikeyChange)="currentEndpoint.apikey = $event"
+            (canSaveChange)="apiKeyCanSave = $event"
+            (isReplacingChange)="apiKeyIsReplacing = $event">
+        </integration-api-key-field>
 
         <div class="input-field" style="margin-bottom: 10px;">
             <label>{{ 'Models' | translate }}</label>

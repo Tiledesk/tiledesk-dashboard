@@ -981,7 +981,7 @@
     "ThisRoleIsCurrentlyAssignedTo": "Ця роль наразі призначена для {{total_associations}} {{association_type}}",
     "ReassignDifferentRoleBeforeDeleting": "Перепризначте {{pronoun}} на іншу роль перед видаленням цієї",
     "RoleCannotBeDeleted": "Роль не може бути видалена",
-    "MaxAllowedSize":"Максимальний дозволений розмір {{file_size_limit}} МБ",
+    "MaxAllowedSize": "Максимальний дозволений розмір {{file_size_limit}} МБ",
     "Attachments": "Вкладення",
     "Emoji": "Емодзі",
     "VoiceRecorder": "Диктофон",
@@ -2919,7 +2919,8 @@
         "AgentPlatformEndpointUrlPlaceholder": "https://.../v1/projects/.../locations/.../models/...:generateContent",
         "AgentPlatformInvalidUrlFormat": "Недійсний URL",
         "AgentPlatformInvalidUrl": "Недійсний URL Gemini Agent Platform: проект, місцезнаходження та модель (або endpoint) не знайдені",
-        "ApiKey": "API Key"
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Вставте новий API-ключ"
     },
     "ViewTeammates": "Переглянути товаришів по команді",
     "AddNewTeammate": "Додати нового товариша по команді",

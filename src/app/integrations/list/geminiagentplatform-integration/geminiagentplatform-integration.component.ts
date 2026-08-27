@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { NotifyService } from 'app/core/notify.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { isMaskedApikey } from 'app/integrations/utils';
 import { AgentPlatformEndpoint } from './agentplatform-endpoint-table/agentplatform-endpoint-table.component';
 
 const Swal = require('sweetalert2');
@@ -30,7 +31,10 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   editingIndex = -1;
   newModelName = '';
   showEnterButton = false;
-  isMasked = true;
+  apiKeyCanSave = true;
+  apiKeyIsReplacing = false;
+  apiKeyFieldReset = 0;
+  endpointStoredApikey = '';
   /** Tracks model auto-seeded from the URL so URL edits can replace it. */
   private urlSeededModel: string | null = null;
 
@@ -81,7 +85,6 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
 
     const name = String(this.currentEndpoint.name || '').trim();
     const url = String(this.currentEndpoint.url || '').trim();
-    const apikey = String(this.currentEndpoint.apikey || '').trim();
     const models = this.normalizeModels(this.currentEndpoint.models);
     const parsed = this.parseProjectLocationFromUrl(url);
 
@@ -130,13 +133,27 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       return;
     }
 
+    const draftKey = String(this.currentEndpoint.apikey || '').trim();
+    let apikeyProps = {};
+    if (this.apiKeyIsReplacing) {
+      if (draftKey && !isMaskedApikey(draftKey)) {
+        apikeyProps = { apikey: draftKey };
+      }
+      // else clear / omit
+    } else if (this.isEditing && this.editingIndex >= 0) {
+      const prev = String(this.integration.value.servers[this.editingIndex]?.apikey || '').trim();
+      if (prev) apikeyProps = { apikey: prev };
+    } else if (draftKey && !isMaskedApikey(draftKey)) {
+      apikeyProps = { apikey: draftKey };
+    }
+
     const endpointToSave: AgentPlatformEndpoint = {
       name,
       url,
       models,
       project: parsed.project,
       location: parsed.location,
-      ...(apikey ? { apikey } : {}),
+      ...apikeyProps,
     };
 
     if (this.isEditing && this.editingIndex >= 0) {
@@ -169,7 +186,8 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       };
       this.isEditing = true;
       this.editingIndex = index;
-      this.isMasked = true;
+      this.endpointStoredApikey = endpoint.apikey || '';
+      this.apiKeyFieldReset++;
       this.newModelName = '';
       this.showEnterButton = false;
       this.urlSeededModel = null;
@@ -260,7 +278,8 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
     this.editingIndex = -1;
     this.newModelName = '';
     this.showEnterButton = false;
-    this.isMasked = true;
+    this.endpointStoredApikey = '';
+    this.apiKeyFieldReset++;
     this.urlSeededModel = null;
   }
 
@@ -271,39 +290,6 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
     };
     this.logger.log('[INT-AgentPlatform] saveIntegration ', this.integration);
     this.onUpdateIntegration.emit(data);
-  }
-
-  handleInput(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const displayedValue = inputElement.value;
-    const currentValue = this.currentEndpoint.apikey || '';
-
-    if (this.isMasked && currentValue) {
-      const newChar = displayedValue.slice(currentValue.length);
-      this.currentEndpoint.apikey = currentValue + newChar;
-    } else {
-      this.currentEndpoint.apikey = displayedValue;
-    }
-
-    inputElement.value = this.getDisplayValue();
-  }
-
-  handleBackspace(): void {
-    if (this.currentEndpoint.apikey) {
-      this.currentEndpoint.apikey = this.currentEndpoint.apikey.slice(0, -1);
-    }
-  }
-
-  toggleMask(inputElement: HTMLInputElement): void {
-    this.isMasked = !this.isMasked;
-    inputElement.value = this.getDisplayValue();
-  }
-
-  getDisplayValue(): string {
-    if (!this.currentEndpoint.apikey) {
-      return '';
-    }
-    return this.isMasked ? '●'.repeat(this.currentEndpoint.apikey.length) : this.currentEndpoint.apikey;
   }
 
   canSubmit(): boolean {

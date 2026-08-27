@@ -423,7 +423,7 @@
             "Chatbot": "Agente IA",
             "KnowledgeBase": "Knowledge Base"
         },
-        "FilterVerb": { 
+        "FilterVerb": {
             "REQUEST_CREATE": "Nova conversa",
             "REQUEST_CLOSE": "Conversa fechada",
             "REQUEST_ASSIGNED_AUTO": "Atribuição automática",
@@ -2918,7 +2918,8 @@
         "AgentPlatformEndpointUrlPlaceholder": "https://.../v1/projects/.../locations/.../models/...:generateContent",
         "AgentPlatformInvalidUrlFormat": "URL inválida",
         "AgentPlatformInvalidUrl": "URL Gemini Agent Platform inválida: projeto, localização e modelo (ou endpoint) não encontrados",
-        "ApiKey": "API Key"
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Cole sua nova API key"
     },
     "ViewTeammates": "Ver companheiros de equipe",
     "AddNewTeammate": "Adicionar novo companheiro de equipe",
