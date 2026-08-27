@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.8.21
+### 2.7.245-stage 
 - Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
 
 ### 2.8.20
@@ -11,21 +11,24 @@
 - Updates LLM models
 - Adds Gemini Agent Platform integration
 
-### 2.8.19
-- Adds permissions to Data tables
+### 2.7.244-stage 
+-  Updates LLM models
 
-### 2.8.18
+### 2.7.243-stage 
+- Adds Gemini Agent Platform integration
+
+### 2.7.242-stage 
 - Migrates the dashboard core to Angular 15 (CLI, `@angular/core`, and Material/CDK 15 with MDC)
 - Adapts key UI surfaces to Material MDC (History date range, Knowledge Base actions, Data Tables)
-- Removes unused components (in-app CDS, FAQ test, Native bot, Tilebot UI and more)
-- Improves Analytics loading feedback
+- Removes unused components (in-app CDS, FAQ test, Native bot, Tilebot UI and more) 
+- Improves Analytics loading feedback  
 - Adds LEAVE_CONVERSATION to the new Activities page
 - Improvements and bug fixing
 
-### 2.8.16
+### 2.7.241-stage 	
 - Shows the current size of data tables in MB against the maximum allowed size
 - Adds the ability to filter data tables by conditions
-- Adds tooltips in the Knowledge Bases and Data Tables sidebars to show the full name
+- Adds tooltips in the Knowledge Bases and Data Tables sidebars to show the full name when truncated
 
 ### 2.7.240-stage
 - Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically (GA and Rewardful on panel.tiledesk.com; Stripe when PAY is enabled)
