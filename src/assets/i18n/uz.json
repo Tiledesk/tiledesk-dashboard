@@ -2567,6 +2567,8 @@
         "JoinNow": "<b>{{ intname }}</b> hozir!",
         "FreeAccount": "bepul <b>{{ intname }}</b> hisob!",
         "YourApikey": "Sizning API kalitingiz",
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Yangi API kalitini joylashtiring",
         "OrganizationOptional": "Tashkilot (ixtiyoriy)",
         "YourOrganization": "Tashkilotingiz nomi",
         "GoodNews": "<b>Xush habar!</b>",

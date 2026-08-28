@@ -1997,8 +1997,8 @@
                         placeholder="Retention period"
                         [clearable]="false" 
                         [searchable]="false"
-                        [(ngModel)]="selectedRetention"
-                        (change)="onSelectRetention(selectedRetention)">
+                        [ngModel]="selectedRetention"
+                        (ngModelChange)="onSelectRetention($event)">
                       </ng-select>
                     </div>
 

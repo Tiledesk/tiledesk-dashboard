@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { isMaskedApikey } from 'app/integrations/utils';
 
 @Component({
   selector: 'v-llm',
@@ -10,132 +11,97 @@ import { LoggerService } from 'app/services/logger/logger.service';
 export class VLLMComponent implements OnInit {
 
   @Input() integration: any;
-   @Output() onUpdateIntegration = new EventEmitter;
-   @Output() onDeleteIntegration = new EventEmitter;
- 
-   translateparams: any;
-   newModelName: string = '';
-   isMasked: boolean = true; // State for masking
-   keyVisibile: boolean = false;
+  @Output() onUpdateIntegration = new EventEmitter;
+  @Output() onDeleteIntegration = new EventEmitter;
 
-   constructor(
-     private integrationService: IntegrationService,
-     private logger: LoggerService
-   ) { }
- 
-   ngOnInit(): void {
-     this.logger.log("[INT-vLLM] integration ", this.integration)
-     this.translateparams = { intname: 'vLLM' };
-   }
- 
-   
-   addModel(modelName: string): void {
-     let enterBtnElement = document.getElementById('enter-button')
-     enterBtnElement.style.display = 'none';
-     this.logger.log('[INT-vLLM] - addModel ', modelName)
-     if (modelName && !this.integration.value.models.includes(modelName)) {
-       this.logger.log('[INT-vLLM] - addModel here yes modelName', modelName)
-       this.logger.log('[INT-vLLM] - addModel this.integration.value.models', this.integration.value.models)
-       this.integration.value.models.push(modelName);
-       
-     }
-     this.newModelName = null
-   }
- 
-   onEnterModel(event) {
-     // console.log('[INT-vLLM] - onEnterModel event', event)
-     let enterBtnElement = document.getElementById('enter-button')
-     // console.log('[INT-vLLM] - onEnterModel enterBtnElement', enterBtnElement)
-     if (event.length > 0) {
-       enterBtnElement.style.display = 'inline-block';
-     } else {
-       enterBtnElement.style.display = 'none';
-     }
-   }
- 
-   removeModel(modelName: string): void {
-     this.integration.value.models =  this.integration.value.models.filter(model => model !== modelName);
-   }
- 
-   saveIntegration() {
-     let data = {
-       integration: this.integration,
-     }
-     this.logger.log("[INT-vLLM] saveIntegration ", this.integration)
-     this.onUpdateIntegration.emit(data);
-    
-   }
- 
-   deleteIntegration() {
-     // this.newModelName = null
-     this.onDeleteIntegration.emit(this.integration);
-   }
- 
-   
- 
-   resetValues() {
-   //  console.log("[INT-vLLM] resetValues ",  this.integration.value)
-     this.integration.value = {
-       url: null,
-       token: null,
-       apikey: null,
-       models: []
-     }
- 
-     this.newModelName = null
-   }
- 
-  showHideKey() {
-    let input = <HTMLInputElement>document.getElementById('api-key-input');
-    if (this.keyVisibile === false) {
-      input.type = 'text';
+  translateparams: any;
+  newModelName: string = '';
+  apiKeyCanSave = true;
+  apiKeyIsReplacing = false;
+
+  constructor(
+    private integrationService: IntegrationService,
+    private logger: LoggerService
+  ) { }
+
+  ngOnInit(): void {
+    this.logger.log("[INT-vLLM] integration ", this.integration)
+    this.translateparams = { intname: 'vLLM' };
+    if (!this.integration.value) {
+      this.integration.value = { url: null, token: null, apikey: null, models: [] };
+    }
+    if (!Array.isArray(this.integration.value.models)) {
+      this.integration.value.models = [];
+    }
+  }
+
+
+  addModel(modelName: string): void {
+    const name = String(modelName || '').trim();
+    const enterBtnElement = document.getElementById('vllm-enter-button');
+    if (enterBtnElement) {
+      enterBtnElement.style.display = 'none';
+    }
+    this.logger.log('[INT-vLLM] - addModel ', name);
+    if (!this.integration.value) {
+      this.integration.value = { models: [] };
+    }
+    if (!Array.isArray(this.integration.value.models)) {
+      this.integration.value.models = [];
+    }
+    if (name && !this.integration.value.models.includes(name)) {
+      this.logger.log('[INT-vLLM] - addModel here yes modelName', name);
+      this.integration.value.models.push(name);
+    }
+    this.newModelName = null;
+  }
+
+  onEnterModel(event) {
+    const enterBtnElement = document.getElementById('vllm-enter-button');
+    if (!enterBtnElement) {
+      return;
+    }
+    if (event && event.length > 0) {
+      enterBtnElement.style.display = 'inline-block';
     } else {
-      input.type = 'password';
-    }
-    this.keyVisibile = !this.keyVisibile;
-  }
-   
-   
-  // ---------------------------------------------------
-  // Mask Api key without use input of password type
-  // ---------------------------------------------------
-  handleInput(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const displayedValue = inputElement.value;
-
-    // Update realValue based on input length and masking state
-    if (this.isMasked && this.integration.value.apikey) {
-      // Add only new characters to realValue
-      const newChar = displayedValue.slice(this.integration.value.apikey.length);
-      this.integration.value.apikey += newChar;
-    } else {
-      // Directly update realValue when unmasked
-      this.integration.value.apikey = displayedValue;
-    }
-
-    // Always set the displayed value to match the current state
-    inputElement.value = this.getDisplayValue();
-  }
-
-  handleBackspace(): void {
-    if (this.integration.value.apikey) {
-      this.integration.value.apikey = this.integration.value.apikey.slice(0, -1);
+      enterBtnElement.style.display = 'none';
     }
   }
 
-  toggleMask(inputElement: HTMLInputElement): void {
-    this.isMasked = !this.isMasked;
-
-    // Update the displayed value immediately when toggling the mask
-    inputElement.value = this.getDisplayValue();
+  removeModel(modelName: string): void {
+    this.integration.value.models = this.integration.value.models.filter(model => model !== modelName);
   }
 
-  getDisplayValue(): string {
-    if (!this.integration.value.apikey) {
-      return ''; // Return an empty string if realValue is null, undefined, or empty
+  saveIntegration() {
+    // When replacing, drop masked leftover so we don't persist a non-usable key.
+    if (this.apiKeyIsReplacing && isMaskedApikey(this.integration?.value?.apikey)) {
+      this.integration.value.apikey = null;
     }
-    return this.isMasked ? '●'.repeat(this.integration.value.apikey.length) : this.integration.value.apikey;
+    let data = {
+      integration: this.integration,
+    }
+    this.logger.log("[INT-vLLM] saveIntegration ", this.integration)
+    this.onUpdateIntegration.emit(data);
+
   }
- 
+
+  deleteIntegration() {
+    // this.newModelName = null
+    this.onDeleteIntegration.emit(this.integration);
+  }
+
+
+
+  resetValues() {
+    //  console.log("[INT-vLLM] resetValues ",  this.integration.value)
+    this.integration.value = {
+      url: null,
+      token: null,
+      apikey: null,
+      models: []
+    }
+
+    this.newModelName = null
+  }
 
 }

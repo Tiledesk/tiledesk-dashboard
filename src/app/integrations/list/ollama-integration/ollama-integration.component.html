@@ -48,48 +48,25 @@
 
     </div> -->
 
-     <div class="input-field">
-        <label>Api Key ({{'Optional' | translate}})</label>
-
-        <!-- <div class="password-input">
-            <input id="api-key-input" type="password" placeholder="{{ 'Integration.YourApikey' | translate }}"
-                [(ngModel)]="integration.value.apikey">
-            <div class="show-hide-button">
-                <span *ngIf="keyVisibile === false" class="material-icons-outlined"
-                    (click)="showHideKey()">visibility</span>
-                <span *ngIf="keyVisibile === true" class="material-icons-outlined"
-                    (click)="showHideKey()">visibility_off</span>
-            </div>
-        </div> -->
-
-        <div class="password-input">
-            <input id="api-key-input" type="text" 
-            name="api-key-input" 
-            placeholder="{{ 'Integration.YourApikey' | translate }}"
-            [value]="getDisplayValue()"
-            (input)="handleInput($event)"
-            (keydown.backspace)="handleBackspace()"
-            autocomplete="off" #maskedInput>
-            <div class="show-hide-button">
-                <button type="button" class="eye-btn" (click)="toggleMask(maskedInput)">
-                    <span *ngIf="isMasked === true" class="material-icons-outlined">visibility_off</span>
-                    <span *ngIf="isMasked === false" class="material-icons-outlined">visibility</span>
-                </button>
-            </div>
-        </div>
-
-    </div>
+    <integration-api-key-field
+        [storedApikey]="integration.value.apikey"
+        [optional]="true"
+        [showOptionalHint]="true"
+        (apikeyChange)="integration.value.apikey = $event"
+        (canSaveChange)="apiKeyCanSave = $event"
+        (isReplacingChange)="apiKeyIsReplacing = $event">
+    </integration-api-key-field>
 
 
 
-    <div class="input-field">
+    <div class="input-field" style="margin-bottom: 10px;">
         <label>{{'Models' | translate}} ({{'Optional' | translate}})</label>
         <div class="fake--input">
             <div class="fake--input-inner">
                 <input id="ollama-models" class="custom-input" name="ollama-models"
                     placeholder="Type an LLM model and press Enter to add it to your favorites" type="text"
                     [(ngModel)]="newModelName"  (ngModelChange)="onEnterModel($event)" autocomplete="off" (keyup.enter)="addModel(newModelName)">
-                <div id="enter-button" class="enter-button" (click)="addModel(newModelName)">{{'KbPage.Enter' | translate}}</div>
+                <div id="ollama-enter-button" class="enter-button" (click)="addModel(newModelName)">{{'KbPage.Enter' | translate}}</div>
             </div>
         </div>
     </div>
@@ -126,7 +103,7 @@
     <!-- </div> -->
 
     <div class="integration-footer">
-        <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">
+        <button class="btn btn-tdblu-no-boxshadow" [disabled]="!apiKeyCanSave" (click)="saveIntegration()">
             {{ 'Integration.Save' | translate }}
         </button>
         <button *ngIf="integration._id" class="btn btn-red" (click)="deleteIntegration()">

@@ -2567,6 +2567,8 @@
         "JoinNow": "<b>{{ intname }}</b> қазір!",
         "FreeAccount": "тегін <b>{{ intname }}</b> шот!",
         "YourApikey": "Сіздің Api кілтіңіз",
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Жаңа API кілтін қойыңыз",
         "OrganizationOptional": "Ұйымдастыру (міндетті емес)",
         "YourOrganization": "Ұйымыңыздың аты",
         "GoodNews": "<b>Жақсы жаңалық!</b>",

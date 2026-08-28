@@ -1148,19 +1148,41 @@ export class ProjectService {
   // --------------------------------------------------------------------------------------
   saveRetentionDays(retentionDays) {
     let promise = new Promise((resolve, reject) => {
-      console.log("[PROJECT-SERV] SAVE retention Days", retentionDays)
-      let headers = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Authorization': this.TOKEN
-      })
-    
-      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.retentionDays": retentionDays }, { headers: headers })
-        .toPromise().then((res) => {
-          resolve(res)
-        }).catch((err) => {
-          reject(err)
+      const days = Number(retentionDays);
+      this.logger.log("[PROJECT-SERV] SAVE retention Days", days);
+      if (Number.isNaN(days)) {
+        reject(new Error('Invalid retentionDays'));
+        return;
+      }
+      if (!this.projectID) {
+        reject(new Error('Missing projectID'));
+        return;
+      }
+
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': this.TOKEN
         })
-    })
+      };
+
+      // Same dotted-path pattern used by working settings updates (chat_limit, allowed_urls, ...)
+      const body = { 'settings.retentionDays': days };
+      const url = this.PROJECTS_URL + this.projectID;
+      this.logger.log('[PROJECT-SERV] SAVE retention Days URL', url);
+      this.logger.log('[PROJECT-SERV] SAVE retention Days BODY', body);
+
+      this._httpclient.put(url, body, httpOptions)
+        .toPromise().then((res) => {
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.cacheService.clearAllProjectsCache();
+          this.logger.log('[PROJECT-SERV] SAVE retention Days RESPONSE settings.retentionDays', (res as any)?.settings?.retentionDays);
+          resolve(res);
+        }).catch((err) => {
+          reject(err);
+        });
+    });
     return promise;
   }
 

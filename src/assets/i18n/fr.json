@@ -2567,6 +2567,8 @@
         "JoinNow": "<b>{{ intname }}</b> maintenant!",
         "FreeAccount": "gratuitement <b>{{ intname }}</b> compte!",
         "YourApikey": "Votre clé API",
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Collez votre nouvelle clé API",
         "OrganizationOptional": "Organisation (facultatif)",
         "YourOrganization": "Nom de votre organisation",
         "GoodNews": "<b>Bonnes nouvelles!</b>",

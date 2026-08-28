@@ -2569,6 +2569,8 @@
         "JoinNow": "<b>{{ intname }}</b> nu!",
         "FreeAccount": "för en gratis <b>{{ intname }}</b> konto!",
         "YourApikey": "Din API-nyckel",
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Klistra in din nya API-nyckel",
         "OrganizationOptional": "Organisation (valfritt)",
         "YourOrganization": "Ditt organisationsnamn",
         "GoodNews": "<b>Goda nyheter!</b>",

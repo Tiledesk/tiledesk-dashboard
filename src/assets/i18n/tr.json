@@ -2568,6 +2568,8 @@
         "JoinNow": "<b>{{ intname }}</b> Şimdi!",
         "FreeAccount": "ücretsiz <b>{{ intname }}</b> hesap!",
         "YourApikey": "API Anahtarınız",
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Yeni API anahtarınızı yapıştırın",
         "OrganizationOptional": "Organizasyon (isteğe bağlı)",
         "YourOrganization": "Kuruluşunuzun adı",
         "GoodNews": "<b>İyi haberler!</b>",

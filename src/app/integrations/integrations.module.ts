@@ -9,6 +9,7 @@ import { MakeIntegrationComponent } from './list/make-integration/make-integrati
 import { OpenaiIntegrationComponent } from './list/openai-integration/openai-integration.component';
 import { QaplaIntegrationComponent } from './list/qapla-integration/qapla-integration.component';
 import { IntegrationHeaderComponent } from './base-components/integration-header/integration-header.component';
+import { IntegrationApiKeyFieldComponent } from './base-components/integration-api-key-field/integration-api-key-field.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
@@ -41,6 +42,7 @@ const routes: Routes = [
   declarations: [
     IntegrationsComponent,
     IntegrationHeaderComponent,
+    IntegrationApiKeyFieldComponent,
     BrevoIntegrationComponent,
     CustomerioIntegrationComponent,
     GsheetsIntegrationComponent,

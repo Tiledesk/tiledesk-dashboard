@@ -2577,6 +2577,8 @@
         "Join": "Vai su",
         "FreeAccount": "per un account <b>{{ intname }}</b> gratuito!",
         "YourApikey": "La tua key",
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Incolla la nuova API key",
         "OrganizationOptional": "Organizzazione (opzionale)",
         "YourOrganization": "Il nome della tua organizzazione",
         "GoodNews": "<b>Buone notizie!</b>",

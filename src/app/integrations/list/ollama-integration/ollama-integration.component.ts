@@ -15,8 +15,8 @@ export class OllamaIntegrationComponent implements OnInit {
 
   translateparams: any;
   newModelName: string = '';
-  isMasked: boolean = true; // State for masking
-    keyVisibile: boolean = false;
+  apiKeyCanSave = true;
+  apiKeyIsReplacing = false;
 
   constructor(
     private integrationService: IntegrationService,
@@ -26,27 +26,41 @@ export class OllamaIntegrationComponent implements OnInit {
   ngOnInit(): void {
     this.logger.log("[INT-Ollama] integration ", this.integration)
     this.translateparams = { intname: 'Ollama' };
+    if (!this.integration.value) {
+      this.integration.value = { url: null, token: null, apikey: null, models: [] };
+    }
+    if (!Array.isArray(this.integration.value.models)) {
+      this.integration.value.models = [];
+    }
   }
 
   
   addModel(modelName: string): void {
-    let enterBtnElement = document.getElementById('enter-button')
-    enterBtnElement.style.display = 'none';
-    this.logger.log('[INT-Ollama] - addModel ', modelName)
-    if (modelName && !this.integration.value.models.includes(modelName)) {
-      this.logger.log('[INT-Ollama] - addModel here yes modelName', modelName)
-      this.logger.log('[INT-Ollama] - addModel this.integration.value.models', this.integration.value.models)
-      this.integration.value.models.push(modelName);
-      
+    const name = String(modelName || '').trim();
+    const enterBtnElement = document.getElementById('ollama-enter-button');
+    if (enterBtnElement) {
+      enterBtnElement.style.display = 'none';
     }
-    this.newModelName = null
+    this.logger.log('[INT-Ollama] - addModel ', name);
+    if (!this.integration.value) {
+      this.integration.value = { models: [] };
+    }
+    if (!Array.isArray(this.integration.value.models)) {
+      this.integration.value.models = [];
+    }
+    if (name && !this.integration.value.models.includes(name)) {
+      this.logger.log('[INT-Ollama] - addModel here yes modelName', name);
+      this.integration.value.models.push(name);
+    }
+    this.newModelName = null;
   }
 
   onEnterModel(event) {
-    // console.log('[INT-Ollama] - onEnterModel event', event)
-    let enterBtnElement = document.getElementById('enter-button')
-    // console.log('[INT-Ollama] - onEnterModel enterBtnElement', enterBtnElement)
-    if (event.length > 0) {
+    const enterBtnElement = document.getElementById('ollama-enter-button');
+    if (!enterBtnElement) {
+      return;
+    }
+    if (event && event.length > 0) {
       enterBtnElement.style.display = 'inline-block';
     } else {
       enterBtnElement.style.display = 'none';
@@ -84,60 +98,5 @@ export class OllamaIntegrationComponent implements OnInit {
 
     this.newModelName = null
   }
-
-  showHideKey() {
-    let input = <HTMLInputElement>document.getElementById('api-key-input');
-    if (this.keyVisibile === false) {
-      input.type = 'text';
-    } else {
-      input.type = 'password';
-    }
-    this.keyVisibile = !this.keyVisibile;
-  }
- 
-  // ---------------------------------------------------
-  // Mask Api key without use input of password type
-  // ---------------------------------------------------
-  handleInput(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const displayedValue = inputElement.value;
-
-    // Update realValue based on input length and masking state
-    if (this.isMasked && this.integration.value.apikey) {
-      // Add only new characters to realValue
-      const newChar = displayedValue.slice(this.integration.value.apikey.length);
-      this.integration.value.apikey += newChar;
-    } else {
-      // Directly update realValue when unmasked
-      this.integration.value.apikey = displayedValue;
-    }
-
-    // Always set the displayed value to match the current state
-    inputElement.value = this.getDisplayValue();
-  }
-
-  handleBackspace(): void {
-    if (this.integration.value.apikey) {
-      this.integration.value.apikey = this.integration.value.apikey.slice(0, -1);
-    }
-  }
-
-  toggleMask(inputElement: HTMLInputElement): void {
-    this.isMasked = !this.isMasked;
-
-    // Update the displayed value immediately when toggling the mask
-    inputElement.value = this.getDisplayValue();
-  }
-
-  getDisplayValue(): string {
-    if (!this.integration.value.apikey) {
-      return ''; // Return an empty string if realValue is null, undefined, or empty
-    }
-    return this.isMasked ? '●'.repeat(this.integration.value.apikey.length) : this.integration.value.apikey;
-  }
-
- 
-
-
 
 }

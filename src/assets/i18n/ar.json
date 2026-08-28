@@ -2568,6 +2568,8 @@
         "JoinNow": "<b>{{ intname }}</b> الآن!",
         "FreeAccount": "مجانا <b>{{ intname }}</b> حساب!",
         "YourApikey": "مفتاح API الخاص بك",
+        "ApiKey": "API Key",
+        "PasteNewApikey": "الصق مفتاح API الجديد",
         "OrganizationOptional": "المنظمة (اختياري)",
         "YourOrganization": "اسم مؤسستك",
         "GoodNews": "<b>أخبار جيدة!</b>",

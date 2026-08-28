@@ -280,6 +280,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   /** Value from API when present; `null` means absent (UI default = -1 / No retention when plan allows). */
   private pendingRetentionSelection: number | null = null;
   private retentionDaysLoadedFromServer = false;
+  /** Avoid PUT when selectedRetention is set programmatically (load/plan sync). */
+  private suppressRetentionSave = false;
 
   formErrors: FormErrors = {
     'creditCard': '',
@@ -1696,31 +1698,59 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
       }
     }
 
-    this.applyRetentionSelectionFromProjectAndPlan();
+    this.syncRetentionItemsForPlan();
   }
 
-  /**
-   * Restricted plan: only 1 month (30) selectable; otherwise full list.
-   * When unrestricted and no saved retentionDays, default UI to No retention (-1).
-   */
-  private applyRetentionSelectionFromProjectAndPlan(): void {
+  /** Rebuild ng-select items from plan restrictions; does not reset the user selection. */
+  private syncRetentionItemsForPlan(): void {
     const restricted = this.isAvailableRetention === false;
     this.messages_retention_items = this.messages_retention.map((item) => ({
       name: item.name,
       value: item.value,
-      disabled: restricted && item.value !== 30
+      disabled: restricted && item.value !== 30,
     }));
 
     if (restricted) {
+      this.suppressRetentionSave = true;
       this.selectedRetention = 30;
+      this.suppressRetentionSave = false;
+    }
+  }
+
+  /**
+   * Apply retentionDays loaded from getProjectById only.
+   * If the server sends a day count not present in `messages_retention` (common on Custom),
+   * ng-select cannot match bindValue — fall back to -1 so the control never stays blank.
+   */
+  private applyRetentionFromServer(): void {
+    if (this.isAvailableRetention === false) {
       return;
     }
 
+    let next = -1;
     if (this.retentionDaysLoadedFromServer && this.pendingRetentionSelection !== null) {
-      this.selectedRetention = this.pendingRetentionSelection;
-    } else {
-      this.selectedRetention = -1;
+      next = this.pendingRetentionSelection;
     }
+
+    const allowedRetentionValues = new Set(this.messages_retention.map((item) => item.value));
+    if (!allowedRetentionValues.has(next)) {
+      next = -1;
+    }
+
+    this.suppressRetentionSave = true;
+    this.selectedRetention = next;
+    this.suppressRetentionSave = false;
+  }
+
+  private normalizeRetentionValue(value: any): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+    if (typeof value === 'object' && value !== null && 'value' in value) {
+      return this.normalizeRetentionValue((value as { value: unknown }).value);
+    }
+    const n = Number(value);
+    return Number.isNaN(n) ? null : n;
   }
 
 
@@ -3134,7 +3164,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
             this.retentionDaysLoadedFromServer = false;
             console.log('[PRJCT-EDIT-ADD] retentionDays no value from server');
           }
-          this.applyRetentionSelectionFromProjectAndPlan();
+          this.syncRetentionItemsForPlan();
+          this.applyRetentionFromServer();
 
 
           // Automatic unavailable status
@@ -3167,7 +3198,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
           this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
           this.pendingRetentionSelection = null;
           this.retentionDaysLoadedFromServer = false;
-          this.applyRetentionSelectionFromProjectAndPlan();
+          this.syncRetentionItemsForPlan();
+          this.applyRetentionFromServer();
           this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
           this.logger.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
@@ -3384,23 +3416,40 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   onSelectRetention(value: any): void {
-    if (this.isAvailableRetention === false && value !== 30) {
-      this.selectedRetention = 30;
+    if (this.suppressRetentionSave) {
       return;
     }
-    this.selectedRetention = value;
 
-    console.log('[PRJCT-EDIT-ADD] selectedRetention ', this.selectedRetention);
-    this.projectService.saveRetentionDays(this.selectedRetention).then((result) => {
-      console.log("[PRJCT-EDIT-ADD] - SAVE RETENTION DAYS result: ", result)
+    const days = this.normalizeRetentionValue(value);
+    if (days === null) {
+      this.logger.warn('[PRJCT-EDIT-ADD] onSelectRetention skipped: empty value', value);
+      return;
+    }
 
-      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+    if (this.isAvailableRetention === false && days !== 30) {
+      this.suppressRetentionSave = true;
+      this.selectedRetention = 30;
+      this.suppressRetentionSave = false;
+      return;
+    }
 
-      this.cacheService.clearAllProjectsCache()
+    // Keep UI in sync when using one-way [ngModel] + ngModelChange
+    this.selectedRetention = days;
+    this.pendingRetentionSelection = days;
+    this.retentionDaysLoadedFromServer = true;
+
+    this.logger.log('[PRJCT-EDIT-ADD] selectedRetention -> save', days);
+    this.projectService.saveRetentionDays(days).then((result: any) => {
+      this.logger.log("[PRJCT-EDIT-ADD] - SAVE RETENTION DAYS result: ", result);
+      const saved = result?.settings?.retentionDays;
+      this.logger.log('[PRJCT-EDIT-ADD] - SAVE RETENTION DAYS response.settings.retentionDays', saved);
+
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+      this.cacheService.clearAllProjectsCache();
     }).catch((err) => {
-      this.logger.error("[PRJCT-EDIT-ADD] -  SAVE RETENTION DAYS ERROR: ", err)
-      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
-    })
+      this.logger.error("[PRJCT-EDIT-ADD] -  SAVE RETENTION DAYS ERROR: ", err);
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+    });
   }
 
   // -------

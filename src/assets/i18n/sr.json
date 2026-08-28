@@ -2568,6 +2568,8 @@
         "JoinNow": "<b>{{ intname }}</b> Сада!",
         "FreeAccount": "за бесплатно <b>{{ intname }}</b> рачун!",
         "YourApikey": "Ваш АПИ кључ",
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Nalepite novi API ključ",
         "OrganizationOptional": "Организација (опционо)",
         "YourOrganization": "Име ваше организације",
         "GoodNews": "<b>Добре вести!</b>",
