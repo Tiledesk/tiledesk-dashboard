@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.165.1
+- Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
+
 ### 2.7.165
 - Adds the ability, in the Import File dialog, to import documents into the knowledge base via URL
 - Adds the ability to view the response as a stream or static to the knowledge preview dialog
