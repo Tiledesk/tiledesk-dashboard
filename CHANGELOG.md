@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### 2.7.165.1
+### 2.7.165-im
 - Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
 
 ### 2.7.165
