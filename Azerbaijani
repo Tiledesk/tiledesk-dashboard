@@ -2927,7 +2927,8 @@
         "VllmDuplicateUrl": "An endpoint with this URL already exists",
         "VllmEndpointWillBeDeleted": "The endpoint <b>{{ endpointName }}</b> will be deleted. This action cannot be undone.",
         "VllmEndpointHasBeenDeleted": "The endpoint has been deleted successfully.",
-        "ApiKey": "API Key"
+        "ApiKey": "API Key",
+        "PasteNewApikey": "Paste your new API key"
     },
     "ViewTeammates": "Komanda yoldaşlarına baxın",
     "AddNewTeammate": "Yeni komanda yoldaşı əlavə edin",
