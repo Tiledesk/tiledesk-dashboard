@@ -57,7 +57,7 @@
                     placeholder="Type an LLM model and press Enter to add it to your favorites" type="text"
                     [(ngModel)]="newModelName"  (ngModelChange)="onEnterModel($event)" autocomplete="off" (keyup.enter)="addModel(newModelName)"
                     style="font-size: 14px;">
-                <div id="enter-button" class="enter-button" (click)="addModel(newModelName)">{{'KbPage.Enter' | translate}}</div>
+                <div #enterButton id="vllm-enter-button" class="enter-button" (click)="addModel(newModelName)">{{'KbPage.Enter' | translate}}</div>
             </div>
         </div>
     </div>
