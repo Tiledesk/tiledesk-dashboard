@@ -358,3 +358,35 @@ export function isMaskedApikey(apikey: string | null | undefined): boolean {
   return /[*•●]/.test(value);
 }
 
+/**
+ * Client-side display for server-masked keys: first 3 + "..." + last 4
+ * visible characters (mask chars *•● are ignored so suffixes like "*4ca" become "4ca").
+ */
+export function formatMaskedApikeyForDisplay(apikey: string | null | undefined): string {
+  const value = String(apikey || '').trim();
+  if (!value) {
+    return '';
+  }
+
+  if (!isMaskedApikey(value)) {
+    if (value.length <= 7) {
+      return value;
+    }
+    return `${value.slice(0, 3)}...${value.slice(-4)}`;
+  }
+
+  const leading = (value.match(/^[^ *•●]+/)?.[0] || '').slice(0, 3);
+  const trailing = (value.match(/[^ *•●]+$/)?.[0] || '').slice(-4);
+
+  if (!leading && !trailing) {
+    return '...';
+  }
+  if (!trailing) {
+    return `${leading}...`;
+  }
+  if (!leading) {
+    return `...${trailing}`;
+  }
+  return `${leading}...${trailing}`;
+}
+
