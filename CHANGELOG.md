@@ -1,3 +1,6 @@
+### 2.7.246-stage
+- Adds the OpenRouter integration: configure the API key, pick models and the providers that run the inference
+
 # tiledesk-dashboard
 
 ### 2.7.245-stage 
