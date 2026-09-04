@@ -3,7 +3,6 @@
     <div class="signup">
         <a href="https://openrouter.ai/keys" target="_blank">{{ 'Integration.Signup' | translate }}</a><p [innerHTML]="'Integration.FreeAccount' | translate: translateparams"></p>
     </div>
-    <!-- <p><a href="https://openai.com/" target="_blank">Sign up</a> for a free <b>OpenAI</b> account!</p> -->
 
     <div *ngIf="isVerified === true" class="status">
         <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
@@ -30,28 +29,146 @@
 
 <div class="content">
 
-        <integration-api-key-field
+    <integration-api-key-field
         [storedApikey]="integration.value.apikey"
         (apikeyChange)="integration.value.apikey = $event"
         (canSaveChange)="apiKeyCanSave = $event">
     </integration-api-key-field>
-<!-- <div class="input-field">
-        <label>{{ 'Integration.OrganizationOptional' | translate }}</label>
-        <input class="custom-input" type="text" [(ngModel)]="integration.value.organization"
-            placeholder="{{ 'Integration.YourOrganization' | translate }}">
-    </div> -->
 
     <div class="integration-footer">
-       
+
         <button *ngIf="integration._id" class="btn btn-red" (click)="deleteIntegration()">
             {{ 'Integration.Delete' | translate }}
         </button>
         <button *ngIf="!integration._id" class="btn btn-outlined" (click)="resetValues()">
             {{ 'Integration.Clear' | translate }}
         </button>
-         <button class="btn btn-tdblu-no-boxshadow" [disabled]="!apiKeyCanSave" (click)="saveIntegration()">
+        <button class="btn btn-tdblu-no-boxshadow" [disabled]="!apiKeyCanSave" (click)="saveIntegration()">
             {{ 'Integration.Save' | translate }}
         </button>
     </div>
+
+    <div class="form-section">
+        <div class="form-header">
+            <h4 *ngIf="!isEditing">{{ 'Integration.AddOpenRouterModel' | translate }}</h4>
+            <h4 *ngIf="isEditing">{{ 'Integration.EditOpenRouterModel' | translate }}</h4>
+            <p class="form-hint">{{ 'Integration.OpenRouterModelsHint' | translate }}</p>
+        </div>
+
+        <div class="input-field">
+            <label>{{ 'Integration.Model' | translate }}</label>
+            <ng-select
+                class="openrouter-model-select"
+                [items]="catalogue"
+                bindValue="id"
+                bindLabel="name"
+                [loading]="catalogueLoading"
+                [virtualScroll]="true"
+                [clearable]="true"
+                [readonly]="isEditing"
+                [ngModel]="selectedModelId"
+                (ngModelChange)="onSelectCatalogueModel($event)"
+                placeholder="{{ 'Integration.OpenRouterModelPlaceholder' | translate }}"
+                notFoundText="{{ 'Integration.OpenRouterNoModelFound' | translate }}">
+                <ng-template ng-option-tmp let-item="item">
+                    <div class="model-option">
+                        <span class="model-option-name">{{ item.name }}</span>
+                        <span class="model-option-id">{{ item.id }}</span>
+                    </div>
+                </ng-template>
+            </ng-select>
+            <p class="field-error" *ngIf="catalogueError">
+                {{ 'Integration.OpenRouterCatalogueError' | translate }}
+                <a href="javascript:void(0)" (click)="loadCatalogue()">{{ 'Integration.OpenRouterRetry' | translate }}</a>
+            </p>
+        </div>
+
+        <ng-container *ngIf="selectedModelId">
+
+            <div class="input-field providers-field">
+                <label>{{ 'Integration.OpenRouterProviders' | translate }}</label>
+                <p class="field-hint">{{ 'Integration.OpenRouterProvidersHint' | translate }}</p>
+
+                <p class="field-loading" *ngIf="providersLoading">{{ 'Integration.OpenRouterLoadingProviders' | translate }}</p>
+                <p class="field-error" *ngIf="providersError">{{ 'Integration.OpenRouterProvidersError' | translate }}</p>
+
+                <div class="providers-selected" cdkDropList (cdkDropListDropped)="onProviderDrop($event)">
+                    <div class="provider-row" *ngFor="let option of selectedProviders; let i = index" cdkDrag>
+                        <span class="material-icons-outlined drag-handle" cdkDragHandle>drag_indicator</span>
+                        <span class="provider-rank">{{ i + 1 }}</span>
+                        <span class="provider-name">{{ getProviderLabel(option) }}</span>
+                        <span class="provider-tag">{{ option.tag }}</span>
+                        <button type="button" class="provider-remove-btn" (click)="unselectProvider(option)"
+                            [attr.aria-label]="'Integration.OpenRouterRemoveProvider' | translate">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+                                <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                                </path>
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="providers-empty" *ngIf="!providersLoading && selectedProviders.length === 0">
+                        {{ 'Integration.OpenRouterNoProviderSelected' | translate }}
+                    </p>
+                </div>
+
+                <div class="providers-available" *ngIf="availableProviders.length > 0">
+                    <p class="field-hint">{{ 'Integration.OpenRouterAvailableProviders' | translate }}</p>
+                    <button type="button" class="provider-chip-btn" *ngFor="let option of availableProviders"
+                        (click)="selectProvider(option)">
+                        <span class="material-icons-outlined">add</span>{{ getProviderLabel(option) }}
+                    </button>
+                </div>
+
+                <p class="providers-empty" *ngIf="!providersLoading && !providersError && selectedProviders.length === 0 && availableProviders.length === 0">
+                    {{ 'Integration.OpenRouterNoProvidersAvailable' | translate }}
+                </p>
+            </div>
+
+            <div class="input-field">
+                <label class="checkbox-label">
+                    <input type="checkbox" [(ngModel)]="allowFallbacks">
+                    <span>{{ 'Integration.OpenRouterAllowFallbacks' | translate }}</span>
+                </label>
+                <p class="field-hint">{{ 'Integration.OpenRouterAllowFallbacksHint' | translate }}</p>
+            </div>
+
+            <div class="input-field">
+                <label>{{ 'Integration.OpenRouterSort' | translate }}</label>
+                <select class="custom-input" [(ngModel)]="sort">
+                    <option *ngFor="let option of SORT_OPTIONS" [ngValue]="option.value">
+                        {{ option.labelKey | translate }}
+                    </option>
+                </select>
+                <p class="field-hint" *ngIf="selectedProviders.length > 0">
+                    {{ 'Integration.OpenRouterSortHint' | translate }}
+                </p>
+            </div>
+
+            <div class="form-actions">
+                <button *ngIf="!isEditing" type="button" class="btn btn-tdblu-no-boxshadow"
+                    [disabled]="!hasApiKey" (click)="addOrUpdateModel()">
+                    {{ 'Add' | translate }}
+                </button>
+                <button *ngIf="isEditing" type="button" class="btn btn-tdblu-no-boxshadow"
+                    [disabled]="!hasApiKey" (click)="addOrUpdateModel()">
+                    {{ 'Update' | translate }}
+                </button>
+                <button type="button" class="btn btn-outlined" (click)="resetForm()">
+                    {{ 'Cancel' | translate }}
+                </button>
+            </div>
+
+            <p class="field-error" *ngIf="!hasApiKey">{{ 'Integration.OpenRouterApiKeyRequired' | translate }}</p>
+
+        </ng-container>
+    </div>
+
+    <openrouter-model-table
+        [models]="integration.value.models"
+        (onSelectModel)="onSelectModel($event)"
+        (onDeleteModel)="onDeleteModel($event)">
+    </openrouter-model-table>
 
 </div>
