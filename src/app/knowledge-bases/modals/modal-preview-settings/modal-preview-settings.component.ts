@@ -506,6 +506,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   /** @deprecated kept for reference; use extractServerModelsFromIntegration */
   private extractVllmModelsFromServers(integration: any): Array<{ name: string; value: string; serverName: string }> {
     return this.extractServerModelsFromIntegration(integration);
+  }
+
   /**
    * OpenRouter stores value.models as objects carrying the provider routing,
    * not as bare strings like ollama: the id is what the LLM is asked for, the
