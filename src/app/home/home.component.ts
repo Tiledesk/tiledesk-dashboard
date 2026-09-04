@@ -39,7 +39,7 @@ import { FaqKb } from 'app/models/faq_kb-model';
 
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
-import { QuotesService } from 'app/services/quotes.service';
+import { QuotesDataPayload, QuotesService } from 'app/services/quotes.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
@@ -682,7 +682,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectId ------------> ", this.projectId);
     this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 1 projectChangedFromList :", this.projectChangedFromList);
     this.quotasSubscription = this.quotesService.quotesData$
-      .subscribe((data) => {
+      .subscribe((data: QuotesDataPayload | null) => {
 
         if (data) {
           if (data['projectId'] === this.projectId) {

@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { isMaskedApikey } from 'app/integrations/utils';
+import { formatMaskedApikeyForDisplay, isMaskedApikey } from 'app/integrations/utils';
 
 @Component({
   selector: 'integration-api-key-field',
@@ -91,7 +91,12 @@ export class IntegrationApiKeyFieldComponent implements OnInit, OnChanges {
   }
 
   get displayValue(): string {
-    return this.isReadonly ? this.initialStored : this.draftApikey;
+    if (!this.isReadonly) {
+      return this.draftApikey;
+    }
+    return isMaskedApikey(this.initialStored)
+      ? formatMaskedApikeyForDisplay(this.initialStored)
+      : this.initialStored;
   }
 
   get placeholderKey(): string {

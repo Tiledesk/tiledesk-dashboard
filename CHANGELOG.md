@@ -2,6 +2,14 @@
 
 ### 2.7.245-stage 
 - Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
+### 2.8.23
+- Improves API Key masking for integrations
+
+### 2.8.22
+-  Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
+
+### 2.8.21
+- Fixes the bug: FAQ content cannot be updated
 
 ### 2.8.20
 - Adds the connector plugin registry: register project-scoped connectors from a manifest URL and manage them from the Integrations page

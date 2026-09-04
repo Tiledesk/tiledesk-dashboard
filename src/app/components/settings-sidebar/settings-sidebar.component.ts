@@ -110,6 +110,7 @@ export class SettingsSidebarComponent implements OnInit {
   PERMISSION_TO_VIEW_PROJECTSETTINGS_NOTIFICATION_READ: boolean;
   PERMISSION_TO_VIEW_PROJECTSETTINGS_SECURITY_READ: boolean;
   PERMISSION_TO_VIEW_PROJECTSETTINGS_BANNED_READ: boolean;
+  PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ: boolean;
   PERMISSION_TO_VIEW_PROJECTSETTINGS_ADVANCED_READ: boolean;
 
   constructor(
@@ -586,6 +587,25 @@ export class SettingsSidebarComponent implements OnInit {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_VIEW_PROJECTSETTINGS_BANNED_READ = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_BANNED_READ);
             this.logger.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_PROJECTSETTINGS_BANNED_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_BANNED_READ);
+          }
+
+          // -------------------------------------------------
+          // PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ
+          // -------------------------------------------------
+          if (status.role === 'owner' || status.role === 'admin') {
+            // Owner and admin always has permission
+            this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ = true;
+            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ);
+
+          } else if (status.role === 'agent') {
+            // Agent never have permission
+            this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ = false;
+            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ);
+
+          } else {
+            // Custom roles: permission depends on matchedPermissions
+            this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_RETENTION_READ);
+            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ);
           }
 
           // ------------------------------------------------
@@ -1081,6 +1101,8 @@ export class SettingsSidebarComponent implements OnInit {
      this.goToProjectSettingsSecurity()
     } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_BANNED_READ) {
      this.goToProjectSettingsBanned()
+    } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ) {
+     this.goToProjectSettingsRetention()
     } else if (this.PERMISSION_TO_VIEW_PROJECTSETTINGS_ADVANCED_READ) {
      this.goToProjectSettingsAdvanced()
     }
@@ -1110,6 +1132,10 @@ export class SettingsSidebarComponent implements OnInit {
 
   goToProjectSettingsBanned() {
     this.router.navigate(['project/' + this.project._id + '/project-settings/banned'])
+  }
+
+  goToProjectSettingsRetention() {
+    this.router.navigate(['project/' + this.project._id + '/project-settings/retention'])
   }
 
    goToProjectSettingsAdvanced() {

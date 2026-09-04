@@ -147,7 +147,7 @@ export const INTEGRATION_LIST_ARRAY = [
     { name: "Twilio Voice",          category: INTEGRATIONS_CATEGORIES.VOICE,            key: INTEGRATIONS_KEYS.TWILIO_VOICE,    src_icon: "assets/img/int/voice-twilio-icon.png",           src_logo: "assets/img/int/voice-twilio-icon.png",       pro: true,  plan: 'Starter' },
     { name: "Elevenlabs",            category: INTEGRATIONS_CATEGORIES.VOICE,            key: INTEGRATIONS_KEYS.ELEVENLABS,      src_icon: "assets/img/int/elevenlabs-icon.png",             src_logo: "assets/img/int/elevenlabs-logo.png",         pro: true,  plan: 'Starter' },
    // { name: "Cerebras",              category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.CEREBRAS,        src_icon: "assets/img/int/cerebras-icon.png",               src_logo: "assets/img/int/cerebras-logo.svg",           pro: true,  plan: 'Pro' },
-   // { name: "OpenRouter",            category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENROUTER,      src_icon: "assets/img/int/openrouter-icon.png",             src_logo: "assets/img/int/openrouter-logo.png",         pro: true,  plan: 'Pro' },
+    { name: "OpenRouter",            category: INTEGRATIONS_CATEGORIES.AI,               key: INTEGRATIONS_KEYS.OPENROUTER,      src_icon: "assets/img/int/openrouter-icon.png",             src_logo: "assets/img/int/openrouter-logo.png",         pro: true,  plan: 'Pro' },
     //{ name: "Zapier",              category: INTEGRATIONS_CATEGORIES.INT_PLAT,         key: INTEGRATIONS_KEYS.ZAPIER,          src_icon: "assets/img/int/zapier-icon.png",                 src_logo: "assets/img/int/zapier-logo.svg",             pro: true,  plan: 'Basic' },
     //{ name: "Zendesk",             category: INTEGRATIONS_CATEGORIES.LIVE_CHAT,        key: INTEGRATIONS_KEYS.ZENDESK,         src_icon: "assets/img/int/zendesk-icon.png",                src_logo: "assets/img/int/zendesk-logo.png",            pro: true,  plan: 'Premium' },
     //{ name: "Zoho",                category: INTEGRATIONS_CATEGORIES.OTHER,            key: INTEGRATIONS_KEYS.ZOHO,            src_icon: "assets/img/int/zoho-icon.png",                   src_logo: "assets/img/int/zoho-logo.png",               pro: true,  plan: 'Premium' }
@@ -329,6 +329,7 @@ export class OpenRouterIntegration extends Integration {
         this.name = INTEGRATIONS_KEYS.OPENROUTER;
         this.value = {
             apikey: null,
+            models: []
         }
     }
 }
@@ -396,5 +397,37 @@ export class N8nIntegration extends Integration {
 export function isMaskedApikey(apikey: string | null | undefined): boolean {
   const value = String(apikey || '');
   return /[*•●]/.test(value);
+}
+
+/**
+ * Client-side display for server-masked keys: first 3 + "..." + last 4
+ * visible characters (mask chars *•● are ignored so suffixes like "*4ca" become "4ca").
+ */
+export function formatMaskedApikeyForDisplay(apikey: string | null | undefined): string {
+  const value = String(apikey || '').trim();
+  if (!value) {
+    return '';
+  }
+
+  if (!isMaskedApikey(value)) {
+    if (value.length <= 7) {
+      return value;
+    }
+    return `${value.slice(0, 3)}...${value.slice(-4)}`;
+  }
+
+  const leading = (value.match(/^[^ *•●]+/)?.[0] || '').slice(0, 3);
+  const trailing = (value.match(/[^ *•●]+$/)?.[0] || '').slice(-4);
+
+  if (!leading && !trailing) {
+    return '...';
+  }
+  if (!trailing) {
+    return `${leading}...`;
+  }
+  if (!leading) {
+    return `...${trailing}`;
+  }
+  return `${leading}...${trailing}`;
 }
 

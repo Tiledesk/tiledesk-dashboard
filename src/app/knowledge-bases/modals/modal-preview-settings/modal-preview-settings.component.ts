@@ -358,6 +358,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.getVllmModels()
     this.getAgentPlatformModels()
     this.getOllamaModels()
+    this.getOpenRouterModels()
     this.loadModelGroups();
   }
 
@@ -505,6 +506,66 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   /** @deprecated kept for reference; use extractServerModelsFromIntegration */
   private extractVllmModelsFromServers(integration: any): Array<{ name: string; value: string; serverName: string }> {
     return this.extractServerModelsFromIntegration(integration);
+  /**
+   * OpenRouter stores value.models as objects carrying the provider routing,
+   * not as bare strings like ollama: the id is what the LLM is asked for, the
+   * name is only a label. The routing itself is resolved server-side from the
+   * integration by model id, so nothing else has to travel from here.
+   */
+  getOpenRouterModels() {
+    const integrationName = 'openrouter';
+    this.integrationService.getIntegrationByName(integrationName).subscribe({
+      next: (res: any) => {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - OPENROUTER MODELS:', res);
+
+        const openRouterProvider = LLM_MODEL.find(p => p.value === 'openrouter');
+        const models = this.extractOpenRouterModels(res);
+
+        if (openRouterProvider && models.length) {
+          openRouterProvider.models = models;
+          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI openrouter:', models);
+        } else {
+          this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per OpenRouter');
+        }
+
+        this.loadModelGroups();
+      },
+      error: (err) => {
+        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getOpenRouterModels:', err);
+      },
+      complete: () => {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - POST REQUEST * COMPLETE *');
+      }
+    });
+  }
+
+  private extractOpenRouterModels(integration: any): Array<{ name: string; value: string; description: string; status: 'active' }> {
+    const models = integration?.value?.models;
+    if (!Array.isArray(models)) {
+      return [];
+    }
+
+    const seen = new Set<string>();
+    const options: Array<{ name: string; value: string; description: string; status: 'active' }> = [];
+
+    models.forEach((model: any) => {
+      // Tolerate the plain-string shape too, so a hand-edited integration still works.
+      const id = (typeof model === 'string' ? model : (model?.id ?? '')).toString().trim();
+      if (!id || seen.has(id)) {
+        return;
+      }
+      seen.add(id);
+
+      const label = (typeof model === 'string' ? '' : (model?.name ?? '')).toString().trim();
+      options.push({
+        name: label || id,
+        value: id,
+        description: '',
+        status: 'active' // senza status il filtro dei gruppi lo scarta
+      });
+    });
+
+    return options;
   }
 
   getOllamaModels() {

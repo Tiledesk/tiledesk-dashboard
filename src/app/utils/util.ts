@@ -1297,15 +1297,6 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true  
     },   
     { 
-        name: "Gpt-5.2",              
-        value: "gpt-5.2",               
-        description: "TYPE_GPT_MODEL.deepseek-chat.description",         
-        status: "active", 
-        min_tokens: 1, 
-        max_output_tokens: 128000, 
-        reasoning: true  
-    },   
-    { 
         name: "Gpt-5.1",              
         value: "gpt-5.1",               
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
@@ -1450,6 +1441,11 @@ export var VLLM_MODEL: Array<{ name: string, value: string, description:string, 
 export var AGENTPLATFORM_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
 ]
 
+// Filled at runtime from the project's OpenRouter integration: the models and
+// the providers that serve them are chosen in Integrations, not listed here.
+export var OPENROUTER_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
+]
+
 export const LLM_MODEL: Array<{name: string, value: string, description: string, src: string, status: "active" | "inactive", models: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> }> = [
   { name: "Cohere",         value: "cohere",            description: "",      src:"assets/images/icons/ai_prompt/cohere.svg",      status: "active",   models: COHERE_MODEL        },
   { name: "Google",         value: "google",            description: "",      src:"assets/images/icons/ai_prompt/google.svg",      status: "active",   models: GOOGLE_MODEL        },
@@ -1460,6 +1456,7 @@ export const LLM_MODEL: Array<{name: string, value: string, description: string,
   { name: "Ollama",         value: "ollama",            description: "",      src:"assets/images/icons/ai_prompt/ollama.svg",      status: "active",   models: OLLAMA_MODEL        },
   { name: "vLLM",           value: "vllm",              description: "",      src:"assets/images/icons/ai_prompt/vllm.svg",      status: "active",     models: VLLM_MODEL        },
   { name: "OpenAI",         value: "openai",            description: "",      src:"assets/images/icons/ai_prompt/openai.svg",      status: "active",   models: OPENAI_MODEL        },
+  { name: "OpenRouter",     value: "openrouter",        description: "",      src:"assets/images/icons/ai_prompt/openrouter.png",  status: "active",   models: OPENROUTER_MODEL    },
 ]
 
 
