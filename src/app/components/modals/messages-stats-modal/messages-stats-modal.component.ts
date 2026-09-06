@@ -55,7 +55,7 @@ export class MessagesStatsModalComponent implements OnInit {
     if (data && data.agent) {
       this.logger.log('[MSGS-STATS-MODAL] data  > hasOwnProperty email', data.agent.hasOwnProperty('email'))
       if ( data.agent.hasOwnProperty('email')) { 
-        this.logger.log('[MSGS-STATS-MODAL] data  >  data.agent.lastname.length', data.agent.lastname.lenght)
+        this.logger.log('[MSGS-STATS-MODAL] data  >  data.agent.lastname.length', data.agent.lastname.length)
         if (data.agent.firstname && data.agent.lastname !== "" ) {
           this.agentName = data.agent.firstname + ' ' + data.agent.lastname
         } else if (data.agent.firstname && data.agent.lastname === "" ){
