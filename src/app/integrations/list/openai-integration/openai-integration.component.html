@@ -30,38 +30,12 @@
 
 <div class="content">
 
-    <div class="input-field">
-        <label>Api Key</label>
-
-        <!-- <div class="password-input">
-            <input id="api-key-input" type="password" placeholder="{{ 'Integration.YourApikey' | translate }}"
-                [(ngModel)]="integration.value.apikey">
-            <div class="show-hide-button">
-                <span *ngIf="keyVisibile === false" class="material-icons-outlined"
-                    (click)="showHideKey()">visibility</span>
-                <span *ngIf="keyVisibile === true" class="material-icons-outlined"
-                    (click)="showHideKey()">visibility_off</span>
-            </div>
-        </div> -->
-
-        <div class="password-input">
-            <input id="api-key-input" type="text" name="api-key-input" placeholder="{{ 'Integration.YourApikey' | translate }}"
-            id="maskedInput"
-            [value]="getDisplayValue()"
-            (input)="handleInput($event)"
-            (keydown.backspace)="handleBackspace()"
-            autocomplete="off" >
-            <div class="show-hide-button">
-                <button type="button" class="eye-btn" (click)="toggleMask(maskedInput)" #maskedInput>
-                    <span *ngIf="isMasked === true" class="material-icons-outlined">visibility_off</span>
-                    <span *ngIf="isMasked === false" class="material-icons-outlined">visibility</span>
-                </button>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="input-field">
+        <integration-api-key-field
+        [storedApikey]="integration.value.apikey"
+        (apikeyChange)="integration.value.apikey = $event"
+        (canSaveChange)="apiKeyCanSave = $event">
+    </integration-api-key-field>
+<div class="input-field">
         <label>{{ 'Integration.OrganizationOptional' | translate }}</label>
         <input class="custom-input" type="text" [(ngModel)]="integration.value.organization"
             placeholder="{{ 'Integration.YourOrganization' | translate }}">
@@ -75,7 +49,7 @@
         <button *ngIf="!integration._id" class="btn btn-outlined" (click)="resetValues()">
             {{ 'Integration.Clear' | translate }}
         </button>
-         <button class="btn btn-tdblu-no-boxshadow" (click)="saveIntegration()">
+         <button class="btn btn-tdblu-no-boxshadow" [disabled]="!apiKeyCanSave" (click)="saveIntegration()">
             {{ 'Integration.Save' | translate }}
         </button>
     </div>

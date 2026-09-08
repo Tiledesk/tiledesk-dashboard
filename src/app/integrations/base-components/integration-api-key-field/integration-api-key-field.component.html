@@ -1,0 +1,31 @@
+<div class="input-field integration-api-key-field">
+    <label>
+        {{ 'Integration.ApiKey' | translate }}
+        <ng-container *ngIf="showOptionalHint"> ({{ 'Optional' | translate }})</ng-container>
+    </label>
+
+    <div class="api-key-row">
+        <div class="password-input" [class.is-readonly]="isReadonly">
+            <input
+                [id]="inputId"
+                type="text"
+                name="api-key-input"
+                [placeholder]="placeholderKey | translate"
+                [value]="displayValue"
+                [readonly]="isReadonly"
+                (input)="onInput($event)"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                spellcheck="false">
+        </div>
+
+        <button
+            *ngIf="hasStoredKey"
+            type="button"
+            class="btn btn-outlined api-key-action-btn"
+            (click)="onAction()">
+            {{ (isReplacing ? 'Cancel' : 'Change') | translate }}
+        </button>
+    </div>
+</div>

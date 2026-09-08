@@ -1,5 +1,20 @@
 # tiledesk-dashboard
 
+### 2.8.23
+- Improves API Key masking for integrations
+
+### 2.8.22
+-  Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
+
+### 2.8.21
+- Fixes the bug: FAQ content cannot be updated
+
+### 2.8.20
+- Updates LLM models
+
+### 2.8.19
+- Adds permissions to Data tables
+
 ### 2.8.18
 - Migrates the dashboard core to Angular 15 (CLI, @angular/core, and Material/CDK 15 with MDC)
 - Adapts key UI surfaces to Material MDC (History date range, Knowledge Base actions, Data Tables …)

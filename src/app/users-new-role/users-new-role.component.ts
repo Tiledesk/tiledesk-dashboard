@@ -240,6 +240,19 @@ export class UsersNewRoleComponent implements OnInit {
     },
 
     {
+      key: 'DataTablesManagement',
+      title: 'Data Tables',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.DATATABLES_READ, label: 'Able to view, create & edit' },
+        // { key: PERMISSIONS.AUTOMATIONSLOG_CREATE, label: 'Able to create' },
+        // { key: PERMISSIONS.AUTOMATIONSLOG_EDIT, label: 'Able to edit' }
+      ]
+    },
+
+    {
       key: 'WhatsAppBroadcasts',
       title: 'WhatsApp Broadcasts',
       parentLabel: 'Select all',

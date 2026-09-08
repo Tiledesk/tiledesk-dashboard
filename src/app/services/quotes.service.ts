@@ -4,8 +4,15 @@ import { LoggerService } from './logger/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from './app-config.service';
 import { PLANS_LIST, PLAN_NAME } from 'app/utils/util';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
+
+export interface QuotesDataPayload {
+  projectLimits: any;
+  allQuotes: any;
+  projectId: string;
+  slot?: { startDate?: string; endDate?: string } | null;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -41,13 +48,8 @@ export class QuotesService {
   // }
 
 
-  private quotasDataSubject = new BehaviorSubject<{
-    projectLimits: any;
-    allQuotes: any;
-    projectId: string;
-    slot?: { startDate?: string; endDate?: string } | null;
-  } | null>(null);
-  quotesData$ = this.quotasDataSubject.asObservable().pipe(shareReplay(1)); // Expose as Observable
+  private quotasDataSubject = new BehaviorSubject<QuotesDataPayload | null>(null);
+  quotesData$: Observable<QuotesDataPayload | null> = this.quotasDataSubject.asObservable().pipe(shareReplay(1));
 
   private requestQuotesSubject = new Subject<void>();
   requestQuotes$ = this.requestQuotesSubject.asObservable();
@@ -80,12 +82,7 @@ export class QuotesService {
   }
 
   /** Called by NavbarComponent to update the stored quotes */
-  updateQuotasData(data: {
-    projectLimits: any;
-    allQuotes: any;
-    projectId: string;
-    slot?: { startDate?: string; endDate?: string } | null;
-  }) {
+  updateQuotasData(data: QuotesDataPayload) {
     this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] - PUBLISH QUOTAS DATA (Called by NavbarComponent to update the quotas)');
     this.quotasDataSubject.next(data);
     this.hasFetchedData = true; // Mark data as fetched

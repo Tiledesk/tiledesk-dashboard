@@ -57,6 +57,8 @@ import {
   operatorNeedsValue,
   operatorsForColumnType,
 } from './data-tables-filter.util';
+import { RoleService } from 'app/services/role.service';
+
 
 const Swal = require('sweetalert2');
 
@@ -225,12 +227,15 @@ export class DataTablesComponent implements OnInit {
     private route: ActivatedRoute,
     private localDbService: LocalDbService,
     private cdr: ChangeDetectorRef,
+    private roleService: RoleService,
+
   ) {
     const brand = this.brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit(): void {
+    this.roleService.checkRoleForCurrentProject('datatables');
     this.dataTableMaxSizeLabel = resolveDataTableMaxSizeLabel(
       this.appConfigService.getConfig()?.defaultTableMaxSizeBytes,
     );

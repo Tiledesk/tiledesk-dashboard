@@ -174,6 +174,14 @@ export class RoleService {
               }
             }
 
+            // Data tables
+            if (calledby === 'datatables') {
+              if (!projectUser_bs.rolePermissions.includes(PERMISSIONS.DATATABLES_READ)) {
+                this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+              }
+            }
+
+
             // Automations > New broadcast
             if (calledby === 'new-broadcast') {
               // const hasPermission = _projectUser.rolePermissions.includes(PERMISSIONS.AUTOMATIONSLOG_READ);
@@ -785,6 +793,15 @@ export class RoleService {
               this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
             }
           }
+
+          // Data tables
+          if (calledby === 'datatables') {
+            console.log('[ROLE-SERV] - here yes 2')
+            if (!_projectUser.rolePermissions.includes(PERMISSIONS.DATATABLES_READ)) {
+              this.router.navigate([`project/${projectId}/${calledby}/no-auth`]);
+            }
+          }
+
 
           // Automations > New broadcast
           if (calledby === 'new-broadcast') {

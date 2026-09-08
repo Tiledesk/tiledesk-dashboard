@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { isMaskedApikey } from 'app/integrations/utils';
 
 @Component({
   selector: 'openrouter-integration',
@@ -13,10 +14,9 @@ export class OpenRouterIntegrationComponent implements OnInit {
   @Output() onUpdateIntegration = new EventEmitter;
   @Output() onDeleteIntegration = new EventEmitter;
 
-  keyVisibile: boolean = false;
   isVerified: boolean;
   translateparams: any;
-  isMasked: boolean = true; // State for masking
+  apiKeyCanSave = false;
 
   constructor(
     private integrationService: IntegrationService,
@@ -26,19 +26,9 @@ export class OpenRouterIntegrationComponent implements OnInit {
   ngOnInit(): void {
     this.logger.log('[INT-OPENROUTER] integration ', this.integration);
     this.translateparams = { intname: 'OpenRouter' };
-    if (this.integration.value.apikey) {
+    if (this.integration.value.apikey && !isMaskedApikey(this.integration.value.apikey)) {
       this.checkKey();
     }
-  }
-
-  showHideKey() {
-    let input = <HTMLInputElement>document.getElementById('api-key-input');
-    if (this.keyVisibile === false) {
-      input.type = 'text';
-    } else {
-      input.type = 'password';
-    }
-    this.keyVisibile = !this.keyVisibile;
   }
 
   saveIntegration() {
@@ -77,39 +67,6 @@ export class OpenRouterIntegrationComponent implements OnInit {
       apikey: null,
       organization: null
     };
-  }
-
-  // ---------------------------------------------------
-  // Mask Api key without use input of password type
-  // ---------------------------------------------------
-  handleInput(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const displayedValue = inputElement.value;
-
-    if (this.isMasked && this.integration.value.apikey) {
-      const newChar = displayedValue.slice(this.integration.value.apikey.length);
-      this.integration.value.apikey += newChar;
-    } else {
-      this.integration.value.apikey = displayedValue;
-    }
-
-    inputElement.value = this.getDisplayValue();
-  }
-
-  handleBackspace(): void {
-    this.integration.value.apikey = this.integration.value.apikey.slice(0, -1);
-  }
-
-  toggleMask(inputElement: HTMLInputElement): void {
-    this.isMasked = !this.isMasked;
-    inputElement.value = this.getDisplayValue();
-  }
-
-  getDisplayValue(): string {
-    if (!this.integration.value.apikey) {
-      return '';
-    }
-    return this.isMasked ? '●'.repeat(this.integration.value.apikey.length) : this.integration.value.apikey;
   }
 
 }

@@ -40,6 +40,8 @@ export const PERMISSIONS = {
   LOGOUT: 'logout',
   HOME_READ: 'home_read',
 
+  DATATABLES_READ: 'datatables_read',
+
   AUTOMATIONSLOG_READ: "automationslog_read",
   AUTOMATIONSLOG_CREATE: "automationslog_create",
 
