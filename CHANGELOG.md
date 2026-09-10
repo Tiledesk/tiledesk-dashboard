@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.24
+- Adds Gemini Agent Platform integration
+
 ### 2.8.23
 - Improves API Key masking for integrations
 
