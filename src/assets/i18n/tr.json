@@ -1028,6 +1028,11 @@
     "5Years": "5 yıl",
     "UpgradePlanForRetention": "Mesaj saklama, {{plan_name}} planından itibaren özelleştirilebilir.",
     "MessageRetention": "Mesaj Saklama",
+    "MessageRetentionChangeTitle": "Mesaj saklama süresinin değiştirilmesi",
+    "MessageRetentionChangeIntro": "Mesaj saklama süresini değiştirmek üzeresiniz.",
+    "MessageRetentionChangeWarning": "Yeni saklama süresini aşan mesajlar otomatik ve kalıcı olarak silinecektir. Bu işlem geri alınamaz veya kurtarılamaz.",
+    "MessageRetentionChangeConfirm": "Devam etmek istediğinizden emin misiniz?",
+    "MessageRetentionChangeContinue": "Devam",
     "ResponseInStreaming": "Akış etkinleştirildiğinde, yanıt oluşturulurken gerçek zamanlı olarak göreceksiniz",
     "QuestionIsRequired": "Soru zorunludur",
     "TYPE_GPT_MODEL": {

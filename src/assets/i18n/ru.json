@@ -1027,6 +1027,11 @@
     "5Years": "5 лет",
     "UpgradePlanForRetention": "Хранение сообщений можно настроить, начиная с тарифа {{plan_name}}.",
     "MessageRetention": "Хранение сообщений",
+    "MessageRetentionChangeTitle": "Изменение срока хранения сообщений",
+    "MessageRetentionChangeIntro": "Вы собираетесь изменить период хранения сообщений.",
+    "MessageRetentionChangeWarning": "Сообщения, срок хранения которых превышает новый период, будут удалены автоматически и безвозвратно. Эту операцию нельзя отменить или восстановить.",
+    "MessageRetentionChangeConfirm": "Вы уверены, что хотите продолжить?",
+    "MessageRetentionChangeContinue": "Продолжить",
     "ResponseInStreaming": "Когда стриминг включен, вы увидите ответ в реальном времени по мере его генерации",
     "QuestionIsRequired": "Вопрос обязателен",
     "TYPE_GPT_MODEL": {

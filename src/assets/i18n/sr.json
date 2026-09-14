@@ -1027,6 +1027,11 @@
     "5Years": "5 година",
     "UpgradePlanForRetention": "Чување порука може да се прилагоди од плана {{plan_name}}.",
     "MessageRetention": "Чување порука",
+    "MessageRetentionChangeTitle": "Измена чувања порука",
+    "MessageRetentionChangeIntro": "Управо ћете изменити период чувања порука.",
+    "MessageRetentionChangeWarning": "Поруке које премашују нови период чувања биће аутоматски и трајно обрисане. Ова операција се не може поништити нити вратити.",
+    "MessageRetentionChangeConfirm": "Да ли сте сигурни да желите да наставите?",
+    "MessageRetentionChangeContinue": "Настави",
     "ResponseInStreaming": "Када је стриминг омогућен, видећете одговор у реалном времену док се генерише",
     "QuestionIsRequired": "Питање је обавезно",
     "TYPE_GPT_MODEL": {

@@ -1026,6 +1026,11 @@
     "5Years": "5 سنوات",
     "UpgradePlanForRetention": "يمكن تخصيص الاحتفاظ بالرسائل من خطة {{plan_name}}.",
     "MessageRetention": "الاحتفاظ بالرسائل",
+    "MessageRetentionChangeTitle": "تعديل فترة الاحتفاظ بالرسائل",
+    "MessageRetentionChangeIntro": "أنت على وشك تعديل فترة الاحتفاظ بالرسائل.",
+    "MessageRetentionChangeWarning": "سيتم حذف الرسائل التي تتجاوز فترة الاحتفاظ الجديدة تلقائيًا وبشكل دائم. لا يمكن التراجع عن هذه العملية أو استعادتها.",
+    "MessageRetentionChangeConfirm": "هل أنت متأكد أنك تريد المتابعة؟",
+    "MessageRetentionChangeContinue": "متابعة",
     "ResponseInStreaming": "عند تمكين البث المباشر، سترى الرد في الوقت الفعلي أثناء إنشائه",
     "QuestionIsRequired": "السؤال مطلوب",
     "TYPE_GPT_MODEL": {

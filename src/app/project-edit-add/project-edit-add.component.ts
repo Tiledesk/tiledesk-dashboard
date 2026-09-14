@@ -2212,19 +2212,29 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
    /**
-   * Restricted plan: only 1 month (30) selectable; otherwise full list.
-   * When unrestricted and no saved retentionDays, default UI to No retention (-1).
+   * Restricted plan (`isAvailableRetention = false`): only 1 month (30) and 3 months (90)
+   * are selectable; default is 3 months. Other periods stay disabled (upsell unchanged).
+   * Unrestricted: full list; when no saved retentionDays, default UI to No retention (-1).
    */
   private applyRetentionSelectionFromProjectAndPlan(): void {
     const restricted = this.isAvailableRetention === false;
+    const restrictedAllowedValues = [30, 90];
+    const restrictedDefaultDays = 90;
+
     this.messages_retention_items = this.messages_retention.map((item) => ({
       name: item.name,
       value: item.value,
-      disabled: restricted && item.value !== 30
+      disabled: restricted && !restrictedAllowedValues.includes(item.value),
     }));
 
     if (restricted) {
-      this.selectedRetention = 30;
+      const savedDays = this.retentionDaysLoadedFromServer
+        ? this.pendingRetentionSelection
+        : null;
+      this.selectedRetention =
+        savedDays != null && restrictedAllowedValues.includes(savedDays)
+          ? savedDays
+          : restrictedDefaultDays;
       return;
     }
 
@@ -3988,20 +3998,56 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     })
   }
 
-  onSelectRetention(value: any): void {
-    this.selectedRetention = value;
+  /**
+   * Save only opens the confirmation Swal.
+   * The PUT runs only when the user clicks Continue in the dialog.
+   */
+  openRetentionSaveConfirm(): void {
+    this.translate.get([
+      'MessageRetentionChangeTitle',
+      'MessageRetentionChangeIntro',
+      'MessageRetentionChangeWarning',
+      'MessageRetentionChangeConfirm',
+      'MessageRetentionChangeContinue',
+      'Cancel',
+    ]).subscribe((translations) => {
+      const html = [
+        `<p>${translations['MessageRetentionChangeIntro']}</p>`,
+        `<p>${translations['MessageRetentionChangeWarning']}</p>`,
+        `<p>${translations['MessageRetentionChangeConfirm']}</p>`,
+      ].join('');
 
+      Swal.fire({
+        title: translations['MessageRetentionChangeTitle'],
+        html,
+        icon: 'warning',
+        showCloseButton: false,
+        showCancelButton: true,
+        confirmButtonText: translations['MessageRetentionChangeContinue'],
+        cancelButtonText: translations['Cancel'],
+        reverseButtons: true,
+        focusConfirm: false,
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.saveRetentionDays();
+        }
+      });
+    });
+  }
+
+  private saveRetentionDays(): void {
     this.logger.log('[PRJCT-EDIT-ADD] selectedRetention ', this.selectedRetention);
     this.projectService.saveRetentionDays(this.selectedRetention).then((result) => {
-      console.log("[PRJCT-EDIT-ADD] - SAVE RETENTION DAYS result: ", result)
+      console.log('[PRJCT-EDIT-ADD] - SAVE RETENTION DAYS result: ', result);
 
-      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
-
-      this.cacheService.clearAllProjectsCache()
+      this.pendingRetentionSelection = this.selectedRetention;
+      this.retentionDaysLoadedFromServer = true;
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done');
+      this.cacheService.clearAllProjectsCache();
     }).catch((err) => {
-      this.logger.error("[PRJCT-EDIT-ADD] -  SAVE RETENTION DAYS ERROR: ", err)
-      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
-    })
+      this.logger.error('[PRJCT-EDIT-ADD] -  SAVE RETENTION DAYS ERROR: ', err);
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem');
+    });
   }
 
 

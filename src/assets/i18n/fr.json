@@ -1026,6 +1026,11 @@
     "5Years": "5 ans",
     "UpgradePlanForRetention": "La conservation des messages peut être personnalisée à partir du forfait {{plan_name}}.",
     "MessageRetention": "Conservation des messages",
+    "MessageRetentionChangeTitle": "Modification de la conservation des messages",
+    "MessageRetentionChangeIntro": "Vous êtes sur le point de modifier la période de conservation des messages.",
+    "MessageRetentionChangeWarning": "Les messages qui dépassent la nouvelle période de conservation seront supprimés automatiquement et de façon permanente. Cette opération ne peut pas être annulée ni récupérée.",
+    "MessageRetentionChangeConfirm": "Êtes-vous sûr de vouloir continuer ?",
+    "MessageRetentionChangeContinue": "Continuer",
     "ResponseInStreaming": "Lorsque le streaming est activé, vous verrez la réponse en temps réel pendant sa génération",
     "QuestionIsRequired": "La question est requise",
     "TYPE_GPT_MODEL": {

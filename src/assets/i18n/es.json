@@ -1001,6 +1001,11 @@
     "5Years": "5 años",
     "UpgradePlanForRetention": "La retención de mensajes se puede personalizar desde el plan {{plan_name}}.",
     "MessageRetention": "Retención de mensajes",
+    "MessageRetentionChangeTitle": "Modificación de la retención de mensajes",
+    "MessageRetentionChangeIntro": "Está a punto de modificar el periodo de retención de mensajes.",
+    "MessageRetentionChangeWarning": "Los mensajes que superen el nuevo periodo de retención se eliminarán automáticamente y de forma permanente. Esta operación no se puede deshacer ni recuperar.",
+    "MessageRetentionChangeConfirm": "¿Seguro que desea continuar?",
+    "MessageRetentionChangeContinue": "Continuar",
     "ResponseInStreaming": "When streaming is enabled, you will see the response in real time as it's being generated",
     "QuestionIsRequired": "Question is required",
     "TYPE_GPT_MODEL": {

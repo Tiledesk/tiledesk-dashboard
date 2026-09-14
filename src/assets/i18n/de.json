@@ -1026,6 +1026,11 @@
     "5Years": "5 Jahre",
     "UpgradePlanForRetention": "Die Nachrichtenaufbewahrung kann ab dem {{plan_name}}-Tarif angepasst werden.",
     "MessageRetention": "Nachrichtenaufbewahrung",
+    "MessageRetentionChangeTitle": "Änderung der Nachrichtenaufbewahrung",
+    "MessageRetentionChangeIntro": "Sie sind dabei, den Aufbewahrungszeitraum für Nachrichten zu ändern.",
+    "MessageRetentionChangeWarning": "Nachrichten, die den neuen Aufbewahrungszeitraum überschreiten, werden automatisch und dauerhaft gelöscht. Dieser Vorgang kann nicht rückgängig gemacht oder wiederhergestellt werden.",
+    "MessageRetentionChangeConfirm": "Möchten Sie wirklich fortfahren?",
+    "MessageRetentionChangeContinue": "Weiter",
     "ResponseInStreaming": "Wenn Streaming aktiviert ist, sehen Sie die Antwort in Echtzeit, während sie generiert wird",
     "QuestionIsRequired": "Frage ist erforderlich",
     "TYPE_GPT_MODEL": {

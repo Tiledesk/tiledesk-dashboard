@@ -1027,6 +1027,11 @@
     "5Years": "5 років",
     "UpgradePlanForRetention": "Зберігання повідомлень можна налаштувати, починаючи з плану {{plan_name}}.",
     "MessageRetention": "Зберігання повідомлень",
+    "MessageRetentionChangeTitle": "Зміна зберігання повідомлень",
+    "MessageRetentionChangeIntro": "Ви збираєтеся змінити період зберігання повідомлень.",
+    "MessageRetentionChangeWarning": "Повідомлення, які перевищують новий період зберігання, буде видалено автоматично та остаточно. Цю операцію неможливо скасувати або відновити.",
+    "MessageRetentionChangeConfirm": "Ви впевнені, що хочете продовжити?",
+    "MessageRetentionChangeContinue": "Продовжити",
     "ResponseInStreaming": "Коли стрімінг увімкнено, ви побачите відповідь у реальному часі під час її генерації",
     "QuestionIsRequired": "Питання є обов'язковим",
     "TYPE_GPT_MODEL": {

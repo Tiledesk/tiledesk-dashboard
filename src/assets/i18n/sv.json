@@ -1027,6 +1027,11 @@
     "5Years": "5 år",
     "UpgradePlanForRetention": "Lagring av meddelanden kan anpassas från {{plan_name}}-planen.",
     "MessageRetention": "Lagring av meddelanden",
+    "MessageRetentionChangeTitle": "Ändring av meddelandelagring",
+    "MessageRetentionChangeIntro": "Du håller på att ändra lagringsperioden för meddelanden.",
+    "MessageRetentionChangeWarning": "Meddelanden som överskrider den nya lagringsperioden raderas automatiskt och permanent. Denna åtgärd kan inte ångras eller återställas.",
+    "MessageRetentionChangeConfirm": "Är du säker på att du vill fortsätta?",
+    "MessageRetentionChangeContinue": "Fortsätt",
     "ResponseInStreaming": "När strömning är aktiverad ser du svaret i realtid medan det genereras",
     "QuestionIsRequired": "Fråga krävs",
     "TYPE_GPT_MODEL": {

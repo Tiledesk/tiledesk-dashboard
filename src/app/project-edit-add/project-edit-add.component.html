@@ -74,11 +74,11 @@
                     <a> {{'BannedVisitors' | translate }} </a>
                   </li>
 
-                  <!-- <li *ngIf="PERMISSION_TO_VIEW_RETENTION" (click)="goToProjectSettings_RetentionPolicy()"
+                  <li *ngIf="PERMISSION_TO_VIEW_RETENTION" (click)="goToProjectSettings_RetentionPolicy()"
                     class="btn-with-border-effect"
                     [ngClass]="{'li-active': PROJECT_SETTINGS_RETENTION, 'border-from-center': PROJECT_SETTINGS_RETENTION === false }">
                     <a> {{'MessageRetention' | translate }} </a>
-                  </li> -->
+                  </li>
 
                   <li *ngIf="PERMISSION_TO_VIEW_ADVANCED" (click)="goToProjectSettings_Advanced()" class="btn-with-border-effect"
                     [ngClass]="{'li-active': PROJECT_SETTINGS_ADVANCED_ROUTE, 'border-from-center': PROJECT_SETTINGS_ADVANCED_ROUTE === false }">
@@ -1949,9 +1949,18 @@
                                 placeholder="Retention period"
                                 [clearable]="false" 
                                 [searchable]="false"
-                                [(ngModel)]="selectedRetention"
-                                (change)="onSelectRetention(selectedRetention)">
+                                [(ngModel)]="selectedRetention">
                               </ng-select>
+                            </div>
+
+                            <div class="save-messages-retention-btn-wpr">
+                              <button
+                                type="button"
+                                class="btn btn-tdblu-no-boxshadow"
+                                style="margin-top: 16px; font-size: 12px; letter-spacing: 1px;"
+                                (click)="openRetentionSaveConfirm()">
+                                {{ 'Save' | translate }}
+                              </button>
                             </div>
                           </div>
 
@@ -2291,8 +2300,7 @@
                               placeholder="Retention period"
                               [clearable]="false" 
                               [searchable]="false"
-                              [(ngModel)]="selectedRetention"
-                              (change)="onSelectRetention(selectedRetention)">
+                              [(ngModel)]="selectedRetention">
                             </ng-select>
                           </div>
                         </div>

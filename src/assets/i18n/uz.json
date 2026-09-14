@@ -1027,6 +1027,11 @@
     "5Years": "5 yil",
     "UpgradePlanForRetention": "Xabarlarni saqlash {{plan_name}} rejasidan boshlab sozlanishi mumkin.",
     "MessageRetention": "Xabarlarni saqlash",
+    "MessageRetentionChangeTitle": "Xabarlarni saqlash muddatini o‘zgartirish",
+    "MessageRetentionChangeIntro": "Xabarlarni saqlash muddatini o‘zgartirmoqchisiz.",
+    "MessageRetentionChangeWarning": "Yangi saqlash muddatidan oshgan xabarlar avtomatik va butunlay o‘chiriladi. Bu amalni bekor qilib bo‘lmaydi va tiklab bo‘lmaydi.",
+    "MessageRetentionChangeConfirm": "Davom etishni xohlaysizmi?",
+    "MessageRetentionChangeContinue": "Davom etish",
     "ResponseInStreaming": "Oqim yoqilganda, javob yaratilayotganda uni real vaqt rejimida ko'rasiz",
     "QuestionIsRequired": "Savol majburiy",
     "TYPE_GPT_MODEL": {
