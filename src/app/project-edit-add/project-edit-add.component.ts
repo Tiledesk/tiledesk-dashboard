@@ -2213,13 +2213,15 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
 
    /**
    * Restricted plan (`isAvailableRetention = false`): only 1 month (30) and 3 months (90)
-   * are selectable; default is 3 months. Other periods stay disabled (upsell unchanged).
-   * Unrestricted: full list; when no saved retentionDays, default UI to No retention (-1).
+   * are selectable. Other periods stay disabled (upsell unchanged).
+   * Selection priority: server `settings.retentionDays` when present (and allowed if restricted);
+   * otherwise `environment.defaultRetentionDays` from app config.
    */
   private applyRetentionSelectionFromProjectAndPlan(): void {
     const restricted = this.isAvailableRetention === false;
     const restrictedAllowedValues = [30, 90];
-    const restrictedDefaultDays = 90;
+    const configDefaultDays = Number(this.appConfigService.getConfig()?.defaultRetentionDays);
+    const fallbackDefaultDays = Number.isFinite(configDefaultDays) ? configDefaultDays : 90;
 
     this.messages_retention_items = this.messages_retention.map((item) => ({
       name: item.name,
@@ -2234,14 +2236,16 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
       this.selectedRetention =
         savedDays != null && restrictedAllowedValues.includes(savedDays)
           ? savedDays
-          : restrictedDefaultDays;
+          : (restrictedAllowedValues.includes(fallbackDefaultDays)
+            ? fallbackDefaultDays
+            : 90);
       return;
     }
 
     if (this.retentionDaysLoadedFromServer && this.pendingRetentionSelection !== null) {
       this.selectedRetention = this.pendingRetentionSelection;
     } else {
-      this.selectedRetention = -1;
+      this.selectedRetention = fallbackDefaultDays;
     }
   }
 
