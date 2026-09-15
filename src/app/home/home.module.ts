@@ -21,9 +21,16 @@ import { HomeCustomizeWidgetComponent } from 'app/home-components/home-customize
 import { HomeCreateTeammateComponent } from 'app/home-components/home-create-teammate/home-create-teammate.component';
 import { HomeKbComponent } from 'app/home-components/home-kb/home-kb.component';
 import { HomeCdsComponent } from 'app/home-components/home-cds/home-cds.component';
+import { HomeFlowComponent } from 'app/home-components/home-flow/home-flow.component';
+import { HomeQuickCardsComponent } from 'app/home-components/home-quick-cards/home-quick-cards.component';
 import { HomeGoToChatComponent } from 'app/home-components/home-go-to-chat/home-go-to-chat.component';
+import { HomeAnalyticsEmbedComponent } from 'app/home-components/home-analytics-embed/home-analytics-embed.component';
+import { HomeKbAnalyticsComponent } from 'app/home-components/home-kb-analytics/home-kb-analytics.component';
+import { HomeOverviewComponent } from 'app/home-components/home-overview/home-overview.component';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MomentModule } from 'ngx-moment';
+import { OverlayModule } from '@angular/cdk/overlay';
 const routes: Routes = [
   { path: "", component: HomeComponent},
 ];
@@ -42,7 +49,12 @@ const routes: Routes = [
     HomeCreateTeammateComponent,
     HomeKbComponent,
     HomeCdsComponent,
-    HomeGoToChatComponent
+    HomeFlowComponent,
+    HomeQuickCardsComponent,
+    HomeGoToChatComponent,
+    HomeAnalyticsEmbedComponent,
+    HomeKbAnalyticsComponent,
+    HomeOverviewComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -55,8 +67,10 @@ const routes: Routes = [
     MatCheckboxModule,
     SatPopoverModule,
     MatButtonModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
-    MomentModule
+    MomentModule,
+    OverlayModule,
   ],
   exports: [
     RouterModule
