@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.186-AR
+- Adds a confirmation dialog displayed when the user saves the retention days
+- Adds DEFAULT_RETENTION_DAYS environment variable used as Message retention fallback when the retention value is missing on the server
+- Restricts Message retention access to Owner or teammates with the dedicated custom-role permission
+- Fixes the bug: Admin could access Banned visitors via direct URL
+
 ### 2.7.185-AR
  - Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
 
