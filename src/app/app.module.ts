@@ -333,6 +333,7 @@ import { OpenaiService } from './services/openai.service';
 import { HomeKbModalComponent } from './home-components/home-kb/home-kb-modal/home-kb-modal.component';
 import { HomeInviteTeammateModalComponent } from './home-components/home-create-teammate/home-invite-teammate-modal/home-invite-teammate-modal.component';
 import { HomeInviteTeammateErrorModalComponent } from './home-components/home-create-teammate/home-invite-teammate-error-modal/home-invite-teammate-error-modal.component';
+import { HomeCreateKbAssistantModalComponent } from './home-components/home-quick-cards/home-create-kb-assistant-modal/home-create-kb-assistant-modal.component';
 // import { HomeGoToChatComponent } from './home-components/home-go-to-chat/home-go-to-chat.component'; // now lazy
 import { ChatbotModalComponent } from './bots/bots-list/chatbot-modal/chatbot-modal.component';
 // import { ChatbotAlertComponent } from './bots/bots-list/chatbot-alert/chatbot-alert.component'; // now lazy
@@ -660,6 +661,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     HomeKbModalComponent,
     HomeInviteTeammateModalComponent,
     HomeInviteTeammateErrorModalComponent,
+    HomeCreateKbAssistantModalComponent,
     // HomeGoToChatComponent, // now lazy
     ChatbotModalComponent,
     // ChatbotAlertComponent, // now lazy

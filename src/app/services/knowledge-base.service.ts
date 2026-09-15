@@ -7,6 +7,11 @@ import { AnalyticsEmbedService } from './analytics-embed.service';
 import { KB } from 'app/models/kbsettings-model';
 import { BehaviorSubject, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import {
+  lastNDaysChartRange,
+  previousNDaysChartRange,
+  resolveProjectTimezone,
+} from 'app/utils/project-timezone.util';
 
 
 
@@ -23,6 +28,7 @@ export class KnowledgeBaseService {
   TOKEN: string;
   user: any;
   project_id: any;
+  project: any;
 
   constructor(
     public appConfigService: AppConfigService,
@@ -61,6 +67,7 @@ export class KnowledgeBaseService {
     this.logger.log("get current project")
     this.auth.project_bs.subscribe((project) => {
       if (project) {
+        this.project = project;
         this.project_id = project._id
       }
     }, (error) => {
@@ -418,11 +425,211 @@ export class KnowledgeBaseService {
         };
 
         const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
-        const url = `${base}/api/v1/${this.project_id}/charts/ai/kb-per-kb-over-time?granularity=day&from=${from}&to=${to}&kb=${namespaceid}`;
+        const url = `${base}/api/v1/${this.project_id}/charts/ai/kb-per-kb-over-time`
+          + `?granularity=day`
+          + `&${this.analyticsRangeQuery(from, to)}`
+          + `&kb=${encodeURIComponent(namespaceid)}`;
         this.logger.log('[KNOWLEDGE BASE SERVICE] - getAnwseredUnansweredQuestionsForCharts URL ', url);
         return this.httpClient.get(url, httpOptions);
       }),
     );
+  }
+
+  /** AI model usage over time for a chatbot agent (Home flow charts). */
+  tokenUsagePerAgentOverTime(agentId: string, range?: { from: string; to: string }) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for AI model usage chart'));
+    }
+    if (!agentId) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing agent id for AI model usage chart'));
+    }
+
+    const { from, to } = range ?? this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const url = `${base}/api/v1/${this.project_id}/charts/ai/agent-tokens-over-time?${this.analyticsRangeQuery(from, to)}&granularity=day&agent=${encodeURIComponent(agentId)}`;
+        this.logger.log('[KNOWLEDGE BASE SERVICE] - tokenUsagePerAgentOverTime URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+
+  /** AI model call counts and token totals KPI for a chatbot agent (Home flow). */
+  aiModelCallCountsAndTokenTotals(agentId: string) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for AI model KPI'));
+    }
+    if (!agentId) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing agent id for AI model KPI'));
+    }
+
+    const { from, to } = this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const url = `${base}/api/v1/${this.project_id}/kpi/ai/tokens?${this.analyticsRangeQuery(from, to)}&agent=${encodeURIComponent(agentId)}`;
+        // const url = `${base}/api/v1/${this.project_id}/kpi/ai/models?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&agent=${encodeURIComponent(agentId)}`;
+        this.logger.log('[KNOWLEDGE BASE SERVICE] - aiModelCallCountsAndTokenTotals URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+
+  /** Agent intent completion distribution KPI (Home — most engaged chatbot). */
+  agentDistribution(range?: { from: string; to: string }) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for agent distribution KPI'));
+    }
+
+    const { from, to } = range ?? this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const url = `${base}/api/v1/${this.project_id}/kpi/agent/intents-duration?${this.analyticsRangeQuery(from, to)}`;
+        this.logger.log('[KNOWLEDGE BASE SERVICE] - agentDistribution URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+
+  /** Agent conversations ops over time (Home flow charts). */
+  agentConversazionsOverTime(agentId?: string, range?: { from: string; to: string }) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for agent ops chart'));
+    }
+
+    const { from, to } = range ?? this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const agentQuery = agentId ? `&agent=${encodeURIComponent(agentId)}` : '';
+        const url = `${base}/api/v1/${this.project_id}/charts/agent/ops-over-time?${this.analyticsRangeQuery(from, to)}&granularity=day${agentQuery}`;
+        this.logger.log('[KNOWLEDGE BASE SERVICE] - agentConversazionsOverTime URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+
+  /** Project-level conversations over time (Home overview). */
+  projectConversationsOverTime(range?: { from: string; to: string }) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for conversations chart'));
+    }
+
+    const { from, to } = range ?? this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const url = `${base}/api/v1/${this.project_id}/charts/conversations?${this.analyticsRangeQuery(from, to)}&granularity=day`;
+        this.logger.log('[KNOWLEDGE BASE SERVICE] - projectConversationsOverTime URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+
+  /** Project-level AI token consumption over time (Home overview). */
+  projectTokensOverTime(range?: { from: string; to: string }) {
+    if (!this.project_id || !this.TOKEN) {
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for tokens chart'));
+    }
+
+    const { from, to } = range ?? this.getLast10DaysChartRange();
+
+    return this.analyticsEmbedService.getEmbedToken(this.project_id, this.TOKEN).pipe(
+      switchMap((embed) => {
+        const authorization = this.analyticsEmbedService.authorizationHeaderFromEmbedToken(embed.token);
+        const httpOptions = {
+          headers: new HttpHeaders({
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: authorization,
+          }),
+        };
+
+        const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
+        const url = `${base}/api/v1/${this.project_id}/charts/ai/tokens?${this.analyticsRangeQuery(from, to)}&granularity=day`;
+        this.logger.log('[KNOWLEDGE BASE SERVICE] - projectTokensOverTime URL ', url);
+        return this.httpClient.get(url, httpOptions);
+      }),
+    );
+  }
+
+  /** Project timezone from Operating Hours (`tzname`), fallback browser TZ. */
+  getProjectTimezone(): string {
+    // Prefer live auth project (storage / projectSelected) over a stale service copy.
+    const project = this.auth.project_bs?.getValue?.() ?? this.project;
+    return resolveProjectTimezone(project);
+  }
+
+  private analyticsRangeQuery(from: string, to: string): string {
+    return `from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
+      + `&timezone=${encodeURIComponent(this.getProjectTimezone())}`;
+  }
+
+  /** Half-open range for the 10 calendar days before the current chart window (project TZ). */
+  getPrevious10DaysChartRange(): { from: string; to: string } {
+    return previousNDaysChartRange(10, this.getProjectTimezone());
+  }
+
+  /** Half-open range for the last `days` calendar days in the project timezone. */
+  getLastNDaysChartRange(days: number): { from: string; to: string } {
+    return lastNDaysChartRange(days, this.getProjectTimezone());
+  }
+
+  /** Half-open range for the last 10 calendar days in the project timezone. */
+  getLast10DaysChartRange(): { from: string; to: string } {
+    return this.getLastNDaysChartRange(10);
   }
 
   // DEPRECATED FUNCTIONS - END

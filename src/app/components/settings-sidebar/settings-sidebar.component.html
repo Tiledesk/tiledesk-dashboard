@@ -300,16 +300,13 @@
 
 
     <!-- -------------------------------------------------------- -->
-    <!--  Knowledge Bases  -->
+    <!--  Knowledge Bases (prev /kbsettings) — hidden: endpoint removed -->
     <!-- -------------------------------------------------------- -->
-    <ng-container *ngIf="isVisibleKNB && USER_ROLE !== 'agent' && ARE_NEW_KB === false">
+    <!-- <ng-container *ngIf="isVisibleKNB && USER_ROLE !== 'agent' && ARE_NEW_KB === false">
       <li [ngClass]="{'active-item': KNOWLEDGE_BASES_ROUTE_IS_ACTIVE}" (click)="goToKnowledgeBases()"
         matTooltipClass="custom-mat-tooltip-in-settings-sidebar" matTooltip="{{ 'KnowledgeBases' | translate }}"
         #tooltip="matTooltip" matTooltipPosition='right' matTooltipHideDelay="100" [matTooltipDisabled]="IS_OPEN">
         <a class="settings-sidebar-anchor">
-          <!-- <i *ngIf="IS_OPEN === true || IS_OPEN === false" class="material-icons settings-sidebar-icons">
-            school
-          </i> -->
           <span *ngIf="IS_OPEN === true || IS_OPEN === false">
 
             <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 0 24 24" width="16px" fill="none"
@@ -321,11 +318,10 @@
           </span>
           <p *ngIf="IS_OPEN === true" class="custom_paragraph">
             {{ 'KnowledgeBases' | translate }}
-            <!-- <span class="kb-beta-badge">Beta</span> -->
           </p>
         </a>
       </li>
-    </ng-container>
+    </ng-container> -->
 
     <!-- -------------------------------------------------------- -->
     <!--  Integrations  -->

@@ -8,8 +8,8 @@ import { TranslateService } from '@ngx-translate/core'
 import { UsersService } from 'app/services/users.service'
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { KnowledgeBaseService } from 'app/services/knowledge-base.service'
-import { KbSettings } from 'app/models/kbsettings-model'
+// import { KnowledgeBaseService } from 'app/services/knowledge-base.service'
+// import { KbSettings } from 'app/models/kbsettings-model'
 import { RolesService } from 'app/services/roles.service'
 import { PERMISSIONS } from 'app/utils/permissions.constants'
 @Component({
@@ -81,7 +81,7 @@ export class SettingsSidebarComponent implements OnInit {
   translations: string;
   teammatates_and_groups_lbl: string;
   USER_HAS_TOGGLE_SIDEBAR: boolean;
-  ARE_NEW_KB: boolean;
+  // ARE_NEW_KB: boolean; // deprecated: /kbsettings removed from server
   TEST_WIDGET_API_BASE_URL: string;
   TESTSITE_BASE_URL: string;
   private unsubscribe$: Subject<any> = new Subject<any>();
@@ -121,7 +121,7 @@ export class SettingsSidebarComponent implements OnInit {
     public location: Location,
     private translate: TranslateService,
     private usersService: UsersService,
-    private kbService: KnowledgeBaseService,
+    // private kbService: KnowledgeBaseService,
     public rolesService: RolesService
   ) { }
 
@@ -908,37 +908,44 @@ export class SettingsSidebarComponent implements OnInit {
     if (!this.public_Key.includes("INT")) {
       this.isVisibleINT = false;
     }
-    if (this.isVisibleKNB) {
-      // this.listenToKbVersion()
-      this.getKnowledgeBaseSettings() 
-    }
+    // Deprecated: GET /:projectId/kbsettings no longer exists on server (404).
+    // if (this.isVisibleKNB) {
+    //   // this.listenToKbVersion()
+    //   this.getKnowledgeBaseSettings()
+    // }
   }
 
 
-   getKnowledgeBaseSettings() {
-      this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
-        this.logger.log("[SIDEBAR] get kbSettings RES ", kbSettings);
-        if (kbSettings && kbSettings.kbs) {
-          if (kbSettings.kbs.length === 0) {
-            // this.kbService.areNewwKb(true)
-            this.ARE_NEW_KB = true
-          } else if (kbSettings.kbs.length > 0) {
-            // this.kbService.areNewwKb(false)
-            this.ARE_NEW_KB = false
-          }
-  
-        } else {
-          // this.kbService.areNewwKb(true)
-          this.ARE_NEW_KB = true
-        }
-  
-      }, (error) => {
-        this.logger.error("[SIDEBAR] get kbSettings ERROR ", error);
-      }, () => {
-        this.logger.log("SIDEBAR] get kbSettings * COMPLETE *");
-  
-      })
-    }
+  // Deprecated: /kbsettings removed — was used only to set ARE_NEW_KB for old KB settings menu.
+  // getKnowledgeBaseSettings() {
+  //    this.kbService.getKbSettingsPrev().subscribe((kbSettings: KbSettings) => {
+  //      this.logger.log("[SIDEBAR] get kbSettings RES ", kbSettings);
+  //      if (kbSettings && kbSettings.kbs) {
+  //        if (kbSettings.kbs.length === 0) {
+  //          // this.kbService.areNewwKb(true)
+  //          this.ARE_NEW_KB = true
+  //        } else if (kbSettings.kbs.length > 0) {
+  //          // this.kbService.areNewwKb(false)
+  //          this.ARE_NEW_KB = false
+  //        }
+  //
+  //      } else {
+  //        // this.kbService.areNewwKb(true)
+  //        this.ARE_NEW_KB = true
+  //      }
+  //
+  //    }, (error) => {
+  //      this.ARE_NEW_KB = true;
+  //      if (error?.status === 404) {
+  //        this.logger.log("[SIDEBAR] get kbSettings 404 — treating as new KB");
+  //      } else {
+  //        this.logger.error("[SIDEBAR] get kbSettings ERROR ", error);
+  //      }
+  //    }, () => {
+  //      this.logger.log("SIDEBAR] get kbSettings * COMPLETE *");
+  //
+  //    })
+  //  }
 
   // No more used
   // listenToKbVersion() {

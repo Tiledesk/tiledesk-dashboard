@@ -220,6 +220,23 @@ export class QuotesService {
     }
   }
 
+  /**
+   * Progress % for quota UI (0–100).
+   * If usage is > 0 but < 1% of the limit, returns 1 so the bar is visible
+   * (Math.floor alone would show 0% for e.g. 2/400).
+   */
+  calcQuotaUsagePercent(used: number, limit: number): number {
+    if (!Number.isFinite(limit) || limit <= 0) {
+      return 0;
+    }
+    const usedSafe = Number(used) || 0;
+    if (usedSafe <= 0) {
+      return 0;
+    }
+    const perc = Math.floor((usedSafe / limit) * 100);
+    return Math.min(100, Math.max(1, perc));
+  }
+
 
 
 

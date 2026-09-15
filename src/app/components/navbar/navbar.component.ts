@@ -2,6 +2,7 @@
 import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy, Inject } from '@angular/core';
 // import { ROUTES } from '../sidebar/sidebar.component';
 import { DOCUMENT, Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -36,8 +37,6 @@ import { Subscription } from 'rxjs'
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { ThemePalette } from '@angular/material/core';
-import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
@@ -180,8 +179,6 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   // QUOTES
   isVisibleQuoteBtn: boolean;
   isVisiblePay: boolean
-  color: ThemePalette = 'primary';
-  mode: ProgressSpinnerMode = 'determinate';
   requests_count = 0;
   requests_perc = 0;
   requests_limit = 0;
@@ -222,6 +219,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
+
+  /** CDK hover help on quota alert icons (aligned with home Current usage). */
+  quotaHelpOpen: 'conversations' | 'tokens' | 'email' | 'voice' | null = null;
+  private quotaHelpCloseTimeout: ReturnType<typeof setTimeout> | null = null;
+  quotaHelpPositions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -12,
+    },
+  ];
+
+  get isQuotaOwner(): boolean {
+    return this.USER_ROLE === 'owner';
+  }
 
   startSlot: string;
   endSlot: string;
@@ -747,6 +761,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   ngOnDestroy() {
     this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+    if (this.quotaHelpCloseTimeout) {
+      clearTimeout(this.quotaHelpCloseTimeout);
+      this.quotaHelpCloseTimeout = null;
+    }
     this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -944,7 +962,41 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   onQuotasMenuClosed() {
     this.isOpenCurrentUsageMenu = false
+    this.quotaHelpOpen = null;
+    if (this.quotaHelpCloseTimeout) {
+      clearTimeout(this.quotaHelpCloseTimeout);
+      this.quotaHelpCloseTimeout = null;
+    }
     // this.logger.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
+  }
+
+  openQuotaHelp(resource: 'conversations' | 'tokens' | 'email' | 'voice'): void {
+    if (this.quotaHelpCloseTimeout) {
+      clearTimeout(this.quotaHelpCloseTimeout);
+      this.quotaHelpCloseTimeout = null;
+    }
+    this.quotaHelpOpen = resource;
+  }
+
+  scheduleCloseQuotaHelp(): void {
+    this.quotaHelpCloseTimeout = setTimeout(() => {
+      this.quotaHelpOpen = null;
+    }, 120);
+  }
+
+  cancelCloseQuotaHelp(): void {
+    if (this.quotaHelpCloseTimeout) {
+      clearTimeout(this.quotaHelpCloseTimeout);
+      this.quotaHelpCloseTimeout = null;
+    }
+  }
+
+  onQuotaContactSalesClick(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    window.open(
+      `mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`
+    );
   }
 
   getProjectQuotes() {
@@ -994,6 +1046,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.voice_limit = Math.floor(this.project_limits.voice_duration / 60);
       }
 
+      // -----------------------------
+      // For test (Navbar Current usage menu)
+      // Setting limit=1 alone does nothing if used quote is 0 (0 >= 1 is false → 0%).
+      // Uncomment BOTH limits and used quotes below to force runned-out UI / progress %.
+      // Voice: compare uses voice_limit_in_sec (seconds), not voice_limit (minutes display).
+      // -----------------------------
+      // this.requests_limit = 100;
+      // this.email_limit = 100;
+      // this.tokens_limit = 100;
+      // this.voice_limit = 100; // display minutes
+      // this.voice_limit_in_sec = 100; // used for runned-out + %
+
       if (resp.quotes.requests.quote === null) {
         resp.quotes.requests.quote = 0;
       }
@@ -1009,6 +1073,14 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       if (resp.quotes.voice_duration && resp.quotes.voice_duration.quote === null) {
         resp.quotes.voice_duration.quote = 0;
       }
+
+      // ------------------------------------------------------------
+      // For test (after null coerce) — force used >= limit
+      // ------------------------------------------------------------
+      // resp.quotes.requests.quote = 100;
+      // resp.quotes.email.quote = 90;
+      // resp.quotes.tokens.quote = 83;
+      // resp.quotes.voice_duration.quote = 90;
 
       this.logger.log('[NAVBAR] used requests', resp.quotes.requests.quote)
       this.logger.log('[NAVBAR] requests_limit', this.requests_limit)
@@ -1058,11 +1130,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       }
 
 
-      this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
-      this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
-      this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
-      this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
-      this.voice_perc = Math.min(100, Math.floor((resp.quotes.voice_duration.quote / this.voice_limit_in_sec) * 100));
+      this.requests_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.requests.quote, this.requests_limit);
+      this.messages_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.messages.quote, this.messages_limit);
+      this.email_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.email.quote, this.email_limit);
+      this.tokens_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.tokens.quote, this.tokens_limit);
+      this.voice_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.voice_duration.quote, this.voice_limit_in_sec);
 
       this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
       if (this.requests_perc <= 25) {

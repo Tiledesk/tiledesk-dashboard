@@ -235,6 +235,33 @@
     }
   }
 
+  .quota-right-title-row {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    max-width: 100%;
+  }
+
+  .quota-right-title-runned-out {
+    color: #f55a4e !important;
+  }
+
+  .navbar-quota-alert-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    line-height: 0;
+    cursor: pointer;
+  }
+
+  .navbar-quota-alert-icon svg {
+    width: 14px;
+    height: 14px;
+    fill: #fbce33;
+  }
+
   .quota-limit-wpr {
     display: flex;
     flex-direction: row;
@@ -252,7 +279,52 @@
     font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
   }
 
-  // .quota-pie, spinner, .quota-pie-label: material-mdc-overrides.scss
+  .quota-progress-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .quota-progress-bar {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 4px;
+    border-radius: 2px;
+    background-color: #e8e9ed;
+    overflow: hidden;
+  }
+
+  .quota-progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    background-image: linear-gradient(
+      90deg,
+      hsl(142, 72%, 46%) 0%,
+      hsl(90, 70%, 45%) 35%,
+      hsl(48, 92%, 50%) 63%,
+      hsl(28, 90%, 52%) 85%,
+      hsl(4, 85%, 55%) 100%
+    );
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: calc(100% * 100 / max(var(--quota-perc, 100), 0.01)) 100%;
+  }
+
+  .quota-progress-percentage {
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    min-width: 32px;
+    text-align: right;
+  }
+
+  .quota-progress-percentage-runned-out {
+    color: #f55a4e;
+  }
 
   .quota-resets {
     font-family: var(--header-font-family);

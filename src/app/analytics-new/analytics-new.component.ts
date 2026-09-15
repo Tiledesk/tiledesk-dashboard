@@ -6,6 +6,7 @@ import { AnalyticsEmbedService } from 'app/services/analytics-embed.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { Subscription } from 'rxjs';
+import { resolveProjectTimezone as resolveProjectTimezoneFromHours } from 'app/utils/project-timezone.util';
 
 @Component({
   selector: 'appdashboard-analytics-new',
@@ -126,6 +127,14 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
     return typeof base === 'string' ? base.replace(/\/?$/, '/') : '';
   }
 
+  /**
+   * Project IANA timezone from Operating Hours (`tzname`), fallback browser TZ.
+   * Same source as project Hours settings / History.
+   */
+  private resolveProjectTimezone(): string {
+    return resolveProjectTimezoneFromHours(this.auth.project_bs.getValue());
+  }
+
   private fetchTokenAndSetUrl(): void {
     const apiBase = this.appConfigService.getConfig()?.analyticsApiBase as string | undefined;
     const embedBase = this.getEmbedBase();
@@ -147,7 +156,10 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
       next: (resp) => {
         console.log('[AnalyticsNew] resp ', resp);
         const sep = embedBase.includes('?') ? '&' : '?';
-        const url = `${embedBase}${sep}token=${encodeURIComponent(resp.token)}`;
+        const timezone = this.resolveProjectTimezone();
+        const url =
+          `${embedBase}${sep}token=${encodeURIComponent(resp.token)}` +
+          `&timezone=${encodeURIComponent(timezone)}`;
         // Keep loading=true until iframe (load); only set URL so the embed can start.
         this.embedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
         console.log('[AnalyticsNew] embedUrl ',  this.embedUrl);

@@ -1,7 +1,8 @@
+import { buildLastNDayKeys, toDayKeyInTimeZone } from 'app/utils/project-timezone.util';
 import type { EChartsOption } from 'echarts';
 
 export interface KbOverTimePoint {
-  /** UTC day key YYYY-MM-DD */
+  /** Calendar day key YYYY-MM-DD (project / browser timezone) */
   dayKey: string;
   answered: number;
   unanswered: number;
@@ -11,15 +12,8 @@ const ANSWERED_COLOR = '#2e7d32';
 const UNANSWERED_COLOR = '#e53935';
 const RATE_COLOR = '#6b4ce6';
 
-function toDayKey(value: unknown): string {
-  if (value == null || value === '') { return ''; }
-  const raw = String(value).trim();
-  if (/^\d{4}-\d{2}-\d{2}/.test(raw)) {
-    return raw.slice(0, 10);
-  }
-  const parsed = new Date(raw);
-  if (Number.isNaN(parsed.getTime())) { return ''; }
-  return parsed.toISOString().slice(0, 10);
+function toDayKey(value: unknown, timeZone: string = 'UTC'): string {
+  return toDayKeyInTimeZone(value, timeZone);
 }
 
 function readCount(row: Record<string, unknown>, keys: string[]): number {
@@ -32,7 +26,10 @@ function readCount(row: Record<string, unknown>, keys: string[]): number {
   return 0;
 }
 
-function parseTimestampsSeriesFormat(root: Record<string, unknown>): KbOverTimePoint[] | null {
+function parseTimestampsSeriesFormat(
+  root: Record<string, unknown>,
+  timeZone: string = 'UTC',
+): KbOverTimePoint[] | null {
   const timestamps = root.timestamps;
   const seriesList = root.series;
   if (!Array.isArray(timestamps) || !Array.isArray(seriesList) || !seriesList.length) {
@@ -48,7 +45,7 @@ function parseTimestampsSeriesFormat(root: Record<string, unknown>): KbOverTimeP
 
   const points: KbOverTimePoint[] = [];
   timestamps.forEach((ts, index) => {
-    const dayKey = toDayKey(ts);
+    const dayKey = toDayKey(ts, timeZone);
     if (!dayKey) { return; }
     points.push({
       dayKey,
@@ -84,11 +81,11 @@ function extractPointsArray(res: unknown): Record<string, unknown>[] {
 }
 
 /** Normalise analytics API payload into daily answered / unanswered counts. */
-export function parseKbOverTimeResponse(res: unknown): KbOverTimePoint[] {
+export function parseKbOverTimeResponse(res: unknown, timeZone: string = 'UTC'): KbOverTimePoint[] {
   if (!res || typeof res !== 'object') { return []; }
   const root = res as Record<string, unknown>;
 
-  const fromTimestampsSeries = parseTimestampsSeriesFormat(root);
+  const fromTimestampsSeries = parseTimestampsSeriesFormat(root, timeZone);
   if (fromTimestampsSeries) {
     return fromTimestampsSeries;
   }
@@ -99,6 +96,7 @@ export function parseKbOverTimeResponse(res: unknown): KbOverTimePoint[] {
   rows.forEach((row) => {
     const dayKey = toDayKey(
       row.date ?? row.day ?? row.t ?? row.timestamp ?? row.bucket ?? row.time ?? row.label,
+      timeZone,
     );
     if (!dayKey) { return; }
     byDay.set(dayKey, {
@@ -111,18 +109,37 @@ export function parseKbOverTimeResponse(res: unknown): KbOverTimePoint[] {
   return Array.from(byDay.values()).sort((a, b) => a.dayKey.localeCompare(b.dayKey));
 }
 
-export function buildDayKeysBetween(startInclusive: Date, endExclusive: Date): string[] {
-  const keys: string[] = [];
-  const cursor = new Date(startInclusive.getTime());
-  cursor.setUTCHours(0, 0, 0, 0);
-  const end = new Date(endExclusive.getTime());
-  end.setUTCHours(0, 0, 0, 0);
+/** Last `days` local calendar day keys in `timeZone` (inclusive of today). */
+export function buildLastNLocalDayKeys(days: number, timeZone: string = 'UTC'): string[] {
+  return buildLastNDayKeys(days, timeZone);
+}
 
-  while (cursor < end) {
-    keys.push(cursor.toISOString().slice(0, 10));
-    cursor.setUTCDate(cursor.getUTCDate() + 1);
+/**
+ * Day keys for half-open [fromIso, toIso) in `timeZone`.
+ * Prefer `buildLastNLocalDayKeys` when the window is "last N local days".
+ */
+export function buildDayKeysBetween(
+  fromIso: string | Date,
+  toIso: string | Date,
+  timeZone: string = 'UTC',
+): string[] {
+  const from = typeof fromIso === 'string' ? fromIso : fromIso.toISOString();
+  const to = typeof toIso === 'string' ? toIso : toIso.toISOString();
+  const lastIncludedKey = toDayKeyInTimeZone(new Date(new Date(to).getTime() - 1).toISOString(), timeZone);
+  const firstKey = toDayKeyInTimeZone(from, timeZone);
+  if (!firstKey || !lastIncludedKey) {
+    return [];
   }
-  return keys;
+  // Walk forward day-by-day using successive midnights approximated via last-N then filter.
+  // Generate a generous window then slice to [firstKey, lastIncludedKey].
+  const keys = buildLastNDayKeys(400, timeZone);
+  const startIdx = keys.indexOf(firstKey);
+  const endIdx = keys.indexOf(lastIncludedKey);
+  if (startIdx < 0 || endIdx < 0 || endIdx < startIdx) {
+    // Fallback: if outside "last 400 days" (shouldn't happen for KB charts), return empty.
+    return [];
+  }
+  return keys.slice(startIdx, endIdx + 1);
 }
 
 export function alignPointsToDayKeys(
