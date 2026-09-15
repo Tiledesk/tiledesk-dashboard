@@ -1,0 +1,18 @@
+<div class="m-header">
+  <h1 mat-dialog-title>{{ title }}</h1>
+  <div class="m-top-right-icon">
+    <span class="material-icons-outlined" (click)="onCancel()">
+      close
+    </span>
+  </div>
+</div>
+
+<div mat-dialog-content>
+  <p class="home-create-kb-assistant-modal__text">{{ bodyText }}</p>
+</div>
+
+<div mat-dialog-actions class="home-create-kb-assistant-modal__actions">
+  <!-- <button class="mat-dialog-close-btn" mat-button type="button" (click)="onCancel()">{{ 'Cancel' | translate }}</button> -->
+  <button class="mat-dialog-close-btn" mat-button type="button" (click)="onContentsOnly()">{{ 'HomeQuickCards.GoToContents' | translate }}</button>
+  <button class="mat-dialog-ok-btn" mat-button type="button" cdkFocusInitial (click)="onCreate()">{{ 'Create' | translate }}</button>
+</div>

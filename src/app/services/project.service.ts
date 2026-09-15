@@ -1542,14 +1542,16 @@ export class ProjectService {
   }
 
   updateDashletsPreferences(
-    displayAnalyticsConvsGraph: boolean,
-    displayAnalyticsIndicators: boolean,
+    displayHomeFlow: boolean,
+    displayOverview: boolean,
+    displayHomeKbAnalytics: boolean,
     displayConnectWhatsApp: boolean,
     displayCreateChatbot: boolean,
     displayKnowledgeBase: boolean,
     displayInviteTeammate: boolean,
     displayCustomizeWidget: boolean,
-    displayNewsFeed: boolean) {
+    displayNewsFeed: boolean,
+    displayAnalyticsIframe: boolean = true) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -1563,14 +1565,19 @@ export class ProjectService {
     {
       dashlets:
       {
-        convsGraph: displayAnalyticsConvsGraph,
-        analyticsIndicators: displayAnalyticsIndicators,
+        homeFlow: displayHomeFlow,
+        overview: displayOverview,
+        homeKbAnalytics: displayHomeKbAnalytics,
+        // Keep legacy keys in sync for older clients / home_old
+        convsGraph: displayOverview,
+        analyticsIndicators: displayOverview,
         connectWhatsApp: displayConnectWhatsApp,
         createChatbot: displayCreateChatbot,
         knowledgeBase: displayKnowledgeBase,
         inviteTeammate: displayInviteTeammate,
         customizeWidget: displayCustomizeWidget,
-        newsFeed: displayNewsFeed
+        newsFeed: displayNewsFeed,
+        analyticsIframe: displayAnalyticsIframe,
       }
     }
     // JSON.stringify()

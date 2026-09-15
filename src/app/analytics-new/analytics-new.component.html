@@ -6,16 +6,16 @@
     </button>
   </div>
 
-  <div *ngIf="loading && !configError && !tokenError" class="analytics-new-state">
+  <div *ngIf="loading && !configError && !tokenError" class="analytics-new-state" style="font-size: 14px;">
     <mat-spinner diameter="40"></mat-spinner>
     <p>{{ 'AnalyticsNew.Loading' | translate }}</p>
   </div>
 
-  <div *ngIf="!loading && configError" class="analytics-new-state analytics-new-state--error">
+  <div *ngIf="!loading && configError" class="analytics-new-state analytics-new-state--error" style="font-size: 14px;">
     <p>{{ 'AnalyticsNew.ConfigurationMissing' | translate }}</p>
   </div>
 
-  <div *ngIf="!loading && tokenError && !configError" class="analytics-new-state analytics-new-state--error">
+  <div *ngIf="!loading && tokenError && !configError" class="analytics-new-state analytics-new-state--error" style="font-size: 14px;">
     <p>{{ 'AnalyticsNew.TokenError' | translate }}</p>
   </div>
 

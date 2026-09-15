@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, isDevMode, ViewEncapsulation } from '@angular/core';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { AuthService } from '../core/auth.service';
 
 import { ActivatedRoute } from '@angular/router';
@@ -42,7 +43,8 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { QuotesService } from 'app/services/quotes.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-
+import { sortChatbotsByLastUpdated } from 'app/utils/chatbot-sort.util';
+import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
 
 const Swal = require('sweetalert2')
 
@@ -115,6 +117,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   storageBucket: string;
   baseUrl: string;
   chatbots: any // TO DISPLAY THE CHATBOT IN THE NEW HOME HEADER
+  /** Featured flow id from home-flow (used to hide duplicate last-flow quick card). */
+  featuredHomeFlowChatbotId: string | null = null;
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
 
@@ -146,8 +150,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // resPromoBanner: any;
 
   // HOME REVOLUTION 
-  displayAnalyticsConvsGraph: boolean = false;
-  displayAnalyticsIndicators: boolean = false;
+  displayHomeFlow: boolean = true;
+  displayOverview: boolean = true;
+  displayHomeKbAnalytics: boolean = true;
+  displayAnalyticsIframe: boolean = true;
   displayConnectWhatsApp: boolean;
   displayKnowledgeBase: boolean;
   displayCreateChatbot: boolean
@@ -197,6 +203,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   PROJECT_ATTRIBUTES: any
   showskeleton: boolean = true;
   showskeletonForKbHero: boolean = true;
+  /** True only after role/permissions are known — before that show generic page shell, not section skeletons. */
+  homePermissionsReady = false;
   showsNewsFeedSkeleton: boolean = true;
   custom_company_home_logo: string;
   companyLogoNoText: string;
@@ -261,6 +269,23 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   voiceRunnedOut: boolean = false;
   diplayVXMLVoiceQuota: boolean;
 
+  /** CDK hover help on quota alert icons (same pattern as KB tags). */
+  quotaHelpOpen: 'conversations' | 'tokens' | 'email' | 'voice' | null = null;
+  private quotaHelpCloseTimeout: ReturnType<typeof setTimeout> | null = null;
+  quotaHelpPositions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -12,
+    },
+  ];
+
+  get isQuotaOwner(): boolean {
+    return this.USER_ROLE === 'owner';
+  }
+
 
   // ---------------------------------------
   // For test 
@@ -285,6 +310,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   allQuotas
 
   PERMISSION_TO_VIEW_FLOWS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_TEST_FLOW: boolean;
   PERMISSION_TO_VIEW_KB: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
   PERMISSION_TO_VIEW_WA_BRODCAST: boolean;
@@ -295,6 +322,55 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   PERMISSION_TO_VIEW_OP: boolean;
   PERMISSION_TO_VIEW_WIDGET_SETUP: boolean;
   PERMISSION_TO_VIEW_QUOTA_USAGE: boolean;
+  PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS: boolean;
+  PERMISSION_TO_VIEW_MONITOR: boolean;
+
+  get isNewAnalyticsConfigured(): boolean {
+    return isNewAnalyticsConfigured(this.appConfigService.getConfig());
+  }
+
+  get showHomeFlowDashletToggle(): boolean {
+    return this.USER_ROLE !== 'agent' && this.isNewAnalyticsConfigured && this.PERMISSION_TO_VIEW_FLOWS;
+  }
+
+  get showOverviewDashletToggle(): boolean {
+    return this.USER_ROLE !== 'agent' && this.isVisibleANA && this.PERMISSION_TO_VIEW_ANALYTICS;
+  }
+
+  get showHomeKbAnalyticsDashletToggle(): boolean {
+    return this.USER_ROLE !== 'agent'
+      && this.isNewAnalyticsConfigured
+      && this.PERMISSION_TO_VIEW_KB
+      && this.isVisibleKNB;
+  }
+
+  get hasAnyDashletToggle(): boolean {
+    return this.showHomeFlowDashletToggle
+      || this.showOverviewDashletToggle
+      || this.showHomeKbAnalyticsDashletToggle;
+  }
+
+  /** Any permission that can surface a home section (excludes deprecated news feed). */
+  get hasAnyHomePermission(): boolean {
+    return !!(
+      this.PERMISSION_TO_VIEW_FLOWS
+      || this.PERMISSION_TO_EDIT_FLOWS
+      || this.PERMISSION_TO_VIEW_KB
+      || this.PERMISSION_TO_VIEW_ANALYTICS
+      || this.PERMISSION_TO_VIEW_TEAMMATES
+      || this.PERMISSION_TO_INVITE
+      || this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS
+      || this.PERMISSION_TO_VIEW_QUOTA_USAGE
+      || this.PERMISSION_TO_VIEW_OP
+      || this.PERMISSION_TO_VIEW_WIDGET_SETUP
+      || this.PERMISSION_TO_VIEW_WA_BRODCAST
+    );
+  }
+
+  /** Same fallback block used for agents when the home has nothing else to show. */
+  get showGoToChatHomeBlock(): boolean {
+    return this.USER_ROLE === 'agent' || !this.hasAnyHomePermission;
+  }
 
   constructor(
     public auth: AuthService,
@@ -386,6 +462,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy() {
     this.logger.log('[QUOTA-DEBUG][HOME COMP] - CALLING ON DESTROY')
+    this.cancelCloseQuotaHelp();
+    this.quotaHelpOpen = null;
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
@@ -402,6 +480,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.logger.log('[HOME] - Role:', status.role);
         this.logger.log('[HOME] - Permissions:', status.matchedPermissions);
+
+        // Empty role = BehaviorSubject seed or resetPermissions() on project switch.
+        // Do NOT flip homePermissionsReady back to false: that destroys section components
+        // mid-flight and surfaces HttpClient status 0 ("Unknown Error") noise.
+        if (!status?.role) {
+          return;
+        }
+
         // -------------------------------
         // PERMISSION_TO_VIEW_QUOTA_USAGE
         // -------------------------------
@@ -474,6 +560,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOWS_READ);
           this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_FLOWS:', this.PERMISSION_TO_VIEW_FLOWS);
+        }
+
+        // ---------------------------------
+        // PERMISSION TO EDIT FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_EDIT_FLOWS = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_EDIT_FLOWS = false;
+        } else {
+          this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
+        }
+
+        // ---------------------------------
+        // PERMISSION TO TEST FLOW
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_TEST_FLOW = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_TEST_FLOW = false;
+        } else {
+          this.PERMISSION_TO_TEST_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_TEST);
         }
 
         // -------------------------------
@@ -590,8 +698,32 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_INVITE:', this.PERMISSION_TO_INVITE);
         }
 
-        
-        
+        // -------------------------------------------
+        // PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS
+        // -------------------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = false;
+        } else {
+          this.PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS = status.matchedPermissions.includes(
+            PERMISSIONS.REQUEST_UNASSIGNED_NOTIFICATION_READ,
+          );
+        }
+
+        // -------------------------------
+        // PERMISSION_TO_VIEW_MONITOR
+        // -------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_VIEW_MONITOR = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_VIEW_MONITOR = true;
+        } else {
+          this.PERMISSION_TO_VIEW_MONITOR = status.matchedPermissions.includes(PERMISSIONS.INBOX_READ);
+        }
+
+        this.homePermissionsReady = true;
+        this.logger.log('[HOME] - homePermissionsReady ', this.homePermissionsReady);
       });
   }
 
@@ -718,11 +850,16 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
             // -----------------------------
-            // For test
+            // For test (Home Current usage only — navbar has its own limits)
+            // Setting limit=1 alone does nothing if used quote is 0 (0 >= 1 is false → 0%).
+            // Uncomment BOTH limits and used quotes to force runned-out UI.
+            // Voice: compare uses voice_limit_in_sec (seconds), not voice_limit (minutes display).
             // -----------------------------
-            // this.requests_limit = 1;
+            // this.requests_limit = 100;
             // this.email_limit = 1;
             // this.tokens_limit = 1;
+            // this.voice_limit = 1; // display minutes
+            // this.voice_limit_in_sec = 1; // used for runned-out + %
 
             this.logger.log("[HOME] Received allQuotas quota - requests quota :", this.allQuotas.requests.quote);
             this.logger.log("[HOME] Received allQuotas quota - messages quota :", this.allQuotas.messages.quote);
@@ -745,6 +882,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               this.logger.log('[HOME] used voice', this.allQuotas.voice_duration.quote)
             }
 
+            // ------------------------------------------------------------
+            // For test (after null coerce) — force used >= limit
+            // ------------------------------------------------------------
+            // this.allQuotas.requests.quote = 88;
+            // this.allQuotas.email.quote = 1;
+            // this.allQuotas.tokens.quote = 1;
+            // this.allQuotas.voice_duration.quote = 1;
 
             if (this.allQuotas.requests.quote >= this.requests_limit) {
               this.conversationsRunnedOut = true;
@@ -782,11 +926,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             }
 
 
-            this.requests_perc = Math.min(100, Math.floor((this.allQuotas.requests.quote / this.requests_limit) * 100));
-            this.messages_perc = Math.min(100, Math.floor((this.allQuotas.messages.quote / this.messages_limit) * 100));
-            this.email_perc = Math.min(100, Math.floor((this.allQuotas.email.quote / this.email_limit) * 100));
-            this.tokens_perc = Math.min(100, Math.floor((this.allQuotas.tokens.quote / this.tokens_limit) * 100));
-            this.voice_perc = Math.min(100, Math.floor((this.allQuotas.voice_duration?.quote / this.voice_limit_in_sec) * 100));
+            this.requests_perc = this.quotesService.calcQuotaUsagePercent(this.allQuotas.requests.quote, this.requests_limit);
+            this.messages_perc = this.quotesService.calcQuotaUsagePercent(this.allQuotas.messages.quote, this.messages_limit);
+            this.email_perc = this.quotesService.calcQuotaUsagePercent(this.allQuotas.email.quote, this.email_limit);
+            this.tokens_perc = this.quotesService.calcQuotaUsagePercent(this.allQuotas.tokens.quote, this.tokens_limit);
+            this.voice_perc = this.quotesService.calcQuotaUsagePercent(this.allQuotas.voice_duration?.quote, this.voice_limit_in_sec);
 
             this.requests_count = this.allQuotas.requests.quote;
             this.messages_count = this.allQuotas.messages.quote;
@@ -831,6 +975,29 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   contacUsViaEmail() {
     window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
+  }
+
+  openQuotaHelp(resource: 'conversations' | 'tokens' | 'email' | 'voice'): void {
+    this.cancelCloseQuotaHelp();
+    this.quotaHelpOpen = resource;
+  }
+
+  scheduleCloseQuotaHelp(): void {
+    this.quotaHelpCloseTimeout = setTimeout(() => {
+      this.quotaHelpOpen = null;
+    }, 120);
+  }
+
+  cancelCloseQuotaHelp(): void {
+    if (this.quotaHelpCloseTimeout) {
+      clearTimeout(this.quotaHelpCloseTimeout);
+      this.quotaHelpCloseTimeout = null;
+    }
+  }
+
+  onQuotaContactSalesClick(event: Event): void {
+    event.stopPropagation();
+    this.contacUsViaEmail();
   }
 
   contacUsViaEmailToUpdadePaymentInformation() {
@@ -1185,35 +1352,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   getProjectBots() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
-      this.chatbots = faqKb
+      this.chatbots = sortChatbotsByLastUpdated(faqKb);
       this.logger.log('[HOME] - GET FAQKB * chatbots *', this.chatbots);
 
     }, (error) => {
       this.logger.error('[HOME] - GET FAQKB - ERROR ', error);
-      // if(!this.displayKbHeroSection) {
       this.showskeleton = false;
-      // } else {
-      //   setTimeout(() => {
-      //     this.showskeleton = false;
-      //     this.logger.log('[HOME] - GET FAQKB - showskeleton ', this.showskeleton);
-      //   }, 500);
-      // }
-
-      this.delayNewsFeedSkeleton()
-
+      this.delayNewsFeedSkeleton();
 
     }, () => {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
-      // if(!this.displayKbHeroSection) {
       this.showskeleton = false;
-      // } else {
-      //   setTimeout(() => {
-
-      //     this.showskeleton = false;
-      //     this.logger.log('[HOME] - GET FAQKB COMPLETE - showskeleton ', this.showskeleton);
-      //   }, 3000);
-      // }
-      this.delayNewsFeedSkeleton()
+      this.delayNewsFeedSkeleton();
 
     });
   }
@@ -1244,9 +1394,25 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (project_attributes && project_attributes.dashlets) {
       this.logger.log('[HOME] - (onInit) ----> DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
+      const workspaceFallback = dashlets.workspaceOverview !== false;
 
-      this.displayAnalyticsConvsGraph = dashlets.convsGraph
-      this.displayAnalyticsIndicators = dashlets.analyticsIndicators
+      this.displayHomeFlow = dashlets.homeFlow !== undefined && dashlets.homeFlow !== null
+        ? dashlets.homeFlow !== false
+        : workspaceFallback;
+
+      if (dashlets.overview !== undefined && dashlets.overview !== null) {
+        this.displayOverview = dashlets.overview !== false;
+      } else if (dashlets.workspaceOverview !== undefined && dashlets.workspaceOverview !== null) {
+        this.displayOverview = dashlets.workspaceOverview !== false;
+      } else {
+        this.displayOverview = dashlets.convsGraph === true || dashlets.analyticsIndicators === true;
+      }
+
+      this.displayHomeKbAnalytics = dashlets.homeKbAnalytics !== undefined && dashlets.homeKbAnalytics !== null
+        ? dashlets.homeKbAnalytics !== false
+        : workspaceFallback;
+
+      this.displayAnalyticsIframe = dashlets.analyticsIframe !== false
       this.displayConnectWhatsApp = dashlets.connectWhatsApp
       this.displayCreateChatbot = dashlets.createChatbot
       this.displayKnowledgeBase = dashlets.knowledgeBase
@@ -1938,6 +2104,40 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  // No more used - replaced by presentModalFeautureAvailableFromTier2Plan
+  presentModalFeautureAvailableFromBPlan() {
+    Swal.fire({
+      title: this.upgradePlan,
+      text: this.featureAvailableFromBPlan,
+      icon: "info",
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: this.upgradePlan,
+      cancelButtonText: this.cancel,
+      focusConfirm: true,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        if (this.isVisiblePay) {
+          if (this.USER_ROLE === 'owner') {
+            if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'payment' && this.subscription_is_active === true && this.profile_name === PLAN_NAME.A) {
+              this.notify._displayContactUsModal(true, 'upgrade_plan');
+            } else if (this.prjct_profile_type === 'free' && this.prjct_trial_expired === true) {
+              this.router.navigate(['project/' + this.projectId + '/pricing']);
+            }
+          } else {
+            this.presentModalAgentCannotManageAvancedSettings();
+          }
+        } else {
+          this.notify._displayContactUsModal(true, 'upgrade_plan');
+        }
+      }
+    });
+  }
+
+
   presentModalAppSumoFeautureAvailableFromBPlan() {
     // const el = document.createElement('div')
     // el.innerHTML = 'Available from ' + this.appSumoProfilefeatureAvailableFromBPlan
@@ -2570,16 +2770,28 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   // new dashbord
-  async switchAnalyticsConvsGraph(event) {
-    this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
-    this.displayAnalyticsConvsGraph = event
-    await this.updatesDashletsPreferences('switchAnalyticsConvsGraph')
+  async switchHomeFlow(event) {
+    this.logger.log('[HOME] SWITCH HOME FLOW event ', event)
+    this.displayHomeFlow = event
+    await this.updatesDashletsPreferences('switchHomeFlow')
   }
 
-  async switchAnalyticsIndicators(event) {
-    this.logger.log('[HOME] SWITCH ANALYTICS OVERVIEW event ', event)
-    this.displayAnalyticsIndicators = event
-    await this.updatesDashletsPreferences('switchAnalyticsIndicators')
+  async switchOverview(event) {
+    this.logger.log('[HOME] SWITCH OVERVIEW event ', event)
+    this.displayOverview = event
+    await this.updatesDashletsPreferences('switchOverview')
+  }
+
+  async switchHomeKbAnalytics(event) {
+    this.logger.log('[HOME] SWITCH HOME KB ANALYTICS event ', event)
+    this.displayHomeKbAnalytics = event
+    await this.updatesDashletsPreferences('switchHomeKbAnalytics')
+  }
+
+  async switchAnalyticsIframe(event) {
+    this.logger.log('[HOME] SWITCH ANALYTICS IFRAME event ', event)
+    this.displayAnalyticsIframe = event
+    await this.updatesDashletsPreferences('switchAnalyticsIframe')
   }
 
   async switchConnectWhatsApp(event) {
@@ -2621,17 +2833,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   async updatesDashletsPreferences(calledBy) {
-    // const dashletArray =[ {'convsGraph': true, 'analyticsIndicators': true, 'connectWhatsApp': null, 'createChatbot': null, 'knowledgeBase': null, 'inviteTeammate': null,  'customizeWidget': null, 'newsFeed': true}]
     this.logger.log('[HOME] - calling updatesDashletsPreferences by ', calledBy);
     return await this.projectService.updateDashletsPreferences(
-      this.displayAnalyticsConvsGraph,
-      this.displayAnalyticsIndicators,
+      this.displayHomeFlow,
+      this.displayOverview,
+      this.displayHomeKbAnalytics,
       this.displayConnectWhatsApp,
       this.displayCreateChatbot,
       this.displayKnowledgeBase,
       this.displayInviteTeammate,
       this.displayCustomizeWidget,
-      this.displayNewsFeed)
+      this.displayNewsFeed,
+      this.displayAnalyticsIframe)
       .toPromise().then((res) => {
         this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
         return;
@@ -2947,10 +3160,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
 
-      this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
-      this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
-      this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
-      this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
+      this.requests_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.requests.quote, this.requests_limit);
+      this.messages_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.messages.quote, this.messages_limit);
+      this.email_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.email.quote, this.email_limit);
+      this.tokens_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.tokens.quote, this.tokens_limit);
 
       this.requests_count = resp.quotes.requests.quote;
       this.logger.log("[HOME] getAllQuotes requests_count: ", this.requests_count)
