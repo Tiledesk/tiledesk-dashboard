@@ -753,6 +753,7 @@
     "YonDontHavePermissionsToViewReports": "К сожалению, у вас нет разрешения на просмотр отчетов.",
     "YonDontHavePermissionsToPerformThisAction": "Извините, но у вас нет прав для выполнения этого действия.",
     "YonDontHavePermissionsToViewThisSection": "К сожалению, у вас нет прав для просмотра этого раздела.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "К сожалению, у вас нет прав для просмотра этого раздела. Доступ есть только у Owner или у teammate с соответствующим разрешением.",
     "ThereHasBeenAnErrorProcessing": "При обработке вашего запроса произошла ошибка",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Пожалуйста, подождите, пока мы обрабатываем ваш запрос",
     "CommunityDesc1": "Исследуйте мир возможностей в нашем Сообществе, где вы откроете для себя огромный массив готовых к использованию агентов ИИ и идей автоматизации.",

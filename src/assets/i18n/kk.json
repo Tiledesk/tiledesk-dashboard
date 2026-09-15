@@ -752,6 +752,7 @@
     "YonDontHavePermissionsToViewReports": "Кешіріңіз, бірақ есептерді көруге рұқсатыңыз жоқ.",
     "YonDontHavePermissionsToPerformThisAction": "Кешіріңіз, бірақ сізде бұл әрекетті орындауға рұқсат жоқ.",
     "YonDontHavePermissionsToViewThisSection": "Кешіріңіз, бірақ сізде бұл бөлімді көруге рұқсаттарыңыз жоқ.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "Кешіріңіз, бірақ сізде бұл бөлімді көруге рұқсаттарыңыз жоқ. Тек Owner немесе арнайы рұқсаты бар teammate кіре алады.",
     "ThereHasBeenAnErrorProcessing": "Сұрауыңызды өңдеу кезінде қате орын алды",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Сұрауыңызды өңдеу кезінде күтіңіз",
     "CommunityDesc1": "Қолдануға дайын AI агенттері мен автоматтандыру идеяларының кең ауқымын табатын біздің қауымдастықтағы мүмкіндіктер әлемін зерттеңіз.",

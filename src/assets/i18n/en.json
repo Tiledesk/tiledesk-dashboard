@@ -753,6 +753,7 @@
     "YonDontHavePermissionsToViewReports": "We're sorry, but you don't have permission to view reports.",
     "YonDontHavePermissionsToPerformThisAction": "We are sorry, but you don't have permissions to perform this action.",
     "YonDontHavePermissionsToViewThisSection": "We are sorry, but you don't have permissions to view this section.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "We are sorry, but you don't have permissions to view this section. Only the Owner or a teammate with the dedicated permission can access it.",
     "ThereHasBeenAnErrorProcessing": "There has been an error processing your request",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Please wait while we are processing your request",
     "CommunityDesc1": "Explore a world of possibilities in our Community, where you'll discover a vast array of ready-to-use AI agents and automation ideas.",

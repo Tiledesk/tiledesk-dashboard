@@ -1683,7 +1683,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
       } else {
         // this.logger.log('displayModalBanVisitor HERE 5 ')
         // this.presentModalOnlyOwnerCanManageAdvancedProjectSettings()
-        this.notify.presentDialogNoPermissionToViewThisSection()
+        this.notify.presentDialogNoPermissionToViewThisSection(
+          false,
+          'YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated',
+        );
       }
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
@@ -1691,15 +1694,19 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
   goToProjectSettings_RetentionPolicy() {
-    if (this.PERMISSION_TO_VIEW_RETENTION === false) {  
-      this.notify.presentDialogNoPermissionToViewThisSection()
-      return
-    }
-    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_SmartAssignment isVisiblePaymentTab ', this.isVisiblePaymentTab, 'overridePay ', this.overridePay , 'PERMISSION_TO_VIEW_SMART_ASSIGN ' , this.PERMISSION_TO_VIEW_SMART_ASSIGN);
+    this.logger.log('[PRJCT-EDIT-ADD] - HAS CLICKED goToProjectSettings_RetentionPolicy isVisiblePaymentTab ', this.isVisiblePaymentTab, 'overridePay ', this.overridePay , 'PERMISSION_TO_VIEW_RETENTION ', this.PERMISSION_TO_VIEW_RETENTION);
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
-      if (this.USER_ROLE !== 'agent') {
+      // || this.USER_ROLE === 'admin'
+      if ((this.USER_ROLE === 'owner') || (this.USER_ROLE !== 'owner' && this.USER_ROLE !== 'admin' && this.USER_ROLE !== 'agent' && this.PERMISSION_TO_VIEW_RETENTION)) {
         this.router.navigate(['project/' + this.id_project + '/project-settings/retention'])
+      } else {
+        this.notify.presentDialogNoPermissionToViewThisSection(
+          false,
+          'YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated',
+        );
       }
+    } else {
+      this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
   }
 

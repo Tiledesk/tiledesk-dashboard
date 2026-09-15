@@ -753,6 +753,7 @@
     "YonDontHavePermissionsToViewReports": "Vi beklagar, men du har inte behörighet att visa rapporter.",
     "YonDontHavePermissionsToPerformThisAction": "Vi beklagar, men du har inte behörighet att utföra denna åtgärd.",
     "YonDontHavePermissionsToViewThisSection": "Vi beklagar, men du har inte behörighet att visa det här avsnittet.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "Vi beklagar, men du har inte behörighet att visa det här avsnittet. Endast Owner eller en teammate med den särskilda behörigheten kan komma åt det.",
     "ThereHasBeenAnErrorProcessing": "Det har uppstått ett fel när din förfrågan behandlas",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Vänta medan vi behandlar din förfrågan",
     "CommunityDesc1": "Utforska en värld av möjligheter i vår community, där du kommer att upptäcka ett stort utbud av färdiga AI-agenter och automatiseringsidéer.",

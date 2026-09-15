@@ -754,6 +754,7 @@
     "YonDontHavePermissionsToViewReports": "Üzgünüz, raporları görüntüleme yetkiniz yok.",
     "YonDontHavePermissionsToPerformThisAction": "Üzgünüz, ancak bu işlemi gerçekleştirme izniniz yok.",
     "YonDontHavePermissionsToViewThisSection": "Üzgünüz, ancak bu bölümü görüntüleme yetkiniz yok.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "Üzgünüz, ancak bu bölümü görüntüleme yetkiniz yok. Yalnızca Owner veya özel izne sahip bir teammate erişebilir.",
     "ThereHasBeenAnErrorProcessing": "İsteğiniz işlenirken bir hata oluştu",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Lütfen isteğinizi işleme koyarken bekleyin",
     "CommunityDesc1": "Topluluğumuzda olasılıklar dünyasını keşfedin; burada kullanıma hazır çok sayıda AI aracı ve otomasyon fikri keşfedeceksiniz.",

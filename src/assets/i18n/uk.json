@@ -753,6 +753,7 @@
     "YonDontHavePermissionsToViewReports": "Вибачте, але у вас немає дозволу на перегляд звітів.",
     "YonDontHavePermissionsToPerformThisAction": "Вибачте, але у вас немає дозволу на виконання цієї дії.",
     "YonDontHavePermissionsToViewThisSection": "Üzgünüz, ancak bu bölümü görüntüleme yetkiniz yok.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "На жаль, у вас немає прав для перегляду цього розділу. Доступ мають лише Owner або teammate зі спеціальним дозволом.",
     "ThereHasBeenAnErrorProcessing": "Під час обробки вашого запиту сталася помилка",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Будь ласка, зачекайте, поки ми обробимо ваш запит",
     "CommunityDesc1": "Досліджуйте світ можливостей у нашій спільноті, де ви знайдете широкий спектр готових до використання агентів ШІ та ідей автоматизації.",

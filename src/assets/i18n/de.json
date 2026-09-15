@@ -752,6 +752,7 @@
     "YonDontHavePermissionsToViewReports": "Es tut uns leid, aber Sie haben keine Berechtigung, Berichte anzuzeigen.",
     "YonDontHavePermissionsToPerformThisAction": "Es tut uns leid, aber Sie haben keine Berechtigung, diese Aktion auszuführen.",
     "YonDontHavePermissionsToViewThisSection": "Es tut uns leid, aber Sie sind nicht berechtigt, diesen Abschnitt anzuzeigen.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "Es tut uns leid, aber Sie sind nicht berechtigt, diesen Abschnitt anzuzeigen. Nur der Owner oder ein Teammate mit der entsprechenden Berechtigung kann darauf zugreifen.",
     "ThereHasBeenAnErrorProcessing": "Es ist ein Fehler bei der Verarbeitung Ihrer Anfrage aufgetreten",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Bitte warten Sie, während wir Ihre Anfrage bearbeiten",
     "CommunityDesc1": "Entdecken Sie in unserer Community eine Welt voller Möglichkeiten und entdecken Sie eine große Auswahl an einsatzbereiten KI-Agenten und Automatisierungsideen.",

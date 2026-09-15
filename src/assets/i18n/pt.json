@@ -752,6 +752,7 @@
     "YonDontHavePermissionsToViewReports": "Lamentamos, mas não tem permissão para visualizar relatórios.",
     "YonDontHavePermissionsToPerformThisAction": "Lamentamos, mas você não tem permissões para realizar esta ação.",
     "YonDontHavePermissionsToViewThisSection": "Lamentamos, mas não tem permissão para visualizar esta secção.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "Lamentamos, mas não tem permissão para visualizar esta secção. Apenas o Owner ou um teammate com a permissão dedicada pode aceder.",
     "ThereHasBeenAnErrorProcessing": "Ocorreu um erro ao processar sua solicitação",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Aguarde enquanto processamos sua solicitação",
     "CommunityDesc1": "Explore um mundo de possibilidades na nossa Comunidade, onde descobrirá uma vasta gama de agentes de IA prontos a usar e ideias de automatização.",

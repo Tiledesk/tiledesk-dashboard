@@ -199,13 +199,16 @@ export class NotifyService {
   }
 
 
-   presentDialogNoPermissionToViewThisSection(CHAT_PANEL_MODE?: boolean) {
+   presentDialogNoPermissionToViewThisSection(
+    CHAT_PANEL_MODE?: boolean,
+    messageKey: string = 'YonDontHavePermissionsToViewThisSection',
+  ) {
     console.log('[NOTIFY-SERVICE] - DIALOG NO PERMISSION TO PERFORM ACTION CHAT_PANEL_MODE', CHAT_PANEL_MODE);
 
     Swal.fire({
       icon: 'warning',
       title: this.translate.instant('PermissionDenied'),
-      text: this.translate.instant('YonDontHavePermissionsToViewThisSection'),
+      text: this.translate.instant(messageKey),
       confirmButtonText: this.translate.instant('Ok'),
       confirmButtonColor: "var(--blue-light)",
       focusConfirm: true,

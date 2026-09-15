@@ -753,6 +753,7 @@
     "YonDontHavePermissionsToViewReports": "Siamo spiacenti, ma non hai l'autorizzazione per visualizzare i report.",
     "YonDontHavePermissionsToPerformThisAction": "Siamo spiacenti, ma non hai i permessi per eseguire questa azione.",
     "YonDontHavePermissionsToViewThisSection": "Siamo spiacenti, ma non hai i permessi per visualizzare questa sezione.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "Siamo spiacenti, ma non hai i permessi per visualizzare questa sezione. Solo l'Owner o un teammate con il permesso dedicato possono accedervi.",
     "ThereHasBeenAnErrorProcessing": "Si è verificato un errore durante l'elaborazione della tua richiesta",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Si prega di attendere mentre stiamo elaborando la tua richiesta",
     "CommunityDesc1": "Esplora un mondo di possibilità nella nostra Community, dove scoprirai una vasta gamma di agenti di intelligenza artificiale e idee di automazione pronti all'uso.",

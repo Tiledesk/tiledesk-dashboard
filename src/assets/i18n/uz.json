@@ -753,6 +753,7 @@
     "YonDontHavePermissionsToViewReports": "Kechirasiz, lekin sizda hisobotlarni ko‘rish uchun ruxsat yo‘q.",
     "YonDontHavePermissionsToPerformThisAction": "Kechirasiz, lekin sizda bu amalni bajarish uchun ruxsat yo'q.",
     "YonDontHavePermissionsToViewThisSection": "Kechirasiz, lekin sizda bu boʻlimni koʻrish uchun ruxsatingiz yoʻq.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "Kechirasiz, lekin sizda bu boʻlimni koʻrish uchun ruxsatingiz yoʻq. Faqat Owner yoki maxsus ruxsatga ega teammate kirishi mumkin.",
     "ThereHasBeenAnErrorProcessing": "So‘rovingizni qayta ishlashda xatolik yuz berdi",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Iltimos, so‘rovingiz ko‘rib chiqilguncha kuting",
     "CommunityDesc1": "Hamjamiyatimizda imkoniyatlar dunyosini o‘rganing, u yerda foydalanishga tayyor AI agentlari va avtomatlashtirish g‘oyalarining keng doirasini kashf etasiz.",

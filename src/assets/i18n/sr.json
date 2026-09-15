@@ -753,6 +753,7 @@
     "YonDontHavePermissionsToViewReports": "Жао нам је, али немате дозволу за преглед извештаја.",
     "YonDontHavePermissionsToPerformThisAction": "Жао нам је, али немате дозволе да извршите ову радњу.",
     "YonDontHavePermissionsToViewThisSection": "Жао нам је, али немате дозволе за преглед овог одељка.",
+    "YouDontHavePermissionsToViewThisSectionOnlyOwnerOrDedicated": "Жао нам је, али немате дозволе за преглед овог одељка. Само Owner или teammate са посебном дозволом могу да му приступе.",
     "ThereHasBeenAnErrorProcessing": "Дошло је до грешке при обради вашег захтева",
     "PleaseWaitWhileWeAreProcessingYourRequest": "Сачекајте док обрађујемо ваш захтев",
     "CommunityDesc1": "Истражите свет могућности у нашој заједници, где ћете открити широку лепезу АИ агената спремних за употребу и идеја за аутоматизацију.",
