@@ -2468,6 +2468,9 @@ print {
 }
 
 // Tooltip style moved to src/assets/css/material-mdc-overrides.scss (.custom-mat-tooltip)
+// Do not restyle .custom-mat-tooltip here: with MDC, matTooltipClass is on the outer
+// panel and padding/background must target .mdc-tooltip__surface only (global override).
+
 
 /* New Home
 /*********************************************** */
@@ -2476,6 +2479,8 @@ print {
   display: flex;
   flex: 1 1 auto;
   width: 100%;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .flex {
@@ -2497,8 +2502,8 @@ print {
 .bg-card {
   opacity: 1;
   background-color: #fff;
-  margin-top: 52px;
-  border-bottom: 1px solid rgb(226, 232, 240);
+  margin-top: 71px;
+  // border-bottom: 1px solid rgb(226, 232, 240);
   height: 80px;
     // background: beige;
     display: flex;
@@ -2641,7 +2646,7 @@ img {
 .text-2xl {
   // font-size: 1.25rem !important;
   // font-size: 36px !important;
-  font-size: 26px !important;
+  font-size: 32px !important;
   // height: 40px;
 }
 
@@ -2780,11 +2785,11 @@ img {
 .home-project-plan-badge {
   width: fit-content;
   // color: #fff;
-  text-transform: capitalize;
-  font-size: 11px;
+  text-transform: uppercase;
+  font-size: 12px;
   font-weight: 500;
   font-family: var(--header-font-family); // "Poppins", "Roboto", "Arial", sans-serif;
-  line-height: 1; // nk
+  // line-height: 1; // nk
   // border-radius: 999px;
   // padding: 2px 8px;
 }
@@ -2817,7 +2822,24 @@ img {
   background-color: var(--red-color)!important; //#f44336 !important;
 }
 
-// Dashlet filter (tune): material-mdc-overrides.scss (#dashlet-filter-btn)
+#dashlet-filter-btn {
+  background-color: #fff;
+  color: #fff;
+  box-shadow: unset;
+  position: relative;
+  top: -1px;
+}
+
+#dashlet-filter-btn > ::ng-deep span> .mat-icon{
+  color: var(--icon-btn) !important;
+  position: relative !important;
+  top: -1px !important;
+}
+
+#dashlet-filter-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 
 .project---name {
   display: flex;
@@ -2867,18 +2889,66 @@ img {
   padding-right: 0px;
   margin-top: 0px;
   // background: rgb(241, 245, 249);
-  background: #fcfcfc;
+  background: #fff;
   min-height: calc(100% - 70px) !important;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: clip;
+}
 
+.home-dashboard-inset {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  padding-left: 30px;
+  padding-right: 30px;
+
+  @media (max-width: 1400px) {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+/* Wait state before permissions are known */
+.home-page-shell {
+  padding-top: 48px;
+  min-height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .home-blocks-wpr {
-  margin-top: -1px;
+  margin-top: 16px;
   // padding: 45px 80px 18px;
-  padding: 6px 80px 18px;
-  max-width: 994px;
+  padding: 6px 0 18px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   display: flex;
-  align-self: center;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+.home-blocks-wpr home-flow,
+.home-blocks-wpr home-kb-analytics,
+.home-blocks-wpr home-overview,
+.home-blocks-wpr home-cds,
+.home--blocks {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1400px) {
+  .padding-l-r {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
 }
 
 @media (max-width: 868px) {
@@ -2892,7 +2962,20 @@ img {
 
 
 
-// Dashlet menu checkboxes (MDC): material-mdc-overrides.scss (.home-settings-checkbox)
+// overwrite the checkbox background
+::ng-deep .mat-checkbox-checked .mat-checkbox-background,
+.mat-checkbox-indeterminate .mat-checkbox-background {
+  background-color: var(--blue-20) !important;
+}
+
+// overwrite the ripple overlay on hover and click
+::ng-deep .mat-checkbox:not(.mat-checkbox-disabled) .mat-checkbox-ripple .mat-ripple-element {
+  background-color: var(--blue-20) !important;
+}
+
+.home-settings-checkbox {
+  margin: 0 12px;
+}
 
 .button-dashlet-settings {
   font-size: 15px;
@@ -3193,8 +3276,93 @@ img {
   // height: 152px;
 }
 
+.home-quota-banner__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 0 0 8px;
+  padding: 0;
+  min-width: 0;
+}
+
+.home-quota-banner__header-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--header-font-family, inherit);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.home-quota-banner__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.home-quota-banner__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.home-quota-banner__reset {
+  font-weight: 400;
+  color: #64748b;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+.home-quota-banner--skeleton {
+  .quota-skel-count,
+  .quota-skel-bar,
+  .quota-skel-pct {
+    background: linear-gradient(110deg, #ececec 8%, #f5f5f5 18%, #ececec 33%);
+    background-size: 200% 100%;
+    animation: 1.5s shine linear infinite;
+  }
+
+  // Match .quote-count-current (22px × line-height 1.2)
+  .quota-skel-count {
+    width: 96px;
+    max-width: 70%;
+    height: 26px;
+    border-radius: 4px;
+  }
+
+  // Match .home-quote-progress-bar height
+  .quota-skel-bar {
+    flex: 1 1 auto;
+    height: 4px;
+    border-radius: 2px;
+    min-width: 0;
+  }
+
+  // Match .home-quote-percentage (12px, min-width 32px)
+  .quota-skel-pct {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 14px;
+    border-radius: 3px;
+  }
+}
+
 .home-quota-banner-alert {
-  background: #fefae6;
+  // background: #fefae6;
   padding-top: 0px !important;
   // border: 6px solid #f55a4e;
   // padding-bottom: 12px;
@@ -3265,53 +3433,86 @@ img {
 .home-quota-wpr {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  gap: 60px;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: stretch;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
 }
 
 .home-quota-resets {
   text-align: center;
   font-family: var(--header-font-family);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 400;
   color: #566787;
-  padding: 3px 12px 3px;
+  padding: 3px 0px;
+  width: fit-content;
 }
 
 .home-quote-container {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 20px;
+  border-right: 1px solid #e4e4e4;
+
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.home-quote-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  // Keep skeleton and loaded quota cards at the same height
+  min-height: 74px;
+}
+
+.quote-title-row {
   display: flex;
   flex-direction: row;
+  align-items: center;
   justify-content: space-between;
-  // width: 240px;
-  gap: 16px;
-}
-
-.home-quote-container-conversations-runned-out {
-  margin-top: 18px;
-}
-
-.home-quote-title-count-wpr {
-  text-align: right;
-}
-
-.home-quote-container-tokens-runned-out {
-  margin-top: 18px;
-}
-
-.home-quote-container-email-runned-out {
-  margin-top: 18px;
-}
-
-.home-quote-container-voice-runned-out {
-  margin-top: 18px;
+  gap: 6px;
+  min-height: 14px;
 }
 
 .quote-title {
-  font-size: 14px;
-  font-weight: 400;
-  margin-bottom: 2px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-bottom: 0;
   font-family: var(--header-font-family);
+  color: #1e293b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.home-quota-card-alert-icon {
+  display: inline-flex;
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.home-quota-card-alert-icon svg {
+  width: 14px;
+  height: 14px;
+  fill: #fbce33;
 }
 
 .quote-title.link {
@@ -3388,28 +3589,51 @@ img {
 
 
 
-// Quota pie + mat-progress-spinner (MDC): material-mdc-overrides.scss (.quote, .percentage)
-
-.percentage-conversations-runned-out {
-  color: #f55a4e !important;
-  // margin-top: 8px;
+.home-quote-progress-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
 }
 
-.percentage-token-runned-out {
-  color: #f55a4e !important;
-  // margin-top: 8px;
+.home-quote-progress-bar {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 4px;
+  border-radius: 2px;
+  background-color: #e8e9ed;
+  overflow: hidden;
 }
 
-
-.percentage-email-runned-out {
-  color: #f55a4e !important;
-  // margin-top: 8px;
+// Gradient mapped to full track width (not compressed into the fill)
+.home-quote-progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  background-image: linear-gradient(
+    90deg,
+    hsl(142, 72%, 46%) 0%,
+    hsl(90, 70%, 45%) 35%,
+    hsl(48, 92%, 50%) 63%,
+    hsl(28, 90%, 52%) 85%,
+    hsl(4, 85%, 55%) 100%
+  );
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: calc(100% * 100 / max(var(--quota-perc, 100), 0.01)) 100%;
 }
 
+.home-quote-percentage {
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748b;
+  min-width: 32px;
+  text-align: right;
+}
 
-.percentage-voice-runned-out {
-  color: #f55a4e !important;
-  // margin-top: 8px;
+.home-quote-percentage-runned-out {
+  color: #f55a4e;
 }
 
 .quota-runned-out-msg {
@@ -3445,7 +3669,14 @@ img {
 }
 
 
-// .quote — layout: material-mdc-overrides.scss
+.quote {
+  // width: 80px;
+  // height: 80px;
+  width: 50px;
+  height: 50px;
+}
+
+
 
 // .quote-count {
 //   background-color: #2196f2;
@@ -3460,19 +3691,24 @@ img {
 // }
 
 .quote-count {
-
-  font-weight: 400;
-  font-size: 21px;
-  color: var(--text-color);
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 4px;
   font-family: Lato, Roboto, Helvetica, Arial, sans-serif;
+}
 
-  // background-color: #f5f7f9;
-  // border-radius: 8px;
-  // padding: 0 16px;
-  // color: #2896f2;
-  // width: 140px;
-  // text-align: center;
-  // box-shadow: 0 0 2px var(--blue-light);
+.quote-count-current {
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--text-color);
+  line-height: 1.2;
+}
+
+.quote-count-limit {
+  font-weight: 400;
+  font-size: 14px;
+  color: #64748b;
 }
 
 #home-material-btn {

@@ -20,6 +20,7 @@ import { AppConfigService } from '../../services/app-config.service';
 // import * as moment from 'moment';
 import moment from "moment";
 import 'moment-timezone';
+import { resolveProjectTimezone } from 'app/utils/project-timezone.util';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
 import { UAParser } from 'ua-parser-js';
 import { WsSharedComponent } from '../../ws_requests/ws-shared/ws-shared.component';
@@ -437,8 +438,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   getCurrentTimezone() {
-    this.currentUTCName = moment.tz.guess();
-    this.logger.log("[HISTORY & NORT-CONVS] currentUTCName ", this.currentUTCName)
+    const project = this.auth.project_bs?.getValue?.() ?? null;
+    this.currentUTCName = resolveProjectTimezone(project);
+    this.logger.log("[HISTORY & NORT-CONVS] currentUTCName (project Hours) ", this.currentUTCName)
   }
 
    listenToGoBack() {
@@ -999,6 +1001,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.logger.log('[HISTORY & NORT-CONVS] - PRJCT FROM SUBSCRIPTION TO AUTH SERV  ', project)
       if (project) {
         this.projectId = project._id;
+        this.getCurrentTimezone();
         this.findCurrentProjectAmongAll(this.projectId)
       }
     });
@@ -3089,10 +3092,11 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this.call_id = ""
     }
 
-    // Get timezone only if both start_date and end_date are selected
+    // Get timezone only if both start_date and end_date are selected (project Hours tzname)
     let timezoneParam = '';
     if (this.startDateValue && this.endDateValue) {
-      this.currentUTCName = moment.tz.guess();
+      const project = this.auth.project_bs?.getValue?.() ?? null;
+      this.currentUTCName = resolveProjectTimezone(project);
       timezoneParam = '&timezone=' + (this.currentUTCName || 'UTC');
     }
 

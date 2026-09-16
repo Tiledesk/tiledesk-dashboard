@@ -308,6 +308,30 @@ export class NotifyService {
     else if (reason === 'seats_limit_exceed') {
       contentText = this.translate.instant("Pricing.TheSeatsNumberExceedsTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
     }
+    else if (reason === 'flows_limit_exceed') {
+      contentText = this.translate.instant("Pricing.TheFlowsNumberExceedsTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    }
+    else if (reason === 'flows_limit_reached') {
+      contentText = this.translate.instant("Pricing.TheFlowsNumberReachedTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    }
+    else if (reason === 'kb_namespaces_limit_exceed') {
+      contentText = this.translate.instant("Pricing.TheKnowledgeBasesNumberExceedsTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    }
+    else if (reason === 'kb_namespaces_limit_reached') {
+      contentText = this.translate.instant("Pricing.TheKnowledgeBasesNumberReachedTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    }
+    else if (reason === 'kb_contents_limit_exceed') {
+      contentText = this.translate.instant("Pricing.TheContentsNumberExceedsTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    }
+    else if (reason === 'kb_contents_limit_reached') {
+      contentText = this.translate.instant("Pricing.TheContentsNumberReachedTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    }
+    else if (reason === 'kb_namespaces_and_contents_limit_exceed') {
+      contentText = this.translate.instant("Pricing.TheKnowledgeBasesAndContentsNumberExceedsTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    }
+    else if (reason === 'kb_namespaces_and_contents_limit_reached') {
+      contentText = this.translate.instant("Pricing.TheKnowledgeBasesAndContentsNumberReachedTheAllowed") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
+    }
     else if (reason === 'seats_limit_reached') {
       contentText = this.translate.instant("Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats") + '. ' + this.translate.instant('Pricing.ContactUsViaEmailToUpgradeYourPricingPlan')
     }
@@ -383,6 +407,58 @@ export class NotifyService {
     this.displayContactOwnerModal = 'none';
   }
 
+  /**
+   * Quick access cards — admin Upgrade plan modal (does not alter owner Contact Us / Pricing modals).
+   * Same limit context as the owner, then instruct to contact the project owner.
+   */
+  displayQuickCardsAdminUpgradeModal(reason: string) {
+    const contextText = this.getQuickCardsUpgradeContextText(reason);
+    const adminFooter = this.translate.instant('Pricing.OnlyOwnerCanManageAccountPlanToProceed');
+    const learnMore = this.translate.instant('LearnMoreAboutDefaultRoles');
+
+    const el = document.createElement('div');
+    let html = contextText ? `${contextText}.<br>${adminFooter}` : adminFooter;
+    if (this.hideHelpLink) {
+      html += ` <a href="${this.URL_UNDERSTANDING_DEFAULT_ROLES}" target="_blank">${learnMore}</a>`;
+    }
+    el.innerHTML = html;
+
+    const freeExceedReasons = ['chatbot_exceeds', 'kb_exceeds', 'user_exceeds'];
+    const titleKey = freeExceedReasons.includes(reason)
+      ? 'Pricing.UpgradePlan'
+      : 'Pricing.PlanChange';
+
+    Swal.fire({
+      title: this.translate.instant(titleKey),
+      html: el,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      focusConfirm: false,
+    });
+  }
+
+  private getQuickCardsUpgradeContextText(reason: string): string {
+    const map: { [key: string]: string } = {
+      chatbot_exceeds: 'Pricing.YouAreCurrentlyUsingAllChatbots',
+      kb_exceeds: 'Pricing.YouAreCurrentlyUsingAllKnowledgeBases',
+      user_exceeds: 'Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats',
+      flows_limit_exceed: 'Pricing.TheFlowsNumberExceedsTheAllowed',
+      flows_limit_reached: 'Pricing.TheFlowsNumberReachedTheAllowed',
+      kb_namespaces_limit_exceed: 'Pricing.TheKnowledgeBasesNumberExceedsTheAllowed',
+      kb_namespaces_limit_reached: 'Pricing.TheKnowledgeBasesNumberReachedTheAllowed',
+      kb_contents_limit_exceed: 'Pricing.TheContentsNumberExceedsTheAllowed',
+      kb_contents_limit_reached: 'Pricing.TheContentsNumberReachedTheAllowed',
+      kb_namespaces_and_contents_limit_exceed: 'Pricing.TheKnowledgeBasesAndContentsNumberExceedsTheAllowed',
+      kb_namespaces_and_contents_limit_reached: 'Pricing.TheKnowledgeBasesAndContentsNumberReachedTheAllowed',
+      seats_limit_exceed: 'Pricing.TheSeatsNumberExceedsTheAllowed',
+      seats_limit_reached: 'Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats',
+    };
+    const key = map[reason];
+    return key ? this.translate.instant(key) : '';
+  }
+
 
   presentModalAttachmentFileSizeTooLarge(fileSize) {
     Swal.fire({
@@ -410,19 +486,51 @@ export class NotifyService {
 
 
 
-  displayGoToPricingModal(reason) {
-    this.goToPricingModal = 'block';
+  displayGoToPricingModal(reason: string) {
+    let contentText = '';
     if (reason === 'user_exceeds') {
       this.showSubtitleAllOperatorsSeatsUsed = true;
       this.showSubtitleAllChatbotUsed = false;
+      contentText = this.translate.instant('Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats') + '.';
     } else if (reason === 'chatbot_exceeds') {
       this.showSubtitleAllOperatorsSeatsUsed = false;
       this.showSubtitleAllChatbotUsed = true;
+      contentText = this.translate.instant('Pricing.YouAreCurrentlyUsingAllChatbots') + '.';
+    } else if (reason === 'kb_exceeds') {
+      this.showSubtitleAllOperatorsSeatsUsed = false;
+      this.showSubtitleAllChatbotUsed = false;
+      contentText = this.translate.instant('Pricing.YouAreCurrentlyUsingAllKnowledgeBases') + '.';
+    } else {
+      this.showSubtitleAllOperatorsSeatsUsed = false;
+      this.showSubtitleAllChatbotUsed = false;
     }
+
+    const projectId = this.getProjectIdFromLocation();
+
+    Swal.fire({
+      title: this.translate.instant('Pricing.UpgradePlan'),
+      text: contentText,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Pricing.UpgradePlan'),
+      focusConfirm: false,
+    }).then((result) => {
+      if (result.isConfirmed && projectId) {
+        this.router.navigate(['project/' + projectId + '/pricing']);
+      }
+    });
   }
 
   closeGoToPricingModal() {
+    // Kept for callers that still close the old Bootstrap modal; Swal is dismissed by the user.
     this.goToPricingModal = 'none';
+  }
+
+  private getProjectIdFromLocation(): string | null {
+    const path = this.location.path() || '';
+    const match = path.match(/\/project\/([^\/\?#]+)/);
+    return match ? match[1] : null;
   }
 
 

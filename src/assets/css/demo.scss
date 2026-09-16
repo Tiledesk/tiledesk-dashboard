@@ -4724,6 +4724,21 @@ li.li-active a {
   }
 }
 
+/* Home Current usage — quota alert CDK help (overlay on body) */
+.home-quota-cdk-popover.cdk-popover {
+  max-width: 280px;
+}
+
+.home-quota-cdk-popover .sales-mail-to {
+  color: #7ec8f5;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.home-quota-cdk-popover .sales-mail-to:hover {
+  text-decoration: underline;
+}
+
 /* mat-slide-toggle (MDC) → src/assets/css/material-mdc-overrides.scss */
 
 

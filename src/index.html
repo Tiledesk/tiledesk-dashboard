@@ -59,14 +59,138 @@
 
 <body>
 
+  <!-- Boot progress bar (commented: on normal/4G networks Angular boots too fast → 0% flash)
+  <style>
+    .boot-loader {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      z-index: 9999;
+      gap: 14px;
+    }
 
+    .boot-loader__label {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 22px;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: #1e293b;
+    }
+
+    .boot-loader__track {
+      width: 160px;
+      height: 6px;
+      background: #e2e8f0;
+      overflow: hidden;
+      border-radius: 999px;
+    }
+
+    .boot-loader__bar {
+      height: 100%;
+      width: 0%;
+      background: #2196f3;
+      border-radius: 999px;
+      transition: width 120ms linear;
+    }
+
+    .boot-loader__pct {
+      margin: 0;
+      min-width: 3ch;
+      text-align: center;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 13px;
+      color: #1e293b;
+      letter-spacing: 0.02em;
+    }
+  </style>
+  -->
 
   <appdashboard-root>
+    <!-- Previous Material-style SVG spinner
     <div class="loader">
       <svg class="circular" viewBox="25 25 50 50">
         <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
       </svg>
     </div>
+    -->
+    <!-- Spinner style from design-studio (cds-dashboard .loader) -->
+    <style>
+      .cds-boot-loader-wrap {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        z-index: 9999;
+      }
+
+      .cds-boot-loader {
+        display: block;
+        width: 100px;
+        height: 100px;
+        border: 3px solid #e06a58; /* CDS --base-brand-color */
+        border-radius: 50%;
+        animation: cds-boot-spin 7s ease-in-out infinite;
+        transition-duration: 0.1s;
+      }
+
+      @keyframes cds-boot-spin {
+        0% {
+          transform: rotate(0deg);
+          border-bottom: solid 3px transparent;
+          border-top: solid 3px transparent;
+        }
+        50% {
+          transform: rotate(1800deg);
+          border: 3px solid #e06a58;
+          border-left: solid 3px transparent;
+          border-right: solid 3px transparent;
+        }
+        100% {
+          transform: rotate(0deg);
+          border-bottom: solid 3px transparent;
+          border-top: solid 3px transparent;
+        }
+      }
+    </style>
+    <div class="cds-boot-loader-wrap" aria-busy="true" aria-live="polite">
+      <div class="cds-boot-loader"></div>
+    </div>
+    <!--
+    <div class="boot-loader" id="boot-loader" aria-live="polite" aria-busy="true">
+      <p class="boot-loader__label">Loading</p>
+      <div class="boot-loader__track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="boot-loader-track">
+        <div class="boot-loader__bar" id="boot-loader-bar"></div>
+      </div>
+      <p class="boot-loader__pct" id="boot-loader-pct">0%</p>
+    </div>
+    <script>
+      (function () {
+        var bar = document.getElementById('boot-loader-bar');
+        var pct = document.getElementById('boot-loader-pct');
+        var track = document.getElementById('boot-loader-track');
+        if (!bar || !pct) { return; }
+        var value = 0;
+        var timer = setInterval(function () {
+          var remaining = 92 - value;
+          if (remaining <= 0.2) { return; }
+          value += Math.max(0.35, remaining * 0.08);
+          if (value > 92) { value = 92; }
+          var shown = Math.round(value);
+          bar.style.width = shown + '%';
+          pct.textContent = shown + '%';
+          if (track) { track.setAttribute('aria-valuenow', String(shown)); }
+        }, 120);
+        window.addEventListener('beforeunload', function () { clearInterval(timer); });
+      })();
+    </script>
+    -->
   </appdashboard-root>
 
 </body>

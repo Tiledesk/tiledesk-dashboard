@@ -1,0 +1,243 @@
+.home-overview {
+  margin-top: 16px;
+  border-radius: 12px;
+  padding: 0;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: visible;
+  background-color: #f5f7f9;
+  font-family: var(--header-font-family, inherit);
+}
+
+.home-overview__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 14px 16px;
+  min-width: 0;
+  background-color: transparent;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
+  border-top: 1px solid #ebe6e7;
+  border-left: 1px solid #ebe6e7;
+  border-right: 1px solid #ebe6e7;
+}
+
+.home-overview__header-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--header-font-family, inherit);
+  color: #1e293b;
+}
+
+.home-overview__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.home-overview__eyebrow-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.home-overview__eyebrow-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: #1e293b;
+}
+
+.home-overview__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 0;
+  margin: 0;
+  height: 240px;
+  min-width: 0;
+  background-color: #fff;
+  border: 1px solid #ebe6e7;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+}
+
+.home-overview__card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 16px;
+  border: none;
+  border-right: 1px solid #e8e4df;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.home-overview__card--last {
+  border-right: none;
+}
+
+.home-overview__card-label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #1e293b;
+  font-family: var(--header-font-family, inherit);
+  flex-shrink: 0;
+}
+
+.home-overview__label-sep {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 8px;
+  color: #94a3b8;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.home-overview__label-period {
+  text-transform: none;
+  letter-spacing: normal;
+  color: #94a3b8;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.home-overview__metric-row {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+  margin-top: 10px;
+  flex-shrink: 0;
+  width: 100%;
+  min-width: 0;
+}
+
+.home-overview__metric-value {
+  margin-top: 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: #1e293b;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.home-overview__chart {
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  margin-top: 8px;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.home-overview__chart-trend {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 0;
+  font-size: 11px;
+  line-height: 1.2;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: #9aa0a6;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.home-overview__chart-trend--up {
+  color: #00a63e;
+}
+
+.home-overview__chart-trend--down {
+  color: #dc2626;
+}
+
+.home-overview__chart-trend--flat {
+  color: #9aa0a6;
+}
+
+.home-overview__chart-trend-hint {
+  color: #9aa0a6;
+}
+
+.home-overview__chart-trend-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  line-height: 1;
+}
+
+.home-overview__chart-trend-arrow {
+  width: 14px;
+  height: 14px;
+  font-size: 14px;
+  line-height: 14px;
+  font-weight: 600;
+}
+
+.home-overview__chart-trend-arrow--up {
+  color: #00a63e;
+}
+
+.home-overview__chart-trend-arrow--down {
+  color: #dc2626;
+}
+
+.home-overview__chart-trend-flat {
+  font-size: 11px;
+  line-height: 1;
+  color: #9aa0a6;
+}
+
+@media (max-width: 1100px) {
+  .home-overview__body {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .home-overview__card {
+    border-right: none;
+    border-bottom: 1px solid #e8e4df;
+    height: auto;
+  }
+
+  .home-overview__chart {
+    flex: none;
+    height: 140px;
+  }
+
+  .home-overview__card--last {
+    border-bottom: none;
+  }
+}

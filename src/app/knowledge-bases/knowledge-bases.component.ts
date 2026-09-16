@@ -65,7 +65,7 @@ import {
   alignPointsToDayKeys,
   buildAnsweredBarChartOption,
   buildAnswerRateChartOption,
-  buildDayKeysBetween,
+  buildLastNLocalDayKeys,
   buildUnansweredBarChartOption,
   computeKbBarChartsSharedCountMax,
   computeKbOverTimeTotals,
@@ -4723,31 +4723,17 @@ _presentDialogImportContents() {
   }
 
 
-    /** Move a UTC date by whole calendar days (handles 28/29/30/31-day months). */
-  private shiftUtcCalendarDays(date: Date, days: number): Date {
-    return new Date(Date.UTC(
-      date.getUTCFullYear(),
-      date.getUTCMonth(),
-      date.getUTCDate() + days,
-      date.getUTCHours(),
-      date.getUTCMinutes(),
-      date.getUTCSeconds(),
-      date.getUTCMilliseconds(),
-    ));
-  }
-
   /**
-   * Last 3 weeks (21 calendar days) including today.
-   * Analytics API uses [from, to) at UTC midnight — `to` is exclusive, so end is tomorrow 00:00.
+   * Last 3 weeks (21 calendar days) including today, in the project timezone
+   * (Hours tzname, else browser). Half-open [from, to) with local midnights.
    */
-  private getChartsLast3WeeksRange(): { startDate: string; endDate: string } {
-    const todayStart = new Date();
-    todayStart.setUTCHours(0, 0, 0, 0);
-    const end = this.shiftUtcCalendarDays(todayStart, 1);
-    const start = this.shiftUtcCalendarDays(end, -21);
+  private getChartsLast3WeeksRange(): { startDate: string; endDate: string; timeZone: string } {
+    const timeZone = this.kbService.getProjectTimezone();
+    const { from, to } = this.kbService.getLastNDaysChartRange(21);
     return {
-      startDate: start.toISOString(),
-      endDate: end.toISOString(),
+      startDate: from,
+      endDate: to,
+      timeZone,
     };
   }
 
@@ -4768,14 +4754,14 @@ _presentDialogImportContents() {
     const requestId = ++this.kbChartsRequestId;
     this.kbChartsLoading = true;
     this.disposeKbCharts();
-    const { startDate, endDate } = this.getChartsLast3WeeksRange();
+    const { startDate, endDate, timeZone } = this.getChartsLast3WeeksRange();
 
     this.kbService.getAnwseredUnansweredQuestionsForCharts(startDate, endDate, namespaceId)
       .subscribe({
         next: (res) => {
           if (requestId !== this.kbChartsRequestId) { return; }
-          const dayKeys = buildDayKeysBetween(new Date(startDate), new Date(endDate));
-          this.kbChartPoints = alignPointsToDayKeys(dayKeys, parseKbOverTimeResponse(res));
+          const dayKeys = buildLastNLocalDayKeys(21, timeZone);
+          this.kbChartPoints = alignPointsToDayKeys(dayKeys, parseKbOverTimeResponse(res, timeZone));
           this.applyKbChartStatsFromPoints(this.kbChartPoints);
           this.kbChartsLoading = false;
           this.cdr.detectChanges();

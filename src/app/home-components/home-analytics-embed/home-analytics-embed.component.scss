@@ -1,0 +1,111 @@
+.home-analytics-embed {
+  margin-top: 16px;
+  margin-bottom: 18px;
+  border-radius: 12px;
+  padding: 0 0 4px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: visible;
+  // background-color: #F5F1F2;
+  background-color: #f5f7f9;
+  border: 1px solid #ebe6e7;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.home-analytics-embed__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 0;
+  padding: 14px 16px;
+  min-width: 0;
+  background-color: transparent;
+  border-radius: 12px 12px 0 0;
+}
+
+.home-analytics-embed__header-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--header-font-family, inherit);
+  color: #1e293b;
+}
+
+.home-analytics-embed__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-family: var(--header-font-family, inherit);
+  color: #1e293b;
+}
+
+.home-analytics-embed__eyebrow-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+
+.home-analytics-embed__eyebrow-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: #1e293b;
+}
+
+.home-analytics-embed__body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh + 532px);
+  min-height: calc(100vh + 532px);
+  margin: 0 4px;
+  overflow: hidden;
+  background-color: #fff;
+  border: 1px solid #ebe6e7;
+  border-radius: 10px;
+}
+
+.home-analytics-embed__iframe {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+
+  &--pending {
+    visibility: hidden;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+}
+
+.home-analytics-embed__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex: 1;
+  min-height: 240px;
+  padding: 24px;
+  text-align: center;
+  font-size: 14px;
+  color: #566787;
+  position: relative;
+  z-index: 1;
+  font-family: var(--header-font-family, inherit);
+}
+
+.home-analytics-embed__state--error {
+  color: #c62828;
+}

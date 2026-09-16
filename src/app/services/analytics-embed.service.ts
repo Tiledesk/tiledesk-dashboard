@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 
@@ -27,6 +28,10 @@ export interface AnalyticsKbChartClickMessage {
 @Injectable({ providedIn: 'root' })
 export class AnalyticsEmbedService {
   private pendingKbChartClick: AnalyticsKbChartClickMessage | null = null;
+  /** Cached embed tokens keyed by projectId + jwt fingerprint. */
+  private embedTokenCache = new Map<string, { token: string; type: string; expiresAtMs: number }>();
+  /** In-flight token requests so parallel callers share one POST. */
+  private embedTokenInflight = new Map<string, Observable<EmbedTokenResponse>>();
 
   constructor(
     private http: HttpClient,
@@ -106,11 +111,37 @@ export class AnalyticsEmbedService {
     return bare ? `Bearer ${bare}` : '';
   }
 
+  private embedTokenCacheKey(projectId: string, tiledeskJwt: string): string {
+    return `${projectId}::${this.bareJwtFromTiledeskAuthValue(tiledeskJwt)}`;
+  }
+
+  /**
+   * Returns a project embed token, sharing in-flight POSTs and caching until near expiry.
+   * Home analytics (flow/overview/kb) each call this many times; without caching that is N POSTs.
+   */
   getEmbedToken(projectId: string, tiledeskJwt: string): Observable<EmbedTokenResponse> {
     const base = this.analyticsApiBase;
     if (!base) {
       return throwError(() => new Error('analyticsApiBase is not configured'));
     }
+
+    const key = this.embedTokenCacheKey(projectId, tiledeskJwt);
+    const cached = this.embedTokenCache.get(key);
+    const now = Date.now();
+    if (cached && cached.expiresAtMs > now) {
+      const expiresInSec = Math.max(1, Math.floor((cached.expiresAtMs - now) / 1000));
+      return of({
+        token: cached.token,
+        expires_in: expiresInSec,
+        type: cached.type,
+      });
+    }
+
+    const inflight = this.embedTokenInflight.get(key);
+    if (inflight) {
+      return inflight;
+    }
+
     const url = `${base}/api/v1/embed-token`;
     const headers = new HttpHeaders({
       Accept: 'application/json',
@@ -118,6 +149,27 @@ export class AnalyticsEmbedService {
       Authorization: this.tiledeskAuthorizationHeader(tiledeskJwt)
     });
     this.logger.log('[AnalyticsEmbedService] POST embed-token', url);
-    return this.http.post<EmbedTokenResponse>(url, { id_project: projectId }, { headers });
+
+    const request$ = this.http.post<EmbedTokenResponse>(url, { id_project: projectId }, { headers }).pipe(
+      tap((res) => {
+        // Refresh slightly early so parallel callers don't race an almost-expired token.
+        const safetyMarginSec = 30;
+        const ttlSec = Math.max(5, (res?.expires_in ?? 300) - safetyMarginSec);
+        this.embedTokenCache.set(key, {
+          token: res.token,
+          type: res.type || 'Bearer',
+          expiresAtMs: Date.now() + ttlSec * 1000,
+        });
+        this.embedTokenInflight.delete(key);
+      }),
+      catchError((err) => {
+        this.embedTokenInflight.delete(key);
+        return throwError(() => err);
+      }),
+      shareReplay(1),
+    );
+
+    this.embedTokenInflight.set(key, request$);
+    return request$;
   }
 }

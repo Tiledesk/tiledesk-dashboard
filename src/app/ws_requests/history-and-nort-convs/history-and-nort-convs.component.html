@@ -642,7 +642,7 @@
       {{ 'ConversationsFound' | translate }}:
       <span *ngIf="showSpinner" class="loading">{{'Processing' | translate}} </span>
       <span *ngIf="!showSpinner">
-        {{requestsCount || 0}}
+        {{ (requestsCount || 0) | number:'1.0-0' }}
       </span>
     </div>
 
@@ -1104,7 +1104,7 @@
               <!-- ------------------------------ -->
               <!--  IF THERE ISN'T REQUEST -->
               <!--  ------------------------------ -->
-              <tr *ngIf="(IS_HERE_FOR_HISTORY && (!has_searched || (requestList && requestList?.length === 0))) || (!IS_HERE_FOR_HISTORY && requestList && requestList?.length === 0)">
+              <tr *ngIf="(IS_HERE_FOR_HISTORY && (!requestList || requestList?.length === 0)) || (!IS_HERE_FOR_HISTORY && requestList && requestList?.length === 0)">
                 <td [attr.colspan]="IS_HERE_FOR_HISTORY ? 11 : 10" style="text-align: center; padding-top: 16px; height: 150px;">
 
                   <span class="material-icons no-request-icon" style="vertical-align: middle;" *ngIf="!has_searched">

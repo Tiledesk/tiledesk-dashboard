@@ -1633,3 +1633,49 @@ mat-progress-spinner circle,
 .mat-mdc-progress-spinner.mat-progress-spinner-voice-runned-out circle {
   stroke: #f55a4e !important;
 }
+
+// ─── home quote mat-progress-bar (MDC) — unused by Current usage (custom fill) ─
+
+.home-quote-progress-row > .mat-mdc-progress-bar {
+  --mdc-linear-progress-active-indicator-color: var(--blue-20);
+  --mdc-linear-progress-track-color: #e8e9ed;
+
+  .mdc-linear-progress__bar-inner {
+    border-color: var(--blue-20);
+  }
+
+  .mdc-linear-progress__buffer-bar {
+    background-color: #e8e9ed;
+  }
+}
+
+.home-quote-progress-row > .mat-mdc-progress-bar.home-quote-progress-bar-runned-out {
+  --mdc-linear-progress-active-indicator-color: #f55a4e;
+
+  .mdc-linear-progress__bar-inner {
+    border-color: #f55a4e;
+  }
+}
+
+// ─── navbar quota mat-progress-bar (MDC) ─────────────────────────────────────
+
+.quotas-usage-container-wpr .quota-progress-row > .mat-mdc-progress-bar {
+  --mdc-linear-progress-active-indicator-color: var(--blue-20);
+  --mdc-linear-progress-track-color: #e8e9ed;
+
+  .mdc-linear-progress__bar-inner {
+    border-color: var(--blue-20);
+  }
+
+  .mdc-linear-progress__buffer-bar {
+    background-color: #e8e9ed;
+  }
+}
+
+.quotas-usage-container-wpr .quota-progress-row > .mat-mdc-progress-bar.quota-progress-bar-runned-out {
+  --mdc-linear-progress-active-indicator-color: #f55a4e;
+
+  .mdc-linear-progress__bar-inner {
+    border-color: #f55a4e;
+  }
+}

@@ -9,12 +9,13 @@ import { TranslateModule } from '@ngx-translate/core';
 import { SmallSidebarComponent } from './small-sidebar/small-sidebar.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { SidebarUserDetailsComponent } from './sidebar-user-details/sidebar-user-details.component';
 import {FormsModule} from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
@@ -34,7 +35,8 @@ import { UnservedNotificationsComponent } from './unserved-notifications/unserve
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
-    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    OverlayModule,
     FormsModule,
     NgSelectModule,
     MatCardModule,
