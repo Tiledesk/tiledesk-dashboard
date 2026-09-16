@@ -1,26 +1,13 @@
+# tiledesk-dashboard
+
+### 2.7.247-stage
+- Refactors home page
+
 ### 2.7.246-stage
 - Adds the OpenRouter integration: configure the API key, pick models and the providers that run the inference
 
-# tiledesk-dashboard
-
 ### 2.7.245-stage 
 - Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
-### 2.8.23
-- Improves API Key masking for integrations
-
-### 2.8.22
--  Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
-
-### 2.8.21
-- Fixes the bug: FAQ content cannot be updated
-
-### 2.8.20
-- Adds the connector plugin registry: register project-scoped connectors from a manifest URL and manage them from the Integrations page
-- Renders one Integrations tile per registered connector, alongside a static "Add connector" tile
-- Adds a connector detail view listing the connector's actions and triggers, using the connector's own icon, with the ability to delete it
-- Adds an optional category field to app registration, marking connector-type apps
-- Updates LLM models
-- Adds Gemini Agent Platform integration
 
 ### 2.7.244-stage 
 -  Updates LLM models
