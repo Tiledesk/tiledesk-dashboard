@@ -14,15 +14,34 @@
             <!-- Use cese URL -->
             <!-- ------------------------------------ -->
             <div *ngIf="kb.type === 'url'">
-                <span class="input-label">{{ 'KbPage.Url' | translate }}</span>
+                <span *ngIf="!kb.sitemap_origin" class="input-label">{{ 'KbPage.Url' | translate }}</span>
+                <span *ngIf="kb.sitemap_origin" class="input-label">Sitemap</span>
                 <a class="input-label link-page" [href]="source" target="_blank">
                     <span class="material-icons-outlined">
                         open_in_new
                     </span>
                 </a>
-                <input [(ngModel)]="source" type="url" name="url" class="custom-input">
+
+                <input *ngIf="!kb.sitemap_origin" [(ngModel)]="source" type="url" name="url" class="custom-input">
+                <input *ngIf="kb.sitemap_origin" [(ngModel)]="kb.sitemap_origin" type="url" name="url" class="custom-input">
+
 
             </div>
+
+
+             <div *ngIf="kb.type === 'sitemap' ">
+                <span class="input-label">{{ 'KbPage.Url' | translate }}</span>
+                <!-- <span *ngIf="kb.sitemap_origin" class="input-label">Sitemap</span> -->
+                <a class="input-label link-page" [href]="source" target="_blank">
+                    <span class="material-icons-outlined">
+                        open_in_new
+                    </span>
+                </a>
+
+                <input  [(ngModel)]="source" type="url" name="url" class="custom-input">
+
+            </div>
+            
             <!-- ------------------------------------ -->
             <!-- Use case text -->
             <!-- ------------------------------------ -->
@@ -94,5 +113,15 @@
     <button *ngIf="kb.type === 'pdf' || kb.type === 'txt' ||  kb.type === 'docx'" class="mat-dialog-ok-btn"
         [disabled]="name.length < 3" mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Update" | translate }}
+    </button>
+
+    <!-- Pulsante SALVA per nuova KB -->
+    <button *ngIf="!kb._id && kb.type === 'faq'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || content.length === 0"
+        mat-button (click)="onUpdateKnowledgeBase()">
+        {{ "Save" | translate }}
+    </button>
+    <button *ngIf="!kb._id && kb.type !== 'faq'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || (!content && !source)"
+        mat-button (click)="onUpdateKnowledgeBase()">
+        {{ "Save" | translate }}
     </button>
 </div>

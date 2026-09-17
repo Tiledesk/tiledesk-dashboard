@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, 
 import { Location } from '@angular/common';
 import { ColorPickerService } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { ProjectService } from '../../services/project.service';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -41,6 +41,8 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import emojiRegex from 'emoji-regex';
+import { MatDialog } from '@angular/material/dialog';
+import { WidgetDomainsWithelistModalComponent } from '../widget-domains-withelist-modal/widget-domains-withelist-modal.component';
 import { ProjectUser } from 'app/models/project-user';
 
 @Component({
@@ -52,6 +54,7 @@ import { ProjectUser } from 'app/models/project-user';
 
 export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, AfterViewInit, OnDestroy, AfterViewChecked {
   @ViewChild('fileUpload', { static: false }) fileUpload: any;
+  private routerSubscription: Subscription;
   PLAN_NAME = PLAN_NAME;
   APP_SUMO_PLAN_NAME = APP_SUMO_PLAN_NAME;
   prjct_profile_name_for_segment: string;
@@ -367,6 +370,16 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   public preChatForm: boolean;
   public nativeRating: boolean;
+
+  // public hideOnSpecificDomainList: string[] = [];
+  // public hideOnSpecificDomain: boolean;
+
+  // hideOnSpecificUrlList: string[] = [];
+  // hideOnSpecificUrl: boolean;
+
+  public allowedOnSpecificUrlList: string[] = [];
+  public allowedOnSpecificUrl: boolean;
+
   public showAttachmentButton: boolean;
   public showEmojiButton: boolean;
   public showAudioRecorderButton: boolean;
@@ -407,6 +420,12 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
   showSpinnerAttachmentUploading: boolean = false;
 
+  selectedOption: string; // = 'all';
+  newExtension: string = '';
+  extensions: string[] = [];
+  allowedUploadExtentions: string;
+  defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt";
+
   isAuthorized = false;
   permissionChecked = false; // To avoid showing the content before check completes
   private accordionInitialized = false;
@@ -434,7 +453,8 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     public selectOptionsTranslatePipe: SelectOptionsTranslatePipe,
     public localDbService: LocalDbService,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    public dialog: MatDialog,
   ) {
     super(translate);
     const brand = brandService.getBrand();
@@ -503,7 +523,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     this.listenToProjectUser()
   }
 
-    ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
     try {
       // name of the class of the html div = . + fragment
       const test = <HTMLElement>document.querySelector('.' + this.fragment)
@@ -522,6 +542,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
     }
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
   }
 
 
@@ -566,9 +590,7 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           console.log('[WIDGET-SET-UP] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TRANSLATIONS ', this.PERMISSION_TO_READ_TRANSLATIONS);
         }
 
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
+    
 
         // You can also check status.role === 'owner' if needed
       });
@@ -2673,6 +2695,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
           this.nativeRating = false;
         }
 
+        // --------------------------------------------
+        // Widget regex whitelist enabled / disabled
+        // --------------------------------------------
+        if (project.widget.allowedOnSpecificUrl) {
+          this.allowedOnSpecificUrl = true;
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
+        } else {
+          this.allowedOnSpecificUrl = false;
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrl ', this.allowedOnSpecificUrl) 
+        }
+
+        // --------------------------------------------
+        // Widget regex whitelist array
+        // --------------------------------------------
+        if (project.widget.allowedOnSpecificUrlList) {
+          this.allowedOnSpecificUrlList = project.widget.allowedOnSpecificUrlList;
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
+        } else {
+          this.allowedOnSpecificUrlList = [];
+          console.log('[WIDGET-SET-UP] allowedOnSpecificUrlList ', this.allowedOnSpecificUrlList) 
+        }
+
         // ----------------------------------------------------
         // Display / hide  Attachment Button (if widget object)
         // ----------------------------------------------------
@@ -2690,6 +2734,26 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         }
 
         this.logger.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  showAttachmentButton ', this.showAttachmentButton);
+
+
+        if (project.widget.hasOwnProperty('allowedUploadExtentions')) {
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  allowedUploadExtentions ', project.widget.allowedUploadExtentions) 
+          
+          if (project.widget.allowedUploadExtentions === '*/*') {
+
+            this.selectedOption = 'all';
+            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+          } else {
+            this.selectedOption = 'custom'
+            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  selectedOption ', this.selectedOption) 
+            this.extensions = project.widget.allowedUploadExtentions.split(',').map(v => v.trim());
+            console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED) >  extensions ', this.extensions) 
+          }
+        } else {
+          this.selectedOption = 'custom'
+          this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+          console.log('[WIDGET-SET-UP] - (onInit WIDGET DEFINED but not has the property allowedUploadExtentions) >  extensions ', this.extensions) 
+        }
 
         // ----------------------------------------------------
         // Display / hide Emoji Button (if widget object)
@@ -2917,6 +2981,24 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
         // WIDGET UNDEFINED
         // -----------------------------------------------------------------------
         this.nativeRating = false;
+
+        // -----------------------------------------------------------------------
+        // @ allowedOnSpecificUrl
+        // @ allowedOnSpecificUrlList
+        // WIDGET UNDEFINED
+        // -----------------------------------------------------------------------
+        this.allowedOnSpecificUrl = false;
+        this.allowedOnSpecificUrlList = []
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrl: ', this.allowedOnSpecificUrl);
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) > allowedOnSpecificUrlList: ', this.allowedOnSpecificUrlList);
+
+        // -----------------------------------------------------------------------
+        // @ allowedUploadExtentions
+        // -----------------------------------------------------------------------
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED) >  allowedUploadExtentions ', this.allowedUploadExtentions);
+        this.selectedOption = 'custom'
+        this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+        console.log('[WIDGET-SET-UP] - (onInit WIDGET UNDEFINED ) >  extensions ', this.extensions) 
 
         // -----------------------------------------------------------------------
         // @ Attachment Button - WIDGET UNDEFINED
@@ -4500,6 +4582,29 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   }
 
   // -----------------------------------------------------------------------
+  //  @ Allowed extentions
+  // -----------------------------------------------------------------------
+  addExtension(): void {
+    const ext = this.newExtension.trim().toLowerCase();
+
+    if (ext && !this.extensions.includes(ext)) {
+      this.extensions.push(ext);
+      this.newExtension = '';
+    }
+     console.log('[WIDGET-SET-UP] add extensions', this.extensions)
+      // this.getExtensionsForBackend()
+  }
+
+  removeExtension(index: number): void {
+    this.extensions.splice(index, 1);
+    console.log('[WIDGET-SET-UP] extensions remove', this.extensions)
+    // if(this.extensions.length === 0) {
+    //   this.selectedOption = 'all'
+    // }
+    // this.getExtensionsForBackend()
+  }
+
+  // -----------------------------------------------------------------------
   //  @ Emoji Button
   // -----------------------------------------------------------------------
   toggleDiplayEmojiButton(event) {
@@ -4582,9 +4687,86 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
       // this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
     }
 
+    this.widgetObj['allowedUploadExtentions'] = this.allowedUploadExtentions;
+    console.log('[WIDGET-SET-UP] this.allowedUploadExtentions',   this.allowedUploadExtentions) 
+
+     console.log('[WIDGET-SET-UP] selectedOption',   this.selectedOption)
+     if(this.selectedOption === 'all') {
+       this.widgetObj['allowedUploadExtentions'] = '*/*'
+     } else {
+      
+      this.widgetObj['allowedUploadExtentions'] = this.extensions.join(',')
+    }
+
     this.widgetService.updateWidgetProject(this.widgetObj)
     this.logger.log('[WIDGET-SET-UP] - widgetObj', this.widgetObj)
   }
+
+
+
+  // -----------------------------------------------------------------------
+  //  @ Widget pattern whitelist
+  // -----------------------------------------------------------------------
+  toggleWidgetPatternWithelist(event) {
+    if (event.target.checked) {
+      this.allowedOnSpecificUrl = true;
+      // *** ADD PROPERTY
+      this.widgetObj['allowedOnSpecificUrl'] = this.allowedOnSpecificUrl;
+      this.widgetService.updateWidgetProject(this.widgetObj)
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN whitelist ', event.target.checked)
+    } else {
+      this.allowedOnSpecificUrl = false;
+
+      // *** REMOVE PROPERTY
+      delete this.widgetObj['allowedOnSpecificUrl'];
+
+      console.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist allowedOnSpecificUrlList length ', this.allowedOnSpecificUrlList?.length)
+      if (this.allowedOnSpecificUrlList?.length === 0 ) {
+        delete this.widgetObj['allowedOnSpecificUrlList'];
+      }
+
+      this.widgetService.updateWidgetProject(this.widgetObj)
+
+      this.logger.log('[WIDGET-SET-UP] - IS ENABLE Widget PATTERN whitelist', event.target.checked)
+      
+    }
+
+    console.log('[WIDGET-SET-UP] - toggleWidgetPatternWithelist widgetObj ', this.widgetObj)
+  }
+
+    onOpenPatternWithelist() {
+      const dialogRef = this.dialog.open(WidgetDomainsWithelistModalComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '500px',
+        disableClose: true,
+        data: this.allowedOnSpecificUrlList
+        
+    });
+
+      // Auto-close dialog on route change
+      this.routerSubscription = this.router.events.subscribe(event => {
+        if (event instanceof NavigationStart) {
+          dialogRef.close();
+        }
+      });
+  
+      dialogRef.afterClosed().subscribe((result: string[]) => {
+        if (result) {
+          this.allowedOnSpecificUrlList = result;
+          // Save to backend or localStorage as needed
+          console.log("[WIDGET-SET-UP] - allowedOnSpecificUrlList afterClosed: ", this.allowedOnSpecificUrlList)
+
+          this.widgetObj['allowedOnSpecificUrlList'] = this.allowedOnSpecificUrlList;
+          this.widgetService.updateWidgetProject(this.widgetObj)
+          console.log('[WIDGET-SET-UP] - onOpenPatternWithelist  afterClosed widgetObj ', this.widgetObj)
+        }
+
+        if (this.routerSubscription) {
+          this.routerSubscription.unsubscribe();
+        }
+      });
+    }
 
 
   // onPastePrechatFormJSON(event: ClipboardEvent) {

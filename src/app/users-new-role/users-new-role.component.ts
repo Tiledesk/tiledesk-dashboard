@@ -111,31 +111,46 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.INBOX_READ, label: 'Able to view real time and opened' },
-        // { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
-        { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' },
+        { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
+        // { key: PERMISSIONS.REQUEST_UPDATE, label: 'Able to update' },
+        { key: PERMISSIONS.REQUEST_CREATE_TICKET, label: 'Able to create a ticket'},
         { key: PERMISSIONS.REQUEST_SEND, label: 'Able to send message' },
         { key: PERMISSIONS.REQUEST_JOIN, label: 'Able to join to a conversation' },
+        { key: PERMISSIONS.REQUEST_CLOSE, label: 'Able to resolve a conversation' },
         { key: PERMISSIONS.REQUEST_REOPEN, label: 'Able to reopen an archived conversation' },
+        { key: PERMISSIONS.REQUEST_DELETE, label: 'Able to delete an archived conversation' },
         { key: PERMISSIONS.REQUEST_UPDATE_STATUS, label: 'Able to update the status of a conservation' },
         { key: PERMISSIONS.REQUEST_UPDATE_PRIORITY, label: 'Able to update the priority of a conservation' },
         { key: PERMISSIONS.REQUEST_UPDATE_FOLLOWERS, label: 'Able to add teammates as followers of a conversation' },
         { key: PERMISSIONS.REQUEST_UPDATE_SMART_ASSIGNMENT, label: 'Able to convert a conversation to offline / online' },
-        { key: PERMISSIONS.REQUEST_UPDATE_TAGS, label: 'Able to add / update conversation TAGS' },
+        { key: PERMISSIONS.REQUEST_UPDATE_TAGS, label: 'Able to add / remove conversation TAGS' },
         { key: PERMISSIONS.REQUEST_UPDATE_NOTES, label: 'Able to add / remove notes from a conversation' },
         { key: PERMISSIONS.REQUEST_REASSIGN, label: 'Able to reassign a conversation' },
         { key: PERMISSIONS.REQUEST_ADD, label: 'Able to add a teammate to a conversation' },
-        { key: PERMISSIONS.REQUEST_CLOSE, label: 'Able to resolve a conversation' },
-        { key: PERMISSIONS.REQUEST_DELETE, label: 'Able to delete' }
+        { key: PERMISSIONS.REQUEST_LEFT, label: 'Able to leave a conversation to which is joined' },
+        { key: PERMISSIONS.REQUEST_TRANSCRIPT_SEND, label: 'Able to send the chat transcript' }
       ]
     },
-    {
-      key: 'historyManagement',
-      title: 'History',
+    // {
+    //   key: 'historyManagement',
+    //   title: 'History',
+    //   parentLabel: 'Select all',
+    //   type: 'checkbox',
+    //   expanded: false,
+    //   children: [
+    //     { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
+    //   ]
+    // },
+
+      {
+      key: 'WhatsAppBroadcasts',
+      title: 'WhatsApp Broadcasts',
       parentLabel: 'Select all',
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.HISTORY_READ, label: 'Able to view History' },
+        { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view' },
+        { key: PERMISSIONS.AUTOMATIONSLOG_CREATE, label: 'Able to create' }
       ]
     },
 
@@ -147,6 +162,17 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.KB_READ, label: 'Able to view' },
+        { key: PERMISSIONS.KB_CONTENTS_ADD, label: 'Able to add contents' },
+        { key: PERMISSIONS.KB_CONTENTS_EXPORT, label: 'Able to export contents' },
+        { key: PERMISSIONS.KB_CONTENT_UPDATE, label: 'Able to edit content' },
+        { key: PERMISSIONS.KB_CONTENT_REINDEX, label: 'Able to reindex content' },
+        { key: PERMISSIONS.KB_CONTENT_CHECK_STATUS, label: 'Able to check content status' },
+        { key: PERMISSIONS.KB_NAMESPACE_ADD, label: 'Able to add a new Knowledge Base' },
+        { key: PERMISSIONS.KB_SETTINGS_EDIT, label: 'Able to update and test AI settings' },
+        { key: PERMISSIONS.KB_DELETE, label: 'Able to delete Knowledge Base and contents' },
+        // { key: PERMISSIONS.KB_CONTENTS_DELETE, label: 'Able to delete only the contents of a Knowledge Base' },
+        // { key: PERMISSIONS.KB_NAMESPACE_DELETE, label: 'Able to delete a Knowledge Base and its contents' },
+        
       ]
     },
     {
@@ -157,6 +183,17 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.FLOWS_READ, label: 'Able to view' },
+        { key: PERMISSIONS.FLOW_ADD, label: 'Able to create a new Flow' },
+        { key: PERMISSIONS.FLOW_EDIT, label: 'Able to edit a Flow' },
+        { key: PERMISSIONS.FLOW_DELETE, label: 'Able to delete' },
+        { key: PERMISSIONS.FLOW_TEST, label: 'Able to test' },
+        { key: PERMISSIONS.FLOW_DUPLICATE, label: 'Able to duplicate' },
+        { key: PERMISSIONS.FLOW_SHARE, label: 'Able to share' },
+        { key: PERMISSIONS.FLOW_EXPORT, label: 'Able to export' },
+        { key: PERMISSIONS.FLOW_WEBHOOK_COPY, label: 'Able to copy Webhooks URL' },
+        { key: PERMISSIONS.FLOW_WEBHOOK_EDIT, label: 'Able to enable/disable Webhooks' },
+        { key: PERMISSIONS.FLOW_WEBHOOK_DELETE, label: 'Able to delete Webhooks' },
+        // { key: PERMISSIONS.FLOW_VIEW_MESSAGE_GRAPH, label: 'Able to view messages graph' },
       ]
     },
     {
@@ -167,10 +204,13 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
        { key: PERMISSIONS.LEADS_READ, label: 'Able to view' },
-       { key: PERMISSIONS.LEAD_UPDATE, label: 'Able to update' },
-       { key: PERMISSIONS.LEAD_TRASH, label: 'Able to trash' },
-       { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete' },
        { key: PERMISSIONS.LEADS_EXPORT, label: 'Able to export' },
+       { key: PERMISSIONS.LEAD_TRASH, label: 'Able to trash' },
+       { key: PERMISSIONS.LEAD_RESTORE, label: 'Able to restore' },
+       { key: PERMISSIONS.LEAD_DELETE, label: 'Able to delete' },
+       { key: PERMISSIONS.LEAD_UPDATE, label: 'Able to update' },
+       { key: PERMISSIONS.LEAD_BAN, label: 'Able to ban visitor' },
+       { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' }
       ]
     },
     // {
@@ -185,14 +225,14 @@ export class UsersNewRoleComponent implements OnInit {
     // },
     {
       key: 'widgetSettings',
-      title: 'Widget',
-      parentLabel: 'Widget',
+      title: 'Widget set up',
+      parentLabel: 'Widget set up',
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view Widget appearance & settings' },
-        { key: PERMISSIONS.INSTALLATION_READ, label: 'Able to view Widget installations' },
-        { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
+        { key: PERMISSIONS.WIDGETSETUP_READ, label: 'Able to view' },
+        // { key: PERMISSIONS.INSTALLATION_READ, label: 'Able to view Widget installations' },
+        // { key: PERMISSIONS.TRANSLATIONS_READ, label: 'Able to view Widget translations' },
         // { key: 'profilePages', label: 'Can access lead and user profile pages' },
         // { key: 'leadData', label: 'Can export Lead, User, Company data' },
         // { key: 'importData', label: 'Can import contacts, companies and tickets' },
@@ -201,13 +241,13 @@ export class UsersNewRoleComponent implements OnInit {
     },
      {
       key: 'routingAndDepts',
-      title: 'Routing & Depts',
+      title: 'Routing & Departments',
       parentLabel: 'Select all',
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.DEPARTMENTS_LIST_READ, label: 'Able to view list' },
-        { key: PERMISSIONS.DEPARTMENT_DETAIL_READ, label: 'Able to view detail'},
+        { key: PERMISSIONS.DEPARTMENTS_LIST_READ, label: 'Able to view' },
+        { key: PERMISSIONS.DEPARTMENT_DETAIL_READ, label: 'Able to edit'},
         { key: PERMISSIONS.DEPARTMENT_CREATE_READ, label: 'Able to create'},
       ]
     },
@@ -219,11 +259,11 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.TEAMMATES_READ, label: 'Able to view Teammates list' },
-        { key: PERMISSIONS.TEAMMATES_READ_DETAILS, label: 'Able to view Teammate detail' },
+        { key: PERMISSIONS.TEAMMATES_READ, label: 'Able to view Teammates' },
+        { key: PERMISSIONS.TEAMMATES_DETAILS_READ, label: 'Able to view Teammates profile' },
         { key: PERMISSIONS.TEAMMATES_CREATE, label: 'Able to invite a new Teammate' },
-        { key: PERMISSIONS.GROUPS_READ, label: 'Able to view Groups'},
         { key: PERMISSIONS.ROLES_READ, label: 'Able to view Roles'},
+        { key: PERMISSIONS.GROUPS_READ, label: 'Able to view Groups'}
       ]
     },
     {
@@ -234,7 +274,7 @@ export class UsersNewRoleComponent implements OnInit {
       expanded: false,
       children: [
         { key: PERMISSIONS.EMAIL_TICKETING_READ, label: 'Able to view' },
-        { key: PERMISSIONS.EMAIL_TICKETING_UPDATE, label: 'Able to edit' },
+        { key: PERMISSIONS.EMAIL_TICKETING_UPDATE, label: 'Able to generate a department\'s email address' },
       ]
     },
      {
@@ -275,8 +315,8 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.HOURS_READ, label: 'Able to view' },
         { key: PERMISSIONS.HOURS_UPDATE, label: 'Able to edit' },
-        { key: PERMISSIONS.HOURS_DELETE, label: 'Able to delete' },
         { key: PERMISSIONS.HOURS_CREATE, label: 'Able to create' },
+        { key: PERMISSIONS.HOURS_DELETE, label: 'Able to delete' }
       ]
     },
 
@@ -342,8 +382,8 @@ export class UsersNewRoleComponent implements OnInit {
 
     {
       key: 'SectionsAccess',
-      title: 'Sections Access',
-      parentLabel: 'Sections Access',
+      title: 'Reports',
+      parentLabel: 'Reports',
       type: 'checkbox',
       expanded: false,
       children: [
@@ -351,7 +391,7 @@ export class UsersNewRoleComponent implements OnInit {
         
         { key: PERMISSIONS.ANALYTICS_READ, label: 'Able to view Analytics' },
         { key: PERMISSIONS.ACTIVITIES_READ, label: 'Able to view Activities' },
-        { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view Automations Log' },
+        // { key: PERMISSIONS.AUTOMATIONSLOG_READ, label: 'Able to view Automations Log' },
         
 
         // { key: 'profilePages', label: 'Can access lead and user profile pages' },

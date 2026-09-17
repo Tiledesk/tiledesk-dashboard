@@ -439,16 +439,13 @@
                         </span>
                       </span>
                     </div>
-                  
-                      
 
-                    <div class="col-xs-12 h-100 plr-0" style="position: relative;"
-                      [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
-
+                     <div class="warning-message-cointainer" style="position: relative;"> 
                       <!-- For emojis -->
+                      <!-- showEmojiWarning {{showEmojiWarning}} -->
                       <div class="emoji-warning-container">
                         <div class="emoji-warning" [ngClass]="{ 'visible': showEmojiWarning }">
-                         {{'EmojisNotAllowed' | translate}}
+                          {{'EmojisNotAllowed' | translate}}
                         </div>
                       </div>
 
@@ -458,6 +455,29 @@
                           {{ warningMessage }}
                         </div>
                       </div>
+                    </div>
+                  
+                    <div class="warning-message-cointainer" style="position: relative;"> 
+                      <!-- For emojis -->
+                      <!-- showEmojiWarning {{showEmojiWarning}} -->
+                      <div class="emoji-warning-container">
+                        <div class="emoji-warning" [ngClass]="{ 'visible': showEmojiWarning }">
+                          {{'EmojisNotAllowed' | translate}}
+                        </div>
+                      </div>
+
+                      <!-- For not allowed URLs -->
+                      <div class="warning-container">
+                        <div class="warning-message" [class.visible]="warningMessage">
+                          {{ warningMessage }}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-xs-12 h-100 plr-0" style="position: relative;"
+                      [ngStyle]="{'background-color': selectedResponseTypeID === 2 ? 'rgb(255, 247, 237)' : '#fff' }">
+
+                     
                     
                       <textarea #sendMessageTexarea class="send-message-texarea" 
                         [(ngModel)]="chat_message"
@@ -715,7 +735,7 @@
 
                           <li class="divider"></li>
 
-                          <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false }">
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : IS_CURRENT_USER_JOINED === false || (IS_CURRENT_USER_JOINED === true && !PERMISSION_TO_LEFT_REQUEST)}">
 
                             <a (click)='openleaveChatModal()' style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">exit_to_app</i>
@@ -727,7 +747,7 @@
                           </li>
 
                           <li class="divider"></li>
-                          <li>
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : !PERMISSION_TO_SEND_TRANSCRIPT}">
                             <a (click)='displayModalDownloadTranscript()'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">speaker_notes</i>
@@ -737,7 +757,7 @@
                             </a>
                           </li>
                           <li class="divider"></li>
-                          <li>
+                          <li [ngClass]="{'disable-dropdown-menu-btn' : !PERMISSION_TO_BAN_VISITOR}">
                             <a (click)='displayModalBanVisitor(request?.lead?.lead_id, request?.lead?.attributes?.ipAddress)'
                               style="padding-left: 15px; padding-right: 15px;">
                               <i class="material-icons" style="padding-right: 5px;">not_interested</i>
@@ -854,7 +874,8 @@
                             <div id="edit-fullname-contact-info-wpr" class="contact-info-wpr">
                               <h3 id="edit-fullname-contact-info--name" *ngIf="request?.lead?.fullname"
                                 class="contact-info--name">
-                                {{request?.lead?.fullname}}
+                               <!-- {{request?.lead?.fullname}} -->  
+                                {{ request?.lead?.fullname?.length > 40 ? (request?.lead?.fullname | slice:0:27) + '...' : request?.lead?.fullname }}
                               </h3>
                               <!-- -->
                               <svg id="edit-fullname-open-edit-fullname-icon" xmlns="http://www.w3.org/2000/svg"
@@ -1318,7 +1339,7 @@
                           'working-status-dropdown-btn-chat': CHAT_PANEL_MODE === true,
                           'open' : (request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000,
                           'pending' : request?.workingStatus === 'pending' && request?.status !== 1000,
-                          'closed' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) || (request?.workingStatus === 'open' && request?.status === 1000)}">
+                          'closed' : (request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) || (request?.workingStatus === 'open' && request?.status === 1000) || (request?.workingStatus === 'pending' && request?.status === 1000)}">
                           <!-- use case: conversation assigned -->
                           <span class="open-conv"
                             *ngIf="(request?.workingStatus === 'open' || !request?.workingStatus || request?.workingStatus === 'new' ) && request?.status !== 1000">
@@ -1333,7 +1354,7 @@
                             {{'Resolved' | translate}}
                           </span>
                           <span class="resolved"
-                            *ngIf="(request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) || (request?.workingStatus === 'open' && request?.status === 1000)">
+                            *ngIf="(request?.workingStatus === '' && request?.status === 1000) || (!request?.workingStatus && request?.status === 1000) || (request?.workingStatus === 'new' && request?.status === 1000) || (request?.workingStatus === 'open' && request?.status === 1000) || (request?.workingStatus === 'pending' && request?.status === 1000)">
                             {{'Resolved' | translate}}
                           </span>
                           <b class="caret"></b>

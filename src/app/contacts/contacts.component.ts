@@ -7,7 +7,7 @@ import { Contact } from '../models/contact-model';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
 import { NotifyService } from '../core/notify.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, isValidEmail, PLAN_NAME } from '../utils/util';
 import { UsersService } from '../services/users.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProjectPlanService } from '../services/project-plan.service';
@@ -132,7 +132,8 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   // isAuthorized = false;
   // permissionChecked = false;
   PERMISSION_TO_TRASH_LEAD: boolean;
-  PERMISSION_TO_UPDATE_LEAD: boolean; // used for the restore contact
+  // PERMISSION_TO_UPDATE_LEAD: boolean; // used for the restore contact
+  PERMISSION_TO_RESTORE_LEAD: boolean
   PERMISSION_TO_DELETE_LEAD: boolean;
   PERMISSION_TO_EXPORT_LEADS: boolean;
 
@@ -216,21 +217,21 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
           console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
         }
 
-        // -----------------------------------------------------  
-        // PERMISSION_TO_UPDATE_LEAD (used for restore contact)
-        // -----------------------------------------------------
+        // ---------------------------
+        // PERMISSION_TO_RESTORE_LEAD 
+        // --------------------------
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_UPDATE)) {
+          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_RESTORE)) {
 
-            this.PERMISSION_TO_UPDATE_LEAD = true
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+            this.PERMISSION_TO_RESTORE_LEAD = true
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
           } else {
-            this.PERMISSION_TO_UPDATE_LEAD = false
-            console.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+            this.PERMISSION_TO_RESTORE_LEAD = false
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
           }
         } else {
-          this.PERMISSION_TO_UPDATE_LEAD = true
-          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          this.PERMISSION_TO_RESTORE_LEAD = true
+          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_RESTORE_LEAD ', this.PERMISSION_TO_RESTORE_LEAD);
         }
 
         // -------------------------  
@@ -831,6 +832,13 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.contacts = leads_object['leads'];
       this.logger.log('[CONTACTS-COMP] - CONTACTS LIST ', this.contacts);
+      this.contacts.forEach(contact => {
+        
+        if (contact.email && !isValidEmail(contact.email)) {
+          contact.email = null; // Or 'N/A', depending on what you want to display
+        }
+
+      });
 
 
       const contactsCount = leads_object['count'];
@@ -1181,7 +1189,7 @@ export class ContactsComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   restore_contact(contactid: string) {
-    if(this.USER_ROLE === 'agent' || this.PERMISSION_TO_UPDATE_LEAD === false) {
+    if(this.USER_ROLE === 'agent' || this.PERMISSION_TO_RESTORE_LEAD === false) {
       this.notify.presentDialogNoPermissionToPermomfAction();
       return;
     }

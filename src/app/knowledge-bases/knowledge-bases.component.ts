@@ -38,22 +38,16 @@ import { DepartmentService } from 'app/services/department.service';
 import { ModalHookBotComponent } from './modals/modal-hook-bot/modal-hook-bot.component';
 import { ModalNsLimitReachedComponent } from './modals/modal-ns-limit-reached/modal-ns-limit-reached.component';
 import { ModalConfirmGotoCdsComponent } from './modals/modal-confirm-goto-cds/modal-confirm-goto-cds.component';
-import { ShepherdService } from 'angular-shepherd';
-import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
-
-import Step from 'shepherd.js/src/types/step';
+// import { ShepherdService } from 'angular-shepherd';
+// import { getSteps as defaultSteps, defaultStepOptions } from './knowledge-bases.tour.config';
+// import Step from 'shepherd.js/src/types/step';
 import { ModalFaqsComponent } from './modals/modal-faqs/modal-faqs.component';
 import { ModalAddContentComponent } from './modals/modal-add-content/modal-add-content.component';
-import { RolesService } from 'app/services/roles.service';
+import { UnansweredQuestionsService, UnansweredQuestion } from 'app/services/unanswered-questions.service';
+import { QuotesService } from 'app/services/quotes.service';
 import { RoleService } from 'app/services/role.service';
-import { ProjectUser } from 'app/models/project-user';
-// import {
-//   // provideHighlightOptions,
-//   Highlight,
-//   // HighlightAuto,
-// } from 'ngx-highlightjs';
-// // import { HighlightLineNumbers } from 'ngx-highlightjs/line-numbers';
-const swal = require('sweetalert');
+import { RolesService } from 'app/services/roles.service';
+import { PERMISSIONS } from 'app/utils/permissions.constants';
 const Swal = require('sweetalert2')
 
 
@@ -64,6 +58,7 @@ const Swal = require('sweetalert2')
   templateUrl: './knowledge-bases.component.html',
   styleUrls: ['./knowledge-bases.component.scss']
 })
+
 export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   PLAN_NAME = PLAN_NAME;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
@@ -171,6 +166,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   chatbotsUsingNamespace: any;
   botid: string;
   nameSpaceId: string;
+  totalCount: Number;
+  quotas: any;
+  isActiveHybrid: boolean = false;
 
 
   storageBucket: string;
@@ -193,7 +191,40 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   hasClickedPreviewModalBackdrop: boolean = false;
   public hideHelpLink: boolean;
   esportingKBChatBotTemplate: boolean = false;
-  refreshRateIsEnabled: boolean
+  refreshRateIsEnabled: boolean;
+
+  hasDefaultRole: boolean;
+  ROLE: string;
+  PERMISSIONS: any;
+  // PERMISSION_TO_DELETE_CONTENTS: boolean;
+  // PERMISSION_TO_DELETE_NAMESPACE: boolean;
+  
+  PERMISSION_TO_DELETE: boolean;
+  PERMISSION_TO_ADD_KB: boolean;
+  PERMISSION_TO_ADD_FLOWS: boolean;
+  PERMISSION_TO_ADD_CONTENTS: boolean;
+  PERMISSION_TO_EXPORT_CONTENTS: boolean;
+
+  // --- TAB SWITCHER ---
+  selectedTab: 'contents' | 'unanswered' = 'contents';
+  switchTab(tab: 'contents' | 'unanswered') {
+    this.selectedTab = tab;
+    if (tab === 'unanswered') {
+      this.loadUnansweredQuestions();
+    }
+  }
+  
+  unansweredQuestions: UnansweredQuestion[] = [];
+  isLoadingUnanswered = false;
+  isLoadingNamespaces = true;
+
+
+  fakeUnansered = [
+      { _id: '68b92286f81418001303bfcf', question: 'How can I reset my password?' },
+      { _id: '68b92286f81418001303bfcf', question: 'What is the refund policy?' },
+      { _id: '68b92286f81418001303bfcf', question: 'How do I contact support?' },
+      { _id: '68b92286f81418001303bfcf', question: 'Where can I find my invoices?' }
+    ]
 
   constructor(
     private auth: AuthService,
@@ -216,9 +247,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     public dialog: MatDialog,
     public faqService: FaqService,
     private departmentService: DepartmentService,
-    private shepherdService: ShepherdService,
-    private roleService: RoleService
-
+    private unansweredQuestionsService: UnansweredQuestionsService,
+    private quotasService: QuotesService,
+    private roleService: RoleService,
+    private rolesService: RolesService
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -229,75 +261,226 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   ngOnInit(): void {
     this.roleService.checkRoleForCurrentProject('kb')
+    performance.mark('kb-parent-init');
+
+    // Misura il tempo dal click nella sidebar all'inizializzazione
+    const clickTime = (window as any).kbNavigationStartTime;
+    if (clickTime) {
+      const currentTime = performance.now();
+      const timeFromClick = currentTime - clickTime;
+      this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init time from click:', timeFromClick.toFixed(2), 'ms', `(${(timeFromClick/1000).toFixed(2)} seconds from sidebar click)`);
+    } else {
+      // Fallback se non c'è il timestamp del click
+      const currentTime = performance.now();
+      this.logger.log('[KNOWLEDGE-BASES-COMP][PERF] init at:', currentTime.toFixed(2), 'ms - ', `${(currentTime/1000).toFixed(2)} seconds`, `no click timestamp available`);
+    }
+
     this.kbsList = [];
-    this.getBrowserVersion();
-    this.getTranslations();
-
-
-    // this.getListOfKb(this.paramsDefault);
-    this.kbFormUrl = this.createConditionGroupUrl();
-    this.kbFormContent = this.createConditionGroupContent();
-    this.trackPage();
+    // this.getBrowserVersion();
+    this.isChromeVerGreaterThan100 = this.checkChromeVersion();
+   
     this.getLoggedUser();
     this.getCurrentProject();
     this.getRouteParams();
-    // this.listenToKbVersion(); // no more used
-    // this.listenSidebarIsOpened();
-    // this.getTemplates();
-    // this.getCommunityTemplates()
-    this.getFaqKbByProjectId();
-    this.getOSCODE();
     this.getProjectPlan();
     this.getProjectUserRole();
     this.listenToOnSenSitemapEvent();
     // this.getAllNamespaces()
     // this.getDeptsByProjectId()
+     // this.listenSidebarIsOpened();
+    // this.getTemplates();
+    // this.getCommunityTemplates()
+    // this.getOSCODE();
+    this.getFaqKbByProjectId();
+    // this.trackPage();
+    // this.getTranslations();
     this.logger.log('[KNOWLEDGE-BASES-COMP] - HELLO !!!!', this.kbLimit);
     // this.openDialogHookBot(this.depts_Without_BotArray, this.chat_bot)
-
+    this.loadUnansweredQuestions();
+    this.listenToProjectUser()
   }
 
   ngAfterViewInit() {
     // const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.id_project}`)
-
+    setTimeout(() => {
+      this.kbFormUrl = this.createConditionGroupUrl();
+      this.kbFormContent = this.createConditionGroupContent();
+      this.getOSCODE();
+      this.trackPage();
+      this.getTranslations();
+    }, 0);
   }
 
-  presentKBTour() {
-    const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
-    this.logger.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
-    if (!tourShowed) {
-      setTimeout(() => {
-        const addButtonEl = <HTMLElement>document.querySelector('#kb-add-content');
-        this.logger.log('[KNOWLEDGE-BASES-COMP] addButtonEl ', addButtonEl)
-        if (addButtonEl) {
-          this.shepherdService.defaultStepOptions = defaultStepOptions;
-          this.shepherdService.modal = true;
-          this.shepherdService.confirmCancel = false;
-          const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
-          if (!this.chatbotsUsingNamespace) {
-            steps.splice(3, 1);
-          } else {
-            steps.splice(4, 1);
-          }
-          this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
-          this.shepherdService.start();
+  ngOnDestroy(): void {
+    clearInterval(this.interval_id);
+    this.unsubscribe$.next();   
+    this.unsubscribe$.complete();
+  }
 
-          // this.localDbService.setInStorage(`tour-shown-${this.id_project}`, 'true')
-          this.localDbService.setInStorage(`tour-shown-${this.CURRENT_USER_ID}`, 'true')
+  listenToProjectUser() {
+    this.rolesService.listenToProjectUserPermissions(this.unsubscribe$);
+
+    this.rolesService.getUpdateRequestPermission()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(status => {
+        this.ROLE = status.role;
+        this.PERMISSIONS = status.matchedPermissions;
+        console.log('[KNOWLEDGE-BASES-COMP] - this.ROLE:', this.ROLE);
+        console.log('[KNOWLEDGE-BASES-COMP] - this.PERMISSIONS', this.PERMISSIONS);
+        this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
+        console.log('KNOWLEDGE-BASES-COMP] - hasDefaultRole', this.hasDefaultRole);
+
+    
+
+
+        // PERMISSION_TO_DELETE
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_DELETE = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_DELETE = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_DELETE = status.matchedPermissions.includes(PERMISSIONS.KB_DELETE);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
         }
-      }, this.timer);
-    }
-    // }
+
+          // PERMISSION_TO_DELETE_NAMESPACE
+          // if (status.role === 'owner' || status.role === 'admin') {
+          //   // Owner and Admin always has permission
+          //   this.PERMISSION_TO_DELETE_NAMESPACE = true;
+          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+  
+          // } else if (status.role === 'agent') {
+          //   // Agent never have permission
+          //   this.PERMISSION_TO_DELETE_NAMESPACE = false;
+          //   console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+  
+          // } else {
+          //   // Custom roles: permission depends on matchedPermissions
+          //   this.PERMISSION_TO_DELETE_NAMESPACE = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_DELETE);
+          //   console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_NAMESPACE:', this.PERMISSION_TO_DELETE_NAMESPACE);
+          // }
+
+        // PERMISSION_TO_ADD_KB
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_KB = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_KB = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_KB = status.matchedPermissions.includes(PERMISSIONS.KB_NAMESPACE_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_KB:', this.PERMISSION_TO_ADD_KB);
+        }
+
+        // PERMISSION_TO_ADD_FLOWS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_FLOWS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_FLOWS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_FLOWS:', this.PERMISSION_TO_ADD_FLOWS);
+        }
+
+        // PERMISSION_TO_ADD_CONTENTS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_ADD_CONTENTS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_ADD_CONTENTS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_ADD_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_ADD);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_ADD_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+        }
+
+
+        // PERMISSION_TO_EXPORT_CONTENTS
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_EXPORT_CONTENTS = true;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is owner or admin (1)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_ADD_CONTENTS);
+
+        } else if (status.role === 'agent') {
+          // Agent never have permission
+          this.PERMISSION_TO_EXPORT_CONTENTS = false;
+          console.log('[KNOWLEDGE-BASES-COMP] - Project user is agent (2)', 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_EXPORT_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_EXPORT);
+          console.log('[KNOWLEDGE-BASES-COMP] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_CONTENTS:', this.PERMISSION_TO_EXPORT_CONTENTS);
+        }
+
+      });
+
   }
 
-  restartTour() {
-    this.timer = 0
-    // this.localDbService.removeFromStorage(`tour-shown-${this.id_project}`)
-    this.localDbService.removeFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
-    // this.ngAfterViewInit()
-    this.presentKBTour()
-    // this.shepherdService.start();
+  checkChromeVersion(): boolean {
+    const ua = navigator.userAgent;
+    const match = ua.match(/Chrome\/(\d+)/);
+    if (match && match[1]) {
+      return parseInt(match[1], 10) > 100;
+    }
+    return false;
   }
+
+  // presentKBTour() {
+  //   const tourShowed = this.localDbService.getFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
+  //   this.logger.log('[KNOWLEDGE-BASES-COMP] tourShowed ', tourShowed)
+  //   if (!tourShowed) {
+  //     setTimeout(() => {
+  //       const addButtonEl = <HTMLElement>document.querySelector('#kb-add-content');
+  //       this.logger.log('[KNOWLEDGE-BASES-COMP] addButtonEl ', addButtonEl)
+  //       if (addButtonEl) {
+  //         this.shepherdService.defaultStepOptions = defaultStepOptions;
+  //         this.shepherdService.modal = true;
+  //         this.shepherdService.confirmCancel = false;
+  //         const steps = defaultSteps(this.router, this.shepherdService, this.translate, this.brandService);
+  //         if (!this.chatbotsUsingNamespace) {
+  //           steps.splice(3, 1);
+  //         } else {
+  //           steps.splice(4, 1);
+  //         }
+  //         this.shepherdService.addSteps(steps as Array<Step.StepOptions>);
+  //         this.shepherdService.start();
+
+  //         // this.localDbService.setInStorage(`tour-shown-${this.id_project}`, 'true')
+  //         this.localDbService.setInStorage(`tour-shown-${this.CURRENT_USER_ID}`, 'true')
+  //       }
+  //     }, this.timer);
+  //   }
+  // }
+
+  // restartTour() {
+  //   this.timer = 0
+  //   this.localDbService.removeFromStorage(`tour-shown-${this.CURRENT_USER_ID}`)
+  //   this.presentKBTour()
+  // }
 
   listenToOnSenSitemapEvent() {
     document.addEventListener(
@@ -323,22 +506,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if (this.project) {
         this.project_name = project.name;
         this.id_project = project._id;
-
-        // const currentUrl = this.router.url;
-        // this.logger.log('[KNOWLEDGE-BASES-COMP] - currentUrl ', currentUrl)
-        // if (currentUrl.indexOf('/knowledge-bases') !== -1) {
-        //   this.logger.log('[KNOWLEDGE-BASES-COMP] - is knowledge-bases route')
-        //   const storedHasAlreadyVisitedKb = this.localDbService.getFromStorage(`has-visited-kb-${this.id_project}`)
-        //   if (storedHasAlreadyVisitedKb) {
-        //     this.hasAlreadyVisitedKb = 'true'
-        //   }
-        //   this.logger.log('[KNOWLEDGE-BASES-COMP] - hasAlreadyVisitedKb ', this.hasAlreadyVisitedKb)
-        //   this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
-
-        //   this.getAllNamespaces()
-        // }
-
-
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
@@ -352,6 +519,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       const isActiveSubscription = project.isActiveSubscription
       const trialExpired = project.trialExpired
       const projectProfileType = project.profile.type
+      this.isActiveHybrid = project.profile?.customization?.hybrid ? true : false;
       this.managePlanRefreshRateAvailability(this.profile_name, isActiveSubscription, trialExpired, projectProfileType)
       const projectProfile = project.profile
       this.getIfRefreshRateIsEnabledInCustomization(projectProfile)
@@ -374,8 +542,15 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         this.localDbService.setInStorage(`has-visited-kb-${this.id_project}`, 'true')
 
         this.getAllNamespaces()
+        this.getQuotas();
       }
     });
+  }
+
+  async getQuotas() {
+    this.quotas = await this.quotasService.getProjectQuotes(this.id_project).catch((err) => {
+      this.logger.error("[KNOWLEDGE-BASES-COMP] - Error getting project quotas: ", err);
+    })
   }
 
   getIfRefreshRateIsEnabledInCustomization(projectProfile) {
@@ -533,6 +708,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
 
   getAllNamespaces() {
+    this.isLoadingNamespaces = true;
     this.kbService.getAllNamespaces().subscribe((res: any) => {
       if (res) {
         this.kbCount = res.length
@@ -541,11 +717,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP]  GET GET ALL NAMESPACES ERROR ', error);
-
+      this.isLoadingNamespaces = false; 
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP]  GET ALL NAMESPACES * COMPLETE *');
       if (this.namespaces) {
         this.selectLastUsedNamespaceAndGetKbList(this.namespaces);
+        this.totalCount = this.namespaces.reduce((acc, ns) => acc + (ns.count || 0), 0);
+        this.isLoadingNamespaces = false;
       }
     });
   }
@@ -659,8 +837,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
   }
 
-  createNewNamespace(namespaceName: string) {
-    this.kbService.createNamespace(namespaceName).subscribe((namespace: any) => {
+  createNewNamespace(namespaceName: string, hybrid: boolean) {
+    this.kbService.createNamespace(namespaceName, hybrid).subscribe((namespace: any) => {
       if (namespace) {
 
         this.logger.log('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE', namespace);
@@ -882,6 +1060,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.localDbService.setInStorage(`last_kbnamespace-${this.id_project}`, JSON.stringify(namespace))
       let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
       this.getListOfKb(paramsDefault, 'onSelectNamespace');
+      this.loadUnansweredQuestions();
 
     }
   }
@@ -970,17 +1149,19 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   // }
 
   createChatbotfromKbOfficialResponderTemplate() {
+    this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate USER_ROLE', this.USER_ROLE) 
+    this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate myChatbotOtherCount', this.myChatbotOtherCount) 
     if (this.USER_ROLE !== 'agent') {
       if (this.chatBotLimit) {
         if (this.myChatbotOtherCount < this.chatBotLimit) {
-          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount < chatBotLimit: RUN FORK')
+          this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.findKbOfficialResponderAndThenExportToJSON()
         } else if (this.myChatbotOtherCount >= this.chatBotLimit) {
-          this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
+          this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount >= chatBotLimit DISPLAY MODAL')
           this.presentDialogReachedChatbotLimit()
         }
       } else if (!this.chatBotLimit) {
-        this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  NO chatBotLimit: RUN FORK')
+        this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  NO chatBotLimit: RUN FORK')
         this.findKbOfficialResponderAndThenExportToJSON()
       }
 
@@ -1788,18 +1969,20 @@ _presentDialogImportContents() {
 
     const dialogRef = this.dialog.open(ModalAddNamespaceComponent, {
       width: '600px',
-      // data: {
-      //   calledBy: 'step1'
-      // },
+      data: {
+        pay: this.payIsVisible,
+        hybridActive: this.isActiveHybrid
+      },
     })
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log(`[KNOWLEDGE-BASES-COMP] Dialog result:`, result);
 
       if (result && result.namespaceName) {
 
-        const namespaceName = result.namespaceName
+        const namespaceName = result.namespaceName;
+        const hybrid = result.hybrid || false;
 
-        this.createNewNamespace(namespaceName)
+        this.createNewNamespace(namespaceName, hybrid)
       }
     });
   }
@@ -1892,6 +2075,10 @@ _presentDialogImportContents() {
   }
 
   onOpenDeleteNamespaceModal() {
+    if(!this.PERMISSION_TO_DELETE) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
     this.logger.log("onOpenDeleteNamespaceModal called....")
     if (this.selectedNamespace.default && this.kbsList.length === 0) {
       this.presentModalDefautNamespaceCannotBeDeleted()
@@ -1923,7 +2110,7 @@ _presentDialogImportContents() {
 
   onOpenBaseModalDetail(kb) {
     // this.kbid_selected = kb;
-    // this.logger.log('onOpenBaseModalDetail:: ', this.kbid_selected);
+    this.logger.log('onOpenBaseModalDetail:: ', kb);
     // this.baseModalDetail = true;
 
     const dialogRef = this.dialog.open(ModalDetailKnowledgeBaseComponent, {
@@ -1982,27 +2169,51 @@ _presentDialogImportContents() {
   }
 
 
-  openAddKnowledgeBaseModal(type?: string) {
-    this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal type', type)
-    this.typeKnowledgeBaseModal = type;
+  openAddKnowledgeBaseModal(typeOrKb?: any) {
+    this.logger.log('[KNOWLEDGE BASES COMP] openAddKnowledgeBaseModal typeOrKb', typeOrKb);
+    // Se è un oggetto KB (ad esempio da unanswered questions), apri direttamente la modale FAQ con i dati precompilati
+    if (typeOrKb && typeof typeOrKb === 'object' && typeOrKb.type === 'faq') {
+      const dialogRef = this.dialog.open(ModalFaqsComponent, {
+        backdropClass: 'cdk-overlay-transparent-backdrop',
+        hasBackdrop: true,
+        width: '600px',
+        data: {
+          selectedNamespace: this.selectedNamespace,
+          prefillKb: typeOrKb
+        },
+      });
+      this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs with prefillKb')
+      dialogRef.afterClosed().subscribe(result => {
+        this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
+        if (result && result.isSingle === "true") {
+          if (result.body) {
+            this.onAddKb(result.body)
+          }
+        } else if (result && result.isSingle === "false") {
+          let paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+          this.getListOfKb(paramsDefault, 'add-multi-faq')
+        }
+      });
+      return;
+    }
+    // Altrimenti, logica classica
+    this.typeKnowledgeBaseModal = typeOrKb;
     this.addKnowledgeBaseModal = 'block';
 
-    if (type === 'text-file') {
+    if (typeOrKb === 'text-file') {
       this.presentModalAddContent()
     }
-    if (type === 'urls') {
+    if (typeOrKb === 'urls') {
       this.presentModalAddURLs()
     }
 
-    if (type === 'site-map') {
+    if (typeOrKb === 'site-map') {
       this.presentModalImportSitemap()
     }
-    if (type === 'file-upload') {
-
+    if (typeOrKb === 'file-upload') {
       this.presentModalUploadFile()
     }
-
-    if (type === 'faq') {
+    if (typeOrKb === 'faq') {
       this.presentModalAddFaqs()
     }
   }
@@ -2012,7 +2223,6 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '600px',
-
     });
     dialogRef.afterClosed().subscribe(body => {
       this.logger.log('[Modal Add content] Dialog body: ', body);
@@ -2031,8 +2241,9 @@ _presentDialogImportContents() {
       data: {
         selectedNamespace: this.selectedNamespace,
       },
-
     });
+    this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs ')
+
     dialogRef.afterClosed().subscribe(result => {
       this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
       if (result && result.isSingle === "true") {
@@ -2168,18 +2379,21 @@ _presentDialogImportContents() {
   }
 
   getProjectUserRole() {
-    this.usersService.projectUser_bs.pipe(takeUntil(this.unsubscribe$)).subscribe((projectUser: ProjectUser) => {
-      this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', projectUser);
-      if (projectUser) {
-        this.USER_ROLE = projectUser.role
-      }
-    });
+    this.usersService.project_user_role_bs
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
+      .subscribe((user_role) => {
+        this.logger.log('[PRJCT-EDIT-ADD] - USER ROLE ', user_role);
+        if (user_role) {
+          this.USER_ROLE = user_role
+
+        }
+      });
   }
 
 
-  ngOnDestroy(): void {
-    clearInterval(this.interval_id);
-  }
+ 
 
   // No more used
   // listenToKbVersion() {
@@ -2464,9 +2678,7 @@ _presentDialogImportContents() {
     }
     params += "&page=" + this.numberPage;
     this.logger.log('[KNOWLEDGE-BASES-COMP] onLoadPage numberPage:', params, 'searchParams  ', searchParams);
-    // } else {
-    //   +"&page=0";
-    // }
+   
     this.logger.log('onLoadNextPage searchParams > search (2):', searchParams.search);
     if (searchParams?.status) {
       params += "&status=" + searchParams.status;
@@ -2598,7 +2810,7 @@ _presentDialogImportContents() {
   /**
    * onAddKb
    */
-  onAddKb(body) {
+  onAddKb(body, doneCb?: (success: boolean) => void) {
     this.logger.log('onAddKb this.kbLimit ', this.kbLimit)
     body.namespace = this.selectedNamespace.id
     this.logger.log("onAddKb body:", body);
@@ -2637,6 +2849,7 @@ _presentDialogImportContents() {
       //   this.checkStatusWithRetry(kb);
       // }, 2000);
       //that.onCloseBaseModal();
+      if (doneCb) doneCb(true);
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
       // this.onOpenErrorModal(error);
@@ -2709,8 +2922,10 @@ _presentDialogImportContents() {
           }
         })
       }
+      if (doneCb) doneCb(false);
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
+      this.getAllNamespaces();
       this.trackUserActioOnKB('Added Knowledge Base')
     })
   }
@@ -2876,6 +3091,7 @@ _presentDialogImportContents() {
 
     }, () => {
       this.logger.log("[KNOWLEDGE-BASES-COMP] delete kb *COMPLETE*");
+      this.getAllNamespaces();
       this.trackUserActioOnKB('Deleted Knowledge Base')
     })
   }
@@ -3420,5 +3636,58 @@ _presentDialogImportContents() {
     window.open(url, '_blank');
   }
 
+  onAddFaqFromUnanswered(event: {q: any, done: (success: boolean) => void}) {
+    // Apre la modale FAQ con la domanda precompilata
+    const question = event.q?.question;
+    this.logger.log('[KNOWLEDGE BASES COMP] AddFaqsevent', event);
+    const dialogRef = this.dialog.open(ModalFaqsComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      data: {
+        selectedNamespace: this.selectedNamespace,
+        prefillKb: {
+          name: question,
+          content: '',
+          type: 'faq',
+          source: question,
+          id_project: this.id_project,
+          namespace: this.selectedNamespace?.name,
+          _id: ''
+        }
+      },
+    });
+    this.logger.log('[KNOWLEDGE BASES COMP] presentModalAddFaqs from unanswered')
+    dialogRef.afterClosed().subscribe(result => {
+      this.logger.log('[Modal Add FAQs] Dialog result (afterClosed): ', result);
+      // Se la modale è stata chiusa con successo (FAQ salvata)
+      if (result && result.isSingle === "true" && result.body) {
+        // Qui puoi anche attendere la risposta del servizio se serve
+        this.unansweredQuestions = this.unansweredQuestions.filter(item => item['_id'] !== event.q['_id']);
+        this.onAddKb(result.body, event.done);
+      } else {
+        // Annullato o errore
+        event.done(false);
+      }
+    });
+  }
+
+  loadUnansweredQuestions() {
+    if (!this.id_project || !this.selectedNamespace?.id) return;
+    //this.isLoadingUnanswered = true;
+    this.unansweredQuestionsService.getUnansweredQuestions(this.id_project, this.selectedNamespace.id)
+      .subscribe(
+        (res) => {
+          this.unansweredQuestions = res['questions'];
+          // this.unansweredQuestions = this.fakeUnansered
+          this.isLoadingUnanswered = false;
+        },
+        (err) => {
+          this.isLoadingUnanswered = false;
+          this.unansweredQuestions = [];
+          this.logger.error('[KnowledgeBasesComponent] Error loading unanswered questions', err);
+        }
+      );
+  }
 
 }

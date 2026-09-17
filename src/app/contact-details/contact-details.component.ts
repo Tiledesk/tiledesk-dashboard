@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ContactsService } from '../services/contacts.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../core/auth.service';
-import { avatarPlaceholder, getColorBck } from '../utils/util';
+import { avatarPlaceholder, getColorBck, isValidEmail } from '../utils/util';
 import { NotifyService } from '../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -173,38 +173,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
         console.log('[CONTACTS-DTLS] - Role:', status.role);
         console.log('[CONTACTS-DTLS] - Permissions:', status.matchedPermissions);
 
-        // ----------------------------   
-        // PERMISSION_TO_UPDATE_LEAD
-        // ----------------------------
-        // if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-        //   if (status.matchedPermissions.includes(PERMISSIONS.LEAD_UPDATE)) {
-
-        //     this.PERMISSION_TO_UPDATE_LEAD = true
-        //     console.log('[CONTACTS-DTLS] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
-        //   } else {
-        //     this.PERMISSION_TO_UPDATE_LEAD = false
-        //     console.log('[CONTACTS-DTLS] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
-        //   }
-        // } else {
-        //   this.PERMISSION_TO_UPDATE_LEAD = true
-        //   console.log('[CONTACTS-DTLS] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
-        // }
-        // ----------------------------
-        // PERMISSION_TO_VIEW_TAG
-        // ----------------------------
-        // if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-        //   if (status.matchedPermissions.includes(PERMISSIONS.TAGS_READ)) {
-
-        //     this.PERMISSION_TO_VIEW_TAG = true
-        //     console.log('[CONTACTS-DTLS] - PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
-        //   } else {
-        //     this.PERMISSION_TO_VIEW_TAG = false
-        //     console.log('[CONTACTS-DTLS] - PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
-        //   }
-        // } else {
-        //   this.PERMISSION_TO_VIEW_TAG = true
-        //   console.log('[CONTACTS-DTLS] - Project user has a default role ', status.role, 'PERMISSION_TO_VIEW_TAG ', this.PERMISSION_TO_VIEW_TAG);
-        // }
         // --------------------------
         // PERMISSION_TO_VIEW_CONVS
         // -------------------------
@@ -241,12 +209,23 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           console.log('[CONTACTS-DTLS] - Project user has a default role ', status.role, 'PERMISSION_TO_TRASH_LEAD ', this.PERMISSION_TO_TRASH_LEAD);
         }
 
+          
+        // ---------------------------
+        // PERMISSION_TO_UPDATE_LEAD 
+        // --------------------------
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          if (status.matchedPermissions.includes(PERMISSIONS.LEAD_UPDATE)) {
 
-
-        
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
+            this.PERMISSION_TO_UPDATE_LEAD = true
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          } else {
+            this.PERMISSION_TO_UPDATE_LEAD = false
+            console.log('[CONTACTS-COMP] - PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+          }
+        } else {
+          this.PERMISSION_TO_UPDATE_LEAD = true
+          console.log('[CONTACTS-COMP] - Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE_LEAD ', this.PERMISSION_TO_UPDATE_LEAD);
+        }
 
         // You can also check status.role === 'owner' if needed
       });
@@ -718,6 +697,9 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
 
         if (lead) {
           this.logger.log('[CONTACTS-DTLS] - GET LEAD BY REQUESTER ID ', lead);
+          if (lead.email && !isValidEmail(lead.email)) {
+            lead.email = null; // Or 'N/A', depending on what you want to display
+          }
           this.contact_details = lead;
 
           if (this.contact_details && this.contact_details.lead_id) {

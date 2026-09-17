@@ -1,5 +1,82 @@
 # tiledesk-dashboard
 
+### 2.7.131-rc2
+- Adds WhatsApp Broadcasts permissions
+
+### 2.7.131-rc1
+- Align the knowledge base code with the one in the master
+
+### 2.7.128-rc1
+- Changes the regex blacklist in the regex whitelist
+
+### 2.7.127-rc9
+- Fixes the bug: Teammates' availability status not updating in the conversation list (Monitor)
+- Changes the URL of the "Learn more about default roles" link
+
+### 2.7.127-rc8
+- Fixes the bug: teammates with admin role can't restore teammates
+
+### 2.7.127-rc7
+- Changes the widget domain blacklist to the widget regex blacklist
+
+### 2.7.127-rc6
+- Implements keycloak logout (step 1)
+
+### 2.7.127-rc5
+- Fixes the bug: In conversation details chat, the combobox for selecting Public Reply or Private Note does not work
+
+### 2.7.127-rc4
+- Minor improvements and bug fixing
+
+### 2.7.127-rc3
+- Adds, on the widget setup page, the ability to add domains in a blacklist. The widget will not displayed on pages where the URL matches a blacklisted domain.
+
+### 2.7.127-rc2
+- Fixes the bug: viewing a teammate's profile by clicking on his avatar doesn't work
+
+### 2.7.127-rc1
+- Adds the option to allow the widget to be displayed only on withelitest domains in the widget setup page
+
+### 2.7.125-rc6
+- Adds the ability to manage the “Copy Webhook URL” feature 
+- Adds the ability to manage the “Enable/disable Webhook” feature 
+- Adds the ability to manage the “Delete Webhook” feature 
+
+### 2.7.125-rc5
+- Adds the ability to manage the "Add a new Flow” feature 
+- Adds the ability to manage the "Edit a Flow" feature 
+- Adds the ability to manage the "Test a Flow" feature 
+- Adds the ability to manage the "Duplicate a Flow" feature 
+- Adds the ability to manage the "Delete a Flow" feature 
+- Adds the ability to manage the "Export a Flow" feature 
+- Adds the ability to manage the "Share a Flow" feature 
+- Adds the ability to the teammates with Admin role to manage in "Project setting" the Banned Visitors and the Advanced features
+
+### 2.7.125-rc4
+- Improves the style of the group list on the department detail page
+
+### 2.7.125-rc3
+- Adds the ability to delete a teammate
+
+### 2.7.125-rc2
+- Adds the ability to manage the "Add contents to Knowledge Bases" feature 
+- Adds the ability to manage the "Update a Knowledge Base content" feature 
+- Adds the ability to manage the "Reidex a Knowledge Base content" feature 
+- Adds the ability to manage the "Check status of a Knowledge Base" content feature 
+- Adds the ability to manage the "Add new Knowledge Base" feature 
+- Adds the ability to manage the "Edit AI settings" feature 
+- Adds the ability to manage the "Delete (Knowledge Base and Contents)" feature
+
+
+### 2.7.125-rc1
+- Adds reCAPTCHA in the sign in page
+- Adds the ability to change the load percentage (alls the groups in a dialog) of groups on the department details page
+- Adds the ability to manage the "Leave conversation" feature 
+- Adds the ability to manage the "Send chat transcript" feature 
+- Adds the ability to manage the "Create ticket" feature 
+- Adds the ability to manage the "Ban visitor" feature 
+- Adds the ability to manage the "Unban visitor" feature 
+
 ### 2.7.123-rc1
 - Adds the ability to manage the "Add teammate" feature for a conversation
 - Adds the ability to change the load percentage of groups to the department details page

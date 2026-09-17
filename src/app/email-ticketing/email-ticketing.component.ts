@@ -101,9 +101,6 @@ export class EmailTicketingComponent implements OnInit {
           console.log('[EMAIL-TICKETING] - listenToProjectUser Project user has a default role ', status.role, 'PERMISSION_TO_UPDATE ', this.PERMISSION_TO_UPDATE);
         }
 
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
 
         // You can also check status.role === 'owner' if needed
       });

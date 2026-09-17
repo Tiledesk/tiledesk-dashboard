@@ -4,7 +4,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/auth.service';
-import { avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
+import { avatarPlaceholder, getColorBck, isValidEmail, PLAN_NAME } from '../../utils/util';
 import { NotifyService } from '../../core/notify.service';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -200,14 +200,17 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   prjct_profile_name: string;
   onlyUserWithOwnerRoleCanManageAdvancedProjectSettings: string;
 
+
+  private permissionReady$ = new BehaviorSubject<boolean>(false);
+ 
+  CHAT_PANEL_MODE: boolean = false;
+  
+  hasDefaultRole: boolean;
   ROLE: string;
   PERMISSIONS: any;
-  PERMISSION_TO_UPDATE_REQUEST: boolean;
-  private permissionReady$ = new BehaviorSubject<boolean>(false);
-  hasDefaultRole: boolean;
-  CHAT_PANEL_MODE: boolean = false;
-
-  PERMISSION_TO_EDIT_SMART_ASSIGN:  boolean;
+ 
+  PERMISSION_TO_CREATE_TICKET: boolean;
+  PERMISSION_TO_EDIT_SMART_ASSIGN: boolean;
   PERMISSION_TO_EDIT_OPERATING_HOURS: boolean;
 
   customHeight: boolean = true;
@@ -306,19 +309,24 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
         console.log('[WS-REQUESTS-LIST] - this.PERMISSIONS', this.PERMISSIONS);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
         console.log('[WS-REQUESTS-LIST] - hasDefaultRole', this.hasDefaultRole);
+
+
+        // -------------------------------------
+        // PERMISSION_TO_CREATE_TICKET
+        // -------------------------------------
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
-            console.log('WS-REQUESTS-LIST] ', PERMISSIONS.REQUEST_UPDATE)
+          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CREATE_TICKET)) {
+            console.log('WS-REQUESTS-LIST] ', PERMISSIONS.REQUEST_CREATE_TICKET)
             // Enable update action
-            this.PERMISSION_TO_UPDATE_REQUEST = true
-            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_UPDATE_REQUEST 1 ', this.PERMISSION_TO_UPDATE_REQUEST);
+            this.PERMISSION_TO_CREATE_TICKET = true
+            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_CREATE TICKET 1 ', this.PERMISSION_TO_CREATE_TICKET);
           } else {
-            this.PERMISSION_TO_UPDATE_REQUEST = false
-            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_UPDATE_REQUEST 2', this.PERMISSION_TO_UPDATE_REQUEST);
+            this.PERMISSION_TO_CREATE_TICKET = false
+            console.log('[WS-REQUESTS-LIST] - PERMISSION_TO_CREATE_TICKET 2', this.PERMISSION_TO_CREATE_TICKET);
           }
         } else {
-          this.PERMISSION_TO_UPDATE_REQUEST = true
-          console.log('[WS-REQUESTS-LIST] - Project user has a default role 3', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
+          this.PERMISSION_TO_CREATE_TICKET = true
+          console.log('[WS-REQUESTS-LIST] - Project user has a default role 3', status.role, 'PERMISSION_TO_CREATE_TICKET ', this.PERMISSION_TO_CREATE_TICKET);
         }
 
 
@@ -768,10 +776,18 @@ getProjectUserRole() {
         takeUntil(this.unsubscribe$)
       )
       .subscribe((projectUser_from_ws_subscription) => {
-       this.logger.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription id_user ', projectUser_from_ws_subscription['id_user']);
+      
+          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS (listenTo) projectUser_from_ws_subscription', projectUser_from_ws_subscription);
+       
         // this.logger.log('WS-REQUESTS-LIST PROJECT-USERS ', projectuser);
+        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS $UBSC TO WS PROJECT-USERS projectuser[_id] ', projectuser['_id'])
+        console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS projectUser_from_ws_subscription[_id] ', projectUser_from_ws_subscription['_id'])
 
         if (projectuser['_id'] === projectUser_from_ws_subscription['_id']) {
+          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF')
+          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> user_available ', projectUser_from_ws_subscription['user_available'])
+          console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> profileStatus ', projectUser_from_ws_subscription['profileStatus'])
           // projectUser_from_ws_subscription['email'] = projectuser['id_user']['email']
           // projectUser_from_ws_subscription['firstname'] = projectuser['id_user']['firstname']
           // projectUser_from_ws_subscription['lastname'] = projectuser['id_user']['lastname']
@@ -780,8 +796,14 @@ getProjectUserRole() {
           projectuser['user_available_rt'] = projectUser_from_ws_subscription['user_available'];
           projectuser['isBusy_rt'] = projectUser_from_ws_subscription['isBusy'];
           projectuser['updatedAt_rt'] = projectUser_from_ws_subscription['updatedAt'];
-          if (projectUser_from_ws_subscription['profileStatus']) {
-            projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
+          // if (projectUser_from_ws_subscription['profileStatus']) {
+          //   console.log('[WS-REQUESTS-LIST] $UBSC TO WS PROJECT-USERS HERE IN THE IF ----> profileStatus_rt ', projectuser['profileStatus_rt'])
+          //   projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus']
+          // }
+
+          if ('profileStatus' in projectUser_from_ws_subscription) {
+            console.log('[WS-REQUESTS-LIST] Updating profileStatus_rt to', projectUser_from_ws_subscription['profileStatus']);
+            projectuser['profileStatus_rt'] = projectUser_from_ws_subscription['profileStatus'];
           }
 
         }
@@ -1741,6 +1763,9 @@ getProjectUserRole() {
         this.ws_requests.forEach((request) => {
 
           // this.logger.log('[WS-REQUESTS-LIST] - request ', request)
+          if (request.lead.email && !isValidEmail(request.lead.email)) {
+            request.lead.email = null; // Or 'N/A', depending on what you want to display
+          }
           const user_agent_result = this.parseUserAgent(request.userAgent)
           // this.logger.log('[WS-REQUESTS-LIST] - request userAgent - USER-AGENT RESULT ', user_agent_result)
           const ua_browser = user_agent_result.browser.name + ' ' + user_agent_result.browser.version
@@ -2188,7 +2213,7 @@ getProjectUserRole() {
 
 
   presentCreateInternalRequestModal() {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
+    if (this.PERMISSION_TO_CREATE_TICKET) {
       this.selectedPriority = this.priority[2].name;
       this.displayInternalRequestModal = 'block'
       this.hasClickedCreateNewInternalRequest = false;

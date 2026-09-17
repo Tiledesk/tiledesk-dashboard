@@ -169,8 +169,17 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   automatic_unavailable_status_on: boolean;
   agents_can_see_only_own_convs: boolean;
   areHideChatbotAttributesInConvDtls: boolean;
+
   isAllowedSendEmoji: boolean;
   isEnabledAllowedURLs: boolean;
+  urlWhitelist: string[] = [];
+  currentWhitelist: string[] = [];
+
+  selectedOption: string; //= 'all';
+  newExtension: string = '';
+  extensions: string[] = [];
+  allowed_upload_extentions: string;
+  defautAllowedExtentions = ".jpg,.jpeg,.png,.gif,.pdf,.txt";
 
   // unavailable_status_on: boolean;
 
@@ -291,6 +300,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   isAuthorizedBanned = false;
   permissionCheckedBanned = false;
   PERMISSION_TO_VIEW_BANNED: boolean;
+  PERMISSION_TO_UNBAN_VISITOR: boolean;
 
 
   isAuthorizedAdvanced = false;
@@ -300,8 +310,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
   ROLE: string
   public widgetObj = {};
 
-  urlWhitelist: string[] = [];
-  currentWhitelist: string[] = [];
+
   /**
    * 
    * @param projectService 
@@ -524,13 +533,13 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         // ---------------------------------
         // PERMISSION TO VIEW BANNED
         // ---------------------------------
-        if (status.role === 'owner') {
+        if (status.role === 'owner' || status.role === 'admin') {
           // Owner always has permission
           this.PERMISSION_TO_VIEW_BANNED = true;
           console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
 
-        } else if (status.role === 'admin' || status.role === 'agent') {
-          // Admin and agent never have permission
+        } else if (status.role === 'agent') {
+         // Agent never have permission
           this.PERMISSION_TO_VIEW_BANNED = false;
           console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_BANNED:', this.PERMISSION_TO_VIEW_BANNED);
 
@@ -541,15 +550,34 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
         }
 
         // ---------------------------------
+        // PERMISSION_TO_UNBAN_VISITOR
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
+          this.PERMISSION_TO_UNBAN_VISITOR = true;
+          console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
+
+        } else if (status.role === 'agent') {
+         // Agent never have permission
+          this.PERMISSION_TO_UNBAN_VISITOR = false;
+          console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
+
+        } else {
+          // Custom roles: permission depends on matchedPermissions
+          this.PERMISSION_TO_UNBAN_VISITOR = status.matchedPermissions.includes(PERMISSIONS.LEAD_UNBAN);
+          console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_UNBAN_VISITOR:', this.PERMISSION_TO_UNBAN_VISITOR);
+        }
+
+        // --------------------------------
         // PERMISSION TO VIEW ADVANCED
         // ---------------------------------
-        if (status.role === 'owner') {
-          // Owner always has permission
+        if (status.role === 'owner' || status.role === 'admin') {
+          // Owner and Admin always has permission
           this.PERMISSION_TO_VIEW_ADVANCED = true;
           console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
 
-        } else if (status.role === 'admin' || status.role === 'agent') {
-          // Admin and agent never have permission
+        } else if (status.role === 'agent') {
+          // Agent never have permission
           this.PERMISSION_TO_VIEW_ADVANCED = false;
           console.log('[PRJCT-EDIT-ADD] - Project user is admin or agent (2)', 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
 
@@ -559,10 +587,6 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_VIEW_ADVANCED:', this.PERMISSION_TO_VIEW_ADVANCED);
         }
 
-
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
 
         // You can also check status.role === 'owner' if needed
       });
@@ -1296,7 +1320,8 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
   goToProjectSettings_BannedVisitors() {
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
-      if (this.USER_ROLE === 'owner' || this.PERMISSION_TO_VIEW_BANNED ) {
+      // || this.USER_ROLE === 'admin'
+      if ((this.USER_ROLE === 'owner') || (this.USER_ROLE !== 'owner' && this.USER_ROLE !== 'admin' && this.USER_ROLE !== 'agent' && this.PERMISSION_TO_VIEW_BANNED )) {
         if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
           // this.logger.log('displayModalBanVisitor HERE 1 ')
           if (this.subscription_is_active === true) {
@@ -1329,12 +1354,12 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
-
   }
 
   goToProjectSettings_Advanced() {
     if ((this.isVisiblePaymentTab && !this.overridePay) || (!this.isVisiblePaymentTab && this.overridePay)) {
-      if (this.USER_ROLE === 'owner' || this.PERMISSION_TO_VIEW_ADVANCED ) {
+      console.log('[PRJCT-EDIT-ADD] goToProjectSettings_Advanced USER_ROLE' , this.USER_ROLE, ' PERMISSION_TO_VIEW_ADVANCED ', this.PERMISSION_TO_VIEW_ADVANCED) 
+      if ((this.USER_ROLE === 'owner' || this.USER_ROLE === 'admin') || (this.USER_ROLE !== 'owner' && this.USER_ROLE !== 'admin' && this.USER_ROLE !== 'agent' && this.PERMISSION_TO_VIEW_ADVANCED )) {
         if (this.profile_name === PLAN_NAME.C || this.profile_name === PLAN_NAME.F) {
           // this.logger.log('displayModalBanVisitor HERE 1 ')
           if (this.subscription_is_active === true) {
@@ -2817,6 +2842,10 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
 
 
   unbanVisitor(bannedUserId: string) {
+    if (!this.PERMISSION_TO_UNBAN_VISITOR) {
+        this.notify.presentDialogNoPermissionToPermomfAction();
+        return;
+    }
     this.logger.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR contact_id ', bannedUserId)
     this.projectService.unbanVisitor(bannedUserId).subscribe((res: any) => {
       this.logger.log('[PRJCT-EDIT-ADD]  UNBAN VISITOR  - RES ', res)
@@ -3023,7 +3052,25 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
             this.logger.log('[PRJCT-EDIT-ADD] allowed_urls_list this.currentWhitelist (else) ', this.currentWhitelist) 
           }
 
-          
+          if (project.settings.allowed_upload_extentions !== undefined) {
+            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            
+            if (project.settings.allowed_upload_extentions === '*/*') {
+              this.selectedOption = 'all';
+              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+            } else {
+              this.selectedOption = 'custom'
+              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined selectedOption', this.selectedOption) 
+              this.extensions = project.settings.allowed_upload_extentions.split(',').map(v => v.trim());
+              console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions defined extensions', this.extensions) 
+            }
+          } else {
+            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  project.settings.allowed_upload_extentions', project.settings.allowed_upload_extentions) 
+            this.selectedOption = 'custom'
+            this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) extensions', this.extensions) 
+            console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else) selectedOption', this.selectedOption) 
+          }
 
          
 
@@ -3053,7 +3100,11 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
           this.areHideChatbotAttributesInConvDtls = false;
           this.isAllowedSendEmoji = true;
           this.isEnabledAllowedURLs = false;
-          this.currentWhitelist = []
+          this.currentWhitelist = [];
+          this.selectedOption = 'custom'
+          this.extensions = this.defautAllowedExtentions.split(',').map(v => v.trim());
+          console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) extensions', this.extensions) 
+          console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions  (else 2) selectedOption', this.selectedOption) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isAllowedSendEmoji (else 2) ', this.isAllowedSendEmoji) 
           this.logger.log('[PRJCT-EDIT-ADD] allow_send_emoji this.isEnabledAllowedURLs (else 2) ', this.isEnabledAllowedURLs) 
         }
@@ -3301,6 +3352,50 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy {
       this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
     })
 
+  }
+
+  
+  addExtension(): void {
+    const ext = this.newExtension.trim().toLowerCase();
+
+    if (ext && !this.extensions.includes(ext)) {
+      this.extensions.push(ext);
+      this.newExtension = '';
+    }
+     console.log('[PRJCT-EDIT-ADD] add extensions', this.extensions)
+      // this.getExtensionsForBackend()
+  }
+
+  removeExtension(index: number): void {
+    this.extensions.splice(index, 1);
+    console.log('[PRJCT-EDIT-ADD] extensions remove', this.extensions)
+    // if(this.extensions.length === 0) {
+    //   this.selectedOption = 'all'
+    // }
+    // this.getExtensionsForBackend()
+  }
+
+  saveAllowedExtensions() {
+    console.log('[PRJCT-EDIT-ADD] selectedOption',   this.selectedOption)
+    console.log('[PRJCT-EDIT-ADD] extensions',   this.extensions)
+
+    if(this.selectedOption === 'all') { 
+      this.allowed_upload_extentions = '*/*'
+    } else {
+      this.allowed_upload_extentions = this.extensions.join(',')
+    }
+    console.log('[PRJCT-EDIT-ADD] allowed_upload_extentions',   this.allowed_upload_extentions)
+
+    this.projectService.saveAgentsChatAllowedExtensions(this.allowed_upload_extentions).then((result) => {
+      console.log("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS  RESULT: ", result)
+
+      this.notify.showWidgetStyleUpdateNotification(this.updateSuccessMsg, 2, 'done')
+
+      this.cacheService.clearCache()
+    }).catch((err) => {
+      this.logger.error("[PRJCT-EDIT-ADD] - SAVE AGENTS CHAT ALLOWED EXTENTIONS ERROR: ", err)
+      this.notify.showWidgetStyleUpdateNotification(this.updateErrorMsg, 4, 'report_problem')
+    })
   }
 
 

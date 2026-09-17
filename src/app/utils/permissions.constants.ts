@@ -7,6 +7,7 @@ export const PERMISSIONS = {
   INBOX_READ: 'inbox_read',
   REQUEST_UPDATE: 'request_update',
   REQUEST_SEND: 'request_send',
+  REQUEST_CREATE_TICKET: 'request_create_ticket',
   REQUEST_CLOSE: 'request_close',
   REQUEST_JOIN: 'request_join',
   REQUEST_REOPEN: 'request_reopen',
@@ -19,18 +20,49 @@ export const PERMISSIONS = {
   REQUEST_UPDATE_NOTES: 'request_update_notes',
   REQUEST_REASSIGN:'request_reassign',
   REQUEST_ADD:'request_add',
-
+  REQUEST_LEFT: 'request_left',
+  REQUEST_TRANSCRIPT_SEND: 'request_transcript_send',
 
   HISTORY_READ: 'history_read',
 
+  AUTOMATIONSLOG_READ: "automationslog_read",
+  AUTOMATIONSLOG_CREATE: "automationslog_create",
+
   KB_READ: 'kb_read',
+  KB_CONTENTS_ADD:'kb_contents_add',
+  KB_CONTENT_UPDATE: 'kb_content_update',
+  KB_CONTENT_REINDEX: 'kb_content_reindex',
+  KB_CONTENT_CHECK_STATUS: 'kb_content_check_status',
+  KB_NAMESPACE_ADD:'kb_namespace_add',
+  KB_SETTINGS_EDIT:'kb_settings_edit',
+  KB_DELETE: 'kb_delete',
+  KB_CONTENTS_EXPORT: 'kb_contents_export',
+  // KB_NAMESPACE_DELETE:'kb_namespace_delete',
+  // KB_CONTENTS_DELETE:'kb_contents_delete',
+
+
+
   FLOWS_READ: 'flows_read',
+  FLOW_ADD: 'flow_add',
+  FLOW_EDIT: 'flow_edit',
+  FLOW_TEST: 'flow_test',
+  FLOW_DUPLICATE: 'flow_duplicate',
+  FLOW_DELETE: 'flow_delete',
+  FLOW_SHARE: 'flow_share',
+  FLOW_EXPORT: 'flow_export',
+  FLOW_WEBHOOK_COPY:"flow_webhook_copy",
+  FLOW_WEBHOOK_EDIT:"flow_webhook_edit",
+  FLOW_WEBHOOK_DELETE:"flow_webhook_delete",
+  // FLOW_VIEW_MESSAGE_GRAPH: 'flow_view_message_graph',
  
   LEADS_READ: 'leads_read',
   LEAD_UPDATE: 'lead_update',
+  LEAD_RESTORE: 'lead_restore',
   LEAD_TRASH: 'lead_trash',
   LEAD_DELETE: 'lead_delete',
   LEADS_EXPORT: 'leads_export',
+  LEAD_BAN: 'lead_ban',
+  LEAD_UNBAN: 'lead_unban',
 
   ANALYTICS_READ: 'analytics_read',
   ACTIVITIES_READ: 'activities_read',
@@ -44,7 +76,7 @@ export const PERMISSIONS = {
   DEPARTMENT_CREATE_READ: 'department_create_read',
 
   TEAMMATES_READ: 'teammates_read',
-  TEAMMATES_READ_DETAILS: 'teammates_detail_read',
+  TEAMMATES_DETAILS_READ: 'teammates_detail_read',
   TEAMMATES_CREATE: 'teammates_create',
   ROLES_READ: 'roles_read',
   GROUPS_READ: 'groups_read',
@@ -68,8 +100,6 @@ export const PERMISSIONS = {
   HOURS_UPDATE: 'hours_update',
   HOURS_DELETE: 'hours_delete',
   HOURS_CREATE: 'hours_create',
-
-  AUTOMATIONSLOG_READ: "automationslog_read",
 
   INTEGRATIONS_READ: 'integrations_read',
   INTEGRATIONS_UPDATE: 'integrations_update',

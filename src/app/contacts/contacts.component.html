@@ -477,7 +477,8 @@
 
                                 <span class="column-td" style="margin-left: 10px;"
                                   [ngClass]="{'contact-verified' : contact?.contact_is_verified === true}">
-                                  {{ contact?.fullname }}
+                                 <!-- {{ contact?.fullname }} -->
+                                  {{ contact?.fullname?.length > 40 ? (contact?.fullname | slice:0:37) + '...' : contact?.fullname}}
                                 </span>
 
                                 <span *ngIf="!contact?.fullname" class="column-td"
@@ -659,7 +660,7 @@
                                 </button>
 
                                 <button type="button" class="btn btn-default btn-simple btn-xs"
-                                  [disabled]="USER_ROLE === 'agent' || PERMISSION_TO_UPDATE_LEAD === false" 
+                                  [disabled]="USER_ROLE === 'agent' || PERMISSION_TO_RESTORE_LEAD === false" 
                                   (click)='restore_contact(contact?._id)'
                                   matTooltipClass="custom-mat-tooltip" 
                                   matTooltip="{{ 'RestoreContact' | translate }}"

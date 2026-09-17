@@ -108,6 +108,12 @@ export function getColorBck(requester_fullname) {
     return arrayBckColor[num];
 }
 
+export function isValidEmail(email: string): boolean {
+  if (!email) return false;
+  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return regex.test(email);
+}
+
 
 export function htmlEntities(str) {
     return String(str)
@@ -889,7 +895,10 @@ export const TYPE_GPT_MODEL: Array<{name: string, value: string, description: st
     { name: "GPT-3 (DaVinci)",                  value: "text-davinci-003",      description: "TYPE_GPT_MODEL.text-davinci-003.description",         status: "inactive"  },
     { name: "GPT-3.5 Turbo",                    value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",            status: "active"    },
     { name: "OpenAI o1-mini",                   value: "o1-mini",               description: "TYPE_GPT_MODEL.o1-mini.description",                  status: "active"    },
-    { name: "OpenAI o1-preview",                value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",               status: "active"    }
+    { name: "OpenAI o1-preview",                value: "o1-preview",            description: "TYPE_GPT_MODEL.o1-preview.description",               status: "active"    },
+    { name: "GPT-5",                            value: "gpt-5",                 description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    },
+    { name: "GPT-5-mini",                       value: "gpt-5-mini",            description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    },
+    { name: "GPT-5-nano",                       value: "gpt-5-nano",            description: "TYPE_GPT_MODEL.deepseek-chat.description",            status: "active"    }
 ]
 
 export const CHANNELS_NAME = {
@@ -1061,7 +1070,10 @@ export const freePlanLimitDate: Date = new Date('2025-01-29T00:00:00');
 
 
 // Links to documentation
-export const URL_understanding_default_roles = 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
+export const URL_standard_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/how-does-the-knowledge-base-work'
+export const URL_hybrid_search_doc = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/hybrid-search'
+export const URL_understanding_custom_roles_and_permissions = 'https://guide.tiledesk.com/manage-permissions-with-custom-roles'
+export const URL_understanding_default_roles = 'https://guide.tiledesk.com/understanding-default-roles' // 'https://gethelp.tiledesk.com/articles/understanding-default-roles/' // 'https://docs.tiledesk.com/knowledge-base/understanding-default-roles/'
 export const URL_getting_started_with_triggers = 'https://gethelp.tiledesk.com/articles/getting-started-with-triggers/' // 'https://docs.tiledesk.com/knowledge-base/getting-started-with-triggers/'
 export const URL_creating_groups = 'https://gethelp.tiledesk.com/articles/creating-groups/' // 'https://docs.tiledesk.com/knowledge-base/creating-groups/'
 export const URL_getting_started_with_email_ticketing = "https://gethelp.tiledesk.com/articles/getting-started-with-email-ticketing-in-tiledesk/"
@@ -1105,6 +1117,6 @@ export const URL_chunk_Limit_doc = "https://gethelp.tiledesk.com/articles/advanc
 export const URL_system_context_doc = 'https://gethelp.tiledesk.com/articles/advanced-knowledge-base-ai-settings/#5-system-context';
 export const URL_advanced_context_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#advanced-context';
 export const URL_contents_sources_doc = 'https://gethelp.tiledesk.com/articles/ask-knowledge-base-and-its-role-in-building-custom-ai-agents/#get-contents-sources'
-export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
-
+// export const URL_kb = 'https://gethelp.tiledesk.com/categories/knowledge-base/'
+export const URL_kb = 'https://guide.tiledesk.com/ai-chatbots-and-automation/knowledge-base/knowledge-base-overview'
 

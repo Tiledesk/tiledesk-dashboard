@@ -28,6 +28,12 @@ export class UnauthorizedForSidebarComponent implements OnInit {
         this.pageName = 'RequestMsgsPage.RequestDetails'
       }
 
+      if (this.callingPage === 'history') {
+        this.pageName = 'History'
+      }
+
+      
+
       if (this.callingPage === 'contacts') {
         this.pageName = 'Contacts'
       }
@@ -51,6 +57,18 @@ export class UnauthorizedForSidebarComponent implements OnInit {
       if (this.callingPage === 'activities') {
         this.pageName = 'Activities'
       }
+
+      if (this.callingPage === 'automations') {
+        this.pageName = 'WhatsAppBroadcasts'
+      }
+
+      if (this.callingPage === 'new-broadcast') {
+        this.pageName = 'NewBroadcast'
+      }
+
+      
+
+      
      
 
       

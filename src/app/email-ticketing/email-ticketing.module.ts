@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
   { path: "", component: EmailTicketingComponent},
@@ -25,7 +26,8 @@ const routes: Routes = [
     SharedModule,
     FormsModule,
     NgSelectModule,
-    UnauthorizedForSettingsModule
+    UnauthorizedForSettingsModule,
+    MatTooltipModule,
   ]
 })
 export class EmailTicketingModule { }

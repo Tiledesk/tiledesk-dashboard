@@ -436,7 +436,8 @@
                   <span class="contact-details-fullname" (click)="openAddContactNameForm($event)"
                     [ngClass]="{'contact-verified' : CONTACT_IS_VERIFIED === true}">
                     <span *ngIf="contact_details?.fullname">
-                      {{ contact_details?.fullname }}
+                      <!-- {{ contact_details?.fullname }} -->
+                      {{ contact_details?.fullname?.length > 40 ? (contact_details?.fullname | slice:0:27) + '...' : contact_details?.fullname}}
                     </span>
 
                     <span *ngIf="!contact_details?.fullname">

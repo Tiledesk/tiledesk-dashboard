@@ -105,8 +105,14 @@
                                 
                                                         </div>
                                                         <span class="copy-container"
-                                                            (click)="copyToClipboard(copyText, 'item-' + i)">
-                                                            <span>
+                                                            (click)="PERMISSION_TO_COPY_WEBHOOK_URL && copyToClipboard(copyText, 'item-' + i)">
+                                                            <span 
+                                                              matTooltipClass="custom-mat-tooltip"
+                                                              #tooltip="matTooltip"
+                                                              matTooltipPosition='above'
+                                                              matTooltipHideDelay="100"
+                                                              [matTooltip]="!PERMISSION_TO_COPY_WEBHOOK_URL ? ('YouDoNotHavePermissions' | translate) : ''"
+                                                              [matTooltipDisabled]="PERMISSION_TO_COPY_WEBHOOK_URL">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" height="14px"
                                                                     viewBox="0 0 24 24" width="14px" fill="#e8eaed">
                                                                     <path d="M0 0h24v24H0V0z" fill="none" />
@@ -128,11 +134,18 @@
 
 
                                             <div class="cl-card-second-column">
-                                                <div class="wh-onoffswitch">
+                                                <div class="wh-onoffswitch"
+                                                    matTooltipClass="custom-mat-tooltip"
+                                                    #tooltip="matTooltip"
+                                                    matTooltipPosition='above'
+                                                    matTooltipHideDelay="100"
+                                                    [matTooltip]="!PERMISSION_TO_ENABLE_DISABLE_WEBHOOK ? ('YouDoNotHavePermissions' | translate) : ''"
+                                                    [matTooltipDisabled]="PERMISSION_TO_ENABLE_DISABLE_WEBHOOK">
                                                     <input type="checkbox" name="onoffswitch{{i}}"
                                                         class="wh-onoffswitch-checkbox" id="whonoffswitch{{i}}"
                                                         tabindex="0" [checked]="webhook.enabled"
-                                                        (change)="webhookOnOff($event, webhook.webhook_id)">
+                                                        (click)="webhookOnOff($event, webhook.webhook_id)"
+                                                        [disabled]="!PERMISSION_TO_ENABLE_DISABLE_WEBHOOK">
                                                     <label class="wh-onoffswitch-label" for="whonoffswitch{{i}}">
                                                         <span class="wh-onoffswitch-inner"></span>
                                                         <span class="wh-onoffswitch-switch"></span>
@@ -143,7 +156,14 @@
                                                 <div class="wh-btn-delete-wpr">
 
                                                     <button class="btn btn-round-red delete-flow-wh"
-                                                        (click)="$event.stopPropagation();deleteWebhook(webhook.webhook_id)">
+                                                        (click)="$event.stopPropagation();deleteWebhook(webhook.webhook_id)"
+                                                        [disabled]="!PERMISSION_TO_DELETE_WEBHOOK"
+                                                        matTooltipClass="custom-mat-tooltip"
+                                                        #tooltip="matTooltip"
+                                                        matTooltipPosition='above'
+                                                        matTooltipHideDelay="100"
+                                                        [matTooltip]="!PERMISSION_TO_DELETE_WEBHOOK ? ('YouDoNotHavePermissions' | translate) : ''"
+                                                        [matTooltipDisabled]="PERMISSION_TO_DELETE_WEBHOOK">
                                                         <span>
                                                             <svg xmlns="http://www.w3.org/2000/svg" height="22px"
                                                                 viewBox="0 -960 960 960" width="22px" fill="none">

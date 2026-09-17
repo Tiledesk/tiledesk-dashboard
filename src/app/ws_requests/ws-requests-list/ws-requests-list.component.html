@@ -37,10 +37,17 @@
       <li class="right-li" style="float: right !important;padding-top: 3px!important; margin-right: 10px;">
         <button attr.aria-label="{{ 'CreateTicket' | translate }}" #createticket
           (click)="presentCreateInternalRequestModal()" class="btn btn-tdblu-no-boxshadow"
-          style="font-size: 12px;  margin-left: 15px;height: 36px;">
+          style="font-size: 12px;  margin-left: 15px;height: 36px;"
+          [disabled]="!PERMISSION_TO_CREATE_TICKET"
+          matTooltipClass="conv-custom-mat-tooltip"
+          #tooltip="matTooltip"
+          matTooltipPosition='above'
+          matTooltipHideDelay="100"
+          [matTooltip]="!PERMISSION_TO_CREATE_TICKET ? ('YouDoNotHavePermissions' | translate) : ''"
+          [matTooltipDisabled]="PERMISSION_TO_CREATE_TICKET">
 
           <span aria-hidden="true" class="material-icons"
-            style="vertical-align: middle; margin-bottom: 0px; margin-top: 0px;">
+            style="vertical-align: middle; margin-bottom: 0px; margin-top: 1px;">
             add_circle
           </span>
           {{ 'CreateTicket' | translate }}
@@ -377,11 +384,6 @@
                       </ng-option>
                     </ng-select>
 
-                    <!-- Invisible overlay to block interactions -->
-                    <!-- <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST"
-                       (click)="handleBlockedSelectClick($event)"
-                      style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
-                    </div> -->
                   </div>
 
 
@@ -404,11 +406,6 @@
                       </ng-option>
                     </ng-select>
 
-                    <!-- <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST"
-                  (click)="handleBlockedSelectClick($event)"
-                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
-                </div> -->
-
                   </div>
 
 
@@ -427,14 +424,7 @@
                         {{ conversationType?.name }}
                       </ng-option>
                     </ng-select>
-
-                    <!-- <div class="overlay--div" *ngIf="!PERMISSION_TO_UPDATE_REQUEST"
-                  (click)="handleBlockedSelectClick($event)"
-                  style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 10; cursor: not-allowed;">
-                </div> -->
                   </div>
-
-
                 </div>
               </div>
 
@@ -459,8 +449,10 @@
                     <div #widgetsContent class="middle-nw">
                       <div class="served-by-conv-a" *ngIf="showRealTeammates === true">
                         <!-- *ngIf="ONLY_MY_REQUESTS === false" -->
+                         
                         <ng-container class="all-teammates">
                           <div class="served-by-conv-b" *ngFor="let agent of projectUserArray">
+                               <!-- user_available_rt  {{agent?.user_available_rt}} - profileStatus_rt {{agent?.profileStatus_rt}} -->
 
                             <div class="served-by-conv-c" matTooltipClass="conv-custom-mat-tooltip"
                               matTooltip="{{ agent?.id_user?.firstname }}  {{ agent?.id_user?.lastname }}"
@@ -504,9 +496,13 @@
                                       {{ agent?.id_user?.fullname_initial }}
                                     </span>
 
-
+                                    <!-- [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }" -->
+                               
                                     <div class="teammates-no-picture-status-icon"
-                                      [ngClass]="{'is-user-online': agent?.user_available_rt === true, 'is-user-offline':agent?.user_available_rt === false   }">
+                                       [ngClass]="{
+                                        'is-user-online': agent?.user_available_rt === true && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
+                                        'is-user-offline': agent?.user_available_rt === false && (agent?.profileStatus_rt === '' || !agent?.profileStatus_rt),
+                                        'is-user-inactive' : agent?.user_available_rt === false && agent?.profileStatus_rt === 'inactive'}">
                                     </div>
 
                                   </div>
@@ -897,13 +893,12 @@
 
               <appdashboard-ws-requests-unserved *ngIf="wsRequestsUnserved && OPEN_RIGHT_SIDEBAR === false"
                 [wsRequestsUnserved]="wsRequestsUnserved" [ws_requests_length]="ws_requests?.length"
-                [requestCountResp]="requestCountResp" [PERMISSION_TO_UPDATE_REQUEST]="PERMISSION_TO_UPDATE_REQUEST">
+                [requestCountResp]="requestCountResp">
               </appdashboard-ws-requests-unserved>
               <!-- *ngIf="wsRequestsServed" -->
               <appdashboard-ws-requests-served *ngIf="wsRequestsServed && OPEN_RIGHT_SIDEBAR === false"
                 [wsRequestsServed]="wsRequestsServed" [current_selected_prjct]="current_selected_prjct"
-                [ws_requests_length]="ws_requests?.length" [requestCountResp]="requestCountResp"
-                [PERMISSION_TO_UPDATE_REQUEST]="PERMISSION_TO_UPDATE_REQUEST">
+                [ws_requests_length]="ws_requests?.length" [requestCountResp]="requestCountResp">
               </appdashboard-ws-requests-served>
               <!-- Chiamare il componente qui -->
             </div>

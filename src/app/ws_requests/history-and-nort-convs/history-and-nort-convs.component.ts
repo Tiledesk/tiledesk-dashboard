@@ -1,4 +1,4 @@
-import { CHANNELS_NAME } from './../../utils/util';
+import { CHANNELS_NAME, isValidEmail } from './../../utils/util';
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy } from '@angular/core';
 import { Request } from '../../models/request-model';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -316,7 +316,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   appSumoProfilefeatureAvailableFromBPlan: string;
   botLogo: string;
   isDefaultRole: boolean;
-  PERMISSION_TO_UPDATE_REQUEST: boolean;
+
   PERMISSION_TO_ARCHIVE_REQUEST: boolean;
   PERMISSION_TO_JOIN_REQUEST: boolean;
   PERMISSION_TO_REOPEN: boolean;
@@ -433,30 +433,16 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       .subscribe(status => {
         console.log('[HISTORY & NORT-CONVS] - Role:', status.role);
         console.log('[HISTORY & NORT-CONVS] - Permissions:', status.matchedPermissions);
-       
+
         this.isDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
         console.log('[HISTORY & NORT-CONVS] isDefaultRole ', this.isDefaultRole)
-        // PERMISSION_TO_UPDATE_REQUEST
-        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
-          if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_UPDATE)) {
-            console.log('PERMISSIONS.REQUEST_UPDATE ', PERMISSIONS.REQUEST_UPDATE)
-            
-            this.PERMISSION_TO_UPDATE_REQUEST = true
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_UPDATE_REQUEST 1 ', this.PERMISSION_TO_UPDATE_REQUEST);
-          } else {
-            this.PERMISSION_TO_UPDATE_REQUEST = false
-            console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_UPDATE_REQUEST 2', this.PERMISSION_TO_UPDATE_REQUEST);
-          }
-        } else {
-          this.PERMISSION_TO_UPDATE_REQUEST = true
-          console.log('[HISTORY & NORT-CONVS] - Project user has a default role 3', status.role, 'PERMISSION_TO_UPDATE_REQUEST ', this.PERMISSION_TO_UPDATE_REQUEST);
-        }
+        
 
         // PERMISSION_TO_ARCHIVE_REQUEST
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_CLOSE)) {
             console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_ARCHIVE_REQUEST', PERMISSIONS.REQUEST_CLOSE)
-            
+
             this.PERMISSION_TO_ARCHIVE_REQUEST = true
             console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_ARCHIVE_REQUEST 1 ', this.PERMISSION_TO_ARCHIVE_REQUEST);
           } else {
@@ -472,7 +458,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_JOIN)) {
             console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_JOIN_REQUEST', PERMISSIONS.REQUEST_JOIN)
-            
+
             this.PERMISSION_TO_JOIN_REQUEST = true
             console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_JOIN_REQUEST 1 ', this.PERMISSION_TO_JOIN_REQUEST);
           } else {
@@ -488,7 +474,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.REQUEST_REOPEN)) {
             console.log('[HISTORY & NORT-CONVS] PERMISSION_TO_REOPEN', PERMISSIONS.REQUEST_REOPEN)
-            
+
             this.PERMISSION_TO_REOPEN = true
             console.log('[HISTORY & NORT-CONVS] - PERMISSION_TO_REOPEN 1 ', this.PERMISSION_TO_REOPEN);
           } else {
@@ -501,7 +487,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         }
 
         // PERMISSION_TO_DELETE
-         if (status.role === 'owner') {
+        if (status.role === 'owner') {
           // Owner always has permission
           this.PERMISSION_TO_DELETE = true;
           console.log('[PRJCT-EDIT-ADD] - Project user is owner (1)', 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
@@ -517,87 +503,10 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
           console.log('[PRJCT-EDIT-ADD] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE:', this.PERMISSION_TO_DELETE);
         }
 
-        // if (status.matchedPermissions.includes('lead_update')) {
-        //   // Enable lead update action
-        // }
 
         // You can also check status.role === 'owner' if needed
       });
 
-    // this.rolesService.getUpdateRequestPermission()
-    //   .pipe(takeUntil(this.unsubscribe$))
-    //   .subscribe((hasPermission) => {
-    //     this.PERMISSION_TO_UPDATE_REQUEST = hasPermission;
-    //     console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST',  this.PERMISSION_TO_UPDATE_REQUEST);
-    //   });
-
-    // this.rolesService.getUpdateRequestPermission()
-    // .pipe(takeUntil(this.unsubscribe$))
-    // .subscribe(status => {
-    //   console.log('Permission allowed:', status.allowed);
-    //   console.log('Matched permissions:', status.matchedPermissions);
-
-    //   if (status.allowed) {
-    //     // Use status.matchedPermissions to tailor UI/actions
-    //   }
-    // });
-
-    // this.rolesService.getUpdateRequestPermission()
-    // .pipe(takeUntil(this.unsubscribe$))
-    // .subscribe(status => {
-    //   console.log('Permission allowed:', status.allowed);
-    //   console.log('Matched permissions:', status.matchedPermissions);
-
-    //   if (status.allowed) {
-    //     // ✅ Enable UI actions
-    //   } else {
-    //     // 🚫 Disable or hide actions
-    //   }
-    // });
-
-    // this.rolesService.getUpdateRequestPermission()
-    // .pipe(takeUntil(this.unsubscribe$))
-    // .subscribe(status => {
-    //   console.log('✅ Allowed:', status.allowed);
-    //   console.log('🔐 Permissions:', status.matchedPermissions);
-
-    //   // if 
-
-    //   if (status.allowed) {
-    //     // Enable actions
-    //   } else {
-    //     // Disable UI controls or show warning
-    //   }
-    // });
-
-
-
-    // My code
-    // this.usersService.projectUser_bs
-    //   .pipe(
-    //     takeUntil(this.unsubscribe$)
-    //   )
-    //   .subscribe((projectUser) => {
-    //     console.log('[HISTORY & NORT-CONVS] - PROJECT USER ', projectUser);
-    //     console.log('[HISTORY & NORT-CONVS] - PROJECT USER ROLE', projectUser.role);
-    //     if (projectUser.role !== 'owner' && projectUser.role !== 'admin' && projectUser.role !== 'agent') {
-    //       console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSIONS', projectUser.permissions);
-    //       console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSIONS LENGTH', projectUser.permissions.length);
-    //       if (projectUser.permissions.length === 0) {
-    //         this.PERMISSION_TO_UPDATE_REQUEST = false
-    //         console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST (1)', this.PERMISSION_TO_UPDATE_REQUEST);
-    //       } else if (projectUser.permissions.length > 0) {
-    //         if (!projectUser.permissions.includes('request_update')) {
-    //           this.PERMISSION_TO_UPDATE_REQUEST = false
-    //           console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST (2)', this.PERMISSION_TO_UPDATE_REQUEST);
-    //         } else {
-    //           this.PERMISSION_TO_UPDATE_REQUEST = true
-    //           console.log('[HISTORY & NORT-CONVS] - PROJECT USER PERMISSION_TO_UPDATE_REQUEST (3)', this.PERMISSION_TO_UPDATE_REQUEST);
-    //         }
-    //       }
-    //     }
-
-    //   })
   }
 
   getProjectUserRole() {
@@ -1253,51 +1162,51 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       return;
     }
 
-      // this._onJoinHandled(request_id, this.currentUserID, request);
-      //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request', request)
-      //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request.participanting_Agents', request.participanting_Agents)
+    // this._onJoinHandled(request_id, this.currentUserID, request);
+    //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request', request)
+    //  this.logger.log('[HISTORY & NORT-CONVS] joinRequest request.participanting_Agents', request.participanting_Agents)
 
-      let chatAgent = '';
-      if (request && request.participanting_Agents) {
+    let chatAgent = '';
+    if (request && request.participanting_Agents) {
 
-        const participantingagentslength = request.participanting_Agents.length
-        request.participanting_Agents.forEach((agent, index) => {
-          this.logger.log('[HISTORY & NORT-CONVS] - joinRequest forEach agent', agent);
-          let stringEnd = ' '
-
-
-          if (participantingagentslength - 1 === index) {
-            stringEnd = '.';
-          } else {
-            stringEnd = ', ';
-          }
-
-          if (agent.firstname && agent.lastname) {
-            chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
-          }
-
-          if (agent.name) {
-            chatAgent += agent.name + stringEnd
-          }
-
-        });
+      const participantingagentslength = request.participanting_Agents.length
+      request.participanting_Agents.forEach((agent, index) => {
+        this.logger.log('[HISTORY & NORT-CONVS] - joinRequest forEach agent', agent);
+        let stringEnd = ' '
 
 
-        this.logger.log('[HISTORY & NORT-CONVS] - joinRequest chatAgent', chatAgent);
+        if (participantingagentslength - 1 === index) {
+          stringEnd = '.';
+        } else {
+          stringEnd = ', ';
+        }
 
-        if (request && request.currentUserIsJoined === false) {
-          if (request.channel.name === 'email' || request.channel.name === 'form') {
-            if (request.participanting_Agents.length === 1) {
-              this.presentModalYouCannotJoinChat()
-            } else if (request.participanting_Agents.length === 0) {
-              this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request);
-            }
-          } else if (request.channel.name !== 'email' || request.channel.name !== 'form' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21') {
+        if (agent.firstname && agent.lastname) {
+          chatAgent += agent.firstname + ' ' + agent.lastname + stringEnd
+        }
+
+        if (agent.name) {
+          chatAgent += agent.name + stringEnd
+        }
+
+      });
+
+
+      this.logger.log('[HISTORY & NORT-CONVS] - joinRequest chatAgent', chatAgent);
+
+      if (request && request.currentUserIsJoined === false) {
+        if (request.channel.name === 'email' || request.channel.name === 'form') {
+          if (request.participanting_Agents.length === 1) {
+            this.presentModalYouCannotJoinChat()
+          } else if (request.participanting_Agents.length === 0) {
             this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request);
           }
+        } else if (request.channel.name !== 'email' || request.channel.name !== 'form' || request.channel.name === 'telegram' || request.channel.name === 'whatsapp' || request.channel.name === 'messenger' || request.channel.name === 'chat21') {
+          this.displayModalAreYouSureToJoinThisChatAlreadyAssigned(chatAgent, request_id, request);
         }
       }
-    
+    }
+
   }
 
   presentModalYouCannotJoinChat() {
@@ -1703,6 +1612,12 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
               request['ua_browser'] = ua_browser;
               const ua_os = user_agent_result.os.name + ' ' + user_agent_result.os.version
               request['ua_os'] = ua_os;
+
+              if (request.lead && request.lead.email) {
+                if (!isValidEmail(request.lead.email)) {
+                    request.lead.email = null; // or 'N/A' if you prefer direct substitution
+                 }
+              }
               // -------------------------------------------------------------------
               // Contact's avatar
               // -------------------------------------------------------------------
@@ -3229,9 +3144,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       .subscribe((projectUser: any) => {
         this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID ', projectUser)
         if (projectUser) {
-          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser._id);
+          this.logger.log('[HISTORY & NORT-CONVS] GET projectUser by USER-ID > projectUser id', projectUser[0]._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
         }
       }, (error) => {
         this.logger.error('[HISTORY & NORT-CONVS] GET projectUser by USER-ID - ERROR ', error);
@@ -3274,7 +3189,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     }
   }
 
-  
+
 
   selectAllHistory(e) {
     console.log("[HISTORY & NORT-CONVS] **++ Is checked: ", e.target.checked)
@@ -3454,7 +3369,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   deleteSelected() {
-   console.log("[HISTORY & NORT-CONVS] - REQUESTS TO DELETE: ", this.request_selected);
+    console.log("[HISTORY & NORT-CONVS] - REQUESTS TO DELETE: ", this.request_selected);
     let nRequestsBefore = this.requestList.length;
     //let correctnessCheck = (this.requestList.length - this.request_selected.length);
 
@@ -3642,7 +3557,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       this.logger.log('[HISTORY & NORT-CONVS] - REOPEN ARCHIVED REQUEST -  THE CONVERSATION HAS BEEN ARCHIVED FOR LESS THAN 10 DAYS  ')
     }
-    
+
   }
 
   presentModalReopenConvIsNotPossible() {
@@ -3663,28 +3578,29 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
 
   reopenConversation(request_id) {
-    if (this.PERMISSION_TO_UPDATE_REQUEST) {
-      this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
-        this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
-
-      }, (error) => {
-        this.logger.error('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
-
-
-      }, () => {
-        this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST * COMPLETE *');
-        for (var i = 0; i < this.requestList.length; i++) {
-
-          if (this.requestList[i].request_id === request_id) {
-            // this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
-            this.requestList.splice(i, 1);
-          }
-
-        }
-      })
-    } else {
+    if (!this.PERMISSION_TO_REOPEN) {
       this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
     }
+    this.wsRequestsService.unarchiveRequest(request_id).subscribe((res: any) => {
+      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST ', res)
+
+    }, (error) => {
+      this.logger.error('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST - ERROR ', error);
+
+
+    }, () => {
+      this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED REQUEST * COMPLETE *');
+      for (var i = 0; i < this.requestList.length; i++) {
+
+        if (this.requestList[i].request_id === request_id) {
+          // this.logger.log('[HISTORY & NORT-CONVS]  REOPEN ARCHIVED  id of the REQUEST  REOPENED ', this.requestList[i].request_id);
+          this.requestList.splice(i, 1);
+        }
+
+      }
+    })
+
   }
 
 }

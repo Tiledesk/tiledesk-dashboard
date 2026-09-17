@@ -933,6 +933,30 @@ saveURLsWhitelist (urlWhitelist) {
     })
     return promise;
   }
+
+
+  // --------------------------------------------------------------------------------------
+  // SAVE AGENTS CHAT ALLOWED EXTENTIONS
+  // --------------------------------------------------------------------------------------
+  saveAgentsChatAllowedExtensions (allowed_upload_extentions) {
+    let promise = new Promise((resolve, reject) => {
+      console.log("[PROJECT-SERV] SAVE allowed_upload_extentions", allowed_upload_extentions)
+      let headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    
+      this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.allowed_upload_extentions": allowed_upload_extentions }, { headers: headers })
+        .toPromise().then((res) => {
+          resolve(res)
+        }).catch((err) => {
+          reject(err)
+        })
+    })
+    return promise;
+  }
+
+
   // -------------------------------------
   // New home service
   // -------------------------------------

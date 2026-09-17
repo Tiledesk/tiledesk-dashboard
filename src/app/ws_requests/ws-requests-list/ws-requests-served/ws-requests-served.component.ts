@@ -41,7 +41,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   @Input() wsRequestsServed: Request[];
   @Input() ws_requests_length: number;
   @Input() current_selected_prjct: any;
-  @Input() PERMISSION_TO_UPDATE_REQUEST: boolean;
+
   CHAT_PANEL_MODE: boolean = false;
   @ViewChild(MatMenuTrigger) contextMenu: MatMenuTrigger;
   contextMenuPosition = { x: '0px', y: '0px' };
@@ -99,8 +99,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   CHANNELS_NAME = CHANNELS_NAME;
 
 
-  PERMISSION_TO_ARCHIVE_REQUEST: boolean
-  PERMISSION_TO_JOIN_REQUEST: boolean
+  PERMISSION_TO_ARCHIVE_REQUEST: boolean;
+  PERMISSION_TO_JOIN_REQUEST: boolean;
+  PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
 
   /**
    * Constructor
@@ -225,6 +226,20 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
             this.PERMISSION_TO_JOIN_REQUEST = true
             console.log('[WS-REQUESTS-LIST][SERVED] - Project user has a default role 3', status.role, 'PERMISSION_TO_JOIN_REQUEST ', this.PERMISSION_TO_JOIN_REQUEST);
           }
+
+          if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+            if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATES_DETAILS_READ)) {
+
+              this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+              console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            } else {
+              this.PERMISSION_TO_READ_TEAMMATE_DETAILS = false
+              console.log('[DEPTS] - PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+            }
+          } else {
+          this.PERMISSION_TO_READ_TEAMMATE_DETAILS = true
+          console.log('[DEPTS] - Project user has a default role ', status.role, 'PERMISSION_TO_READ_TEAMMATE_DETAILS ', this.PERMISSION_TO_READ_TEAMMATE_DETAILS);
+        }
   
   
          
@@ -256,7 +271,6 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges PERMISSION_TO_UPDATE_REQUEST', this.PERMISSION_TO_UPDATE_REQUEST)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges changes', changes)
     this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed length', this.wsRequestsServed.length)
     // this.logger.log('[WS-REQUESTS-LIST][SERVED] ngOnChanges wsRequestsServed ', this.wsRequestsServed)
@@ -663,6 +677,12 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
 
 
   goToAgentProfile(member_id) {
+    // if (this.PERMISSION_TO_READ_TEAMMATE_DETAILS) {
+    //   this.notify.presentDialogNoPermissionToEditFlow();
+    //   return
+    // }
+
+
     this.logger.log('[WS-REQUESTS-LIST][SERVED]  goToAgentProfile ', member_id)
 
     this.getProjectuserbyUseridAndGoToEditProjectuser(member_id);
@@ -674,9 +694,9 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
       .subscribe((projectUser: any) => {
         this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser ', projectUser)
         if (projectUser) {
-          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser._id);
+          this.logger.log('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - projectUser id', projectUser[0]._id);
 
-          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser._id]);
+          this.router.navigate(['project/' + this.projectId + '/user/edit/' + projectUser[0]._id]);
         }
       }, (error) => {
         this.logger.error('[WS-REQUESTS-LIST][SERVED] GET PROJECT-USER-BY-USER-ID & GO TO EDIT PROJECT-USER - ERROR ', error);

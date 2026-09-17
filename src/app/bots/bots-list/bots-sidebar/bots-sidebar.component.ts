@@ -40,8 +40,8 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
   public BOTS_INCREASE_SALES_TEMPALTES_ROUTE_IS_ACTIVE: boolean;
   public BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE: boolean;
   public AIAGENT_ROUTE_IS_ACTIVE: boolean;
-    public AUTOMATION_ROUTE_IS_ACTIVE: boolean;
-    public FLOWS_WEBHOOK_ROUTE_IS_ACTIVE: boolean;
+  public AUTOMATION_ROUTE_IS_ACTIVE: boolean;
+  public FLOWS_WEBHOOK_ROUTE_IS_ACTIVE: boolean;
   public BOTS_MYCHATBOT_INCREASE_SALES_ROUTE_IS_ACTIVE: boolean;
   public BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE: boolean;
   public BOTS_COMMUNITY_TEMPLATES_ROUTE_IS_ACTIVE: boolean;
