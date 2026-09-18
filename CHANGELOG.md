@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-### this branch
+### 2.7.248-stage
 - Agents created from scratch open with the new Design Studio editor. Set by `CHATBOT_VERSION`: empty leaves creation as before. Templates, copies and imports keep their own version
 
 ### 2.7.247-stage
