@@ -1165,6 +1165,9 @@ export class ProjectService {
     
       this._httpclient.put(this.SERVER_BASE_PATH + "projects/" + this.projectID, { "settings.retentionDays": retentionDays }, { headers: headers })
         .toPromise().then((res) => {
+          // getProjectById uses ProjectCacheService (not AllProjectsCacheService)
+          this.projectCacheService.clearProjectCache(this.projectID);
+          this.cacheService.clearAllProjectsCache();
           resolve(res)
         }).catch((err) => {
           reject(err)
