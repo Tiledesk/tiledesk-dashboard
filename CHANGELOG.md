@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.187-AR
+- Fixes the bug: Message retention select showed a stale value after save until page refresh
+
 ### 2.7.186-AR
 - Adds a confirmation dialog displayed when the user saves the retention days
 - Adds DEFAULT_RETENTION_DAYS environment variable used as Message retention fallback when the retention value is missing on the server
