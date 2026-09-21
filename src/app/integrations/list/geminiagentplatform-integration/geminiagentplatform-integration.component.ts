@@ -37,6 +37,8 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   endpointStoredApikey = '';
   /** Tracks model auto-seeded from the URL so URL edits can replace it. */
   private urlSeededModel: string | null = null;
+  /** True when Location/Project were last filled from a valid URL. */
+  private locationProjectFromUrl = false;
 
   constructor(
     private logger: LoggerService,
@@ -59,6 +61,13 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   onUrlChange(url: string): void {
     this.currentEndpoint.url = url;
     this.syncModelFromUrl(url);
+    this.syncLocationProjectFromUrl(url);
+  }
+
+  /** Location/Project are read-only when a valid URL already provides them. */
+  get isLocationProjectReadonly(): boolean {
+    const url = String(this.currentEndpoint?.url || '').trim();
+    return !!url && !!this.parseProjectLocationFromUrl(url);
   }
 
   get showInvalidUrlError(): boolean {
@@ -86,9 +95,11 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
     const name = String(this.currentEndpoint.name || '').trim();
     const url = String(this.currentEndpoint.url || '').trim();
     const models = this.normalizeModels(this.currentEndpoint.models);
-    const parsed = this.parseProjectLocationFromUrl(url);
+    const parsed = url ? this.parseProjectLocationFromUrl(url) : null;
+    const project = parsed?.project || String(this.currentEndpoint.project || '').trim();
+    const location = parsed?.location || String(this.currentEndpoint.location || '').trim();
 
-    if (!name || !url) {
+    if (!name) {
       this.notify.showWidgetStyleUpdateNotification(
         this.translate.instant('Integration.VllmNameAndUrlRequired'),
         3,
@@ -97,9 +108,18 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       return;
     }
 
-    if (!parsed) {
+    if (url && !parsed) {
       this.notify.showWidgetStyleUpdateNotification(
         this.translate.instant(this.invalidUrlErrorKey || 'Integration.AgentPlatformInvalidUrl'),
+        3,
+        'error',
+      );
+      return;
+    }
+
+    if (!project || !location) {
+      this.notify.showWidgetStyleUpdateNotification(
+        this.translate.instant('Integration.AgentPlatformInvalidUrl'),
         3,
         'error',
       );
@@ -124,7 +144,7 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       return;
     }
 
-    if (this.hasDuplicateUrl(url)) {
+    if (url && this.hasDuplicateUrl(url)) {
       this.notify.showWidgetStyleUpdateNotification(
         this.translate.instant('Integration.VllmDuplicateUrl'),
         3,
@@ -151,8 +171,8 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       name,
       url,
       models,
-      project: parsed.project,
-      location: parsed.location,
+      project,
+      location,
       ...apikeyProps,
     };
 
@@ -191,6 +211,7 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       this.newModelName = '';
       this.showEnterButton = false;
       this.urlSeededModel = null;
+      this.locationProjectFromUrl = !!this.parseProjectLocationFromUrl(endpoint.url || '');
     }
   }
 
@@ -281,6 +302,7 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
     this.endpointStoredApikey = '';
     this.apiKeyFieldReset++;
     this.urlSeededModel = null;
+    this.locationProjectFromUrl = false;
   }
 
   saveIntegration(): void {
@@ -295,11 +317,46 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   canSubmit(): boolean {
     const pendingModel = String(this.newModelName || '').trim();
     const modelsCount = this.normalizeModels(this.currentEndpoint.models).length;
+    const name = String(this.currentEndpoint.name || '').trim();
     const url = String(this.currentEndpoint.url || '').trim();
-    return !!String(this.currentEndpoint.name || '').trim()
-      && !!url
-      && !!this.parseProjectLocationFromUrl(url)
-      && (modelsCount > 0 || !!pendingModel);
+    const project = String(this.currentEndpoint.project || '').trim();
+    const location = String(this.currentEndpoint.location || '').trim();
+    const hasModels = modelsCount > 0 || !!pendingModel;
+
+    if (!name || !hasModels || !this.apiKeyCanSave) {
+      return false;
+    }
+
+    if (url) {
+      return !!this.parseProjectLocationFromUrl(url);
+    }
+
+    return !!project && !!location;
+  }
+
+  private syncLocationProjectFromUrl(url: string): void {
+    const trimmed = String(url || '').trim();
+    const parsed = trimmed ? this.parseProjectLocationFromUrl(trimmed) : null;
+
+    if (parsed) {
+      this.currentEndpoint.project = parsed.project;
+      this.currentEndpoint.location = parsed.location;
+      this.locationProjectFromUrl = true;
+      return;
+    }
+
+    if (!trimmed) {
+      // URL cleared — unlock fields, keep values so the user can edit them manually.
+      this.locationProjectFromUrl = false;
+      return;
+    }
+
+    if (this.locationProjectFromUrl) {
+      // Non-empty invalid URL after a successful parse — clear derived values.
+      this.currentEndpoint.project = '';
+      this.currentEndpoint.location = '';
+      this.locationProjectFromUrl = false;
+    }
   }
 
   private syncModelFromUrl(url: string): void {
@@ -403,7 +460,12 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
 
     const servers = (this.integration.value?.servers || [])
       .map((endpoint: AgentPlatformEndpoint) => this.normalizeStoredEndpoint(endpoint))
-      .filter((endpoint: AgentPlatformEndpoint) => !!endpoint.name && !!endpoint.url && !!endpoint.project && !!endpoint.location);
+      .filter((endpoint: AgentPlatformEndpoint) =>
+        !!endpoint.name
+        && !!endpoint.project
+        && !!endpoint.location
+        && this.normalizeModels(endpoint.models).length > 0
+      );
 
     this.integration.value = { servers };
   }
@@ -479,6 +541,9 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
 
   private hasDuplicateUrl(url: string): boolean {
     const normalizedUrl = this.normalizeValue(url);
+    if (!normalizedUrl) {
+      return false;
+    }
     return this.integration.value.servers.some((endpoint: AgentPlatformEndpoint, index: number) =>
       index !== this.editingIndex && this.normalizeValue(endpoint.url) === normalizedUrl
     );
@@ -487,10 +552,18 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   private findEndpointIndex(endpoint: AgentPlatformEndpoint): number {
     const normalizedName = this.normalizeValue(endpoint.name);
     const normalizedUrl = this.normalizeValue(endpoint.url);
+    const normalizedProject = this.normalizeValue(endpoint.project);
+    const normalizedLocation = this.normalizeValue(endpoint.location);
 
-    return this.integration.value.servers.findIndex((item: AgentPlatformEndpoint) =>
-      this.normalizeValue(item.name) === normalizedName &&
-      this.normalizeValue(item.url) === normalizedUrl
-    );
+    return this.integration.value.servers.findIndex((item: AgentPlatformEndpoint) => {
+      if (this.normalizeValue(item.name) !== normalizedName) {
+        return false;
+      }
+      if (normalizedUrl) {
+        return this.normalizeValue(item.url) === normalizedUrl;
+      }
+      return this.normalizeValue(item.project) === normalizedProject
+        && this.normalizeValue(item.location) === normalizedLocation;
+    });
   }
 }

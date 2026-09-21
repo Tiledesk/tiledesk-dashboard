@@ -136,11 +136,21 @@
 
             <div class="input-field">
                 <label>{{ 'Integration.OpenRouterSort' | translate }}</label>
-                <select class="custom-input" [(ngModel)]="sort">
-                    <option *ngFor="let option of SORT_OPTIONS" [ngValue]="option.value">
-                        {{ option.labelKey | translate }}
-                    </option>
-                </select>
+                <ng-select
+                    class="openrouter-sort-select"
+                    [items]="SORT_OPTIONS"
+                    bindValue="value"
+                    [(ngModel)]="sort"
+                    [clearable]="true"
+                    [searchable]="false"
+                    placeholder="{{ 'Integration.OpenRouterSortDefault' | translate }}">
+                    <ng-template ng-label-tmp let-item="item">
+                        {{ item?.labelKey | translate }}
+                    </ng-template>
+                    <ng-template ng-option-tmp let-item="item">
+                        {{ item.labelKey | translate }}
+                    </ng-template>
+                </ng-select>
                 <p class="field-hint" *ngIf="selectedProviders.length > 0">
                     {{ 'Integration.OpenRouterSortHint' | translate }}
                 </p>

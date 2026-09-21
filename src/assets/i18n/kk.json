@@ -2909,6 +2909,7 @@
         "EditOpenAICompatibleEndpoint": "OpenAI-үйлесімді endpoint-ты өңдеу",
         "TotalVllmEndpoints": "Endpoint-тар саны",
         "SearchByNameURLOrModels": "Аты, URL немесе үлгілер бойынша іздеу",
+        "SearchByNameProjectLocationOrModels": "Атауы, project, location немесе модельдер бойынша іздеу",
         "NoVllmEndpoints": "Endpoint-тар жоқ",
         "NoVllmEndpointsFound": "Endpoint-тар табылмады",
         "VllmEndpointNamePlaceholder": "Endpoint атын енгізіңіз",

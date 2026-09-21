@@ -123,29 +123,34 @@
       }
 
       &:nth-child(1) {
-        width: calc((100% - 260px) * 0.35);
+        width: calc((100% - 260px) * 0.30);
         min-width: 100px;
       }
 
       &:nth-child(2) {
-        width: calc((100% - 260px) * 0.65);
-        min-width: 150px;
+        width: calc((100% - 260px) * 0.35);
+        min-width: 120px;
       }
 
       &:nth-child(3) {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
+        width: calc((100% - 260px) * 0.35);
+        min-width: 120px;
       }
 
       &:nth-child(4) {
         width: 100px;
         min-width: 100px;
         max-width: 100px;
-        text-align: center;
       }
 
       &:nth-child(5) {
+        width: 100px;
+        min-width: 100px;
+        max-width: 100px;
+        text-align: center;
+      }
+
+      &:nth-child(6) {
         width: 60px;
         min-width: 60px;
         max-width: 60px;
@@ -180,7 +185,7 @@
 
         &.name-column {
           font-weight: 500;
-          width: calc((100% - 260px) * 0.35);
+          width: calc((100% - 260px) * 0.30);
           min-width: 100px;
 
           .endpoint-name {
@@ -191,11 +196,13 @@
           }
         }
 
-        &.url-column {
-          width: calc((100% - 260px) * 0.65);
-          min-width: 150px;
+        &.project-column,
+        &.location-column {
+          width: calc((100% - 260px) * 0.35);
+          min-width: 120px;
 
-          .endpoint-url {
+          .endpoint-project,
+          .endpoint-location {
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;

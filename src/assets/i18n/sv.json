@@ -2910,6 +2910,7 @@
         "EditOpenAICompatibleEndpoint": "Redigera OpenAI-kompatibel endpoint",
         "TotalVllmEndpoints": "Totalt antal endpoints",
         "SearchByNameURLOrModels": "Sök efter namn eller URL",
+        "SearchByNameProjectLocationOrModels": "Sök efter namn, project, location eller modeller",
         "NoVllmEndpoints": "Inga endpoints",
         "NoVllmEndpointsFound": "Inga endpoints hittades",
         "VllmEndpointNamePlaceholder": "Ange endpoint-namn",

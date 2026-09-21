@@ -321,11 +321,14 @@ p {
     background-color: #fff;
   }
 
-  .openrouter-model-select {
+  .openrouter-model-select,
+  .openrouter-sort-select {
     max-width: 500px;
     width: 100%;
     font-size: 14px;
+  }
 
+  .openrouter-model-select {
     .model-option {
       display: flex;
       flex-direction: column;

@@ -60,8 +60,7 @@ export class OpenRouterIntegrationComponent implements OnInit, OnChanges {
   isEditing = false;
   editingIndex = -1;
 
-  readonly SORT_OPTIONS: { value: OpenRouterSort, labelKey: string }[] = [
-    { value: null, labelKey: 'Integration.OpenRouterSortDefault' },
+  readonly SORT_OPTIONS: { value: Exclude<OpenRouterSort, null>, labelKey: string }[] = [
     { value: 'price', labelKey: 'Integration.OpenRouterSortPrice' },
     { value: 'throughput', labelKey: 'Integration.OpenRouterSortThroughput' },
     { value: 'latency', labelKey: 'Integration.OpenRouterSortLatency' }

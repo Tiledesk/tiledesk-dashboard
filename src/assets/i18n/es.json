@@ -2893,6 +2893,7 @@
         "EditOpenAICompatibleEndpoint": "Editar endpoint compatible con OpenAI",
         "TotalVllmEndpoints": "Total de endpoints",
         "SearchByNameURLOrModels": "Buscar por nombre o URL",
+        "SearchByNameProjectLocationOrModels": "Buscar por nombre, project, location o modelos",
         "NoVllmEndpoints": "No hay endpoints",
         "NoVllmEndpointsFound": "No se encontraron endpoints",
         "VllmEndpointNamePlaceholder": "Ingrese el nombre del endpoint",

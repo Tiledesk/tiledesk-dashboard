@@ -22,7 +22,7 @@ export class AgentPlatformEndpointTableComponent implements OnInit, OnChanges {
 
   filteredEndpoints: AgentPlatformEndpoint[] = [];
   filterText = '';
-  sortField: 'name' | 'url' = 'name';
+  sortField: 'name' | 'project' | 'location' = 'name';
   sortDirection: 'asc' | 'desc' = 'asc';
 
   readonly apiKeyPlaceholder = '●●●●●●';
@@ -46,7 +46,6 @@ export class AgentPlatformEndpointTableComponent implements OnInit, OnChanges {
       const searchTerm = this.filterText.toLowerCase().trim();
       this.filteredEndpoints = this.endpoints.filter((endpoint) =>
         endpoint.name?.toLowerCase().includes(searchTerm) ||
-        endpoint.url?.toLowerCase().includes(searchTerm) ||
         endpoint.project?.toLowerCase().includes(searchTerm) ||
         endpoint.location?.toLowerCase().includes(searchTerm) ||
         endpoint.models?.some((model) => model.toLowerCase().includes(searchTerm))
@@ -61,7 +60,7 @@ export class AgentPlatformEndpointTableComponent implements OnInit, OnChanges {
     this.applyFilter();
   }
 
-  onSort(field: 'name' | 'url'): void {
+  onSort(field: 'name' | 'project' | 'location'): void {
     if (this.sortField === field) {
       this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     } else {
@@ -97,7 +96,7 @@ export class AgentPlatformEndpointTableComponent implements OnInit, OnChanges {
     this.onDeleteEndpoint.emit(endpoint);
   }
 
-  getSortIcon(field: 'name' | 'url'): string {
+  getSortIcon(field: 'name' | 'project' | 'location'): string {
     if (this.sortField !== field) {
       return 'unfold_more';
     }

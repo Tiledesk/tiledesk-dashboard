@@ -2909,6 +2909,7 @@
         "EditOpenAICompatibleEndpoint": "OpenAI bilan mos keladigan endpointni tahrirlash",
         "TotalVllmEndpoints": "Jami Endpointlar",
         "SearchByNameURLOrModels": "Nomi, URL yoki modellar bo'yicha qidirish",
+        "SearchByNameProjectLocationOrModels": "Nom, project, location yoki modellari bo‘yicha qidirish",
         "NoVllmEndpoints": "Endpointlar yo'q",
         "NoVllmEndpointsFound": "Endpointlar topilmadi",
         "VllmEndpointNamePlaceholder": "Endpoint nomini kiriting",

@@ -7,7 +7,7 @@
                         type="text"
                         [(ngModel)]="filterText"
                         (input)="onFilterChange($any($event.target).value)"
-                        placeholder="{{ 'Integration.SearchByNameURLOrModels' | translate }}">
+                        placeholder="{{ 'Integration.SearchByNameProjectLocationOrModels' | translate }}">
                     <span class="material-icons-outlined">search</span>
                 </div>
             </div>
@@ -29,9 +29,13 @@
                             <span>{{ 'Name' | translate }}</span>
                             <span class="material-icons-outlined sort-icon">{{ getSortIcon('name') }}</span>
                         </th>
-                        <th class="sortable-column" (click)="onSort('url')">
-                            <span>URL</span>
-                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('url') }}</span>
+                        <th class="sortable-column" (click)="onSort('project')">
+                            <span>{{ 'Project' | translate }}</span>
+                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('project') }}</span>
+                        </th>
+                        <th class="sortable-column" (click)="onSort('location')">
+                            <span>{{ 'Location' | translate }}</span>
+                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('location') }}</span>
                         </th>
                         <th class="apikey-column">
                             <span>{{ 'Integration.ApiKey' | translate }}</span>
@@ -49,8 +53,11 @@
                         <td class="name-column">
                             <span class="endpoint-name">{{ endpoint.name }}</span>
                         </td>
-                        <td class="url-column">
-                            <span class="endpoint-url">{{ endpoint.url }}</span>
+                        <td class="project-column">
+                            <span class="endpoint-project">{{ endpoint.project }}</span>
+                        </td>
+                        <td class="location-column">
+                            <span class="endpoint-location">{{ endpoint.location }}</span>
                         </td>
                         <td class="apikey-column">
                             <span class="apikey-placeholder" *ngIf="hasApiKey(endpoint)">{{ apiKeyPlaceholder }}</span>
@@ -75,7 +82,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="filteredEndpoints.length === 0">
-                        <td colspan="5" class="no-data">
+                        <td colspan="6" class="no-data">
                             <div class="no-data-message">
                                 <span class="material-icons-outlined">link_off</span>
                                 <p>{{ emptyStateMessageKey | translate }}</p>

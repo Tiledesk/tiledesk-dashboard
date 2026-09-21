@@ -2910,6 +2910,7 @@
         "EditOpenAICompatibleEndpoint": "Редагувати endpoint, сумісний з OpenAI",
         "TotalVllmEndpoints": "Всього endpoint-ів",
         "SearchByNameURLOrModels": "Пошук за назвою або URL",
+        "SearchByNameProjectLocationOrModels": "Пошук за назвою, project, location або моделями",
         "NoVllmEndpoints": "Немає endpoint-ів",
         "NoVllmEndpointsFound": "Endpoint-и не знайдено",
         "VllmEndpointNamePlaceholder": "Введіть назву endpoint-у",

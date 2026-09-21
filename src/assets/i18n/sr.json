@@ -2910,6 +2910,7 @@
         "EditOpenAICompatibleEndpoint": "Уреди OpenAI-компатибилни endpoint",
         "TotalVllmEndpoints": "Укупно endpoint-а",
         "SearchByNameURLOrModels": "Претражи по имену или URL-у",
+        "SearchByNameProjectLocationOrModels": "Pretraži po imenu, project, location ili modelima",
         "NoVllmEndpoints": "Нема endpoint-а",
         "NoVllmEndpointsFound": "Ниједан endpoint није пронађен",
         "VllmEndpointNamePlaceholder": "Унесите име endpoint-а",

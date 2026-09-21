@@ -2909,6 +2909,7 @@
         "EditOpenAICompatibleEndpoint": "تحرير نقطة نهاية متوافقة مع OpenAI",
         "TotalVllmEndpoints": "إجمالي نقاط النهاية",
         "SearchByNameURLOrModels": "البحث بالاسم أو URL",
+        "SearchByNameProjectLocationOrModels": "البحث بالاسم أو project أو location أو النماذج",
         "NoVllmEndpoints": "لا توجد نقاط نهاية",
         "NoVllmEndpointsFound": "لم يتم العثور على نقاط نهاية",
         "VllmEndpointNamePlaceholder": "أدخل اسم نقطة النهاية",

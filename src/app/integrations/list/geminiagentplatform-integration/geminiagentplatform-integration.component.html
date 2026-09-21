@@ -26,6 +26,26 @@
             </p>
         </div>
 
+        <div class="input-field">
+            <label>{{ 'Project' | translate }}</label>
+            <input id="agentplatform-project" class="custom-input" type="text" name="agentplatform-project"
+                placeholder="my-gcp-project-id"
+                [(ngModel)]="currentEndpoint.project"
+                [readonly]="isLocationProjectReadonly"
+                [ngClass]="{'input-readonly': isLocationProjectReadonly}"
+                autocomplete="off" style="font-size: 14px;">
+        </div>
+
+        <div class="input-field">
+            <label>{{ 'Location' | translate }}</label>
+            <input id="agentplatform-location" class="custom-input" type="text" name="agentplatform-location"
+                placeholder="europe-west1"
+                [(ngModel)]="currentEndpoint.location"
+                [readonly]="isLocationProjectReadonly"
+                [ngClass]="{'input-readonly': isLocationProjectReadonly}"
+                autocomplete="off" style="font-size: 14px;">
+        </div>
+
         <integration-api-key-field
             [storedApikey]="endpointStoredApikey"
             [optional]="true"

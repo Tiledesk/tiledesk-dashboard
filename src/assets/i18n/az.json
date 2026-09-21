@@ -2910,6 +2910,7 @@
         "EditOpenAICompatibleEndpoint": "OpenAI uyumlu endpoint-i redaktə et",
         "TotalVllmEndpoints": "Ümumi endpoint sayı",
         "SearchByNameURLOrModels": "Ad, URL və ya modellərə görə axtar",
+        "SearchByNameProjectLocationOrModels": "Ad, project, location və ya modellərə görə axtar",
         "NoVllmEndpoints": "Endpoint yoxdur",
         "NoVllmEndpointsFound": "Endpoint tapılmadı",
         "VllmEndpointNamePlaceholder": "Endpoint adını daxil edin",

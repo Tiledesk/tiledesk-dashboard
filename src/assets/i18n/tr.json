@@ -2910,6 +2910,7 @@
         "EditOpenAICompatibleEndpoint": "OpenAI uyumlu uç noktayı düzenle",
         "TotalVllmEndpoints": "Toplam Uç Nokta",
         "SearchByNameURLOrModels": "Ada, URL veya modellere göre ara",
+        "SearchByNameProjectLocationOrModels": "Ada, project, location veya modellere göre ara",
         "NoVllmEndpoints": "Uç nokta yok",
         "NoVllmEndpointsFound": "Uç nokta bulunamadı",
         "VllmEndpointNamePlaceholder": "Uç nokta adını girin",
