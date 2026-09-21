@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.250-stage
+- Updates the Gemini Agent Platform integration to make the API key required
+
 ### 2.7.249-stage
 - Improves Gemini Agent Platform endpoint setup with Project/Location fields and table columns
 - Uses `llmServer` in KB preview QA requests for vLLM and Gemini Agent Platform
