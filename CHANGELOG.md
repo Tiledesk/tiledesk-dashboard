@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.249-stage
+- Improves Gemini Agent Platform endpoint setup with Project/Location fields and table columns
+- Uses `llmServer` in KB preview QA requests for vLLM and Gemini Agent Platform
+- Updates OpenRouter Provider sorting to use ng-select
+
 ### 2.7.248-stage
 - Agents created from scratch open with the new Design Studio editor. Set by `CHATBOT_VERSION`: empty leaves creation as before. Templates, copies and imports keep their own version
 
