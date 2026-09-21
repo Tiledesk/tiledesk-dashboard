@@ -201,6 +201,28 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
 }
 
   /**
+   * Retrieve the OpenRouter model catalogue.
+   * The endpoint is public, so it also works while the stored API key is server-masked.
+   */
+  getOpenRouterModels() {
+    const url = 'https://openrouter.ai/api/v1/models';
+    this.logger.debug('[INTEGRATION.SERV] - get OpenRouter models URL: ', url);
+
+    return this.http.get(url);
+  }
+
+  /**
+   * Retrieve the providers serving a single OpenRouter model.
+   * @param modelId Full model id, e.g. "openai/gpt-4o"
+   */
+  getOpenRouterModelEndpoints(modelId: string) {
+    const url = 'https://openrouter.ai/api/v1/models/' + modelId + '/endpoints';
+    this.logger.debug('[INTEGRATION.SERV] - get OpenRouter model endpoints URL: ', url);
+
+    return this.http.get(url);
+  }
+
+  /**
    * Retrieve MCP tools from server
    * @param serverUrl The URL of the MCP server
    * @returns Observable with tools array

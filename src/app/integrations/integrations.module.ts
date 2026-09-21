@@ -40,6 +40,9 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ElevenlabsIntegrationComponent } from './list/elevenlabs-integration/elevenlabs-integration.component';
 import { CerebrasIntegrationComponent } from './list/cerebras-integration/cerebras-integration.component';
 import { OpenRouterIntegrationComponent } from './list/openrouter-integration/openrouter-integration.component';
+import { OpenRouterModelTableComponent } from './list/openrouter-integration/openrouter-model-table/openrouter-model-table.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 const routes: Routes = [
@@ -75,7 +78,8 @@ const routes: Routes = [
     AgentPlatformEndpointTableComponent,
     ElevenlabsIntegrationComponent,
     CerebrasIntegrationComponent,
-    OpenRouterIntegrationComponent
+    OpenRouterIntegrationComponent,
+    OpenRouterModelTableComponent
   ],
   imports: [
     RouterModule.forChild(routes),
@@ -90,6 +94,8 @@ const routes: Routes = [
     SettingsSidebarModule,
     SharedModule,
     FormsModule,
+    NgSelectModule,
+    DragDropModule,
     UnauthorizedForSettingsModule
   ]
 })

@@ -1450,6 +1450,10 @@ export var VLLM_MODEL: Array<{ name: string, value: string, description:string, 
 ]
 export var AGENTPLATFORM_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
 ]
+// Filled at runtime from the project's OpenRouter integration: the models and
+// provider routing configured there become the options in KB preview / AI settings.
+export var OPENROUTER_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
+]
 
 export const LLM_MODEL: Array<{name: string, value: string, description: string, src: string, status: "active" | "inactive", models: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> }> = [
   { name: "Cohere",         value: "cohere",            description: "",      src:"assets/images/icons/ai_prompt/cohere.svg",      status: "active",   models: COHERE_MODEL        },
@@ -1460,6 +1464,7 @@ export const LLM_MODEL: Array<{name: string, value: string, description: string,
   { name: "Deepseek",       value: "deepseek",          description: "",      src:"assets/images/icons/ai_prompt/deepseek.svg",    status: "active",   models: DEEPSEEK_MODEL      },
   { name: "Ollama",         value: "ollama",            description: "",      src:"assets/images/icons/ai_prompt/ollama.svg",      status: "active",   models: OLLAMA_MODEL        },
   { name: "vLLM",           value: "vllm",              description: "",      src:"assets/images/icons/ai_prompt/vllm.svg",      status: "active",     models: VLLM_MODEL        },
+  { name: "OpenRouter",     value: "openrouter",        description: "",      src:"assets/img/int/openrouter-icon.png",  status: "active",   models: OPENROUTER_MODEL    },
   { name: "OpenAI",         value: "openai",            description: "",      src:"assets/images/icons/ai_prompt/openai.svg",      status: "active",   models: OPENAI_MODEL        },
 ]
 

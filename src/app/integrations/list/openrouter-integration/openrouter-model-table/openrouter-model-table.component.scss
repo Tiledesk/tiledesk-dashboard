@@ -1,9 +1,8 @@
-.agentplatform-table-wrapper {
+.openrouter-table-wrapper {
   margin-top: 20px;
 }
 
 .filters-card {
-  // margin-bottom: 16px;
   border-radius: 5px;
   box-shadow: unset !important;
 }
@@ -63,7 +62,7 @@
   box-shadow: unset;
 }
 
-.endpoints-count {
+.models-count {
   font-size: 14px;
   color: #666;
   font-weight: 500;
@@ -123,34 +122,21 @@
       }
 
       &:nth-child(1) {
-        width: calc((100% - 260px) * 0.30);
-        min-width: 100px;
+        width: calc((100% - 60px) * 0.26);
+        min-width: 120px;
       }
 
       &:nth-child(2) {
-        width: calc((100% - 260px) * 0.35);
-        min-width: 120px;
+        width: calc((100% - 60px) * 0.29);
+        min-width: 140px;
       }
 
       &:nth-child(3) {
-        width: calc((100% - 260px) * 0.35);
-        min-width: 120px;
+        width: calc((100% - 60px) * 0.45);
+        min-width: 160px;
       }
 
       &:nth-child(4) {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
-      }
-
-      &:nth-child(5) {
-        width: 100px;
-        min-width: 100px;
-        max-width: 100px;
-        text-align: center;
-      }
-
-      &:nth-child(6) {
         width: 60px;
         min-width: 60px;
         max-width: 60px;
@@ -167,7 +153,7 @@
         border-bottom: 0 solid #e0e0e0;
       }
 
-      &.endpoint-row {
+      &.model-row {
         cursor: pointer;
 
         &:hover {
@@ -185,24 +171,22 @@
 
         &.name-column {
           font-weight: 500;
-          width: calc((100% - 260px) * 0.30);
-          min-width: 100px;
-
-          .endpoint-name {
-            display: block;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-        }
-
-        &.project-column,
-        &.location-column {
-          width: calc((100% - 260px) * 0.35);
+          width: calc((100% - 60px) * 0.26);
           min-width: 120px;
 
-          .endpoint-project,
-          .endpoint-location {
+          .model-name {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+
+        &.id-column {
+          width: calc((100% - 60px) * 0.29);
+          min-width: 140px;
+
+          .model-id {
             display: block;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -211,41 +195,53 @@
           }
         }
 
-        &.apikey-column {
-          width: 100px;
-          min-width: 100px;
-          max-width: 100px;
+        &.providers-column {
+          width: calc((100% - 60px) * 0.45);
+          min-width: 160px;
 
-          .apikey-placeholder {
-            letter-spacing: 1px;
-            color: #666;
+          .providers-cell {
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            gap: 4px;
           }
-        }
 
-        &.models-column {
-          width: 100px;
-          min-width: 100px;
-          max-width: 100px;
-          text-align: center;
-
-          .models-badge {
+          .provider-chip {
             display: inline-flex;
             align-items: center;
-            justify-content: center;
+            gap: 4px;
+            height: 22px;
+            padding: 0 8px;
+            border-radius: 11px;
+            background-color: #f0f0f0;
+            color: #333;
+            font-size: 12px;
+            white-space: nowrap;
 
-            .badge-number {
+            .provider-rank {
               display: inline-flex;
               align-items: center;
               justify-content: center;
-              min-width: 32px;
-              height: 24px;
-              padding: 0 8px;
-              border-radius: 12px;
-              background-color: #f0f0f0;
-              color: #333;
-              font-size: 12px;
+              width: 14px;
+              height: 14px;
+              border-radius: 50%;
+              background-color: #3ea9f5;
+              color: #fff;
+              font-size: 10px;
               font-weight: 600;
             }
+          }
+
+          .provider-any {
+            font-size: 12px;
+            color: #999;
+            font-style: italic;
+          }
+
+          .routing-summary {
+            width: 100%;
+            font-size: 11px;
+            color: #999;
           }
         }
 

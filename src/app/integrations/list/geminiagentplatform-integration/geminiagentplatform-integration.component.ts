@@ -2,13 +2,16 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { NotifyService } from 'app/core/notify.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { isMaskedApikey } from 'app/integrations/utils';
 import { AgentPlatformEndpoint } from './agentplatform-endpoint-table/agentplatform-endpoint-table.component';
 
 const Swal = require('sweetalert2');
 
-/** Gemini Agent Platform generateContent URL: .../projects/{project}/locations/{location}/... */
+/** Gemini Agent Platform URL: .../projects/{project}/locations/{location}/... */
 const PROJECT_LOCATION_RE = /\/projects\/([^/]+)\/locations\/([^/]+)\//i;
-/** .../models/{modelId}:generateContent */
+/** Minimum publisher path (model is optional — user can add models separately). */
+const PUBLISHERS_GOOGLE_RE = /\/publishers\/google(?:\/|:|$|\?)/i;
+/** .../models/{modelId}:generateContent — optional; used to seed the models list from the URL */
 const MODEL_RE = /\/models\/([^/:]+)(?::|$|\/|\?)/i;
 /** .../endpoints/{endpointId}:generateContent (tuned model) */
 const ENDPOINT_RE = /\/endpoints\/([^/:]+)(?::|$|\/|\?)/i;
@@ -30,9 +33,14 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   editingIndex = -1;
   newModelName = '';
   showEnterButton = false;
-  isMasked = true;
+  apiKeyCanSave = false;
+  apiKeyIsReplacing = false;
+  apiKeyFieldReset = 0;
+  endpointStoredApikey = '';
   /** Tracks model auto-seeded from the URL so URL edits can replace it. */
   private urlSeededModel: string | null = null;
+  /** True when Location/Project were last filled from a valid URL. */
+  private locationProjectFromUrl = false;
 
   constructor(
     private logger: LoggerService,
@@ -55,6 +63,13 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   onUrlChange(url: string): void {
     this.currentEndpoint.url = url;
     this.syncModelFromUrl(url);
+    this.syncLocationProjectFromUrl(url);
+  }
+
+  /** Location/Project are read-only when a valid URL already provides them. */
+  get isLocationProjectReadonly(): boolean {
+    const url = String(this.currentEndpoint?.url || '').trim();
+    return !!url && !!this.parseProjectLocationFromUrl(url);
   }
 
   get showInvalidUrlError(): boolean {
@@ -81,11 +96,12 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
 
     const name = String(this.currentEndpoint.name || '').trim();
     const url = String(this.currentEndpoint.url || '').trim();
-    const apikey = String(this.currentEndpoint.apikey || '').trim();
     const models = this.normalizeModels(this.currentEndpoint.models);
-    const parsed = this.parseProjectLocationFromUrl(url);
+    const parsed = url ? this.parseProjectLocationFromUrl(url) : null;
+    const project = parsed?.project || String(this.currentEndpoint.project || '').trim();
+    const location = parsed?.location || String(this.currentEndpoint.location || '').trim();
 
-    if (!name || !url) {
+    if (!name) {
       this.notify.showWidgetStyleUpdateNotification(
         this.translate.instant('Integration.VllmNameAndUrlRequired'),
         3,
@@ -94,9 +110,18 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       return;
     }
 
-    if (!parsed) {
+    if (url && !parsed) {
       this.notify.showWidgetStyleUpdateNotification(
         this.translate.instant(this.invalidUrlErrorKey || 'Integration.AgentPlatformInvalidUrl'),
+        3,
+        'error',
+      );
+      return;
+    }
+
+    if (!project || !location) {
+      this.notify.showWidgetStyleUpdateNotification(
+        this.translate.instant('Integration.AgentPlatformInvalidUrl'),
         3,
         'error',
       );
@@ -112,6 +137,15 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       return;
     }
 
+    if (!this.hasUsableApiKey()) {
+      this.notify.showWidgetStyleUpdateNotification(
+        this.translate.instant('Integration.OpenRouterApiKeyRequired'),
+        3,
+        'error',
+      );
+      return;
+    }
+
     if (this.hasDuplicateName(name)) {
       this.notify.showWidgetStyleUpdateNotification(
         this.translate.instant('Integration.VllmDuplicateName'),
@@ -121,9 +155,33 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       return;
     }
 
-    if (this.hasDuplicateUrl(url)) {
+    if (url && this.hasDuplicateUrl(url)) {
       this.notify.showWidgetStyleUpdateNotification(
         this.translate.instant('Integration.VllmDuplicateUrl'),
+        3,
+        'error',
+      );
+      return;
+    }
+
+    const draftKey = String(this.currentEndpoint.apikey || '').trim();
+    let apikeyProps: { apikey?: string } = {};
+    if (this.apiKeyIsReplacing) {
+      if (draftKey && !isMaskedApikey(draftKey)) {
+        apikeyProps = { apikey: draftKey };
+      }
+    } else if (this.isEditing && this.editingIndex >= 0) {
+      const prev = String(this.integration.value.servers[this.editingIndex]?.apikey || '').trim();
+      if (prev) {
+        apikeyProps = { apikey: prev };
+      }
+    } else if (draftKey && !isMaskedApikey(draftKey)) {
+      apikeyProps = { apikey: draftKey };
+    }
+
+    if (!apikeyProps.apikey) {
+      this.notify.showWidgetStyleUpdateNotification(
+        this.translate.instant('Integration.OpenRouterApiKeyRequired'),
         3,
         'error',
       );
@@ -134,9 +192,9 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       name,
       url,
       models,
-      project: parsed.project,
-      location: parsed.location,
-      ...(apikey ? { apikey } : {}),
+      project,
+      location,
+      ...apikeyProps,
     };
 
     if (this.isEditing && this.editingIndex >= 0) {
@@ -169,10 +227,12 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       };
       this.isEditing = true;
       this.editingIndex = index;
-      this.isMasked = true;
+      this.endpointStoredApikey = endpoint.apikey || '';
+      this.apiKeyFieldReset++;
       this.newModelName = '';
       this.showEnterButton = false;
       this.urlSeededModel = null;
+      this.locationProjectFromUrl = !!this.parseProjectLocationFromUrl(endpoint.url || '');
     }
   }
 
@@ -260,8 +320,10 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
     this.editingIndex = -1;
     this.newModelName = '';
     this.showEnterButton = false;
-    this.isMasked = true;
+    this.endpointStoredApikey = '';
+    this.apiKeyFieldReset++;
     this.urlSeededModel = null;
+    this.locationProjectFromUrl = false;
   }
 
   saveIntegration(): void {
@@ -273,47 +335,66 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
     this.onUpdateIntegration.emit(data);
   }
 
-  handleInput(event: Event): void {
-    const inputElement = event.target as HTMLInputElement;
-    const displayedValue = inputElement.value;
-    const currentValue = this.currentEndpoint.apikey || '';
-
-    if (this.isMasked && currentValue) {
-      const newChar = displayedValue.slice(currentValue.length);
-      this.currentEndpoint.apikey = currentValue + newChar;
-    } else {
-      this.currentEndpoint.apikey = displayedValue;
-    }
-
-    inputElement.value = this.getDisplayValue();
-  }
-
-  handleBackspace(): void {
-    if (this.currentEndpoint.apikey) {
-      this.currentEndpoint.apikey = this.currentEndpoint.apikey.slice(0, -1);
-    }
-  }
-
-  toggleMask(inputElement: HTMLInputElement): void {
-    this.isMasked = !this.isMasked;
-    inputElement.value = this.getDisplayValue();
-  }
-
-  getDisplayValue(): string {
-    if (!this.currentEndpoint.apikey) {
-      return '';
-    }
-    return this.isMasked ? '●'.repeat(this.currentEndpoint.apikey.length) : this.currentEndpoint.apikey;
-  }
-
   canSubmit(): boolean {
     const pendingModel = String(this.newModelName || '').trim();
     const modelsCount = this.normalizeModels(this.currentEndpoint.models).length;
+    const name = String(this.currentEndpoint.name || '').trim();
     const url = String(this.currentEndpoint.url || '').trim();
-    return !!String(this.currentEndpoint.name || '').trim()
-      && !!url
-      && !!this.parseProjectLocationFromUrl(url)
-      && (modelsCount > 0 || !!pendingModel);
+    const project = String(this.currentEndpoint.project || '').trim();
+    const location = String(this.currentEndpoint.location || '').trim();
+    const hasModels = modelsCount > 0 || !!pendingModel;
+
+    if (!name || !hasModels || !this.hasUsableApiKey()) {
+      return false;
+    }
+
+    if (url) {
+      return !!this.parseProjectLocationFromUrl(url);
+    }
+
+    return !!project && !!location;
+  }
+
+  /**
+   * API key is required. New endpoint: draft key must be present.
+   * Edit: keep stored key, or a non-empty replacement while in Change mode.
+   * (Do not use apiKeyCanSave alone: when optional=false it is false for an unchanged stored key.)
+   */
+  private hasUsableApiKey(): boolean {
+    if (this.apiKeyIsReplacing) {
+      const draft = String(this.currentEndpoint.apikey || '').trim();
+      return !!draft && !isMaskedApikey(draft);
+    }
+    if (this.isEditing && String(this.endpointStoredApikey || '').trim()) {
+      return true;
+    }
+    const draft = String(this.currentEndpoint.apikey || '').trim();
+    return !!draft && !isMaskedApikey(draft);
+  }
+
+  private syncLocationProjectFromUrl(url: string): void {
+    const trimmed = String(url || '').trim();
+    const parsed = trimmed ? this.parseProjectLocationFromUrl(trimmed) : null;
+
+    if (parsed) {
+      this.currentEndpoint.project = parsed.project;
+      this.currentEndpoint.location = parsed.location;
+      this.locationProjectFromUrl = true;
+      return;
+    }
+
+    if (!trimmed) {
+      // URL cleared — unlock fields, keep values so the user can edit them manually.
+      this.locationProjectFromUrl = false;
+      return;
+    }
+
+    if (this.locationProjectFromUrl) {
+      // Non-empty invalid URL after a successful parse — clear derived values.
+      this.currentEndpoint.project = '';
+      this.currentEndpoint.location = '';
+      this.locationProjectFromUrl = false;
+    }
   }
 
   private syncModelFromUrl(url: string): void {
@@ -348,10 +429,10 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   }
 
   /**
-   * Validate a Gemini Agent Platform generateContent URL and extract project/location.
+   * Validate a Gemini Agent Platform URL and extract project/location.
    * - malformed: not a proper http(s) URL (e.g. "ttps://...", "3. https://...")
-   * - missing_path_parts: valid URL but missing project/location and/or model|endpoint
-   *   (publisher: .../models/{id}:generateContent, tuned: .../endpoints/{id}:generateContent)
+   * - missing_path_parts: valid URL but missing project/location, or neither
+   *   .../publishers/google (publisher; model optional) nor .../endpoints/{id} (tuned)
    */
   private validateAgentPlatformUrl(url: string):
     | { ok: true; project: string; location: string }
@@ -383,8 +464,11 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       return { ok: false, reason: 'missing_path_parts' };
     }
 
-    const hasModelOrEndpoint = !!pathAndSearch.match(MODEL_RE) || !!pathAndSearch.match(ENDPOINT_RE);
-    if (!hasModelOrEndpoint) {
+    // Publisher URLs are valid up to /publishers/google; model is added separately.
+    // Tuned URLs still use /endpoints/{id}.
+    const hasPublishersGoogle = PUBLISHERS_GOOGLE_RE.test(pathAndSearch);
+    const hasEndpoint = !!pathAndSearch.match(ENDPOINT_RE);
+    if (!hasPublishersGoogle && !hasEndpoint) {
       return { ok: false, reason: 'missing_path_parts' };
     }
 
@@ -417,7 +501,13 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
 
     const servers = (this.integration.value?.servers || [])
       .map((endpoint: AgentPlatformEndpoint) => this.normalizeStoredEndpoint(endpoint))
-      .filter((endpoint: AgentPlatformEndpoint) => !!endpoint.name && !!endpoint.url && !!endpoint.project && !!endpoint.location);
+      .filter((endpoint: AgentPlatformEndpoint) =>
+        !!endpoint.name
+        && !!endpoint.project
+        && !!endpoint.location
+        && !!String(endpoint.apikey || '').trim()
+        && this.normalizeModels(endpoint.models).length > 0
+      );
 
     this.integration.value = { servers };
   }
@@ -493,6 +583,9 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
 
   private hasDuplicateUrl(url: string): boolean {
     const normalizedUrl = this.normalizeValue(url);
+    if (!normalizedUrl) {
+      return false;
+    }
     return this.integration.value.servers.some((endpoint: AgentPlatformEndpoint, index: number) =>
       index !== this.editingIndex && this.normalizeValue(endpoint.url) === normalizedUrl
     );
@@ -501,10 +594,18 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   private findEndpointIndex(endpoint: AgentPlatformEndpoint): number {
     const normalizedName = this.normalizeValue(endpoint.name);
     const normalizedUrl = this.normalizeValue(endpoint.url);
+    const normalizedProject = this.normalizeValue(endpoint.project);
+    const normalizedLocation = this.normalizeValue(endpoint.location);
 
-    return this.integration.value.servers.findIndex((item: AgentPlatformEndpoint) =>
-      this.normalizeValue(item.name) === normalizedName &&
-      this.normalizeValue(item.url) === normalizedUrl
-    );
+    return this.integration.value.servers.findIndex((item: AgentPlatformEndpoint) => {
+      if (this.normalizeValue(item.name) !== normalizedName) {
+        return false;
+      }
+      if (normalizedUrl) {
+        return this.normalizeValue(item.url) === normalizedUrl;
+      }
+      return this.normalizeValue(item.project) === normalizedProject
+        && this.normalizeValue(item.location) === normalizedLocation;
+    });
   }
 }

@@ -1,0 +1,89 @@
+<div class="openrouter-table-wrapper">
+    <div class="filters-card">
+        <div class="card-content">
+            <div class="search-filters-card-header">
+                <div class="fake-input">
+                    <input
+                        type="text"
+                        [(ngModel)]="filterText"
+                        (input)="onFilterChange($any($event.target).value)"
+                        placeholder="{{ 'Integration.SearchByModelOrProvider' | translate }}">
+                    <span class="material-icons-outlined">search</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card contents-card">
+        <div class="card-header">
+            <div class="models-count">
+                {{ 'Integration.TotalOpenRouterModels' | translate }}: <span class="count-num">{{ filteredModels.length }}</span>
+            </div>
+        </div>
+
+        <div class="table-body card-content table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="sortable-column" (click)="onSort('name')">
+                            <span>{{ 'Integration.Model' | translate }}</span>
+                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('name') }}</span>
+                        </th>
+                        <th class="sortable-column" (click)="onSort('id')">
+                            <span>{{ 'Integration.ModelId' | translate }}</span>
+                            <span class="material-icons-outlined sort-icon">{{ getSortIcon('id') }}</span>
+                        </th>
+                        <th class="providers-column">
+                            <span>{{ 'Integration.Providers' | translate }}</span>
+                        </th>
+                        <th class="actions-column"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let model of filteredModels"
+                        class="model-row"
+                        (click)="onRowClick(model)">
+                        <td class="name-column">
+                            <span class="model-name">{{ model.name }}</span>
+                        </td>
+                        <td class="id-column">
+                            <span class="model-id">{{ model.id }}</span>
+                        </td>
+                        <td class="providers-column">
+                            <div class="providers-cell">
+                                <span class="provider-chip" *ngFor="let provider of getProviders(model); let i = index">
+                                    <span class="provider-rank">{{ i + 1 }}</span>{{ provider }}
+                                </span>
+                                <span class="provider-any" *ngIf="getProviders(model).length === 0">
+                                    {{ 'Integration.OpenRouterAnyProvider' | translate }}
+                                </span>
+                                <span class="routing-summary">{{ getRoutingSummary(model) }}</span>
+                            </div>
+                        </td>
+                        <td class="actions-column">
+                            <button
+                                mat-icon-button
+                                (click)="onDelete(model, $event)"
+                                [matTooltip]="'Delete' | translate"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltipHideDelay="100"
+                                [matTooltipPosition]="'after'"
+                                aria-label="Delete"
+                                class="delete-button">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="filteredModels.length === 0">
+                        <td colspan="4" class="no-data">
+                            <div class="no-data-message">
+                                <span class="material-icons-outlined">layers_clear</span>
+                                <p>{{ emptyStateMessageKey | translate }}</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -664,10 +664,10 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
       'tags':this.kbTagsArray
     };
     if (this.selectedNamespace.preview_settings.llm === 'vllm' && this.selectedNamespace.preview_settings.vllmServer) {
-      this.body.vllmServer = this.selectedNamespace.preview_settings.vllmServer;
+      this.body.llmServer = this.selectedNamespace.preview_settings.vllmServer;
     }
     if (this.selectedNamespace.preview_settings.llm === 'agentplatform' && this.selectedNamespace.preview_settings.agentplatformServer) {
-      this.body.agentplatformServer = this.selectedNamespace.preview_settings.agentplatformServer;
+      this.body.llmServer = this.selectedNamespace.preview_settings.agentplatformServer;
     }
     // this.error_answer = false;
 

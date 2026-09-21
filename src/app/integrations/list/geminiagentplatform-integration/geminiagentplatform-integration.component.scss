@@ -62,6 +62,12 @@ p {
   &.input-error {
     border-color: #d06079;
   }
+
+  &.input-readonly {
+    background-color: #f1f3f5;
+    color: #495057;
+    cursor: default;
+  }
 }
 
 .field-error {
