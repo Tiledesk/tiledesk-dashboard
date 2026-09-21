@@ -48,8 +48,8 @@
 
         <integration-api-key-field
             [storedApikey]="endpointStoredApikey"
-            [optional]="true"
-            [showOptionalHint]="true"
+            [optional]="false"
+            [showOptionalHint]="false"
             [resetKey]="apiKeyFieldReset"
             (apikeyChange)="currentEndpoint.apikey = $event"
             (canSaveChange)="apiKeyCanSave = $event"

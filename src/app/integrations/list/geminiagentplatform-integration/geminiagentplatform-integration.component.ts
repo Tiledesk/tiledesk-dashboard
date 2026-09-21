@@ -31,7 +31,7 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   editingIndex = -1;
   newModelName = '';
   showEnterButton = false;
-  apiKeyCanSave = true;
+  apiKeyCanSave = false;
   apiKeyIsReplacing = false;
   apiKeyFieldReset = 0;
   endpointStoredApikey = '';
@@ -135,6 +135,15 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       return;
     }
 
+    if (!this.hasUsableApiKey()) {
+      this.notify.showWidgetStyleUpdateNotification(
+        this.translate.instant('Integration.OpenRouterApiKeyRequired'),
+        3,
+        'error',
+      );
+      return;
+    }
+
     if (this.hasDuplicateName(name)) {
       this.notify.showWidgetStyleUpdateNotification(
         this.translate.instant('Integration.VllmDuplicateName'),
@@ -154,17 +163,27 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
     }
 
     const draftKey = String(this.currentEndpoint.apikey || '').trim();
-    let apikeyProps = {};
+    let apikeyProps: { apikey?: string } = {};
     if (this.apiKeyIsReplacing) {
       if (draftKey && !isMaskedApikey(draftKey)) {
         apikeyProps = { apikey: draftKey };
       }
-      // else clear / omit
     } else if (this.isEditing && this.editingIndex >= 0) {
       const prev = String(this.integration.value.servers[this.editingIndex]?.apikey || '').trim();
-      if (prev) apikeyProps = { apikey: prev };
+      if (prev) {
+        apikeyProps = { apikey: prev };
+      }
     } else if (draftKey && !isMaskedApikey(draftKey)) {
       apikeyProps = { apikey: draftKey };
+    }
+
+    if (!apikeyProps.apikey) {
+      this.notify.showWidgetStyleUpdateNotification(
+        this.translate.instant('Integration.OpenRouterApiKeyRequired'),
+        3,
+        'error',
+      );
+      return;
     }
 
     const endpointToSave: AgentPlatformEndpoint = {
@@ -323,7 +342,7 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
     const location = String(this.currentEndpoint.location || '').trim();
     const hasModels = modelsCount > 0 || !!pendingModel;
 
-    if (!name || !hasModels || !this.apiKeyCanSave) {
+    if (!name || !hasModels || !this.hasUsableApiKey()) {
       return false;
     }
 
@@ -332,6 +351,23 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
     }
 
     return !!project && !!location;
+  }
+
+  /**
+   * API key is required. New endpoint: draft key must be present.
+   * Edit: keep stored key, or a non-empty replacement while in Change mode.
+   * (Do not use apiKeyCanSave alone: when optional=false it is false for an unchanged stored key.)
+   */
+  private hasUsableApiKey(): boolean {
+    if (this.apiKeyIsReplacing) {
+      const draft = String(this.currentEndpoint.apikey || '').trim();
+      return !!draft && !isMaskedApikey(draft);
+    }
+    if (this.isEditing && String(this.endpointStoredApikey || '').trim()) {
+      return true;
+    }
+    const draft = String(this.currentEndpoint.apikey || '').trim();
+    return !!draft && !isMaskedApikey(draft);
   }
 
   private syncLocationProjectFromUrl(url: string): void {
@@ -464,6 +500,7 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
         !!endpoint.name
         && !!endpoint.project
         && !!endpoint.location
+        && !!String(endpoint.apikey || '').trim()
         && this.normalizeModels(endpoint.models).length > 0
       );
 
