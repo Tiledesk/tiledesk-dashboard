@@ -4,7 +4,6 @@
 - Improves Gemini Agent Platform endpoint setup with Project/Location fields and table columns
 - Adds the OpenRouter integration: configure the API key, pick models and the providers that run the inference
 
-
 ### 2.8.24
 - Adds Gemini Agent Platform integration
 
