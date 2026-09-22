@@ -2898,6 +2898,7 @@
         "TotalVllmEndpoints": "إجمالي نقاط النهاية",
         "SearchByNameURLOrModels": "البحث بالاسم أو URL",
         "SearchByNameProjectLocationOrModels": "البحث بالاسم أو المشروع أو الموقع أو النماذج",
+        "Location": "موقع",
         "NoVllmEndpoints": "لا توجد نقاط نهاية",
         "NoVllmEndpointsFound": "لم يتم العثور على نقاط نهاية",
         "VllmEndpointNamePlaceholder": "أدخل اسم نقطة النهاية",

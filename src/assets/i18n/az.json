@@ -2899,6 +2899,7 @@
         "TotalVllmEndpoints": "Ümumi endpoint sayı",
         "SearchByNameURLOrModels": "Ad, URL və ya modellərə görə axtar",
         "SearchByNameProjectLocationOrModels": "Ad, layihə, məkan və ya modellərə görə axtar",
+        "Location": "Məkan",
         "NoVllmEndpoints": "Endpoint yoxdur",
         "NoVllmEndpointsFound": "Endpoint tapılmadı",
         "VllmEndpointNamePlaceholder": "Endpoint adını daxil edin",

@@ -2899,6 +2899,7 @@
         "TotalVllmEndpoints": "Totalt antal endpoints",
         "SearchByNameURLOrModels": "Sök efter namn eller URL",
         "SearchByNameProjectLocationOrModels": "Sök efter namn, projekt, plats eller modeller",
+        "Location": "Plats",
         "NoVllmEndpoints": "Inga endpoints",
         "NoVllmEndpointsFound": "Inga endpoints hittades",
         "VllmEndpointNamePlaceholder": "Ange endpoint-namn",

@@ -2899,6 +2899,7 @@
         "TotalVllmEndpoints": "Укупно endpoint-а",
         "SearchByNameURLOrModels": "Претражи по имену или URL-у",
         "SearchByNameProjectLocationOrModels": "Pretraži po imenu, projektu, lokaciji ili modelima",
+        "Location": "Локација",
         "NoVllmEndpoints": "Нема endpoint-а",
         "NoVllmEndpointsFound": "Ниједан endpoint није пронађен",
         "VllmEndpointNamePlaceholder": "Унесите име endpoint-а",

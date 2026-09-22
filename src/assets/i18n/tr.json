@@ -2899,6 +2899,7 @@
         "TotalVllmEndpoints": "Toplam Uç Nokta",
         "SearchByNameURLOrModels": "Ada, URL veya modellere göre ara",
         "SearchByNameProjectLocationOrModels": "Ada, proje, konum veya modellere göre ara",
+        "Location": "Konum",
         "NoVllmEndpoints": "Uç nokta yok",
         "NoVllmEndpointsFound": "Uç nokta bulunamadı",
         "VllmEndpointNamePlaceholder": "Uç nokta adını girin",
