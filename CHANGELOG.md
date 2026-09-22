@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.8.26
+- Improves translations in the integration Gemini Agent Platform
+- Fixes the bug: conversation detail showed oversized `h1` text inside chat message bubbles
+
 ### 2.8.25
 - Adds Gemini Agent Platform integration with Project/Location fields in the endpoint setup and table
 - Adds the OpenRouter integration: configure the API key, pick models and the providers that run the inference
