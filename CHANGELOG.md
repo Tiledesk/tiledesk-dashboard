@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.251-stage
+- Accepts Gemini Agent Platform URLs up to `/publishers/google` (model is configured separately)
+- Fixes the bug: conversation detail showed oversized `h1` text inside chat message bubbles
+- Improves translations in the integration Gemini Agent Platform
+
 ### 2.7.250-stage
 - Updates the Gemini Agent Platform integration to make the API key required
 
