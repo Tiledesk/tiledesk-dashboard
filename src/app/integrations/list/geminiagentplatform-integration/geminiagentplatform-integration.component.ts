@@ -7,9 +7,11 @@ import { AgentPlatformEndpoint } from './agentplatform-endpoint-table/agentplatf
 
 const Swal = require('sweetalert2');
 
-/** Gemini Agent Platform generateContent URL: .../projects/{project}/locations/{location}/... */
+/** Gemini Agent Platform URL: .../projects/{project}/locations/{location}/... */
 const PROJECT_LOCATION_RE = /\/projects\/([^/]+)\/locations\/([^/]+)\//i;
-/** .../models/{modelId}:generateContent */
+/** Minimum publisher path (model is optional — user can add models separately). */
+const PUBLISHERS_GOOGLE_RE = /\/publishers\/google(?:\/|:|$|\?)/i;
+/** .../models/{modelId}:generateContent — optional; used to seed the models list from the URL */
 const MODEL_RE = /\/models\/([^/:]+)(?::|$|\/|\?)/i;
 /** .../endpoints/{endpointId}:generateContent (tuned model) */
 const ENDPOINT_RE = /\/endpoints\/([^/:]+)(?::|$|\/|\?)/i;
@@ -427,10 +429,10 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
   }
 
   /**
-   * Validate a Gemini Agent Platform generateContent URL and extract project/location.
+   * Validate a Gemini Agent Platform URL and extract project/location.
    * - malformed: not a proper http(s) URL (e.g. "ttps://...", "3. https://...")
-   * - missing_path_parts: valid URL but missing project/location and/or model|endpoint
-   *   (publisher: .../models/{id}:generateContent, tuned: .../endpoints/{id}:generateContent)
+   * - missing_path_parts: valid URL but missing project/location, or neither
+   *   .../publishers/google (publisher; model optional) nor .../endpoints/{id} (tuned)
    */
   private validateAgentPlatformUrl(url: string):
     | { ok: true; project: string; location: string }
@@ -462,8 +464,11 @@ export class GeminiAgentPlatformIntegrationComponent implements OnInit, OnChange
       return { ok: false, reason: 'missing_path_parts' };
     }
 
-    const hasModelOrEndpoint = !!pathAndSearch.match(MODEL_RE) || !!pathAndSearch.match(ENDPOINT_RE);
-    if (!hasModelOrEndpoint) {
+    // Publisher URLs are valid up to /publishers/google; model is added separately.
+    // Tuned URLs still use /endpoints/{id}.
+    const hasPublishersGoogle = PUBLISHERS_GOOGLE_RE.test(pathAndSearch);
+    const hasEndpoint = !!pathAndSearch.match(ENDPOINT_RE);
+    if (!hasPublishersGoogle && !hasEndpoint) {
       return { ok: false, reason: 'missing_path_parts' };
     }
 

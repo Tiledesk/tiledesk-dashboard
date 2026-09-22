@@ -2980,11 +2980,12 @@
         "TotalAgentPlatformEndpoints": "Total Endpoints",
         "NoAgentPlatformEndpoints": "No endpoints",
         "NoAgentPlatformEndpointsFound": "No endpoints found",
-        "AgentPlatformEndpointUrlPlaceholder": "https://.../v1/projects/.../locations/.../models/...:generateContent",
+        "AgentPlatformEndpointUrlPlaceholder": "https://.../v1/projects/.../locations/.../publishers/google",
         "AgentPlatformInvalidUrlFormat": "Invalid URL",
-        "AgentPlatformInvalidUrl": "Invalid Gemini Agent Platform URL: project, location and model (or endpoint) not found",
+        "AgentPlatformInvalidUrl": "Invalid Gemini Agent Platform URL: project, location or publishers/google path not found",
         "ApiKey": "API Key",
-        "PasteNewApikey": "Paste your new API key"
+        "PasteNewApikey": "Paste your new API key",
+        "Location": "Location"
     },
     "ViewTeammates": "View teammates",
     "AddNewTeammate": "Add new teammate",
