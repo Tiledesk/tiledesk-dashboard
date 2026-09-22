@@ -2917,6 +2917,7 @@
         "TotalVllmEndpoints": "Total Endpoints",
         "SearchByNameURLOrModels": "Search by name or URL",
         "SearchByNameProjectLocationOrModels": "Search by name, project, location or models",
+        "Location": "Location",
         "NoVllmEndpoints": "No endpoints",
         "NoVllmEndpointsFound": "No endpoints found",
         "VllmEndpointNamePlaceholder": "Enter endpoint name",
