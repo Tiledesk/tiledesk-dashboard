@@ -1,7 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.8.25
-- Improves Gemini Agent Platform endpoint setup with Project/Location fields and table columns
+- Adds Gemini Agent Platform integration with Project/Location fields in the endpoint setup and table
 - Adds the OpenRouter integration: configure the API key, pick models and the providers that run the inference
 
 ### 2.8.24
