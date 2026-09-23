@@ -533,19 +533,21 @@ export function computeOverviewPercentChange(current: number, previous: number):
     return current > 0 ? 100 : 0;
   }
   const raw = ((current - previous) / previous) * 100;
-  const rounded = Math.round(raw);
-  if (rounded === 0 && current !== previous) {
-    const oneDecimal = Math.round(raw * 10) / 10;
-    if (oneDecimal !== 0) { return oneDecimal; }
+  // Match home-kb-analytics: keep one decimal of precision.
+  const oneDecimal = Math.round(raw * 10) / 10;
+  if (oneDecimal === 0 && current !== previous) {
     return current > previous ? 0.1 : -0.1;
   }
-  return rounded;
+  return oneDecimal;
 }
 
 export function formatOverviewSignedPercent(percent: number): string {
   if (!Number.isFinite(percent)) { return '0%'; }
   if (percent === 0) { return '0%'; }
-  const value = Number.isInteger(percent) ? String(percent) : percent.toFixed(1);
-  if (percent > 0) { return `+${value}%`; }
-  return `${value}%`;
+  const abs = Math.abs(percent).toLocaleString(undefined, {
+    minimumFractionDigits: 1,
+    maximumFractionDigits: 1,
+  });
+  if (percent > 0) { return `+${abs}%`; }
+  return `−${abs}%`;
 }

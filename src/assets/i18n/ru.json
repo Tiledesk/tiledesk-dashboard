@@ -3623,6 +3623,7 @@
         "AveragePerDay": "в среднем {{value}}/день",
         "ConversationsOverTime": "Разговоры во времени",
         "Title": "Обзор",
+        "QueriesPerKbOverTime": "Запросы по KB во времени",
         "TokenConsumptionOverTime": "Расход токенов во времени",
         "Total": "Всего",
         "WithAiAgent": "С AI Agent",

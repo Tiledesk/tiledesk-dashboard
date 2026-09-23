@@ -3623,6 +3623,7 @@
         "AveragePerDay": "o‘rt. {{value}}/kun",
         "ConversationsOverTime": "Vaqt boʻyicha suhbatlar",
         "Title": "Umumiy koʻrinish",
+        "QueriesPerKbOverTime": "Vaqt boʻyicha KB soʻrovlari",
         "TokenConsumptionOverTime": "Vaqt boʻyicha token sarfi",
         "Total": "Jami",
         "WithAiAgent": "AI Agent bilan",

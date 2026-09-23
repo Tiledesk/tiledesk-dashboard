@@ -3624,6 +3624,7 @@
         "AveragePerDay": "orta {{value}}/gün",
         "ConversationsOverTime": "Zaman üzrə söhbətlər",
         "Title": "İcmal",
+        "QueriesPerKbOverTime": "Zaman üzrə KB üzrə sorğular",
         "TokenConsumptionOverTime": "Zaman üzrə token istehlakı",
         "Total": "Cəmi",
         "WithAiAgent": "AI Agent ilə",

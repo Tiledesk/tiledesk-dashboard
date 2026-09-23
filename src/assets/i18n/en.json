@@ -3643,6 +3643,7 @@
         "AveragePerDay": "avg {{value}}/day",
         "ConversationsOverTime": "Conversations Over Time",
         "Title": "Overview",
+        "QueriesPerKbOverTime": "Queries per KB Over Time",
         "TokenConsumptionOverTime": "Token Consumption Over Time",
         "Total": "Total",
         "WithAiAgent": "With AI Agent",

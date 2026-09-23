@@ -3624,6 +3624,7 @@
         "AveragePerDay": "сер. {{value}}/день",
         "ConversationsOverTime": "Розмови в часі",
         "Title": "Огляд",
+        "QueriesPerKbOverTime": "Запити на KB у часі",
         "TokenConsumptionOverTime": "Споживання токенів у часі",
         "Total": "Усього",
         "WithAiAgent": "З AI Agent",
