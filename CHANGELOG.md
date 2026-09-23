@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.252-stage
+- Replaces the Token Consumption Over Time chart with Queries per KB Over Time in the Home Overview
+- Removes the section KB analytics
+- Other improvements
+
 ### 2.7.251-stage
 - Accepts Gemini Agent Platform URLs up to `/publishers/google` (model is configured separately)
 - Fixes the bug: conversation detail showed oversized `h1` text inside chat message bubbles
