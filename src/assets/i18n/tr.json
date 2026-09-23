@@ -3578,6 +3578,7 @@
         "AveragePerDay": "ort. {{value}}/gün",
         "ConversationsOverTime": "Zaman içinde konuşmalar",
         "Title": "Özet",
+        "QueriesPerKbOverTime": "Zaman içinde KB başına sorgular",
         "TokenConsumptionOverTime": "Zaman içinde token tüketimi",
         "Total": "Toplam",
         "WithAiAgent": "AI Agent ile",

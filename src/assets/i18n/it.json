@@ -3593,6 +3593,7 @@
         "AveragePerDay": "media {{value}}/giorno",
         "ConversationsOverTime": "Conversazioni nel tempo",
         "Title": "Panoramica",
+        "QueriesPerKbOverTime": "Query per KB nel tempo",
         "TokenConsumptionOverTime": "Consumo token nel tempo",
         "Total": "Totale",
         "WithAiAgent": "Con AI Agent",

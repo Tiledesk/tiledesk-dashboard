@@ -3578,6 +3578,7 @@
         "AveragePerDay": "snitt {{value}}/dag",
         "ConversationsOverTime": "Konversationer över tid",
         "Title": "Översikt",
+        "QueriesPerKbOverTime": "Frågor per KB över tid",
         "TokenConsumptionOverTime": "Tokenförbrukning över tid",
         "Total": "Totalt",
         "WithAiAgent": "Med AI Agent",

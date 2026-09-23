@@ -301,6 +301,8 @@
 
 .home-flow__card {
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
   padding: 14px 16px;
   border-right: 1px solid #e8e4df;
   min-width: 0;
@@ -341,9 +343,71 @@
 
 .home-flow__models {
   margin-top: 14px;
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  border-radius: 4px;
+
+  // Fill card height; scroll when expanded instead of locking to 2 rows
+  &--expanded {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+    scrollbar-color: #9aa0a6 #eef1f4;
+    padding-right: 2px;
+
+    &::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #eef1f4;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #9aa0a6;
+      border-radius: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #767b82;
+    }
+  }
+
+  &--flash {
+    animation: home-flow-kb-list-flash 1400ms ease-out;
+  }
+}
+
+.home-flow__models-more {
+  margin-top: auto;
+  padding-top: 10px;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.home-flow__model-overflow {
+  align-self: flex-start;
+  margin-top: 2px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #039be5;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .home-flow__model-head {
@@ -457,7 +521,8 @@
 }
 
 .home-flow__kb-more {
-  margin-top: 4px;
+  margin-top: auto;
+  padding-top: 10px;
   min-width: 0;
   display: flex;
   align-items: center;

@@ -3578,6 +3578,7 @@
         "AveragePerDay": "орташа {{value}}/күн",
         "ConversationsOverTime": "Уақыт бойынша әңгімелер",
         "Title": "Шолу",
+        "QueriesPerKbOverTime": "Уақыт бойынша KB сұраулары",
         "TokenConsumptionOverTime": "Уақыт бойынша токен тұтынуы",
         "Total": "Барлығы",
         "WithAiAgent": "AI Agent бар",
