@@ -3629,6 +3629,7 @@
         "AveragePerDay": "просек {{value}}/дан",
         "ConversationsOverTime": "Разговори током времена",
         "Title": "Преглед",
+        "QueriesPerKbOverTime": "Упити по KB током времена",
         "TokenConsumptionOverTime": "Потрошња токена током времена",
         "Total": "Укупно",
         "WithAiAgent": "Са AI Agent",
