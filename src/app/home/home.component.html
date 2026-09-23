@@ -186,12 +186,14 @@
                     </mat-checkbox>
                     <span>{{ 'HomeOverview.Title' | translate }}</span>
                   </button>
+                  <!-- Hidden: home-kb-analytics removed from dashlet menu (Queries to KBs is in Overview)
                   <button mat-menu-item *ngIf="showHomeKbAnalyticsDashletToggle" (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayHomeKbAnalytics"
                       (change)="switchHomeKbAnalytics($event.checked)">
                     </mat-checkbox>
                     <span>{{ 'HomeKbAnalytics.Title' | translate }}</span>
                   </button>
+                  -->
                 </mat-menu>
               </div>
             </div>
@@ -621,11 +623,13 @@
               </appdashboard-home-analytics-indicator>
             </ng-container>
 
+            <!-- Hidden: home-kb-analytics removed from Home (Queries to KBs is in Overview). Recoverable.
             <home-kb-analytics
               *ngIf="displayHomeKbAnalytics && isNewAnalyticsConfigured && PERMISSION_TO_VIEW_KB && isVisibleKNB && (showskeleton || areVisibleChatbot)"
               [project]="project"
               [PERMISSION_TO_VIEW_KB]="PERMISSION_TO_VIEW_KB">
             </home-kb-analytics>
+            -->
 
             <!-- Hidden: Analytics overview (home-analytics-embed) removed from dashlet menu
             <home-analytics-embed

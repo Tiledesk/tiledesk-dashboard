@@ -276,7 +276,10 @@ export class HomeKbAnalyticsComponent implements OnInit, OnChanges, AfterViewIni
 
     this.stackedChart = echarts.init(stackedEl);
     this.stackedChart.setOption(
-      buildKbStackedBarChartOption(this.currentParsed.dayKeys, this.currentParsed.series),
+      buildKbStackedBarChartOption(
+        this.currentParsed.dayKeys,
+        this.currentParsed.series,
+      ),
     );
 
     const rateLabel = this.translate.instant('HomeKbAnalytics.ResponseRate');

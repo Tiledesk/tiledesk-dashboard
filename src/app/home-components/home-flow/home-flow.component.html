@@ -134,8 +134,14 @@
             </div>
           </ng-container>
           <ng-template #modelsReady>
-            <div class="home-flow__models" *ngIf="modelUsage.length; else modelsEmpty">
-              <div *ngFor="let model of modelUsage; let i = index" class="home-flow__model-row">
+            <div
+              #modelsListEl
+              class="home-flow__models"
+              [class.home-flow__models--expanded]="modelsListExpanded"
+              [class.home-flow__models--flash]="modelsListFlash"
+              (scroll)="onModelsListScroll()"
+              *ngIf="modelUsage.length; else modelsEmpty">
+              <div *ngFor="let model of displayedModelUsage; let i = index" class="home-flow__model-row">
                 <div class="home-flow__model-head">
                   <span class="home-flow__model-name">{{ model.model }}</span>
                   <span class="home-flow__model-percent">{{ model.percent | number:'1.0-2' }}%</span>
@@ -148,12 +154,30 @@
                   </span>
                 </div>
               </div>
+              <button
+                *ngIf="modelsOverflowCount > 0"
+                type="button"
+                class="home-flow__model-overflow"
+                (click)="toggleModelsListExpand($event)">
+                +{{ modelsOverflowCount }}
+              </button>
             </div>
             <ng-template #modelsEmpty>
               <div class="home-flow__empty">—</div>
             </ng-template>
-            <div class="home-flow__card-foot" *ngIf="activeModelsCount">
-              {{ activeModelsCount }} {{ 'HomeFlow.ActiveModels' | translate }}
+            <div class="home-flow__models-more" *ngIf="modelsListExpanded">
+              <button
+                type="button"
+                class="home-flow__kb-more-link"
+                (click)="toggleModelsListExpand($event)">{{ 'NavBar.ShowLess' | translate }}</button>
+              <button
+                type="button"
+                class="home-flow__kb-scroll-btn"
+                [disabled]="!modelsListCanScrollDown"
+                (click)="scrollModelsListDown($event)"
+                aria-label="Scroll down">
+                <span class="material-icons" aria-hidden="true">keyboard_arrow_down</span>
+              </button>
             </div>
           </ng-template>
         </article>

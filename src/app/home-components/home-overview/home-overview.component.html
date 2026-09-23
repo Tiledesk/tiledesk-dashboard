@@ -1,85 +1,133 @@
-<section *ngIf="PERMISSION_TO_VIEW_ANALYTICS" class="home-overview">
-  <header class="home-overview__header">
-    <div class="home-overview__header-meta">
-      <span class="home-overview__eyebrow">
-        <span class="home-overview__eyebrow-icon" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-            <path d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z"/>
-          </svg>
+<ng-container *ngIf="PERMISSION_TO_VIEW_ANALYTICS">
+  <!-- Skeleton -->
+  <section *ngIf="loading" class="home-overview home-overview--skeleton" aria-hidden="true">
+    <header class="home-overview__header">
+      <div class="home-overview__header-meta">
+        <span class="home-overview__eyebrow">
+          <span class="home-overview__eyebrow-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+              <path d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z"/>
+            </svg>
+          </span>
+          <span>{{ 'HomeOverview.Title' | translate }}</span>
         </span>
-        <span>{{ 'HomeOverview.Title' | translate }}</span>
-      </span>
+      </div>
+    </header>
+    <div class="home-overview__body">
+      <article class="home-overview__card">
+        <div class="home-overview__card-label">
+          {{ 'HomeOverview.ConversationsOverTime' | translate }}
+          <span class="home-overview__label-sep" aria-hidden="true">·</span>
+          <span class="home-overview__label-period">{{ 'HomeFlow.Last10Days' | translate }}</span>
+        </div>
+        <div class="home-overview__metric-row">
+          <div class="ho-skel ho-skel--metric"></div>
+          <div class="ho-skel ho-skel--trend"></div>
+        </div>
+        <div class="ho-skel ho-skel--chart"></div>
+      </article>
+      <article class="home-overview__card home-overview__card--last">
+        <div class="home-overview__card-label">
+          {{ 'HomeOverview.QueriesPerKbOverTime' | translate }}
+          <span class="home-overview__label-sep" aria-hidden="true">·</span>
+          <span class="home-overview__label-period">{{ 'HomeFlow.Last10Days' | translate }}</span>
+        </div>
+        <div class="home-overview__metric-row">
+          <div class="ho-skel ho-skel--metric"></div>
+          <div class="ho-skel ho-skel--trend"></div>
+        </div>
+        <div class="ho-skel ho-skel--chart"></div>
+        <div class="home-overview__kb-legend home-overview__kb-legend--skel">
+          <div class="ho-skel ho-skel--legend" *ngFor="let _ of [1,2,3]"></div>
+        </div>
+      </article>
     </div>
-  </header>
+  </section>
 
-  <div class="home-overview__body">
-    <article class="home-overview__card">
-      <div class="home-overview__card-label">
-        {{ 'HomeOverview.ConversationsOverTime' | translate }}
-        <span class="home-overview__label-sep" aria-hidden="true">·</span>
-        <span class="home-overview__label-period">{{ 'HomeFlow.Last10Days' | translate }}</span>
-      </div>
-      <div class="home-overview__metric-row">
-        <div class="home-overview__metric-value">{{ loading ? '...' : (conversationsTotal | number:'1.0-0') }}</div>
-        <div
-          class="home-overview__chart-trend"
-          *ngIf="!loading && conversationsTrendPercent !== null"
-          [class.home-overview__chart-trend--flat]="conversationsTrendPercent === 0">
-          <span class="home-overview__chart-trend-icon" aria-hidden="true">
-            <mat-icon *ngIf="conversationsTrendPercent > 0" class="home-overview__chart-trend-arrow home-overview__chart-trend-arrow--up">arrow_upward</mat-icon>
-            <mat-icon *ngIf="conversationsTrendPercent < 0" class="home-overview__chart-trend-arrow home-overview__chart-trend-arrow--down">arrow_downward</mat-icon>
-            <span *ngIf="conversationsTrendPercent === 0" class="home-overview__chart-trend-flat">—</span>
+  <section *ngIf="!loading" class="home-overview">
+    <header class="home-overview__header">
+      <div class="home-overview__header-meta">
+        <span class="home-overview__eyebrow">
+          <span class="home-overview__eyebrow-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+              <path d="M80-120v-80h800v80H80Zm40-120v-280h120v280H120Zm200 0v-480h120v480H320Zm200 0v-360h120v360H520Zm200 0v-600h120v600H720Z"/>
+            </svg>
           </span>
-          <span
-            [class.home-overview__chart-trend--up]="conversationsTrendPercent > 0"
-            [class.home-overview__chart-trend--down]="conversationsTrendPercent < 0"
-            [class.home-overview__chart-trend--flat]="conversationsTrendPercent === 0">
-            {{ conversationsTrendLabel(conversationsTrendPercent) }}
-          </span>
-          <span class="home-overview__chart-trend-hint">
-            {{ 'HomeFlow.VsPrevious10Days' | translate }}
-            ({{ conversationsPreviousTotal | number:'1.0-0' }})
-          </span>
-        </div>
-      </div>
-      <div #conversationsChart class="home-overview__chart"></div>
-    </article>
-
-    <article class="home-overview__card home-overview__card--last">
-      <div class="home-overview__card-label">
-        {{ 'HomeOverview.TokenConsumptionOverTime' | translate }}
-        <span class="home-overview__label-sep" aria-hidden="true">·</span>
-        <span class="home-overview__label-period">
-          {{ 'HomeFlow.Last10Days' | translate }}
-          <ng-container *ngIf="!loading">
-            ({{ 'HomeOverview.AveragePerDay' | translate:{ value: (tokensAverageDaily | number:'1.0-0') } }})
-          </ng-container>
+          <span>{{ 'HomeOverview.Title' | translate }}</span>
         </span>
       </div>
-      <div class="home-overview__metric-row">
-        <div class="home-overview__metric-value">{{ loading ? '...' : (tokensTotal | number:'1.0-0') }}</div>
-        <div
-          class="home-overview__chart-trend"
-          *ngIf="!loading && tokensTrendPercent !== null"
-          [class.home-overview__chart-trend--flat]="tokensTrendPercent === 0">
-          <span class="home-overview__chart-trend-icon" aria-hidden="true">
-            <mat-icon *ngIf="tokensTrendPercent > 0" class="home-overview__chart-trend-arrow home-overview__chart-trend-arrow--up">arrow_upward</mat-icon>
-            <mat-icon *ngIf="tokensTrendPercent < 0" class="home-overview__chart-trend-arrow home-overview__chart-trend-arrow--down">arrow_downward</mat-icon>
-            <span *ngIf="tokensTrendPercent === 0" class="home-overview__chart-trend-flat">—</span>
-          </span>
-          <span
-            [class.home-overview__chart-trend--up]="tokensTrendPercent > 0"
-            [class.home-overview__chart-trend--down]="tokensTrendPercent < 0"
-            [class.home-overview__chart-trend--flat]="tokensTrendPercent === 0">
-            {{ tokensTrendLabel(tokensTrendPercent) }}
-          </span>
-          <span class="home-overview__chart-trend-hint">
-            {{ 'HomeFlow.VsPrevious10Days' | translate }}
-            ({{ tokensPreviousTotal | number:'1.0-0' }})
-          </span>
+    </header>
+
+    <div class="home-overview__body">
+      <article class="home-overview__card">
+        <div class="home-overview__card-label">
+          {{ 'HomeOverview.ConversationsOverTime' | translate }}
+          <span class="home-overview__label-sep" aria-hidden="true">·</span>
+          <span class="home-overview__label-period">{{ 'HomeFlow.Last10Days' | translate }}</span>
         </div>
-      </div>
-      <div #tokensChart class="home-overview__chart"></div>
-    </article>
-  </div>
-</section>
+        <div class="home-overview__metric-row">
+          <div class="home-overview__metric-value">{{ conversationsTotal | number:'1.0-0' }}</div>
+          <div
+            class="home-overview__chart-trend"
+            *ngIf="conversationsTrendPercent !== null"
+            [class.home-overview__chart-trend--flat]="conversationsTrendPercent === 0">
+            <span class="home-overview__chart-trend-icon" aria-hidden="true">
+              <mat-icon *ngIf="conversationsTrendPercent > 0" class="home-overview__chart-trend-arrow home-overview__chart-trend-arrow--up">arrow_upward</mat-icon>
+              <mat-icon *ngIf="conversationsTrendPercent < 0" class="home-overview__chart-trend-arrow home-overview__chart-trend-arrow--down">arrow_downward</mat-icon>
+              <span *ngIf="conversationsTrendPercent === 0" class="home-overview__chart-trend-flat">—</span>
+            </span>
+            <span
+              [class.home-overview__chart-trend--up]="conversationsTrendPercent > 0"
+              [class.home-overview__chart-trend--down]="conversationsTrendPercent < 0"
+              [class.home-overview__chart-trend--flat]="conversationsTrendPercent === 0">
+              {{ conversationsTrendLabel(conversationsTrendPercent) }}
+            </span>
+            <span class="home-overview__chart-trend-hint">
+              {{ 'HomeFlow.VsPrevious10Days' | translate }}
+              ({{ conversationsPreviousTotal | number:'1.0-0' }})
+            </span>
+          </div>
+        </div>
+        <div #conversationsChart class="home-overview__chart"></div>
+      </article>
+
+      <!-- Step 1: Token Consumption Over Time replaced by Queries to KBs (commented, keep for restore)
+      <article class="home-overview__card home-overview__card--last">
+        ... Token Consumption Over Time ...
+      </article>
+      -->
+
+      <article class="home-overview__card home-overview__card--last">
+        <div class="home-overview__card-label">
+          {{ 'HomeOverview.QueriesPerKbOverTime' | translate }}
+          <span class="home-overview__label-sep" aria-hidden="true">·</span>
+          <span class="home-overview__label-period">{{ 'HomeFlow.Last10Days' | translate }}</span>
+        </div>
+        <div class="home-overview__metric-row">
+          <div class="home-overview__metric-value">{{ kbQueriesTotal | number:'1.0-0' }}</div>
+          <div
+            class="home-overview__chart-trend"
+            *ngIf="kbQueriesTrendPercent !== null"
+            [class.home-overview__chart-trend--flat]="kbQueriesTrendPercent === 0">
+            <span class="home-overview__chart-trend-icon" aria-hidden="true">
+              <mat-icon *ngIf="kbQueriesTrendPercent > 0" class="home-overview__chart-trend-arrow home-overview__chart-trend-arrow--up">arrow_upward</mat-icon>
+              <mat-icon *ngIf="kbQueriesTrendPercent < 0" class="home-overview__chart-trend-arrow home-overview__chart-trend-arrow--down">arrow_downward</mat-icon>
+              <span *ngIf="kbQueriesTrendPercent === 0" class="home-overview__chart-trend-flat">—</span>
+            </span>
+            <span
+              [class.home-overview__chart-trend--up]="kbQueriesTrendPercent > 0"
+              [class.home-overview__chart-trend--down]="kbQueriesTrendPercent < 0"
+              [class.home-overview__chart-trend--flat]="kbQueriesTrendPercent === 0">
+              {{ conversationsTrendLabel(kbQueriesTrendPercent) }}
+            </span>
+            <span class="home-overview__chart-trend-hint">
+              {{ 'HomeKbAnalytics.QueriesVsPrevious10Days' | translate:{ previous: (kbQueriesPreviousTotal | number:'1.0-0') } }}
+            </span>
+          </div>
+        </div>
+        <div #kbQueriesChart class="home-overview__chart"></div>
+        <!-- Legend is rendered by ECharts (click to show/hide series), matching Analytics. -->
+      </article>
+    </div>
+  </section>
+</ng-container>

@@ -338,10 +338,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get showHomeKbAnalyticsDashletToggle(): boolean {
-    return this.USER_ROLE !== 'agent'
-      && this.isNewAnalyticsConfigured
-      && this.PERMISSION_TO_VIEW_KB
-      && this.isVisibleKNB;
+    // Hidden from Home UI / dashlet menu (Queries to KBs lives in Overview). Recoverable.
+    return false;
   }
 
   get hasAnyDashletToggle(): boolean {

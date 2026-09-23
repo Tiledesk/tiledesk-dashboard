@@ -3624,6 +3624,7 @@
         "AveragePerDay": "متوسط {{value}}/يوم",
         "ConversationsOverTime": "المحادثات عبر الزمن",
         "Title": "نظرة عامة",
+        "QueriesPerKbOverTime": "الاستعلامات لكل KB عبر الزمن",
         "TokenConsumptionOverTime": "استهلاك التوكن عبر الزمن",
         "Total": "الإجمالي",
         "WithAiAgent": "مع AI Agent",

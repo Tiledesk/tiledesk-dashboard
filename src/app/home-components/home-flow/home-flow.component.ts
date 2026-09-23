@@ -55,6 +55,7 @@ interface HomeFlowNamespaceWithChatbots {
 export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @ViewChild('conversationsChart') conversationsChartRef?: ElementRef<HTMLDivElement>;
   @ViewChild('kbListEl') kbListEl?: ElementRef<HTMLOListElement>;
+  @ViewChild('modelsListEl') modelsListEl?: ElementRef<HTMLDivElement>;
 
   @Input() chatbots: Chatbot[] = [];
   @Input() chatbotsLoading = false;
@@ -77,7 +78,10 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   private kbListFlashTimer: ReturnType<typeof setTimeout> | null = null;
 
   modelUsage: HomeFlowModelUsage[] = [];
-  activeModelsTotalCount = 0;
+  modelsListExpanded = false;
+  modelsListFlash = false;
+  modelsListCanScrollDown = false;
+  private modelsListFlashTimer: ReturnType<typeof setTimeout> | null = null;
   conversationsSeries: HomeFlowTimeSeriesPoint[] = [];
   conversationsTotalLabel = '0';
   conversationsPreviousTotalLabel = '0';
@@ -146,6 +150,10 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       clearTimeout(this.kbListFlashTimer);
       this.kbListFlashTimer = null;
     }
+    if (this.modelsListFlashTimer) {
+      clearTimeout(this.modelsListFlashTimer);
+      this.modelsListFlashTimer = null;
+    }
     this.chartResizeObserver?.disconnect();
     this.disposeFlowCharts();
     this.unsubscribe$.next();
@@ -176,7 +184,30 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   }
 
   get activeModelsCount(): number {
-    return this.activeModelsTotalCount;
+    return this.modelUsage.length;
+  }
+
+  get displayedModelUsage(): HomeFlowModelUsage[] {
+    if (this.modelsListExpanded) {
+      return this.modelUsage;
+    }
+    // Up to 3 fit without growing the card. Beyond that: 2 models + inline "+N".
+    if (this.modelUsage.length <= 3) {
+      return this.modelUsage;
+    }
+    return this.modelUsage.slice(0, 2);
+  }
+
+  /** Remaining models when collapsed with 4+ (shown as inline "+N" in the 3rd slot). */
+  get modelsOverflowCount(): number {
+    if (this.modelsListExpanded || this.modelUsage.length <= 3) {
+      return 0;
+    }
+    return this.modelUsage.length - 2;
+  }
+
+  get hiddenModelsCount(): number {
+    return this.modelsOverflowCount;
   }
 
   get displayedChatbotUsedNamespaces(): HomeFlowNamespaceWithChatbots[] {
@@ -350,7 +381,9 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   private resetAnalytics(): void {
     this.modelUsage = [];
-    this.activeModelsTotalCount = 0;
+    this.modelsListExpanded = false;
+    this.modelsListFlash = false;
+    this.modelsListCanScrollDown = false;
     this.conversationsSeries = alignSeriesToLast10Days([], this.kbService.getProjectTimezone());
     this.conversationsTotalLabel = '0';
     this.conversationsPreviousTotalLabel = '0';
@@ -403,8 +436,9 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       next: ({ models, conversations, conversationsPrevious }) => {
         if (this.analyticsAgentId !== agentId) { return; }
         const allModels = parseAiModelUsageResponse(models);
-        this.modelUsage = allModels.slice(0, 2);
-        this.activeModelsTotalCount = allModels.length;
+        this.modelUsage = allModels;
+        this.modelsListExpanded = false;
+        this.modelsListCanScrollDown = false;
         const timeZone = this.kbService.getProjectTimezone();
         this.conversationsSeries = alignSeriesToLast10Days(
           parseTimeSeriesResponse(conversations, ['ops', 'conversations', 'count', 'value'], timeZone),
@@ -584,6 +618,21 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     }
   }
 
+  toggleModelsListExpand(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    if (this.hiddenModelsCount <= 0 && !this.modelsListExpanded) {
+      return;
+    }
+    this.modelsListExpanded = !this.modelsListExpanded;
+    if (this.modelsListExpanded) {
+      this.triggerModelsListFlash();
+      setTimeout(() => this.updateModelsListScrollState(), 0);
+    } else {
+      this.modelsListCanScrollDown = false;
+    }
+  }
+
   scrollKbListDown(event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
@@ -597,8 +646,25 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     setTimeout(() => this.updateKbListScrollState(), 220);
   }
 
+  scrollModelsListDown(event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
+    const list = this.modelsListEl?.nativeElement;
+    if (!list || !this.modelsListExpanded) {
+      return;
+    }
+    const firstItem = list.querySelector('.home-flow__model-row') as HTMLElement | null;
+    const step = firstItem?.offsetHeight || 36;
+    list.scrollBy({ top: step + 12, behavior: 'smooth' });
+    setTimeout(() => this.updateModelsListScrollState(), 220);
+  }
+
   onKbListScroll(): void {
     this.updateKbListScrollState();
+  }
+
+  onModelsListScroll(): void {
+    this.updateModelsListScrollState();
   }
 
   private updateKbListScrollState(): void {
@@ -609,6 +675,16 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     }
     const remaining = list.scrollHeight - list.scrollTop - list.clientHeight;
     this.kbListCanScrollDown = remaining > 1;
+  }
+
+  private updateModelsListScrollState(): void {
+    const list = this.modelsListEl?.nativeElement;
+    if (!list || !this.modelsListExpanded) {
+      this.modelsListCanScrollDown = false;
+      return;
+    }
+    const remaining = list.scrollHeight - list.scrollTop - list.clientHeight;
+    this.modelsListCanScrollDown = remaining > 1;
   }
 
   private triggerKbListFlash(): void {
@@ -623,6 +699,21 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       this.kbListFlashTimer = setTimeout(() => {
         this.kbListFlash = false;
         this.kbListFlashTimer = null;
+      }, 1400);
+    }, 0);
+  }
+
+  private triggerModelsListFlash(): void {
+    if (this.modelsListFlashTimer) {
+      clearTimeout(this.modelsListFlashTimer);
+      this.modelsListFlashTimer = null;
+    }
+    this.modelsListFlash = false;
+    setTimeout(() => {
+      this.modelsListFlash = true;
+      this.modelsListFlashTimer = setTimeout(() => {
+        this.modelsListFlash = false;
+        this.modelsListFlashTimer = null;
       }, 1400);
     }, 0);
   }
