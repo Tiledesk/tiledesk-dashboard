@@ -163,10 +163,39 @@ export function parseAiModelUsageResponse(res: unknown): HomeFlowModelUsage[] {
     }));
 }
 
+/**
+ * Pick the agent with the most launched conversations in the period.
+ * Preferred payload: `charts/agent/ops-over-time` → `{ series: [{ agent_id, data[] }] }`.
+ * Legacy fallback: `kpi/agent/intents-duration` → `{ by_agent: { id: { completion_count } } }`.
+ */
 export function parseMostEngagedAgentId(res: unknown): string | null {
   if (!res || typeof res !== 'object') { return null; }
 
-  const byAgent = (res as Record<string, unknown>).by_agent;
+  const root = res as Record<string, unknown>;
+
+  // ops-over-time: distinct conversations per agent (aligned with "Launched conversations")
+  if (Array.isArray(root.series)) {
+    let bestAgentId: string | null = null;
+    let bestTotal = 0;
+
+    (root.series as unknown[]).forEach((item) => {
+      if (!item || typeof item !== 'object') { return; }
+      const row = item as Record<string, unknown>;
+      const agentId = String(row.agent_id ?? '').trim();
+      if (!agentId) { return; }
+      const data = Array.isArray(row.data) ? (row.data as unknown[]) : [];
+      const total: number = data.reduce<number>((sum, v) => sum + (Number(v) || 0), 0);
+      if (total > bestTotal) {
+        bestTotal = total;
+        bestAgentId = agentId;
+      }
+    });
+
+    return bestTotal > 0 ? bestAgentId : null;
+  }
+
+  // Legacy intents-duration ranking (intent completions, not conversations)
+  const byAgent = root.by_agent;
   if (!byAgent || typeof byAgent !== 'object') { return null; }
 
   let bestAgentId: string | null = null;
