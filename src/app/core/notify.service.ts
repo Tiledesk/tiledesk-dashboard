@@ -439,6 +439,114 @@ export class NotifyService {
     });
   }
 
+  /**
+   * Quick access cards — owner paid plan "Increase limit" for Teammates seats.
+   * Separate from shared `_displayContactUsModal` (still used for free Upgrade plan).
+   */
+  displayQuickCardsIncreaseSeatLimitModal(reason: 'seats_limit_reached' | 'seats_limit_exceed' = 'seats_limit_reached'): void {
+    const contextKey = reason === 'seats_limit_exceed'
+      ? 'Pricing.TheSeatsNumberExceedsTheAllowed'
+      : 'Pricing.YouCurrentlyAreUsingAllActiveOperatorSeats';
+    const contentText =
+      this.translate.instant(contextKey)
+      + '. '
+      + this.translate.instant('Pricing.ContactUsToIncreaseYourSeatLimit');
+
+    Swal.fire({
+      title: this.translate.instant('Pricing.SeatLimitReached'),
+      text: contentText,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('ContactUs'),
+      focusConfirm: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.open(`mailto:${this.salesEmail}?subject=Increase seat limit`);
+      }
+    });
+  }
+
+  /**
+   * Quick access cards — owner paid plan "Increase limit" for Flows.
+   * Separate from shared `_displayContactUsModal` (still used for free Upgrade plan).
+   */
+  displayQuickCardsIncreaseFlowsLimitModal(reason: 'flows_limit_reached' | 'flows_limit_exceed' = 'flows_limit_reached'): void {
+    const contextKey = reason === 'flows_limit_exceed'
+      ? 'Pricing.TheFlowsNumberExceedsTheAllowed'
+      : 'Pricing.TheFlowsNumberReachedTheAllowed';
+    const contentText =
+      this.translate.instant(contextKey)
+      + '. '
+      + this.translate.instant('Pricing.ContactUsToIncreaseYourFlowsLimit');
+
+    Swal.fire({
+      title: this.translate.instant('Pricing.FlowsLimitReached'),
+      text: contentText,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('ContactUs'),
+      focusConfirm: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.open(`mailto:${this.salesEmail}?subject=Increase Flows limit`);
+      }
+    });
+  }
+
+  /**
+   * Quick access cards — owner paid plan "Increase limit" for Knowledge Bases / contents.
+   * Reuses existing per-case body context; separate from shared `_displayContactUsModal`.
+   */
+  displayQuickCardsIncreaseKbLimitModal(reason: string): void {
+    const contextText = this.getQuickCardsUpgradeContextText(reason);
+    const { titleKey, contactKey, mailSubject } = this.getQuickCardsKbIncreaseLimitCopy(reason);
+    const contentText = contextText
+      ? `${contextText}. ${this.translate.instant(contactKey)}`
+      : this.translate.instant(contactKey);
+
+    Swal.fire({
+      title: this.translate.instant(titleKey),
+      text: contentText,
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('ContactUs'),
+      focusConfirm: false,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.open(`mailto:${this.salesEmail}?subject=${encodeURIComponent(mailSubject)}`);
+      }
+    });
+  }
+
+  private getQuickCardsKbIncreaseLimitCopy(reason: string): {
+    titleKey: string;
+    contactKey: string;
+    mailSubject: string;
+  } {
+    if (reason.includes('namespaces_and_contents')) {
+      return {
+        titleKey: 'Pricing.KnowledgeBasesAndContentsLimitReached',
+        contactKey: 'Pricing.ContactUsToIncreaseYourKnowledgeBasesAndContentsLimits',
+        mailSubject: 'Increase Knowledge Bases and contents limits',
+      };
+    }
+    if (reason.includes('contents')) {
+      return {
+        titleKey: 'Pricing.ContentsLimitReached',
+        contactKey: 'Pricing.ContactUsToIncreaseYourContentsLimit',
+        mailSubject: 'Increase contents limit',
+      };
+    }
+    return {
+      titleKey: 'Pricing.KnowledgeBasesLimitReached',
+      contactKey: 'Pricing.ContactUsToIncreaseYourKnowledgeBasesLimit',
+      mailSubject: 'Increase Knowledge Bases limit',
+    };
+  }
+
   private getQuickCardsUpgradeContextText(reason: string): string {
     const map: { [key: string]: string } = {
       chatbot_exceeds: 'Pricing.YouAreCurrentlyUsingAllChatbots',

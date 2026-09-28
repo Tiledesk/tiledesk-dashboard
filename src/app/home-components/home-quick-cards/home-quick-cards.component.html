@@ -23,8 +23,8 @@
       </div>
       <div class="home-quick-card__body">
         <div class="home-quick-card__title">{{ 'Flows' | translate }}</div>
-        <div class="home-quick-card__value"><div class="hq-skel-count"></div></div>
         <div class="hq-skel-remaining"></div>
+        <div class="home-quick-card__value"><div class="hq-skel-count hq-skel-count--sm"></div></div>
       </div>
     </article>
 
@@ -37,8 +37,8 @@
       </div>
       <div class="home-quick-card__body">
         <div class="home-quick-card__title">{{ 'KnowledgeBases' | translate }}</div>
-        <div class="home-quick-card__value"><div class="hq-skel-count"></div></div>
         <div class="hq-skel-remaining"></div>
+        <div class="home-quick-card__value"><div class="hq-skel-count hq-skel-count--sm"></div></div>
       </div>
     </article>
 
@@ -51,20 +51,7 @@
       </div>
       <div class="home-quick-card__body">
         <div class="home-quick-card__title">{{ 'TeammatesCapitalized' | translate }}</div>
-        <div class="home-quick-card__value"><div class="hq-skel-count"></div></div>
         <div class="hq-skel-remaining"></div>
-      </div>
-    </article>
-
-    <article *ngIf="showConversationsCard" class="home-quick-card home-quick-card--conversations">
-      <div class="home-quick-card__icon" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
-        </svg>
-      </div>
-      <div class="home-quick-card__body">
-        <div class="home-quick-card__title">{{ 'Conversations' | translate }}</div>
-        <div class="home-quick-card__desc">{{ 'Unserved' | translate }}</div>
         <div class="home-quick-card__value"><div class="hq-skel-count hq-skel-count--sm"></div></div>
       </div>
     </article>
@@ -110,13 +97,31 @@
       <div class="home-quick-card__body">
         <div class="home-quick-card__title">{{ 'Flows' | translate }}</div>
         <ng-container *ngIf="isFlowsEmpty; else flowsCountState">
-          <div class="home-quick-card__empty-msg">{{ 'HomeQuickCards.NoFlowCreated' | translate }}</div>
-          <div class="home-quick-card__remaining home-quick-card__remaining--link">
-            <span class="home-quick-card__remaining-text" style="font-size: 13px;font-weight: 400;">{{ 'HomeQuickCards.CreateFirstFlow' | translate }}</span>
+          <button
+            type="button"
+            class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
+            (click)="onAddFlowClick($event)">
+            <span class="home-quick-card__remaining-text">{{ 'HomeQuickCards.CreateFirstFlow' | translate }}</span>
             <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
-          </div>
+          </button>
         </ng-container>
         <ng-template #flowsCountState>
+          <button
+            *ngIf="showFlowsAddFlow"
+            type="button"
+            class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
+            (click)="onAddFlowClick($event)">
+            <span class="home-quick-card__remaining-text">{{ 'HomeQuickCards.AddFlow' | translate }}</span>
+            <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
+          </button>
+          <div class="home-quick-card__remaining" *ngIf="showFlowsUpgradePlan">
+            <button
+              type="button"
+              class="home-quick-card__invite-btn"
+              (click)="onFlowsUpgradePlanClick($event)">
+              {{ upgradePlanCtaLabelKey | translate }}
+            </button>
+          </div>
           <div class="home-quick-card__value">
             <span
               class="home-quick-card__count"
@@ -138,20 +143,6 @@
               </ng-template>
             </span>
           </div>
-          <div class="home-quick-card__remaining" *ngIf="showFlowsLimit">
-            <ng-container *ngIf="!showFlowsUpgradePlan; else flowsUpgradePlan">
-              <span class="home-quick-card__remaining-count">{{ flowsRemainingCount | number:'1.0-0' }}</span>
-              {{ 'HomeQuickCards.Remaining' | translate }}
-            </ng-container>
-            <ng-template #flowsUpgradePlan>
-              <button
-                type="button"
-                class="home-quick-card__invite-btn"
-                (click)="onFlowsUpgradePlanClick($event)">
-                {{ 'Pricing.UpgradePlan' | translate }}
-              </button>
-            </ng-template>
-          </div>
         </ng-template>
       </div>
       <mat-icon *ngIf="canViewFlows" class="home-quick-card__chevron">chevron_right</mat-icon>
@@ -171,6 +162,30 @@
       </div>
       <div class="home-quick-card__body">
         <div class="home-quick-card__title">{{ 'KnowledgeBases' | translate }}</div>
+        <div class="home-quick-card__remaining" *ngIf="showKbUpgradePlan">
+          <button
+            type="button"
+            class="home-quick-card__invite-btn"
+            (click)="onKbUpgradePlanClick($event)">
+            {{ upgradePlanCtaLabelKey | translate }}
+          </button>
+        </div>
+        <button
+          *ngIf="showKbAddContent"
+          type="button"
+          class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
+          (click)="onAddKbContentClick($event)">
+          <span class="home-quick-card__remaining-text">{{ 'HomeQuickCards.AddContent' | translate }}</span>
+          <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
+        </button>
+        <button
+          *ngIf="showKbManageContents"
+          type="button"
+          class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
+          (click)="onManageKbContentsClick($event)">
+          <span class="home-quick-card__remaining-text">{{ 'HomeQuickCards.ManageContents' | translate }}</span>
+          <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
+        </button>
         <div class="home-quick-card__value">
           <span
             class="home-quick-card__count"
@@ -212,30 +227,6 @@
             </ng-template>
           </span>
         </div>
-        <div class="home-quick-card__remaining" *ngIf="showKbUpgradePlan">
-          <button
-            type="button"
-            class="home-quick-card__invite-btn"
-            (click)="onKbUpgradePlanClick($event)">
-            {{ 'Pricing.UpgradePlan' | translate }}
-          </button>
-        </div>
-        <button
-          *ngIf="showKbAddContent"
-          type="button"
-          class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
-          (click)="onAddKbContentClick($event)">
-          <span class="home-quick-card__remaining-text" style="font-size: 13px; font-weight: 400;">{{ 'HomeQuickCards.AddContent' | translate }}</span>
-          <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
-        </button>
-        <button
-          *ngIf="showKbManageContents"
-          type="button"
-          class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
-          (click)="onManageKbContentsClick($event)">
-          <span class="home-quick-card__remaining-text" style="font-size: 13px; font-weight: 400;">{{ 'HomeQuickCards.ManageContents' | translate }}</span>
-          <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
-        </button>
       </div>
       <mat-icon *ngIf="canViewKb" class="home-quick-card__chevron">chevron_right</mat-icon>
     </article>
@@ -254,6 +245,22 @@
       </div>
       <div class="home-quick-card__body">
         <div class="home-quick-card__title">{{ 'TeammatesCapitalized' | translate }}</div>
+        <div class="home-quick-card__remaining" *ngIf="showTeammatesLimit">
+          <button
+            *ngIf="seatsRemainingCount > 0 && !seatsCountOverLimit && canInviteTeammates && displayInviteTeammateBtn"
+            type="button"
+            class="home-quick-card__invite-btn"
+            (click)="onInviteTeammateClick($event)">
+            {{ 'InviteTeammate' | translate }}
+          </button>
+          <button
+            *ngIf="showTeammatesUpgradePlan"
+            type="button"
+            class="home-quick-card__invite-btn"
+            (click)="onUpgradePlanClick($event)">
+            {{ upgradePlanCtaLabelKey | translate }}
+          </button>
+        </div>
         <div class="home-quick-card__value">
           <span
             class="home-quick-card__count"
@@ -275,47 +282,8 @@
             </ng-template>
           </span>
         </div>
-        <div class="home-quick-card__remaining" *ngIf="showTeammatesLimit">
-          <button
-            *ngIf="seatsRemainingCount > 0 && !seatsCountOverLimit && canInviteTeammates && displayInviteTeammateBtn"
-            type="button"
-            class="home-quick-card__invite-btn"
-            (click)="onInviteTeammateClick($event)">
-            {{ 'InviteTeammate' | translate }}
-          </button>
-          <button
-            *ngIf="showTeammatesUpgradePlan"
-            type="button"
-            class="home-quick-card__invite-btn"
-            (click)="onUpgradePlanClick($event)">
-            {{ 'Pricing.UpgradePlan' | translate }}
-          </button>
-        </div>
       </div>
       <mat-icon *ngIf="canViewTeammates" class="home-quick-card__chevron">chevron_right</mat-icon>
-    </article>
-
-    <!-- Conversations (unassigned) -->
-    <article
-      *ngIf="showConversationsCard"
-      class="home-quick-card home-quick-card--conversations home-quick-card--clickable"
-      (click)="onConversationsCardClick($event)">
-      <div class="home-quick-card__icon" aria-hidden="true">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-          <path
-            d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
-        </svg>
-      </div>
-      <div class="home-quick-card__body">
-        <div class="home-quick-card__title">{{ 'Conversations' | translate }}</div>
-        <div class="home-quick-card__desc">{{ 'Unserved' | translate }}</div>
-        <div class="home-quick-card__value">
-          <span class="home-quick-card__count home-quick-card__count--link">
-            <span class="home-quick-card__count-current">{{ countUnassigned | number:'1.0-0' }}</span>
-          </span>
-        </div>
-      </div>
-      <mat-icon *ngIf="canNavigateToMonitor" class="home-quick-card__chevron">chevron_right</mat-icon>
     </article>
 
     <!-- Last edited flow -->

@@ -32,7 +32,6 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { QuotesService } from 'app/services/quotes.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
-import { WsRequestsService } from 'app/services/websocket/ws-requests.service';
 import { getLastUpdatedChatbot, sortChatbotsByLastUpdated } from 'app/utils/chatbot-sort.util';
 import { goToCDSVersion } from 'app/utils/util';
 import { Subject, forkJoin, of } from 'rxjs';
@@ -53,13 +52,10 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   @Input() permissionToViewKb = false;
   @Input() permissionToViewTeammates = false;
   @Input() permissionToInviteTeammates = false;
-  @Input() permissionToViewUnassignedNotifications = false;
-  @Input() permissionToViewMonitor = false;
   /** Featured flow id from home-flow; hide last-flow card when it matches. */
   @Input() featuredHomeFlowChatbotId: string | null = null;
 
   countOfChatbots = 0;
-  countUnassigned = 0;
   countOfKbNamespaces = 0;
   countOfKbContents = 0;
   private kbNamespaces: Array<{ id?: string; name?: string; updatedAt?: string; count?: number }> = [];
@@ -79,11 +75,9 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   private chatbotsLoadRequestId = 0;
   private kbLoadRequestId = 0;
   private teammatesLoadRequestId = 0;
-  private unassignedLoadRequestId = 0;
   private flowsReady = false;
   private kbReady = false;
   private teammatesReady = false;
-  private unassignedReady = false;
   private unsubscribe$ = new Subject<void>();
   onlyOwnerCanManageTheAccountPlanMsg: string;
   learnMoreAboutDefaultRoles: string;
@@ -107,7 +101,6 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     private dialog: MatDialog,
     private brandService: BrandService,
     private cachePuService: CachePuService,
-    private wsRequestsService: WsRequestsService,
     private localDbService: LocalDbService,
   ) {
     super(prjctPlanService, notify);
@@ -121,7 +114,6 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     this.loadChatbots();
     this.loadKbData();
     this.loadTeammatesData();
-    this.loadUnassignedCount();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -129,11 +121,6 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
       this.loadChatbots();
       this.loadKbData();
       this.loadTeammatesData();
-      this.loadUnassignedCount();
-    }
-
-    if (changes.permissionToViewUnassignedNotifications || changes.userRole) {
-      this.loadUnassignedCount();
     }
   }
 
@@ -178,35 +165,10 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     return this.userRole !== 'agent' && this.permissionToInviteTeammates;
   }
 
-  get canViewUnassignedNotifications(): boolean {
-    if (this.userRole === 'agent') {
-      return false;
-    }
-
-    if (this.userRole === 'owner' || this.userRole === 'admin') {
-      return true;
-    }
-
-    return this.permissionToViewUnassignedNotifications;
-  }
-
-  get canNavigateToMonitor(): boolean {
-    if (this.userRole === 'owner' || this.userRole === 'admin') {
-      return true;
-    }
-
-    return this.permissionToViewMonitor;
-  }
-
-  get showConversationsCard(): boolean {
-    return this.canViewUnassignedNotifications;
-  }
-
   get hasAnyQuickCard(): boolean {
     return this.canViewFlows
       || this.canViewKb
-      || this.canViewTeammates
-      || this.showConversationsCard;
+      || this.canViewTeammates;
   }
 
   get showCardsSkeleton(): boolean {
@@ -222,9 +184,6 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
       return true;
     }
     if (this.canViewTeammates && !this.teammatesReady) {
-      return true;
-    }
-    if (this.showConversationsCard && !this.unassignedReady) {
       return true;
     }
 
@@ -328,9 +287,23 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     return this.flowsRemainingCount <= 0 || this.flowsCountOverLimit;
   }
 
+  /** Add Flow CTA when under limit (or unlimited); Upgrade takes precedence at/over limit. */
+  get showFlowsAddFlow(): boolean {
+    if (this.isFlowsEmpty || this.showFlowsUpgradePlan) { return false; }
+    if (!this.showFlowsLimit) { return true; }
+    return this.flowsRemainingCount > 0 && !this.flowsCountOverLimit;
+  }
+
   get showTeammatesUpgradePlan(): boolean {
     if (!this.areActivePay || !this.showTeammatesLimit) { return false; }
     return this.seatsRemainingCount <= 0 || this.seatsCountOverLimit;
+  }
+
+  /** Paid plan → Increase limit; free → Upgrade plan. */
+  get upgradePlanCtaLabelKey(): string {
+    return this.prjct_profile_type === 'payment'
+      ? 'Pricing.IncreaseLimit'
+      : 'Pricing.UpgradePlan';
   }
 
   get seatsRemainingCount(): number {
@@ -358,6 +331,33 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     }
 
     this.notify.presentDialogNoPermissionToPermomfAction();
+  }
+
+  /**
+   * Add Flow / Create first flow — same trial/subscription gates as Upgrade plan,
+   * then navigate to Flows when the project can still create chatbots.
+   */
+  onAddFlowClick(event?: Event): void {
+    event?.stopPropagation();
+
+    if (!this.canViewFlows) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+
+    if (this.prjct_profile_type === 'free' && this.trial_expired) {
+      this.openModalSeatsTrialExpired();
+      return;
+    }
+
+    if (this.prjct_profile_type === 'payment' && !this.subscription_is_active) {
+      this.openModalSeatsSubsExpired();
+      return;
+    }
+
+    if (!this.projectId) { return; }
+
+    this.router.navigate([`project/${this.projectId}/bots/my-chatbots/all`]);
   }
 
   onFlowsCardClick(event: Event): void {
@@ -390,14 +390,6 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     }
 
     this.onTeammatesCountClick(event);
-  }
-
-  onConversationsCardClick(event: Event): void {
-    if (this.shouldIgnoreCardClick(event)) {
-      return;
-    }
-
-    this.onUnassignedCountClick(event);
   }
 
   onKbCountClick(event?: Event): void {
@@ -693,26 +685,6 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     this.router.navigate([`project/${this.projectId}/users`]);
   }
 
-  onUnassignedCountClick(event?: Event): void {
-    event?.stopPropagation();
-
-    if (!this.canViewUnassignedNotifications) {
-      return;
-    }
-
-    if (this.userRole === 'owner' || this.userRole === 'admin') {
-      this.router.navigate([`project/${this.projectId}/wsrequests`]);
-      return;
-    }
-
-    if (this.canNavigateToMonitor) {
-      this.router.navigate([`project/${this.projectId}/wsrequests`]);
-      return;
-    }
-
-    this.notify.presentDialogNoPermissionToViewThisSection();
-  }
-
   onEditLastChatbotClick(event?: Event): void {
     event?.stopPropagation();
 
@@ -862,7 +834,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     if (this.prjct_profile_type === 'payment' && this.subscription_is_active) {
       const flowsReason = this.getFlowsContactUsReason();
       if (this.userRole === 'owner') {
-        this.notify._displayContactUsModal(true, flowsReason);
+        this.notify.displayQuickCardsIncreaseFlowsLimitModal(flowsReason as 'flows_limit_reached' | 'flows_limit_exceed');
       } else if (this.userRole === 'admin') {
         this.notify.displayQuickCardsAdminUpgradeModal(flowsReason);
       } else {
@@ -896,7 +868,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     if (this.prjct_profile_type === 'payment' && this.subscription_is_active) {
       const kbReason = this.getKbContactUsReason();
       if (this.userRole === 'owner') {
-        this.notify._displayContactUsModal(true, kbReason);
+        this.notify.displayQuickCardsIncreaseKbLimitModal(kbReason);
       } else if (this.userRole === 'admin') {
         this.notify.displayQuickCardsAdminUpgradeModal(kbReason);
       } else {
@@ -955,7 +927,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
       if (this.prjct_profile_type === 'free') {
         this.notify.displayGoToPricingModal('user_exceeds');
       } else {
-        this.notify._displayContactUsModal(true, seatsReason);
+        this.notify.displayQuickCardsIncreaseSeatLimitModal(seatsReason as 'seats_limit_reached' | 'seats_limit_exceed');
       }
       return;
     }
@@ -1159,38 +1131,6 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
       })
       .catch(() => {
         this.kbNamespaceLimit = null;
-      });
-  }
-
-  private loadUnassignedCount(): void {
-    if (!this.projectId || !this.canViewUnassignedNotifications) {
-      this.countUnassigned = 0;
-      this.unassignedReady = true;
-      return;
-    }
-
-    this.unassignedReady = false;
-    const requestId = ++this.unassignedLoadRequestId;
-
-    this.wsRequestsService.getConversationCount()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe({
-        next: (requests: any) => {
-          if (requestId !== this.unassignedLoadRequestId) {
-            return;
-          }
-
-          this.countUnassigned = requests?.unassigned ?? 0;
-          this.unassignedReady = true;
-        },
-        error: () => {
-          if (requestId !== this.unassignedLoadRequestId) {
-            return;
-          }
-
-          this.countUnassigned = 0;
-          this.unassignedReady = true;
-        },
       });
   }
 

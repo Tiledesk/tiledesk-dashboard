@@ -2920,15 +2920,16 @@ img {
 }
 
 .home-blocks-wpr {
-  margin-top: 16px;
+  margin-top: 32px;
   // padding: 45px 80px 18px;
-  padding: 6px 0 18px;
+  padding: 0 0 18px;
   width: 100%;
   min-width: 0;
   max-width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  gap: 32px;
   align-self: stretch;
 }
 
@@ -3269,11 +3270,17 @@ img {
 /* Quotas
 /* *********************************** */
 .home-quota-banner {
+  margin-top: 32px;
+  border-radius: 12px;
+  padding: 0 0 8px;
   width: 100%;
-  padding-top: 18px;
-  // margin-top: 34px;
-  // margin-top: 24px;
-  // height: 152px;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: visible;
+  background-color: #f5f7f9;
+  font-family: var(--header-font-family, inherit);
+  border: 1px solid #e8ecf1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
 }
 
 .home-quota-banner__header {
@@ -3282,9 +3289,12 @@ img {
   justify-content: space-between;
   gap: 16px;
   flex-wrap: wrap;
-  margin: 0 0 8px;
-  padding: 0;
+  margin: 0;
+  padding: 14px 16px;
   min-width: 0;
+  background-color: transparent;
+  border-bottom: none;
+  border-radius: 12px 12px 0 0;
 }
 
 .home-quota-banner__header-meta {
@@ -3298,6 +3308,7 @@ img {
   font-size: 12px;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  color: #1e293b;
 }
 
 .home-quota-banner__eyebrow {
@@ -3305,6 +3316,16 @@ img {
   align-items: center;
   gap: 8px;
   font-weight: 600;
+  color: #1e293b;
+}
+
+.home-quota-banner__eyebrow-icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 20px;
   color: #1e293b;
 }
 
@@ -3336,11 +3357,11 @@ img {
     animation: 1.5s shine linear infinite;
   }
 
-  // Match .quote-count-current (22px × line-height 1.2)
+  // Match .quote-count-current (32px × line-height 1.2)
   .quota-skel-count {
     width: 96px;
     max-width: 70%;
-    height: 26px;
+    height: 38px;
     border-radius: 4px;
   }
 
@@ -3435,13 +3456,13 @@ img {
   flex-direction: row;
   align-items: stretch;
   justify-content: stretch;
-  border: 1px solid #e4e4e4;
-  border-radius: 8px;
+  border: 1px solid #e8ecf1;
+  border-radius: 12px;
   overflow: hidden;
   background: #fff;
   box-sizing: border-box;
-  width: 100%;
-  margin: 0;
+  width: auto;
+  margin: 0 8px;
 }
 
 .home-quota-resets {
@@ -3460,7 +3481,7 @@ img {
   display: flex;
   flex-direction: column;
   padding: 16px 20px;
-  border-right: 1px solid #e4e4e4;
+  border-right: 1px solid #e8ecf1;
 
   &:last-child {
     border-right: none;
@@ -3700,14 +3721,14 @@ img {
 
 .quote-count-current {
   font-weight: 600;
-  font-size: 22px;
+  font-size: 32px;
   color: var(--text-color);
   line-height: 1.2;
 }
 
 .quote-count-limit {
   font-weight: 400;
-  font-size: 14px;
+  font-size: 20px;
   color: #64748b;
 }
 
