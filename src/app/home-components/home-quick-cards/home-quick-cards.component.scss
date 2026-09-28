@@ -6,7 +6,7 @@
 }
 
 .home-shortcuts {
-  margin-top: 18px;
+  margin-top: 32px;
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
@@ -110,10 +110,6 @@
   --hq-accent: #7c3aed;
 }
 
-.home-quick-card--conversations {
-  --hq-accent: #f26c61;
-}
-
 .home-quick-card--last-flow {
   --hq-accent: #ea580c;
 }
@@ -150,21 +146,52 @@
   white-space: nowrap;
 }
 
-.home-quick-card__value,
+/* Default layout: title → action CTA → counts */
+.home-quick-card__remaining,
 .home-quick-card__empty-msg {
   grid-row: 2;
-  min-width: 0;
+  margin-top: 0;
+  font-size: 12px;
+  line-height: 24px;
+  height: 24px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   align-self: end;
 }
 
 .home-quick-card__value {
+  grid-row: 3;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  align-items: baseline;
+  align-items: center;
   gap: 8px;
-  line-height: 24px;
-  height: 24px;
+  min-width: 0;
+  margin-top: 0;
+  line-height: 16px;
+  height: 16px;
+  align-self: start;
+}
+
+.home-quick-card__value .home-quick-card__count {
+  line-height: 16px;
+}
+
+.home-quick-card__value .home-quick-card__count-current {
+  font-size: 12px;
+  line-height: 16px;
+  color: #767b82;
+}
+
+.home-quick-card__value .home-quick-card__count-total {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+.home-quick-card__value .home-quick-card__count--over .home-quick-card__count-current {
+  color: #f44336;
 }
 
 .home-quick-card__kb-sep {
@@ -191,7 +218,7 @@
 }
 
 .home-quick-card__kb-contents-total {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 16px;
   color: #767b82;
@@ -203,25 +230,21 @@
 }
 
 .home-quick-card--kb .home-quick-card__value .home-quick-card__remaining-count {
-  font-size: 16px;
+  font-size: 12px;
   line-height: 16px;
 }
 
-.home-quick-card__remaining {
+.hq-skel-remaining {
+  grid-row: 2;
+  align-self: end;
+}
+
+.hq-skel-count {
   grid-row: 3;
-  margin-top: 0;
-  font-size: 12px;
-  line-height: 16px;
-  height: 16px;
-  color: #64748b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   align-self: start;
 }
 
-/* Conversations / last-flow: desc in middle row, value/meta in footer row */
-.home-quick-card--conversations .home-quick-card__desc,
+/* Last-flow: desc in middle row, value/meta in footer row */
 .home-quick-card--last-flow .home-quick-card__desc {
   grid-row: 2;
   margin: 0;
@@ -230,23 +253,12 @@
   height: 24px;
 }
 
-.home-quick-card--conversations .home-quick-card__value,
 .home-quick-card--last-flow .home-quick-card__value {
   grid-row: 3;
   margin-top: 0;
   height: 16px;
   line-height: 16px;
   align-self: start;
-}
-
-.home-quick-card--conversations .home-quick-card__count {
-  line-height: 16px;
-}
-
-.home-quick-card--conversations .home-quick-card__count-current {
-  font-size: 16px;
-  line-height: 16px;
-  color: #767b82;
 }
 
 .home-quick-card__meta-value {
@@ -267,16 +279,16 @@
 }
 
 .home-quick-card__count-current {
-  font-size: 22px;
+  font-size: 12px;
   font-weight: 500;
-  line-height: 24px;
+  line-height: 16px;
   color: #1e293b; // var(--blue-20);
 }
 
 .home-quick-card__count-total {
-  font-size: 18px;
+  font-size: 12px;
   font-weight: 400;
-  line-height: 24px;
+  line-height: 16px;
   color: #767b82;
 }
 
@@ -304,9 +316,9 @@
 }
 
 .home-quick-card__remaining-count {
-  font-weight: 400;
+  font-weight: 500;
   color: #767b82;
-  font-size: 16px;
+  font-size: 12px;
   line-height: 16px;
   font-family: var(--header-font-family);
 }
@@ -316,7 +328,7 @@
 }
 
 .home-quick-card__remaining .home-quick-card__count-total {
-  font-size: 14px;
+  font-size: 12px;
   line-height: 16px;
   font-family: var(--header-font-family);
 }
@@ -374,6 +386,8 @@
   min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .home-quick-card__remaining-arrow {
@@ -431,12 +445,12 @@
   }
 
   .hq-skel-remaining {
-    grid-row: 3;
+    grid-row: 2;
     width: 88px;
     height: 14px;
     border-radius: 3px;
     margin-top: 0;
-    align-self: start;
+    align-self: end;
   }
 }
 

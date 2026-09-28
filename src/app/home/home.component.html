@@ -217,8 +217,6 @@
             [permissionToViewKb]="PERMISSION_TO_VIEW_KB"
             [permissionToViewTeammates]="PERMISSION_TO_VIEW_TEAMMATES"
             [permissionToInviteTeammates]="PERMISSION_TO_INVITE"
-            [permissionToViewUnassignedNotifications]="PERMISSION_TO_VIEW_UNASSIGNED_NOTIFICATIONS"
-            [permissionToViewMonitor]="PERMISSION_TO_VIEW_MONITOR"
             [featuredHomeFlowChatbotId]="featuredHomeFlowChatbotId">
           </home-quick-cards>
 
@@ -229,7 +227,10 @@
 
             <header class="home-quota-banner__header">
               <div class="home-quota-banner__header-meta">
-                <span class="home-quota-banner__eyebrow">{{ 'CurrentUsage' | translate }}</span>
+                <span class="home-quota-banner__eyebrow">
+                  <mat-icon class="home-quota-banner__eyebrow-icon" aria-hidden="true">donut_large</mat-icon>
+                  <span>{{ 'CurrentUsage' | translate }}</span>
+                </span>
                 <span class="home-quota-banner__dot" *ngIf="quotaResetEndDateLabel" aria-hidden="true">·</span>
                 <span class="home-quota-banner__reset" *ngIf="quotaResetEndDateLabel">
                   {{ 'QuotasReset' | translate }}: {{ quotaResetEndDateLabel | amDateFormat: 'LL' }}
@@ -526,7 +527,10 @@
           <div *ngIf="displayQuotaSkeleton" class="home-quota-banner home-quota-banner--skeleton" aria-hidden="true">
             <header class="home-quota-banner__header">
               <div class="home-quota-banner__header-meta">
-                <span class="home-quota-banner__eyebrow">{{ 'CurrentUsage' | translate }}</span>
+                <span class="home-quota-banner__eyebrow">
+                  <mat-icon class="home-quota-banner__eyebrow-icon" aria-hidden="true">donut_large</mat-icon>
+                  <span>{{ 'CurrentUsage' | translate }}</span>
+                </span>
                 <span class="home-quota-banner__dot" *ngIf="quotaResetEndDateLabel" aria-hidden="true">·</span>
                 <span class="home-quota-banner__reset" *ngIf="quotaResetEndDateLabel">
                   {{ 'QuotasReset' | translate }}: {{ quotaResetEndDateLabel | amDateFormat: 'LL' }}
