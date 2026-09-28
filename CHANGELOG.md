@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.27
+- Redesigns the home page dashboard with a new layout
+
 ### 2.8.26
 - Improves translations in the integration Gemini Agent Platform
 - Fixes the bug: conversation detail showed oversized `h1` text inside chat message bubbles
