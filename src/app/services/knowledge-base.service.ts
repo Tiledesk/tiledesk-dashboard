@@ -497,9 +497,13 @@ export class KnowledgeBaseService {
   }
 
   /** Agent intent completion distribution KPI (Home — most engaged chatbot). */
+  /**
+   * Home "most used flow": all agents' launched conversations over the period
+   * (`charts/agent/ops-over-time` without agent filter). Caller picks max series total.
+   */
   agentDistribution(range?: { from: string; to: string }) {
     if (!this.project_id || !this.TOKEN) {
-      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for agent distribution KPI'));
+      return throwError(() => new Error('[KNOWLEDGE BASE SERVICE] Missing project_id or auth token for agent ops ranking'));
     }
 
     const { from, to } = range ?? this.getLast10DaysChartRange();
@@ -516,8 +520,9 @@ export class KnowledgeBaseService {
         };
 
         const base = (this.ANALYTICS_API_BASE_PATH || '').replace(/\/+$/, '');
-        const url = `${base}/api/v1/${this.project_id}/kpi/agent/intents-duration?${this.analyticsRangeQuery(from, to)}`;
-        this.logger.log('[KNOWLEDGE BASE SERVICE] - agentDistribution URL ', url);
+        // No agent= → one series per agent (same metric as Agent Engagement / Launched conversations)
+        const url = `${base}/api/v1/${this.project_id}/charts/agent/ops-over-time?${this.analyticsRangeQuery(from, to)}&granularity=day`;
+        this.logger.log('[KNOWLEDGE BASE SERVICE] - agentDistribution (ops-over-time) URL ', url);
         return this.httpClient.get(url, httpOptions);
       }),
     );

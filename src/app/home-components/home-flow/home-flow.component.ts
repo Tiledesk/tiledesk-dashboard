@@ -240,8 +240,8 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
     const requestId = ++this.featuredChatbotRequestId;
 
-    // Paint last-edited identity immediately; wait for agentDistribution before analytics
-    // so we don't load last-edited then reload most-engaged (skeleton → chart → skeleton).
+    // Paint last-edited identity immediately; wait for ops-over-time ranking before analytics
+    // so we don't load last-edited then reload most-used (skeleton → chart → skeleton).
     const lastEdited = getLastUpdatedChatbot(this.chatbots);
     this.lastUpdatedChatbot = lastEdited;
     this.featuredFlowSource = lastEdited ? 'last_edited' : null;
@@ -254,11 +254,12 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       this.analyticsLoading = true;
     }
 
+    // Rank by launched conversations (ops-over-time, all agents) — then models/ops/KB for winner
     this.kbService.agentDistribution().pipe(
       timeout(8000),
       map((res) => parseMostEngagedAgentId(res)),
       catchError((err) => {
-        this.logger.error('[HOME-FLOW] agentDistribution error', err);
+        this.logger.error('[HOME-FLOW] most-used agent (ops-over-time) error', err);
         return of(null);
       }),
       takeUntil(this.unsubscribe$),
