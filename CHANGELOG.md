@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.28
+- Updates Flow engagement metrics and terminology in the Dashboard Home for greater clarity.
+
 ### 2.8.27
 - Redesigns the home page dashboard with a new layout
 
