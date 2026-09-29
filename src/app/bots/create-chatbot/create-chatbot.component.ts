@@ -271,7 +271,7 @@ export class CreateChatbotComponent implements OnInit {
       this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
     }, () => {
       this.logger.log('[TILEBOT] - IMPORT CHATBOT FROM JSON - COMPLETE');
-      this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded succesfully", 2, 'done')
+      this.notify.showWidgetStyleUpdateNotification("Chatbot was uploaded successfully", 2, 'done')
     });
   }
 
