@@ -2510,9 +2510,15 @@ print {
     align-items: center;
 }
 
+/* Same horizontal inset as .home-dashboard-inset (quick cards / blocks) */
 .padding-l-r {
-  padding-left: 20px !important;
-  padding-right: 20px !important;
+  padding-left: 30px !important;
+  padding-right: 30px !important;
+
+  @media (max-width: 1400px) {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
 }
 
 @media (min-width: 600px) {
@@ -2612,9 +2618,10 @@ img {
   // display: block;
 }
 
+/* Logo beside the title is commented out — do not offset plan/project name */
 .ml-4 {
-  margin-left: 1rem !important;
-  margin-top: -7px;
+  margin-left: 0 !important;
+  margin-top: 0;
 }
 
 @media (min-width: 960px) {

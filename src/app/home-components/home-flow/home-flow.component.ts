@@ -83,10 +83,9 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   modelsListCanScrollDown = false;
   private modelsListFlashTimer: ReturnType<typeof setTimeout> | null = null;
   conversationsSeries: HomeFlowTimeSeriesPoint[] = [];
-  conversationsTotalLabel = '0';
-  conversationsPreviousTotalLabel = '0';
   conversationsTrendPercent: number | null = null;
   conversationsTotal = 0;
+  conversationsPreviousTotal = 0;
 
   analyticsLoading = false;
   chartsReady = false;
@@ -175,7 +174,7 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
   get featuredFlowReasonKey(): string | null {
     if (this.featuredFlowSource === 'most_engaged') {
-      return 'HomeFlow.MostEngagedAiAgent';
+      return 'HomeFlow.MostEngagedFlow';
     }
     if (this.featuredFlowSource === 'last_edited') {
       return 'HomeFlow.LastEditedAiAgent';
@@ -386,10 +385,9 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.modelsListFlash = false;
     this.modelsListCanScrollDown = false;
     this.conversationsSeries = alignSeriesToLast10Days([], this.kbService.getProjectTimezone());
-    this.conversationsTotalLabel = '0';
-    this.conversationsPreviousTotalLabel = '0';
     this.conversationsTrendPercent = null;
     this.conversationsTotal = 0;
+    this.conversationsPreviousTotal = 0;
     this.analyticsLoading = false;
     this.scheduleFlowChartsRender();
   }
@@ -457,8 +455,7 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
           previousConversationsTotal,
         );
         this.conversationsTotal = currentConversationsTotal;
-        this.conversationsTotalLabel = this.conversationsTotal.toLocaleString();
-        this.conversationsPreviousTotalLabel = previousConversationsTotal.toLocaleString();
+        this.conversationsPreviousTotal = previousConversationsTotal;
         this.analyticsLoading = false;
         this.scheduleFlowChartsRender();
       },
@@ -467,7 +464,7 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
         if (this.analyticsAgentId !== agentId) { return; }
         this.analyticsLoading = false;
         this.conversationsTrendPercent = null;
-        this.conversationsPreviousTotalLabel = '0';
+        this.conversationsPreviousTotal = 0;
         this.conversationsTotal = 0;
         this.conversationsSeries = alignSeriesToLast10Days([], this.kbService.getProjectTimezone());
         this.scheduleFlowChartsRender();
@@ -527,7 +524,7 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
 
     const option = buildConversationsLineChartOption(
       conversationPoints,
-      this.translate.instant('HomeFlow.ConversationsLaunched'),
+      this.translate.instant('HomeFlow.EngagedConversations'),
     );
 
     const existing = echarts.getInstanceByDom(conversationsEl);

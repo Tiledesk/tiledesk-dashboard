@@ -443,7 +443,7 @@
 }
 
 .home-flow__kb-count-current {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 500;
   color: #1e293b;
 }
@@ -607,13 +607,48 @@
   min-width: 0;
 }
 
+.home-flow__metric-value-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
 .home-flow__metric-value {
   margin-top: 0;
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 500;
   color: #1e293b;
   line-height: 1;
   flex-shrink: 0;
+}
+
+.home-flow__metric-info {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  color: #94a3b8;
+  cursor: help;
+  flex-shrink: 0;
+  outline: none;
+  user-select: none;
+
+  &:hover,
+  &:focus-visible {
+    color: #64748b;
+  }
+}
+
+// Overlay panel (matTooltipClass) — long definition copy
+::ng-deep .home-flow-engaged-tooltip {
+  .mdc-tooltip__surface {
+    max-width: 280px !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
+  }
 }
 
 .home-flow__card--chart {
@@ -787,11 +822,11 @@
   }
 
   .home-flow__metric-value {
-    font-size: 32px;
+    font-size: 28px;
   }
 
   .home-flow__kb-count-current {
-    font-size: 32px;
+    font-size: 28px;
   }
 }
 

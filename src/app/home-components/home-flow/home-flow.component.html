@@ -46,7 +46,7 @@
         </article>
 
         <article class="home-flow__card">
-          <div class="home-flow__card-label">KB UTILIZZATE</div>
+          <div class="home-flow__card-label">{{ 'HomeFlow.KbUsed' | translate }}</div>
           <div class="hf-skel hf-skel--kb-count"></div>
           <div class="home-flow__kb-list">
             <div class="hf-skel hf-skel--kb-row" *ngFor="let _ of [1,2]"></div>
@@ -55,7 +55,7 @@
 
         <article class="home-flow__card home-flow__card--last home-flow__card--chart home-flow__card--conversations-chart">
           <div class="home-flow__card-label">
-            {{ 'HomeFlow.ConversationsLaunched' | translate }}
+            {{ 'HomeFlow.EngagedConversations' | translate }}
             <span class="home-flow__label-sep" aria-hidden="true">·</span>
             <span class="home-flow__label-period">{{ 'HomeFlow.Last10Days' | translate }}</span>
           </div>
@@ -183,7 +183,7 @@
         </article>
 
         <article class="home-flow__card">
-          <div class="home-flow__card-label">KB UTILIZZATE</div>
+          <div class="home-flow__card-label">{{ 'HomeFlow.KbUsed' | translate }}</div>
           <ng-container *ngIf="showKbSkeleton; else kbContent">
             <div class="hf-skel hf-skel--kb-count"></div>
             <div class="home-flow__kb-list">
@@ -237,7 +237,7 @@
 
         <article class="home-flow__card home-flow__card--last home-flow__card--chart home-flow__card--conversations-chart">
           <div class="home-flow__card-label">
-            {{ 'HomeFlow.ConversationsLaunched' | translate }}
+            {{ 'HomeFlow.EngagedConversations' | translate }}
             <span class="home-flow__label-sep" aria-hidden="true">·</span>
             <span class="home-flow__label-period">{{ 'HomeFlow.Last10Days' | translate }}</span>
           </div>
@@ -257,7 +257,18 @@
           </ng-container>
           <ng-template #conversationsReady>
             <div class="home-flow__metric-row">
-              <div class="home-flow__metric-value">{{ conversationsTotalLabel }}</div>
+              <div class="home-flow__metric-value-wrap">
+                <div class="home-flow__metric-value">{{ conversationsTotal | number:'1.0-0' }}</div>
+                <mat-icon
+                  class="home-flow__metric-info"
+                  [matTooltip]="'HomeFlow.EngagedConversationsTooltip' | translate"
+                  matTooltipClass="h-custom-mat-tooltip home-flow-engaged-tooltip"
+                  matTooltipPosition="above"
+                  matTooltipShowDelay="150"
+                  tabindex="0"
+                  role="img"
+                  [attr.aria-label]="'HomeFlow.EngagedConversationsTooltip' | translate">info_outline</mat-icon>
+              </div>
               <div
                 class="home-flow__chart-trend"
                 *ngIf="conversationsTrendPercent !== null"
@@ -275,7 +286,7 @@
                 </span>
                 <span class="home-flow__chart-trend-hint">
                   {{ 'HomeFlow.VsPrevious10Days' | translate }}
-                  ({{ conversationsPreviousTotalLabel }})
+                  ({{ conversationsPreviousTotal | number:'1.0-0' }})
                 </span>
               </div>
             </div>
