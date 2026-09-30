@@ -825,7 +825,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               this.quotaResetEndDateLabel = null;
               this.displayQuotaSkeleton = false;
               if (data.fetchFailed) {
-                this.notify.showToast(
+                this.notify.showWidgetStyleUpdateNotification(
                   this.translate.instant('CurrentUsageLoadError', {
                     section: this.translate.instant('CurrentUsage'),
                   }),
