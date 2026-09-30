@@ -30,6 +30,8 @@ import { SatPopover } from '@ncstate/sat-popover';
 import { WebhookService } from 'app/services/webhook.service';
 import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-modal.component';
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
+import { CreateAgentModalComponent, CreateAgentModalResult } from './create-agent-modal/create-agent-modal.component';
+import { saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 import { aiAgents, automations } from 'app/integrations/utils';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
@@ -174,6 +176,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   botDefaultLangCode: string = 'en'
   chatbotName: string;
+  /** The description of the agent to build, left for the Design Studio once the agent exists. */
+  chatbotPrompt: string = '';
   chatbotToImportSubtype: string;
   showUploadingSpinner: boolean = false;
 
@@ -1784,6 +1788,18 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           _id: faqKb['_id']
         }
 
+        // Before the redirect, and only then: the note is addressed to this agent, so it needs
+        // the id the server has just answered with. The Design Studio picks it up on the other
+        // side of the same tab and hands it to the AI chat.
+        if (this.chatbotPrompt) {
+          saveAgentPrompt({
+            botId: faqKb['_id'],
+            prompt: this.chatbotPrompt,
+            language: this.botDefaultLangCode,
+            createdAt: Date.now()
+          });
+        }
+
         goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
         this.trackChatbotCreated(faqKb, 'Create')
       }
@@ -1796,6 +1812,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     }, () => {
       this.logger.log('[BOT-LIST] CREATE FAQKB - POST REQUEST * COMPLETE *');
       this.chatbotName = null;
+      this.chatbotPrompt = '';
       // this.getFaqKbByProjectId();
       // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
     })
@@ -2083,6 +2100,16 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     // const createBotFromScratchBtnEl = <HTMLElement>document.querySelector('#home-material-btn');
     // this.logger.log('[HOME-CREATE-CHATBOT] - presentModalAddBotFromScratch addKbBtnEl ', addKbBtnEl);
     // createBotFromScratchBtnEl.blur()
+
+    // The AI Agent is the first creation path moved onto the new modal, and only where agents are
+    // born V3: the description is built by the AI chat, which exists in that editor alone. The
+    // other paths -- voice, webhook, copilot, templates -- still open the old modal, and each is
+    // moved over on its own.
+    if (subtype === 'chatbot' && this.createsV3Agents()) {
+      this.presentModalCreateAgent(subtype);
+      return;
+    }
+
     const dialogRef = this.dialog.open(CreateChatbotModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -2113,6 +2140,43 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.goToPricing()
       }
     });
+  }
+
+  /** Creates an AI Agent: its name, and a description of what it should do. */
+  presentModalCreateAgent(subtype: string) {
+    const dialogRef = this.dialog.open(CreateAgentModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '480px',
+      data: {
+        subtype: subtype,
+        // The flag stays in the modal's own interface: it will be opened from places where a
+        // description means nothing -- a template starts from a flow already written.
+        showPromptField: true
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: CreateAgentModalResult) => {
+      this.logger.log('[BOTS-LIST] Dialog Create Agent result:', result);
+      if (!result || !result.chatbotName) { return; }
+      this.chatbotName = result.chatbotName;
+      this.chatbotPrompt = result.prompt || '';
+      this.createBlankTilebot(result.subType);
+    });
+  }
+
+  /** Whether the agents created here are born V3.
+   *
+   *  Describing an agent in words leads somewhere only on that editor, the one whose AI chat
+   *  builds the flow; elsewhere the description would be collected and never read. The label
+   *  that decides the editor arrives from the deployment -- an absent value, or the `${...}`
+   *  placeholder left behind when the variable is not set, both mean "not here", and creation
+   *  then behaves exactly as it always has. */
+  private createsV3Agents(): boolean {
+    const version = this.appConfigService.getConfig()?.chatbotVersion;
+    if (typeof version !== 'string') { return false; }
+    const trimmed = version.trim();
+    return !!trimmed && !trimmed.startsWith('${');
   }
 
    goToPricing() {

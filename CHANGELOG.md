@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+# this branch 30/09/2026
+- Adds a new modal to create an AI Agent: its name and a description of what it should do, offered only where agents are created with the new editor
+- Hands that description to the Design Studio, so the AI chat can build the flow on the canvas
+- Leaves every other way of creating something on the previous modal, unchanged
+
 ### 2.8.28
 - Updates Flow engagement metrics and terminology in the Dashboard Home for greater clarity.
 
