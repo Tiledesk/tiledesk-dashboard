@@ -818,6 +818,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           if (data['projectId'] === this.projectId) {
             this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
             this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data.projectId ", data['projectId']);
+
+            // Fetch failed (e.g. 504) or empty payload: stop skeleton, do not apply quotas.
+            if (data.fetchFailed || !data.allQuotes) {
+              this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] quotes fetch failed/empty — clearing skeleton");
+              this.quotaResetEndDateLabel = null;
+              this.displayQuotaSkeleton = false;
+              if (data.fetchFailed) {
+                this.notify.showToast(
+                  this.translate.instant('CurrentUsageLoadError', {
+                    section: this.translate.instant('CurrentUsage'),
+                  }),
+                  4,
+                  'report_problem'
+                );
+              }
+              return;
+            }
+
             this.quotasLimits = data.projectLimits;
             this.allQuotas = data.allQuotes;
             this.quotaResetEndDateLabel = data.slot?.endDate ?? null;

@@ -192,6 +192,7 @@
     "Closed": "Kapalı",
     "Temporary": "Geçici",
     "CurrentUsage": "Güncel kullanım",
+    "CurrentUsageLoadError": "{{section}} yüklenirken bir hata oluştu",
     "Conversations": "Konuşmalar",
     "OpenConvsCount": "{{conv_num}} açık konuşma",
     "ClosedConvsCount": "{{conv_num}} kapalı görüşme",

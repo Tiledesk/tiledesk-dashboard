@@ -191,6 +191,7 @@
     "Closed": "Жабық",
     "Temporary": "уақытша",
     "CurrentUsage": "Ағымдағы пайдалану",
+    "CurrentUsageLoadError": "{{section}} жүктеу кезінде қате орын алды",
     "Conversations": "Әңгімелер",
     "OpenConvsCount": "{{conv_num}} ашық сөйлесу",
     "ClosedConvsCount": "{{conv_num}} жабық әңгіме",

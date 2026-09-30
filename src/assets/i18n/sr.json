@@ -191,6 +191,7 @@
     "Closed": "Затворено",
     "Temporary": "Привремени",
     "CurrentUsage": "Тренутна употреба",
+    "CurrentUsageLoadError": "Дошло је до грешке при учитавању {{section}}",
     "Conversations": "Разговори",
     "OpenConvsCount": "{{conv_num}} отворених конверзација",
     "ClosedConvsCount": "{{conv_num}} затворених конверзација",

@@ -191,6 +191,7 @@
     "Closed": "Geschlossen",
     "Temporary": "Vorübergehend",
     "CurrentUsage": "Aktuelle Nutzung",
+    "CurrentUsageLoadError": "Beim Laden von {{section}} ist ein Fehler aufgetreten",
     "Conversations": "Gespräche",
     "OpenConvsCount": "{{conv_num}} offene Gespräche",
     "ClosedConvsCount": "{{conv_num}} geschlossene Unterhaltungen",

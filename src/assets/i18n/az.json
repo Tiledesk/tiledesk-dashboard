@@ -193,6 +193,7 @@
     "RequestsForAgent": "Agent üçün söhbətlər",
     "RequestsForTeammate": "Komanda yoldaşı üçün söhbətlər",
     "CurrentUsage": "Cari istifadə",
+    "CurrentUsageLoadError": "{{section}} yüklənərkən xəta baş verdi",
     "Conversations": "Söhbətlər",
     "OpenConvsCount": "{{conv_num}} açıq söhbət",
     "ClosedConvsCount": "{{conv_num}} qapalı söhbət",

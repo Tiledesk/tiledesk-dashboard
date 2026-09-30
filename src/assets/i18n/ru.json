@@ -191,6 +191,7 @@
     "Closed": "Закрыто",
     "Temporary": "Временный",
     "CurrentUsage": "Текущее использование",
+    "CurrentUsageLoadError": "Произошла ошибка при загрузке {{section}}",
     "Conversations": "Разговоры",
     "OpenConvsCount": "{{conv_num}} открытых разговоров",
     "ClosedConvsCount": "{{conv_num}} закрытых разговоров",

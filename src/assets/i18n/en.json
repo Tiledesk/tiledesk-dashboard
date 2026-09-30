@@ -195,6 +195,7 @@
     "Closed": "Closed",
     "Temporary": "Temporary",
     "CurrentUsage": "Current usage",
+    "CurrentUsageLoadError": "An error occurred while loading {{section}}",
     "Conversations": "Conversations",
     "OpenConvsCount": "{{conv_num}} open conversations",
     "ClosedConvsCount": "{{conv_num}} closed conversations",

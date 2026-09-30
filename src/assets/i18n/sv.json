@@ -191,6 +191,7 @@
     "Closed": "Stängd",
     "Temporary": "Geçici",
     "CurrentUsage": "Nuvarande användning",
+    "CurrentUsageLoadError": "Ett fel uppstod när {{section}} skulle laddas",
     "Conversations": "Samtal",
     "OpenConvsCount": "{{conv_num}} öppna konversationer",
     "ClosedConvsCount": "{{conv_num}} stängda konversationer",

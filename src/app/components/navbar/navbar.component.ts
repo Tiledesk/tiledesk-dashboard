@@ -1002,14 +1002,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   getProjectQuotes() {
     this.logger.log("[NAVBAR][QUOTA-DEBUG] getProjectQuotes this.projectId -------> : ", this.projectId);
     this.quotaResetEndDateLabel = null;
-    this.quotesService.getProjectQuotes(this.projectId).then((response) => {
+    const projectId = this.projectId;
+    this.quotesService.getProjectQuotes(projectId).then((response) => {
       this.logger.log("[NAVBAR] getProjectQuotes response: ", response);
       this.project_limits = response;
       if (this.project_limits) {
-        this.getQuotes(this.project_limits , this.projectId)
+        this.getQuotes(this.project_limits , projectId)
+      } else {
+        this.quotesService.notifyQuotasFetchFailed(projectId);
       }
     }).catch((err) => {
       this.logger.error("[NAVBAR] getProjectQuotes error: ", err);
+      this.quotesService.notifyQuotasFetchFailed(projectId);
     })
   }
 
@@ -1034,6 +1038,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           slot: resp.slot ?? null
         });
 
+      } else {
+        this.quotesService.notifyQuotasFetchFailed(projectId || this.projectId);
+        return;
       }
 
       if (project_limits) {
@@ -1172,6 +1179,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }, (error) => {
       this.logger.error("get all quotes error: ", error)
       this.quotaResetEndDateLabel = null;
+      this.quotesService.notifyQuotasFetchFailed(projectId || this.projectId);
     }, () => {
       this.logger.log("[QUOTA-DEBUG][NAVBAR][DISPLAY-SKELETON] get all quotes *COMPLETE*");
 

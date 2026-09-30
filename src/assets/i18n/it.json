@@ -193,6 +193,7 @@
     "Closed": "Chiuse",
     "Temporary": "Temporanee",
     "CurrentUsage": "Utilizzo attuale",
+    "CurrentUsageLoadError": "Si è verificato un errore durante il caricamento di {{section}}",
     "Conversations": "Conversazioni",
     "OpenConvsCount": "{{conv_num}} conversazioni aperte",
     "ClosedConvsCount": "{{conv_num}} conversazioni chiuse",

@@ -191,6 +191,7 @@
     "Closed": "Yopiq",
     "Temporary": "Vaqtinchalik",
     "CurrentUsage": "Joriy foydalanish",
+    "CurrentUsageLoadError": "{{section}} yuklanayotganda xatolik yuz berdi",
     "Conversations": "Suhbatlar",
     "OpenConvsCount": "{{conv_num}} ta ochiq suhbat",
     "ClosedConvsCount": "{{conv_num}} ta yopiq suhbat",

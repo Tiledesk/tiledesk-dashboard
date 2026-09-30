@@ -192,6 +192,7 @@
     "RequestsForAgent": "Розмови для агента",
     "RequestsForTeammate": "Розмови для товариша по команді",
     "CurrentUsage": "Поточне використання",
+    "CurrentUsageLoadError": "Сталася помилка під час завантаження {{section}}",
     "Conversations": "Розмови",
     "OpenConvsCount": "{{conv_num}} відкритих бесід",
     "ClosedConvsCount": "{{conv_num}} закритих бесід",

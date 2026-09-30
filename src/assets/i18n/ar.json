@@ -191,6 +191,7 @@
     "Closed": "مغلق",
     "Temporary": "مؤقت",
     "CurrentUsage": "الاستخدام الحالي",
+    "CurrentUsageLoadError": "حدث خطأ أثناء تحميل {{section}}",
     "Conversations": "المحادثات",
     "OpenConvsCount": "{{conv_num}} محادثات مفتوحة",
     "ClosedConvsCount": "{{conv_num}} من المحادثات المغلقة",
