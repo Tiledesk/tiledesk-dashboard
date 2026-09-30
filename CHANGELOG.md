@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.29
+- Removes the link to Legacy Analytics in the new analytics page
+
 ### 2.8.28
 - Updates Flow engagement metrics and terminology in the Dashboard Home for greater clarity.
 
