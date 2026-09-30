@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
-import { NotifyService } from 'app/core/notify.service';
+import { MatDialog } from '@angular/material/dialog';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { TranslateService } from '@ngx-translate/core';
-import { isMaskedApikey } from 'app/integrations/utils';
 import { VllmEndpoint } from './vllm-endpoint-table/vllm-endpoint-table.component';
+import {
+  VllmEndpointDialogComponent,
+  VllmEndpointDialogResult,
+} from './vllm-endpoint-dialog/vllm-endpoint-dialog.component';
 
 const Swal = require('sweetalert2');
 
@@ -19,20 +22,11 @@ export class VLLMComponent implements OnInit, OnChanges {
   @Output() onDeleteIntegration = new EventEmitter();
 
   translateparams: any;
-  currentEndpoint: VllmEndpoint = this.createEmptyEndpoint();
-  isEditing = false;
-  editingIndex = -1;
-  newModelName = '';
-  showEnterButton = false;
-  apiKeyCanSave = true;
-  apiKeyIsReplacing = false;
-  apiKeyFieldReset = 0;
-  endpointStoredApikey = '';
 
   constructor(
     private logger: LoggerService,
-    private notify: NotifyService,
     private translate: TranslateService,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -47,104 +41,39 @@ export class VLLMComponent implements OnInit, OnChanges {
     }
   }
 
-  addOrUpdateEndpoint(): void {
-    this.flushPendingModel();
-    this.logger.log('[INT-vLLM] addOrUpdateEndpoint', this.currentEndpoint, 'isEditing:', this.isEditing);
-
-    const name = String(this.currentEndpoint.name || '').trim();
-    const url = String(this.currentEndpoint.url || '').trim();
-    const models = this.normalizeModels(this.currentEndpoint.models);
-
-    if (!name || !url) {
-      this.notify.showWidgetStyleUpdateNotification(
-        this.translate.instant('Integration.VllmNameAndUrlRequired'),
-        3,
-        'error',
-      );
-      return;
-    }
-
-    if (!models.length) {
-      this.notify.showWidgetStyleUpdateNotification(
-        this.translate.instant('Integration.VllmModelsRequired'),
-        3,
-        'error',
-      );
-      return;
-    }
-
-    if (this.hasDuplicateName(name)) {
-      this.notify.showWidgetStyleUpdateNotification(
-        this.translate.instant('Integration.VllmDuplicateName'),
-        3,
-        'error',
-      );
-      return;
-    }
-
-    if (this.hasDuplicateUrl(url)) {
-      this.notify.showWidgetStyleUpdateNotification(
-        this.translate.instant('Integration.VllmDuplicateUrl'),
-        3,
-        'error',
-      );
-      return;
-    }
-
-    const draftKey = String(this.currentEndpoint.apikey || '').trim();
-    let apikeyProps = {};
-    if (this.apiKeyIsReplacing) {
-      if (draftKey && !isMaskedApikey(draftKey)) {
-        apikeyProps = { apikey: draftKey };
-      }
-      // else clear / omit
-    } else if (this.isEditing && this.editingIndex >= 0) {
-      const prev = String(this.integration.value.servers[this.editingIndex]?.apikey || '').trim();
-      if (prev) apikeyProps = { apikey: prev };
-    } else if (draftKey && !isMaskedApikey(draftKey)) {
-      apikeyProps = { apikey: draftKey };
-    }
-
-    const endpointToSave: VllmEndpoint = {
-      name,
-      url,
-      models,
-      ...apikeyProps,
-    };
-
-    if (this.isEditing && this.editingIndex >= 0) {
-      this.integration.value.servers = this.integration.value.servers.map(
-        (endpoint: VllmEndpoint, index: number) =>
-          index === this.editingIndex ? endpointToSave : endpoint,
-      );
-      this.logger.log('[INT-vLLM] Updated endpoint at index', this.editingIndex);
-    } else {
-      this.integration.value.servers = [...this.integration.value.servers, endpointToSave];
-      this.logger.log('[INT-vLLM] Added new endpoint');
-    }
-
-    this.resetForm();
-    this.saveIntegration();
+  openAddEndpointDialog(): void {
+    this.openEndpointDialog({
+      isEditing: false,
+      editingIndex: -1,
+      servers: this.integration.value.servers || [],
+    });
   }
 
   onSelectEndpoint(endpoint: VllmEndpoint): void {
     this.logger.log('[INT-vLLM] Endpoint selected:', endpoint);
     const index = this.findEndpointIndex(endpoint);
+    if (index < 0) {
+      return;
+    }
 
-    if (index >= 0) {
-      this.currentEndpoint = {
+    this.openEndpointDialog({
+      isEditing: true,
+      editingIndex: index,
+      endpoint: {
         name: endpoint.name,
         url: endpoint.url,
         apikey: endpoint.apikey || '',
         models: [...(endpoint.models || [])],
-      };
-      this.isEditing = true;
-      this.editingIndex = index;
-      this.endpointStoredApikey = endpoint.apikey || '';
-      this.apiKeyFieldReset++;
-      this.newModelName = '';
-      this.showEnterButton = false;
-    }
+        customHeaders: Array.isArray(endpoint.customHeaders)
+          ? endpoint.customHeaders.map((h) => ({
+              key: h.key,
+              value: h.value,
+              enabled: h.enabled !== false,
+            }))
+          : [],
+      },
+      servers: this.integration.value.servers || [],
+    });
   }
 
   onDeleteEndpoint(endpoint: VllmEndpoint): void {
@@ -177,12 +106,6 @@ export class VLLMComponent implements OnInit, OnChanges {
         (_endpoint: VllmEndpoint, i: number) => i !== indexToDelete,
       );
 
-      if (this.isEditing && this.editingIndex === indexToDelete) {
-        this.resetForm();
-      } else if (this.isEditing && this.editingIndex > indexToDelete) {
-        this.editingIndex -= 1;
-      }
-
       this.saveIntegration();
 
       Swal.fire({
@@ -196,42 +119,6 @@ export class VLLMComponent implements OnInit, OnChanges {
     });
   }
 
-  addModel(modelName: string): void {
-    const trimmed = String(modelName || '').trim();
-    if (!trimmed) {
-      return;
-    }
-
-    if (!Array.isArray(this.currentEndpoint.models)) {
-      this.currentEndpoint.models = [];
-    }
-
-    if (!this.currentEndpoint.models.includes(trimmed)) {
-      this.currentEndpoint.models.push(trimmed);
-    }
-
-    this.newModelName = '';
-    this.showEnterButton = false;
-  }
-
-  removeModel(modelName: string): void {
-    this.currentEndpoint.models = (this.currentEndpoint.models || []).filter((model) => model !== modelName);
-  }
-
-  onEnterModel(value: string): void {
-    this.showEnterButton = String(value || '').trim().length > 0;
-  }
-
-  resetForm(): void {
-    this.currentEndpoint = this.createEmptyEndpoint();
-    this.isEditing = false;
-    this.editingIndex = -1;
-    this.newModelName = '';
-    this.showEnterButton = false;
-    this.endpointStoredApikey = '';
-    this.apiKeyFieldReset++;
-  }
-
   saveIntegration(): void {
     this.sanitizeIntegrationValue();
     const data = {
@@ -241,12 +128,40 @@ export class VLLMComponent implements OnInit, OnChanges {
     this.onUpdateIntegration.emit(data);
   }
 
-  canSubmit(): boolean {
-    const pendingModel = String(this.newModelName || '').trim();
-    const modelsCount = this.normalizeModels(this.currentEndpoint.models).length;
-    return !!String(this.currentEndpoint.name || '').trim()
-      && !!String(this.currentEndpoint.url || '').trim()
-      && (modelsCount > 0 || !!pendingModel);
+  private openEndpointDialog(data: {
+    isEditing: boolean;
+    editingIndex: number;
+    endpoint?: VllmEndpoint;
+    servers: VllmEndpoint[];
+  }): void {
+    const dialogRef = this.dialog.open(VllmEndpointDialogComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      maxHeight: '90vh',
+      autoFocus: false,
+      position: { top: '60px' },
+      data,
+    });
+
+    dialogRef.afterClosed().subscribe((result?: VllmEndpointDialogResult) => {
+      if (!result?.endpoint) {
+        return;
+      }
+
+      const endpointToSave = result.endpoint;
+      if (data.isEditing && data.editingIndex >= 0) {
+        this.integration.value.servers = this.integration.value.servers.map(
+          (endpoint: VllmEndpoint, index: number) =>
+            index === data.editingIndex ? endpointToSave : endpoint,
+        );
+        this.logger.log('[INT-vLLM] Updated endpoint at index', data.editingIndex);
+      } else {
+        this.integration.value.servers = [...this.integration.value.servers, endpointToSave];
+        this.logger.log('[INT-vLLM] Added new endpoint');
+      }
+
+      this.saveIntegration();
+    });
   }
 
   private ensureServersArray(): void {
@@ -281,40 +196,28 @@ export class VLLMComponent implements OnInit, OnChanges {
     const url = String(endpoint?.url || '').trim();
     const models = this.normalizeModels(endpoint?.models);
     const apikey = String(endpoint?.apikey || '').trim();
+    const customHeaders = this.normalizeCustomHeaders(endpoint?.customHeaders);
 
     return {
       name,
       url,
       models,
       ...(apikey ? { apikey } : {}),
+      ...(customHeaders.length ? { customHeaders } : {}),
     };
   }
 
-  private flushPendingModel(): void {
-    const trimmed = String(this.newModelName || '').trim();
-    if (!trimmed) {
-      return;
+  private normalizeCustomHeaders(headers: VllmEndpoint['customHeaders']): VllmEndpoint['customHeaders'] {
+    if (!Array.isArray(headers)) {
+      return [];
     }
-
-    if (!Array.isArray(this.currentEndpoint.models)) {
-      this.currentEndpoint.models = [];
-    }
-
-    if (!this.currentEndpoint.models.includes(trimmed)) {
-      this.currentEndpoint.models.push(trimmed);
-    }
-
-    this.newModelName = '';
-    this.showEnterButton = false;
-  }
-
-  private createEmptyEndpoint(): VllmEndpoint {
-    return {
-      name: '',
-      url: '',
-      apikey: '',
-      models: [],
-    };
+    return headers
+      .map((header) => ({
+        key: String(header?.key || '').trim(),
+        value: String(header?.value || '').trim(),
+        enabled: header?.enabled !== false,
+      }))
+      .filter((header) => !!header.key && !!header.value);
   }
 
   private normalizeModels(models: string[] | undefined): string[] {
@@ -329,20 +232,6 @@ export class VLLMComponent implements OnInit, OnChanges {
 
   private normalizeValue(value: string): string {
     return String(value || '').trim().toLowerCase();
-  }
-
-  private hasDuplicateName(name: string): boolean {
-    const normalizedName = this.normalizeValue(name);
-    return this.integration.value.servers.some((endpoint: VllmEndpoint, index: number) =>
-      index !== this.editingIndex && this.normalizeValue(endpoint.name) === normalizedName
-    );
-  }
-
-  private hasDuplicateUrl(url: string): boolean {
-    const normalizedUrl = this.normalizeValue(url);
-    return this.integration.value.servers.some((endpoint: VllmEndpoint, index: number) =>
-      index !== this.editingIndex && this.normalizeValue(endpoint.url) === normalizedUrl
-    );
   }
 
   private findEndpointIndex(endpoint: VllmEndpoint): number {

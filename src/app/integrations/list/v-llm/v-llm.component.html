@@ -1,93 +1,16 @@
 <div class="content">
 
-    <div class="form-section">
-        <div class="form-header">
-            <h4 *ngIf="!isEditing">{{ 'Integration.AddOpenAICompatibleEndpoint' | translate }}</h4>
-            <h4 *ngIf="isEditing">{{ 'Integration.EditOpenAICompatibleEndpoint' | translate }}</h4>
-        </div>
+  <div class="endpoints-header">
+    <h4>{{ 'Integration.OpenAICompatibleEndpoints' | translate }}</h4>
+    <button type="button" class="btn btn-tdblu-no-boxshadow" (click)="openAddEndpointDialog()">
+      {{ 'Integration.AddEndpoint' | translate }}
+    </button>
+  </div>
 
-        <div class="input-field">
-            <label>{{ 'Name' | translate }}</label>
-            <input id="vllm-name" class="custom-input" type="text" name="vllm-name"
-                placeholder="{{ 'Integration.VllmEndpointNamePlaceholder' | translate }}"
-                [(ngModel)]="currentEndpoint.name" autocomplete="off" style="font-size: 14px;">
-        </div>
-
-        <div class="input-field">
-            <label>URL</label>
-            <input id="vllm-url" class="custom-input" type="url" name="vllm-url"
-                placeholder="{{ 'Integration.VllmEndpointUrlPlaceholder' | translate }}"
-                [(ngModel)]="currentEndpoint.url" autocomplete="off" style="font-size: 14px;">
-        </div>
-
-        <integration-api-key-field
-            [storedApikey]="endpointStoredApikey"
-            [optional]="true"
-            [showOptionalHint]="true"
-            [resetKey]="apiKeyFieldReset"
-            (apikeyChange)="currentEndpoint.apikey = $event"
-            (canSaveChange)="apiKeyCanSave = $event"
-            (isReplacingChange)="apiKeyIsReplacing = $event">
-        </integration-api-key-field>
-
-        <div class="input-field" style="margin-bottom: 10px;">
-            <label>{{ 'Models' | translate }}</label>
-            <div class="fake--input">
-                <div class="fake--input-inner">
-                    <input id="vllm-models" class="custom-input" name="vllm-models"
-                        placeholder="{{ 'Integration.VllmModelsPlaceholder' | translate }}" type="text"
-                        [(ngModel)]="newModelName" (ngModelChange)="onEnterModel($event)" autocomplete="off"
-                        (keyup.enter)="addModel(newModelName)" style="font-size: 14px;">
-                    <div id="enter-button" class="enter-button" [style.display]="showEnterButton ? 'inline-block' : 'none'"
-                        (click)="addModel(newModelName)">{{ 'KbPage.Enter' | translate }}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="vllm-models--container">
-            <span aria-label="models" *ngFor="let model of currentEndpoint.models" class="vllm-model-tag-wpr">
-                <p weight="400" class="vllm-model-tag-label">{{ model }}</p>
-                <button type="button" class="vllm-model-tag-delete-btn" (click)="removeModel(model)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                        class="vllm-model-tag-delete-icon" style="min-width: 12px; min-height: 12px; margin-right: 0px;">
-                        <path
-                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                        </path>
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg>
-                </button>
-            </span>
-        </div>
-
-        <div class="form-actions">
-            <button
-                *ngIf="!isEditing"
-                type="button"
-                class="btn btn-tdblu-no-boxshadow"
-                (click)="addOrUpdateEndpoint()"
-                [disabled]="!canSubmit()">
-                {{ 'Add' | translate }}
-            </button>
-
-            <button
-                *ngIf="isEditing"
-                type="button"
-                class="btn btn-tdblu-no-boxshadow"
-                (click)="addOrUpdateEndpoint()"
-                [disabled]="!canSubmit()">
-                {{ 'Update' | translate }}
-            </button>
-
-            <button *ngIf="isEditing" type="button" class="btn btn-outlined" (click)="resetForm()">
-                {{ 'Cancel' | translate }}
-            </button>
-        </div>
-    </div>
-
-    <vllm-endpoint-table
-        [endpoints]="integration.value.servers"
-        (onSelectEndpoint)="onSelectEndpoint($event)"
-        (onDeleteEndpoint)="onDeleteEndpoint($event)">
-    </vllm-endpoint-table>
+  <vllm-endpoint-table
+    [endpoints]="integration.value.servers"
+    (onSelectEndpoint)="onSelectEndpoint($event)"
+    (onDeleteEndpoint)="onDeleteEndpoint($event)">
+  </vllm-endpoint-table>
 
 </div>
