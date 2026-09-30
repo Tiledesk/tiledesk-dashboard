@@ -657,14 +657,14 @@ export class RoleService {
 
           // Project settings > Banned
           if (calledby === 'project-settings-banned') {
-            const hasPermission = projectUserRole === 'owner' || projectUserRole === 'admin'
-            this.logger.log('[ROLE-SERV] - project-settings-security hasPermission ', hasPermission)
+            const hasPermission = projectUserRole === 'owner'
+            this.logger.log('[ROLE-SERV] - project-settings-banned hasPermission ', hasPermission)
             return hasPermission;
           }
 
           // Project settings > Retention
           if (calledby === 'project-settings-retention') {
-            const hasPermission = projectUserRole === 'owner' || projectUserRole === 'admin'
+            const hasPermission = projectUserRole === 'owner'
             this.logger.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
             return hasPermission;
           }
@@ -1276,14 +1276,14 @@ export class RoleService {
 
         // Project settings > Banned
         if (calledby === 'project-settings-banned') {
-          const hasPermission = _projectUserRole === 'owner' || _projectUserRole === 'admin';
+          const hasPermission = _projectUserRole === 'owner';
           this.logger.log('[ROLE-SERV] - project-settings-banned hasPermission ', hasPermission)
           return hasPermission;
         }
 
         // Project settings > Retention
         if (calledby === 'project-settings-retention') {
-          const hasPermission = _projectUserRole === 'owner' || _projectUserRole === 'admin';
+          const hasPermission = _projectUserRole === 'owner';
           this.logger.log('[ROLE-SERV] - project-settings-retention hasPermission ', hasPermission)
           return hasPermission;
         }
