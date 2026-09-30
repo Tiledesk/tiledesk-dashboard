@@ -36,6 +36,9 @@ import { AgentPlatformEndpointTableComponent } from './list/geminiagentplatform-
 import { McpIntegrationComponent } from './list/mcp-integration/mcp-integration.component';
 import { McpServerTableComponent } from './list/mcp-integration/mcp-server-table/mcp-server-table.component';
 import { McpToolsModalComponent } from './list/mcp-integration/mcp-tools-modal/mcp-tools-modal.component';
+import { ConnectorIntegrationComponent } from './list/connector-integration/connector-integration.component';
+import { ConnectorDetailComponent } from './list/connector-detail/connector-detail.component';
+import { ConnectorItemsModalComponent } from './list/connector-detail/connector-items-modal/connector-items-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ElevenlabsIntegrationComponent } from './list/elevenlabs-integration/elevenlabs-integration.component';
 import { CerebrasIntegrationComponent } from './list/cerebras-integration/cerebras-integration.component';
@@ -72,6 +75,9 @@ const routes: Routes = [
     McpIntegrationComponent,
     McpServerTableComponent,
     McpToolsModalComponent,
+    ConnectorIntegrationComponent,
+    ConnectorDetailComponent,
+    ConnectorItemsModalComponent,
     VLLMComponent,
     VllmEndpointTableComponent,
     GeminiAgentPlatformIntegrationComponent,

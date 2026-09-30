@@ -46,7 +46,7 @@
                                                 [ngClass]="{'element-selected': integrationSelectedName === integration.key }"
                                                 (click)="onIntegrationSelect(integration)">
 
-                                                <img [src]="integration.src_icon" alt="{{integration.name}}">
+                                                <img [src]="integration.src_icon" alt="{{integration.name}}" (error)="onSidebarIconError($event)">
                                                 <!-- dispayBadgeAvaibleFromInAppStore >  {{dispayBadgeAvaibleFromInAppStore}} -->
                                                 <div class="integration-name-and-badge">
                                                     <p>{{ integration.name }}</p>
@@ -67,7 +67,7 @@
                             <ng-container *ngIf="!showSpinner">
                                 <div *ngIf="integrationSelectedName !== 'none'" class="menu-container">
 
-                                    <integration-header *ngIf="!showInIframe" 
+                                    <integration-header *ngIf="!showInIframe && !isConnectorItemSelected()"
                                         [integrationModel]="selectedIntegrationModel">
                                     </integration-header>
 
@@ -166,6 +166,19 @@
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </mcp-integration>
+
+                                        <connector-integration *ngIf="integrationSelectedName === INT_KEYS.CONNECTORS"
+                                            [integration]="selectedIntegration"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)
+                                            (onDeleteIntegration)=integrationDeletedEvent($event)>
+                                        </connector-integration>
+
+                                        <connector-detail *ngIf="isConnectorItemSelected()"
+                                            [integration]="selectedIntegration"
+                                            [connectorItem]="selectedConnectorItem"
+                                            (onUpdateIntegration)=integrationUpdateEvent($event)>
+                                        </connector-detail>
+
                                         <v-llm *ngIf="integrationSelectedName === INT_KEYS.VLLM"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)

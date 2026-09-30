@@ -1,0 +1,416 @@
+::ng-deep .contact-request-messages-dialog-panel {
+  max-width: 100vw !important;
+  width: 100% !important;
+  height: calc(100vh + 2px) !important;
+  max-height: calc(100vh + 2px) !important;
+
+  .mat-dialog-container {
+    padding: 0;
+    overflow: visible;
+    height: 100%;
+    max-height: 100%;
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-top-right-radius: var(--dialog-border-radius, 16px) !important;
+    border-bottom-right-radius: var(--dialog-border-radius, 16px) !important;
+  }
+}
+
+.contact-request-messages-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: var(--card-background-color, #fff);
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  overflow: visible;
+}
+
+.contact-request-messages-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 12px 12px 10px;
+  border-bottom: 1px solid var(--border-color, #e5effe);
+  background: var(--conv-details-header-background, #fff);
+  flex-shrink: 0;
+}
+
+.contact-request-messages-dialog-title {
+  min-width: 0;
+  flex: 1;
+}
+
+.contact-request-messages-dialog-first-text {
+  font-size: 14px;
+  line-height: 1.3;
+  font-weight: 400;
+  margin-bottom: 4px;
+  color: var(--text-color);
+  word-break: break-word;
+}
+
+.contact-request-messages-dialog-date {
+  color: var(--secondary-text-color);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.contact-request-messages-dialog-close {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: var(--secondary-text-color);
+  line-height: 1;
+
+  .material-icons {
+    font-size: 20px;
+  }
+}
+
+.contact-request-messages-dialog-content {
+  flex: 1;
+  min-height: 0;
+  margin: 0;
+  padding: 0 !important;
+  max-height: none !important;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-request-messages-dialog-state {
+  padding: 24px 16px;
+}
+
+.contact-request-messages-dialog-chat {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: clip;
+  padding: 0 2px 12px;
+  scrollbar-width: thin;
+  scrollbar-color: #b9b9b9 #f9f9f9;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: #f9f9f9;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #b9b9b9;
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #727272;
+  }
+}
+
+.contact-accordion-info-msg {
+  padding: 8px 2px;
+  text-align: center;
+}
+
+.type-info-msg-text {
+  padding: 4px 6px;
+  background: #c9e4f6;
+  margin: 0 auto 1px;
+ // width: auto;
+  width: fit-content;
+  max-width: 100%;
+  font-size: 11px;
+  line-height: 1.4;
+  word-break: break-word;
+  text-align: center;
+  display: block;
+  border-radius: 12px;
+  color: #2b2b2b;
+  font-weight: 400;
+}
+
+.contact-accordion-info-msg-time {
+  display: block;
+  //margin-top: 4px;
+  color: rgba(43, 43, 43, 0.75);
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.parent {
+  width: 100%;
+  display: flex;
+
+  > div {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  > .child {
+    margin-left: auto;
+  }
+}
+
+.child {
+  margin-left: auto;
+}
+
+.speech-wrapper {
+  padding: 28px 8px 36px 50px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: visible;
+
+  .child & {
+    padding: 28px 50px 36px 8px;
+  }
+
+  .bubble {
+    width: fit-content;
+    max-width: 100%;
+    box-sizing: border-box;
+    display: block;
+    background: #f5f5f5;
+    border-radius: 12px;
+    position: relative;
+    overflow: visible;
+
+    &:not(.alt):has(.message.audio),
+    &.alt:has(.message.audio) {
+      width: 100%;
+      z-index: 1;
+    }
+
+    &.alt {
+      background: #0099ff;
+      margin-left: auto;
+    }
+
+    &.internal-note {
+      background: rgb(254, 214, 168);
+    }
+
+    .image-container {
+      max-width: 100%;
+    }
+
+    .message-img {
+      display: block;
+      width: auto;
+      max-width: 100%;
+      height: auto;
+      max-height: 200px;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .message.audio {
+      overflow: visible;
+      position: relative;
+      z-index: 2;
+
+      audio {
+        width: 100%;
+        min-width: 0;
+        height: 32px;
+        display: block;
+        overflow: visible;
+      }
+
+      p {
+        margin-top: 5px;
+        margin-bottom: 0;
+      }
+    }
+
+    .frame-container {
+      max-width: 100%;
+    }
+
+    .message-frame {
+      width: 100%;
+      max-width: 100%;
+      height: 160px;
+      min-height: 120px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .avatar {
+      width: 35px;
+      height: 35px;
+      position: absolute;
+      bottom: 36px;
+    }
+
+    .requester-avatar {
+      left: -50px;
+    }
+
+    .requester-avatar-wrapper {
+      margin-top: 35px;
+    }
+
+    .requester-avatar-wrapper,
+    .agent-avatar-inner {
+      display: block;
+      border-radius: 50%;
+      height: 35px;
+      width: 35px;
+    }
+
+    .agent-avatar-inner {
+      background-color: #fff;
+      border: 1px solid #ebebeb;
+      overflow: hidden;
+    }
+
+    ._requester-avatar-inchat,
+    .agent-avatar-initial {
+      border-radius: 50%;
+      font-size: 14px;
+      font-weight: 400;
+      text-align: center;
+      padding-top: 10px;
+      padding-bottom: 0;
+      display: inline-block;
+      width: 35px;
+      height: 35px;
+      line-height: 1;
+      color: #fff;
+    }
+
+    .agent-avatar-img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    &.alt .agent-avatar {
+      left: auto;
+      right: -50px;
+    }
+
+    &.alt .agent-avatar-inner {
+      margin-top: 35px;
+    }
+
+    .txt {
+      padding: 10px 14px;
+      position: relative;
+      overflow: visible;
+
+      &:has(.message.audio) {
+        padding-bottom: 18px;
+      }
+
+      .name {
+        font-weight: 400;
+        font-size: 11px;
+        margin: 0 0 4px;
+        position: absolute;
+        top: -17px;
+        left: 0;
+        white-space: nowrap;
+
+        &.alt {
+          color: #aaa;
+          right: 9px;
+          left: auto;
+        }
+      }
+
+      .message {
+        font-size: 12px;
+        font-weight: 300;
+        line-height: 1.5;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        margin: 0;
+        color: #2b2b2b;
+
+        &.alt {
+          color: #fff;
+        }
+      }
+
+      .timestamp {
+        font-size: 10px;
+        position: absolute;
+        bottom: -20px;
+        right: 10px;
+        text-transform: uppercase;
+        color: #7695a5;
+        font-weight: 400;
+        white-space: nowrap;
+      }
+    }
+
+    &:not(.alt) .txt .timestamp {
+      left: 0;
+      right: auto;
+      text-align: left;
+    }
+
+    &.alt .txt .timestamp {
+      left: auto;
+      right: 10px;
+      text-align: right;
+    }
+
+    .bubble-arrow {
+      position: absolute;
+      width: 0;
+      bottom: 42px;
+      left: -16px;
+      height: 0;
+      pointer-events: none;
+
+      &.alt {
+        right: 2px;
+        bottom: 40px;
+        left: auto;
+      }
+    }
+
+    .bubble-arrow:after {
+      content: "";
+      position: absolute;
+      border: 0 solid transparent;
+      border-top: 9px solid #f5f5f5;
+      border-radius: 0 20px 0;
+      width: 15px;
+      height: 30px;
+      transform: rotate(145deg);
+    }
+
+    .bubble-arrow.alt:after {
+      transform: rotate(45deg) scaleY(-1);
+      border-top: 9px solid #039be5;
+      left: 3px;
+    }
+
+    .bubble-arrow.alt.internal-note:after {
+      transform: rotate(45deg) scaleY(-1);
+      border-top: 9px solid rgb(254, 214, 168);
+      left: 3px;
+    }
+  }
+}
+
+// innerHTML from marked pipe: nested <p> tags don't get component encapsulation
+::ng-deep .contact-request-messages-dialog .message p {
+  margin-bottom: 0 !important;
+}
+
+.image-container {
+  cursor: pointer;
+}

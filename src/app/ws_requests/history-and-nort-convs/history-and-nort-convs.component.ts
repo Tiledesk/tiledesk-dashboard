@@ -2719,7 +2719,9 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
     this.logger.log('[HISTORY & NORT-CONVS] - onChangeStartDate event', $event);
   }
 
-  clearDateRange() {
+  clearDateRange(event?: MouseEvent): void {
+    event?.stopPropagation();
+    event?.preventDefault();
     this.logger.log('[HISTORY & NORT-CONVS] - CLEAR DATE RANGE');
     this.startDateDefaultValue = null;
     this.endDateDefaultValue = null;

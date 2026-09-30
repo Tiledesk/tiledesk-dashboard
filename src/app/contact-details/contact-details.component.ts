@@ -120,7 +120,6 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
   PERMISSION_TO_VIEW_TAG: boolean;
   PERMISSION_TO_VIEW_CONVS: boolean;
   PERMISSION_TO_TRASH_LEAD: boolean;
-
   PERMISSION_TO_READ_LEADS: boolean;
 
   private contactDataLoaded = false;
@@ -218,7 +217,7 @@ export class ContactDetailsComponent implements OnInit, AfterViewInit {
           this.PERMISSION_TO_READ_LEADS = true;
         }
 
-       // Page-level deny is handled by RoleService.checkRoleForCurrentProject('contact-details').
+        // Page-level deny is handled by RoleService.checkRoleForCurrentProject('contact-details').
         if (!this.PERMISSION_TO_READ_LEADS) {
           return;
         }

@@ -16,6 +16,10 @@ export const environment = {
     baseImageUrl: "CHANGEIT",
     pushEngine: 'none',
     logLevel: 'Info',
+    // Editor version a new agent created from scratch is born with: it is written on the agent
+    // as attributes.dsVersion and decides which Design Studio editor opens on it. Empty means
+    // no version, so agents are created as before.
+    chatbotVersion: '',
     templatesUrl: 'CHANGEIT',
     appsUrl: 'CHANGEIT',
     promoBannerUrl: 'CHANGEIT',

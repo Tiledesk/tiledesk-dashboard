@@ -462,6 +462,23 @@ export class FaqKbService {
   }
 
 
+  /**
+   * The Design Studio editor version a brand new agent is born with, taken from the runtime
+   * configuration (chatbotVersion) so it can be switched on per environment, and off again,
+   * without a release.
+   *
+   * Read at call time and not in the constructor: the runtime configuration is loaded by the
+   * APP_INITIALIZER, after this service is built. An empty value -- and the ${...} placeholder
+   * left behind when the environment variable is not set at all -- means "no version", and
+   * agents are then created exactly as before.
+   */
+  private chatbotVersion(): string | null {
+    const version = this.appConfigService.getConfig()?.chatbotVersion;
+    if (typeof version !== 'string') { return null; }
+    const trimmed = version.trim();
+    return (!trimmed || trimmed.startsWith('${')) ? null : trimmed;
+  }
+
   createChatbotFromScratch(botname: string, bottype: string, botSubtype: string, language: string, namespaceid?:string) {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -476,6 +493,14 @@ export class FaqKbService {
     const body = { 'name': botname, 'id_project': this.project._id, 'type': bottype, subtype:botSubtype, language: language, template: 'blank' };
     if(namespaceid) {
       body['namespace_id'] = namespaceid
+    }
+    // Which editor the Design Studio opens on an agent is decided by this label
+    // (attributes.dsVersion); without it the agent opens with the previous editor. Only an
+    // agent created from scratch gets it: a template, a copy or an imported chatbot keeps
+    // whatever version it already carries.
+    const dsVersion = this.chatbotVersion();
+    if (dsVersion) {
+      body['attributes'] = { dsVersion: dsVersion };
     }
 
     // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);

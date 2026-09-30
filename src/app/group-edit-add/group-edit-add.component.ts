@@ -772,7 +772,8 @@ goToDeptDetail(dept_id){
     this.router.navigate(['project/' + this.project_id + '/user/edit/' + member_id]);
   }
 
-  /**
+
+   /**
    * Availability dot classes aligned with sidebar (user_available + profileStatus on project user JSON).
    */
   projectUserStatusIconNgClass(projectUser: any): Record<string, boolean> {
@@ -795,5 +796,7 @@ goToDeptDetail(dept_id){
     }
     return classes;
   }
+
+
 
 }

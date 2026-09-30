@@ -801,7 +801,7 @@ export function loadTokenMultiplier(ai_models) {
 // ]
 
 export const COHERE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
-    { 
+  { 
         name: "Command A+ (05-2026)",             
         value: "command-a-plus-05-2026",       
         description: "TYPE_GPT_MODEL.text-davinci-003.description",    
@@ -859,11 +859,10 @@ export const COHERE_MODEL: Array<{ name: string, value: string, description:stri
     { name: "Command R",                        value: "command-r",                    description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 4096,    reasoning: false  },
     { name: "Command R+",                       value: "command-r-plus",               description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
     { name: "Command R+ (04-2024)",             value: "command-r-plus-04-2024",       description: "TYPE_GPT_MODEL.text-davinci-003.description",    status: "inactive",  min_tokens: 1,  max_output_tokens: 128000,  reasoning: false  },
-    
 ]
 
 export const GOOGLE_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
-   { 
+    { 
         name: "Gemini 3.6 Flash", 
         value: "gemini-3.6-flash",               
         description: "TYPE_GPT_MODEL.text-davinci-003.description",   
@@ -1194,7 +1193,7 @@ export const GROQ_MODEL: Array<{ name: string, value: string, description:string
 ]
 
 export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
-      { 
+    { 
         name: "Deepseek v4 Flash",      
         value: "deepseek-v4-flash",   
         description: "TYPE_GPT_MODEL.deepseek-chat.description", 
@@ -1217,7 +1216,7 @@ export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:st
 ]
 
 export var OPENAI_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", additionalText?: string,  min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
-     { 
+    { 
         name: "Gpt-5.6 Sol",
         value: "gpt-5.6-sol",           
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
@@ -1282,15 +1281,6 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
     { 
         name: "Gpt-5.3",              
         value: "gpt-5.3-chat-latest",   
-        description: "TYPE_GPT_MODEL.deepseek-chat.description",         
-        status: "active", 
-        min_tokens: 1, 
-        max_output_tokens: 128000, 
-        reasoning: true  
-    },   
-    { 
-        name: "Gpt-5.2",              
-        value: "gpt-5.2",               
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
         min_tokens: 1, 
@@ -1450,8 +1440,9 @@ export var VLLM_MODEL: Array<{ name: string, value: string, description:string, 
 ]
 export var AGENTPLATFORM_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
 ]
+
 // Filled at runtime from the project's OpenRouter integration: the models and
-// provider routing configured there become the options in KB preview / AI settings.
+// the providers that serve them are chosen in Integrations, not listed here.
 export var OPENROUTER_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive"}> = [
 ]
 
@@ -1466,6 +1457,7 @@ export const LLM_MODEL: Array<{name: string, value: string, description: string,
   { name: "vLLM",           value: "vllm",              description: "",      src:"assets/images/icons/ai_prompt/vllm.svg",      status: "active",     models: VLLM_MODEL        },
   { name: "OpenRouter",     value: "openrouter",        description: "",      src:"assets/img/int/openrouter-icon.png",  status: "active",   models: OPENROUTER_MODEL    },
   { name: "OpenAI",         value: "openai",            description: "",      src:"assets/images/icons/ai_prompt/openai.svg",      status: "active",   models: OPENAI_MODEL        },
+  { name: "OpenRouter",     value: "openrouter",        description: "",      src:"assets/images/icons/ai_prompt/openrouter.png",  status: "active",   models: OPENROUTER_MODEL    },
 ]
 
 
