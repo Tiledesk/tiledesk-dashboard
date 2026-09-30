@@ -2184,6 +2184,20 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
       disabled: restricted && item.value !== 30,
     }));
 
+    if (!restricted) {
+      const customDays = this.getCustomRetentionDaysToShow();
+      if (customDays !== null) {
+        this.messages_retention_items = [
+          ...this.messages_retention_items,
+          {
+            name: this.buildCustomRetentionLabel(customDays),
+            value: customDays,
+            disabled: false,
+          },
+        ];
+      }
+    }
+
     if (restricted) {
       this.selectedRetention = 30;
     }
@@ -2191,8 +2205,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
 
   /**
    * Apply retentionDays loaded from getProjectById only.
-   * If the server sends a day count not present in `messages_retention` (common on Custom),
-   * ng-select cannot match bindValue — fall back to -1 so the control never stays blank.
+   * Values not in `messages_retention` (set via API) get a temporary "(Custom)" option.
    */
   private applyRetentionFromServer(): void {
     if (this.isAvailableRetention === false) {
@@ -2207,8 +2220,36 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
 
     const allowedRetentionValues = new Set(this.messages_retention.map((item) => item.value));
     if (!allowedRetentionValues.has(this.selectedRetention)) {
-      this.selectedRetention = -1;
+      if (this.isPositiveCustomRetentionDays(this.selectedRetention)) {
+        // Custom API value: ensure the extra option exists, keep selection.
+        this.syncRetentionItemsForPlan();
+      } else {
+        this.selectedRetention = -1;
+      }
     }
+  }
+
+  /** Days from server/selection that are not in the fixed select list. */
+  private getCustomRetentionDaysToShow(): number | null {
+    const candidate =
+      this.retentionDaysLoadedFromServer && this.pendingRetentionSelection !== null
+        ? this.pendingRetentionSelection
+        : this.selectedRetention;
+    if (!this.isPositiveCustomRetentionDays(candidate)) {
+      return null;
+    }
+    const standardValues = new Set(this.messages_retention.map((item) => item.value));
+    return standardValues.has(candidate) ? null : candidate;
+  }
+
+  private isPositiveCustomRetentionDays(value: number): boolean {
+    return Number.isFinite(value) && value > 0;
+  }
+
+  /** e.g. "15 days (Custom)" / "15 giorni (Custom)" */
+  private buildCustomRetentionLabel(days: number): string {
+    const unitKey = days === 1 ? 'RetentionDay' : 'RetentionDays';
+    return `${days} ${this.translate.instant(unitKey)} (${this.translate.instant('RetentionCustom')})`;
   }
 
   getProjectPlan() {
@@ -3986,6 +4027,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
       return;
     }
     this.selectedRetention = value;
+    this.pendingRetentionSelection = value;
+    this.retentionDaysLoadedFromServer = true;
+    this.syncRetentionItemsForPlan();
 
     this.logger.log('[PRJCT-EDIT-ADD] selectedRetention ', this.selectedRetention);
     this.projectService.saveRetentionDays(this.selectedRetention).then((result) => {
