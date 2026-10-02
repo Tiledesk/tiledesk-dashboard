@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.189-AR
+- Fixes the bug: New Home Flow/Overview stayed on the legacy Conversations graph when analytics bases were relative paths
+
 ### 2.7.188-AR
 - Redesigns the home page dashboard with a new layout
 
