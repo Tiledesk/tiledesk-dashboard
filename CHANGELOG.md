@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.188-AR
+- Redesigns the home page dashboard with a new layout
+
 ### 2.7.187-AR
 - Fixes the bug: Message retention select showed a stale value after save until page refresh
 
