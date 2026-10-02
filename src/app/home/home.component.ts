@@ -317,8 +317,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   PERMISSION_TO_VIEW_FLOWS: boolean;
   PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_ADD_FLOWS: boolean;
   PERMISSION_TO_TEST_FLOW: boolean;
   PERMISSION_TO_VIEW_KB: boolean;
+  PERMISSION_TO_ADD_KB_CONTENTS: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
   PERMISSION_TO_VIEW_WA_BRODCAST: boolean;
   PERMISSION_TO_VIEW_TEAMMATES: boolean;
@@ -578,6 +580,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         // ---------------------------------
+        // PERMISSION TO ADD FLOWS (Able to create a new Flow)
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_ADD_FLOWS = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_ADD_FLOWS = false;
+        } else {
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+        }
+
+        // ---------------------------------
         // PERMISSION TO TEST FLOW
         // ---------------------------------
         if (status.role === 'owner' || status.role === 'admin') {
@@ -605,6 +618,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // Custom roles: permission depends on matchedPermissions
           this.PERMISSION_TO_VIEW_KB = status.matchedPermissions.includes(PERMISSIONS.KB_READ);
           this.logger.log('[HOME] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_KB:', this.PERMISSION_TO_VIEW_KB);
+        }
+
+        // -------------------------------
+        // PERMISSION TO ADD KB CONTENTS (Able to add contents)
+        // -------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_ADD_KB_CONTENTS = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_ADD_KB_CONTENTS = false;
+        } else {
+          this.PERMISSION_TO_ADD_KB_CONTENTS = status.matchedPermissions.includes(PERMISSIONS.KB_CONTENTS_ADD);
         }
 
         // -------------------------------
