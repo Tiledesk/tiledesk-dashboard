@@ -6,6 +6,7 @@ import { TooltipOptions } from 'ng2-tooltip-directive';
 import { concat, from, isObservable, Observable, of } from 'rxjs';
 import { concatMap, first, last, takeWhile } from 'rxjs/operators';
 import { TEAMMATE_STATUS } from './constants';
+import { HomeFlowNamespacesCache } from 'app/home-components/home-flow/home-flow-namespaces.cache';
 
 export const CutomTooltipOptions: TooltipOptions = {
     'show-delay': 0,
@@ -648,6 +649,9 @@ export const appSumoHighlightedFeaturesPlanATier4 = [
 
 
 export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
+    // Opening CDS can change KB↔flow links (Ask KB, namespace settings) — invalidate Home Flow cache.
+    HomeFlowNamespacesCache.clear(project_id);
+
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 
     let chatBotDate = new Date(chatbot.createdAt)
@@ -664,6 +668,9 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
 
 
 export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
+    // Same as goToCDSVersion: Designer may change namespace / KB links for the flow.
+    HomeFlowNamespacesCache.clear(project_id);
+
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 
     let chatBotDate = new Date(chatbot.createdAt)

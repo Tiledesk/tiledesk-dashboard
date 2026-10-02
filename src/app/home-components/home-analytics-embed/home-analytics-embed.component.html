@@ -1,0 +1,41 @@
+<section class="home-analytics-embed">
+  <header class="home-analytics-embed__header">
+    <div class="home-analytics-embed__header-meta">
+      <span class="home-analytics-embed__eyebrow">
+        <span class="home-analytics-embed__eyebrow-icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+            <path d="M441-82Q287-97 184-211T81-480q0-155 103-269t257-129v120q-104 14-172 93t-68 185q0 106 68 185t172 93v120Zm80 0v-120q94-12 159-78t79-160h120q-14 143-114.5 243.5T521-82Zm238-438q-14-94-79-160t-159-78v-120q143 14 243.5 114.5T879-520H759Z"/>
+          </svg>
+        </span>
+        <span>{{ 'HomeAnalytics.Overview' | translate }}</span>
+      </span>
+    </div>
+  </header>
+
+  <div class="home-analytics-embed__body">
+    <div *ngIf="loading && !configError && !tokenError" class="home-analytics-embed__state">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>{{ 'AnalyticsNew.Loading' | translate }}</p>
+    </div>
+
+    <div *ngIf="!loading && configError" class="home-analytics-embed__state home-analytics-embed__state--error">
+      <p>{{ 'AnalyticsNew.ConfigurationMissing' | translate }}</p>
+    </div>
+
+    <div *ngIf="!loading && tokenError && !configError" class="home-analytics-embed__state home-analytics-embed__state--error">
+      <p>{{ 'AnalyticsNew.TokenError' | translate }}</p>
+    </div>
+
+    <iframe
+      *ngIf="embedUrl"
+      #analyticsIframe
+      class="home-analytics-embed__iframe"
+      [class.home-analytics-embed__iframe--pending]="loading"
+      [src]="embedUrl"
+      title="Analytics"
+      frameborder="0"
+      allow="clipboard-read; clipboard-write"
+      (load)="onAnalyticsIframeLoad()"
+    ></iframe>
+  </div>
+</section>

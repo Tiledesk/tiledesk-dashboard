@@ -24,6 +24,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { MomentModule } from 'ngx-moment';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { MomentModule } from 'ngx-moment';
     MatButtonModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    OverlayModule,
     FormsModule,
     NgSelectModule,
     MatCardModule,

@@ -24,6 +24,7 @@ import { WebSocketJs } from '../services/websocket/websocket-js'
 import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util'
+import { HomeFlowNamespacesCache } from 'app/home-components/home-flow/home-flow-namespaces.cache'
 import { BrandService } from 'app/services/brand.service'
 import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service'
 import { ProjectCacheService } from 'app/services/cache/project-cache.service'
@@ -1148,6 +1149,7 @@ export class AuthService {
     this.cachePuService.clearPuCache()
     // Pulisci anche la cache dei departments al logout
     this.departmentsCacheService.clearDepartmentsCache()
+    HomeFlowNamespacesCache.clearAll()
     this.logger.log('[AUTH-SERV] - SIGNOUT - Cleared all project cache, project users cache and departments cache')
     // this.resetSleekplanUser()
     this.closeSleekplanWidget()

@@ -2,6 +2,7 @@
 import { Component, OnInit, ElementRef, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy, Inject } from '@angular/core';
 // import { ROUTES } from '../sidebar/sidebar.component';
 import { DOCUMENT, Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { AuthService } from '../../core/auth.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -216,6 +217,23 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   conversationsRunnedOut: boolean = false;
   emailsRunnedOut: boolean = false;
   tokensRunnedOut: boolean = false;
+
+  /** CDK hover help on quota alert icons (aligned with home Current usage). */
+  quotaHelpOpen: 'conversations' | 'tokens' | 'email' | 'voice' | null = null;
+  private quotaHelpCloseTimeout: ReturnType<typeof setTimeout> | null = null;
+  quotaHelpPositions: ConnectedPosition[] = [
+    {
+      originX: 'start',
+      originY: 'center',
+      overlayX: 'end',
+      overlayY: 'center',
+      offsetX: -12,
+    },
+  ];
+
+  get isQuotaOwner(): boolean {
+    return this.USER_ROLE === 'owner';
+  }
 
   startSlot: string;
   endSlot: string;
@@ -736,6 +754,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   ngOnDestroy() {
     this.logger.log('[NAVBAR] % »»» WebSocketJs WF +++++ ws-requests--- navbar ≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥≥ ngOnDestroy')
+    if (this.quotaHelpCloseTimeout) {
+      clearTimeout(this.quotaHelpCloseTimeout);
+      this.quotaHelpCloseTimeout = null;
+    }
     this.subscription.unsubscribe();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
@@ -933,7 +955,41 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   onQuotasMenuClosed() {
     this.isOpenCurrentUsageMenu = false
+    this.quotaHelpOpen = null;
+    if (this.quotaHelpCloseTimeout) {
+      clearTimeout(this.quotaHelpCloseTimeout);
+      this.quotaHelpCloseTimeout = null;
+    }
     // this.logger.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
+  }
+
+  openQuotaHelp(resource: 'conversations' | 'tokens' | 'email' | 'voice'): void {
+    if (this.quotaHelpCloseTimeout) {
+      clearTimeout(this.quotaHelpCloseTimeout);
+      this.quotaHelpCloseTimeout = null;
+    }
+    this.quotaHelpOpen = resource;
+  }
+
+  scheduleCloseQuotaHelp(): void {
+    this.quotaHelpCloseTimeout = setTimeout(() => {
+      this.quotaHelpOpen = null;
+    }, 120);
+  }
+
+  cancelCloseQuotaHelp(): void {
+    if (this.quotaHelpCloseTimeout) {
+      clearTimeout(this.quotaHelpCloseTimeout);
+      this.quotaHelpCloseTimeout = null;
+    }
+  }
+
+  onQuotaContactSalesClick(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
+    window.open(
+      `mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`
+    );
   }
 
   getProjectQuotes() {
@@ -1046,11 +1102,11 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       }
 
 
-      this.requests_perc = Math.min(100, Math.floor((resp.quotes.requests.quote / this.requests_limit) * 100));
-      this.messages_perc = Math.min(100, Math.floor((resp.quotes.messages.quote / this.messages_limit) * 100));
-      this.email_perc = Math.min(100, Math.floor((resp.quotes.email.quote / this.email_limit) * 100));
-      this.tokens_perc = Math.min(100, Math.floor((resp.quotes.tokens.quote / this.tokens_limit) * 100));
-      this.voice_perc = Math.min(100, Math.floor((resp.quotes.voice_duration.quote / this.voice_limit_in_sec) * 100));
+      this.requests_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.requests.quote, this.requests_limit);
+      this.messages_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.messages.quote, this.messages_limit);
+      this.email_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.email.quote, this.email_limit);
+      this.tokens_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.tokens.quote, this.tokens_limit);
+      this.voice_perc = this.quotesService.calcQuotaUsagePercent(resp.quotes.voice_duration.quote, this.voice_limit_in_sec);
 
       this.logger.log('[NAVBAR] requests_perc', this.requests_perc)
       if (this.requests_perc <= 25) {

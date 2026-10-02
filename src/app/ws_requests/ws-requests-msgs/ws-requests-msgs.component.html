@@ -506,9 +506,9 @@
 
                             <button type="button" class="btn btn-tdblu-no-boxshadow send-msg-btn"
                               (click)="sendChatMessage()"
-                              [disabled]="(!chat_message || chat_message?.length === 0) && (existAnAttacment === false)"
+                              [disabled]="isSendAsReopenBlocked() || ((!chat_message || chat_message?.length === 0) && (existAnAttacment === false))"
                               matTooltipClass="custom-mat-tooltip"
-                              [matTooltip]="!PERMISSION_TO_SEND_REQUEST ? ('YouDoNotHavePermissions' | translate) : null"
+                              [matTooltip]="(!PERMISSION_TO_SEND_REQUEST || isSendAsReopenBlocked()) ? ('YouDoNotHavePermissions' | translate) : null"
                               #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
                               <span style="font-weight:300;"> {{'SendAs' | translate }} </span>
                               <span
@@ -545,7 +545,8 @@
 
                             <ul class="dropdown-menu dropdown-menu-custom" role="menu">
                               <li [ngClass]="{
-                                'active' : HAS_SELECTED_SEND_AS_OPENED === true && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === false
+                                'active' : HAS_SELECTED_SEND_AS_OPENED === true && HAS_SELECTED_SEND_AS_PENDING === false && HAS_SELECTED_SEND_AS_SOLVED === false,
+                                'disable-dropdown-menu-btn' : isSelectingOpenOrPendingReopenBlocked()
                               }">
                                 <a class="dropdown-item" (click)="hasSelectedOpen('sendMessageAs', request)"
                                   style="padding-left: 15px; padding-right: 15px;">
@@ -558,7 +559,8 @@
                                 </a>
                               </li>
                               <li [ngClass]="{
-                                'active' : HAS_SELECTED_SEND_AS_OPENED === false && HAS_SELECTED_SEND_AS_PENDING === true && HAS_SELECTED_SEND_AS_SOLVED === false
+                                'active' : HAS_SELECTED_SEND_AS_OPENED === false && HAS_SELECTED_SEND_AS_PENDING === true && HAS_SELECTED_SEND_AS_SOLVED === false,
+                                'disable-dropdown-menu-btn' : isSelectingOpenOrPendingReopenBlocked()
                               }">
 
                                 <a class="dropdown-item" (click)="hasSelectedPending('sendMessageAs',request)"

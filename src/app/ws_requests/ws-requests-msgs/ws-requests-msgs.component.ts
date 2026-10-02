@@ -6551,6 +6551,30 @@ extractUrls(text: string): string[] {
     }, 3000); // 3000 =3 seconds
   }
 
+  /**
+   * On archived conversations, Send as Open/Pending calls reopen.
+   * Without REQUEST_REOPEN the user must not be able to send in those modes.
+   */
+  isSendAsReopenBlocked(): boolean {
+    if (this.request?.status !== 1000 || this.PERMISSION_TO_REOPEN !== false) {
+      return false;
+    }
+    const sendAsOpen =
+      this.HAS_SELECTED_SEND_AS_OPENED === true &&
+      this.HAS_SELECTED_SEND_AS_PENDING === false &&
+      this.HAS_SELECTED_SEND_AS_SOLVED === false;
+    const sendAsPending =
+      this.HAS_SELECTED_SEND_AS_OPENED === false &&
+      this.HAS_SELECTED_SEND_AS_PENDING === true &&
+      this.HAS_SELECTED_SEND_AS_SOLVED === false;
+    return sendAsOpen || sendAsPending;
+  }
+
+  /** Selecting Open/Pending on an archived conversation would reopen it. */
+  isSelectingOpenOrPendingReopenBlocked(): boolean {
+    return this.request?.status === 1000 && this.PERMISSION_TO_REOPEN === false;
+  }
+
   sendChatMessage() {
     if (this.PERMISSION_TO_SEND_REQUEST) {
       // this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - IS_CURRENT_USER_JOINED ', this.IS_CURRENT_USER_JOINED)
@@ -6559,6 +6583,11 @@ extractUrls(text: string): string[] {
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID REQUEST ', this.id_request)
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  ID PROJECT ', this.id_project)
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE -  selectedResponseTypeID ', this.selectedResponseTypeID)
+
+      if (this.isSendAsReopenBlocked()) {
+        this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+        return;
+      }
 
       const requestclosedAt = moment(this.request?.closed_at);
       this.logger.log('[WS-REQUESTS-MSGS] - SEND CHAT MESSAGE - requestclosedAt ', requestclosedAt)
@@ -6801,6 +6830,10 @@ extractUrls(text: string): string[] {
 
    updateRequestWorkingStatusAndReopen(convWokingStatus) {
     this.logger.log('-----> updateRequestWorkingStatusAndReopen ', convWokingStatus)
+    if (this.request?.status === 1000 && !this.PERMISSION_TO_REOPEN) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
     this.wsRequestsService.updateRequestWorkingStatus(this.id_request, convWokingStatus)
       .subscribe((request) => {
 
@@ -6835,6 +6868,10 @@ extractUrls(text: string): string[] {
   hasSelectedOpen(calledby, request) {
     this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN calledby', calledby)
     this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED OPEN request', request)
+    if (this.isSelectingOpenOrPendingReopenBlocked()) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
     this.HAS_SELECTED_SEND_AS_OPENED = true;
     this.HAS_SELECTED_SEND_AS_PENDING = false;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;
@@ -6854,6 +6891,10 @@ extractUrls(text: string): string[] {
   hasSelectedPending(calledby, request) {
     this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING calledby', calledby)
     this.logger.log('[WS-REQUESTS-MSGS] HAS SELECTED PENDING request', request)
+    if (this.isSelectingOpenOrPendingReopenBlocked()) {
+      this.notify.presentDialogNoPermissionToPermomfAction(this.CHAT_PANEL_MODE);
+      return;
+    }
     this.HAS_SELECTED_SEND_AS_OPENED = false;
     this.HAS_SELECTED_SEND_AS_PENDING = true;
     this.HAS_SELECTED_SEND_AS_SOLVED = false;

@@ -8,6 +8,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HomeFlowNamespacesCache } from 'app/home-components/home-flow/home-flow-namespaces.cache';
 @Injectable()
 export class FaqKbService {
 
@@ -439,6 +440,9 @@ export class FaqKbService {
    * @returns 
    */
   public createFaqKb(name: string, urlfaqkb: string, bottype: string, description: string, resbotlanguage: string, resbottemplate: string) {
+    if (this.project?._id) {
+      HomeFlowNamespacesCache.clear(this.project._id);
+    }
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -463,6 +467,9 @@ export class FaqKbService {
 
 
   createChatbotFromScratch(botname: string, bottype: string, botSubtype: string, language: string, namespaceid?:string) {
+    if (this.project?._id) {
+      HomeFlowNamespacesCache.clear(this.project._id);
+    }
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -573,6 +580,9 @@ export class FaqKbService {
    * @returns 
    */
   public updateFaqKbAsTrashed(id: string, _trashed: boolean) {
+    if (this.project?._id) {
+      HomeFlowNamespacesCache.clear(this.project._id);
+    }
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
