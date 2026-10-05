@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.8.30
+- Fixes the bug: teammates without reopen permission could reopen archived conversations via Send as Open/Pending
+- Fixes the bug: Home Flow / Overview / KB analytics used inconsistent thousand and decimal separators
+
 ### 2.8.29
 - Removes the link to Legacy Analytics in the new analytics page
 
