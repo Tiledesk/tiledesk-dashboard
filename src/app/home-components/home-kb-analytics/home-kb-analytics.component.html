@@ -91,7 +91,12 @@
             <span
               [class.home-kb-analytics__rate-delta--up]="queriesDeltaPercent > 0"
               [class.home-kb-analytics__rate-delta--down]="queriesDeltaPercent < 0"
-              [class.home-kb-analytics__rate-delta--flat]="queriesDeltaPercent === 0">{{ queriesDeltaLabel }}</span>
+              [class.home-kb-analytics__rate-delta--flat]="queriesDeltaPercent === 0">
+              <ng-container *ngIf="queriesDeltaPercent === 0">0%</ng-container>
+              <ng-container *ngIf="queriesDeltaPercent !== 0">
+                <ng-container *ngIf="queriesDeltaPercent > 0">+</ng-container><ng-container *ngIf="queriesDeltaPercent < 0">-</ng-container>{{ queriesDeltaAbs | number:'1.0-1' }}%
+              </ng-container>
+            </span>
             <span class="home-kb-analytics__delta-hint">{{ 'HomeKbAnalytics.QueriesVsPrevious10Days' | translate:{ previous: (queriesPreviousTotal | number:'1.0-0') } }}</span>
           </div>
         </div>
@@ -117,7 +122,10 @@
       </div>
       <div class="home-kb-analytics__cell home-kb-analytics__cell--rate-meta">
         <div class="home-kb-analytics__rate-row">
-          <div class="home-kb-analytics__rate-value">{{ responseRateLabel }}</div>
+          <div class="home-kb-analytics__rate-value">
+            <ng-container *ngIf="responseRatePercent == null">—</ng-container>
+            <ng-container *ngIf="responseRatePercent != null">{{ responseRatePercent | number:'1.0-1' }}%</ng-container>
+          </div>
           <div
             class="home-kb-analytics__rate-delta"
             *ngIf="responseRateDeltaPercent !== null"
@@ -130,8 +138,13 @@
             <span
               [class.home-kb-analytics__rate-delta--up]="responseRateDeltaPercent > 0"
               [class.home-kb-analytics__rate-delta--down]="responseRateDeltaPercent < 0"
-              [class.home-kb-analytics__rate-delta--flat]="responseRateDeltaPercent === 0">{{ deltaLabel }}</span>
-            <span class="home-kb-analytics__delta-hint">{{ 'HomeKbAnalytics.AnsweredVsPrevious10Days' | translate:{ current: answeredTotalLabel, previous: answeredPreviousTotalLabel } }}</span>
+              [class.home-kb-analytics__rate-delta--flat]="responseRateDeltaPercent === 0">
+              <ng-container *ngIf="responseRateDeltaPercent === 0">0%</ng-container>
+              <ng-container *ngIf="responseRateDeltaPercent !== 0">
+                <ng-container *ngIf="responseRateDeltaPercent > 0">+</ng-container><ng-container *ngIf="responseRateDeltaPercent < 0">-</ng-container>{{ responseRateDeltaAbs | number:'1.0-1' }}%
+              </ng-container>
+            </span>
+            <span class="home-kb-analytics__delta-hint">{{ 'HomeKbAnalytics.AnsweredVsPrevious10Days' | translate:{ current: (answeredTotal | number:'1.0-0'), previous: (answeredPreviousTotal | number:'1.0-0') } }}</span>
           </div>
         </div>
         <div #answersChart class="home-kb-analytics__answers-chart"></div>

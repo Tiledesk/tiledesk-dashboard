@@ -49,7 +49,11 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   @Input() userRole: string;
   @Input() permissionToViewFlows = false;
   @Input() permissionToEditFlows = false;
+  /** Able to create a new Flow (`PERMISSIONS.FLOW_ADD`). */
+  @Input() permissionToAddFlows = false;
   @Input() permissionToViewKb = false;
+  /** Able to add contents (`PERMISSIONS.KB_CONTENTS_ADD`). */
+  @Input() permissionToAddKbContents = false;
   @Input() permissionToViewTeammates = false;
   @Input() permissionToInviteTeammates = false;
   /** Featured flow id from home-flow; hide last-flow card when it matches. */
@@ -153,8 +157,16 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     return this.userRole !== 'agent' && this.permissionToEditFlows;
   }
 
+  get canAddFlows(): boolean {
+    return this.userRole !== 'agent' && this.permissionToAddFlows;
+  }
+
   get canViewKb(): boolean {
     return this.userRole !== 'agent' && this.permissionToViewKb;
+  }
+
+  get canAddKbContents(): boolean {
+    return this.userRole !== 'agent' && this.permissionToAddKbContents;
   }
 
   get canViewTeammates(): boolean {
@@ -275,11 +287,11 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   get showKbAddContent(): boolean {
-    return !this.showKbUpgradePlan && !this.hasKbContents;
+    return this.canAddKbContents && !this.showKbUpgradePlan && !this.hasKbContents;
   }
 
   get showKbManageContents(): boolean {
-    return !this.showKbUpgradePlan && this.hasKbContents;
+    return this.canAddKbContents && !this.showKbUpgradePlan && this.hasKbContents;
   }
 
   get showFlowsUpgradePlan(): boolean {
@@ -287,9 +299,9 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
     return this.flowsRemainingCount <= 0 || this.flowsCountOverLimit;
   }
 
-  /** Add Flow CTA when under limit (or unlimited); Upgrade takes precedence at/over limit. */
+  /** Add Flow CTA when under limit (or unlimited); Upgrade takes precedence at/over limit. Requires FLOW_ADD. */
   get showFlowsAddFlow(): boolean {
-    if (this.isFlowsEmpty || this.showFlowsUpgradePlan) { return false; }
+    if (!this.canAddFlows || this.isFlowsEmpty || this.showFlowsUpgradePlan) { return false; }
     if (!this.showFlowsLimit) { return true; }
     return this.flowsRemainingCount > 0 && !this.flowsCountOverLimit;
   }
@@ -340,7 +352,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   onAddFlowClick(event?: Event): void {
     event?.stopPropagation();
 
-    if (!this.canViewFlows) {
+    if (!this.canViewFlows || !this.canAddFlows) {
       this.notify.presentDialogNoPermissionToPermomfAction();
       return;
     }
@@ -417,7 +429,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
 
   /** Add content / Manage contents — modal only if the project has no chatbots. */
   private handleKbContentsCta(): void {
-    if (!this.canViewKb) {
+    if (!this.canViewKb || !this.canAddKbContents) {
       this.notify.presentDialogNoPermissionToPermomfAction();
       return;
     }

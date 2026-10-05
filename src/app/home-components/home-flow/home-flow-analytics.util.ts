@@ -264,10 +264,10 @@ export function formatCompactCount(value: number): string {
     const thousands = value / 1_000;
     return `${thousands >= 10 ? Math.round(thousands) : thousands.toFixed(1).replace(/\.0$/, '')} K`;
   }
-  return Math.round(value).toLocaleString();
+  return Math.round(value).toLocaleString('en-US');
 }
 
-/** Percent change of current total vs a prior period total. */
+/** Percent change of current total vs a prior period total (1 decimal, like Overview). */
 export function computePercentChangeVsPrevious(currentTotal: number, previousTotal: number): number | null {
   if (!Number.isFinite(currentTotal) || !Number.isFinite(previousTotal)) {
     return null;
@@ -276,23 +276,12 @@ export function computePercentChangeVsPrevious(currentTotal: number, previousTot
     return currentTotal > 0 ? 100 : 0;
   }
   const raw = ((currentTotal - previousTotal) / previousTotal) * 100;
-  const rounded = Math.round(raw);
-  // Sub-0.5% real changes must not collapse to flat "0%" (e.g. 366 vs 367 → -0.3%).
-  if (rounded === 0 && currentTotal !== previousTotal) {
-    const oneDecimal = Math.round(raw * 10) / 10;
-    if (oneDecimal !== 0) { return oneDecimal; }
+  // Match Overview / home-kb-analytics: keep one decimal of precision.
+  const oneDecimal = Math.round(raw * 10) / 10;
+  if (oneDecimal === 0 && currentTotal !== previousTotal) {
     return currentTotal > previousTotal ? 0.1 : -0.1;
   }
-  return rounded;
-}
-
-/** Signed percent label e.g. 121 -> "+121%", -5 -> "-5%", -0.3 -> "-0.3%". */
-export function formatSignedPercent(percent: number): string {
-  if (!Number.isFinite(percent)) { return '0%'; }
-  if (percent === 0) { return '0%'; }
-  const value = Number.isInteger(percent) ? String(percent) : percent.toFixed(1);
-  if (percent > 0) { return `+${value}%`; }
-  return `${value}%`;
+  return oneDecimal;
 }
 
 /** Percent change between first and second half of a series. */

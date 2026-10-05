@@ -1,31 +1,31 @@
-<h1 mat-dialog-title> 
-   Invite teammate
+<h1 mat-dialog-title>
+   {{ 'UsersPage.Invites' | translate }}
 </h1>
 <div mat-dialog-content>
     <form class="invite-teammate-form">
         <mat-form-field appearance="outline" class="mat--form-field" style="font-size:14px">
-            <mat-label>Email</mat-label>
+            <mat-label>{{ 'Email' | translate }}</mat-label>
             <input type="email" matInput [formControl]="emailFormControl" [(ngModel)]="teammateEmail">
             <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-                Please enter a valid email
+                {{ 'Email must be a valid email' | translate }}
             </mat-error>
             <mat-error *ngIf="emailFormControl.hasError('required')">
-                Email is <strong>required</strong>
+                {{ 'Email is required.' | translate }}
             </mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="mat--form-field" style="font-size:14px">
-            <mat-label>Role</mat-label>
+            <mat-label>{{ 'UsersPage.Role' | translate }}</mat-label>
             <select matNativeControl required #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" [formControl]="selectFormControl">
-                <option label="Select a role"></option>
-                <option value="admin">Administrator</option>
-                <option value="agent">Agent</option>
+                <option [label]="'UserEditAddPage.SelectRole' | translate"></option>
+                <option value="admin">{{ 'UserEditAddPage.Admin' | translate }}</option>
+                <option value="agent">{{ 'UserEditAddPage.Agent' | translate }}</option>
                 <option *ngFor="let role of roles" [value]="role.name">
                     {{ role.name }}
                 </option>
               </select>
               <mat-error *ngIf="selectFormControl.hasError('required')">
-                This field is required
+                {{ 'FieldRequired' | translate }}
               </mat-error>
           </mat-form-field>
     </form>
@@ -40,6 +40,6 @@
         class="mat-dialog-ok-btn" mat-button
         (click)="onOkPresssed(teammateEmail)" cdkFocusInitial>
        
-        Invite
+        {{ 'UserEditAddPage.Invites' | translate }}
     </button>
 </div>

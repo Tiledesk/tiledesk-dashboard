@@ -26,7 +26,6 @@ import { catchError, map, switchMap, takeUntil, timeout } from 'rxjs/operators';
 import {
   alignSeriesToLast10Days,
   computePercentChangeVsPrevious,
-  formatSignedPercent,
   HomeFlowModelUsage,
   HomeFlowTimeSeriesPoint,
   parseAiModelUsageResponse,
@@ -721,7 +720,8 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     return colors[index] ?? '#d0d0d0';
   }
 
-  conversationsTrendLabel(percent: number): string {
-    return formatSignedPercent(percent);
+  /** Absolute trend % for `| number:'1.0-1'` (1 decimal only when needed). */
+  get conversationsTrendAbs(): number {
+    return Math.abs(this.conversationsTrendPercent ?? 0);
   }
 }

@@ -23,7 +23,6 @@ import {
   buildConversationsOverviewChartOption,
   // buildTokensOverviewChartOption, // Step 1: tokens card replaced by KB queries
   computeOverviewPercentChange,
-  formatOverviewSignedPercent,
   OverviewConversationsSeries,
   parseConversationsOverviewResponse,
   // parseTokensOverviewResponse, // Step 1: tokens card replaced by KB queries
@@ -118,13 +117,14 @@ export class HomeOverviewComponent implements OnInit, OnChanges, AfterViewInit, 
     this.kbQueriesChart?.resize();
   }
 
-  conversationsTrendLabel(percent: number): string {
-    return formatOverviewSignedPercent(percent);
+  /** Absolute trend % for `| number:'1.0-1'` (1 decimal only when needed). */
+  get conversationsTrendAbs(): number {
+    return Math.abs(this.conversationsTrendPercent ?? 0);
   }
 
-  // tokensTrendLabel(percent: number): string {
-  //   return formatOverviewSignedPercent(percent);
-  // }
+  get kbQueriesTrendAbs(): number {
+    return Math.abs(this.kbQueriesTrendPercent ?? 0);
+  }
 
   private queriesTotalFromParsed(parsed: KbAnalyticsParsed): number {
     if (parsed.series?.length) {

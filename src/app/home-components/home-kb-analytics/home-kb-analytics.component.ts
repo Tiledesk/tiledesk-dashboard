@@ -55,8 +55,7 @@ export class HomeKbAnalyticsComponent implements OnInit, OnChanges, AfterViewIni
   responseRateDeltaPercent: number | null = null;
   answeredTotal = 0;
   unansweredTotal = 0;
-  answeredTotalLabel = '0';
-  answeredPreviousTotalLabel = '0';
+  answeredPreviousTotal = 0;
   queriesTotal = 0;
   queriesPreviousTotal = 0;
   queriesDeltaPercent: number | null = null;
@@ -104,30 +103,12 @@ export class HomeKbAnalyticsComponent implements OnInit, OnChanges, AfterViewIni
     this.answersChart?.resize();
   }
 
-  get responseRateLabel(): string {
-    if (this.responseRatePercent == null) { return '—'; }
-    return `${this.responseRatePercent.toLocaleString(undefined, {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    })}%`;
+  get queriesDeltaAbs(): number {
+    return Math.abs(this.queriesDeltaPercent ?? 0);
   }
 
-  get deltaLabel(): string {
-    return this.formatSignedPercent(this.responseRateDeltaPercent);
-  }
-
-  get queriesDeltaLabel(): string {
-    return this.formatSignedPercent(this.queriesDeltaPercent);
-  }
-
-  private formatSignedPercent(value: number | null): string {
-    if (value == null) { return '—'; }
-    const abs = Math.abs(value).toLocaleString(undefined, {
-      minimumFractionDigits: 1,
-      maximumFractionDigits: 1,
-    });
-    const sign = value > 0 ? '+' : value < 0 ? '−' : '';
-    return `${sign}${abs}%`;
+  get responseRateDeltaAbs(): number {
+    return Math.abs(this.responseRateDeltaPercent ?? 0);
   }
 
   private queriesTotalFromParsed(parsed: KbAnalyticsParsed): number {
@@ -195,8 +176,7 @@ export class HomeKbAnalyticsComponent implements OnInit, OnChanges, AfterViewIni
         this.currentParsed = currentParsed;
         this.answeredTotal = currentParsed.answeredTotal;
         this.unansweredTotal = currentParsed.unansweredTotal;
-        this.answeredTotalLabel = currentParsed.answeredTotal.toLocaleString();
-        this.answeredPreviousTotalLabel = previousParsed.answeredTotal.toLocaleString();
+        this.answeredPreviousTotal = previousParsed.answeredTotal;
 
         this.queriesTotal = this.queriesTotalFromParsed(currentParsed);
         this.queriesPreviousTotal = this.queriesTotalFromParsed(previousParsed);
@@ -231,8 +211,7 @@ export class HomeKbAnalyticsComponent implements OnInit, OnChanges, AfterViewIni
     this.currentParsed = buildEmptyKbAnalyticsLast10Days(this.kbService.getProjectTimezone());
     this.answeredTotal = 0;
     this.unansweredTotal = 0;
-    this.answeredTotalLabel = '0';
-    this.answeredPreviousTotalLabel = '0';
+    this.answeredPreviousTotal = 0;
     this.queriesTotal = 0;
     this.queriesPreviousTotal = 0;
     this.queriesDeltaPercent = 0;

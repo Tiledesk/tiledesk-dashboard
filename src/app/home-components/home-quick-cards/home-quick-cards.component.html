@@ -96,7 +96,7 @@
       </div>
       <div class="home-quick-card__body">
         <div class="home-quick-card__title">{{ 'Flows' | translate }}</div>
-        <ng-container *ngIf="isFlowsEmpty; else flowsCountState">
+        <ng-container *ngIf="isFlowsEmpty && canAddFlows; else flowsCountState">
           <button
             type="button"
             class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
@@ -251,7 +251,7 @@
             type="button"
             class="home-quick-card__invite-btn"
             (click)="onInviteTeammateClick($event)">
-            {{ 'InviteTeammate' | translate }}
+            {{ 'UsersPage.Invites' | translate }}
           </button>
           <button
             *ngIf="showTeammatesUpgradePlan"

@@ -541,13 +541,3 @@ export function computeOverviewPercentChange(current: number, previous: number):
   return oneDecimal;
 }
 
-export function formatOverviewSignedPercent(percent: number): string {
-  if (!Number.isFinite(percent)) { return '0%'; }
-  if (percent === 0) { return '0%'; }
-  const abs = Math.abs(percent).toLocaleString(undefined, {
-    minimumFractionDigits: 1,
-    maximumFractionDigits: 1,
-  });
-  if (percent > 0) { return `+${abs}%`; }
-  return `−${abs}%`;
-}

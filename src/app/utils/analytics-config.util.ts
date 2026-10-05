@@ -3,7 +3,12 @@ export interface AnalyticsConfigLike {
   analyticsEmbedBase?: unknown;
 }
 
-/** True when value is a non-empty http(s) URL (not an unresolved ${...} placeholder). */
+/**
+ * True when value is a usable analytics base:
+ * - absolute http(s) URL, or
+ * - same-origin relative path starting with `/` (e.g. `/analyticsapi/` from remote config)
+ * Rejects empty values and unresolved `${...}` placeholders.
+ */
 export function isValidAnalyticsBaseUrl(value: unknown): boolean {
   if (typeof value !== 'string') {
     return false;
@@ -15,6 +20,10 @@ export function isValidAnalyticsBaseUrl(value: unknown): boolean {
   if (/\$\{[^}]+\}/.test(trimmed)) {
     return false;
   }
+  // Same-origin relative bases (common in dashboard-config.json / reverse-proxy deploys).
+  if (trimmed.startsWith('/')) {
+    return trimmed.length > 1;
+  }
   try {
     const url = new URL(trimmed);
     return url.protocol === 'http:' || url.protocol === 'https:';
@@ -23,7 +32,7 @@ export function isValidAnalyticsBaseUrl(value: unknown): boolean {
   }
 }
 
-/** New embedded analytics are available only when both bases are valid URLs. */
+/** New embedded analytics are available only when both bases are valid. */
 export function isNewAnalyticsConfigured(config: AnalyticsConfigLike | null | undefined): boolean {
   if (!config) {
     return false;

@@ -80,7 +80,10 @@
               [class.home-overview__chart-trend--up]="conversationsTrendPercent > 0"
               [class.home-overview__chart-trend--down]="conversationsTrendPercent < 0"
               [class.home-overview__chart-trend--flat]="conversationsTrendPercent === 0">
-              {{ conversationsTrendLabel(conversationsTrendPercent) }}
+              <ng-container *ngIf="conversationsTrendPercent === 0">0%</ng-container>
+              <ng-container *ngIf="conversationsTrendPercent !== 0">
+                <ng-container *ngIf="conversationsTrendPercent > 0">+</ng-container><ng-container *ngIf="conversationsTrendPercent < 0">-</ng-container>{{ conversationsTrendAbs | number:'1.0-1' }}%
+              </ng-container>
             </span>
             <span class="home-overview__chart-trend-hint">
               {{ 'HomeFlow.VsPrevious10Days' | translate }}
@@ -118,7 +121,10 @@
               [class.home-overview__chart-trend--up]="kbQueriesTrendPercent > 0"
               [class.home-overview__chart-trend--down]="kbQueriesTrendPercent < 0"
               [class.home-overview__chart-trend--flat]="kbQueriesTrendPercent === 0">
-              {{ conversationsTrendLabel(kbQueriesTrendPercent) }}
+              <ng-container *ngIf="kbQueriesTrendPercent === 0">0%</ng-container>
+              <ng-container *ngIf="kbQueriesTrendPercent !== 0">
+                <ng-container *ngIf="kbQueriesTrendPercent > 0">+</ng-container><ng-container *ngIf="kbQueriesTrendPercent < 0">-</ng-container>{{ kbQueriesTrendAbs | number:'1.0-1' }}%
+              </ng-container>
             </span>
             <span class="home-overview__chart-trend-hint">
               {{ 'HomeKbAnalytics.QueriesVsPrevious10Days' | translate:{ previous: (kbQueriesPreviousTotal | number:'1.0-0') } }}

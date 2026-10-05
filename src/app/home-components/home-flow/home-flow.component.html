@@ -144,7 +144,7 @@
               <div *ngFor="let model of displayedModelUsage; let i = index" class="home-flow__model-row">
                 <div class="home-flow__model-head">
                   <span class="home-flow__model-name">{{ model.model }}</span>
-                  <span class="home-flow__model-percent">{{ model.percent | number:'1.0-2' }}%</span>
+                  <span class="home-flow__model-percent">{{ model.percent | number:'1.0-1' }}%</span>
                 </div>
                 <div class="home-flow__model-bar">
                   <span
@@ -282,7 +282,10 @@
                   [class.home-flow__chart-trend--up]="conversationsTrendPercent > 0"
                   [class.home-flow__chart-trend--down]="conversationsTrendPercent < 0"
                   [class.home-flow__chart-trend--flat]="conversationsTrendPercent === 0">
-                  {{ conversationsTrendLabel(conversationsTrendPercent) }}
+                  <ng-container *ngIf="conversationsTrendPercent === 0">0%</ng-container>
+                  <ng-container *ngIf="conversationsTrendPercent !== 0">
+                    <ng-container *ngIf="conversationsTrendPercent > 0">+</ng-container><ng-container *ngIf="conversationsTrendPercent < 0">-</ng-container>{{ conversationsTrendAbs | number:'1.0-1' }}%
+                  </ng-container>
                 </span>
                 <span class="home-flow__chart-trend-hint">
                   {{ 'HomeFlow.VsPrevious10Days' | translate }}
