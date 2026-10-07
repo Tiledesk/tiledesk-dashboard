@@ -14,7 +14,7 @@ What is Tiledesk today? It became the open source “conversational app developm
 
 You can use Tiledesk to increase sales for your website or for post-sales customer service. Every conversation can be automated using our first class native chatbot technology. You can also connect your own applications using our APIs or Webhooks. Moreover you can deploy entire visual applications inside a conversation. And your applications can converse with your chatbots or your end-users! We know this is cool 😎
 
-Tiledesk is multichannel in a totally new way. You can write your chatbot scripts with images, buttons and other cool elements that your channels support. But you will configureyour chatbot replies only once. They will run on every channel, auto-adapting the responses to the target channel whatever it is, Whatsapp, Facebook Messenger, Telegram etc.
+Tiledesk is multichannel in a totally new way. You can write your chatbot scripts with images, buttons and other cool elements that your channels support. But you will configure your chatbot replies only once. They will run on every channel, auto-adapting the responses to the target channel whatever it is, Whatsapp, Facebook Messenger, Telegram etc.
 
 # Tiledesk-dashboard
 
@@ -46,7 +46,7 @@ Consider that Tiledesk.com cloud service makes every module available with the s
 # Community? Questions? Support?
 
 - If you need help or just want to hang out, come, say hi on our [<img width="15" alt="Tiledesk discord" src="https://seeklogo.com/images/D/discord-color-logo-E5E6DFEF80-seeklogo.com.png"> Discord](https://discord.gg/nERZEZ7SmG) server.
-- You can also to ask for support on https://tiledesk.com, using the live chat widget on the the website.
+- You can also ask for support on https://tiledesk.com, using the live chat widget on the website.
 
   
 ## Features
@@ -70,9 +70,9 @@ And more.
 
 - Install Node and NPM (https://nodejs.org/en). Suggested: node v14.15.5 (npm v6.14.11). 
 	
-- If you want to to manage multiple active Node.js versions, to install node use the tool Node Version Manager (NVM)
+- If you want to manage multiple active Node.js versions, to install node use the tool Node Version Manager (NVM)
 
-- Install angular-cli v7.3.10 with `npm install -g @angular/cli@14.2.9`
+- Install angular-cli with `npm install -g @angular/cli@14.2.9`
 
 - tiledesk-server installed and running (https://github.com/Tiledesk/tiledesk-server.git)
 
@@ -86,7 +86,7 @@ Use [Docker Compose Tiledesk installation guide](https://github.com/Tiledesk/til
 
   
 
-Install the latest stable release. Check on Github page the last release under the Releases tab and then run
+Install the latest stable release. Check on GitHub page the last release under the Releases tab and then run
 
 -  `git clone https://github.com/Tiledesk/tiledesk-dashboard.git --branch <LATEST-RELEASE-VERSION>`
 
@@ -339,7 +339,7 @@ You can run an embedded version of the dashboard inside an existing app using, f
 
 ```typescript
 
-"<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/request-for-panel/support-group-<CONVERSATION_ID>?token=<JWT_TOKEN'></iframe>"
+"<iframe src='http://localhost:4200/#/project/<YOUR_PROJECT_ID>/request-for-panel/support-group-<CONVERSATION_ID>?token=<JWT_TOKEN>'></iframe>"
 
 ```
 
