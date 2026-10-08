@@ -435,32 +435,100 @@ export class AutomationCreateComponent implements OnInit {
   //   id: string;
   // }
 
+  /** Count positional placeholders {{1}}..{{n}} in template text (returns n). */
+  private countPositionalPlaceholders(text: string): number {
+    if (!text) {
+      return 0;
+    }
+    const matches = text.match(/\{\{(\d+)\}\}/g);
+    if (!matches?.length) {
+      return 0;
+    }
+    let max = 0;
+    for (const match of matches) {
+      const n = parseInt(match.replace(/[{}]/g, ''), 10);
+      if (!isNaN(n) && n > max) {
+        max = n;
+      }
+    }
+    return max;
+  }
+
+  /**
+   * How many CSV header_* columns this HEADER needs.
+   * Static TEXT headers (no {{n}}) must not get a column; media/location headers do.
+   */
+  private getHeaderCsvParamCount(headerComponent: any): number {
+    if (!headerComponent) {
+      return 0;
+    }
+    const format = headerComponent.format;
+    if (format === 'IMAGE' || format === 'DOCUMENT' || format === 'VIDEO' || format === 'LOCATION') {
+      return 1;
+    }
+    if (format === 'TEXT') {
+      const fromText = this.countPositionalPlaceholders(headerComponent.text);
+      const fromExample = headerComponent.example?.header_text?.length ?? 0;
+      return Math.max(fromText, fromExample);
+    }
+    return 0;
+  }
+
+  /** How many CSV body_* columns this BODY needs (placeholders, else examples). */
+  private getBodyCsvParamCount(bodyComponent: any, bodyExamples: string[][]): number {
+    if (!bodyComponent) {
+      return 0;
+    }
+    const fromText = this.countPositionalPlaceholders(bodyComponent.text);
+    const fromExample = bodyExamples?.[0]?.length ?? 0;
+    return Math.max(fromText, fromExample);
+  }
+
+  /** True when a URL button has a dynamic path param that must come from CSV. */
+  private hasButtonCsvParam(buttonsComponent: any): boolean {
+    if (!buttonsComponent?.buttons?.length) {
+      return false;
+    }
+    return buttonsComponent.buttons.some(
+      (b) => b.type === 'URL' && typeof b.url === 'string' && b.url.includes('{{1}}')
+    );
+  }
+
+  private getDynamicUrlButton(buttonsComponent: any): any {
+    if (!buttonsComponent?.buttons?.length) {
+      return null;
+    }
+    return buttonsComponent.buttons.find(
+      (b) => b.type === 'URL' && typeof b.url === 'string' && b.url.includes('{{1}}')
+    ) || null;
+  }
+
   generateCSVFromWhatsAppTemplate(template: any, phoneNumbers: string[]): string {
     const headerFields: string[] = [];
     const rows: string[][] = [];
 
     const headerComponent = template.components.find(c => c.type === 'HEADER');
     const bodyComponent = template.components.find(c => c.type === 'BODY');
-    const footerComponent = template.components.find(c => c.type === 'FOOTER');
     const buttonsComponent = template.components.find(c => c.type === 'BUTTONS');
 
     const bodyExamples: string[][] = bodyComponent?.example?.body_text ?? [[]];
     const headerExample = headerComponent?.example;
-    const buttonsExamples = buttonsComponent?.buttons?.[0]?.example ?? [];
+    const dynamicUrlButton = this.getDynamicUrlButton(buttonsComponent);
+    const buttonsExamples = dynamicUrlButton?.example ?? [];
 
-    headerFields.push(`phone_number`);
-    // Determine header columns
-    if (headerComponent) {
-      headerFields.push('header_0');
+    const headerParamCount = this.getHeaderCsvParamCount(headerComponent);
+    const bodyParamCount = this.getBodyCsvParamCount(bodyComponent, bodyExamples);
+    const includeButtonsColumn = this.hasButtonCsvParam(buttonsComponent);
+
+    headerFields.push('phone_number');
+
+    for (let i = 0; i < headerParamCount; i++) {
+      headerFields.push(`header_${i}`);
     }
-
-    if (bodyExamples.length > 0) {
-      for (let i = 0; i < bodyExamples[0].length; i++) {
-        headerFields.push(`body_${i}`);
-      }
+    for (let i = 0; i < bodyParamCount; i++) {
+      headerFields.push(`body_${i}`);
     }
-
-    if (buttonsExamples.length > 0) {
+    if (includeButtonsColumn) {
       headerFields.push('buttons_0');
     }
 
@@ -469,26 +537,37 @@ export class AutomationCreateComponent implements OnInit {
       const row: string[] = [];
       row.push(phoneNumbers[i]);
 
-      // Header
-      if (headerComponent?.format === 'IMAGE' && headerExample?.header_handle?.[0]) {
-        row.push(headerExample.header_handle[0]);
-      } else if (headerComponent?.format === 'TEXT' && headerExample?.header_text?.[0]) {
-        row.push(headerExample.header_text[0]);
-      } else if (headerComponent) {
-        row.push(''); // empty if format exists but no example
+      // Header sample values (only when CSV columns are required)
+      if (headerParamCount > 0) {
+        const mediaFormats = ['IMAGE', 'DOCUMENT', 'VIDEO'];
+        if (mediaFormats.includes(headerComponent?.format) && headerExample?.header_handle?.[0]) {
+          row.push(headerExample.header_handle[0]);
+        } else if (headerComponent?.format === 'TEXT') {
+          for (let h = 0; h < headerParamCount; h++) {
+            row.push(headerExample?.header_text?.[h] ?? '');
+          }
+        } else {
+          for (let h = 0; h < headerParamCount; h++) {
+            row.push('');
+          }
+        }
       }
 
       // Body
-      const bodyParams = bodyExamples[i] ?? [];
-      for (let j = 0; j < (bodyExamples[0]?.length ?? 0); j++) {
+      const bodyParams = bodyExamples[i] ?? bodyExamples[0] ?? [];
+      for (let j = 0; j < bodyParamCount; j++) {
         row.push(bodyParams[j] ?? '');
       }
 
       // Buttons
-      if (buttonsExamples[i]) {
-        row.push(buttonsExamples[i]);
-      } else if (buttonsExamples[0]) {
-        row.push(buttonsExamples[0]); // fallback to first
+      if (includeButtonsColumn) {
+        if (buttonsExamples[i]) {
+          row.push(buttonsExamples[i]);
+        } else if (buttonsExamples[0]) {
+          row.push(buttonsExamples[0]);
+        } else {
+          row.push('');
+        }
       }
 
       rows.push(row);
