@@ -270,10 +270,16 @@
 }
 
 .home-flow__description {
-  margin: 14px 0 0;
+  margin: 8px 0 0;
   font-size: 14px;
   line-height: 1.55;
   max-width: 360px;
+  max-height: 81px;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  text-overflow: ellipsis;
 }
 
 .home-flow__card-label,
@@ -651,6 +657,22 @@
   }
 }
 
+::ng-deep .home-flow-description-tooltip {
+  max-width: 320px !important;
+  white-space: normal !important;
+  line-height: 1.4 !important;
+  text-align: left !important;
+  word-break: break-word !important;
+
+  .mdc-tooltip__surface {
+    max-width: 320px !important;
+    white-space: normal !important;
+    line-height: 1.4 !important;
+    text-align: left !important;
+    word-break: break-word !important;
+  }
+}
+
 .home-flow__card--chart {
   display: grid;
   grid-template-rows: auto auto 72px;
@@ -782,7 +804,7 @@
   .home-flow__identity {
     grid-column: 1;
     grid-row: 1;
-    padding: 14px 16px;
+    padding: 14px 16px 0;
     border-right: 1px solid #e8e4df;
     border-bottom: 1px solid #e8e4df;
   }

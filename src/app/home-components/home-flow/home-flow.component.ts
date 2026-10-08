@@ -55,6 +55,7 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   @ViewChild('conversationsChart') conversationsChartRef?: ElementRef<HTMLDivElement>;
   @ViewChild('kbListEl') kbListEl?: ElementRef<HTMLOListElement>;
   @ViewChild('modelsListEl') modelsListEl?: ElementRef<HTMLDivElement>;
+  @ViewChild('descriptionEl') descriptionEl?: ElementRef<HTMLParagraphElement>;
 
   @Input() chatbots: Chatbot[] = [];
   @Input() chatbotsLoading = false;
@@ -65,6 +66,8 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   projectId: string;
   lastUpdatedChatbot: Chatbot;
   chatbotPublished = false;
+  /** True when description is clamped and the full text is available via tooltip. */
+  descriptionTruncated = false;
   /** Why this flow is featured in the home card. */
   featuredFlowSource: 'most_engaged' | 'last_edited' | null = null;
 
@@ -101,6 +104,7 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   private chartRenderToken = 0;
   private chartRenderTimer: ReturnType<typeof setTimeout> | null = null;
   private chartResizeTimer: ReturnType<typeof setTimeout> | null = null;
+  private descriptionTruncationTimer: ReturnType<typeof setTimeout> | null = null;
   private unsubscribe$ = new Subject<void>();
 
   constructor(
@@ -119,11 +123,13 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
   ngAfterViewInit(): void {
     this.viewInitialized = true;
     this.scheduleFlowChartsRender();
+    this.scheduleDescriptionTruncationCheck();
   }
 
   @HostListener('window:resize')
   onWindowResize(): void {
     this.resizeFlowCharts();
+    this.scheduleDescriptionTruncationCheck();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -151,6 +157,10 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     if (this.modelsListFlashTimer) {
       clearTimeout(this.modelsListFlashTimer);
       this.modelsListFlashTimer = null;
+    }
+    if (this.descriptionTruncationTimer) {
+      clearTimeout(this.descriptionTruncationTimer);
+      this.descriptionTruncationTimer = null;
     }
     this.chartResizeObserver?.disconnect();
     this.disposeFlowCharts();
@@ -231,6 +241,7 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       this.chatbotUsedNamespaces = [];
       this.analyticsAgentId = null;
       this.featuredResolving = false;
+      this.descriptionTruncated = false;
       this.resetAnalytics();
       this.featuredChatbotIdChange.emit(null);
       return;
@@ -247,6 +258,7 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
     this.applyChatbotNamespacesFilter();
     this.featuredResolving = false;
     this.featuredChatbotIdChange.emit(lastEdited?._id ?? null);
+    this.scheduleDescriptionTruncationCheck();
 
     if (!this.analyticsAgentId) {
       this.analyticsLoading = true;
@@ -282,8 +294,30 @@ export class HomeFlowComponent implements OnInit, OnChanges, AfterViewInit, OnDe
       this.chatbotPublished = this.isChatbotPublished(this.lastUpdatedChatbot);
       this.applyChatbotNamespacesFilter();
       this.featuredChatbotIdChange.emit(featuredChatbot?._id ?? null);
+      this.scheduleDescriptionTruncationCheck();
       this.loadFlowAnalytics();
     });
+  }
+
+  private scheduleDescriptionTruncationCheck(): void {
+    if (this.descriptionTruncationTimer) {
+      clearTimeout(this.descriptionTruncationTimer);
+    }
+    this.descriptionTruncationTimer = setTimeout(() => {
+      this.descriptionTruncationTimer = null;
+      this.updateDescriptionTruncation();
+    }, 0);
+  }
+
+  private updateDescriptionTruncation(): void {
+    const el = this.descriptionEl?.nativeElement;
+    const description = this.lastUpdatedChatbot?.description;
+    if (!el || !description) {
+      this.descriptionTruncated = false;
+      return;
+    }
+    // line-clamp: truncated when content taller than the visible box
+    this.descriptionTruncated = el.scrollHeight > el.clientHeight + 1;
   }
 
   private isChatbotPublished(bot: Chatbot): boolean {

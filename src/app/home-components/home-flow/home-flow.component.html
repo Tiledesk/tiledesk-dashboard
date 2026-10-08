@@ -114,7 +114,15 @@
     <div class="home-flow__body">
       <div class="home-flow__identity">
         <h2 class="home-flow__name">{{ lastUpdatedChatbot?.name }}</h2>
-        <p class="home-flow__description" [class.home-flow__description--empty]="!lastUpdatedChatbot?.description">
+        <p
+          #descriptionEl
+          class="home-flow__description"
+          [class.home-flow__description--empty]="!lastUpdatedChatbot?.description"
+          [matTooltip]="lastUpdatedChatbot?.description"
+          matTooltipClass="h-custom-mat-tooltip home-flow-description-tooltip"
+          matTooltipPosition="above"
+          matTooltipShowDelay="300"
+          [matTooltipDisabled]="!descriptionTruncated">
           {{ lastUpdatedChatbot?.description || ('HomeFlow.NoDescription' | translate) }}
         </p>
       </div>
