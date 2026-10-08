@@ -258,16 +258,14 @@
                   <!-- --------------------------------------- -->
                   <!-- Chatbots that used current KB -->
                   <!-- --------------------------------------- -->
-                  <div class="chatbot-using-current-namespace-wpr">
-                    <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
-                      class="chatbot-using-current-namespace">
+                  <div class="chatbot-using-current-namespace-wpr"
+                    *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0">
+                    <div class="chatbot-using-current-namespace">
                       {{ 'KbPage.ThisKnowledgeBaseisUsedByTheChatbots' | translate }}:
                     </div>
-      
-                 
-                    <div *ngIf="chatbotsUsingNamespace && chatbotsUsingNamespace?.length > 0"
-                       id="kb-chatbot" class="served-by-cb-wpr" style="margin-left: 8px;">
-                      <div class="served-by-cb-row" style="display: flex; flex-wrap: wrap; flex-wrap: wrap;">
+
+                    <div id="kb-chatbot" class="served-by-cb-wpr">
+                      <div class="served-by-cb-row">
                         <ng-container *ngFor="let chatbot of chatbotsUsingNamespace; let i = index">
                           <div class="served-by-cb-b" [ngClass]="{'first-served-by': i === 0, 'disable-link-if-is-agent': USER_ROLE === 'agent' }">
                             <div class="served-by-cb-c"
@@ -299,31 +297,28 @@
                         </ng-container>
                       </div>
                     </div>
-      
-                    <sat-popover #cbPopover horizontalAlign="center" verticalAlign="below" panelClass="cb-details-popover">
-      
-                      <div class="cbPopover-cbname">
-                        <!-- {{chatbot.name }} -->
-                        <!-- {{hoveredChatbot.name}} -->
-                        {{hoveredChatbot?.name }}
-                      </div>
-      
-                      <div class="cbPopover-cbtext">
-                        <!-- View in the design studio -->
-                        {{'ViewInTheDesignStudio' | translate}}
-                      </div>
-      
-                    </sat-popover>
-      
-                    <!-- --------------------------------------- -->
-                    <!-- Create a Chatbot that use current KB -->
-                    <!-- --------------------------------------- -->
-                    <div *ngIf="!chatbotsUsingNamespace" class="chatbot-using-current-namespace">
+                  </div>
+
+                  <sat-popover #cbPopover horizontalAlign="center" verticalAlign="below" panelClass="cb-details-popover">
+                    <div class="cbPopover-cbname">
+                      {{hoveredChatbot?.name }}
+                    </div>
+                    <div class="cbPopover-cbtext">
+                      {{'ViewInTheDesignStudio' | translate}}
+                    </div>
+                  </sat-popover>
+
+                  <!-- --------------------------------------- -->
+                  <!-- Create a Chatbot that use current KB -->
+                  <!-- --------------------------------------- -->
+                  <div *ngIf="!chatbotsUsingNamespace"
+                    class="chatbot-using-current-namespace-wpr chatbot-using-current-namespace-wpr--empty">
+                    <div class="chatbot-using-current-namespace">
                       {{ 'KbPage.ThisKBisReadyToUse' | translate }}.
-    
+
                       <button *ngIf="PERMISSION_TO_ADD_FLOWS" class="custom-button xs" style="font-size: 12px;"
                         (click)="createChatbotfromKbOfficialResponderTemplate()">
-      
+
                         <span *ngIf="!esportingKBChatBotTemplate">
                           {{ 'CreateYourAIAgentWithOneClick' | translate }}
                         </span>
@@ -331,8 +326,7 @@
                           {{ 'Processing' | translate }}
                         </span>
                       </button>
-                    </div> 
-                         
+                    </div>
                   </div>
 
                   <!-- <div class="kb-stats-cards" *ngIf="selectedNamespace">

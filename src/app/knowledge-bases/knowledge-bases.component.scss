@@ -922,10 +922,15 @@ table {
 .chatbot-using-current-namespace-wpr {
     display: flex;
     flex-direction: row;
-    align-items: center;
-    //gap: 6px;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 4px 8px;
     margin-top: 6px;
-    height: 24px;
+    margin-bottom: 16px;
+    // No fixed height: multi-line agent list must push KPI cards down
+}
+
+.chatbot-using-current-namespace-wpr--empty {
     align-items: center;
 }
 
@@ -934,7 +939,10 @@ table {
     font-size: 12px;
     align-items: center;
     display: flex;
-    min-width: 278px;
+    min-width: 0;
+    flex: 0 0 auto;
+    line-height: 24px;
+    padding-top: 2px;
 }
 
 .chatbot-list-using-current-namespace {
@@ -951,9 +959,58 @@ table {
 }
 
 .served-by-cb-wpr {
+    display: block;
+    flex: 1 1 220px;
+    min-width: 0;
+    margin-left: 0;
+}
+
+.served-by-cb-row {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 8px;
+}
+
+// Chip-like agents (scoped overrides of global demo.scss .served-by-cb-*)
+.served-by-cb-wpr {
+    .served-by-cb-b {
+        margin: 0;
+    }
+
+    .served-by-cb-c {
+        flex: 0 1 auto;
+        max-width: none;
+    }
+
+    .served-by-cb-d {
+        gap: 4px;
+        padding: 2px 8px 2px 4px;
+        border-radius: 16px;
+        background-color: #f4f6f9;
+        max-width: none;
+    }
+
+    .served-by-cb-name {
+        max-width: none;
+        margin-right: 0;
+        margin-left: 0;
+        line-height: 20px;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .served-by-cb-e {
+        margin: 0;
+        flex-shrink: 0;
+        line-height: 0;
+    }
+
+    .served-by-cb-e img {
+        width: 18px;
+        height: 18px;
+    }
 }
 
 
