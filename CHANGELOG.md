@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.8.31
+- Fixes the bug: WhatsApp broadcast CSV template columns did not match actual template parameters
+- Improves Knowledge Base “used by chatbots” list wrapping and chip layout
+- Improves Home Flow description truncation with ellipsis and tooltip for the full text
+
 ### 2.8.30
 - Fixes the bug: teammates without reopen permission could reopen archived conversations via Send as Open/Pending
 - Fixes the bug: Home Flow / Overview / KB analytics used inconsistent thousand and decimal separators
