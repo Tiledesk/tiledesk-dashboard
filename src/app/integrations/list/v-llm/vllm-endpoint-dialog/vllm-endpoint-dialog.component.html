@@ -1,0 +1,143 @@
+<div class="m-header">
+  <h1 mat-dialog-title>
+    <span *ngIf="!isEditing">{{ 'Integration.AddOpenAICompatibleEndpoint' | translate }}</span>
+    <span *ngIf="isEditing">{{ 'Integration.EditOpenAICompatibleEndpoint' | translate }}</span>
+  </h1>
+  <div class="m-top-right-icon">
+    <span class="material-icons-outlined" (click)="onClose()">close</span>
+  </div>
+</div>
+
+<div mat-dialog-content class="dialog-content">
+  <div class="input-field">
+    <label>{{ 'Name' | translate }}</label>
+    <input id="vllm-name" class="custom-input" type="text" name="vllm-name"
+      placeholder="{{ 'Integration.VllmEndpointNamePlaceholder' | translate }}"
+      [(ngModel)]="currentEndpoint.name" autocomplete="off">
+  </div>
+
+  <div class="input-field">
+    <label>URL</label>
+    <input id="vllm-url" class="custom-input" type="url" name="vllm-url"
+      placeholder="{{ 'Integration.VllmEndpointUrlPlaceholder' | translate }}"
+      [(ngModel)]="currentEndpoint.url" autocomplete="off">
+  </div>
+
+  <integration-api-key-field
+    [storedApikey]="endpointStoredApikey"
+    [optional]="true"
+    [showOptionalHint]="true"
+    [resetKey]="apiKeyFieldReset"
+    (apikeyChange)="currentEndpoint.apikey = $event"
+    (canSaveChange)="apiKeyCanSave = $event"
+    (isReplacingChange)="apiKeyIsReplacing = $event">
+  </integration-api-key-field>
+
+  <div class="input-field input-field--models">
+    <label>{{ 'Models' | translate }}</label>
+    <div class="fake--input">
+      <div class="fake--input-inner">
+        <input id="vllm-models" class="custom-input" name="vllm-models"
+          placeholder="{{ 'Integration.VllmModelsPlaceholder' | translate }}" type="text"
+          [(ngModel)]="newModelName" (ngModelChange)="onEnterModel($event)" autocomplete="off"
+          (keyup.enter)="addModel(newModelName)">
+        <div id="enter-button" class="enter-button" [style.display]="showEnterButton ? 'inline-block' : 'none'"
+          (click)="addModel(newModelName)">{{ 'KbPage.Enter' | translate }}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="vllm-models--container">
+    <span aria-label="models" *ngFor="let model of currentEndpoint.models" class="vllm-model-tag-wpr">
+      <p class="vllm-model-tag-label">{{ model }}</p>
+      <button type="button" class="vllm-model-tag-delete-btn" (click)="removeModel(model)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+          class="vllm-model-tag-delete-icon">
+          <path
+            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+          </path>
+          <path d="M0 0h24v24H0z" fill="none"></path>
+        </svg>
+      </button>
+    </span>
+  </div>
+
+  <div class="custom-headers-section">
+    <div class="custom-headers-header">
+      <h5>{{ 'Integration.CustomHeaders' | translate }}</h5>
+      <button type="button" class="btn btn-outlined custom-headers-add-btn" (click)="addHeaderRow()">
+        {{ 'Add' | translate }}
+      </button>
+    </div>
+
+    <div class="custom-header-row" *ngFor="let row of headerRows; let i = index">
+      <div class="on-off-primary-color-switch-and-lbl-wpr"
+        [class.on-off-primary-color-switch-and-lbl-wpr--disabled]="!canToggleHeader(row)">
+        <div class="nw-onoffswitch">
+          <input
+            type="checkbox"
+            class="nw-onoffswitch-checkbox"
+            [id]="'vllm-header-switch-' + i"
+            [name]="'vllm-header-switch-' + i"
+            [(ngModel)]="row.enabled"
+            [disabled]="!canToggleHeader(row)">
+          <label
+            class="nw-onoffswitch-label"
+            [class.nw-onoffswitch-label--disabled]="!canToggleHeader(row)"
+            [attr.for]="canToggleHeader(row) ? ('vllm-header-switch-' + i) : null"></label>
+        </div>
+      </div>
+
+      <div class="custom-header-fields">
+        <div class="custom-header-field">
+          <input
+            class="custom-input"
+            [class.custom-input--error]="isHeaderKeyMissing(row)"
+            type="text"
+            [placeholder]="'Integration.Key' | translate"
+            [(ngModel)]="row.key"
+            (ngModelChange)="onHeaderFieldsChange(row)"
+            [disabled]="!row.enabled"
+            autocomplete="off">
+          <span class="field-error" *ngIf="isHeaderKeyMissing(row)">{{ 'FieldRequired' | translate }}</span>
+        </div>
+        <div class="custom-header-field">
+          <input
+            class="custom-input"
+            [class.custom-input--error]="isHeaderValueMissing(row)"
+            type="text"
+            [placeholder]="'Integration.Value' | translate"
+            [(ngModel)]="row.value"
+            (ngModelChange)="onHeaderFieldsChange(row)"
+            [disabled]="!row.enabled"
+            autocomplete="off">
+          <span class="field-error" *ngIf="isHeaderValueMissing(row)">{{ 'FieldRequired' | translate }}</span>
+        </div>
+      </div>
+
+      <button
+        type="button"
+        class="custom-header-delete-btn"
+        (click)="removeHeaderRow(i)"
+        [attr.aria-label]="'Delete' | translate">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+
+    <p class="custom-headers-hint" *ngIf="headerRows.length > 0">{{ 'Integration.CustomHeadersHint' | translate }}</p>
+  </div>
+</div>
+
+<div mat-dialog-actions class="dialog-actions">
+  <button class="mat-dialog-close-btn" mat-button type="button" (click)="onClose()">
+    {{ 'Cancel' | translate }}
+  </button>
+  <button
+    class="mat-dialog-ok-btn"
+    mat-button
+    type="button"
+    (click)="addOrUpdateEndpoint()"
+    [disabled]="!canSubmit()">
+    {{ (isEditing ? 'Update' : 'Save') | translate }}
+  </button>
+</div>

@@ -1232,6 +1232,26 @@ $td-slide-toggle-thumb-shadow:
   border-radius: var(--btn-border-radius) !important;
 }
 
+// Dialog actions — shared typography (Cancel / Save / Update, …)
+.mat-mdc-dialog-actions .mat-mdc-button,
+.mat-mdc-dialog-actions .mat-button,
+.mat-mdc-dialog-actions [mat-button],
+.mat-dialog-actions .mat-button,
+.mat-dialog-actions [mat-button],
+.mat-mdc-dialog-container [mat-dialog-actions] .mat-mdc-button,
+.mat-mdc-dialog-container [mat-dialog-actions] .mat-button,
+.mat-dialog-container [mat-dialog-actions] .mat-button {
+  font-size: 14px !important;
+  font-family: var(--header-font-family) !important;
+  letter-spacing: normal;
+
+  .mdc-button__label {
+    font-size: 14px !important;
+    font-family: var(--header-font-family) !important;
+    letter-spacing: normal;
+  }
+}
+
 // ─── mat-tooltip (MDC) — baseline ─────────────────────────────────────────────
 // Border radius on every tooltip; custom matTooltipClass rules below extend the mixin.
 

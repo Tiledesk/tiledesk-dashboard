@@ -4,30 +4,15 @@
 - Shows a small "v3" tag beside the name, in the chatbots list, for the agents managed by the new Design Studio
 - Opens those agents in the new Design Studio from the chatbots list and from the home cards, when its URL is configured (`CDS_V3_URL`); without that URL, and for every other agent, nothing changes
 
-# features/VC-new-agent 30/09/2026
+### 2.7.254-stage
+- Adds Custom Headers to OpenAI-Compatible (vLLM) endpoints, with enable/disable via toggle
+- Shows custom retention periods in the Message Retention select
+
+### 2.7.253-stage
 - Adds a new modal to create an AI Agent: its name and a description of what it should do, offered only where agents are created with the new editor
 - Hands that description to the Design Studio, so the AI chat can build the flow on the canvas
 - Leaves every other way of creating something on the previous modal, unchanged
 
-### 2.8.28
-- Updates Flow engagement metrics and terminology in the Dashboard Home for greater clarity.
-
-### 2.8.27
-- Redesigns the home page dashboard with a new layout
-
-### 2.8.26
-- Improves translations in the integration Gemini Agent Platform
-- Fixes the bug: conversation detail showed oversized `h1` text inside chat message bubbles
-
-### 2.8.25
-- Adds Gemini Agent Platform integration with Project/Location fields in the endpoint setup and table
-- Adds the OpenRouter integration: configure the API key, pick models and the providers that run the inference
-
-### 2.8.24
-- Adds Gemini Agent Platform integration
-
-### 2.8.23
-- Improves API Key masking for integrations
 ### 2.7.252-stage
 - Replaces the Token Consumption Over Time chart with Queries per KB Over Time in the Home Overview
 - Removes the section KB analytics

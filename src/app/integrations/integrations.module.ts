@@ -31,6 +31,7 @@ import { DeepseekIntegrationComponent } from './list/deepseek-integration/deepse
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 import { VLLMComponent } from './list/v-llm/v-llm.component';
 import { VllmEndpointTableComponent } from './list/v-llm/vllm-endpoint-table/vllm-endpoint-table.component';
+import { VllmEndpointDialogComponent } from './list/v-llm/vllm-endpoint-dialog/vllm-endpoint-dialog.component';
 import { GeminiAgentPlatformIntegrationComponent } from './list/geminiagentplatform-integration/geminiagentplatform-integration.component';
 import { AgentPlatformEndpointTableComponent } from './list/geminiagentplatform-integration/agentplatform-endpoint-table/agentplatform-endpoint-table.component';
 import { McpIntegrationComponent } from './list/mcp-integration/mcp-integration.component';
@@ -80,6 +81,7 @@ const routes: Routes = [
     ConnectorItemsModalComponent,
     VLLMComponent,
     VllmEndpointTableComponent,
+    VllmEndpointDialogComponent,
     GeminiAgentPlatformIntegrationComponent,
     AgentPlatformEndpointTableComponent,
     ElevenlabsIntegrationComponent,

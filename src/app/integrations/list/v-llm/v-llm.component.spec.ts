@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 import { TranslateModule } from '@ngx-translate/core';
 
 import { VLLMComponent } from './v-llm.component';
@@ -12,7 +13,7 @@ describe('VLLMComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [VLLMComponent, VllmEndpointTableComponent],
-      imports: [FormsModule, TranslateModule.forRoot()],
+      imports: [FormsModule, MatDialogModule, TranslateModule.forRoot()],
     })
     .compileComponents();
 

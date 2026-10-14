@@ -12,6 +12,8 @@ export interface QuotesDataPayload {
   allQuotes: any;
   projectId: string;
   slot?: { startDate?: string; endDate?: string } | null;
+  /** True when quotes fetch failed (e.g. 504) — Home clears skeleton without applying quotas. */
+  fetchFailed?: boolean;
 }
 
 @Injectable({
@@ -86,6 +88,18 @@ export class QuotesService {
     this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] - PUBLISH QUOTAS DATA (Called by NavbarComponent to update the quotas)');
     this.quotasDataSubject.next(data);
     this.hasFetchedData = true; // Mark data as fetched
+  }
+
+  /** Called by Navbar when project quotes /quotes fetch fails (timeout, 5xx, …). */
+  notifyQuotasFetchFailed(projectId: string) {
+    this.logger.log('[QUOTA-DEBUG][QUOTE-SERVICE] - PUBLISH QUOTAS FETCH FAILED for projectId', projectId);
+    this.quotasDataSubject.next({
+      projectId,
+      projectLimits: null,
+      allQuotes: null,
+      slot: null,
+      fetchFailed: true,
+    });
   }
 
   /** Called by HomeComponent to request Navbar to fetch quotas */
