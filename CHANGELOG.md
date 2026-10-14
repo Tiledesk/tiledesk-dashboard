@@ -1,6 +1,6 @@
 # tiledesk-dashboard
 
-# features/VC-new-agent 14/10/2026
+### 2.7.255-stage
 - Shows a small "v3" tag beside the name, in the chatbots list, for the agents managed by the new Design Studio
 - Opens those agents in the new Design Studio from the chatbots list and from the home cards, when its URL is configured (`CDS_V3_URL`); without that URL, and for every other agent, nothing changes
 
