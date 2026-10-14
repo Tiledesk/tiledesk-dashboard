@@ -1345,3 +1345,20 @@ input[type="checkbox"]:disabled {
 //   font-size: var(--mat-icon-font-size) !important;
 //   margin-top: 4px !important;
 // }
+
+// The small "v3" tag to the right of the name (sibling of .cl-card-item-name inside the flex
+// row .cl-card-item-name-wpr, so the name keeps its ellipsis and the tag is never clipped)
+.cl-card-v3-tag {
+  flex-shrink: 0;
+  align-self: center;
+  margin-left: 6px;
+  padding: 0 5px;
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  border-radius: var(--badge-border-radius);
+  color: #0d8cff;
+  background: rgba(13, 140, 255, .12);
+}

@@ -23,6 +23,7 @@ export const environment = {
   // no version, so agents are created as before.
   chatbotVersion: '',
   cdsBaseUrl: 'CHANGEIT',
+  cdsV3BaseUrl: 'CHANGEIT',
   promoBannerUrl: 'CHANGEIT',
   chatStoragePrefix: "CHANGEIT",
   firebase: {

@@ -16,7 +16,7 @@ import { ProjectService } from 'app/services/project.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
-import { CHATBOT_MAX_NUM, containsXSS, formatBytesWithDecimal, goToCDSVersion, PLAN_NAME } from 'app/utils/util';
+import { CHATBOT_MAX_NUM, containsXSS, formatBytesWithDecimal, goToCDSVersion, isV3Chatbot, PLAN_NAME } from 'app/utils/util';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
@@ -2331,9 +2331,14 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
   }
 
+  /** The small "v3" tag on the card: the agent is managed by the new Design Studio. */
+  isV3Chatbot(faqKb: FaqKb): boolean {
+    return isV3Chatbot(faqKb);
+  }
+
   goToCDS(faqKb: FaqKb) {
     // this.router.navigate(['project/' + this.project._id + '/cds/', faqKb._id, 'intent', '0']);
-    goToCDSVersion(this.router, faqKb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+    goToCDSVersion(this.router, faqKb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl, this.appConfigService.getConfig().cdsV3BaseUrl)
   }
 
 

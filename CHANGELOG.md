@@ -1,6 +1,10 @@
 # tiledesk-dashboard
 
-# this branch 30/09/2026
+# features/VC-new-agent 14/10/2026
+- Shows a small "v3" tag beside the name, in the chatbots list, for the agents managed by the new Design Studio
+- Opens those agents in the new Design Studio from the chatbots list and from the home cards, when its URL is configured (`CDS_V3_URL`); without that URL, and for every other agent, nothing changes
+
+# features/VC-new-agent 30/09/2026
 - Adds a new modal to create an AI Agent: its name and a description of what it should do, offered only where agents are created with the new editor
 - Hands that description to the Design Studio, so the AI chat can build the flow on the canvas
 - Leaves every other way of creating something on the previous modal, unchanged

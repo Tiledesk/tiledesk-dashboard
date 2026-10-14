@@ -235,7 +235,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
           // this.router.navigate(['project/' + this.project._id + '/bots/intents/', this.lastUpdatedChatbot._id, 'external']);
           this.router.navigate(['project/' + this.project._id + '/bots', this.lastUpdatedChatbot._id, 'external']);
         } else {
-          goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+          goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl, this.appConfigService.getConfig().cdsV3BaseUrl)
         }
         // goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       } else if (this.chatbots?.length === 0) {

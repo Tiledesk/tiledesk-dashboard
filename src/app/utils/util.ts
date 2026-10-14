@@ -665,8 +665,40 @@ export const appSumoHighlightedFeaturesPlanATier4 = [
 
 
 
-export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
+/**
+ * An agent managed by the new Design Studio carries the label `attributes.dsVersion = 'v3'`,
+ * written by whoever created it. Anything else (no attributes, no label, a stub with only
+ * `createdAt` and `_id`) is an agent of the previous editor.
+ */
+export function isV3Chatbot(chatbot: any): boolean {
+    const version = chatbot && chatbot.attributes && chatbot.attributes.dsVersion;
+    return typeof version === 'string' && version.trim().toLowerCase() === 'v3';
+}
+
+/**
+ * A URL from the runtime configuration, or null when it is not set: empty, or the `${...}`
+ * placeholder that envsubst leaves behind when the environment variable does not exist.
+ */
+export function configuredUrl(value: any): string | null {
+    if (typeof value !== 'string') { return null; }
+    const trimmed = value.trim();
+    return (!trimmed || trimmed.startsWith('${')) ? null : trimmed;
+}
+
+/**
+ * Opens the editor of a chatbot. An agent labelled v3 (see `isV3Chatbot`) opens in the new
+ * Design Studio when its URL (`cdsV3BaseUrl`, env `CDS_V3_URL`) is passed and configured;
+ * without that URL, or for every other agent, the behaviour is the one of always.
+ */
+export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string, redirectV3BaseUrl?: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+
+    const v3BaseUrl = configuredUrl(redirectV3BaseUrl);
+    if (v3BaseUrl && isV3Chatbot(chatbot)) {
+        const urlCDS_v3 = `${v3BaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/blocks`
+        window.open(urlCDS_v3, '_self')
+        return;
+    }
 
     let chatBotDate = new Date(chatbot.createdAt)
     let dateLimit = new Date('2023-10-02T00:00:00')
