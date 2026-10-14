@@ -19,6 +19,7 @@ export const environment = {
   templatesUrl: 'CHANGEIT',
   appsUrl: 'CHANGEIT',
   cdsBaseUrl: 'CHANGEIT',
+  cdsV3BaseUrl: 'CHANGEIT',
   promoBannerUrl: 'CHANGEIT',
   chatStoragePrefix: "CHANGEIT",
   firebase: {

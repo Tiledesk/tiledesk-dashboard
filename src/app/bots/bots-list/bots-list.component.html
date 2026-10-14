@@ -716,6 +716,8 @@
                                 (click)="$event.stopPropagation()"
                                 (keypress)="onPressEnterUpdateChatBotName($event);$event.stopPropagation()">
                             </div>
+                            <!-- a small tag to the right of the name: the agent is managed by the new Design Studio -->
+                            <span class="cl-card-v3-tag" *ngIf="botIdToRename !== faqkb._id && isV3Chatbot(faqkb)">v3</span>
                           </span>
                           <div class="cl-card-item-description-wpr">
                             <!-- <div class="bot-card-bot-no-description" *ngIf="!faqkb.description"> No description provided</div> -->

@@ -20,6 +20,7 @@
   "templatesUrl": "${TEMPLATES_URL}",
   "appsUrl":  "${APPS_URL}",
   "cdsBaseUrl": "${CDS_BASE_URL}",
+  "cdsV3BaseUrl": "${CDS_V3_URL}",
   "promoBannerUrl": "${PROMO_BANNER_URL}",
   "whatsappApiUrl": "${WHATSAPP_API_URL}",
   "tiledeskPhoneNumber": "${TILEDESK_PHONE_NUMBER}",

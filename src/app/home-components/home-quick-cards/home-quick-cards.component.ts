@@ -707,6 +707,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
       this.lastUpdatedChatbot,
       this.projectId,
       this.appConfigService.getConfig().cdsBaseUrl,
+      this.appConfigService.getConfig().cdsV3BaseUrl,
     );
   }
 
