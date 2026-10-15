@@ -17,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WebhookService } from 'app/services/webhook.service';
 import { BrandService } from 'app/services/brand.service';
 import { CreateChatbotModalComponent } from '../bots-list/create-chatbot-modal/create-chatbot-modal.component';
-import { containsXSS, formatBytesWithDecimal, goToCDSVersion } from 'app/utils/util';
+import { containsXSS, formatBytesWithDecimal, goToCDSVersion, openChatbotEditor } from 'app/utils/util';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { CreateFlowsModalComponent } from '../bots-list/create-flows-modal/create-flows-modal.component';
 import { FaqService } from 'app/services/faq.service';
@@ -825,12 +825,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
 
-        let newfaqkb = {
-          createdAt: new Date(),
-          _id: faqKb['_id']
-        }
-
-        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, faqKb as any, this.project._id, this.appConfigService.getConfig())
         this.trackChatbotCreated(faqKb, 'Create')
       }
 
@@ -956,12 +951,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
         this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON  RES - importedChatbotid ', faqkb._id)
         this.botLocalDbService.saveBotsInStorage(faqkb._id, faqkb);
 
-        let newfaqkb = {
-          createdAt: new Date(),
-          _id: faqkb['_id']
-        }
-
-        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, faqkb, this.project._id, this.appConfigService.getConfig())
 
         this.trackChatbotCreated(faqkb, 'Import')
       }

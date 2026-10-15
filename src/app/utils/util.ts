@@ -690,6 +690,16 @@ export function configuredUrl(value: any): string | null {
  * Design Studio when its URL (`cdsV3BaseUrl`, env `CDS_V3_URL`) is passed and configured;
  * without that URL, or for every other agent, the behaviour is the one of always.
  */
+/**
+ * Opens the editor of a chatbot choosing between the two Design Studios by the chatbot's own
+ * version (see `goToCDSVersion`). Every path that creates or imports an agent goes through here
+ * with the object the server answered with, never with a stub: a stub has no `attributes`, so it
+ * would always open the previous editor.
+ */
+export function openChatbotEditor(router: any, chatbot: Chatbot, project_id, config: any) {
+    goToCDSVersion(router, chatbot, project_id, config?.cdsBaseUrl, config?.cdsV3BaseUrl);
+}
+
 export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string, redirectV3BaseUrl?: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 

@@ -9,7 +9,7 @@ import { Location } from '@angular/common';
 import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import moment from 'moment';
-import { goToCDSVersion, tranlatedLanguage } from 'app/utils/util';
+import { goToCDSVersion, tranlatedLanguage, openChatbotEditor } from 'app/utils/util';
 import { TranslateService } from '@ngx-translate/core';
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
 import { WidgetService } from 'app/services/widget.service';
@@ -494,7 +494,7 @@ export class CreateProjectComponent extends WidgetSetUpBaseComponent implements 
   goToBotDetails(faqkb: FaqKb) {
     this.logger.log('[TEMPLATE DETAIL] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
     // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
-    goToCDSVersion(this.router, faqkb, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
+    openChatbotEditor(this.router, faqkb, this.id_project, this.appConfigService.getConfig())
   }
 
 }

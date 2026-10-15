@@ -15,7 +15,7 @@ import { Location } from '@angular/common';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { DepartmentService } from 'app/services/department.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME } from 'app/utils/util';
+import { APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME, openChatbotEditor } from 'app/utils/util';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -551,7 +551,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
   goToBotDetails(faqkb: FaqKb) {
     this.logger.log('[TEMPLATE DETAIL] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
     // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
-    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+    openChatbotEditor(this.router, faqkb, this.project._id, this.appConfigService.getConfig())
   }
 
   getTestSiteUrl() {

@@ -12,7 +12,7 @@ import { NotifyService } from '../../core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { goToCDSVersion } from 'app/utils/util';
+import { goToCDSVersion, openChatbotEditor } from 'app/utils/util';
 @Component({
   selector: 'appdashboard-create-chatbot',
   templateUrl: './create-chatbot.component.html',
@@ -261,7 +261,7 @@ export class CreateChatbotComponent implements OnInit {
         this.botLocalDbService.saveBotsInStorage(this.importedChatbotid, faqkb);
 
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0']);
-        goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, faqkb, this.project._id, this.appConfigService.getConfig())
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
       }
 
