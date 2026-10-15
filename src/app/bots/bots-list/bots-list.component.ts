@@ -16,7 +16,7 @@ import { ProjectService } from 'app/services/project.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
-import { CHATBOT_MAX_NUM, containsXSS, formatBytesWithDecimal, goToCDSVersion, isV3Chatbot, PLAN_NAME } from 'app/utils/util';
+import { CHATBOT_MAX_NUM, containsXSS, formatBytesWithDecimal, goToCDSVersion, isV3Chatbot, PLAN_NAME, openChatbotEditor } from 'app/utils/util';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
@@ -1783,11 +1783,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
 
-        let newfaqkb = {
-          createdAt: new Date(),
-          _id: faqKb['_id']
-        }
-
         // Before the redirect, and only then: the note is addressed to this agent, so it needs
         // the id the server has just answered with. The Design Studio picks it up on the other
         // side of the same tab and hands it to the AI chat.
@@ -1800,7 +1795,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           });
         }
 
-        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        // The server's answer carries the version label of the new agent: the editor follows it
+        openChatbotEditor(this.router, faqKb as any, this.project._id, this.appConfigService.getConfig())
         this.trackChatbotCreated(faqKb, 'Create')
       }
 
@@ -1930,12 +1926,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON  RES - importedChatbotid ', faqkb._id)
         this.botLocalDbService.saveBotsInStorage(faqkb._id, faqkb);
 
-        let newfaqkb = {
-          createdAt: new Date(),
-          _id: faqkb['_id']
-        }
-
-        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        // An imported agent keeps the version label of its JSON: the editor follows it
+        openChatbotEditor(this.router, faqkb, this.project._id, this.appConfigService.getConfig())
 
         this.trackChatbotCreated(faqkb, 'Import')
       }

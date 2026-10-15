@@ -7,7 +7,7 @@ import { BrandService } from 'app/services/brand.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
-import { APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
+import { APP_SUMO_PLAN_NAME, CHATBOT_MAX_NUM, goToCDSVersion, PLAN_NAME, URL_understanding_default_roles, openChatbotEditor } from 'app/utils/util';
 import { FaqKb } from 'app/models/faq_kb-model';
 import { AppConfigService } from 'app/services/app-config.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
@@ -441,7 +441,7 @@ export class GetStartChatbotForkComponent implements OnInit {
   goToBotDetails(faqkb: FaqKb) {
     this.logger.log('[GET START CHATBOT FORK] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
     // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
-    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+    openChatbotEditor(this.router, faqkb, this.project._id, this.appConfigService.getConfig())
   }
 
 

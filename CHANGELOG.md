@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+# features/VC-new-agent 15/10/2026
+- Opens the right Design Studio also after creating or importing an agent (from scratch, from a prompt, from a JSON, from a template, from the onboarding wizard, from a knowledge base): the editor follows the version label the server answers with, instead of always the previous editor; where only the agent id is at hand, the agent is read back first
+
 # features/VC-new-agent 14/10/2026
 - Shows a small "v3" tag beside the name, in the chatbots list, for the agents managed by the new Design Studio
 - Opens those agents in the new Design Studio from the chatbots list and from the home cards, when its URL is configured (`CDS_V3_URL`); without that URL, and for every other agent, nothing changes

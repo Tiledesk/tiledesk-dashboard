@@ -7,7 +7,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { Location } from '@angular/common';
 import { DepartmentService } from 'app/services/department.service';
 import { Project } from 'app/models/project-model';
-import { goToCDSVersion } from 'app/utils/util';
+import { goToCDSVersion, openChatbotEditor } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
@@ -232,11 +232,14 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
 
   goToBotDetails() {
     // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
-    let faqkb = {
-      createdAt: new Date(),
-      _id : this.botid
-    }
-    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+    // The agent was just installed and only its id is here: the server's copy carries the
+    // version label, and the editor follows it. If the lookup fails, the editor of always.
+    const stub = { createdAt: new Date(), _id: this.botid } as any;
+    this.faqKbService.getFaqKbById(this.botid).subscribe((bot: any) => {
+      openChatbotEditor(this.router, bot || stub, this.project._id, this.appConfigService.getConfig());
+    }, () => {
+      openChatbotEditor(this.router, stub, this.project._id, this.appConfigService.getConfig());
+    });
   }
 
   getCurrentProject() {
