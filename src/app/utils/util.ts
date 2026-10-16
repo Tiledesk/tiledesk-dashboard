@@ -666,12 +666,13 @@ export const appSumoHighlightedFeaturesPlanATier4 = [
 
 
 /**
- * An agent managed by the new Design Studio carries the label `attributes.dsVersion = 'v3'`,
- * written by whoever created it. Anything else (no attributes, no label, a stub with only
- * `createdAt` and `_id`) is an agent of the previous editor.
+ * An agent managed by the new Design Studio carries the label `ds_version = 'v3'`, a field of the
+ * bot written by whoever created it (the server keeps it there since 2.30.0; before, it lived in
+ * `attributes.dsVersion`). Anything else (no label, a stub with only `createdAt` and `_id`) is an
+ * agent of the previous editor.
  */
 export function isV3Chatbot(chatbot: any): boolean {
-    const version = chatbot && chatbot.attributes && chatbot.attributes.dsVersion;
+    const version = chatbot && chatbot.ds_version;
     return typeof version === 'string' && version.trim().toLowerCase() === 'v3';
 }
 

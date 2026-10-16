@@ -61,7 +61,7 @@ describe('FaqKbService — the editor version of a new agent', () => {
   it('labels an agent created from scratch with the configured version', () => {
     build('v3');
     service.createChatbotFromScratch('Bot', 'tilebot', 'chatbot', 'en').subscribe();
-    expect(sentBody().attributes).toEqual({ dsVersion: 'v3' });
+    expect(sentBody().ds_version).toBe('v3');
   });
 
   it('labels every kind of agent the picker offers', () => {
@@ -70,7 +70,7 @@ describe('FaqKbService — the editor version of a new agent', () => {
       service.createChatbotFromScratch('Bot', 'tilebot', subtype, 'en').subscribe();
       const body = sentBody();
       expect(body.subtype).toBe(subtype);
-      expect(body.attributes).toEqual({ dsVersion: 'v3' });
+      expect(body.ds_version).toBe('v3');
     });
   });
 
@@ -89,13 +89,13 @@ describe('FaqKbService — the editor version of a new agent', () => {
   it('writes no version when the configuration carries none', () => {
     build('');
     service.createChatbotFromScratch('Bot', 'tilebot', 'chatbot', 'en').subscribe();
-    expect(sentBody().attributes).toBeUndefined();
+    expect(sentBody().ds_version).toBeUndefined();
   });
 
   it('writes no version when the configuration key is missing altogether', () => {
     build(undefined);
     service.createChatbotFromScratch('Bot', 'tilebot', 'chatbot', 'en').subscribe();
-    expect(sentBody().attributes).toBeUndefined();
+    expect(sentBody().ds_version).toBeUndefined();
   });
 
   // The runtime configuration is filled in at container start: an environment variable that
@@ -103,7 +103,7 @@ describe('FaqKbService — the editor version of a new agent', () => {
   it('writes no version when the placeholder was never replaced', () => {
     build('${CHATBOT_VERSION}');
     service.createChatbotFromScratch('Bot', 'tilebot', 'chatbot', 'en').subscribe();
-    expect(sentBody().attributes).toBeUndefined();
+    expect(sentBody().ds_version).toBeUndefined();
   });
 
   // Creation paths that are not "from scratch" are left exactly as they were: an agent built
@@ -111,9 +111,9 @@ describe('FaqKbService — the editor version of a new agent', () => {
   it('leaves the other ways of creating an agent untouched', () => {
     build('v3');
     service.createFaqKb('Bot', 'http://bot', 'tilebot', 'a bot', 'en', 'blank').subscribe();
-    expect(sentBody().attributes).toBeUndefined();
+    expect(sentBody().ds_version).toBeUndefined();
 
     service.createRasaBot('Bot', 'rasa', 'a bot').subscribe();
-    expect(sentBody().attributes).toBeUndefined();
+    expect(sentBody().ds_version).toBeUndefined();
   });
 });

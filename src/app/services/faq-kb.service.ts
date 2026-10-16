@@ -494,13 +494,13 @@ export class FaqKbService {
     if(namespaceid) {
       body['namespace_id'] = namespaceid
     }
-    // Which editor the Design Studio opens on an agent is decided by this label
-    // (attributes.dsVersion); without it the agent opens with the previous editor. Only an
-    // agent created from scratch gets it: a template, a copy or an imported chatbot keeps
-    // whatever version it already carries.
+    // Which editor the Design Studio opens on an agent is decided by this label (`ds_version`, a
+    // field of the bot since server 2.30.0; the server also builds the flow in that form); without
+    // it the agent opens with the previous editor. Only an agent created from scratch gets it: a
+    // template, a copy or an imported chatbot keeps whatever version it already carries.
     const dsVersion = this.chatbotVersion();
     if (dsVersion) {
-      body['attributes'] = { dsVersion: dsVersion };
+      body['ds_version'] = dsVersion;
     }
 
     // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);

@@ -1,6 +1,9 @@
 # tiledesk-dashboard
 
 ### 2.7.256-stage
+- Reads the version of an agent from the `ds_version` field of the bot, where the server keeps it since 2.30.0, no longer from its attributes; the "v3" tag and the choice of the Design Studio follow
+- An agent created from scratch is born with the version the deployment sets (`chatbotVersion`, env `CHATBOT_VERSION`) written as `ds_version`, no longer as `attributes.dsVersion`, so the server builds its flow in that form; without that setting creation is unchanged
+- Adds `CHATBOT_VERSION` to the environment sample
 - Opens the right Design Studio also after creating or importing an agent (from scratch, from a prompt, from a JSON, from a template, from the onboarding wizard, from a knowledge base): the editor follows the version label the server answers with, instead of always the previous editor; where only the agent id is at hand, the agent is read back first
 
 ### 2.7.255-stage
