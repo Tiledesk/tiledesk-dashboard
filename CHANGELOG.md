@@ -1,6 +1,7 @@
 # tiledesk-dashboard
 
 # features/VC-new-agent 16/10/2026
+- An agent that still carries the `v3` label inside its attributes, saved before the `ds_version` field existed, is treated as v3 too: it gets the tag and opens in the new Design Studio, which moves the label to the field on open
 - Reads the version of an agent from the `ds_version` field of the bot, where the server keeps it since 2.30.0, no longer from its attributes; the "v3" tag and the choice of the Design Studio follow
 - An agent created from scratch is born with the version the deployment sets (`chatbotVersion`, env `CHATBOT_VERSION`) written as `ds_version`, no longer as `attributes.dsVersion`, so the server builds its flow in that form; without that setting creation is unchanged
 - Adds `CHATBOT_VERSION` to the environment sample
