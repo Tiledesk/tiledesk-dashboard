@@ -677,17 +677,6 @@ export function isV3Chatbot(chatbot: any): boolean {
 }
 
 /**
- * The editor version the agents created from this dashboard are born with (`chatbotVersion`, env
- * `CHATBOT_VERSION`), or null when the deployment does not set it: empty, or the `${...}`
- * placeholder that envsubst leaves behind. Null means "create as always, no label".
- */
-export function configuredChatbotVersion(value: any): string | null {
-    if (typeof value !== 'string') { return null; }
-    const trimmed = value.trim();
-    return (!trimmed || trimmed.startsWith('${')) ? null : trimmed;
-}
-
-/**
  * A URL from the runtime configuration, or null when it is not set: empty, or the `${...}`
  * placeholder that envsubst leaves behind when the environment variable does not exist.
  */

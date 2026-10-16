@@ -16,7 +16,7 @@ import { ProjectService } from 'app/services/project.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
-import { configuredChatbotVersion, CHATBOT_MAX_NUM, containsXSS, formatBytesWithDecimal, goToCDSVersion, isV3Chatbot, PLAN_NAME, openChatbotEditor } from 'app/utils/util';
+import { CHATBOT_MAX_NUM, containsXSS, formatBytesWithDecimal, goToCDSVersion, isV3Chatbot, PLAN_NAME, openChatbotEditor } from 'app/utils/util';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
@@ -2165,7 +2165,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
    *  placeholder left behind when the variable is not set, both mean "not here", and creation
    *  then behaves exactly as it always has. */
   private createsV3Agents(): boolean {
-    return configuredChatbotVersion(this.appConfigService.getConfig()?.chatbotVersion) !== null;
+    const version = this.appConfigService.getConfig()?.chatbotVersion;
+    if (typeof version !== 'string') { return false; }
+    const trimmed = version.trim();
+    return !!trimmed && !trimmed.startsWith('${');
   }
 
    goToPricing() {

@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { FaqKb } from '../models/faq_kb-model';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
-import { configuredChatbotVersion } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -463,6 +462,23 @@ export class FaqKbService {
   }
 
 
+  /**
+   * The Design Studio editor version a brand new agent is born with, taken from the runtime
+   * configuration (chatbotVersion) so it can be switched on per environment, and off again,
+   * without a release.
+   *
+   * Read at call time and not in the constructor: the runtime configuration is loaded by the
+   * APP_INITIALIZER, after this service is built. An empty value -- and the ${...} placeholder
+   * left behind when the environment variable is not set at all -- means "no version", and
+   * agents are then created exactly as before.
+   */
+  private chatbotVersion(): string | null {
+    const version = this.appConfigService.getConfig()?.chatbotVersion;
+    if (typeof version !== 'string') { return null; }
+    const trimmed = version.trim();
+    return (!trimmed || trimmed.startsWith('${')) ? null : trimmed;
+  }
+
   createChatbotFromScratch(botname: string, bottype: string, botSubtype: string, language: string, namespaceid?:string) {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -478,9 +494,11 @@ export class FaqKbService {
     if(namespaceid) {
       body['namespace_id'] = namespaceid
     }
-    // The agent is born with the editor version the deployment sets (`chatbotVersion`): the server
-    // stores it as `ds_version` and builds the flow in that form. Without it, creation is as always.
-    const dsVersion = configuredChatbotVersion(this.appConfigService.getConfig()?.chatbotVersion);
+    // Which editor the Design Studio opens on an agent is decided by this label (`ds_version`, a
+    // field of the bot since server 2.30.0; the server also builds the flow in that form); without
+    // it the agent opens with the previous editor. Only an agent created from scratch gets it: a
+    // template, a copy or an imported chatbot keeps whatever version it already carries.
+    const dsVersion = this.chatbotVersion();
     if (dsVersion) {
       body['ds_version'] = dsVersion;
     }

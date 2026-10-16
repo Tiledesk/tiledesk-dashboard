@@ -1,4 +1,4 @@
-import { configuredChatbotVersion, configuredUrl, goToCDSVersion, isV3Chatbot, openChatbotEditor } from './util';
+import { configuredUrl, goToCDSVersion, isV3Chatbot, openChatbotEditor } from './util';
 
 /**
  * Which editor a chatbot opens in: an agent labelled v3 goes to the new Design Studio when its
@@ -21,18 +21,6 @@ describe('util - the Design Studio of a chatbot', () => {
       expect(isV3Chatbot(recent())).toBe(false);
       expect(isV3Chatbot({ _id: BOT, createdAt: new Date() })).toBe(false);
       expect(isV3Chatbot(null)).toBe(false);
-    });
-  });
-
-  describe('configuredChatbotVersion', () => {
-    it('returns the version the deployment sets, and null when it is unset or a placeholder', () => {
-      expect(configuredChatbotVersion('v3')).toBe('v3');
-      expect(configuredChatbotVersion(' v3 ')).toBe('v3');
-      expect(configuredChatbotVersion('')).toBeNull();
-      expect(configuredChatbotVersion('   ')).toBeNull();
-      expect(configuredChatbotVersion('${CHATBOT_VERSION}')).toBeNull();
-      expect(configuredChatbotVersion(undefined)).toBeNull();
-      expect(configuredChatbotVersion(null)).toBeNull();
     });
   });
 

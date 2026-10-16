@@ -17,11 +17,14 @@ export const environment = {
   baseImageUrl: 'CHANGEIT',
   pushEngine: 'none',
   logLevel: 'Info',
+  // Editor version a new agent created from scratch is born with: it is written on the agent
+  // as attributes.dsVersion and decides which Design Studio editor opens on it. Empty means
+  // no version, so agents are created as before.
+  chatbotVersion: 'v3',
   templatesUrl: 'CHANGEIT',
   appsUrl: 'CHANGEIT',
   cdsBaseUrl: 'CHANGEIT',
   cdsV3BaseUrl: 'CHANGEIT',   // the new Design Studio, for the agents labelled v3 (env CDS_V3_URL)
-  chatbotVersion: '',   // the editor version new agents are born with: 'v3' for the new Design Studio, empty for the previous one (env CHATBOT_VERSION)
   promoBannerUrl: 'CHANGEIT',
   chatStoragePrefix: "CHANGEIT",
   firebase: {
