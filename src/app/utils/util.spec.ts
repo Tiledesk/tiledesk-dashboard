@@ -1,4 +1,4 @@
-import { configuredUrl, goToCDSVersion, isV3Chatbot, openChatbotEditor } from './util';
+import { configuredChatbotVersion, configuredUrl, goToCDSVersion, isV3Chatbot, openChatbotEditor } from './util';
 
 /**
  * Which editor a chatbot opens in: an agent labelled v3 goes to the new Design Studio when its
@@ -8,18 +8,31 @@ describe('util - the Design Studio of a chatbot', () => {
 
   const PROJECT = 'pid', BOT = 'bid';
   const CDS = 'https://host/cds/', CDS_V3 = 'https://host/cds-v3/';
-  const recent = (attributes?: any) => ({ _id: BOT, createdAt: '2026-10-01T00:00:00.000Z', attributes } as any);
+  const recent = (fields?: any) => ({ _id: BOT, createdAt: '2026-10-01T00:00:00.000Z', ...(fields || {}) } as any);
 
   describe('isV3Chatbot', () => {
-    it('is true only for the dsVersion label v3, spaces and case apart', () => {
-      expect(isV3Chatbot(recent({ dsVersion: 'v3' }))).toBe(true);
-      expect(isV3Chatbot(recent({ dsVersion: ' V3 ' }))).toBe(true);
-      expect(isV3Chatbot(recent({ dsVersion: 'v2' }))).toBe(false);
-      expect(isV3Chatbot(recent({ dsVersion: 3 }))).toBe(false);
+    it('is true only for the ds_version label v3, spaces and case apart', () => {
+      expect(isV3Chatbot(recent({ ds_version: 'v3' }))).toBe(true);
+      expect(isV3Chatbot(recent({ ds_version: ' V3 ' }))).toBe(true);
+      expect(isV3Chatbot(recent({ ds_version: 'v2' }))).toBe(false);
+      expect(isV3Chatbot(recent({ ds_version: 3 }))).toBe(false);
       expect(isV3Chatbot(recent({ connectors: { version: 1, items: [] } }))).toBe(false);
+      expect(isV3Chatbot(recent({ attributes: { dsVersion: 'v3' } }))).toBe(false);
       expect(isV3Chatbot(recent())).toBe(false);
       expect(isV3Chatbot({ _id: BOT, createdAt: new Date() })).toBe(false);
       expect(isV3Chatbot(null)).toBe(false);
+    });
+  });
+
+  describe('configuredChatbotVersion', () => {
+    it('returns the version the deployment sets, and null when it is unset or a placeholder', () => {
+      expect(configuredChatbotVersion('v3')).toBe('v3');
+      expect(configuredChatbotVersion(' v3 ')).toBe('v3');
+      expect(configuredChatbotVersion('')).toBeNull();
+      expect(configuredChatbotVersion('   ')).toBeNull();
+      expect(configuredChatbotVersion('${CHATBOT_VERSION}')).toBeNull();
+      expect(configuredChatbotVersion(undefined)).toBeNull();
+      expect(configuredChatbotVersion(null)).toBeNull();
     });
   });
 
@@ -44,15 +57,15 @@ describe('util - the Design Studio of a chatbot', () => {
     });
 
     it('a v3 agent opens in the new Design Studio when its URL is configured', () => {
-      goToCDSVersion(router, recent({ dsVersion: 'v3' }), PROJECT, CDS, CDS_V3);
+      goToCDSVersion(router, recent({ ds_version: 'v3' }), PROJECT, CDS, CDS_V3);
       expect(open.calls.allArgs()).toEqual([[`${CDS_V3}#/project/${PROJECT}/chatbot/${BOT}/blocks`, '_self']]);
       expect(router.navigate).not.toHaveBeenCalled();
     });
 
     it('a v3 agent without that URL, or with the placeholder, opens as always', () => {
-      goToCDSVersion(router, recent({ dsVersion: 'v3' }), PROJECT, CDS);
-      goToCDSVersion(router, recent({ dsVersion: 'v3' }), PROJECT, CDS, '');
-      goToCDSVersion(router, recent({ dsVersion: 'v3' }), PROJECT, CDS, '${CDS_V3_URL}');
+      goToCDSVersion(router, recent({ ds_version: 'v3' }), PROJECT, CDS);
+      goToCDSVersion(router, recent({ ds_version: 'v3' }), PROJECT, CDS, '');
+      goToCDSVersion(router, recent({ ds_version: 'v3' }), PROJECT, CDS, '${CDS_V3_URL}');
       expect(open.calls.allArgs()).toEqual([
         [`${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`, '_self'],
         [`${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`, '_self'],
@@ -62,7 +75,7 @@ describe('util - the Design Studio of a chatbot', () => {
 
     it('any other agent opens as always, the v3 URL notwithstanding', () => {
       goToCDSVersion(router, recent(), PROJECT, CDS, CDS_V3);
-      goToCDSVersion(router, recent({ dsVersion: 'v2' }), PROJECT, CDS, CDS_V3);
+      goToCDSVersion(router, recent({ ds_version: 'v2' }), PROJECT, CDS, CDS_V3);
       goToCDSVersion(router, { _id: BOT, createdAt: new Date() } as any, PROJECT, CDS, CDS_V3);
       expect(open.calls.allArgs()).toEqual([
         [`${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`, '_self'],
@@ -85,7 +98,7 @@ describe('util - the Design Studio of a chatbot', () => {
 
     it('reads both URLs from the configuration: a v3 agent opens in the new editor, any other in the previous one', () => {
       const config = { cdsBaseUrl: CDS, cdsV3BaseUrl: CDS_V3 };
-      openChatbotEditor({ navigate: () => {} }, recent({ dsVersion: 'v3' }), PROJECT, config);
+      openChatbotEditor({ navigate: () => {} }, recent({ ds_version: 'v3' }), PROJECT, config);
       openChatbotEditor({ navigate: () => {} }, recent(), PROJECT, config);
       expect(open.calls.allArgs()).toEqual([
         [`${CDS_V3}#/project/${PROJECT}/chatbot/${BOT}/blocks`, '_self'],
@@ -94,8 +107,8 @@ describe('util - the Design Studio of a chatbot', () => {
     });
 
     it('without the v3 URL in the configuration every agent opens as always', () => {
-      openChatbotEditor({ navigate: () => {} }, recent({ dsVersion: 'v3' }), PROJECT, { cdsBaseUrl: CDS });
-      openChatbotEditor({ navigate: () => {} }, recent({ dsVersion: 'v3' }), PROJECT, { cdsBaseUrl: CDS, cdsV3BaseUrl: '${CDS_V3_URL}' });
+      openChatbotEditor({ navigate: () => {} }, recent({ ds_version: 'v3' }), PROJECT, { cdsBaseUrl: CDS });
+      openChatbotEditor({ navigate: () => {} }, recent({ ds_version: 'v3' }), PROJECT, { cdsBaseUrl: CDS, cdsV3BaseUrl: '${CDS_V3_URL}' });
       expect(open.calls.allArgs().map(a => a[0])).toEqual([`${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`, `${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`]);
     });
   });

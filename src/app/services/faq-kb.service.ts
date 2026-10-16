@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { FaqKb } from '../models/faq_kb-model';
 import { AuthService } from '../core/auth.service';
 import { AppConfigService } from '../services/app-config.service';
+import { configuredChatbotVersion } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -476,6 +477,12 @@ export class FaqKbService {
     const body = { 'name': botname, 'id_project': this.project._id, 'type': bottype, subtype:botSubtype, language: language, template: 'blank' };
     if(namespaceid) {
       body['namespace_id'] = namespaceid
+    }
+    // The agent is born with the editor version the deployment sets (`chatbotVersion`): the server
+    // stores it as `ds_version` and builds the flow in that form. Without it, creation is as always.
+    const dsVersion = configuredChatbotVersion(this.appConfigService.getConfig()?.chatbotVersion);
+    if (dsVersion) {
+      body['ds_version'] = dsVersion;
     }
 
     // console.log('[BOT-CREATE][FAQ-KB.SERV] - CREATE FAQ-KB - BODY ', body);

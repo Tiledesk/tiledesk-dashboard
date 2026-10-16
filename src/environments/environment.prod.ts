@@ -20,6 +20,7 @@ export const environment = {
     appsUrl: 'CHANGEIT',
     cdsBaseUrl: 'CHANGEIT',
     cdsV3BaseUrl: 'CHANGEIT',   // the new Design Studio, for the agents labelled v3 (env CDS_V3_URL)
+    chatbotVersion: '',   // the editor version new agents are born with: 'v3' for the new Design Studio, empty for the previous one (env CHATBOT_VERSION)
     promoBannerUrl: 'CHANGEIT',
     chatStoragePrefix: "CHANGEIT",
     firebase: {
