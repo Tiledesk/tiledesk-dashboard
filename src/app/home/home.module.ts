@@ -31,6 +31,10 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MomentModule } from 'ngx-moment';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { MatDialogModule } from '@angular/material/dialog';
+import { VibeCoderModule } from 'app/shared/vibe-coder/vibe-coder.module';
+import { CreateChatbotModalModule } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.module';
+
 const routes: Routes = [
   { path: "", component: HomeComponent},
 ];
@@ -71,6 +75,9 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MomentModule,
     OverlayModule,
+    MatDialogModule,
+    VibeCoderModule,
+    CreateChatbotModalModule,
   ],
   exports: [
     RouterModule

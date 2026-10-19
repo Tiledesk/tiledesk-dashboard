@@ -45,6 +45,10 @@ import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { sortChatbotsByLastUpdated } from 'app/utils/chatbot-sort.util';
 import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
+import { MatDialog } from '@angular/material/dialog';
+import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { CreateChatbotModalComponent } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.component';
+import { MAX_PROMPT_LENGTH, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 
 const Swal = require('sweetalert2')
 
@@ -121,6 +125,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   featuredHomeFlowChatbotId: string | null = null;
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
+
+  /** Home vibe coder → CreateChatbotModal → AI agent + CDS handoff. */
+  vibeCoderBusy = false;
+  vibeCoderError: string | null = null;
+  private pendingHomeBuildPrompt: string | null = null;
 
   public_Key: string;
   isVisibleANA: boolean;
@@ -390,7 +399,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private departmentService: DepartmentService,
     public localDbService: LocalDbService,
     private quotesService: QuotesService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private dialog: MatDialog,
+    private botLocalDbService: BotLocalDbService,
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -3331,5 +3342,77 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   //     });
   // }
 
+  onHomeVibeCoderStart(prompt: string): void {
+    const normalized = (prompt || '').trim().slice(0, MAX_PROMPT_LENGTH);
+    if (!normalized || this.vibeCoderBusy) {
+      return;
+    }
+    if (!this.PERMISSION_TO_ADD_FLOWS || this.USER_ROLE === 'agent') {
+      this.vibeCoderError = 'You do not have permission to create AI agents.';
+      return;
+    }
+
+    this.pendingHomeBuildPrompt = normalized;
+    this.vibeCoderError = null;
+
+    const dialogRef = this.dialog.open(CreateChatbotModalComponent, {
+      width: '400px',
+      data: {
+        subtype: 'chatbot',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result || result === 'upgrade-plan' || !result.chatbotName) {
+        this.pendingHomeBuildPrompt = null;
+        return;
+      }
+      this.createHomeAgentFromPrompt(result.chatbotName, this.pendingHomeBuildPrompt);
+      this.pendingHomeBuildPrompt = null;
+    });
+  }
+
+  private createHomeAgentFromPrompt(chatbotName: string, prompt: string): void {
+    if (!chatbotName || !prompt || !this.projectId) {
+      this.vibeCoderError = 'Could not create the AI Agent. Please try again.';
+      return;
+    }
+
+    this.vibeCoderBusy = true;
+    this.vibeCoderError = null;
+    const language = this.translate.currentLang || 'en';
+
+    this.logger.log('[HOME] Vibe coder create agent', chatbotName);
+
+    this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', 'chatbot', language)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (faqKb: any) => {
+          this.vibeCoderBusy = false;
+          if (!faqKb?._id) {
+            this.vibeCoderError = 'Could not create the AI Agent. Please try again.';
+            return;
+          }
+          this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
+          saveAgentPrompt({
+            botId: faqKb._id,
+            prompt,
+            language,
+            createdAt: Date.now(),
+          });
+          goToCDSVersion(
+            this.router,
+            faqKb,
+            this.projectId,
+            this.appConfigService.getConfig().cdsBaseUrl
+          );
+        },
+        error: (error) => {
+          this.logger.error('[HOME] Vibe coder create agent error', error);
+          this.vibeCoderBusy = false;
+          this.vibeCoderError = 'Something went wrong while creating the AI Agent. Please try again.';
+        }
+      });
+  }
 
 }
