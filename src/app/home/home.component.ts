@@ -23,7 +23,7 @@ import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
 // import * as moment from 'moment';
 import moment from "moment";
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, openChatbotEditor, PLAN_NAME } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators'
@@ -45,6 +45,10 @@ import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { sortChatbotsByLastUpdated } from 'app/utils/chatbot-sort.util';
 import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
+import { MatDialog } from '@angular/material/dialog';
+import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { CreateAgentModalComponent, CreateAgentModalResult } from 'app/bots/bots-list/create-agent-modal/create-agent-modal.component';
+import { MAX_PROMPT_LENGTH, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 
 const Swal = require('sweetalert2')
 
@@ -121,6 +125,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   featuredHomeFlowChatbotId: string | null = null;
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
+
+  /** Home prompt box → CreateAgentModal (name) → AI agent + CDS v3 vibe coder handoff. */
+  vibeCoderBusy = false;
+  vibeCoderError: string | null = null;
+  private pendingHomeBuildPrompt: string | null = null;
 
   public_Key: string;
   isVisibleANA: boolean;
@@ -388,7 +397,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private departmentService: DepartmentService,
     public localDbService: LocalDbService,
     private quotesService: QuotesService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private dialog: MatDialog,
+    private botLocalDbService: BotLocalDbService,
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -3327,5 +3338,75 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   //     });
   // }
 
+  onHomeVibeCoderStart(prompt: string): void {
+    const normalized = (prompt || '').trim().slice(0, MAX_PROMPT_LENGTH);
+    if (!normalized || this.vibeCoderBusy) {
+      return;
+    }
+    if (!this.PERMISSION_TO_EDIT_FLOWS || this.USER_ROLE === 'agent') {
+      this.vibeCoderError = 'You do not have permission to create AI agents.';
+      return;
+    }
+
+    this.pendingHomeBuildPrompt = normalized;
+    this.vibeCoderError = null;
+
+    // Same modal as New Flow → AI Agent; prompt already collected in the home box.
+    const dialogRef = this.dialog.open(CreateAgentModalComponent, {
+      width: '480px',
+      data: {
+        subtype: 'chatbot',
+        showPromptField: false,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result: CreateAgentModalResult) => {
+      if (!result?.chatbotName) {
+        this.pendingHomeBuildPrompt = null;
+        return;
+      }
+      this.createHomeAgentFromPrompt(result.chatbotName, this.pendingHomeBuildPrompt);
+      this.pendingHomeBuildPrompt = null;
+    });
+  }
+
+  private createHomeAgentFromPrompt(chatbotName: string, prompt: string): void {
+    if (!chatbotName || !prompt || !this.projectId) {
+      this.vibeCoderError = 'Could not create the AI Agent. Please try again.';
+      return;
+    }
+
+    this.vibeCoderBusy = true;
+    this.vibeCoderError = null;
+    const language = this.translate.currentLang || 'en';
+
+    this.logger.log('[HOME] Prompt box create agent', chatbotName);
+
+    this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', 'chatbot', language)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (faqKb: any) => {
+          this.vibeCoderBusy = false;
+          if (!faqKb?._id) {
+            this.vibeCoderError = 'Could not create the AI Agent. Please try again.';
+            return;
+          }
+          this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
+          saveAgentPrompt({
+            botId: faqKb._id,
+            prompt,
+            language,
+            createdAt: Date.now(),
+          });
+          // Server answer carries ds_version — openChatbotEditor picks v2 / v3.
+          openChatbotEditor(this.router, faqKb, this.projectId, this.appConfigService.getConfig());
+        },
+        error: (error) => {
+          this.logger.error('[HOME] Prompt box create agent error', error);
+          this.vibeCoderBusy = false;
+          this.vibeCoderError = 'Something went wrong while creating the AI Agent. Please try again.';
+        }
+      });
+  }
 
 }

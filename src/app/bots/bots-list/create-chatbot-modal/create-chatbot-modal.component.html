@@ -22,7 +22,7 @@
         </span>
     </h1>
 
-    <div class="m-top-right-icon">
+    <div class="m-top-right-icon" style="padding: 11px; cursor: pointer;">
         <span class="material-icons-outlined" (click)="onNoClick()">
             <!-- play_arrow -->
             close
@@ -94,8 +94,8 @@
 
 <div class="feature-available-from" *ngIf="automationCopilotIsAvailable !== undefined && automationCopilotIsAvailable === false">
 
-    <div style="font-weight: 400;"> {{'FeatureAvailableFromThe'| translate: t_params}} </div>
-    <button class="btn btn--get-feature-no-boxshadow" style="margin-bottom: 0px;" (click)="goToPricing()">
+    <div style="font-weight: 400;font-size: 14px;"> {{'FeatureAvailableFromThe'| translate: t_params}} </div>
+    <button class="btn btn--get-feature-no-boxshadow"  (click)="goToPricing()">
         <span class="material-icons-outlined get--feature-upgrade-plan-icon">
             upgrade
         </span>

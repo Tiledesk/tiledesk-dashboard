@@ -208,6 +208,15 @@
         </div>
 
         <ng-container *ngIf="homePermissionsReady">
+          <div class="home-vibe-coder" *ngIf="USER_ROLE !== 'agent' && PERMISSION_TO_EDIT_FLOWS">
+            <div class="home-vibe-coder__title">What will you build?</div>
+            <appdashboard-vibe-coder
+              [busy]="vibeCoderBusy"
+              [error]="vibeCoderError"
+              (start)="onHomeVibeCoderStart($event)">
+            </appdashboard-vibe-coder>
+          </div>
+
           <home-quick-cards
             *ngIf="USER_ROLE !== 'agent'"
             [projectId]="projectId"

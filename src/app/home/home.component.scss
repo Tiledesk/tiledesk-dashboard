@@ -2917,6 +2917,22 @@ img {
   }
 }
 
+.home-vibe-coder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 28px;
+}
+
+.home-vibe-coder__title {
+  color: var(--secondary-text-color, #64748b);
+  font-family: var(--header-font-family, inherit);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
 /* Wait state before permissions are known */
 .home-page-shell {
   padding-top: 48px;
