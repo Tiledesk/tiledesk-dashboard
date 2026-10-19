@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.259-stage
+- Adds a prompt box on onboarding welcome and Home that lets users enter a description used by the CDS vibe coder to create an AI Agent
+
 ### 2.7.258-stage
 - An agent that still carries the `v3` label inside its attributes, saved before the `ds_version` field existed, is treated as v3 too: it gets the tag and opens in the new Design Studio, which moves the label to the field on open
 
