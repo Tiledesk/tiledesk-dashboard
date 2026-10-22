@@ -56,6 +56,7 @@ import {
   ONBOARDING_VIBE_CODER_PROMPT_STATE,
 } from 'app/utils/pending-website-prompt.util';
 import { consumePendingBuild, rememberLastOpenedProject } from 'app/utils/pending-build.util';
+import { AgentPromptSource, AgentPromptsService } from 'app/services/agent-prompts.service';
 
 const Swal = require('sweetalert2')
 
@@ -142,6 +143,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   /** Set from onboarding Get started router state — focus (+ optional prefill) once permissions ready. */
   private focusHomeVibeCoderPending = false;
   private homeVibeCoderInitialPrompt: string | null = null;
+  /** Where the text in the vibe coder field came from, saved with the prompt. */
+  private homeVibeCoderSource: AgentPromptSource = 'home';
 
   public_Key: string;
   isVisibleANA: boolean;
@@ -435,6 +438,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     public rolesService: RolesService,
     private dialog: MatDialog,
     private botLocalDbService: BotLocalDbService,
+    private agentPromptsService: AgentPromptsService,
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -797,6 +801,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.homeVibeCoderInitialPrompt = typeof prompt === 'string' && prompt.trim()
         ? prompt.trim().slice(0, MAX_PROMPT_LENGTH)
         : null;
+      if (this.homeVibeCoderInitialPrompt) {
+        this.homeVibeCoderSource = 'onboarding';
+      }
       // Avoid re-focus on browser refresh / back.
       history.replaceState({
         ...state,
@@ -822,6 +829,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.logger.log('[HOME] website prompt for the vibe coder');
     this.focusHomeVibeCoderPending = true;
     this.homeVibeCoderInitialPrompt = prompt;
+    this.homeVibeCoderSource = 'website';
   }
 
   private tryFocusHomeVibeCoder(): void {
@@ -3668,23 +3676,39 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (faqKb: any) => {
-          this.vibeCoderBusy = false;
           if (!faqKb?._id) {
+            this.vibeCoderBusy = false;
             this.vibeCoderError = this.translate.instant('CouldNotCreateAIAgent');
             return;
           }
           this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
-          // Only hand off to CDS vibe coder when the Home box had a prompt (Flussi may omit it).
-          if (normalizedPrompt) {
-            saveAgentPrompt({
-              botId: faqKb._id,
-              prompt: normalizedPrompt,
-              language,
-              createdAt: Date.now(),
-            });
-          }
           // Server answer carries ds_version — openChatbotEditor picks v2 / v3.
-          openChatbotEditor(this.router, faqKb, this.projectId, this.appConfigService.getConfig());
+          const openEditor = () => openChatbotEditor(this.router, faqKb, this.projectId, this.appConfigService.getConfig());
+          // Only hand off to CDS vibe coder when the Home box had a prompt (Flussi may omit it).
+          if (!normalizedPrompt) {
+            this.vibeCoderBusy = false;
+            openEditor();
+            return;
+          }
+          saveAgentPrompt({
+            botId: faqKb._id,
+            prompt: normalizedPrompt,
+            language,
+            createdAt: Date.now(),
+          });
+          // The prompt is saved with its agent before leaving the page (the editor opens in the
+          // same tab); the save never fails and has a time limit, so the agent always opens.
+          const source = this.homeVibeCoderSource;
+          this.homeVibeCoderSource = 'home';
+          this.agentPromptsService.save(this.projectId, this.auth.user_bs.value?.token, {
+            id_faq_kb: faqKb._id,
+            text: normalizedPrompt,
+            language,
+            source,
+          }).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+            this.vibeCoderBusy = false;
+            openEditor();
+          });
         },
         error: (error) => {
           this.logger.error('[HOME] Prompt box create agent error', error);
