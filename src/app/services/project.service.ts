@@ -1551,7 +1551,8 @@ export class ProjectService {
     displayInviteTeammate: boolean,
     displayCustomizeWidget: boolean,
     displayNewsFeed: boolean,
-    displayAnalyticsIframe: boolean = true) {
+    displayAnalyticsIframe: boolean = true,
+    displayQuotaBanner: boolean = true) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -1568,6 +1569,7 @@ export class ProjectService {
         homeFlow: displayHomeFlow,
         overview: displayOverview,
         homeKbAnalytics: displayHomeKbAnalytics,
+        quotaBanner: displayQuotaBanner,
         // Keep legacy keys in sync for older clients / home_old
         convsGraph: displayOverview,
         analyticsIndicators: displayOverview,

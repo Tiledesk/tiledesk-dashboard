@@ -576,6 +576,17 @@ button.user-details-btn-close {
     margin-right: 6px;
 }
 
+.user-details-plan-name {
+    margin-top: 8px;
+    margin-left: 25px;
+    cursor: pointer;
+
+    &:hover {
+        color: #fff;
+        text-decoration: underline;
+    }
+}
+
 
 
 .user-details-help-center-icon {

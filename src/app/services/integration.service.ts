@@ -225,9 +225,13 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
   /**
    * Retrieve MCP tools from server
    * @param serverUrl The URL of the MCP server
+   * @param customHeaders Optional headers forwarded to the MCP server (enabled only)
    * @returns Observable with tools array
    */
-  getMcpTools(serverUrl: string) {
+  getMcpTools(
+    serverUrl: string,
+    customHeaders?: Array<{ key: string; value: string }>,
+  ) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -239,9 +243,16 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
     this.logger.debug('[INTEGRATION.SERV] - get MCP tools URL: ', url);
     this.logger.debug('[INTEGRATION.SERV] - server URL: ', serverUrl);
 
-    const body = {
+    const body: {
+      url: string;
+      customHeaders?: Array<{ key: string; value: string }>;
+    } = {
       url: serverUrl
     };
+
+    if (Array.isArray(customHeaders) && customHeaders.length) {
+      body.customHeaders = customHeaders;
+    }
 
     return this.http.post(url, body, httpOptions);
   }

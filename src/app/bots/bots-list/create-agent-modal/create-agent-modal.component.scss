@@ -4,6 +4,23 @@
     font-size: 14px;
 }
 
+.agent-type-field {
+    margin-bottom: 16px;
+}
+
+.agent-type-field__label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    color: rgb(91, 98, 106);
+}
+
+.agent-type-select {
+    width: 100%;
+    font-size: 14px;
+}
+
 .m-header {
     display: flex;
     flex-direction: row;

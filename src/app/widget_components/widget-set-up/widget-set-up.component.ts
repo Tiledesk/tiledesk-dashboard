@@ -1,5 +1,6 @@
 import { Component, OnInit, AfterViewInit, HostListener, OnDestroy, ElementRef, ViewChild, AfterViewChecked } from '@angular/core';
 import { Location } from '@angular/common';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ColorPickerService } from 'ngx-color-picker';
 import { WidgetService } from '../../services/widget.service';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
@@ -21,7 +22,7 @@ import { LoggerService } from '../../services/logger/logger.service';
 import { UsersService } from '../../services/users.service';
 import { Subject } from 'rxjs';
 import { startWith, takeUntil } from 'rxjs/operators';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites, checkAcceptedFile, filterImageMimeTypesAndExtensions, isMaliciousHTML, isMaliciousURL } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_google_tag_manager_add_tiledesk_to_your_sites, URL_widget_voice_streaming, checkAcceptedFile, filterImageMimeTypesAndExtensions, isMaliciousHTML, isMaliciousURL } from '../../utils/util';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import * as moment from 'moment';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -379,6 +380,18 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   public showEmojiButton: boolean;
   public showAudioRecorderButton: boolean;
   public showVoiceStreamingButton: boolean;
+  /** CDK hover help for Voice streaming (replaces mat-tooltip so the docs link is clickable). */
+  isVoiceStreamingHelpOpen = false;
+  private voiceStreamingHelpCloseTimeout: ReturnType<typeof setTimeout> | null = null;
+  voiceStreamingHelpPositions: ConnectedPosition[] = [
+    {
+      originX: 'center',
+      originY: 'top',
+      overlayX: 'center',
+      overlayY: 'bottom',
+      offsetY: -8,
+    },
+  ];
   public enablePrechatformFieldsCheckBox: boolean;
   public prechatFormTexareaJson: any;
   public prechatFormArray: Array<any> = [];
@@ -541,6 +554,28 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
 
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
+    }
+
+    this.cancelCloseVoiceStreamingHelp();
+    this.isVoiceStreamingHelpOpen = false;
+  }
+
+  openVoiceStreamingHelp(): void {
+    this.cancelCloseVoiceStreamingHelp();
+    this.isVoiceStreamingHelpOpen = true;
+  }
+
+  scheduleCloseVoiceStreamingHelp(): void {
+    this.voiceStreamingHelpCloseTimeout = setTimeout(() => {
+      this.isVoiceStreamingHelpOpen = false;
+      this.voiceStreamingHelpCloseTimeout = null;
+    }, 150);
+  }
+
+  cancelCloseVoiceStreamingHelp(): void {
+    if (this.voiceStreamingHelpCloseTimeout) {
+      clearTimeout(this.voiceStreamingHelpCloseTimeout);
+      this.voiceStreamingHelpCloseTimeout = null;
     }
   }
 
@@ -4850,6 +4885,10 @@ export class WidgetSetUp extends WidgetSetUpBaseComponent implements OnInit, Aft
   goToWidgetWebSdk() {
     const url = 'https://developer.tiledesk.com/widget/web-sdk';
     window.open(url, '_blank');
+  }
+
+  goToVoiceStreamingDocs() {
+    window.open(URL_widget_voice_streaming, '_blank');
   }
 
   goToPrechatFormExample() {

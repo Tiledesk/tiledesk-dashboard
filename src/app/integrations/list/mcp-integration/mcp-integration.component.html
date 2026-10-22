@@ -34,6 +34,71 @@
             </div>
         </div>
 
+        <div class="custom-headers-section">
+            <div class="custom-headers-header">
+                <h5>{{ 'Integration.CustomHeaders' | translate }}</h5>
+                <button type="button" class="btn btn-outlined custom-headers-add-btn" (click)="addHeaderRow()">
+                    {{ 'Add' | translate }}
+                </button>
+            </div>
+
+            <div class="custom-header-row" *ngFor="let row of headerRows; let i = index">
+                <div class="on-off-primary-color-switch-and-lbl-wpr"
+                    [class.on-off-primary-color-switch-and-lbl-wpr--disabled]="!canToggleHeader(row)">
+                    <div class="nw-onoffswitch">
+                        <input
+                            type="checkbox"
+                            class="nw-onoffswitch-checkbox"
+                            [id]="'mcp-header-switch-' + i"
+                            [name]="'mcp-header-switch-' + i"
+                            [(ngModel)]="row.enabled"
+                            [disabled]="!canToggleHeader(row)">
+                        <label
+                            class="nw-onoffswitch-label"
+                            [class.nw-onoffswitch-label--disabled]="!canToggleHeader(row)"
+                            [attr.for]="canToggleHeader(row) ? ('mcp-header-switch-' + i) : null"></label>
+                    </div>
+                </div>
+
+                <div class="custom-header-fields">
+                    <div class="custom-header-field">
+                        <input
+                            class="custom-input"
+                            [class.custom-input--error]="isHeaderKeyMissing(row)"
+                            type="text"
+                            [placeholder]="'Integration.Key' | translate"
+                            [(ngModel)]="row.key"
+                            (ngModelChange)="onHeaderFieldsChange(row)"
+                            [disabled]="!row.enabled"
+                            autocomplete="off">
+                        <span class="field-error" *ngIf="isHeaderKeyMissing(row)">{{ 'FieldRequired' | translate }}</span>
+                    </div>
+                    <div class="custom-header-field">
+                        <input
+                            class="custom-input"
+                            [class.custom-input--error]="isHeaderValueMissing(row)"
+                            type="text"
+                            [placeholder]="'Integration.Value' | translate"
+                            [(ngModel)]="row.value"
+                            (ngModelChange)="onHeaderFieldsChange(row)"
+                            [disabled]="!row.enabled"
+                            autocomplete="off">
+                        <span class="field-error" *ngIf="isHeaderValueMissing(row)">{{ 'FieldRequired' | translate }}</span>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    class="custom-header-delete-btn"
+                    (click)="removeHeaderRow(i)"
+                    [attr.aria-label]="'Delete' | translate">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+
+            <p class="custom-headers-hint" *ngIf="headerRows.length > 0">{{ 'Integration.CustomHeadersHint' | translate }}</p>
+        </div>
+
         <!-- Tools Info Section (shown when editing a server with tools) -->
         <div class="tools-info-section" *ngIf="isEditing && currentServerHasTools()">
             <div class="tools-badge-info">
@@ -54,7 +119,7 @@
                 *ngIf="!isEditing || (isEditing && !currentServerHasTools())"
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="connectToServer()"
-                [disabled]="isLoadingTools || !currentServer.url">
+                [disabled]="isLoadingTools || !currentServer.url || hasIncompleteHeaders()">
                 <span *ngIf="!isLoadingTools || loadingServerUrl !== currentServer.url">
                     {{ 'Integration.Connect' | translate }}
                 </span>
@@ -69,7 +134,7 @@
                 *ngIf="isEditing && currentServerHasTools()"
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="refreshCurrentServerTools()"
-                [disabled]="isLoadingTools || !currentServer.url">
+                [disabled]="isLoadingTools || !currentServer.url || hasIncompleteHeaders()">
                 <span *ngIf="!isLoadingTools || loadingServerUrl !== currentServer.url">
                     {{ 'Integration.RefreshTools' | translate }}
                 </span>
@@ -84,7 +149,7 @@
                 *ngIf="hasToolsRetrieved() && !isEditing"
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="addOrUpdateServer()"
-                [disabled]="!currentServer.name || !currentServer.url || isLoadingTools">
+                [disabled]="!currentServer.name || !currentServer.url || isLoadingTools || hasIncompleteHeaders()">
                 {{ 'Add' | translate }}
             </button>
 
@@ -93,7 +158,7 @@
                 *ngIf="isEditing"
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="addOrUpdateServer()"
-                [disabled]="!currentServer.name || !currentServer.url || isLoadingTools">
+                [disabled]="!currentServer.name || !currentServer.url || isLoadingTools || hasIncompleteHeaders()">
                 {{ 'Update' | translate }}
             </button>
 

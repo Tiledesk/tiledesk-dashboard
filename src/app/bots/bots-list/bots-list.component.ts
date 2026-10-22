@@ -2029,6 +2029,15 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
 
+  /** Header "New Flow" (route all): open create-agent modal directly (no AI Agents / Automations dropdown). */
+  presentNewFlowCreateAgent() {
+    if (!this.PERMISSION_TO_ADD_FLOWS) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+    this.presentModalCreateAgent('chatbot');
+  }
+
   presentDialogCreateFlows(isChatbotRoute) {
     if (!this.PERMISSION_TO_ADD_FLOWS) {
       this.notify.presentDialogNoPermissionToPermomfAction()
@@ -2144,17 +2153,52 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         subtype: subtype,
         // The flag stays in the modal's own interface: it will be opened from places where a
         // description means nothing -- a template starts from a flow already written.
-        showPromptField: true
+        showPromptField: true,
+        // Same visibility as Create Flows voice cards.
+        displayTwilioVoiceAgent: this.diplayTwilioVoiceChabotCard === true,
+        displayVXMLVoiceAgent: this.diplayVXMLVoiceChabotCard === true,
       }
     });
 
     dialogRef.afterClosed().subscribe((result: CreateAgentModalResult) => {
       this.logger.log('[BOTS-LIST] Dialog Create Agent result:', result);
-      if (!result || !result.chatbotName) { return; }
+      if (!result) { return; }
+      if (result.openCreateChatbotModal) {
+        this.presentCreateChatbotModalFromAgentSelect(result.subType);
+        return;
+      }
+      if (!result.chatbotName) { return; }
       this.chatbotName = result.chatbotName;
       this.chatbotPrompt = result.prompt || '';
       this.createBlankTilebot(result.subType);
     });
+  }
+
+  /**
+   * Voice / Voice (VXML) / Copilot from CreateAgentModal → CreateChatbotModal.
+   * Twilio Voice is always offered; if customization.voice_twilio is missing, open gated
+   * (disabled fields + ContactUsToEnableIt). VXML only when customization.voice is on.
+   * Copilot reuses the existing plan / enable gate (subtitle: CopilotDesc).
+   */
+  private presentCreateChatbotModalFromAgentSelect(subType: string): void {
+    if (subType === 'copilot') {
+      this.presentModalAddCopilot('copilot');
+      return;
+    }
+    if (subType === 'voice_twilio' && this.diplayTwilioVoiceChabotCard !== true) {
+      this.presentModalAddBotFromScratch(
+        'voice_twilio',
+        true,
+        false,
+        this.t_params,
+        this.salesEmail,
+        this.project_name,
+        this.currentProjectId,
+        this.isVisiblePAY,
+      );
+      return;
+    }
+    this.presentModalAddBotFromScratch(subType);
   }
 
   /** Whether the agents created here are born V3.

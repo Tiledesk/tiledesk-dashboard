@@ -81,6 +81,12 @@ describe('util - the Design Studio of a chatbot', () => {
       expect(open).not.toHaveBeenCalled();
       expect(router.navigate.calls.allArgs()).toEqual([[['project/' + PROJECT + '/cds/', BOT, 'intent', '0']]]);
     });
+
+    it('a chatbot without createdAt opens in the external editor (avoids NG04002 on the legacy in-app route)', () => {
+      goToCDSVersion(router, { _id: BOT } as any, PROJECT, CDS, CDS_V3);
+      expect(open.calls.allArgs()).toEqual([[`${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`, '_self']]);
+      expect(router.navigate).not.toHaveBeenCalled();
+    });
   });
 
   describe('openChatbotEditor', () => {

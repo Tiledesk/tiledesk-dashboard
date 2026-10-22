@@ -544,10 +544,11 @@ input[type="checkbox"]:disabled {
 /* *********************************************** */
 .add---content-cards-wpr {
   width: 100%;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 350px));
-    gap: 20px;
-    justify-content: center;
+  display: grid;
+  // Single empty-state card: a bit wider than the old 350px twin layout
+  grid-template-columns: repeat(auto-fit, minmax(440px, 440px));
+  gap: 0;
+  justify-content: center;
 }
 
 .add---content-card-wpr {
@@ -560,38 +561,37 @@ input[type="checkbox"]:disabled {
   cursor: pointer;
   min-height: 200px;
   pointer-events: auto;
+  overflow: hidden;
 }
 
 .add---content-card-content.aiagents {
   background: url('../../../assets/img/ai-agent.svg');
   padding: 20px;
   background-repeat: no-repeat;
-    background-size: contain;
-    background-attachment: fixed;
-    background-position: 236px 5px;
-    height: 140px;
+  background-size: 160px;
+  background-position: right -48px top 14px;
+  height: 200px;
 }
 
 .add---content-card-content.automations {
   background: url('../../../assets/img/automation.svg');
   padding: 20px;
   background-repeat: no-repeat;
-    background-size: contain;
-    background-attachment: fixed;
-    background-position: 236px 5px;
-    height: 140px;
+  background-size: 160px;
+  background-position: right -48px top 14px;
+  height: 200px;
 }
 
 .add---content-card-content-subtitle {
   margin-top: 0;
   margin-bottom: 0;
   font-weight: 400;
-  font-size: 13px;
+  font-size: 14px;
   line-height: 18px;
   letter-spacing: -.01em;
   color: #647491;
   text-align: left;
-  max-width: 200px;
+  max-width: 300px;
 }
 
 .add---content-card-wpr:hover {
@@ -619,8 +619,26 @@ input[type="checkbox"]:disabled {
   font-family: var(--header-font-family) !important;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
-  margin-right: 25px;
+  margin-right: 12px;
   color: #fff !important; // Keep text white
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+.bots-list-import-agent-btn {
+  margin-right: 25px;
+  border-radius: 9999px !important;
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
 }
 
 .select-flow-btn:hover,

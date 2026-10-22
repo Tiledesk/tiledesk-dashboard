@@ -106,7 +106,10 @@ export class CreateChatbotModalComponent implements OnInit {
 
   contacUsViaEmail() {
     this.dialogRef.close();
-    window.open(`mailto:${this.salesEmail}?subject=Enable Copilot Automation for project ${this.project_name} (${this.currentProjectId})`);
+    const subject = (this.botSubType === 'voice' || this.botSubType === 'voice_twilio')
+      ? `Enable AI Voice Agent for project ${this.project_name} (${this.currentProjectId})`
+      : `Enable Copilot Automation for project ${this.project_name} (${this.currentProjectId})`;
+    window.open(`mailto:${this.salesEmail}?subject=${subject}`);
   }
 
 }

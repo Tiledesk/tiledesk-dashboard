@@ -9,6 +9,10 @@ export const PENDING_WEBSITE_PROMPT_KEY = 'tiledesk-pending-build-prompt';
 /** Query param names accepted on /onboarding (first match wins). */
 export const PENDING_WEBSITE_PROMPT_QUERY_KEYS = ['prompt', 'buildPrompt'] as const;
 
+/** Router `state` keys: onboarding Get started → Home vibe coder focus (+ optional prefill). */
+export const ONBOARDING_FOCUS_VIBE_CODER_STATE = 'focusVibeCoder';
+export const ONBOARDING_VIBE_CODER_PROMPT_STATE = 'vibeCoderPrompt';
+
 export function normalizeBuildPrompt(raw: string | null | undefined): string {
   return (raw || '').trim().slice(0, MAX_PROMPT_LENGTH);
 }
