@@ -7,7 +7,6 @@
 - Centers signup form (removes left marketing split)
 - Adds custom headers support to the MCP integration
 
-
 ### 2.7.259-stage
 - Adds a prompt box on onboarding welcome and Home that lets users enter a description used by the CDS vibe coder to create an AI Agent
 
