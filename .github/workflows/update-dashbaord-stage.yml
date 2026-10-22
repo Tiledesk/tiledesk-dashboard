@@ -1,0 +1,93 @@
+name: Update Tiledesk Argo stage
+
+# Updates on Tiledesk/tiledesk-argo (branch stage), in helm/values.yaml:
+#  - dashboard.image.tag
+
+on:
+  push:
+    tags:
+      - '**'
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: 'Image tag to write on dashboard.image.tag (defaults to the pushed git tag)'
+        required: false
+        type: string
+
+concurrency:
+  group: update-argo-stage
+  cancel-in-progress: false
+
+jobs:
+
+  update_dashboard_stage:
+    name: Update dashboard.image.tag on tiledesk-argo stage
+    runs-on: ubuntu-latest
+    steps:
+
+     - name: Resolve image tag
+       id: image_tag
+       run: |
+          RAW="${{ github.event.inputs.image_tag || github.ref_name }}"
+          # docker/metadata-action publishes semver tags without the leading v
+          echo "value=${RAW#v}" >> "$GITHUB_OUTPUT"
+          echo "Image tag to deploy: ${RAW#v}"
+
+     - name: Check out tiledesk-argo stage
+       uses: actions/checkout@v4
+       with:
+        repository: Tiledesk/tiledesk-argo
+        ref: stage
+        token: ${{ secrets.ARGO_REPO_TOKEN }}
+
+     - name: Update dashboard.image.tag in helm/values.yaml
+       env:
+        IMAGE_TAG: ${{ steps.image_tag.outputs.value }}
+       run: |
+          # Rewrite only dashboard.image.tag, leaving the rest of the file untouched.
+          # Fails if the section is not found, so a rename cannot silently skip the update.
+          awk -v tag="$IMAGE_TAG" '
+            BEGIN { replaced = 0 }
+            /^[A-Za-z_][A-Za-z0-9_]*:/ {
+              section = $1
+              sub(/:$/, "", section)
+              in_image = 0
+            }
+            section == "dashboard" {
+              if ($0 ~ /^  image:[[:space:]]*$/) {
+                in_image = 1
+              } else if ($0 ~ /^  [^ ]/) {
+                in_image = 0
+              }
+              if (in_image && $0 ~ /^    tag:[[:space:]]/) {
+                print "    tag: " tag
+                replaced++
+                next
+              }
+            }
+            { print }
+            END {
+              if (replaced != 1) {
+                print "ERROR: expected 1 tag replacement in helm/values.yaml, made " replaced > "/dev/stderr"
+                exit 1
+              }
+            }
+          ' helm/values.yaml > helm/values.yaml.new
+          mv helm/values.yaml.new helm/values.yaml
+          git --no-pager diff -- helm/values.yaml
+     
+     - name: Wait 5 minutes before commit
+       run: sleep 300
+
+     - name: Commit and push on stage
+       env:
+        IMAGE_TAG: ${{ steps.image_tag.outputs.value }}
+       run: |
+          if git diff --quiet -- helm/values.yaml; then
+            echo "helm/values.yaml is already on $IMAGE_TAG, nothing to commit"
+            exit 0
+          fi
+          git config user.name "Tiledesk Developer[bot]"
+          git config user.email "tiledeskdeveloper@gmail.com"
+          git commit -m "dashboard $IMAGE_TAG on stage" -- helm/values.yaml
+          git push origin HEAD:stage
