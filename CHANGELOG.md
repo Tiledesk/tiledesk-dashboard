@@ -1,5 +1,23 @@
 # tiledesk-dashboard
 
+
+### 2.7.262-stage
+- The saved prompt also keeps where it was written: the dashboard, or the web page that sent it, given by that page on `/build?prompt=…&origin=<page address>` (otherwise the site the browser reports, when it is not the dashboard)
+
+### 2.7.261-stage
+- Saves the prompt an AI agent is created from (Home and agents list), with the agent and where it was written (Home, website, onboarding, agents list); author, project and date are set by the server
+- The save never blocks: the agent opens anyway if it fails, if the server does not answer within 2 seconds or does not have the service yet
+- Adds the `/build?prompt=` landing page for a prompt written on the website: the prompt is kept and the user lands on the Home of the last project used, with the vibe-coder field filled in (nothing starts until the user presses it)
+- Not logged in: login first, then back to the same Home; a new user who signs up gets a first project created as in the onboarding and lands on its Home
+- Remembers the last project each user opened, so the landing works also after a logout; login, signup and onboarding pages are unchanged
+
+### 2.7.260-stage
+- Removes onboarding vibe-coder prompt boxes
+- Improves Home vibe-coder prompt boxes
+- Adds Current usage dashlet toggle (first in the menu)
+- Centers signup form (removes left marketing split)
+- Adds custom headers support to the MCP integration
+
 ### 2.7.259-stage
 - Adds a prompt box on onboarding welcome and Home that lets users enter a description used by the CDS vibe coder to create an AI Agent
 

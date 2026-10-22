@@ -399,8 +399,9 @@ export class BotsSidebarComponent implements OnInit, OnChanges {
     this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
   }
 
+  /** Single Flows entry: all agents / automations / webhooks in one list. */
   goToAiAgents() {
-    this.router.navigate(['project/' + this.project._id + '/flows/flow-aiagent']);
+    this.router.navigate(['project/' + this.project._id + '/bots/my-chatbots/all']);
   }
 
   goToAutomations() {

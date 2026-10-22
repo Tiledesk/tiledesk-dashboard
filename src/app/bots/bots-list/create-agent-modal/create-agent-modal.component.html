@@ -12,6 +12,20 @@
 
 <div mat-dialog-content>
 
+    <div class="agent-type-field" *ngIf="showAgentTypeSelect">
+        <label class="agent-type-field__label">{{ 'ChooseTheAgentType' | translate }}</label>
+        <ng-select
+            class="agent-type-select"
+            [items]="agentTypeOptions"
+            bindLabel="label"
+            bindValue="value"
+            [(ngModel)]="subtype"
+            (ngModelChange)="onAgentTypeChange($event)"
+            [clearable]="false"
+            [searchable]="false">
+        </ng-select>
+    </div>
+
     <mat-form-field appearance="outline" class="cc-mat-form-field">
         <mat-label>{{'ChatbotName' | translate}}</mat-label>
         <input matInput

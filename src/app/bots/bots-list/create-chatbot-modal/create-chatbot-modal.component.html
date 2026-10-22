@@ -20,6 +20,9 @@
         <span *ngIf="botSubType === 'copilot'">
             {{'CreateACopilot' | translate}}
         </span>
+        <span *ngIf="botSubType === 'voice' || botSubType === 'voice_twilio'">
+            {{'CreateAnAIVoiceAgent' | translate}}
+        </span>
     </h1>
 
     <div class="m-top-right-icon" style="padding: 11px; cursor: pointer;">
@@ -32,6 +35,14 @@
 
 
 <div mat-dialog-content>
+
+    <p class="create-chatbot-modal-desc" *ngIf="botSubType === 'copilot'">
+        {{ 'CopilotDesc' | translate }}
+    </p>
+
+    <p class="create-chatbot-modal-desc" *ngIf="botSubType === 'voice' || botSubType === 'voice_twilio'">
+        {{ 'AIVoiceAgentDesc' | translate }}
+    </p>
 
     <mat-form-field appearance="outline" class="cc-mat-form-field" style="font-size: 14px;">
         <mat-label>
@@ -108,8 +119,8 @@
 <ng-container *ngIf="isVisiblePAY">
     <div *ngIf="automationCopilotIsAvailable === true && !automationCopilotIsEnabled">
         <div class="contact--sales-to-enable-feature">
-            <div style="font-weight: 400;"> {{'ThisFeatureIsInBeta' | translate}}. </div>
-            <div class="contact-sales-to-enable-feature-link" (click)="contacUsViaEmail()">
+            <!-- <div style="font-weight: 400;"> {{'ThisFeatureIsInBeta' | translate}}. </div> -->
+            <div class="contact-sales-to-enable-feature-link" style="font-size: 14px; margin-bottom: 12px;" (click)="contacUsViaEmail()">
                 {{'ContactUsToEnableIt' | translate}}
             </div>
         </div>

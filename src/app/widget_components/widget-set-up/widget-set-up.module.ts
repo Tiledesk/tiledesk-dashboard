@@ -13,6 +13,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { OverlayModule } from '@angular/cdk/overlay';
 import { SettingsSidebarModule } from 'app/components/settings-sidebar/settings-sidebar.module';
 import { UnauthorizedForSettingsComponent } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.component';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
@@ -47,6 +48,7 @@ const routes: Routes = [
     // ColorPickerModule,
     FormsModule,
     MatTooltipModule,
+    OverlayModule,
     SettingsSidebarModule,
     UnauthorizedForSettingsModule,
     ReactiveFormsModule,

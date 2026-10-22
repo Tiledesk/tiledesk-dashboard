@@ -713,11 +713,17 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
         return;
     }
 
-    let chatBotDate = new Date(chatbot.createdAt)
-    let dateLimit = new Date('2023-10-02T00:00:00')
-    if (chatBotDate > dateLimit) {
+    // Missing/invalid createdAt (create-from-scratch can omit it) must open the external CDS.
+    // Otherwise we hit the legacy in-app `project/.../cds/...` route → NG04002.
+    const createdAt = chatbot && (chatbot as any).createdAt;
+    const chatBotDate = createdAt != null ? new Date(createdAt) : null;
+    const dateValid = !!(chatBotDate && !isNaN(chatBotDate.getTime()));
+    const dateLimit = new Date('2023-10-02T00:00:00');
+    const cdsBaseUrl = configuredUrl(redirectBaseUrl) || redirectBaseUrl;
+
+    if (!dateValid || chatBotDate > dateLimit) {
         // let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
-        let urlCDS_v2 = `${redirectBaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/blocks` //  /intent/0
+        let urlCDS_v2 = `${cdsBaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/blocks` //  /intent/0
         window.open(urlCDS_v2, '_self')
     } else {
         router.navigate(['project/' + project_id + '/cds/', chatbot._id, 'intent', '0']);
@@ -1770,6 +1776,7 @@ export const URL_external_chatbot_connect_your_own_chatbot = 'https://developer.
 export const URL_getting_started_for_admins = 'https://gethelp.tiledesk.com/categories/getting-started-for-admins/' // https://docs.tiledesk.com/knowledge-base-category/getting-started-for-admins/
 export const URL_getting_started_for_agents = 'https://gethelp.tiledesk.com/categories/getting-started-for-agents/' //'https://docs.tiledesk.com/knowledge-base-category/getting-started-for-agents/'
 export const URL_google_tag_manager_add_tiledesk_to_your_sites = 'https://guide.tiledesk.com/manage-your-workspace/google-tag-manager-add-tiledesk-to-your-sites' // NOT FOUND on gethelp
+export const URL_widget_voice_streaming = 'https://developer.tiledesk.com/widget/voice_streaming'
 export const URL_setting_up_automatic_assignment = 'https://gethelp.tiledesk.com/articles/setting-up-automatic-assignment/' // https://docs.tiledesk.com/knowledge-base/setting-up-automatic-assignment/
 export const URL_dialogflow_connector = 'https://gethelp.tiledesk.com/articles/dialogflow-connector/'
 

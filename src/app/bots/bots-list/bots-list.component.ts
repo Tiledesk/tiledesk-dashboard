@@ -32,6 +32,7 @@ import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-mod
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
 import { CreateAgentModalComponent, CreateAgentModalResult } from './create-agent-modal/create-agent-modal.component';
 import { saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
+import { AgentPromptsService } from 'app/services/agent-prompts.service';
 import { aiAgents, automations } from 'app/integrations/utils';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
@@ -235,6 +236,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private roleService: RoleService,
     private rolesService: RolesService,
     // private kbService: KnowledgeBaseService,
+    private agentPromptsService: AgentPromptsService,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -1786,18 +1788,29 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         // Before the redirect, and only then: the note is addressed to this agent, so it needs
         // the id the server has just answered with. The Design Studio picks it up on the other
         // side of the same tab and hands it to the AI chat.
-        if (this.chatbotPrompt) {
-          saveAgentPrompt({
-            botId: faqKb['_id'],
-            prompt: this.chatbotPrompt,
-            language: this.botDefaultLangCode,
-            createdAt: Date.now()
-          });
-        }
-
         // The server's answer carries the version label of the new agent: the editor follows it
-        openChatbotEditor(this.router, faqKb as any, this.project._id, this.appConfigService.getConfig())
-        this.trackChatbotCreated(faqKb, 'Create')
+        const openEditor = () => {
+          openChatbotEditor(this.router, faqKb as any, this.project._id, this.appConfigService.getConfig())
+          this.trackChatbotCreated(faqKb, 'Create')
+        }
+        if (!this.chatbotPrompt) {
+          openEditor()
+          return
+        }
+        saveAgentPrompt({
+          botId: faqKb['_id'],
+          prompt: this.chatbotPrompt,
+          language: this.botDefaultLangCode,
+          createdAt: Date.now()
+        });
+        // The prompt is saved with its agent before leaving the page (the editor opens in the
+        // same tab); the save never fails and has a time limit, so the agent always opens.
+        this.agentPromptsService.save(this.project._id, this.auth.user_bs.value?.token, {
+          id_faq_kb: faqKb['_id'],
+          text: this.chatbotPrompt,
+          language: this.botDefaultLangCode,
+          source: 'bots_list'
+        }).subscribe(() => openEditor())
       }
 
     }, (error) => {
@@ -2029,6 +2042,15 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
 
+  /** Header "New Flow" (route all): open create-agent modal directly (no AI Agents / Automations dropdown). */
+  presentNewFlowCreateAgent() {
+    if (!this.PERMISSION_TO_ADD_FLOWS) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+    this.presentModalCreateAgent('chatbot');
+  }
+
   presentDialogCreateFlows(isChatbotRoute) {
     if (!this.PERMISSION_TO_ADD_FLOWS) {
       this.notify.presentDialogNoPermissionToPermomfAction()
@@ -2144,17 +2166,52 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         subtype: subtype,
         // The flag stays in the modal's own interface: it will be opened from places where a
         // description means nothing -- a template starts from a flow already written.
-        showPromptField: true
+        showPromptField: true,
+        // Same visibility as Create Flows voice cards.
+        displayTwilioVoiceAgent: this.diplayTwilioVoiceChabotCard === true,
+        displayVXMLVoiceAgent: this.diplayVXMLVoiceChabotCard === true,
       }
     });
 
     dialogRef.afterClosed().subscribe((result: CreateAgentModalResult) => {
       this.logger.log('[BOTS-LIST] Dialog Create Agent result:', result);
-      if (!result || !result.chatbotName) { return; }
+      if (!result) { return; }
+      if (result.openCreateChatbotModal) {
+        this.presentCreateChatbotModalFromAgentSelect(result.subType);
+        return;
+      }
+      if (!result.chatbotName) { return; }
       this.chatbotName = result.chatbotName;
       this.chatbotPrompt = result.prompt || '';
       this.createBlankTilebot(result.subType);
     });
+  }
+
+  /**
+   * Voice / Voice (VXML) / Copilot from CreateAgentModal → CreateChatbotModal.
+   * Twilio Voice is always offered; if customization.voice_twilio is missing, open gated
+   * (disabled fields + ContactUsToEnableIt). VXML only when customization.voice is on.
+   * Copilot reuses the existing plan / enable gate (subtitle: CopilotDesc).
+   */
+  private presentCreateChatbotModalFromAgentSelect(subType: string): void {
+    if (subType === 'copilot') {
+      this.presentModalAddCopilot('copilot');
+      return;
+    }
+    if (subType === 'voice_twilio' && this.diplayTwilioVoiceChabotCard !== true) {
+      this.presentModalAddBotFromScratch(
+        'voice_twilio',
+        true,
+        false,
+        this.t_params,
+        this.salesEmail,
+        this.project_name,
+        this.currentProjectId,
+        this.isVisiblePAY,
+      );
+      return;
+    }
+    this.presentModalAddBotFromScratch(subType);
   }
 
   /** Whether the agents created here are born V3.

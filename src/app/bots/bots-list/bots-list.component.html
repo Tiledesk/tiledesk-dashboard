@@ -88,32 +88,64 @@
             </button>
       
 
-            <div class="dropdown pull-right" *ngIf="isChatbotRoute === 'all'">
-              <a  class="btn dropdown-toggle select-flow-btn" 
-                id="selectFlowDropdown" 
-                role="button" 
-                data-bs-toggle="dropdown" 
-                aria-expanded="false"
-                [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
-                [attr.aria-disabled]="!PERMISSION_TO_ADD_FLOWS">
-                {{'NewFlow' | translate}}
-                  <b class="caret" style="position: relative; left: 8px;">
-                  </b>
-              </a>
-              <ul *ngIf="PERMISSION_TO_ADD_FLOWS" class="dropdown-menu dropdown-menu-custom">
-                <li>
-                  <a class="dropdown-item" (click)="presentDialogCreateFlows(true)">
-                    {{'AIAgents' | translate}}
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" (click)="presentDialogCreateFlows(false)">
-                    {{'Automations' | translate}}
-                  </a>
-                </li>
-              </ul>
-            </div>
+            <!-- New Flow + Import (route "all"): float:right → first in DOM is rightmost -->
+            <ng-container *ngIf="isChatbotRoute === 'all'">
+              <input type="file" #importAgentFileInput class="inputfile" name="upload-agent-from-json"
+                id="upload-agent-from-json-header"
+                (change)="fileChangeUploadChatbotFromJSON($event)" accept=".json"
+                style="display: none;">
 
+              <button type="button"
+                class="btn btn-blu-gray-outline pull-right bots-list-import-agent-btn"
+                [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
+                [disabled]="!PERMISSION_TO_ADD_FLOWS"
+                matTooltipClass="custom-mat-tooltip"
+                matTooltip="{{ 'AIAgentImportDesc' | translate }}"
+                #tooltip="matTooltip"
+                matTooltipPosition="below"
+                matTooltipHideDelay="100"
+                (click)="PERMISSION_TO_ADD_FLOWS && importAgentFileInput.click()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                  <path
+                    d="M440-320v-326L336-542l-56-58 200-200 200 200-56 58-104-104v326h-80ZM240-160q-33 0-56.5-23.5T160-240v-120h80v120h480v-120h80v120q0 33-23.5 56.5T720-160H240Z" />
+                </svg>
+              </button>
+
+              <button type="button"
+                class="btn select-flow-btn pull-right"
+                [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
+                [disabled]="!PERMISSION_TO_ADD_FLOWS"
+                (click)="presentNewFlowCreateAgent()">
+                {{ 'NewFlow' | translate }}
+              </button>
+
+              <!-- New Flow dropdown (AI Agents / Automations) — kept commented; button above only
+              <div class="dropdown pull-right">
+                <a class="btn dropdown-toggle select-flow-btn"
+                  id="selectFlowDropdown"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
+                  [attr.aria-disabled]="!PERMISSION_TO_ADD_FLOWS">
+                  {{ 'NewFlow' | translate }}
+                  <b class="caret" style="position: relative; left: 8px;"></b>
+                </a>
+                <ul *ngIf="PERMISSION_TO_ADD_FLOWS" class="dropdown-menu dropdown-menu-custom">
+                  <li>
+                    <a class="dropdown-item" (click)="presentDialogCreateFlows(true)">
+                      {{ 'AIAgents' | translate }}
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" (click)="presentDialogCreateFlows(false)">
+                      {{ 'Automations' | translate }}
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              -->
+            </ng-container>
 
             <button *ngIf="PERMISSION_TO_ADD_FLOWS" class="btn btn-outlined pull-right" (click)="goToBotAllTemplates()" style="margin-right: 16px">
               <!-- Add from template -->
@@ -190,15 +222,17 @@
                     </span>
                   </p>
                   <span class="span-8"> </span>
+                  <!--
                   <div class="flow-section-title">
                     {{'WhatTypeOfFlowDoYouWantToStart' | translate}}
                   </div>
+                  -->
 
                   <span class="span-32"> </span>
 
                  <!-- PERMISSION_TO_ADD_FLOWS -> {{ PERMISSION_TO_ADD_FLOWS }} -->
                   <div class="add---content-cards-wpr">
-                    <div class="add---content-card-wpr" (click)="PERMISSION_TO_ADD_FLOWS && presentDialogCreateFlows(true)" 
+                    <div class="add---content-card-wpr" (click)="PERMISSION_TO_ADD_FLOWS && presentNewFlowCreateAgent()" 
                       matRipple 
                       [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
                       [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
@@ -236,42 +270,11 @@
                       </div>
                     </div>
 
+                    <!-- Automations empty-state card removed — flows converge under AI Agents
                     <div class="add---content-card-wpr" (click)="PERMISSION_TO_ADD_FLOWS && presentDialogCreateFlows(false)" 
-                      matRipple
-                      [matRippleDisabled]="!PERMISSION_TO_ADD_FLOWS"
-                      [ngClass]="{'add---content-card-wpr-disabled': !PERMISSION_TO_ADD_FLOWS}"
-                      matTooltipClass="custom-mat-tooltip"
-                      #tooltip="matTooltip"
-                      matTooltipPosition='above'
-                      matTooltipHideDelay="100"
-                      [matTooltip]="!PERMISSION_TO_ADD_FLOWS ? ('YouDoNotHavePermissions' | translate) : ''"
-                      [matTooltipDisabled]="PERMISSION_TO_ADD_FLOWS">
-                      <div class="add---content-card-content automations">
-                        <div class="add-content-card-content-icon-wpr">
-                          <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                              stroke-linejoin="round" class="svg-stroke">
-                              <path _ngcontent-wai-c230=""
-                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                              </path>
-                              <circle _ngcontent-wai-c230="" cx="12" cy="12" r="4"></circle>
-                            </svg>
-                          </span>
-                        </div>
-                        <span class="span-6"> </span>
-                        <p class="add-content-card-content-title">
-                          {{'Automations' | translate }}
-                        </p>
-                        <span class="span-8"> </span>
-                        <p class="add---content-card-content-subtitle">
-                          <span style="display: block;">
-                            {{'CreateAutomationFlowTypeDesc' | translate}}
-                          </span>
-                        </p>
-
-                      </div>
+                      ...>
                     </div>
+                    -->
 
                   </div>
 

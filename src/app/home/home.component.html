@@ -15,77 +15,22 @@
         <div class="bg-card">
           <div class="flex flex-col w-full max-w-screen-xl mx-auto padding-l-r">
 
-            <div class="flex flex-col sm-flex-row flex-auto sm-items-center min-w-0 my-8 sm:my-12">
-              <div class="flex flex-auto items-center min-w-0">
-                <!-- Brand logo on left -->
-                <!-- <div class="flex-0  overflow-hidden">
-
-                  <svg *ngIf="isVisiblePay" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 65.2 65.2"
-                    style="enable-background:new 0 0 65.2 65.2;height: 40px; width: auto;" xml:space="preserve"  class="td--logo">
-                    <g>
-                      <path fill="#F18876" d="M54.9,29.8H35.6c-1.7,0-3-1.4-3-3V7.5c0-1.7-1.4-3-3-3H10.3c-1.7,0-3,1.4-3,3v22.3v22.3c0,1.7,1.4,3,3,3H9h3.5
-		                    c0.7,0,1.4,0.3,1.9,0.8l2.2,2.2l2.1,2.1c0.7,0.7,1.8,0.7,2.5,0l2.1-2.1l2.2-2.2c0.5-0.5,1.2-0.8,1.9-0.8h27.6c1.7,0,3-1.4,3-3V32.8
-                        C58,31.2,56.6,29.8,54.9,29.8" />
-                    </g>
-                    <g class="running">
-                      <path [ngClass]="{
-                        'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
-                        'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
-                        'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
-                        'bb-plan-badge': project?.plan_badge_background_type === 'bb_plan_badge',
-                        'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
-                        'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
-                        }" d="M56.1,25.7H38.5c-1,0-1.8-0.8-1.8-1.8V6.3c0-1,0.8-1.8,1.8-1.8h17.6c1,0,1.8,0.8,1.8,1.8v17.6
-		                    C58,24.9,57.1,25.7,56.1,25.7" />
-                    </g>
-                  </svg>
-
-                  <div *ngIf="!isVisiblePay && !custom_company_home_logo" class="logo-no--text">
-                    <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 35px; height: auto;" />
-                  </div>
-
-                  <div *ngIf="!isVisiblePay && custom_company_home_logo">
-                    <img [src]="companyLogoNoText" class="img-fluid" style="max-width: 35px; height: auto;" />
-                  </div>
-
-                </div> -->
-             
-                <div class="flex flex-col min-w-0">
-                  <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
-                    (click)="goToSubscription()">
-                    <div *ngIf="isVisiblePay" class="home-project-plan-badge" [ngClass]="{
-                        'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge', 
-                        'a-plan-badge':  project?.plan_badge_background_type === 'a_plan_badge',
-                        'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge', 
-                        'bb-plan-badge': project?.plan_badge_background_type === 'bb_plan_badge', 
-                        'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
-                        'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
-                        }">
-                        <!-- style="border-bottom: 1px dotted #3ea9f5;" -->
-                        <span >
-                          {{ prjct_profile_name }}
-                        </span>
-                    </div>
-                  </div>
-                  <!-- leading-7 -->
-                  <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
-                    <span style="font-family: 'Poppins', Arial, sans-serif;">
-                      {{ prjct_name }}
-                    </span>
-                    <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
-                      matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
-                      #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                      mode_edit
-                    </span>
-                  </div>
-                  
-                </div>
+            <!-- OPH + dashlet icons pinned right -->
+            <div class="home-header-toolbar">
+              <!-- home-project-plan-badge removed; project name commented -->
+              <!-- Project / workspace name (commented on Home)
+              <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
+                <span style="font-family: 'Poppins', Arial, sans-serif;">
+                  {{ prjct_name }}
+                </span>
+                <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
+                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
+                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                  mode_edit
+                </span>
               </div>
-              <!-- ---------------------------------- -->
-              <!-- Left side mt-6 ---------------------->
-              <!-- ---------------------------------- -->
-              <div class="flex items-center  sm-mt-0 sm-ml-2 space-x-3">
+              -->
+              <div class="home-header-toolbar__actions">
 
                 <!-- ------------------------------------ -->
                 <!-- Operating Hours style="background-color: #f44336-->
@@ -122,7 +67,7 @@
                         </div>
 
                         <div class="optext"
-                          style="overflow: hidden;padding-right: 12px;display: flex;flex-direction: column;align-items: center;justify-content: center;">
+                          style="overflow: hidden;padding-right: 12px;display: flex;flex-direction: column;align-items: center;justify-content: center;gap: 6px;">
 
                           <div style="color: rgba(0, 0, 0, 0.87);font-weight: 500;font-size: 14px;">
                             <!-- {{'Hours' | translate}} -->
@@ -174,17 +119,17 @@
                 </button>
 
                 <mat-menu #dashletMenu="matMenu">
+                  <button mat-menu-item *ngIf="showQuotaBannerDashletToggle" (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayQuotaBanner"
+                      (change)="switchQuotaBanner($event.checked)">
+                    </mat-checkbox>
+                    <span>{{ 'CurrentUsage' | translate }}</span>
+                  </button>
                   <button mat-menu-item *ngIf="showHomeFlowDashletToggle" (click)="$event.stopPropagation()">
                     <mat-checkbox class="home-settings-checkbox" [checked]="displayHomeFlow"
                       (change)="switchHomeFlow($event.checked)">
                     </mat-checkbox>
                     <span>{{ 'Flows' | translate }}</span>
-                  </button>
-                  <button mat-menu-item *ngIf="showOverviewDashletToggle" (click)="$event.stopPropagation()">
-                    <mat-checkbox class="home-settings-checkbox" [checked]="displayOverview"
-                      (change)="switchOverview($event.checked)">
-                    </mat-checkbox>
-                    <span>{{ 'HomeOverview.Title' | translate }}</span>
                   </button>
                   <!-- Hidden: home-kb-analytics removed from dashlet menu (Queries to KBs is in Overview)
                   <button mat-menu-item *ngIf="showHomeKbAnalyticsDashletToggle" (click)="$event.stopPropagation()">
@@ -194,11 +139,17 @@
                     <span>{{ 'HomeKbAnalytics.Title' | translate }}</span>
                   </button>
                   -->
+                  <button mat-menu-item *ngIf="showOverviewDashletToggle" (click)="$event.stopPropagation()">
+                    <mat-checkbox class="home-settings-checkbox" [checked]="displayOverview"
+                      (change)="switchOverview($event.checked)">
+                    </mat-checkbox>
+                    <span>{{ 'HomeOverview.Title' | translate }}</span>
+                  </button>
                 </mat-menu>
               </div>
             </div>
           </div>
-        </div> <!-- ./ bg-card -->
+        </div> <!-- ./ bg-card (toolbar only — fixed height) -->
 
         <div class="home-dashboard-inset">
 
@@ -208,13 +159,27 @@
         </div>
 
         <ng-container *ngIf="homePermissionsReady">
-          <div class="home-vibe-coder" *ngIf="USER_ROLE !== 'agent' && PERMISSION_TO_EDIT_FLOWS">
-            <div class="home-vibe-coder__title">What will you build?</div>
-            <appdashboard-vibe-coder
-              [busy]="vibeCoderBusy"
-              [error]="vibeCoderError"
-              (start)="onHomeVibeCoderStart($event)">
-            </appdashboard-vibe-coder>
+
+          <!-- Title + vibe coder + examples — under toolbar, above quick cards -->
+          <div class="home-vibe-coder-box"
+            *ngIf="USER_ROLE !== 'agent' && PERMISSION_TO_ADD_FLOWS">
+            <div class="home-vibe-coder-box__heading">
+              <span class="home-vibe-coder__badge">
+                <span class="home-vibe-coder__badge-star" aria-hidden="true">✦</span>
+                {{ 'HomeVibeCoderBadge' | translate }}
+              </span>
+              <div class="home-vibe-coder__title">
+                {{ 'HomeVibeCoderTitle' | translate }}
+              </div>
+            </div>
+            <div class="home-vibe-coder">
+              <appdashboard-vibe-coder
+                #homeVibeCoder
+                [busy]="vibeCoderBusy"
+                [error]="vibeCoderError"
+                (start)="onHomeVibeCoderStart($event)">
+              </appdashboard-vibe-coder>
+            </div>
           </div>
 
           <home-quick-cards
@@ -229,8 +194,8 @@
             [featuredHomeFlowChatbotId]="featuredHomeFlowChatbotId">
           </home-quick-cards>
 
-        <!-- QUOTA Banner -->
-        <ng-container *ngIf="isVisibleQuoteSection && PERMISSION_TO_VIEW_QUOTA_USAGE">
+        <!-- QUOTA Banner (toggle via dashlet filter → Current usage) -->
+        <ng-container *ngIf="displayQuotaBanner && isVisibleQuoteSection && PERMISSION_TO_VIEW_QUOTA_USAGE">
           <!-- [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
           <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner">
 
@@ -605,7 +570,7 @@
 
           <ng-container *ngIf="USER_ROLE !== 'agent'">
             <home-flow
-              *ngIf="displayHomeFlow && isNewAnalyticsConfigured && PERMISSION_TO_VIEW_FLOWS && (showskeleton || areVisibleChatbot)"
+              *ngIf="displayHomeFlow && isNewAnalyticsConfigured && PERMISSION_TO_VIEW_FLOWS && (showskeleton || (areVisibleChatbot && chatbots?.length))"
               [chatbots]="chatbots"
               [chatbotsLoading]="showskeleton"
               [project]="project"
@@ -618,6 +583,14 @@
               [project]="project"
               [PERMISSION_TO_VIEW_ANALYTICS]="PERMISSION_TO_VIEW_ANALYTICS">
             </home-overview>
+
+            <!-- Hidden: home-kb-analytics removed from Home (Queries to KBs is in Overview). Recoverable.
+            <home-kb-analytics
+              *ngIf="displayHomeKbAnalytics && isNewAnalyticsConfigured && PERMISSION_TO_VIEW_KB && isVisibleKNB && (showskeleton || areVisibleChatbot)"
+              [project]="project"
+              [PERMISSION_TO_VIEW_KB]="PERMISSION_TO_VIEW_KB">
+            </home-kb-analytics>
+            -->
 
             <ng-container *ngIf="displayOverview && isVisibleANA && !isNewAnalyticsConfigured && PERMISSION_TO_VIEW_ANALYTICS">
               <appdashboard-home-convs-graph
@@ -635,14 +608,6 @@
                 [PERMISSION_TO_VIEW_ANALYTICS]="PERMISSION_TO_VIEW_ANALYTICS">
               </appdashboard-home-analytics-indicator>
             </ng-container>
-
-            <!-- Hidden: home-kb-analytics removed from Home (Queries to KBs is in Overview). Recoverable.
-            <home-kb-analytics
-              *ngIf="displayHomeKbAnalytics && isNewAnalyticsConfigured && PERMISSION_TO_VIEW_KB && isVisibleKNB && (showskeleton || areVisibleChatbot)"
-              [project]="project"
-              [PERMISSION_TO_VIEW_KB]="PERMISSION_TO_VIEW_KB">
-            </home-kb-analytics>
-            -->
 
             <!-- Hidden: Analytics overview (home-analytics-embed) removed from dashlet menu
             <home-analytics-embed
@@ -820,7 +785,7 @@
               </div>
             </span>
           </ng-container>
-        </div>
+        </div><!-- ./home-blocks-wpr -->
         </ng-container><!-- ./homePermissionsReady -->
         </div><!-- ./home-dashboard-inset -->
 

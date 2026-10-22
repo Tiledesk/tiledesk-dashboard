@@ -1,13 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { McpServer, McpTool } from './mcp-server-table/mcp-server-table.component';
+import { McpCustomHeader, McpServer, McpTool } from './mcp-server-table/mcp-server-table.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotifyService } from 'app/core/notify.service';
 import { McpToolsModalComponent } from './mcp-tools-modal/mcp-tools-modal.component';
 import { TranslateService } from '@ngx-translate/core';
 
 const Swal = require('sweetalert2');
+
+/** UI row: persisted headers are only { key, value } when enabled + both filled. */
+interface McpHeaderRow {
+  key: string;
+  value: string;
+  enabled: boolean;
+}
 
 @Component({
   selector: 'mcp-integration',
@@ -31,6 +38,7 @@ export class McpIntegrationComponent implements OnInit {
   
   isEditing: boolean = false;
   editingIndex: number = -1;
+  headerRows: McpHeaderRow[] = [];
 
   // Connect/Tools state
   isLoadingTools: boolean = false;
@@ -65,24 +73,39 @@ export class McpIntegrationComponent implements OnInit {
       return;
     }
 
+    if (this.hasIncompleteHeaders()) {
+      return;
+    }
+
     // Preserve tools if they were retrieved
     const toolsToPreserve = this.currentServer.tools || [];
+    const customHeaders = this.serializeCustomHeaders();
 
     if (this.isEditing && this.editingIndex >= 0) {
       // Update existing server - preserve existing tools if no new ones were retrieved
       const existingServer = this.integration.value.servers[this.editingIndex];
       const serverToSave: McpServer = { 
         ...this.currentServer,
-        tools: toolsToPreserve.length > 0 ? toolsToPreserve : existingServer.tools
+        tools: toolsToPreserve.length > 0 ? toolsToPreserve : existingServer.tools,
       };
+      if (customHeaders.length) {
+        serverToSave.customHeaders = customHeaders;
+      } else {
+        delete serverToSave.customHeaders;
+      }
       this.integration.value.servers[this.editingIndex] = serverToSave;
       this.logger.log('[INT-MCP] Updated server at index', this.editingIndex);
     } else {
       // Add new server with tools if available
       const serverToAdd: McpServer = { 
         ...this.currentServer,
-        tools: toolsToPreserve
+        tools: toolsToPreserve,
       };
+      if (customHeaders.length) {
+        serverToAdd.customHeaders = customHeaders;
+      } else {
+        delete serverToAdd.customHeaders;
+      }
       this.integration.value.servers.push(serverToAdd);
       this.logger.log('[INT-MCP] Added new server');
     }
@@ -98,7 +121,13 @@ export class McpIntegrationComponent implements OnInit {
     );
     
     if (index >= 0) {
-      this.currentServer = { ...server };
+      this.currentServer = {
+        ...server,
+        customHeaders: Array.isArray(server.customHeaders)
+          ? server.customHeaders.map((h) => ({ ...h }))
+          : [],
+      };
+      this.headerRows = this.mapStoredHeadersToRows(server.customHeaders);
       this.isEditing = true;
       this.editingIndex = index;
     }
@@ -160,10 +189,101 @@ export class McpIntegrationComponent implements OnInit {
       url: '',
       transport: 'streamable_http'
     };
+    this.headerRows = [];
     this.isEditing = false;
     this.editingIndex = -1;
     this.toolsRetrieved = false;
     this.currentTools = [];
+  }
+
+  addHeaderRow(): void {
+    this.headerRows = [
+      ...this.headerRows,
+      { key: '', value: '', enabled: true },
+    ];
+  }
+
+  removeHeaderRow(index: number): void {
+    this.headerRows = this.headerRows.filter((_, i) => i !== index);
+  }
+
+  /** Switch is interactive only when both Key and Value are filled. */
+  canToggleHeader(row: McpHeaderRow): boolean {
+    return !!String(row.key || '').trim() && !!String(row.value || '').trim();
+  }
+
+  onHeaderFieldsChange(row: McpHeaderRow): void {
+    // Incomplete / empty rows stay ON but the switch control is disabled.
+    if (!this.canToggleHeader(row)) {
+      row.enabled = true;
+    }
+  }
+
+  isHeaderKeyMissing(row: McpHeaderRow): boolean {
+    if (!row.enabled) {
+      return false;
+    }
+    const key = String(row.key || '').trim();
+    const value = String(row.value || '').trim();
+    return !key && !!value;
+  }
+
+  isHeaderValueMissing(row: McpHeaderRow): boolean {
+    if (!row.enabled) {
+      return false;
+    }
+    const key = String(row.key || '').trim();
+    const value = String(row.value || '').trim();
+    return !!key && !value;
+  }
+
+  hasIncompleteHeaders(): boolean {
+    return this.headerRows.some((row) => this.isHeaderKeyMissing(row) || this.isHeaderValueMissing(row));
+  }
+
+  private serializeCustomHeaders(): McpCustomHeader[] {
+    return this.headerRows
+      .map((row) => ({
+        key: String(row.key || '').trim(),
+        value: String(row.value || '').trim(),
+        enabled: !!row.enabled,
+      }))
+      .filter((header) => !!header.key && !!header.value);
+  }
+
+  private mapStoredHeadersToRows(headers: McpCustomHeader[] | undefined): McpHeaderRow[] {
+    if (!Array.isArray(headers) || !headers.length) {
+      return [];
+    }
+    return headers
+      .map((header) => ({
+        key: String(header?.key || '').trim(),
+        value: String(header?.value || '').trim(),
+        // Legacy headers without `enabled` default to on.
+        enabled: header?.enabled !== false,
+      }))
+      .filter((row) => !!row.key && !!row.value);
+  }
+
+  /** Enabled headers only, for Connect / Refresh tools proxy calls. */
+  private getEnabledHeadersForRequest(): Array<{ key: string; value: string }> {
+    return this.serializeCustomHeaders()
+      .filter((header) => header.enabled !== false)
+      .map(({ key, value }) => ({ key, value }));
+  }
+
+  private getEnabledHeadersFromServer(server: McpServer): Array<{ key: string; value: string }> {
+    if (!Array.isArray(server?.customHeaders)) {
+      return [];
+    }
+    return server.customHeaders
+      .map((header) => ({
+        key: String(header?.key || '').trim(),
+        value: String(header?.value || '').trim(),
+        enabled: header?.enabled !== false,
+      }))
+      .filter((header) => !!header.key && !!header.value && header.enabled)
+      .map(({ key, value }) => ({ key, value }));
   }
 
   /**
@@ -194,13 +314,20 @@ export class McpIntegrationComponent implements OnInit {
       return;
     }
 
+    if (this.hasIncompleteHeaders()) {
+      return;
+    }
+
     this.isLoadingTools = true;
     this.loadingServerUrl = this.currentServer.url;
     this.toolsRetrieved = false;
 
     this.logger.log('[INT-MCP] Connecting to server:', this.currentServer.url);
 
-    this.integrationService.getMcpTools(this.currentServer.url).subscribe(
+    this.integrationService.getMcpTools(
+      this.currentServer.url,
+      this.getEnabledHeadersForRequest(),
+    ).subscribe(
       (response: any) => {
         this.logger.log('[INT-MCP] Tools retrieved:', response);
         
@@ -262,7 +389,10 @@ export class McpIntegrationComponent implements OnInit {
 
     this.logger.log('[INT-MCP] Refreshing tools for server:', server.url);
 
-    this.integrationService.getMcpTools(server.url).subscribe(
+    this.integrationService.getMcpTools(
+      server.url,
+      this.getEnabledHeadersFromServer(server),
+    ).subscribe(
       (response: any) => {
         this.logger.log('[INT-MCP] Tools refreshed:', response);
         
@@ -396,7 +526,10 @@ export class McpIntegrationComponent implements OnInit {
 
     this.logger.log('[INT-MCP] Refreshing tools for current server:', this.currentServer.url);
 
-    this.integrationService.getMcpTools(this.currentServer.url).subscribe(
+    this.integrationService.getMcpTools(
+      this.currentServer.url,
+      this.getEnabledHeadersForRequest(),
+    ).subscribe(
       (response: any) => {
         this.logger.log('[INT-MCP] Tools refreshed:', response);
         

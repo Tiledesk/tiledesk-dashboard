@@ -159,7 +159,11 @@
 
         <span>
             <div style="position: relative; top: 3px; z-index: -1;"> {{prjct_name}} </div>
-            <div  *ngIf="isVisiblePAY" style="margin-top: 8px; margin-left: 25px;"> {{ _prjct_profile_name }} </div>
+            <div *ngIf="isVisiblePAY"
+                class="user-details-plan-name"
+                (click)="goToSubscription()">
+                {{ _prjct_profile_name }}
+            </div>
             <!-- <div  style="display: inline-block; margin-top: 8px;"> ver {{version}} </div> -->
 
             <!-- <div *ngIf="plan_type === 'payment' && plan_subscription_is_active === false"

@@ -1,0 +1,33 @@
+.build-from-website {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 100vh;
+  background: #ffffff;
+  font-family: inherit;
+}
+
+.build-from-website__spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid #e5e7eb;
+  border-top-color: #f18876;
+  border-radius: 50%;
+  animation: build-from-website-spin 0.8s linear infinite;
+}
+
+.build-from-website__text {
+  margin: 0;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+@keyframes build-from-website-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .build-from-website__spinner { animation-duration: 2.4s; }
+}

@@ -6,6 +6,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { CreateAgentModalComponent } from './create-agent-modal.component';
 
 @NgModule({
@@ -19,7 +20,8 @@ import { CreateAgentModalComponent } from './create-agent-modal.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    NgSelectModule
   ],
   exports: [
     CreateAgentModalComponent

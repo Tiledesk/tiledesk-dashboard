@@ -1060,6 +1060,19 @@ export class SidebarUserDetailsComponent implements OnInit {
     this.closeUserDetailSidePanel();
   }
 
+  /** Same destination as the former Home plan badge → project settings Subscription. */
+  goToSubscription(): void {
+    if (this.USER_ROLE === 'owner') {
+      this.router.navigate(['project/' + this.projectId + '/project-settings/payments']);
+      this.closeUserDetailSidePanel();
+    } else {
+      this.notifyService.presentModalOnlyOwnerCanManageTheAccountPlan(
+        this.translate.instant('OnlyUsersWithTheOwnerRoleCanManageTheAccountPlan'),
+        this.translate.instant('LearnMoreAboutDefaultRoles'),
+      );
+    }
+  }
+
   goToHelpCenter() {
     const url = "https://gethelp.tiledesk.com/"
     window.open(url, '_blank');

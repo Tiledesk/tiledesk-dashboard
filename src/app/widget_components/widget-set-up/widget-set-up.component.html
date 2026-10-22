@@ -3461,17 +3461,37 @@
 																class="col-sm-12 control-label widget-settings-control-head-label" style="white-space: nowrap;">
 
 																{{'VoiceStreamingMode' | translate}}
-																<span class="info-icon---wpr"VoiceRecorder
-																	matTooltipClass="custom-mat-tooltip-in-widget-setup"
-																	matTooltip="{{'VoiceStreamingModeDesc' | translate}}"
-																	#tooltip="matTooltip" matTooltipPosition='above'
-																	matTooltipHideDelay="100">
+																<span class="info-icon---wpr"
+																	#voiceStreamingHelpTrigger="cdkOverlayOrigin"
+																	cdkOverlayOrigin
+																	(mouseenter)="openVoiceStreamingHelp()"
+																	(mouseleave)="scheduleCloseVoiceStreamingHelp()">
 																	<span>
 																		<i class="material-icons" style="font-size: 18px;color: #566787;cursor: pointer; vertical-align: middle;">
 																			help_outline
 																		</i>
 																	</span>
 																</span>
+																<ng-template
+																	cdk-connected-overlay
+																	[cdkConnectedOverlayOrigin]="voiceStreamingHelpTrigger"
+																	[cdkConnectedOverlayOpen]="isVoiceStreamingHelpOpen"
+																	[cdkConnectedOverlayPositions]="voiceStreamingHelpPositions"
+																	[cdkConnectedOverlayHasBackdrop]="false"
+																	(detach)="isVoiceStreamingHelpOpen = false">
+																	<div class="cdk-popover voice-streaming-cdk-tooltip"
+																		(mouseenter)="cancelCloseVoiceStreamingHelp()"
+																		(mouseleave)="scheduleCloseVoiceStreamingHelp()">
+																		<div class="cdk-popover-content">
+																			{{ 'VoiceStreamingModeDesc' | translate }}
+																		</div>
+																		<div *ngIf="hideHelpLink"
+																			class="cdk-learn-more"
+																			(click)="goToVoiceStreamingDocs()">
+																			{{ 'LearnMoreAboutVoiceStreaming' | translate }}
+																		</div>
+																	</div>
+																</ng-template>
 															</label>
 
 															<div class="col-sm-12">
