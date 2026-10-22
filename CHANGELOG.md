@@ -1,6 +1,7 @@
 # tiledesk-dashboard
 
-### features-2610/website-prompt-to-home-STAGE-NEW 22-10-2026 17:56
+
+### 2.7.262-stage
 - The saved prompt also keeps where it was written: the dashboard, or the web page that sent it, given by that page on `/build?prompt=…&origin=<page address>` (otherwise the site the browser reports, when it is not the dashboard)
 
 ### 2.7.261-stage
