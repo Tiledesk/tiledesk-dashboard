@@ -40,6 +40,12 @@ jobs:
         ref: stage
         token: ${{ secrets.ARGO_REPO_TOKEN }}
 
+     - name: Wait 5 minutes before pull
+       run: sleep 300
+
+     - name: Pull latest stage
+       run: git pull --ff-only origin stage
+
      - name: Update dashboard.image.tag in helm/values.yaml
        env:
         IMAGE_TAG: ${{ steps.image_tag.outputs.value }}
@@ -75,9 +81,6 @@ jobs:
           ' helm/values.yaml > helm/values.yaml.new
           mv helm/values.yaml.new helm/values.yaml
           git --no-pager diff -- helm/values.yaml
-     
-     - name: Wait 5 minutes before commit
-       run: sleep 300
 
      - name: Commit and push on stage
        env:
