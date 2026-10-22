@@ -1,5 +1,13 @@
 # tiledesk-dashboard
 
+### 2.7.260-stage
+- Removes onboarding vibe-coder prompt boxes
+- Improves Home vibe-coder prompt boxes
+- Adds Current usage dashlet toggle (first in the menu)
+- Centers signup form (removes left marketing split)
+- Adds custom headers support to the MCP integration
+
+
 ### 2.7.259-stage
 - Adds a prompt box on onboarding welcome and Home that lets users enter a description used by the CDS vibe coder to create an AI Agent
 
