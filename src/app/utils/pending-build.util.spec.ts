@@ -2,7 +2,7 @@ import {
   PENDING_BUILD_KEY, PENDING_BUILD_MAX_AGE_MS,
   chooseProjectForBuild, clearPendingBuild, consumePendingBuild, lastOpenedProjectOf, lastProjectIdFrom,
   rememberLastOpenedProject, LAST_OPENED_PROJECT_KEY_PREFIX, projectNameForUser,
-  readBuildPromptFromQuery, readPendingBuild, savePendingBuild
+  readBuildOrigin, readBuildPromptFromQuery, readPendingBuild, savePendingBuild, normalizeOriginUrl, ORIGIN_URL_MAX_LENGTH
 } from './pending-build.util';
 
 describe('pending-build.util (prompt from the website for the Home)', () => {
@@ -30,7 +30,7 @@ describe('pending-build.util (prompt from the website for the Home)', () => {
 
   it('is used once: consume returns it and removes it', () => {
     savePendingBuild('Un agente');
-    expect(consumePendingBuild()).toBe('Un agente');
+    expect(consumePendingBuild()?.prompt).toBe('Un agente');
     expect(localStorage.getItem(PENDING_BUILD_KEY)).toBeNull();
     expect(consumePendingBuild()).toBeNull();
   });
@@ -44,6 +44,30 @@ describe('pending-build.util (prompt from the website for the Home)', () => {
     localStorage.setItem(PENDING_BUILD_KEY, '{not json');
     expect(readPendingBuild()).toBeNull();
     expect(localStorage.getItem(PENDING_BUILD_KEY)).toBeNull();
+  });
+
+  it('keeps the page the prompt was written on, with the prompt', () => {
+    savePendingBuild('Un agente', Date.now(), 'https://tiledesk.com/ai-agents?utm_source=hero#form');
+    expect(consumePendingBuild()?.originUrl).toBe('https://tiledesk.com/ai-agents?utm_source=hero');
+    savePendingBuild('Un agente');
+    expect(consumePendingBuild()?.originUrl).toBeNull();
+  });
+
+  it('accepts only http(s) addresses as origin; a too long one keeps site and path', () => {
+    expect(normalizeOriginUrl('javascript:alert(1)')).toBeNull();
+    expect(normalizeOriginUrl('not a url')).toBeNull();
+    expect(normalizeOriginUrl('')).toBeNull();
+    expect(normalizeOriginUrl(42)).toBeNull();
+    expect(normalizeOriginUrl('https://site.test/page?q=' + 'x'.repeat(ORIGIN_URL_MAX_LENGTH))).toBe('https://site.test/page');
+  });
+
+  it('takes the origin from ?origin=, otherwise from a referrer that is not the dashboard', () => {
+    const own = 'https://panel.tiledesk.com';
+    expect(readBuildOrigin({ origin: 'https://tiledesk.com/pricing' }, 'https://google.com/', own)).toBe('https://tiledesk.com/pricing');
+    expect(readBuildOrigin({}, 'https://tiledesk.com/', own)).toBe('https://tiledesk.com/');
+    expect(readBuildOrigin({}, own + '/dashboard/', own)).toBeNull();
+    expect(readBuildOrigin({ origin: 'ftp://x' }, '', own)).toBeNull();
+    expect(readBuildOrigin(null, null, own)).toBeNull();
   });
 
   it('saves nothing for a blank prompt; clear is safe on an empty storage', () => {

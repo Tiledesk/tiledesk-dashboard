@@ -17,9 +17,18 @@ export const PENDING_BUILD_QUERY_KEYS = ['prompt', 'buildPrompt'] as const;
 /** A prompt nobody collected within a day is not wanted any more: it must not fill a Home later. */
 export const PENDING_BUILD_MAX_AGE_MS = 24 * 60 * 60 * 1000;
 
+/** Query param with the address of the page the prompt was written on: more pages, on the
+ *  website or elsewhere, can send a prompt here, and the saved prompt keeps where it came from. */
+export const PENDING_BUILD_ORIGIN_QUERY_KEY = 'origin';
+
+/** Longer than this, an address keeps only its site and path (no query string). */
+export const ORIGIN_URL_MAX_LENGTH = 2048;
+
 export interface PendingBuild {
   prompt: string;
   createdAt: number;
+  /** The page the prompt was written on; null when nobody said. */
+  originUrl: string | null;
 }
 
 /** The prompt in the query params, normalized like every other prompt (trim, length cap); null if none. */
@@ -36,14 +45,47 @@ export function readBuildPromptFromQuery(queryParams?: Record<string, any> | nul
   return null;
 }
 
+/** An http(s) address, without the part after `#`; null for anything else. */
+export function normalizeOriginUrl(raw: any): string | null {
+  if (typeof raw !== 'string' || !raw.trim()) {
+    return null;
+  }
+  let url: URL;
+  try {
+    url = new URL(raw.trim());
+  } catch {
+    return null;
+  }
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    return null;
+  }
+  url.hash = '';
+  const full = url.toString();
+  return full.length <= ORIGIN_URL_MAX_LENGTH ? full : (url.origin + url.pathname).slice(0, ORIGIN_URL_MAX_LENGTH);
+}
+
+/** Where the prompt was written: the `?origin=` the page passed, otherwise the referrer the browser
+ *  sent (often the site alone, without the path), unless it is the dashboard itself. */
+export function readBuildOrigin(queryParams: Record<string, any> | null | undefined, referrer: string | null | undefined, ownOrigin: string): string | null {
+  const fromQuery = normalizeOriginUrl(queryParams?.[PENDING_BUILD_ORIGIN_QUERY_KEY]);
+  if (fromQuery) {
+    return fromQuery;
+  }
+  const fromReferrer = normalizeOriginUrl(referrer);
+  if (!fromReferrer || new URL(fromReferrer).origin === ownOrigin) {
+    return null;
+  }
+  return fromReferrer;
+}
+
 /** Stores the prompt for the Home. Never throws: storage may be blocked (private window). */
-export function savePendingBuild(prompt: string, now: number = Date.now()): boolean {
+export function savePendingBuild(prompt: string, now: number = Date.now(), originUrl: string | null = null): boolean {
   const value = normalizeBuildPrompt(prompt);
   if (!value) {
     return false;
   }
   try {
-    localStorage.setItem(PENDING_BUILD_KEY, JSON.stringify({ prompt: value, createdAt: now }));
+    localStorage.setItem(PENDING_BUILD_KEY, JSON.stringify({ prompt: value, createdAt: now, originUrl: normalizeOriginUrl(originUrl) }));
     return true;
   } catch {
     return false;
@@ -69,14 +111,14 @@ export function readPendingBuild(now: number = Date.now()): PendingBuild | null 
     clearPendingBuild();
     return null;
   }
-  return { prompt, createdAt };
+  return { prompt, createdAt, originUrl: normalizeOriginUrl(pending?.originUrl) };
 }
 
-/** Reads the stored prompt and removes it: used once, by the Home. */
-export function consumePendingBuild(now: number = Date.now()): string | null {
+/** Reads the stored prompt, with where it was written, and removes it: used once, by the Home. */
+export function consumePendingBuild(now: number = Date.now()): PendingBuild | null {
   const pending = readPendingBuild(now);
   clearPendingBuild();
-  return pending ? pending.prompt : null;
+  return pending;
 }
 
 export function clearPendingBuild(): void {

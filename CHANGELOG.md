@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### features-2610/website-prompt-to-home-STAGE-NEW 22-10-2026 17:56
+- The saved prompt also keeps where it was written: the dashboard, or the web page that sent it, given by that page on `/build?prompt=…&origin=<page address>` (otherwise the site the browser reports, when it is not the dashboard)
+
 ### features-2610/website-prompt-to-home 22-10-2026 17:36
 - Saves the prompt an AI agent is created from (Home and agents list), with the agent and where it was written (Home, website, onboarding, agents list); author, project and date are set by the server
 - The save never blocks: the agent opens anyway if it fails, if the server does not answer within 2 seconds or does not have the service yet

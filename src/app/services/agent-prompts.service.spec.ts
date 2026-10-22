@@ -33,10 +33,18 @@ describe('AgentPromptsService', () => {
     expect(req.request.method).toBe('POST');
     expect(req.request.headers.get('Authorization')).toBe('JWT abc');
     expect(JSON.parse(req.request.body)).toEqual({
-      id_faq_kb: 'bot1', text: 'build me an agent', language: 'it', source: 'home', attachments: [],
+      id_faq_kb: 'bot1', text: 'build me an agent', language: 'it', source: 'home',
+      origin: { kind: 'dashboard' }, attachments: [],
     });
     req.flush({ _id: 'ap1' });
     expect(result).toEqual({ _id: 'ap1' });
+  });
+
+  it('sends the web page the prompt was written on', () => {
+    service.save('p1', 'JWT abc', { ...record, source: 'website', origin: { kind: 'web', url: 'https://tiledesk.com/ai' } }).subscribe();
+    const req = http.expectOne('https://api.test/p1/agent-prompts');
+    expect(JSON.parse(req.request.body).origin).toEqual({ kind: 'web', url: 'https://tiledesk.com/ai' });
+    req.flush({});
   });
 
   it('sends nothing without a prompt, an agent, a project or a session', () => {

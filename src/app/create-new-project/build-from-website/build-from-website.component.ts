@@ -9,7 +9,7 @@ import { WidgetService } from 'app/services/widget.service';
 import { tranlatedLanguage } from 'app/utils/util';
 import {
   chooseProjectForBuild, lastOpenedProjectOf, lastProjectIdFrom, projectNameForUser,
-  readBuildPromptFromQuery, savePendingBuild
+  readBuildOrigin, readBuildPromptFromQuery, savePendingBuild
 } from 'app/utils/pending-build.util';
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
@@ -57,8 +57,9 @@ export class BuildFromWebsiteComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const prompt = readBuildPromptFromQuery(this.route.snapshot.queryParams);
     if (prompt) {
-      const saved = savePendingBuild(prompt);
-      this.logger.log('[BUILD-FROM-WEBSITE] prompt received, saved:', saved);
+      const originUrl = readBuildOrigin(this.route.snapshot.queryParams, document.referrer, window.location.origin);
+      const saved = savePendingBuild(prompt, Date.now(), originUrl);
+      this.logger.log('[BUILD-FROM-WEBSITE] prompt received from', originUrl, 'saved:', saved);
     }
 
     if (!this.loggedUser()) {

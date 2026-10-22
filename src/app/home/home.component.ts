@@ -145,6 +145,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private homeVibeCoderInitialPrompt: string | null = null;
   /** Where the text in the vibe coder field came from, saved with the prompt. */
   private homeVibeCoderSource: AgentPromptSource = 'home';
+  /** The web page the prompt was written on, when it came from outside the dashboard. */
+  private homeVibeCoderOriginUrl: string | null = null;
 
   public_Key: string;
   isVisibleANA: boolean;
@@ -822,14 +824,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.focusHomeVibeCoderPending) {
       return;
     }
-    const prompt = consumePendingBuild();
-    if (!prompt) {
+    const pending = consumePendingBuild();
+    if (!pending) {
       return;
     }
-    this.logger.log('[HOME] website prompt for the vibe coder');
+    this.logger.log('[HOME] website prompt for the vibe coder, from', pending.originUrl);
     this.focusHomeVibeCoderPending = true;
-    this.homeVibeCoderInitialPrompt = prompt;
+    this.homeVibeCoderInitialPrompt = pending.prompt;
     this.homeVibeCoderSource = 'website';
+    this.homeVibeCoderOriginUrl = pending.originUrl;
   }
 
   private tryFocusHomeVibeCoder(): void {
@@ -3699,12 +3702,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           // The prompt is saved with its agent before leaving the page (the editor opens in the
           // same tab); the save never fails and has a time limit, so the agent always opens.
           const source = this.homeVibeCoderSource;
+          const originUrl = this.homeVibeCoderOriginUrl;
           this.homeVibeCoderSource = 'home';
+          this.homeVibeCoderOriginUrl = null;
           this.agentPromptsService.save(this.projectId, this.auth.user_bs.value?.token, {
             id_faq_kb: faqKb._id,
             text: normalizedPrompt,
             language,
             source,
+            origin: originUrl ? { kind: 'web', url: originUrl } : { kind: 'dashboard' },
           }).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
             this.vibeCoderBusy = false;
             openEditor();

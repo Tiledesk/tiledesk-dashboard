@@ -9,6 +9,13 @@ import { MAX_PROMPT_LENGTH } from '../utils/agent-from-prompt.util';
 /** Where the prompt was written: one endpoint for every entry point, told apart by this. */
 export type AgentPromptSource = 'home' | 'website' | 'bots_list' | 'onboarding';
 
+/** Where the prompt was written: in the dashboard, or on a web page (the website, a landing page,
+ *  ...) that sent it to the dashboard, with the address of that page. */
+export interface AgentPromptOrigin {
+  kind: 'dashboard' | 'web';
+  url?: string;
+}
+
 /** A file attached to the prompt: only its link is kept, the file itself lives in the file storage. */
 export interface AgentPromptAttachment {
   name: string;
@@ -24,6 +31,8 @@ export interface AgentPromptRecord {
   text: string;
   language: string;
   source: AgentPromptSource;
+  /** Omitted: written in the dashboard. */
+  origin?: AgentPromptOrigin;
   attachments?: AgentPromptAttachment[];
 }
 
@@ -64,6 +73,9 @@ export class AgentPromptsService {
       text: text,
       language: record.language || 'en',
       source: record.source,
+      origin: record.origin?.kind === 'web' && record.origin.url
+        ? { kind: 'web', url: record.origin.url }
+        : { kind: 'dashboard' },
       attachments: record.attachments || []
     };
 
