@@ -1,10 +1,8 @@
 # tiledesk-dashboard
 
-### features-2610/website-prompt-to-home 22-10-2026 17:36
+### 2.7.261-stage
 - Saves the prompt an AI agent is created from (Home and agents list), with the agent and where it was written (Home, website, onboarding, agents list); author, project and date are set by the server
 - The save never blocks: the agent opens anyway if it fails, if the server does not answer within 2 seconds or does not have the service yet
-
-### features-2610/website-prompt-to-home 22-10-2026 16:50
 - Adds the `/build?prompt=` landing page for a prompt written on the website: the prompt is kept and the user lands on the Home of the last project used, with the vibe-coder field filled in (nothing starts until the user presses it)
 - Not logged in: login first, then back to the same Home; a new user who signs up gets a first project created as in the onboarding and lands on its Home
 - Remembers the last project each user opened, so the landing works also after a logout; login, signup and onboarding pages are unchanged
