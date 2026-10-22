@@ -55,6 +55,7 @@ import {
   ONBOARDING_FOCUS_VIBE_CODER_STATE,
   ONBOARDING_VIBE_CODER_PROMPT_STATE,
 } from 'app/utils/pending-website-prompt.util';
+import { consumePendingBuild, rememberLastOpenedProject } from 'app/utils/pending-build.util';
 
 const Swal = require('sweetalert2')
 
@@ -448,6 +449,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.consumeOnboardingVibeCoderHandoff();
+    this.consumePendingBuildPrompt();
     this.getLoggedUser()
     this.getCurrentProjectProjectByIdAndBots();
     this.listenHasChangedProjectFroList()
@@ -806,6 +808,22 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  /** Prompt written on the website (`/build?prompt=`, BuildFromWebsiteComponent): it fills the vibe
+   *  coder field the same way the onboarding handoff does, and only when the onboarding did not
+   *  hand one over. Read once and removed, so a reload of the Home does not fill it again. */
+  private consumePendingBuildPrompt(): void {
+    if (this.focusHomeVibeCoderPending) {
+      return;
+    }
+    const prompt = consumePendingBuild();
+    if (!prompt) {
+      return;
+    }
+    this.logger.log('[HOME] website prompt for the vibe coder');
+    this.focusHomeVibeCoderPending = true;
+    this.homeVibeCoderInitialPrompt = prompt;
+  }
+
   private tryFocusHomeVibeCoder(): void {
     if (!this.focusHomeVibeCoderPending) {
       return;
@@ -851,6 +869,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.project = project
           this.projectId = this.project._id;
           this.projectName = this.project.name
+          // For /build after a login: `last_project` does not survive the logout, this does.
+          const loggedUser: any = this.auth.user_bs?.value;
+          rememberLastOpenedProject(loggedUser?._id || loggedUser?.id, this.projectId);
 
           if (this.projectId) {
             this.displayQuotaSkeleton = true
