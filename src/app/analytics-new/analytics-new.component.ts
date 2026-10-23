@@ -41,7 +41,7 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setPostMessageTargetFromConfig();
     this.projectId = this.resolveProjectIdFromRoute();
-    console.log('[AnalyticsNew] projectId' , this.projectId)
+    this.logger.log('[AnalyticsNew] projectId' , this.projectId)
     if (!this.projectId) {
       this.logger.error('[AnalyticsNew] Missing projectid in route');
       this.loading = false;
@@ -117,13 +117,13 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
   private postMessageToEmbed(data: object): void {
     const iframe = this.analyticsIframeRef?.nativeElement;
     iframe?.contentWindow?.postMessage(data, this.postMessageTargetOrigin);
-    console.log('[AnalyticsNew] postMessage to embed', data);
+    this.logger.log('[AnalyticsNew] postMessage to embed', data);
   }
 
   private getEmbedBase(): string {
     const c = this.appConfigService.getConfig();
     const base = c?.analyticsEmbedBase as string | undefined;
-    console.log('[AnalyticsNew] EmbedBase ', base);
+    this.logger.log('[AnalyticsNew] EmbedBase ', base);
     return typeof base === 'string' ? base.replace(/\/?$/, '/') : '';
   }
 
@@ -154,7 +154,7 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
     this.tokenError = false;
     this.embedService.getEmbedToken(this.projectId, this.tiledeskJwt).subscribe({
       next: (resp) => {
-        console.log('[AnalyticsNew] resp ', resp);
+        this.logger.log('[AnalyticsNew] resp ', resp);
         const sep = embedBase.includes('?') ? '&' : '?';
         const timezone = this.resolveProjectTimezone();
         const url =
@@ -162,7 +162,7 @@ export class AnalyticsNewComponent implements OnInit, OnDestroy {
           `&timezone=${encodeURIComponent(timezone)}`;
         // Keep loading=true until iframe (load); only set URL so the embed can start.
         this.embedUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
-        console.log('[AnalyticsNew] embedUrl ',  this.embedUrl);
+        this.logger.log('[AnalyticsNew] embedUrl ',  this.embedUrl);
         if (this.refreshTimer) {
           clearTimeout(this.refreshTimer);
         }
