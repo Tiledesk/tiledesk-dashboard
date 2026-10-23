@@ -17,7 +17,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { WebhookService } from 'app/services/webhook.service';
 import { BrandService } from 'app/services/brand.service';
 import { CreateChatbotModalComponent } from '../bots-list/create-chatbot-modal/create-chatbot-modal.component';
-import { containsXSS, formatBytesWithDecimal, openChatbotEditor } from 'app/utils/util';
+import { containsXSS, formatBytesWithDecimal, openChatbotEditor, v3AgentOrStub } from 'app/utils/util';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { CreateFlowsModalComponent } from '../bots-list/create-flows-modal/create-flows-modal.component';
 import { FaqService } from 'app/services/faq.service';
@@ -826,7 +826,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
         this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
 
         // The server's answer carries the version label of the new agent: the editor follows it
-        openChatbotEditor(this.router, faqKb as any, this.project._id, this.appConfigService.getConfig())
+        openChatbotEditor(this.router, v3AgentOrStub(faqKb, faqKb['_id']), this.project._id, this.appConfigService.getConfig())
         this.trackChatbotCreated(faqKb, 'Create')
       }
 
@@ -952,7 +952,7 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
         this.logger.log('[BOT-CREATE] - IMPORT CHATBOT FROM JSON  RES - importedChatbotid ', faqkb._id)
         this.botLocalDbService.saveBotsInStorage(faqkb._id, faqkb);
 
-        openChatbotEditor(this.router, faqkb, this.project._id, this.appConfigService.getConfig())
+        openChatbotEditor(this.router, v3AgentOrStub(faqkb, faqkb['_id']), this.project._id, this.appConfigService.getConfig())
 
         this.trackChatbotCreated(faqkb, 'Import')
       }
