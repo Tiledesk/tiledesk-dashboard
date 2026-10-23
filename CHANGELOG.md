@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.261-stage
+- Improves Home vibe-coder UX (optional prompt, Copilot gate, send button, ng-select)
+- Defaults Overview and Current usage off for new projects
+
 ### 2.7.260-stage
 - Removes onboarding vibe-coder prompt boxes
 - Improves Home vibe-coder prompt boxes
