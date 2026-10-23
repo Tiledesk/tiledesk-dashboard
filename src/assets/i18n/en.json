@@ -800,7 +800,7 @@
     "YouDoNotHaveFlows": "You don't have any Flow yet",
     "Automations": "Automations",
     "YouDoNotHaveAutomations": "You don't have any Automations yet",
-    "YouDoNotHaveWebhooks": "You don't have any Webhooks in your Automations yet",
+    "YouDoNotHaveWebhooks": "You don't have any Webhooks",
     "CreateFromScratch": "Create from scratch",
     "AddFromTemplate": "Add from template",
     "NewAIAgent": "New AI agent",

@@ -795,7 +795,7 @@
     "YouDoNotHaveFlows": "ليس لديك أي تدفق حتى الآن",
     "Automations": "الأتمتة",
     "YouDoNotHaveAutomations": "ليس لديك أي أتمتة حتى الآن",
-    "YouDoNotHaveWebhooks": "ليس لديك أي Webhooks في الأتمتة الخاصة بك حتى الآن",
+    "YouDoNotHaveWebhooks": "ليس لديك أي Webhooks",
     "CreateFromScratch": "إنشاء من الصفر",
     "AddFromTemplate": "إضافة من القالب",
     "NewAIAgent": "وكيل ذكاء اصطناعي جديد",

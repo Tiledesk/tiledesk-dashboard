@@ -795,7 +795,7 @@
     "YouDoNotHaveFlows": "Ainda não tem nenhum Flow",
     "Automations": "Automações",
     "YouDoNotHaveAutomations": "Ainda não tem nenhuma automação",
-    "YouDoNotHaveWebhooks": "Ainda não tem nenhum Webhooks nas suas Automações",
+    "YouDoNotHaveWebhooks": "Não tem nenhum Webhook",
     "CreateFromScratch": "Crie de raiz",
     "AddFromTemplate": "Adicionar a partir do modelo",
     "NewAIAgent": "Novo agente de IA",

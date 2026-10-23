@@ -796,7 +796,7 @@
     "YouDoNotHaveFlows": "У вас пока нет Flow",
     "Automations": "Автоматизация",
     "YouDoNotHaveAutomations": "У вас пока нет автоматизаций",
-    "YouDoNotHaveWebhooks": "У вас пока нет ни одного WebHook в ваших Automations",
+    "YouDoNotHaveWebhooks": "У вас нет Webhook",
     "CreateFromScratch": "Создать с нуля",
     "AddFromTemplate": "Добавить из шаблона",
     "NewAIAgent": "Новый агент ИИ",

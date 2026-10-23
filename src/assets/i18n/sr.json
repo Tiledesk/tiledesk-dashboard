@@ -796,7 +796,7 @@
     "YouDoNotHaveFlows": "Још увек немате никакав Флов",
     "Automations": "Аутоматизација",
     "YouDoNotHaveAutomations": "Још увек немате аутоматизацију",
-    "YouDoNotHaveWebhooks": "Још увек немате ниједан веб-хук у својим аутоматизацијама",
+    "YouDoNotHaveWebhooks": "Немате ниједан Webhook",
     "CreateFromScratch": "Креирајте од нуле",
     "AddFromTemplate": "Додај из шаблона",
     "NewAIAgent": "Нови АИ агент",

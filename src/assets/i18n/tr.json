@@ -797,7 +797,7 @@
     "YouDoNotHaveFlows": "Henüz bir Flow'unuz yok",
     "Automations": "Otomasyonlar",
     "YouDoNotHaveAutomations": "Henüz herhangi bir Otomasyonunuz yok",
-    "YouDoNotHaveWebhooks": "Otomasyonlarınızda henüz herhangi bir Webhook yok",
+    "YouDoNotHaveWebhooks": "Hiç Webhook'unuz yok",
     "StartByEnteringTheNameOfTheFlow": "{{flow_name}} adını girerek başlayın",
     "WhatTypeOfFlowDoYouWantToStart": "Hangi Akış türüyle başlamak istiyorsunuz?",
     "NewFlow": "Yeni Akış",

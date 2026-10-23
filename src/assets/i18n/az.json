@@ -796,7 +796,7 @@
     "YouDoNotHaveFlows": "Hələ heç bir Axınınız yoxdur",
     "Automations": "Avtomatlaşdırmalar",
     "YouDoNotHaveAutomations": "Hələ heç bir Avtomatlaşdırmanız yoxdur",
-    "YouDoNotHaveWebhooks": "Avtomatlaşdırmalarınızda hələ heç bir Webhookunuz yoxdur",
+    "YouDoNotHaveWebhooks": "Heç bir Webhookunuz yoxdur",
     "CreateFromScratch": "Sıfırdan yaradın",
     "AddFromTemplate": "Şablondan əlavə edin",
     "NewAIAgent": "Yeni AI agenti",

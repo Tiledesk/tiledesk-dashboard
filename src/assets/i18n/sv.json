@@ -796,7 +796,7 @@
     "YouDoNotHaveFlows": "Du har inget flöde än",
     "Automations": "Automatiseringar",
     "YouDoNotHaveAutomations": "Du har inga automatiseringar än",
-    "YouDoNotHaveWebhooks": "Du har inga Webhooks i dina automatiseringar än",
+    "YouDoNotHaveWebhooks": "Du har inga Webhooks",
     "CreateFromScratch": "Skapa från grunden",
     "AddFromTemplate": "Lägg till från mall",
     "NewAIAgent": "Ny AI-agent",

@@ -795,7 +795,7 @@
     "YouDoNotHaveFlows": "Du hast noch keinen Flow",
     "Automations": "Automatisierungen",
     "YouDoNotHaveAutomations": "Sie haben noch keine Automatisierungen",
-    "YouDoNotHaveWebhooks": "Sie haben noch keine Webhooks in Ihren Automatisierungen",
+    "YouDoNotHaveWebhooks": "Sie haben keine Webhooks",
     "CreateFromScratch": "Von Grund auf neu erstellen",
     "AddFromTemplate": "Aus Vorlage hinzufügen",
     "NewAIAgent": "Neuer KI-Agent",
