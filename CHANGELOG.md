@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.264-stage
+- Removes the Home vibe-coder badge chip
+- Prevents a stale `/build` redirect from skipping onboarding on signup
+
 ### 2.7.263-stage
 - Improves Home vibe-coder UX (optional prompt, Copilot gate, send button, ng-select)
 - Defaults Overview and Current usage off for new projects
