@@ -712,6 +712,16 @@ export function configuredUrl(value: any): string | null {
 }
 
 /**
+ * The agent to hand to the editor helpers when a stub `{ createdAt: now, _id }` used to be passed:
+ * the agent itself when it is a v3 agent (so it opens in Design Studio V3), otherwise that same
+ * stub, so a non-v3 agent keeps opening exactly where it did (external CDS), whatever its real
+ * createdAt (an agent created before 2023-10-02 would otherwise take the legacy in-app route).
+ */
+export function v3AgentOrStub(chatbot: any, botId: string): any {
+    return isV3Chatbot(chatbot) ? chatbot : { createdAt: new Date(), _id: botId };
+}
+
+/**
  * Opens the editor of a chatbot choosing between the two Design Studios by the chatbot's own
  * version (see `goToCDSVersion`). Every path that creates or imports an agent goes through here
  * with the object the server answered with, never with a stub: a stub has no `attributes`, so it

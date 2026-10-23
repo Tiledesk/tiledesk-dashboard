@@ -24,7 +24,8 @@ import {
   dialogflowLanguage,
   containsXSS,
   formatBytesWithDecimal,
-  openChatbotEditor
+  openChatbotEditor,
+  v3AgentOrStub
 } from '../../utils/util';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKb } from 'app/models/faq_kb-model';
@@ -855,7 +856,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
         this.trackChatbotCreated(faqKb)
 
         // The server's answer carries the version label of the new agent: the editor follows it
-        openChatbotEditor(this.router, faqKb as any, this.project._id, this.appConfigService.getConfig())
+        openChatbotEditor(this.router, v3AgentOrStub(faqKb, this.newBot_Id), this.project._id, this.appConfigService.getConfig())
       }
 
     }, (error) => {

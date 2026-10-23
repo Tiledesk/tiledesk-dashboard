@@ -47,6 +47,13 @@ describe('TemplateDetailComponent - goToBotDetails opens the right Design Studio
     expect(open.calls.allArgs()).toEqual([[`${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`, '_self']]);
   });
 
+  it('a v2 agent created before 2023-10-02 still opens the external CDS (as master: stub with createdAt now)', () => {
+    const c = component(of({ _id: BOT, createdAt: '2023-01-01T00:00:00.000Z' }));
+    c.goToBotDetails();
+    expect(open.calls.allArgs()).toEqual([[`${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`, '_self']]);
+    expect(c.router.navigate).not.toHaveBeenCalled();
+  });
+
   it('a v3 agent opens as always when cdsV3BaseUrl is not configured (envsubst placeholder)', () => {
     const c = component(of({ _id: BOT, createdAt: '2026-10-20T00:00:00.000Z', ds_version: 'v3' }),
       { cdsBaseUrl: CDS, cdsV3BaseUrl: '${CDS_V3_URL}' });

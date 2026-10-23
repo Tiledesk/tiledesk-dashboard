@@ -7,7 +7,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { Location } from '@angular/common';
 import { DepartmentService } from 'app/services/department.service';
 import { Project } from 'app/models/project-model';
-import { openChatbotEditor } from 'app/utils/util';
+import { openChatbotEditor, v3AgentOrStub } from 'app/utils/util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
@@ -236,7 +236,7 @@ export class CommunityTemplateDtlsComponent extends PricingBaseComponent impleme
     // (ds_version), and the editor follows it. If the lookup fails, open with the stub.
     const stub = { createdAt: new Date(), _id: this.botid } as any;
     this.faqKbService.getFaqKbById(this.botid).subscribe((bot: any) => {
-      openChatbotEditor(this.router, bot || stub, this.project._id, this.appConfigService.getConfig());
+      openChatbotEditor(this.router, v3AgentOrStub(bot, stub._id), this.project._id, this.appConfigService.getConfig());
     }, () => {
       openChatbotEditor(this.router, stub, this.project._id, this.appConfigService.getConfig());
     });

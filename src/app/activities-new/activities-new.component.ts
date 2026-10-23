@@ -16,7 +16,7 @@ import { RolesService } from 'app/services/roles.service';
 import { UsersService } from 'app/services/users.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
-import { avatarPlaceholder, getColorBck, openChatbotEditor } from 'app/utils/util';
+import { avatarPlaceholder, getColorBck, isV3Chatbot, openChatbotEditor } from 'app/utils/util';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { ActivityRecord, UnassignedParticipantDisplay } from 'app/models/activity-model';
 import { Chatbot } from 'app/models/faq_kb-model';
@@ -1214,22 +1214,31 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let bot = this.botLocalDbService.getBotFromStorage(chatbotId) as Chatbot | null;
-    if (!bot) {
-      const actionObj = activity.actionObj || {};
-      const targetObject = activity.target?.object || {};
-      bot = {
-        _id: chatbotId,
-        name: faqKbCreateChatbotName(activity) || chatbotName(activity),
-        type: str(actionObj['type'] || targetObject['type']) || 'tilebot',
-        subtype: str(actionObj['subtype'] || targetObject['subtype']),
-        createdAt: (targetObject['createdAt'] || activity.createdAt || new Date().toISOString()) as Date,
-        // keep the Design Studio version label when the activity carries it (v3 agents open in V3)
-        ds_version: (actionObj['ds_version'] || targetObject['ds_version']) as string,
-        attributes: actionObj['attributes'] || targetObject['attributes'],
-      };
+    const cached = this.botLocalDbService.getBotFromStorage(chatbotId) as Chatbot | null;
+    if (cached) {
+      this.openChatbotFromActivity(cached);
+      return;
     }
 
+    const actionObj = activity.actionObj || {};
+    const targetObject = activity.target?.object || {};
+    const stub: Chatbot = {
+      _id: chatbotId,
+      name: faqKbCreateChatbotName(activity) || chatbotName(activity),
+      type: str(actionObj['type'] || targetObject['type']) || 'tilebot',
+      subtype: str(actionObj['subtype'] || targetObject['subtype']),
+      createdAt: (targetObject['createdAt'] || activity.createdAt || new Date().toISOString()) as Date,
+    };
+    // Not in the local cache: read the agent back so a v3 agent opens in Design Studio V3.
+    // Any other agent (or a failed lookup) keeps the stub built from the activity, as before.
+    this.faqKbService.getFaqKbById(chatbotId).subscribe((faqkb: any) => {
+      this.openChatbotFromActivity(isV3Chatbot(faqkb) ? faqkb : stub);
+    }, () => {
+      this.openChatbotFromActivity(stub);
+    });
+  }
+
+  private openChatbotFromActivity(bot: Chatbot): void {
     if (bot.type === 'internal') {
       this.router.navigate(['project/' + this.projectId + '/bots/intents/', bot._id, 'native']);
       return;

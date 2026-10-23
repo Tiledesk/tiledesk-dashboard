@@ -24,7 +24,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam, openChatbotEditor } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam, openChatbotEditor, v3AgentOrStub } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
@@ -2309,7 +2309,7 @@ _presentDialogImportContents() {
     // (ds_version), and the editor follows it. If the lookup fails, open with the stub.
     const stub = { createdAt: new Date(), _id: this.botid } as any;
     this.faqKbService.getFaqKbById(this.botid).subscribe((bot: any) => {
-      openChatbotEditor(this.router, bot || stub, this.project._id, this.appConfigService.getConfig());
+      openChatbotEditor(this.router, v3AgentOrStub(bot, stub._id), this.project._id, this.appConfigService.getConfig());
     }, () => {
       openChatbotEditor(this.router, stub, this.project._id, this.appConfigService.getConfig());
     });
@@ -2370,7 +2370,7 @@ _presentDialogImportContents() {
         // The namespace's chatbot list carries only _id and name (no version label).
         const stub = { createdAt: new Date(), _id: chatbot._id } as any;
         this.faqKbService.getFaqKbById(chatbot._id).subscribe((bot: any) => {
-          openChatbotEditor(this.router, bot || stub, this.project._id, this.appConfigService.getConfig());
+          openChatbotEditor(this.router, v3AgentOrStub(bot, stub._id), this.project._id, this.appConfigService.getConfig());
         }, () => {
           openChatbotEditor(this.router, stub, this.project._id, this.appConfigService.getConfig());
         });
@@ -2378,7 +2378,7 @@ _presentDialogImportContents() {
         const stub = { createdAt: new Date(), _id: chatbot._id } as any;
         const config = this.appConfigService.getConfig();
         this.faqKbService.getFaqKbById(chatbot._id).subscribe((bot: any) => {
-          goToCDSSettings(this.router, bot || stub, this.project._id, config.cdsBaseUrl, config.cdsV3BaseUrl);
+          goToCDSSettings(this.router, v3AgentOrStub(bot, stub._id), this.project._id, config.cdsBaseUrl, config.cdsV3BaseUrl);
         }, () => {
           goToCDSSettings(this.router, stub, this.project._id, config.cdsBaseUrl, config.cdsV3BaseUrl);
         });

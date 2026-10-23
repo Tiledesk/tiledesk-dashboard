@@ -7,7 +7,7 @@ import { BrandService } from 'app/services/brand.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
-import { openChatbotEditor } from 'app/utils/util';
+import { openChatbotEditor, v3AgentOrStub } from 'app/utils/util';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
@@ -435,7 +435,7 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
     // (ds_version), and the editor follows it. If the lookup fails, open with the stub.
     const stub = { createdAt: new Date(), _id: this.botid } as any;
     this.faqKbService.getFaqKbById(this.botid).subscribe((bot: any) => {
-      openChatbotEditor(this.router, bot || stub, this.projectid, this.appConfigService.getConfig());
+      openChatbotEditor(this.router, v3AgentOrStub(bot, stub._id), this.projectid, this.appConfigService.getConfig());
     }, () => {
       openChatbotEditor(this.router, stub, this.projectid, this.appConfigService.getConfig());
     });
