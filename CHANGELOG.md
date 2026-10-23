@@ -3,6 +3,7 @@
 ### 2.7.263-stage
 - Improves Home vibe-coder UX (optional prompt, Copilot gate, send button, ng-select)
 - Defaults Overview and Current usage off for new projects
+- Shows Home quick-card counters as N/N
 
 ### 2.7.262-stage
 - The saved prompt also keeps where it was written: the dashboard, or the web page that sent it, given by that page on `/build?prompt=…&origin=<page address>` (otherwise the site the browser reports, when it is not the dashboard)
