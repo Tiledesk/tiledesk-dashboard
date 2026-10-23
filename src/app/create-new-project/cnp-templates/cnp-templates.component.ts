@@ -7,7 +7,7 @@ import { BrandService } from 'app/services/brand.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
-import { goToCDSVersion } from 'app/utils/util';
+import { openChatbotEditor } from 'app/utils/util';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
@@ -431,11 +431,14 @@ export class CnpTemplatesComponent implements OnInit, AfterViewInit, OnChanges {
   goToBotDetails() {
     this.goToNext.emit(this.segmentAttributes);
     // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
-    let faqkb = {
-      createdAt: new Date(),
-      _id: this.botid
-    }
-    goToCDSVersion(this.router, faqkb, this.projectid, this.appConfigService.getConfig().cdsBaseUrl)
+    // Only the agent id is at hand here: the server's copy carries the version label
+    // (ds_version), and the editor follows it. If the lookup fails, open with the stub.
+    const stub = { createdAt: new Date(), _id: this.botid } as any;
+    this.faqKbService.getFaqKbById(this.botid).subscribe((bot: any) => {
+      openChatbotEditor(this.router, bot || stub, this.projectid, this.appConfigService.getConfig());
+    }, () => {
+      openChatbotEditor(this.router, stub, this.projectid, this.appConfigService.getConfig());
+    });
 
   }
 

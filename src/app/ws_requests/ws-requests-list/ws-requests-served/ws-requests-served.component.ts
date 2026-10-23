@@ -19,7 +19,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { WsMsgsService } from 'app/services/websocket/ws-msgs.service';
 import { BrandService } from 'app/services/brand.service';
-import { CHANNELS_NAME, goToCDSVersion } from 'app/utils/util';
+import { CHANNELS_NAME, openChatbotEditor } from 'app/utils/util';
 import { MatMenuTrigger } from '@angular/material/menu';
 // import { Location, PopStateEvent } from '@angular/common';
 
@@ -719,7 +719,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
           }
 
         botType = 'tilebot'
-        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, bot, this.projectId, this.appConfigService.getConfig())
 
       } else if (bot.type === 'tiledesk-ai') {
           if(!this.PERMISSION_TO_EDIT_FLOWS) {
@@ -727,7 +727,7 @@ export class WsRequestsServedComponent extends WsSharedComponent implements OnIn
             return;
           }
         botType = 'tiledesk-ai'
-        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, bot, this.projectId, this.appConfigService.getConfig())
 
       } else {
          if(!this.PERMISSION_TO_UPDATE_APP) {

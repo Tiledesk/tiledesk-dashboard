@@ -1,4 +1,4 @@
-import { CHANNELS_NAME, checkAcceptedFile, formatBytesWithDecimal, isValidEmail } from './../../utils/util';
+import { CHANNELS_NAME, checkAcceptedFile, formatBytesWithDecimal, isValidEmail, openChatbotEditor } from './../../utils/util';
 import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, HostListener, OnDestroy, Input, OnChanges, SimpleChanges, isDevMode } from '@angular/core';
 import { Router, RoutesRecognized } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -25,7 +25,7 @@ import { TagsService } from '../../services/tags.service';
 
 import { UAParser } from 'ua-parser-js';
 import { ContactsService } from '../../services/contacts.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, PLAN_NAME } from '../../utils/util';
 import { LoggerService } from '../../services/logger/logger.service';
 
 import 'firebase/database';
@@ -6097,7 +6097,7 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
           }
           if (this.CURRENT_USER_ROLE !== 'agent') {
             // this.router.navigate(['project/' + this.id_project + '/tilebot/intents/', id_bot, botType]);
-            goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
+            openChatbotEditor(this.router, bot, this.id_project, this.appConfigService.getConfig())
           }
         } else if (bot.type === 'tiledesk-ai') {
           botType = 'tiledesk-ai'
@@ -6107,7 +6107,7 @@ getMemberFromRemoteForTag(userid: string): Promise<any> {
             return;
           }
           if (this.CURRENT_USER_ROLE !== 'agent') {
-            goToCDSVersion(this.router, bot, this.id_project, this.appConfigService.getConfig().cdsBaseUrl)
+            openChatbotEditor(this.router, bot, this.id_project, this.appConfigService.getConfig())
           }
         } else {
 

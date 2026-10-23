@@ -752,8 +752,15 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
 
 
 
-export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
+export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string, redirectV3BaseUrl?: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+
+    // A v3 agent opens its settings in the new Design Studio (same route) when its URL is configured.
+    const v3BaseUrl = configuredUrl(redirectV3BaseUrl);
+    if (v3BaseUrl && isV3Chatbot(chatbot)) {
+        window.open(`${v3BaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/settings?active=bot_detail`, '_self')
+        return;
+    }
 
     let chatBotDate = new Date(chatbot.createdAt)
     let dateLimit = new Date('2023-10-02T00:00:00')

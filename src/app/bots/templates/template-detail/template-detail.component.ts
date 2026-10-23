@@ -12,7 +12,7 @@ import { ProjectService } from 'app/services/project.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 
-import { CHATBOT_MAX_NUM, PLAN_NAME, goToCDSVersion } from 'app/utils/util';
+import { CHATBOT_MAX_NUM, PLAN_NAME, openChatbotEditor } from 'app/utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
@@ -410,11 +410,14 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
   goToBotDetails() {
     this.logger.log('[TEMPLATE DETAIL] GO TO  BOT DETAILS - isDevMode() ', isDevMode());
     // this.router.navigate(['project/' + this.project._id + '/cds/', this.botid, 'intent', '0']);
-    let faqkb = {
-      createdAt: new Date(),
-      _id : this.botid
-    }
-    goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+    // Only the agent id is at hand here: the server's copy carries the version label
+    // (ds_version), and the editor follows it. If the lookup fails, open with the stub.
+    const stub = { createdAt: new Date(), _id: this.botid } as any;
+    this.faqKbService.getFaqKbById(this.botid).subscribe((bot: any) => {
+      openChatbotEditor(this.router, bot || stub, this.project._id, this.appConfigService.getConfig());
+    }, () => {
+      openChatbotEditor(this.router, stub, this.project._id, this.appConfigService.getConfig());
+    });
 
     this.closeDialog();
     // this.closeCreateBotInfoModal();
