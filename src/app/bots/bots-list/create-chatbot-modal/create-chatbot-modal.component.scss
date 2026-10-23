@@ -3,6 +3,14 @@
   width: 100%;
 }
 
+.create-chatbot-modal-desc {
+  margin: 0 0 14px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: rgb(91, 98, 106);
+}
+
 
 // Autocomplete borders: demo.scss (.mat-autocomplete-panel); letter-spacing: material-mdc-overrides.scss
 ::ng-deep .mat-mdc-autocomplete-panel.mat-autocomplete-visible,

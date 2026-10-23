@@ -12,6 +12,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { SatPopoverModule } from '@ncstate/sat-popover';
 import { FlowWebhooksComponent } from './flow-webhooks.component';
 import { BotsSidebarModule } from '../bots-list/bots-sidebar/bots-sidebar.module';
+import { CreateChatbotModalModule } from '../bots-list/create-chatbot-modal/create-chatbot-modal.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 const routes: Routes = [
   { path: "", component: FlowWebhooksComponent },
@@ -33,7 +35,9 @@ const routes: Routes = [
     MatMenuModule,
     FormsModule,
     MatTooltipModule,
-    SatPopoverModule
+    SatPopoverModule,
+    MatDialogModule,
+    CreateChatbotModalModule,
   ]
 })
 export class FlowWebhooksModule { }

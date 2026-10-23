@@ -24,6 +24,10 @@ export interface FaqKb {
 
 export interface Chatbot extends FaqKb {
     attributes?: any
+    /** 'v3' for an agent of the new Design Studio (a field of the bot since server 2.30.0). */
+    ds_version?: string;
+    /** V3 agents: the connectors list; the server returns it only with the single GET of a bot. */
+    connectors?: any;
     public?: boolean;
     certified?: boolean;
     tags?: any;

@@ -23,7 +23,7 @@ import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
 // import * as moment from 'moment';
 import moment from "moment";
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, openChatbotEditor, PLAN_NAME, projectDefaultsDashletFiltersOff } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators'
@@ -47,8 +47,17 @@ import { sortChatbotsByLastUpdated } from 'app/utils/chatbot-sort.util';
 import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
 import { MatDialog } from '@angular/material/dialog';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
+import { CreateAgentModalComponent, CreateAgentModalResult } from 'app/bots/bots-list/create-agent-modal/create-agent-modal.component';
 import { CreateChatbotModalComponent } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.component';
 import { MAX_PROMPT_LENGTH, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
+import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
+import { VibeCoderComponent } from 'app/shared/vibe-coder/vibe-coder.component';
+import {
+  ONBOARDING_FOCUS_VIBE_CODER_STATE,
+  ONBOARDING_VIBE_CODER_PROMPT_STATE,
+} from 'app/utils/pending-website-prompt.util';
+import { consumePendingBuild, rememberLastOpenedProject } from 'app/utils/pending-build.util';
+import { AgentPromptSource, AgentPromptsService } from 'app/services/agent-prompts.service';
 
 const Swal = require('sweetalert2')
 
@@ -126,10 +135,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   DISPLAY_TEAMMATES: boolean = false;
   DISPLAY_CHATBOTS: boolean = false;
 
-  /** Home vibe coder → CreateChatbotModal → AI agent + CDS handoff. */
+  /** Home prompt box → CreateAgentModal (name) → AI agent + CDS v3 vibe coder handoff. */
   vibeCoderBusy = false;
   vibeCoderError: string | null = null;
   private pendingHomeBuildPrompt: string | null = null;
+
+  @ViewChild('homeVibeCoder') homeVibeCoder?: VibeCoderComponent;
+  /** Set from onboarding Get started router state — focus (+ optional prefill) once permissions ready. */
+  private focusHomeVibeCoderPending = false;
+  private homeVibeCoderInitialPrompt: string | null = null;
+  /** Where the text in the vibe coder field came from, saved with the prompt. */
+  private homeVibeCoderSource: AgentPromptSource = 'home';
+  /** The web page the prompt was written on, when it came from outside the dashboard. */
+  private homeVibeCoderOriginUrl: string | null = null;
 
   public_Key: string;
   isVisibleANA: boolean;
@@ -161,6 +179,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   // HOME REVOLUTION 
   displayHomeFlow: boolean = true;
   displayOverview: boolean = true;
+  displayQuotaBanner: boolean = true;
   displayHomeKbAnalytics: boolean = true;
   displayAnalyticsIframe: boolean = true;
   displayConnectWhatsApp: boolean;
@@ -277,6 +296,14 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   tokensRunnedOut: boolean = false;
   voiceRunnedOut: boolean = false;
   diplayVXMLVoiceQuota: boolean;
+  /** Same as bots-list voice cards — drives CreateAgentModal type select. */
+  displayTwilioVoiceAgent = false;
+  displayVXMLVoiceAgent = false;
+
+  /** Same as bots-list — Copilot CreateChatbotModal plan / enable gate. */
+  automationCopilotIsAvailable: boolean;
+  automationCopilotIsEnabled: boolean;
+  copilotPlanParams: { plan_name: string };
 
   /** CDK hover help on quota alert icons (same pattern as KB tags). */
   quotaHelpOpen: 'conversations' | 'tokens' | 'email' | 'voice' | null = null;
@@ -319,8 +346,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   allQuotas
 
   PERMISSION_TO_VIEW_FLOWS: boolean;
-  PERMISSION_TO_EDIT_FLOWS: boolean;
   PERMISSION_TO_ADD_FLOWS: boolean;
+  PERMISSION_TO_EDIT_FLOWS: boolean;
   PERMISSION_TO_TEST_FLOW: boolean;
   PERMISSION_TO_VIEW_KB: boolean;
   PERMISSION_TO_ADD_KB_CONTENTS: boolean;
@@ -341,7 +368,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get showHomeFlowDashletToggle(): boolean {
-    return this.USER_ROLE !== 'agent' && this.isNewAnalyticsConfigured && this.PERMISSION_TO_VIEW_FLOWS;
+    // Same gate as home-flow content: no checkbox if there is nothing to show
+    return this.USER_ROLE !== 'agent'
+      && this.isNewAnalyticsConfigured
+      && !!this.PERMISSION_TO_VIEW_FLOWS
+      && !!this.areVisibleChatbot
+      && Array.isArray(this.chatbots)
+      && this.chatbots.length > 0;
   }
 
   get showOverviewDashletToggle(): boolean {
@@ -349,20 +382,27 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   get showHomeKbAnalyticsDashletToggle(): boolean {
-    // Hidden from Home UI / dashlet menu (Queries to KBs lives in Overview). Recoverable.
-    return false;
+    return this.USER_ROLE !== 'agent'
+      && this.isNewAnalyticsConfigured
+      && !!this.PERMISSION_TO_VIEW_KB
+      && !!this.isVisibleKNB;
+  }
+
+  get showQuotaBannerDashletToggle(): boolean {
+    return !!this.isVisibleQuoteSection && !!this.PERMISSION_TO_VIEW_QUOTA_USAGE;
   }
 
   get hasAnyDashletToggle(): boolean {
     return this.showHomeFlowDashletToggle
       || this.showOverviewDashletToggle
-      || this.showHomeKbAnalyticsDashletToggle;
+      || this.showQuotaBannerDashletToggle;
   }
 
   /** Any permission that can surface a home section (excludes deprecated news feed). */
   get hasAnyHomePermission(): boolean {
     return !!(
       this.PERMISSION_TO_VIEW_FLOWS
+      || this.PERMISSION_TO_ADD_FLOWS
       || this.PERMISSION_TO_EDIT_FLOWS
       || this.PERMISSION_TO_VIEW_KB
       || this.PERMISSION_TO_VIEW_ANALYTICS
@@ -402,6 +442,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     public rolesService: RolesService,
     private dialog: MatDialog,
     private botLocalDbService: BotLocalDbService,
+    private agentPromptsService: AgentPromptsService,
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -415,6 +456,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit() {
+    this.consumeOnboardingVibeCoderHandoff();
+    this.consumePendingBuildPrompt();
     this.getLoggedUser()
     this.getCurrentProjectProjectByIdAndBots();
     this.listenHasChangedProjectFroList()
@@ -574,6 +617,17 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         // ---------------------------------
+        // PERMISSION TO ADD FLOWS
+        // ---------------------------------
+        if (status.role === 'owner' || status.role === 'admin') {
+          this.PERMISSION_TO_ADD_FLOWS = true;
+        } else if (status.role === 'agent') {
+          this.PERMISSION_TO_ADD_FLOWS = false;
+        } else {
+          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+        }
+
+        // ---------------------------------
         // PERMISSION TO EDIT FLOWS
         // ---------------------------------
         if (status.role === 'owner' || status.role === 'admin') {
@@ -582,17 +636,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.PERMISSION_TO_EDIT_FLOWS = false;
         } else {
           this.PERMISSION_TO_EDIT_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_EDIT);
-        }
-
-        // ---------------------------------
-        // PERMISSION TO ADD FLOWS (Able to create a new Flow)
-        // ---------------------------------
-        if (status.role === 'owner' || status.role === 'admin') {
-          this.PERMISSION_TO_ADD_FLOWS = true;
-        } else if (status.role === 'agent') {
-          this.PERMISSION_TO_ADD_FLOWS = false;
-        } else {
-          this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
         }
 
         // ---------------------------------
@@ -757,7 +800,73 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.homePermissionsReady = true;
         this.logger.log('[HOME] - homePermissionsReady ', this.homePermissionsReady);
+        this.tryFocusHomeVibeCoder();
       });
+  }
+
+  /** Onboarding Get started → Home: focus vibe coder (optional website prompt prefill). */
+  private consumeOnboardingVibeCoderHandoff(): void {
+    try {
+      const state = typeof history !== 'undefined' ? history.state : null;
+      if (!state?.[ONBOARDING_FOCUS_VIBE_CODER_STATE]) {
+        return;
+      }
+      this.focusHomeVibeCoderPending = true;
+      const prompt = state[ONBOARDING_VIBE_CODER_PROMPT_STATE];
+      this.homeVibeCoderInitialPrompt = typeof prompt === 'string' && prompt.trim()
+        ? prompt.trim().slice(0, MAX_PROMPT_LENGTH)
+        : null;
+      if (this.homeVibeCoderInitialPrompt) {
+        this.homeVibeCoderSource = 'onboarding';
+      }
+      // Avoid re-focus on browser refresh / back.
+      history.replaceState({
+        ...state,
+        [ONBOARDING_FOCUS_VIBE_CODER_STATE]: false,
+        [ONBOARDING_VIBE_CODER_PROMPT_STATE]: null,
+      }, '');
+    } catch (e) {
+      this.logger.log('[HOME] consumeOnboardingVibeCoderHandoff error', e);
+    }
+  }
+
+  /** Prompt written on the website (`/build?prompt=`, BuildFromWebsiteComponent): it fills the vibe
+   *  coder field the same way the onboarding handoff does, and only when the onboarding did not
+   *  hand one over. Read once and removed, so a reload of the Home does not fill it again. */
+  private consumePendingBuildPrompt(): void {
+    if (this.focusHomeVibeCoderPending) {
+      return;
+    }
+    const pending = consumePendingBuild();
+    if (!pending) {
+      return;
+    }
+    this.logger.log('[HOME] website prompt for the vibe coder, from', pending.originUrl);
+    this.focusHomeVibeCoderPending = true;
+    this.homeVibeCoderInitialPrompt = pending.prompt;
+    this.homeVibeCoderSource = 'website';
+    this.homeVibeCoderOriginUrl = pending.originUrl;
+  }
+
+  private tryFocusHomeVibeCoder(): void {
+    if (!this.focusHomeVibeCoderPending) {
+      return;
+    }
+    if (this.USER_ROLE === 'agent' || !this.PERMISSION_TO_ADD_FLOWS) {
+      this.focusHomeVibeCoderPending = false;
+      this.homeVibeCoderInitialPrompt = null;
+      return;
+    }
+    // Wait for *ngIf + CD to create #homeVibeCoder
+    setTimeout(() => {
+      if (this.homeVibeCoderInitialPrompt) {
+        this.homeVibeCoder?.setPrompt(this.homeVibeCoderInitialPrompt, true);
+      } else {
+        this.homeVibeCoder?.focusInput();
+      }
+      this.focusHomeVibeCoderPending = false;
+      this.homeVibeCoderInitialPrompt = null;
+    }, 100);
   }
 
   listenHasChangedProjectFroList() {
@@ -784,6 +893,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.project = project
           this.projectId = this.project._id;
           this.projectName = this.project.name
+          // For /build after a login: `last_project` does not survive the logout, this does.
+          const loggedUser: any = this.auth.user_bs?.value;
+          rememberLastOpenedProject(loggedUser?._id || loggedUser?.id, this.projectId);
 
           if (this.projectId) {
             this.displayQuotaSkeleton = true
@@ -853,6 +965,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           if (data['projectId'] === this.projectId) {
             this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data ", data);
             this.logger.log("[QUOTA-DEBUG][HOME] LISTEN TO QUOTAS HAS BEEN CALLED 2 data.projectId ", data['projectId']);
+
+            // Fetch failed (e.g. 504) or empty payload: stop skeleton, do not apply quotas.
+            if (data.fetchFailed || !data.allQuotes) {
+              this.logger.log("[QUOTA-DEBUG][HOME][DISPLAY-SKELETON] quotes fetch failed/empty — clearing skeleton");
+              this.quotaResetEndDateLabel = null;
+              this.displayQuotaSkeleton = false;
+              if (data.fetchFailed) {
+                this.notify.showWidgetStyleUpdateNotification(
+                  this.translate.instant('CurrentUsageLoadError', {
+                    section: this.translate.instant('CurrentUsage'),
+                  }),
+                  4,
+                  'report_problem'
+                );
+              }
+              return;
+            }
+
             this.quotasLimits = data.projectLimits;
             this.allQuotas = data.allQuotes;
             this.quotaResetEndDateLabel = data.slot?.endDate ?? null;
@@ -947,13 +1077,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               this.logger.log('[HOME] tokensRunnedOut', this.tokensRunnedOut)
             }
 
-            // Always compute (like navbar): quotes can arrive before manageVoiceQuotaVisibility sets the flag.
-            if (this.allQuotas.voice_duration?.quote >= this.voice_limit_in_sec) {
-              this.voiceRunnedOut = true;
-              this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
-            } else {
-              this.voiceRunnedOut = false;
-              this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+            if (this.diplayVXMLVoiceQuota) {
+              if (this.allQuotas.voice_duration?.quote >= this.voice_limit_in_sec) {
+                // if (3342 >= this.voice_limit_in_sec) {   
+                this.voiceRunnedOut = true;
+                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+              } else {
+                this.voiceRunnedOut = false;
+                this.logger.log('[HOME] voiceRunnedOut', this.voiceRunnedOut)
+              }
             }
 
 
@@ -1042,7 +1174,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.project = project
         if (project.attributes && project.attributes.dashlets) {
           this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getDashlet(this.PROJECT_ATTRIBUTES)
+          this.getDashlet(this.PROJECT_ATTRIBUTES, project.createdAt)
+        } else {
+          // No dashlets prefs yet — date cutover decides filter defaults (Overview / Flows / Quota)
+          this.applyDefaultDashletFilterVisibility(project.createdAt)
         }
 
         if (project.attributes && project.attributes.userPreferences) {
@@ -1060,6 +1195,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
         this.manageChatbotVisibility(projectProfileData)
         this.manageVoiceQuotaVisibility(projectProfileData)
+        this.getIfAutomationCopilotIsEnabled(projectProfileData)
+        this.managePlanAutomationCopilotAvailability(
+          projectProfileData.name,
+          project.isActiveSubscription,
+          project.trialExpired,
+          projectProfileData.type,
+        )
 
         this.logger.log('[HOME] - (getProjectById) - projectProfileData', projectProfileData)
 
@@ -1291,33 +1433,58 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   
 
   manageVoiceQuotaVisibility(projectProfileData) {
-    if (projectProfileData['customization']) {
-      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] ', projectProfileData['customization'])
-    
-      if (projectProfileData['customization'] && ((projectProfileData['customization']['voice'] !== undefined))) {
+    const customization = projectProfileData?.['customization'];
+    this.displayTwilioVoiceAgent = customization?.['voice_twilio'] === true;
+    this.displayVXMLVoiceAgent = customization?.['voice'] === true;
+    this.diplayVXMLVoiceQuota = this.displayVXMLVoiceAgent;
 
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] voice', projectProfileData['customization']['voice'])
-     
-
-        if (projectProfileData['customization']['voice'] === true) {
-          this.diplayVXMLVoiceQuota = true
-        } else if (projectProfileData['customization']['voice'] === false) {
-          this.diplayVXMLVoiceQuota = false
-        } else if (projectProfileData['customization']['voice'] === undefined) {
-          this.diplayVXMLVoiceQuota = false
-        }
-      } else {
-        this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization][voice] ', projectProfileData['customization']['voice'])
-        this.diplayVXMLVoiceQuota = false
-      }
-
+    if (customization) {
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) customization ', customization);
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) voice_twilio:', this.displayTwilioVoiceAgent, 'voice:', this.displayVXMLVoiceAgent);
     } else {
+      this.logger.log('[HOME] (manageVoiceQuotaVisibility) no customization');
+    }
+  }
 
-      this.logger.log('[HOME] (manageVoiceQuotaVisibility) projectProfileData[customization] (else) ', projectProfileData['customization'])
-      // this.diplayTwilioVoiceQuota = false
-      this.diplayVXMLVoiceQuota = false
+  /** Same rules as bots-list `getIfAutomationCopilotIsEnabled` (customization.webhook). */
+  getIfAutomationCopilotIsEnabled(projectProfile: any): void {
+    const webhook = projectProfile?.customization?.webhook;
+    this.automationCopilotIsEnabled = webhook === true;
+    this.logger.log('[HOME] automationCopilotIsEnabled', this.automationCopilotIsEnabled);
+  }
+
+  /** Same rules as bots-list `managePlanAutomationCopilotAvailability`. */
+  managePlanAutomationCopilotAvailability(
+    profileName: string,
+    isActiveSubscription: boolean,
+    trialExpired: boolean,
+    projectProfileType: string,
+  ): void {
+    this.copilotPlanParams = { plan_name: PLAN_NAME.EE };
+    this.automationCopilotIsAvailable = false;
+
+    if (projectProfileType === 'payment' && isActiveSubscription === true) {
+      if (
+        profileName === PLAN_NAME.C ||
+        profileName === PLAN_NAME.EE ||
+        profileName === PLAN_NAME.F
+      ) {
+        this.automationCopilotIsAvailable = true;
+      }
     }
 
+    this.logger.log(
+      '[HOME] automationCopilotIsAvailable',
+      this.automationCopilotIsAvailable,
+      'profileName',
+      profileName,
+      'trialExpired',
+      trialExpired,
+      'projectProfileType',
+      projectProfileType,
+      'isActiveSubscription',
+      isActiveSubscription,
+    );
   }
 
 
@@ -1420,28 +1587,55 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.editOperatingHoursBtn.nativeElement.blur();
   }
 
-  getDashlet(project_attributes) {
+  /**
+   * Filter dashlets defaults when prefs are missing:
+   * - Flows (`homeFlow`): always **on** (shows after first chatbot, like before)
+   * - Overview / Current usage: on before cutover, off after (`HOME_DASHLET_FILTER_OFF_FROM`)
+   */
+  private applyDefaultDashletFilterVisibility(projectCreatedAt?: any): void {
+    const overviewQuotaOn = !projectDefaultsDashletFiltersOff(projectCreatedAt);
+    this.displayHomeFlow = true;
+    this.displayOverview = overviewQuotaOn;
+    this.displayQuotaBanner = overviewQuotaOn;
+  }
+
+  getDashlet(project_attributes, projectCreatedAt?: any) {
     // this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
     if (project_attributes && project_attributes.dashlets) {
       this.logger.log('[HOME] - (onInit) ----> DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
-      const workspaceFallback = dashlets.workspaceOverview !== false;
+      const overviewQuotaDefaultOn = !projectDefaultsDashletFiltersOff(projectCreatedAt);
+      const workspaceFallback = dashlets.workspaceOverview !== undefined && dashlets.workspaceOverview !== null
+        ? dashlets.workspaceOverview !== false
+        : overviewQuotaDefaultOn;
 
-      this.displayHomeFlow = dashlets.homeFlow !== undefined && dashlets.homeFlow !== null
-        ? dashlets.homeFlow !== false
-        : workspaceFallback;
+      // Flows: missing key → on (content appears when chatbots.length > 0)
+      if (dashlets.homeFlow !== undefined && dashlets.homeFlow !== null) {
+        this.displayHomeFlow = dashlets.homeFlow !== false;
+      } else {
+        this.displayHomeFlow = true;
+      }
 
       if (dashlets.overview !== undefined && dashlets.overview !== null) {
         this.displayOverview = dashlets.overview !== false;
       } else if (dashlets.workspaceOverview !== undefined && dashlets.workspaceOverview !== null) {
         this.displayOverview = dashlets.workspaceOverview !== false;
-      } else {
+      } else if (dashlets.convsGraph !== undefined || dashlets.analyticsIndicators !== undefined) {
+        // Legacy keys present: on if either was explicitly true
         this.displayOverview = dashlets.convsGraph === true || dashlets.analyticsIndicators === true;
+      } else {
+        this.displayOverview = overviewQuotaDefaultOn;
       }
 
       this.displayHomeKbAnalytics = dashlets.homeKbAnalytics !== undefined && dashlets.homeKbAnalytics !== null
         ? dashlets.homeKbAnalytics !== false
         : workspaceFallback;
+
+      if (dashlets.quotaBanner !== undefined && dashlets.quotaBanner !== null) {
+        this.displayQuotaBanner = dashlets.quotaBanner !== false;
+      } else {
+        this.displayQuotaBanner = overviewQuotaDefaultOn;
+      }
 
       this.displayAnalyticsIframe = dashlets.analyticsIframe !== false
       this.displayConnectWhatsApp = dashlets.connectWhatsApp
@@ -2813,6 +3007,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     await this.updatesDashletsPreferences('switchOverview')
   }
 
+  async switchQuotaBanner(event) {
+    this.logger.log('[HOME] SWITCH QUOTA BANNER event ', event)
+    this.displayQuotaBanner = event
+    await this.updatesDashletsPreferences('switchQuotaBanner')
+  }
+
   async switchHomeKbAnalytics(event) {
     this.logger.log('[HOME] SWITCH HOME KB ANALYTICS event ', event)
     this.displayHomeKbAnalytics = event
@@ -2875,7 +3075,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.displayInviteTeammate,
       this.displayCustomizeWidget,
       this.displayNewsFeed,
-      this.displayAnalyticsIframe)
+      this.displayAnalyticsIframe,
+      this.displayQuotaBanner)
       .toPromise().then((res) => {
         this.logger.log('[HOME] - UPDATE PRJCT WITH DASHLET PREFERENCES - RES ', res);
         return;
@@ -3344,73 +3545,238 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   onHomeVibeCoderStart(prompt: string): void {
     const normalized = (prompt || '').trim().slice(0, MAX_PROMPT_LENGTH);
-    if (!normalized || this.vibeCoderBusy) {
+    if (this.vibeCoderBusy) {
       return;
     }
     if (!this.PERMISSION_TO_ADD_FLOWS || this.USER_ROLE === 'agent') {
-      this.vibeCoderError = 'You do not have permission to create AI agents.';
+      this.vibeCoderError = this.translate.instant('NoPermissionToCreateAIAgents');
       return;
     }
 
-    this.pendingHomeBuildPrompt = normalized;
+    // Prompt optional (same as Flussi CreateAgentModal). Empty → blank Conversational, no CDS vibe handoff.
+    this.pendingHomeBuildPrompt = normalized || null;
     this.vibeCoderError = null;
 
-    const dialogRef = this.dialog.open(CreateChatbotModalComponent, {
-      width: '400px',
+    // Same modal as New Flow → AI Agent; prompt already collected in the home box (may be empty).
+    const dialogRef = this.dialog.open(CreateAgentModalComponent, {
+      width: '480px',
       data: {
         subtype: 'chatbot',
+        showPromptField: false,
+        displayTwilioVoiceAgent: this.displayTwilioVoiceAgent,
+        displayVXMLVoiceAgent: this.displayVXMLVoiceAgent,
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      if (!result || result === 'upgrade-plan' || !result.chatbotName) {
+    dialogRef.afterClosed().subscribe((result: CreateAgentModalResult) => {
+      if (!result) {
         this.pendingHomeBuildPrompt = null;
         return;
       }
-      this.createHomeAgentFromPrompt(result.chatbotName, this.pendingHomeBuildPrompt);
+      if (result.openCreateChatbotModal) {
+        this.pendingHomeBuildPrompt = null;
+        this.presentCreateChatbotModalFromAgentSelect(result.subType);
+        return;
+      }
+      if (!result.chatbotName) {
+        this.pendingHomeBuildPrompt = null;
+        return;
+      }
+      this.createHomeAgentFromPrompt(
+        result.chatbotName,
+        this.pendingHomeBuildPrompt || '',
+        result.subType || 'chatbot',
+      );
       this.pendingHomeBuildPrompt = null;
     });
   }
 
-  private createHomeAgentFromPrompt(chatbotName: string, prompt: string): void {
-    if (!chatbotName || !prompt || !this.projectId) {
-      this.vibeCoderError = 'Could not create the AI Agent. Please try again.';
+  /**
+   * Voice / Voice (VXML) / Copilot from CreateAgentModal → CreateChatbotModal.
+   * Twilio gated when customization.voice_twilio is missing.
+   * Copilot reuses the same plan / enable gate as bots-list (upgrade or Contattaci).
+   */
+  private presentCreateChatbotModalFromAgentSelect(subType: string): void {
+    if (subType === 'copilot') {
+      this.presentModalAddCopilotFromHome();
+      return;
+    }
+
+    const twilioEnabled = this.displayTwilioVoiceAgent === true;
+    const gatedTwilio = subType === 'voice_twilio' && !twilioEnabled;
+    const dialogRef = this.dialog.open(CreateChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '400px',
+      data: gatedTwilio
+        ? {
+            subtype: 'voice_twilio',
+            automationCopilotIsAvailable: true,
+            automationCopilotIsEnabled: false,
+            salesEmail: this.salesEmail,
+            project_name: this.projectName,
+            currentProjectId: this.projectId,
+            isVisiblePAY: this.isVisiblePay,
+          }
+        : { subtype: subType },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.handleCreateChatbotModalResult(result, subType);
+    });
+  }
+
+  /** Same as bots-list `presentModalAddCopilot` — gated CreateChatbotModal when plan/enable blocks. */
+  private presentModalAddCopilotFromHome(): void {
+    const gated =
+      this.automationCopilotIsAvailable === false ||
+      this.automationCopilotIsEnabled === false;
+
+    const dialogRef = this.dialog.open(CreateChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '400px',
+      data: gated
+        ? {
+            subtype: 'copilot',
+            automationCopilotIsAvailable: this.automationCopilotIsAvailable,
+            automationCopilotIsEnabled: this.automationCopilotIsEnabled,
+            t_params: this.copilotPlanParams,
+            salesEmail: this.salesEmail,
+            project_name: this.projectName,
+            currentProjectId: this.projectId,
+            isVisiblePAY: this.isVisiblePay,
+          }
+        : { subtype: 'copilot' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.handleCreateChatbotModalResult(result, 'copilot');
+    });
+  }
+
+  private handleCreateChatbotModalResult(result: any, fallbackSubType: string): void {
+    if (!result) {
+      return;
+    }
+    if (result === 'upgrade-plan') {
+      this.goToPricing();
+      return;
+    }
+    if (!result.chatbotName) {
+      return;
+    }
+    this.createHomeVoiceAgent(
+      result.chatbotName,
+      result.subType || fallbackSubType,
+      result.namespace_id,
+    );
+  }
+
+  private createHomeVoiceAgent(chatbotName: string, subtype: string, namespaceId?: string): void {
+    if (!chatbotName || !this.projectId) {
+      return;
+    }
+    if (subtype === 'copilot' && !namespaceId) {
+      return;
+    }
+    const language = this.translate.currentLang || 'en';
+    this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', subtype, language, namespaceId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (faqKb: any) => {
+          if (!faqKb?._id) {
+            return;
+          }
+          this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
+          hookFirstFlowToDefaultDepartment(
+            this.faqKbService,
+            this.departmentService,
+            faqKb._id,
+            subtype,
+          );
+          openChatbotEditor(this.router, faqKb, this.projectId, this.appConfigService.getConfig());
+        },
+        error: (err) => {
+          this.logger.error('[HOME] create agent from select error', err);
+          this.vibeCoderError = this.translate.instant('CouldNotCreateAIAgent');
+        },
+      });
+  }
+
+  private createHomeAgentFromPrompt(chatbotName: string, prompt: string, subtype: string = 'chatbot'): void {
+    if (!chatbotName || !this.projectId) {
+      this.vibeCoderError = this.translate.instant('CouldNotCreateAIAgent');
       return;
     }
 
     this.vibeCoderBusy = true;
     this.vibeCoderError = null;
     const language = this.translate.currentLang || 'en';
+    const normalizedPrompt = (prompt || '').trim();
 
-    this.logger.log('[HOME] Vibe coder create agent', chatbotName);
+    this.logger.log('[HOME] Prompt box create agent', chatbotName, 'subtype', subtype, 'hasPrompt', !!normalizedPrompt);
 
-    this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', 'chatbot', language)
+    this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', subtype, language)
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (faqKb: any) => {
-          this.vibeCoderBusy = false;
           if (!faqKb?._id) {
-            this.vibeCoderError = 'Could not create the AI Agent. Please try again.';
+            this.vibeCoderBusy = false;
+            this.vibeCoderError = this.translate.instant('CouldNotCreateAIAgent');
             return;
           }
           this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
+          hookFirstFlowToDefaultDepartment(
+            this.faqKbService,
+            this.departmentService,
+            faqKb._id,
+            subtype,
+          );
+          // Only hand off to CDS vibe coder when the Home box had a prompt (Flussi may omit it).
+          if (normalizedPrompt) {
+            saveAgentPrompt({
+              botId: faqKb._id,
+              prompt: normalizedPrompt,
+              language,
+              createdAt: Date.now(),
+            });
+          }
+          // Server answer carries ds_version — openChatbotEditor picks v2 / v3.
+          const openEditor = () => openChatbotEditor(this.router, faqKb, this.projectId, this.appConfigService.getConfig());
+          // Only hand off to CDS vibe coder when the Home box had a prompt (Flussi may omit it).
+          if (!normalizedPrompt) {
+            this.vibeCoderBusy = false;
+            openEditor();
+            return;
+          }
           saveAgentPrompt({
             botId: faqKb._id,
-            prompt,
+            prompt: normalizedPrompt,
             language,
             createdAt: Date.now(),
           });
-          goToCDSVersion(
-            this.router,
-            faqKb,
-            this.projectId,
-            this.appConfigService.getConfig().cdsBaseUrl
-          );
+          // The prompt is saved with its agent before leaving the page (the editor opens in the
+          // same tab); the save never fails and has a time limit, so the agent always opens.
+          const source = this.homeVibeCoderSource;
+          const originUrl = this.homeVibeCoderOriginUrl;
+          this.homeVibeCoderSource = 'home';
+          this.homeVibeCoderOriginUrl = null;
+          this.agentPromptsService.save(this.projectId, this.auth.user_bs.value?.token, {
+            id_faq_kb: faqKb._id,
+            text: normalizedPrompt,
+            language,
+            source,
+            origin: originUrl ? { kind: 'web', url: originUrl } : { kind: 'dashboard' },
+          }).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+            this.vibeCoderBusy = false;
+            openEditor();
+          });
         },
         error: (error) => {
-          this.logger.error('[HOME] Vibe coder create agent error', error);
+          this.logger.error('[HOME] Prompt box create agent error', error);
           this.vibeCoderBusy = false;
-          this.vibeCoderError = 'Something went wrong while creating the AI Agent. Please try again.';
+          this.vibeCoderError = this.translate.instant('SomethingWentWrongCreatingAIAgent');
         }
       });
   }

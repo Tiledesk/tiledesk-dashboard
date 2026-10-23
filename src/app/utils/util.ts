@@ -665,14 +665,83 @@ export const appSumoHighlightedFeaturesPlanATier4 = [
 
 
 
-export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
+/**
+ * Cutover for Home filter dashlets **Overview** and **Current usage** (not Flows).
+ * Projects created on/after this date default those to **off** when the preference key is
+ * missing (same idea as the CDS `dateLimit`). Older projects keep missing-key → on.
+ * **Flows** (`homeFlow`) stays default **on** so `home-flow` appears after the first chatbot.
+ * New projects also get prefs written at create (see `ProjectService.createProject`).
+ */
+export const HOME_DASHLET_FILTER_OFF_FROM = new Date('2026-10-22T00:00:00');
+
+/** True when the project should treat missing Overview / Current usage keys as off. */
+export function projectDefaultsDashletFiltersOff(createdAt: any): boolean {
+    if (createdAt == null) {
+        return false;
+    }
+    const created = new Date(createdAt);
+    if (isNaN(created.getTime())) {
+        return false;
+    }
+    return created >= HOME_DASHLET_FILTER_OFF_FROM;
+}
+
+/**
+ * An agent managed by the new Design Studio carries the label `ds_version = 'v3'`, a field of the
+ * bot written by whoever created it (the server keeps it there since 2.30.0). An agent saved
+ * before that date carries the same label in `attributes.dsVersion`, and counts as v3 too: the
+ * new Design Studio moves it to the field on open. Anything else (no label, a stub with only
+ * `createdAt` and `_id`) is an agent of the previous editor.
+ */
+export function isV3Chatbot(chatbot: any): boolean {
+    const field = chatbot && chatbot.ds_version;
+    const version = (field !== undefined && field !== null) ? field : (chatbot && chatbot.attributes && chatbot.attributes.dsVersion);
+    return typeof version === 'string' && version.trim().toLowerCase() === 'v3';
+}
+
+/**
+ * A URL from the runtime configuration, or null when it is not set: empty, or the `${...}`
+ * placeholder that envsubst leaves behind when the environment variable does not exist.
+ */
+export function configuredUrl(value: any): string | null {
+    if (typeof value !== 'string') { return null; }
+    const trimmed = value.trim();
+    return (!trimmed || trimmed.startsWith('${')) ? null : trimmed;
+}
+
+/**
+ * Opens the editor of a chatbot choosing between the two Design Studios by the chatbot's own
+ * version (see `goToCDSVersion`). Every path that creates or imports an agent goes through here
+ * with the object the server answered with, never with a stub: a stub has no `attributes`, so it
+ * would always open the previous editor.
+ * An agent labelled v3 opens in the new Design Studio when `cdsV3BaseUrl` is configured;
+ * without that URL, or for every other agent, falls back to `cdsBaseUrl` (CDS v2).
+ */
+export function openChatbotEditor(router: any, chatbot: Chatbot, project_id, config: any) {
+    goToCDSVersion(router, chatbot, project_id, config?.cdsBaseUrl, config?.cdsV3BaseUrl);
+}
+
+export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string, redirectV3BaseUrl?: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
 
-    let chatBotDate = new Date(chatbot.createdAt)
-    let dateLimit = new Date('2023-10-02T00:00:00')
-    if (chatBotDate > dateLimit) {
+    const v3BaseUrl = configuredUrl(redirectV3BaseUrl);
+    if (v3BaseUrl && isV3Chatbot(chatbot)) {
+        const urlCDS_v3 = `${v3BaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/blocks`
+        window.open(urlCDS_v3, '_self')
+        return;
+    }
+
+    // Missing/invalid createdAt (create-from-scratch can omit it) must open the external CDS.
+    // Otherwise we hit the legacy in-app `project/.../cds/...` route → NG04002.
+    const createdAt = chatbot && (chatbot as any).createdAt;
+    const chatBotDate = createdAt != null ? new Date(createdAt) : null;
+    const dateValid = !!(chatBotDate && !isNaN(chatBotDate.getTime()));
+    const dateLimit = new Date('2023-10-02T00:00:00');
+    const cdsBaseUrl = configuredUrl(redirectBaseUrl) || redirectBaseUrl;
+
+    if (!dateValid || chatBotDate > dateLimit) {
         // let urlCDS_v2 = `${redirectBaseUrl}dashboard/#/project/${project_id}/cds/${chatbot._id}/intent/0`
-        let urlCDS_v2 = `${redirectBaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/blocks` //  /intent/0
+        let urlCDS_v2 = `${cdsBaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/blocks` //  /intent/0
         window.open(urlCDS_v2, '_self')
     } else {
         router.navigate(['project/' + project_id + '/cds/', chatbot._id, 'intent', '0']);

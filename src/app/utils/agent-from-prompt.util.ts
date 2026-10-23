@@ -15,13 +15,13 @@ export const AGENT_FROM_PROMPT_KEY = 'cds-agent-from-prompt';
 export const MAX_PROMPT_LENGTH = 2000;
 
 export interface PendingAgentPrompt {
-  /** The agent the description belongs to: the note is ignored if another agent is opened. */
-  botId: string;
-  prompt: string;
-  /** The language every message of the new flow has to be written in. */
-  language: string;
-  /** When it was left. A note nobody collected must not fire hours later, on some other visit. */
-  createdAt: number;
+    /** The agent the description belongs to: the note is ignored if another agent is opened. */
+    botId: string;
+    prompt: string;
+    /** The language every message of the new flow has to be written in. */
+    language: string;
+    /** When it was left. A note nobody collected must not fire hours later, on some other visit. */
+    createdAt: number;
 }
 
 /** Leaves the description for the agent that was just created.
@@ -30,19 +30,19 @@ export interface PendingAgentPrompt {
  *  an agent that exists must not be reported as failed because a note could not be put down.
  *  The agent then opens empty, exactly as it did before this feature. */
 export function saveAgentPrompt(pending: PendingAgentPrompt): boolean {
-  const prompt = (pending?.prompt || '').trim().slice(0, MAX_PROMPT_LENGTH);
-  if (!pending?.botId || !prompt) {
-    return false;
-  }
-  try {
-    sessionStorage.setItem(AGENT_FROM_PROMPT_KEY, JSON.stringify({
-      botId: pending.botId,
-      prompt: prompt,
-      language: pending.language || 'en',
-      createdAt: Date.now()
-    }));
-    return true;
-  } catch (error) {
-    return false;
-  }
+    const prompt = (pending?.prompt || '').trim().slice(0, MAX_PROMPT_LENGTH);
+    if (!pending?.botId || !prompt) {
+        return false;
+    }
+    try {
+        sessionStorage.setItem(AGENT_FROM_PROMPT_KEY, JSON.stringify({
+            botId: pending.botId,
+            prompt: prompt,
+            language: pending.language || 'en',
+            createdAt: Date.now()
+        }));
+        return true;
+    } catch (error) {
+        return false;
+    }
 }

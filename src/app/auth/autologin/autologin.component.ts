@@ -13,6 +13,7 @@ import { ProjectService } from '../../services/project.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
+import { BUILD_WANNAGO_ROUTE, shouldHonorBuildWannago } from 'app/utils/pending-build.util';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -202,9 +203,12 @@ export class AutologinComponent implements OnInit {
       this.logger.log('[AUTOLOGIN] SSO - ssoLogin projectIDGetFromRoute ', projectIDGetFromRoute);
     
       this.getProject(projectIDGetFromRoute)
-    
 
-      this.router.navigate([route]);
+      // Google (and other SSO) ignore SigninComponent's wannago redirect: land on the
+      // JWT route (often /projects). Honour /build + pending prompt like email auth.
+      const wannago = this.localDbService.getFromStorage('wannago')
+      const postAuthRoute = shouldHonorBuildWannago(wannago) ? BUILD_WANNAGO_ROUTE : route
+      this.router.navigate([postAuthRoute]);
 
       // get if user has used Signin with Google
       const hasSigninWithGoogle = this.localDbService.getFromStorage('swg')
@@ -376,7 +380,9 @@ export class AutologinComponent implements OnInit {
                 localStorage.setItem('tiledesk_token', JWT);
                 this.auth.publishSSOloggedUser();
 
-                this.router.navigate([route]);
+                const wannago = this.localDbService.getFromStorage('wannago')
+                const postAuthRoute = shouldHonorBuildWannago(wannago) ? BUILD_WANNAGO_ROUTE : route
+                this.router.navigate([postAuthRoute]);
 
                 this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken JWT before to get permsission ', JWT)
                 this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken storedJWT before to get permsission ', storedJWT)

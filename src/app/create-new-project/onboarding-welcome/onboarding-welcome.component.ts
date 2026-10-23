@@ -3,17 +3,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
 import { Project } from 'app/models/project-model';
-import { AppConfigService } from 'app/services/app-config.service';
-import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { BrandService } from 'app/services/brand.service';
-import { FaqKbService } from 'app/services/faq-kb.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
-import { MAX_PROMPT_LENGTH, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
-import { consumePendingWebsitePrompt } from 'app/utils/pending-website-prompt.util';
-import { emailDomainWhiteList, goToCDSVersion } from 'app/utils/util';
+import { WidgetService } from 'app/services/widget.service';
+import {
+  ONBOARDING_FOCUS_VIBE_CODER_STATE,
+  ONBOARDING_VIBE_CODER_PROMPT_STATE,
+  consumePendingWebsitePrompt,
+} from 'app/utils/pending-website-prompt.util';
+import { emailDomainWhiteList, tranlatedLanguage } from 'app/utils/util';
 import { Subject } from 'rxjs';
-import { filter, map, switchMap, take, takeUntil } from 'rxjs/operators';
+import { filter, take, takeUntil, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'appdashboard-onboarding-welcome',
@@ -25,10 +26,9 @@ export class OnboardingWelcomeComponent implements OnInit, OnDestroy {
   companyNameParams: any;
   isStarting = false;
   startError: string | null = null;
-  /** True when a prompt arrived from the website — vibe coder is skipped. */
-  skipVibeCoder = false;
 
   private user: any;
+  /** Prompt from marketing site (?prompt=) — prefilled on Home vibe coder, no auto agent create. */
   private pendingExternalPrompt: string | null = null;
   private silentStartTriggered = false;
   private unsubscribe$ = new Subject<void>();
@@ -39,9 +39,7 @@ export class OnboardingWelcomeComponent implements OnInit, OnDestroy {
     public brandService: BrandService,
     private auth: AuthService,
     private projectService: ProjectService,
-    private faqKbService: FaqKbService,
-    private botLocalDbService: BotLocalDbService,
-    private appConfigService: AppConfigService,
+    private widgetService: WidgetService,
     private translate: TranslateService,
     private logger: LoggerService,
   ) {
@@ -53,9 +51,7 @@ export class OnboardingWelcomeComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.pendingExternalPrompt = consumePendingWebsitePrompt(this.route.snapshot.queryParams);
     if (this.pendingExternalPrompt) {
-      this.skipVibeCoder = true;
-      this.logger.log('[ON-BOARDING-WELCOME] External prompt detected — skipping vibe coder');
-      // Drop ?prompt= from the URL after consume so a refresh does not re-trigger.
+      this.logger.log('[ON-BOARDING-WELCOME] External prompt detected — will open Home with vibe coder focus');
       this.router.navigate([], {
         relativeTo: this.route,
         queryParams: {},
@@ -67,9 +63,10 @@ export class OnboardingWelcomeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((user) => {
         this.user = user;
-        if (user && this.skipVibeCoder && this.pendingExternalPrompt && !this.silentStartTriggered) {
+        // Website deep-link: create project and go Home (no auto chatbot).
+        if (user && this.pendingExternalPrompt && !this.silentStartTriggered) {
           this.silentStartTriggered = true;
-          this.startWithPrompt(this.pendingExternalPrompt);
+          this.startProjectAndGoHome(this.pendingExternalPrompt);
         }
       });
   }
@@ -79,18 +76,17 @@ export class OnboardingWelcomeComponent implements OnInit, OnDestroy {
     this.unsubscribe$.complete();
   }
 
-  onVibeCoderStart(prompt: string): void {
-    this.startWithPrompt(prompt);
+  onGetStarted(): void {
+    this.startProjectAndGoHome(this.pendingExternalPrompt);
   }
 
-  private startWithPrompt(rawPrompt: string): void {
-    const prompt = (rawPrompt || '').trim().slice(0, MAX_PROMPT_LENGTH);
-    if (!prompt) {
-      return;
-    }
-
+  /**
+   * Create project only (no AI Agent), seed widget labels, navigate to Home
+   * with vibe coder focused (and optional prompt prefilled).
+   */
+  private startProjectAndGoHome(promptForHome: string | null): void {
     if (!this.user) {
-      this.startError = 'User not available. Please sign in again.';
+      this.startError = this.translate.instant('UserNotAvailableSignInAgain');
       return;
     }
 
@@ -102,70 +98,70 @@ export class OnboardingWelcomeComponent implements OnInit, OnDestroy {
     this.startError = null;
 
     const projectName = this.resolveProjectName();
-    const agentName = `${projectName} AI Agent`;
-    const language = this.translate.currentLang || 'en';
-
-    this.logger.log('[ON-BOARDING-WELCOME] Start — projectName:', projectName, 'agentName:', agentName, 'silent:', this.skipVibeCoder);
+    this.logger.log('[ON-BOARDING-WELCOME] Get started — projectName:', projectName);
 
     this.projectService.createProject(projectName, 'onboarding-welcome')
       .pipe(
         takeUntil(this.unsubscribe$),
-        switchMap((project: Project) => {
+        tap((project: Project) => {
           this.logger.log('[ON-BOARDING-WELCOME] Project created', project);
           project['role'] = 'owner';
           this.auth.projectSelected(project, 'onboarding-welcome');
           localStorage.setItem(project._id, JSON.stringify(project));
-
-          return this.auth.project_bs.pipe(
-            filter((p) => !!(p && p._id === project._id)),
-            take(1),
-            switchMap(() =>
-              this.faqKbService.createChatbotFromScratch(agentName, 'tilebot', 'chatbot', language)
-                .pipe(
-                  map((faqKb: any) => {
-                    this.logger.log('[ON-BOARDING-WELCOME] AI Agent created', faqKb);
-                    if (faqKb?._id) {
-                      this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
-                      saveAgentPrompt({
-                        botId: faqKb._id,
-                        prompt,
-                        language,
-                        createdAt: Date.now(),
-                      });
-                    }
-                    return { project, faqKb };
-                  })
-                )
-            )
-          );
-        })
+        }),
       )
       .subscribe({
-        next: ({ project, faqKb }) => {
-          this.isStarting = false;
-          if (!faqKb?._id) {
-            this.startError = 'Could not create the AI Agent. Please try again.';
-            return;
-          }
-          goToCDSVersion(
-            this.router,
-            faqKb,
-            project._id,
-            this.appConfigService.getConfig().cdsBaseUrl
-          );
+        next: (project: Project) => {
+          this.auth.project_bs.pipe(
+            filter((p) => !!(p && p._id === project._id)),
+            take(1),
+            takeUntil(this.unsubscribe$),
+          ).subscribe({
+            next: () => {
+              this.cloneWidgetDefaultLanguage();
+              this.isStarting = false;
+              this.router.navigate([`project/${project._id}/home`], {
+                state: {
+                  [ONBOARDING_FOCUS_VIBE_CODER_STATE]: true,
+                  [ONBOARDING_VIBE_CODER_PROMPT_STATE]: promptForHome || null,
+                },
+              });
+            },
+            error: (error) => {
+              this.logger.error('[ON-BOARDING-WELCOME] project_bs error', error);
+              this.isStarting = false;
+              this.startError = this.translate.instant('SomethingWentWrongSettingUpProject');
+            },
+          });
         },
         error: (error) => {
-          this.logger.error('[ON-BOARDING-WELCOME] Start flow error', error);
+          this.logger.error('[ON-BOARDING-WELCOME] createProject error', error);
           this.isStarting = false;
-          this.startError = 'Something went wrong while setting up your project. Please try again.';
-        }
+          this.startError = this.translate.instant('SomethingWentWrongSettingUpProject');
+        },
       });
   }
 
   /**
-   * Same rules as onboarding-content.setProjectName():
-   * corporate email domain → use domain label; consumer domains → fallback.
+   * Same as onboarding-content.addWidgetDefaultLanguage():
+   * seed project widget labels from the default pack for browser lang (or EN).
+   * Fire-and-forget — does not block navigation to Home.
    */
+  private cloneWidgetDefaultLanguage(): void {
+    const browserLang = this.translate.getBrowserLang();
+    const langCode = tranlatedLanguage.includes(browserLang) ? browserLang : 'en';
+
+    this.logger.log('[ON-BOARDING-WELCOME] cloneLabel lang:', langCode);
+    this.widgetService.cloneLabel(langCode.toUpperCase()).subscribe({
+      next: (res: any) => {
+        this.logger.log('[ON-BOARDING-WELCOME] cloneLabel RES', res?.data);
+      },
+      error: (error) => {
+        this.logger.error('[ON-BOARDING-WELCOME] cloneLabel ERROR', error);
+      },
+    });
+  }
+
   private resolveProjectName(): string {
     const fromEmail = this.setProjectNameFromEmail();
     if (fromEmail) {

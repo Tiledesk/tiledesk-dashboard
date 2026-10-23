@@ -19,6 +19,7 @@ import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatb
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CreateChatbotModalModule } from './create-chatbot-modal/create-chatbot-modal.module';
+import { CreateAgentModalModule } from './create-agent-modal/create-agent-modal.module';
 import { CreateFlowsModalModule } from './create-flows-modal/create-flows-modal.module';
 import { MatRippleModule } from '@angular/material/core';
 
@@ -38,6 +39,7 @@ const routes: Routes = [
     BotsSidebarModule,
     ChatbotAlertModule,
     CreateChatbotModalModule,
+    CreateAgentModalModule,
     CreateFlowsModalModule,
     SharedModule,
     TranslateModule,

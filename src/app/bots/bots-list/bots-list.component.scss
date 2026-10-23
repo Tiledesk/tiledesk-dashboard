@@ -619,8 +619,32 @@ input[type="checkbox"]:disabled {
   font-family: var(--header-font-family) !important;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
-  margin-right: 25px;
+  // Gap to the import btn; right edge of the group matches .cl-card-action-group (20px)
+  margin-right: 12px;
   color: #fff !important; // Keep text white
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+}
+
+// Rightmost header control — same inset as card action icons (.cl-card-action-group)
+.bots-list-import-agent-btn {
+  margin-right: 20px;
+  border-radius: 9999px !important;
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+}
+
+.bots-list-add-from-template-btn {
+  margin-right: 12px;
 }
 
 .select-flow-btn:hover,
@@ -1083,7 +1107,7 @@ input[type="checkbox"]:disabled {
   top: 100% !important;
   margin-top: 5px !important;
   transform: none !important;
-  margin-right: 25px !important;
+  margin-right: 20px !important;
 }
 
 // Hide Bootstrap's automatic caret for orderByDropdown
@@ -1345,3 +1369,20 @@ input[type="checkbox"]:disabled {
 //   font-size: var(--mat-icon-font-size) !important;
 //   margin-top: 4px !important;
 // }
+
+// The small "v3" tag to the right of the name (sibling of .cl-card-item-name inside the flex
+// row .cl-card-item-name-wpr, so the name keeps its ellipsis and the tag is never clipped)
+.cl-card-v3-tag {
+  flex-shrink: 0;
+  align-self: center;
+  margin-left: 6px;
+  padding: 0 5px;
+  font-size: 10px;
+  line-height: 14px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
+  border-radius: var(--badge-border-radius);
+  color: #0d8cff;
+  background: rgba(13, 140, 255, .12);
+}

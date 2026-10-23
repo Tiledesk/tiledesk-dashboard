@@ -6,6 +6,8 @@ import { Project } from 'app/models/project-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { emailDomainWhiteList } from 'app/utils/util';
+import { BUILD_WANNAGO_ROUTE, shouldHonorBuildWannago } from 'app/utils/pending-build.util';
+import { LocalDbService } from 'app/services/users-local-db.service';
 import moment from 'moment';
 
 @Component({
@@ -22,7 +24,8 @@ export class CreateProjectGsComponent implements OnInit {
     public auth: AuthService,
     private projectService: ProjectService,
     private router: Router,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private localDbService: LocalDbService
   ) { }
 
   ngOnInit(): void {
@@ -35,6 +38,13 @@ export class CreateProjectGsComponent implements OnInit {
         this.getProjects(user)
         this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] USER  ', user)
         this.user = user
+        // Website /#/build?prompt=… : same path as email signup with wannago (skip onboarding).
+        const wannago = this.localDbService.getFromStorage('wannago')
+        if (shouldHonorBuildWannago(wannago)) {
+          this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] honour wannago=/build → /build')
+          this.router.navigate([BUILD_WANNAGO_ROUTE]);
+          return
+        }
         // this.createNewProject(user)
         // this.router.navigate(['/create-new-project']);
         this.router.navigate(['/onboarding']);

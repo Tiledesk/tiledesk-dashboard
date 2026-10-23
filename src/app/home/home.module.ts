@@ -33,6 +33,7 @@ import { MomentModule } from 'ngx-moment';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatDialogModule } from '@angular/material/dialog';
 import { VibeCoderModule } from 'app/shared/vibe-coder/vibe-coder.module';
+import { CreateAgentModalModule } from 'app/bots/bots-list/create-agent-modal/create-agent-modal.module';
 import { CreateChatbotModalModule } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.module';
 
 const routes: Routes = [
@@ -77,6 +78,7 @@ const routes: Routes = [
     OverlayModule,
     MatDialogModule,
     VibeCoderModule,
+    CreateAgentModalModule,
     CreateChatbotModalModule,
   ],
   exports: [

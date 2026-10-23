@@ -26,7 +26,7 @@
   // padding: 30px;
   max-width: 400px;
   width: 100% !important;
-  // margin: 0 auto;
+  margin: 0 auto;
 }
 
 .right-panel-logo {
@@ -83,6 +83,24 @@ input:-webkit-autofill {
   box-shadow: 0 0 0px 1000px white inset;
 }
 
+/* Full-page centered signup (left marketing split removed) */
+.split.right.signup-page-centered {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  left: auto;
+  right: auto;
+  top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px 48px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  background-color: #fff;
+}
+
 .split {
   height: 100%;
   // width: 50%;
@@ -104,16 +122,19 @@ input:-webkit-autofill {
 }
 
 .right {
-  width: 60%;
+  width: 100%;
   right: 0;
   background-color: #fff;
 }
 
 .centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
   // text-align: center;
 }
 
@@ -126,56 +147,37 @@ input:-webkit-autofill {
   display: none;
 }
 
-@media (max-width: 992px) {
-  .centered {
-    position: unset;
-    top: unset;
-    left: unset;
-    transform: unset;
-    // text-align: center;
-  }
+.signup-page-centered .right-logo {
+  display: none;
+}
 
+/* Same logo at all widths — left-aligned with title / form copy */
+.signup-page-centered .logo-at-media-plus-992 {
+  display: block;
+  height: 48px;
+  margin: 0 0 8px;
+  text-align: left;
+}
+
+.signup-page-centered .signup-title > h2 {
+  text-align: left !important;
+}
+
+.signup-page-centered .no-card-required {
+  text-align: left !important;
+}
+
+.signup-page-centered .left-panel-signin-link,
+.signup-page-centered .left-panel-gotov1-link {
+  display: block;
+  text-align: left;
+}
+
+@media (max-width: 992px) {
   .login-container {
     margin: 0 auto;
-    padding-left: 30px;
-    padding-right: 30px;
-    // width: 400px !important;
-  }
-
-  .right {
-    width: 100%;
-  }
-
-  .left {
-    width: 0%;
-  }
-
-  .left-panel-signin-link {
-    display: block;
-  }
-
-  .left-panel-gotov1-link {
-    display: block;
-  }
-
-  .logo-at-media-plus-992 {
-    display: none;
-  }
-
-  // .signup-subtitle {
-  //   display: none;
-  // }
-
-  .signup-title>h2 {
-    text-align: center !important;
-  }
-
-  .no-card-required {
-    text-align: center !important;
-    color: #666666 !important;
-    font-size: 1.1em !important;
-    font-weight: 300 !important;
-    margin: auto !important;
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }
 
@@ -186,20 +188,6 @@ input:-webkit-autofill {
   position: absolute;
   // max-height: 60px;
   max-height: 40px;
-}
-
-@media (min-width: 992px) {
-  .right-logo {
-    display: none;
-  }
-
-  .left-panel-signin-link {
-    display: none;
-  }
-
-  .left-panel-gotov1-link {
-    display: none;
-  }
 }
 
 .appsumo-features-signup-description {

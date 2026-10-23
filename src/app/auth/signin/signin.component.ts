@@ -10,6 +10,7 @@ import { BrandService } from '../../services/brand.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { TranslateService } from '@ngx-translate/core';
+import { isBuildWannagoRoute, shouldHonorBuildWannago } from 'app/utils/pending-build.util';
 declare const grecaptcha: any;
 
 type UserFields = 'email' | 'password';
@@ -115,6 +116,12 @@ export class SigninComponent implements OnInit {
 
   getStoredRoute() {
     this.storedRoute = this.localDbService.getFromStorage('wannago')
+    // Leftover wannago=/build without a valid pending prompt must not redirect after login.
+    if (isBuildWannagoRoute(this.storedRoute) && !shouldHonorBuildWannago(this.storedRoute)) {
+      this.logger.log('[SIGN-IN] clear stale wannago=/build (no pending website prompt)')
+      this.localDbService.removeFromStorage('wannago')
+      this.storedRoute = null
+    }
     this.logger.log('[SIGN-IN] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true

@@ -174,6 +174,34 @@ export class WebhookService {
       .get<[any]>(url, { headers: headers })
   }
 
+  /**
+   * Same POST as CDS WebhookService.createWebhook — registers the inbound URL
+   * (listed as "{chatbotName}-webhook" under Webhooks).
+   */
+  createFlowWebhook(
+    chatbot_id: string,
+    block_id: string,
+    asyncMode: boolean = false,
+    copilot: boolean = false,
+  ): Observable<[any]> {
+    const url = this.SERVER_BASE_PATH + this.projectID + '/webhooks/';
+    this.logger.log('[WEBHOOK-SERV] - CREATE FLOW WEBHOOK URL: ', url);
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': this.TOKEN,
+    });
+
+    const body = {
+      chatbot_id,
+      block_id,
+      async: asyncMode,
+      copilot,
+    };
+    this.logger.log('[WEBHOOK-SERV] - CREATE FLOW WEBHOOK BODY: ', body);
+
+    return this.http.post<[any]>(url, JSON.stringify(body), { headers });
+  }
 
   getFlowWebhookById(webhooksid) {
     const url = this.SERVER_BASE_PATH + this.projectID + '/webhooks/id/' + webhooksid;

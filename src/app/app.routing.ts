@@ -151,6 +151,7 @@ import { CreateProjectGsComponent } from './create-project-wizard/create-project
 import { CnpIsMobileComponent } from './create-new-project/cnp-is-mobile/cnp-is-mobile.component';
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { BuildFromWebsiteComponent } from './create-new-project/build-from-website/build-from-website.component';
 import { RoleGuard } from './core/role.guard';
 import { UnauthorizedToUpgradeComponent } from './auth/unauthorized-to-upgrade/unauthorized-to-upgrade.component';
 import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-page.component';
@@ -1565,6 +1566,8 @@ const routes: Routes = [
   // USED WHEN THE USER CLICK ON 'ADD NEW PROJECT' FROM THE NAVBAR
   //{ path: 'create-new-project', component: CreateProjectComponent, canActivate: [AuthGuard] }, // wizard 
 
+  // Prompt from website: /build?prompt=... (no AuthGuard; prompt saved before login redirect)
+  { path: 'build', component: BuildFromWebsiteComponent },
   { path: 'onboarding', component: OnboardingWelcomeComponent, canActivate: [AuthGuard] }, // wizard
   { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },

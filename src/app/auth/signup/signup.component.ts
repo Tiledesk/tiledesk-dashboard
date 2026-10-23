@@ -15,6 +15,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { ProjectService } from 'app/services/project.service';
 import { Project } from 'app/models/project-model';
 import { emailDomainWhiteList, tranlatedLanguage } from 'app/utils/util';
+import { isBuildWannagoRoute, shouldHonorBuildWannago } from 'app/utils/pending-build.util';
 import { TitleCasePipe } from '@angular/common';
 declare const grecaptcha: any;
 import { WidgetSetUpBaseComponent } from 'app/widget_components/widget-set-up/widget-set-up-base/widget-set-up-base.component';
@@ -463,6 +464,12 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   checkCurrentUrlAndSkipWizard() {
 
     this.storedRoute = this.localDbService.getFromStorage('wannago')
+    // Leftover wannago=/build without a valid pending prompt must not skip onboarding.
+    if (isBuildWannagoRoute(this.storedRoute) && !shouldHonorBuildWannago(this.storedRoute)) {
+      this.logger.log('[SIGN-UP] clear stale wannago=/build (no pending website prompt)')
+      this.localDbService.removeFromStorage('wannago')
+      this.storedRoute = null
+    }
     // this.logger.log('[SIGN-UP] storedRoute ', this.storedRoute)
     if (this.storedRoute) {
       this.EXIST_STORED_ROUTE = true

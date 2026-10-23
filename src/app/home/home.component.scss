@@ -2504,10 +2504,13 @@ print {
   background-color: #fff;
   margin-top: 71px;
   // border-bottom: 1px solid rgb(226, 232, 240);
-  height: 80px;
-    // background: beige;
-    display: flex;
-    align-items: center;
+  height: 80px; // toolbar row only (OPH + dashlet filter)
+  // background: beige;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  overflow: visible;
 }
 
 /* Same horizontal inset as .home-dashboard-inset (quick cards / blocks) */
@@ -2804,7 +2807,6 @@ img {
 
 #adjust-operating-hours-btn {
   box-shadow: unset;
-  margin-right: 16px;
   position: relative;
   background-color: #fff;
 }
@@ -2814,7 +2816,7 @@ img {
 }
 
 .oph-disabled {
-  color: var(--red-color)!important; //#f44336 !important;
+  color: rgba(0, 0, 0, .55) !important;
 }
 
 .oph-enabled {
@@ -2826,7 +2828,7 @@ img {
 }
 
 .oph-btn-disabled {
-  background-color: var(--red-color)!important; //#f44336 !important;
+  background-color: rgba(0, 0, 0, .55) !important;
 }
 
 #dashlet-filter-btn {
@@ -2904,12 +2906,15 @@ img {
 }
 
 .home-dashboard-inset {
+  position: relative;
+  z-index: 1;
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
   max-width: 100%;
   padding-left: 30px;
   padding-right: 30px;
+  padding-top: 8px;
 
   @media (max-width: 1400px) {
     padding-left: 20px;
@@ -2917,20 +2922,125 @@ img {
   }
 }
 
+/* Plan + project name left; OPH + dashlet icons right */
+.home-header-toolbar {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  margin-top: 8px;
+  margin-bottom: 12px;
+  min-height: 40px;
+  gap: 1rem;
+}
+
+.home-header-toolbar__identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.home-header-toolbar__actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  gap: 0.75rem;
+}
+
+/* Title + vibe coder + examples — under toolbar, above quick cards */
+.home-vibe-coder-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 28px;
+  padding: 24px 20px;
+  border: 1px solid #e8ecf1;
+  border-radius: 12px;
+  background-color: #fff;
+  background-image: radial-gradient(
+    70% 60% at 50% 50%,
+    color-mix(in srgb, #bee4ff 20%, transparent),
+    transparent 90%
+  );
+  box-shadow: 0 1px 3px #0000000f;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
+
+.home-vibe-coder-box__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  max-width: 100%;
+}
+
+// .home-vibe-coder__badge / __badge-star — removed from Home (kept commented for restore)
+// .home-vibe-coder__badge {
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 6px;
+//   padding: 5px 12px;
+//   border-radius: 999px;
+//   background: rgba(144, 68, 235, 0.1);
+//   border: 1px solid rgba(144, 68, 235, 0.22);
+//   color: rgb(144, 68, 235);
+//   font-family: var(--header-font-family, inherit);
+//   font-size: 11px;
+//   font-weight: 600;
+//   letter-spacing: 0.06em;
+//   line-height: 1.2;
+//   text-transform: uppercase;
+// }
+//
+// .home-vibe-coder__badge-star {
+//   flex-shrink: 0;
+//   font-size: 12px;
+//   line-height: 1;
+// }
+
 .home-vibe-coder {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
-  margin: 8px 0 28px;
+  width: 100%;
+  margin: 0;
+}
+
+.home-vibe-coder__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  max-width: 640px;
+  padding: 0 16px;
 }
 
 .home-vibe-coder__title {
-  color: var(--secondary-text-color, #64748b);
+  color: var(--text-color, #1e293b);
   font-family: var(--header-font-family, inherit);
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.4;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: center;
+  margin: 0;
+  max-width: 100%;
 }
 
 /* Wait state before permissions are known */

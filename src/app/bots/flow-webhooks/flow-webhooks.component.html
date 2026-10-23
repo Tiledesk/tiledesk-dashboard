@@ -50,6 +50,18 @@
 
                 <div class="row">
                     <div class="col-12">
+                        <button type="button"
+                            class="btn select-flow-btn pull-right"
+                            [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
+                            [disabled]="!PERMISSION_TO_ADD_FLOWS"
+                            (click)="presentNewWebhook()">
+                            {{ 'NewWebhook' | translate }}
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
 
                         <div class="card card--no-border" style="margin-top: 5px;">
 

@@ -21,26 +21,23 @@
         </a>
       </li>
 
+      <!-- All (every flow) — same as prod -->
       <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_MYCHATBOT_ALL_ROUTE_IS_ACTIVE}"
         (click)="goToAllFlows()">
         <a class="sidebar-item">
-         
-
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" class="svg-fill">
             <path
               d="M16.65 13 11 7.35l5.65-5.65 5.65 5.65zM3 11V3h8v8zm10 10v-8h8v8zM3 21v-8h8v8zM5 9h4V5H5zm11.675 1.2L19.5 7.375 16.675 4.55 13.85 7.375zM15 19h4v-4h-4zM5 19h4v-4H5z">
             </path>
           </svg>
           <p class="custom_paragraph" style="position: relative; top: 1px;">
-  
             {{'All' | translate}}
           </p>
-
           <span class="sidebar-item-s">{{ chatBotCount }}</span>
         </a>
       </li>
 
-
+      <!-- AI Agents (no webhook / copilot) — same as prod -->
       <li class="sidebar-item-wpr" [ngClass]="{'active-item': AIAGENT_ROUTE_IS_ACTIVE}"
         (click)="goToAiAgents()">
         <a class="sidebar-item">
@@ -54,33 +51,20 @@
             <path d="M9 13v2"></path>
           </svg>
           <p class="custom_paragraph" style="position: relative; top: 1px;">
-       
             {{'AIAgents' | translate}}
           </p>
-
           <span class="sidebar-item-s">{{ myChatbotOtherCount }}</span>
         </a>
       </li>
 
-
+      <!-- Automations removed (prod collapse) — route kept for deep links
       <li class="sidebar-item-wpr" [ngClass]="{'active-item': AUTOMATION_ROUTE_IS_ACTIVE}" (click)="goToAutomations()">
-        <a class="sidebar-item">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="svg-stroke">
-            <path
-              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-            </path>
-            <circle cx="12" cy="12" r="4"></circle>
-          </svg>
-          <p class="custom_paragraph" style="position: relative; top: 1px;">
-            {{'Automations' | translate}}
-          </p>
-          <span class="sidebar-item-s">{{ automationsCount }}</span>
-        </a>
+        ... Automations {{ automationsCount }}
       </li>
+      -->
 
       <!-- -------------------------- -->
-      <!-- WEBOOK SECTION -->
+      <!-- WEBHOOK SECTION -->
       <!-- -------------------------- -->
       <li class="sidebar-item-wpr-no-link" style="margin-top: 16px;">
         <a class="sidebar-item-no-link">
@@ -107,21 +91,6 @@
           <span class="sidebar-item-s">{{ flowWebhooksCount }}</span>
         </a>
       </li>
-
-
-      <!-- <li class="sidebar-item-wpr" [ngClass]="{'active-item': BOTS_MYCHATBOT_CUSTOMER_SATISFACTION_ROUTE_IS_ACTIVE}"
-        (click)="goToBotCustomerSatisfactionBots()">
-        <a class="sidebar-item">
-         
-         <i class="material-icons settings-sidebar-icons" style="margin-left: 0px !important;">
-            emoji_emotions
-          </i>
-          <p class="custom_paragraph" style="position: relative; top: 1px;">
-            Customer Satisfaction
-          </p>
-          <span class="sidebar-item-s">{{ customerSatisfactionBotsCount }}</span>
-        </a>
-      </li> -->
     </ng-container>
 
     <!-- -------------------------------------------------------- -->

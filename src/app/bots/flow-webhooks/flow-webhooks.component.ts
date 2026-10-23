@@ -1,18 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { AppConfigService } from 'app/services/app-config.service';
+import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { FaqService } from 'app/services/faq.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { WebhookService } from 'app/services/webhook.service';
+import { CreateChatbotModalComponent } from '../bots-list/create-chatbot-modal/create-chatbot-modal.component';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { openChatbotEditor } from 'app/utils/util';
+import { Subject, of } from 'rxjs';
+import { switchMap, takeUntil } from 'rxjs/operators';
 const Swal = require('sweetalert2')
 @Component({
   selector: 'appdashboard-flow-webhooks',
@@ -54,7 +58,10 @@ export class FlowWebhooksComponent implements OnInit {
   PERMISSION_TO_COPY_WEBHOOK_URL: boolean;
   PERMISSION_TO_ENABLE_DISABLE_WEBHOOK: boolean;
   PERMISSION_TO_DELETE_WEBHOOK: boolean;
+  PERMISSION_TO_ADD_FLOWS: boolean;
   project: any;
+  chatbotName: string;
+  botDefaultLangCode: string = 'en';
 
   constructor(
     private auth: AuthService,
@@ -67,6 +74,9 @@ export class FlowWebhooksComponent implements OnInit {
     public notify: NotifyService,
     private roleService: RoleService,
     private rolesService: RolesService,
+    private dialog: MatDialog,
+    private botLocalDbService: BotLocalDbService,
+    private faqService: FaqService,
   ) { }
 
 
@@ -153,9 +163,105 @@ export class FlowWebhooksComponent implements OnInit {
             this.PERMISSION_TO_DELETE_WEBHOOK = status.matchedPermissions.includes(PERMISSIONS.FLOW_WEBHOOK_DELETE);
             this.logger.log('[PERMISSION_TO_COPY_WEBHOOK_URL] - Custom role (3)', status.role, 'PERMISSION_TO_DELETE_WEBHOOK:', this.PERMISSION_TO_DELETE_WEBHOOK);
           }
+
+          // PERMISSION_TO_ADD_FLOWS (create webhook flow)
+          if (status.role === 'owner' || status.role === 'admin') {
+            this.PERMISSION_TO_ADD_FLOWS = true;
+          } else if (status.role === 'agent') {
+            this.PERMISSION_TO_ADD_FLOWS = false;
+          } else {
+            this.PERMISSION_TO_ADD_FLOWS = status.matchedPermissions.includes(PERMISSIONS.FLOW_ADD);
+          }
         });
   
     }
+
+  /**
+   * Same modal as Automations → Webhook on Master, then the same POST /webhooks/
+   * CDS runs when you generate/test the webhook URL (creates "{name}-webhook").
+   */
+  presentNewWebhook() {
+    if (!this.PERMISSION_TO_ADD_FLOWS) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+
+    const dialogRef = this.dialog.open(CreateChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '400px',
+      data: {
+        subtype: 'webhook',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      this.logger.log('[FLOW-WEBHOOKS] Create webhook dialog result:', result);
+      if (result && result.chatbotName) {
+        this.chatbotName = result.chatbotName;
+        this.createWebhookFromScratch('webhook');
+      }
+    });
+  }
+
+  private createWebhookFromScratch(botSubtype: string) {
+    if (this.ROLE === 'agent') {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+
+    this.faqKbService.createChatbotFromScratch(
+      this.chatbotName,
+      'tilebot',
+      botSubtype,
+      this.botDefaultLangCode,
+    ).pipe(
+      switchMap((faqKb: any) => {
+        this.logger.log('[FLOW-WEBHOOKS] create faq_kb webhook - RES ', faqKb);
+        if (!faqKb || !faqKb._id) {
+          return of(null);
+        }
+        this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
+        // CDS: getWebhook / createWebhook against the reserved "webhook" block.
+        return this.faqService.getAllFaqByFaqKbId(faqKb._id).pipe(
+          switchMap((faqs: any[]) => {
+            const webhookIntent = (faqs || []).find((f) =>
+              (f.intent_display_name || '').trim().toLowerCase() === 'webhook'
+            );
+            this.logger.log('[FLOW-WEBHOOKS] webhook intent ', webhookIntent);
+            if (!webhookIntent || !webhookIntent.intent_id) {
+              this.logger.error('[FLOW-WEBHOOKS] no webhook intent on new bot — cannot register /webhooks/');
+              return of({ faqKb, registered: false });
+            }
+            // Same body as CDS createWebhook (async=false when thereIsWebResponse=true).
+            return this.webhookService.createFlowWebhook(
+              faqKb._id,
+              webhookIntent.intent_id,
+              false,
+              false,
+            ).pipe(
+              switchMap(() => of({ faqKb, registered: true })),
+            );
+          }),
+        );
+      }),
+    ).subscribe((outcome: { faqKb: any, registered: boolean } | null) => {
+      this.chatbotName = null;
+      if (!outcome || !outcome.faqKb) {
+        return;
+      }
+      this.getFlowWebhooks();
+      openChatbotEditor(
+        this.router,
+        outcome.faqKb as any,
+        this.project._id,
+        this.appConfigService.getConfig(),
+      );
+    }, (error) => {
+      this.logger.error('[FLOW-WEBHOOKS] CREATE WEBHOOK ERROR ', error);
+      this.chatbotName = null;
+    });
+  }
 
   getServerBaseURL() {
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;

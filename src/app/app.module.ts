@@ -340,6 +340,7 @@ import { ChatbotModalComponent } from './bots/bots-list/chatbot-modal/chatbot-mo
 // import { KnowledgeBasesComponent } from './knowledge-bases/knowledge-bases.component'; // now lazy
 import { CnpTemplatesComponent } from './create-new-project/cnp-templates/cnp-templates.component';
 import { OnboardingWelcomeComponent } from './create-new-project/onboarding-welcome/onboarding-welcome.component';
+import { BuildFromWebsiteComponent } from './create-new-project/build-from-website/build-from-website.component';
 import { VibeCoderModule } from './shared/vibe-coder/vibe-coder.module';
 import { HomeNewsFeedModalComponent } from './home-components/home-news-feed/home-news-feed-modal/home-news-feed-modal.component';
 // import { AutomationsComponent } from './automations/automations.component'; // now lazy
@@ -668,6 +669,7 @@ const appInitializerFn = (appConfig: AppConfigService, brandService: BrandServic
     // ChatbotAlertComponent, // now lazy
     CnpTemplatesComponent,
     OnboardingWelcomeComponent,
+    BuildFromWebsiteComponent,
     HomeNewsFeedModalComponent,
     // AutomationsComponent, // now lazy
     // HomeCdsComponent, // now lazy

@@ -1,3 +1,30 @@
+.select-flow-btn {
+    box-shadow: unset !important;
+    border-radius: 9999px !important;
+    background-color: var(--blue-20) !important;
+    text-transform: none !important;
+    margin-bottom: 0 !important;
+    font-size: 14px !important;
+    font-family: var(--header-font-family) !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    // Align with card action group (.cl-card-action-group margin-right: 20px)
+    margin-right: 20px;
+    color: #fff !important;
+}
+
+.select-flow-btn:hover,
+.select-flow-btn:focus,
+.select-flow-btn:active {
+    color: #fff !important;
+}
+
+.select-flow-btn.disabled,
+.select-flow-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
 /* WH on off switch
 /* ******************* */
 

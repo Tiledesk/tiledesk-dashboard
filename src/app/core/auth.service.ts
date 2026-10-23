@@ -24,6 +24,7 @@ import { WebSocketJs } from '../services/websocket/websocket-js'
 import { LoggerService } from '../services/logger/logger.service'
 import { ScriptService } from '../services/script/script.service'
 import { APP_SUMO_PLAN_NAME, PLAN_NAME } from 'app/utils/util'
+import { BUILD_WANNAGO_ROUTE, shouldHonorBuildWannago } from 'app/utils/pending-build.util'
 import { BrandService } from 'app/services/brand.service'
 import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service'
 import { ProjectCacheService } from 'app/services/cache/project-cache.service'
@@ -1540,18 +1541,32 @@ export class AuthService {
 
 
   public siginWithGoogle() {
-    // this.logger.log('[AUTH-SERV] siginWithGoogle HERE YES!!!')
-    const url = this.SERVER_BASE_PATH + "auth/google"
-    // const url = "https://eu.rtmv3.tiledesk.com/api/auth/google"
+    // Same as email sign-in: after Google, land on /build when the website left a
+    // pending prompt (wannago=/build). Otherwise keep the server default redirect.
+    const url = this.googleAuthUrl()
     window.open(url, '_self');
     this.localDbService.setInStorage('swg', 'true')
   }
 
   public siginUpWithGoogle() {
-    const url = this.SERVER_BASE_PATH + "auth/google?redirect_url=%23%2Fcreate-project-gs"
-    // const url = "https://eu.rtmv3.tiledesk.com/api/auth/google?redirect_url=%23%2Fcreate-project-gs"
-    // this.logger.log('siginUpWithGoogle ', url)
+    // Default Google signup goes to create-project-gs → onboarding. When coming from
+    // /#/build?prompt=… honour wannago and open /build instead (creates the first
+    // project and prefills Home, same as email signup).
+    const url = this.googleAuthUrl('%23%2Fcreate-project-gs')
     window.open(url, '_self');
+    this.localDbService.setInStorage('swg', 'true')
+  }
+
+  /** Google OAuth entry URL; optional encoded redirect_url (e.g. %23%2Fcreate-project-gs). */
+  private googleAuthUrl(defaultRedirectEncoded?: string): string {
+    const wannago = this.localDbService.getFromStorage('wannago')
+    if (shouldHonorBuildWannago(wannago)) {
+      return this.SERVER_BASE_PATH + 'auth/google?redirect_url=' + encodeURIComponent('#' + BUILD_WANNAGO_ROUTE)
+    }
+    if (defaultRedirectEncoded) {
+      return this.SERVER_BASE_PATH + 'auth/google?redirect_url=' + defaultRedirectEncoded
+    }
+    return this.SERVER_BASE_PATH + 'auth/google'
   }
 
   signinWithOAuth2() {
