@@ -196,6 +196,7 @@
     "ClosedConvsCount": "{{conv_num}} жабық әңгіме",
     "TotalConversationsUsage": "Сөйлесулердің жалпы пайдаланылуы",
     "TotalAITokensUsage": "{{COMPANY_NAME}} токендерін толық пайдалануы",
+    "TotalAIAgentTokensUsage": "ЖИ агенті токендерінің жалпы пайдаланылуы (Design Studio)",
     "TotalEmailUsage": "Электрондық поштаның жалпы пайдаланылуы",
     "TotalVoiceUsage": "Дауысты жалпы пайдалану",
     "Email": "Электронды пошта",
@@ -994,6 +995,7 @@
     "AddTagToConversation": "Өтінішке тег қосу...",
     "Info": "Ақпарат",
     "AiTokens": "{{COMPANY_NAME}} Токендері",
+    "AiAgentTokens": "ЖИ агентінің токендері",
     "YouRunOutOfConversations": "Сізде сөйлесулер бітті",
     "YouRunOutOfAiTokens": "{{COMPANY_NAME}} токендеріңіз бітті",
     "YouRunOutOfEmail": "Сізде электрондық пошта бітті",
@@ -3671,6 +3673,8 @@
         "ConversationsReached": "Осы айдағы әңгіме квотасына жетті",
         "EmailReached": "Осы айдағы email квотасына жетті",
         "TokensReached": "Осы айдағы {{COMPANY_NAME}} токен квотасына жетті",
+        "AgentTokensReached": "Осы айдағы ЖИ агенті токен квотасына жетті",
+        "AgentTokensHelp": "Ағымдағы кезеңде ағындарыңызды құратын ЖИ агенті (Design Studio V3) пайдаланған токендер.",
         "VoiceReached": "Осы айдағы voice квотасына жетті"
     },
     "AddIntentPage": {

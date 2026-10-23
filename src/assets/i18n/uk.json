@@ -197,6 +197,7 @@
     "ClosedConvsCount": "{{conv_num}} закритих бесід",
     "TotalConversationsUsage": "Загальне використання розмов",
     "TotalAITokensUsage": "Загальне використання токенів {{COMPANY_NAME}}",
+    "TotalAIAgentTokensUsage": "Загальне використання токенів ШІ-агента (Design Studio)",
     "TotalEmailUsage": "Загальна кількість використання електронної пошти",
     "TotalVoiceUsage": "Загальне використання голосу",
     "Email": "Електронна пошта",
@@ -995,6 +996,7 @@
     "AddTagToConversation": "Додати тег до розмови...",
     "Info": "Інформація",
     "AiTokens": "Токени {{COMPANY_NAME}}",
+    "AiAgentTokens": "Токени ШІ-агента",
     "YouRunOutOfConversations": "У вас закінчилися розмови",
     "YouRunOutOfAiTokens": "У вас закінчилися токени {{COMPANY_NAME}}",
     "YouRunOutOfEmail": "У вас закінчилася електронна пошта",
@@ -3671,6 +3673,8 @@
         "ConversationsReached": "Квоту розмов на цей місяць вичерпано",
         "EmailReached": "Квоту email на цей місяць вичерпано",
         "TokensReached": "Квоту токенів {{COMPANY_NAME}} на цей місяць вичерпано",
+        "AgentTokensReached": "Квоту токенів ШІ-агента на цей місяць вичерпано",
+        "AgentTokensHelp": "Токени, використані ШІ-агентом, який будує ваші потоки (Design Studio V3), у поточному періоді.",
         "VoiceReached": "Квоту Voice на цей місяць вичерпано"
     },
     "AddIntentPage": {

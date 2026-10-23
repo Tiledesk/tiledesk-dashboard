@@ -196,6 +196,7 @@
     "ClosedConvsCount": "{{conv_num}} закрытых разговоров",
     "TotalConversationsUsage": "Общее использование разговоров",
     "TotalAITokensUsage": "Общее использование токенов {{COMPANY_NAME}}",
+    "TotalAIAgentTokensUsage": "Общее использование токенов ИИ-агента (Design Studio)",
     "TotalEmailUsage": "Общее использование электронной почты",
     "TotalVoiceUsage": "Общее использование голоса",
     "Email": "Электронная почта",
@@ -995,6 +996,7 @@
     "AddTagToConversation": "Добавить тег к разговору...",
     "Info": "Информация",
     "AiTokens": "Токены {{COMPANY_NAME}}",
+    "AiAgentTokens": "Токены ИИ-агента",
     "YouRunOutOfConversations": "У вас закончились разговоры",
     "YouRunOutOfAiTokens": "У вас закончились токены {{COMPANY_NAME}}",
     "YouRunOutOfEmail": "У вас закончилась электронная почта",
@@ -3670,6 +3672,8 @@
         "ConversationsReached": "Квота разговоров на этот месяц исчерпана",
         "EmailReached": "Квота email на этот месяц исчерпана",
         "TokensReached": "Квота токенов {{COMPANY_NAME}} на этот месяц исчерпана",
+        "AgentTokensReached": "Квота токенов ИИ-агента на этот месяц исчерпана",
+        "AgentTokensHelp": "Токены, использованные ИИ-агентом, который строит ваши потоки (Design Studio V3), в текущем периоде.",
         "VoiceReached": "Квота voice на этот месяц исчерпана"
     },
     "AddIntentPage": {

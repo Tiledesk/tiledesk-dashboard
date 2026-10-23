@@ -40,7 +40,7 @@ import { FaqKb } from 'app/models/faq_kb-model';
 
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
-import { QuotesDataPayload, QuotesService } from 'app/services/quotes.service';
+import { AgentTokensUsage, QuotesDataPayload, QuotesService } from 'app/services/quotes.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { sortChatbotsByLastUpdated } from 'app/utils/chatbot-sort.util';
@@ -281,6 +281,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   tokens_perc = 0;
   tokens_limit = 0;
 
+  /** Design Studio AI agent tokens; null when the server does not return agent_tokens (indicator hidden). */
+  agentTokensUsage: AgentTokensUsage | null = null;
+
   voice_count = 0;
   voice_perc = 0;
   voice_limit = 0;
@@ -306,7 +309,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   copilotPlanParams: { plan_name: string };
 
   /** CDK hover help on quota alert icons (same pattern as KB tags). */
-  quotaHelpOpen: 'conversations' | 'tokens' | 'email' | 'voice' | null = null;
+  quotaHelpOpen: 'conversations' | 'tokens' | 'agent_tokens' | 'email' | 'voice' | null = null;
   private quotaHelpCloseTimeout: ReturnType<typeof setTimeout> | null = null;
   quotaHelpPositions: ConnectedPosition[] = [
     {
@@ -1087,6 +1090,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             this.messages_count = this.allQuotas.messages.quote;
             this.email_count = this.allQuotas.email.quote;
             this.tokens_count = this.allQuotas.tokens.quote;
+            this.agentTokensUsage = this.quotesService.computeAgentTokensUsage(this.allQuotas, this.quotasLimits);
             this.voice_count = this.allQuotas.voice_duration?.quote
             this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)
 
@@ -1128,7 +1132,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     window.open(`mailto:${this.salesEmail}?subject=Resource increase request for project ${this.projectName} (${this.projectId}) &body=Dear Sales team, some of my monthly resource quota reached his limit for this month, I need some help!`);
   }
 
-  openQuotaHelp(resource: 'conversations' | 'tokens' | 'email' | 'voice'): void {
+  openQuotaHelp(resource: 'conversations' | 'tokens' | 'agent_tokens' | 'email' | 'voice'): void {
     this.cancelCloseQuotaHelp();
     this.quotaHelpOpen = resource;
   }

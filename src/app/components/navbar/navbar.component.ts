@@ -37,7 +37,7 @@ import { Subscription } from 'rxjs'
 import { BrandService } from './../../services/brand.service';
 import { LocalDbService } from '../../services/users-local-db.service';
 import { LoggerService } from '../../services/logger/logger.service';
-import { QuotesService } from 'app/services/quotes.service';
+import { AgentTokensUsage, QuotesService } from 'app/services/quotes.service';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { APP_SUMO_PLAN_NAME, PLAN_NAME, URL_understanding_default_roles } from 'app/utils/util';
 import { SleekplanApiService } from 'app/services/sleekplan-api.service';
@@ -195,6 +195,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokens_perc = 0;
   tokens_limit = 0;
 
+  /** Design Studio AI agent tokens; null when the server does not return agent_tokens (indicator hidden). */
+  agentTokensUsage: AgentTokensUsage | null = null;
+
   voice_count = 0;
   voice_perc = 0;
   voice_limit = 0;
@@ -221,7 +224,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   tokensRunnedOut: boolean = false;
 
   /** CDK hover help on quota alert icons (aligned with home Current usage). */
-  quotaHelpOpen: 'conversations' | 'tokens' | 'email' | 'voice' | null = null;
+  quotaHelpOpen: 'conversations' | 'tokens' | 'agent_tokens' | 'email' | 'voice' | null = null;
   private quotaHelpCloseTimeout: ReturnType<typeof setTimeout> | null = null;
   quotaHelpPositions: ConnectedPosition[] = [
     {
@@ -970,7 +973,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.logger.log('[NAVBAR] - onQuotasMenuClosed - isOpenCurrentUsageMenu ', this.isOpenCurrentUsageMenu )
   }
 
-  openQuotaHelp(resource: 'conversations' | 'tokens' | 'email' | 'voice'): void {
+  openQuotaHelp(resource: 'conversations' | 'tokens' | 'agent_tokens' | 'email' | 'voice'): void {
     if (this.quotaHelpCloseTimeout) {
       clearTimeout(this.quotaHelpCloseTimeout);
       this.quotaHelpCloseTimeout = null;
@@ -1171,6 +1174,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.messages_count = resp.quotes.messages.quote;
       this.email_count = resp.quotes.email.quote;
       this.tokens_count = resp.quotes.tokens.quote;
+      this.agentTokensUsage = this.quotesService.computeAgentTokensUsage(resp.quotes, project_limits);
       this.voice_count = resp.quotes.voice_duration.quote
       this.logger.log("[NAVBAR] getAllQuotes voice_count: ", this.voice_count)
       this.voice_count_min_sec = this.secondsToMinutes_seconds(this.voice_count)

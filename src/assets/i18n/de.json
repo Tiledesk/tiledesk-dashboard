@@ -196,6 +196,7 @@
     "ClosedConvsCount": "{{conv_num}} geschlossene Unterhaltungen",
     "TotalConversationsUsage": "Gesamte Konversationsnutzung",
     "TotalAITokensUsage": "Gesamtnutzung von {{COMPANY_NAME}}-Tokens",
+    "TotalAIAgentTokensUsage": "Gesamtnutzung der KI-Agent-Tokens (Design Studio)",
     "TotalEmailUsage": "Gesamte E-Mail-Nutzung",
     "TotalVoiceUsage": "Gesamte Sprachauslastung",
     "Email": "E-Mail",
@@ -994,6 +995,7 @@
     "AddTagToConversation": "Tag zur Konversation hinzufügen...",
     "Info": "Info",
     "AiTokens": "{{COMPANY_NAME}}-Tokens",
+    "AiAgentTokens": "KI-Agent-Tokens",
     "YouRunOutOfConversations": "Ihnen sind die Konversationen ausgegangen",
     "YouRunOutOfAiTokens": "Ihnen sind die {{COMPANY_NAME}}-Tokens ausgegangen",
     "YouRunOutOfEmail": "Ihnen sind die E-Mails ausgegangen",
@@ -3669,6 +3671,8 @@
         "ConversationsReached": "Das Gesprächskontingent für diesen Monat ist erreicht",
         "EmailReached": "Das E-Mail-Kontingent für diesen Monat ist erreicht",
         "TokensReached": "Das {{COMPANY_NAME}}-Token-Kontingent für diesen Monat ist erreicht",
+        "AgentTokensReached": "Das KI-Agent-Token-Kontingent für diesen Monat ist erreicht",
+        "AgentTokensHelp": "Tokens, die der KI-Agent, der deine Flows erstellt (Design Studio V3), im aktuellen Zeitraum verbraucht hat.",
         "VoiceReached": "Das Voice-Kontingent für diesen Monat ist erreicht"
     },
     "AddIntentPage": {

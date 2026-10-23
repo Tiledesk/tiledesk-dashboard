@@ -344,6 +344,90 @@
                       </div>
                     </div>
 
+                    <div aria-label="Usage limit for AI agent tokens" class="quota-section-main"
+                      *ngIf="agentTokensUsage">
+                      <div class="quota-container-wpr">
+                        <div class="quota-container">
+                          <div class="quota-left-column-wpr">
+                            <div class="quota-title-wpr">
+                              <h2 class="quota-title">{{'AiAgentTokens' | translate: tparams}}</h2>
+                            </div>
+                          </div>
+                          <div class="quota-right-column-wpr">
+                            <div class="quota-count-and-limit-wpr">
+                              <div class="quota-right-title-row">
+                                <p class="quota-right-title"
+                                  [class.quota-right-title-runned-out]="agentTokensUsage.runnedOut">
+                                  {{'TotalAIAgentTokensUsage' | translate: tparams}}
+                                </p>
+                                <ng-container>
+                                  <span
+                                    class="navbar-quota-alert-icon"
+                                    [class.quota-help-info-icon]="!agentTokensUsage.runnedOut"
+                                    #agentTokensQuotaHelpTrigger="cdkOverlayOrigin"
+                                    cdkOverlayOrigin
+                                    (mouseenter)="openQuotaHelp('agent_tokens')"
+                                    (mouseleave)="scheduleCloseQuotaHelp()"
+                                    (click)="$event.stopPropagation()">
+                                    <svg *ngIf="agentTokensUsage.runnedOut" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true">
+                                      <path
+                                        d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480L40 480c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24l0 112c0 13.3 10.7 24 24 24s24-10.7 24-24l0-112c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z" />
+                                    </svg>
+                                    <svg *ngIf="!agentTokensUsage.runnedOut" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" aria-hidden="true"><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" /></svg>
+                                  </span>
+                                  <ng-template
+                                    cdk-connected-overlay
+                                    [cdkConnectedOverlayOrigin]="agentTokensQuotaHelpTrigger"
+                                    [cdkConnectedOverlayOpen]="quotaHelpOpen === 'agent_tokens'"
+                                    [cdkConnectedOverlayPositions]="quotaHelpPositions"
+                                    [cdkConnectedOverlayHasBackdrop]="false"
+                                    (detach)="quotaHelpOpen = null">
+                                    <div class="cdk-popover home-quota-cdk-popover"
+                                      (mouseenter)="cancelCloseQuotaHelp()"
+                                      (mouseleave)="scheduleCloseQuotaHelp()"
+                                      (click)="$event.stopPropagation()">
+                                      <div class="cdk-popover-arrow"></div>
+                                      <div class="cdk-popover-content">
+                                        {{ 'HomeQuota.AgentTokensHelp' | translate }}
+                                        <ng-container *ngIf="agentTokensUsage.runnedOut">
+                                        <br>{{ 'HomeQuota.AgentTokensReached' | translate: tparams }}.
+                                        <ng-container *ngIf="isQuotaOwner; else agentTokensContactOwner">
+                                          <span class="sales-mail-to" (click)="onQuotaContactSalesClick($event)">
+                                            {{ 'HomeQuota.ContactSalesToIncrease' | translate }}
+                                          </span>
+                                        </ng-container>
+                                        <ng-template #agentTokensContactOwner>
+                                          {{ 'HomeQuota.ContactOwnerToIncrease' | translate }}
+                                        </ng-template>
+                                        </ng-container>
+                                      </div>
+                                    </div>
+                                  </ng-template>
+                                </ng-container>
+                              </div>
+                              <div class="quota-limit-wpr">
+                                <p class="quota-limit">{{agentTokensUsage.count | number:'1.0-0'}} /&nbsp;</p>
+                                <p class="quota-limit">{{agentTokensUsage.limit | number:'1.0-0'}}</p>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="quota-progress-row">
+                          <div class="quota-progress-bar" role="progressbar"
+                            [attr.aria-valuenow]="agentTokensUsage.perc" aria-valuemin="0" aria-valuemax="100">
+                            <div class="quota-progress-fill"
+                              [style.width.%]="agentTokensUsage.perc"
+                              [style.--quota-perc]="agentTokensUsage.perc">
+                            </div>
+                          </div>
+                          <span class="quota-progress-percentage"
+                            [ngClass]="{'quota-progress-percentage-runned-out': agentTokensUsage.runnedOut}">
+                            {{ agentTokensUsage.perc }}%
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
                     <div aria-label="Usage limit for Email" class="quota-section-main">
                       <div class="quota-container-wpr">
                         <div class="quota-container">

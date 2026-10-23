@@ -196,6 +196,7 @@
     "ClosedConvsCount": "{{conv_num}} من المحادثات المغلقة",
     "TotalConversationsUsage": "إجمالي استخدام المحادثات",
     "TotalAITokensUsage": "إجمالي استخدام رموز {{COMPANY_NAME}}",
+    "TotalAIAgentTokensUsage": "إجمالي استخدام رموز وكيل الذكاء الاصطناعي (Design Studio)",
     "TotalEmailUsage": "إجمالي استخدام البريد الإلكتروني",
     "TotalVoiceUsage": "إجمالي استخدام الصوت",
     "Email": "بريد إلكتروني",
@@ -994,6 +995,7 @@
     "AddTagToConversation": "إضافة علامة إلى المحادثة...",
     "Info": "معلومات",
     "AiTokens": "رموز {{COMPANY_NAME}}",
+    "AiAgentTokens": "رموز وكيل الذكاء الاصطناعي",
     "YouRunOutOfConversations": "لقد نفدت المحادثات",
     "YouRunOutOfAiTokens": "لقد نفدت رموز {{COMPANY_NAME}}",
     "YouRunOutOfEmail": "لقد نفد البريد الإلكتروني",
@@ -3671,6 +3673,8 @@
         "ConversationsReached": "تم بلوغ حصة المحادثات لهذا الشهر",
         "EmailReached": "تم بلوغ حصة البريد الإلكتروني لهذا الشهر",
         "TokensReached": "تم بلوغ حصة توكن {{COMPANY_NAME}} لهذا الشهر",
+        "AgentTokensReached": "تم بلوغ حصة رموز وكيل الذكاء الاصطناعي لهذا الشهر",
+        "AgentTokensHelp": "الرموز التي استخدمها وكيل الذكاء الاصطناعي الذي يبني تدفقاتك (Design Studio V3) في الفترة الحالية.",
         "VoiceReached": "تم بلوغ حصة الصوت لهذا الشهر"
     },
     "AddIntentPage": {
