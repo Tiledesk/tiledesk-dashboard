@@ -16,6 +16,7 @@
         <label class="agent-type-field__label">{{ 'ChooseTheAgentType' | translate }}</label>
         <ng-select
             class="agent-type-select"
+            appendTo="body"
             [items]="agentTypeOptions"
             bindLabel="label"
             bindValue="value"

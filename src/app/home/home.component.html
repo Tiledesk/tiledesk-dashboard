@@ -15,19 +15,33 @@
         <div class="bg-card">
           <div class="flex flex-col w-full max-w-screen-xl mx-auto padding-l-r">
 
-            <!-- OPH + dashlet icons pinned right -->
+            <!-- Plan + project name left; OPH + dashlet icons right -->
             <div class="home-header-toolbar">
-              <!-- home-project-plan-badge removed; project name commented -->
-              <!-- Project / workspace name (commented on Home)
-              <div class="text-2xl md-text-5xl font-w-400 tracking-tight  md-leading-snug truncate project---name">
-                <span style="font-family: 'Poppins', Arial, sans-serif;">
-                  {{ prjct_name }}
-                </span>
-                <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
-                  matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
-                  #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
-                  mode_edit
-                </span>
+              <!-- Plan badge + project name (commented on Home)
+              <div class="home-header-toolbar__identity">
+                <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
+                  (click)="goToSubscription()">
+                  <div *ngIf="isVisiblePay" class="home-project-plan-badge" [ngClass]="{
+                      'free-plan-badge': project?.plan_badge_background_type === 'free_plan_badge',
+                      'a-plan-badge': project?.plan_badge_background_type === 'a_plan_badge',
+                      'b-plan-badge': project?.plan_badge_background_type === 'b_plan_badge',
+                      'bb-plan-badge': project?.plan_badge_background_type === 'bb_plan_badge',
+                      'c-plan-badge': project?.plan_badge_background_type === 'c_plan_badge',
+                      'unsupported-plan-badge': project?.plan_badge_background_type === 'unsupported_plan_badge'
+                      }">
+                    <span>{{ prjct_profile_name }}</span>
+                  </div>
+                </div>
+                <div class="text-2xl md-text-5xl font-w-400 tracking-tight md-leading-snug truncate project---name">
+                  <span style="font-family: 'Poppins', Arial, sans-serif;">
+                    {{ prjct_name }}
+                  </span>
+                  <span class="material-icons home-edit-project-name-icon" (click)="goToProjectSettingsGeneral()"
+                    matTooltipClass="custom-mat-tooltip" matTooltip="{{'EditProjectName' | translate }}"
+                    #tooltip="matTooltip" matTooltipPosition='below' matTooltipHideDelay="100">
+                    mode_edit
+                  </span>
+                </div>
               </div>
               -->
               <div class="home-header-toolbar__actions">

@@ -23,7 +23,7 @@ import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
 // import * as moment from 'moment';
 import moment from "moment";
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, openChatbotEditor, PLAN_NAME } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, openChatbotEditor, PLAN_NAME, projectDefaultsDashletFiltersOff } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators'
@@ -50,6 +50,7 @@ import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { CreateAgentModalComponent, CreateAgentModalResult } from 'app/bots/bots-list/create-agent-modal/create-agent-modal.component';
 import { CreateChatbotModalComponent } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.component';
 import { MAX_PROMPT_LENGTH, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
+import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
 import { VibeCoderComponent } from 'app/shared/vibe-coder/vibe-coder.component';
 import {
   ONBOARDING_FOCUS_VIBE_CODER_STATE,
@@ -1129,7 +1130,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         this.project = project
         if (project.attributes && project.attributes.dashlets) {
           this.PROJECT_ATTRIBUTES = project.attributes;
-          this.getDashlet(this.PROJECT_ATTRIBUTES)
+          this.getDashlet(this.PROJECT_ATTRIBUTES, project.createdAt)
+        } else {
+          // No dashlets prefs yet — date cutover decides filter defaults (Overview / Flows / Quota)
+          this.applyDefaultDashletFilterVisibility(project.createdAt)
         }
 
         if (project.attributes && project.attributes.userPreferences) {
@@ -1539,15 +1543,34 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.editOperatingHoursBtn.nativeElement.blur();
   }
 
-  getDashlet(project_attributes) {
+  /**
+   * Filter dashlets defaults when prefs are missing:
+   * - Flows (`homeFlow`): always **on** (shows after first chatbot, like before)
+   * - Overview / Current usage: on before cutover, off after (`HOME_DASHLET_FILTER_OFF_FROM`)
+   */
+  private applyDefaultDashletFilterVisibility(projectCreatedAt?: any): void {
+    const overviewQuotaOn = !projectDefaultsDashletFiltersOff(projectCreatedAt);
+    this.displayHomeFlow = true;
+    this.displayOverview = overviewQuotaOn;
+    this.displayQuotaBanner = overviewQuotaOn;
+  }
+
+  getDashlet(project_attributes, projectCreatedAt?: any) {
     // this.logger.log('[HOME] - (onInit) - DASHLETS PREFERENCES project_attributes ', project_attributes);
     if (project_attributes && project_attributes.dashlets) {
       this.logger.log('[HOME] - (onInit) ----> DASHLETS PREFERENCES ', project_attributes.dashlets);
       const dashlets = project_attributes.dashlets;
-      const workspaceFallback = dashlets.workspaceOverview !== false;
+      const overviewQuotaDefaultOn = !projectDefaultsDashletFiltersOff(projectCreatedAt);
+      const workspaceFallback = dashlets.workspaceOverview !== undefined && dashlets.workspaceOverview !== null
+        ? dashlets.workspaceOverview !== false
+        : overviewQuotaDefaultOn;
 
-      // Missing key → on (do not inherit workspaceFallback; avoids sticky off after prefs PATCH)
-      this.displayHomeFlow = dashlets.homeFlow !== false;
+      // Flows: missing key → on (content appears when chatbots.length > 0)
+      if (dashlets.homeFlow !== undefined && dashlets.homeFlow !== null) {
+        this.displayHomeFlow = dashlets.homeFlow !== false;
+      } else {
+        this.displayHomeFlow = true;
+      }
 
       if (dashlets.overview !== undefined && dashlets.overview !== null) {
         this.displayOverview = dashlets.overview !== false;
@@ -1557,17 +1580,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         // Legacy keys present: on if either was explicitly true
         this.displayOverview = dashlets.convsGraph === true || dashlets.analyticsIndicators === true;
       } else {
-        // No overview keys at all → same default as homeFlow (do not treat missing as off)
-        this.displayOverview = workspaceFallback;
+        this.displayOverview = overviewQuotaDefaultOn;
       }
 
       this.displayHomeKbAnalytics = dashlets.homeKbAnalytics !== undefined && dashlets.homeKbAnalytics !== null
         ? dashlets.homeKbAnalytics !== false
         : workspaceFallback;
 
-      this.displayQuotaBanner = dashlets.quotaBanner !== undefined && dashlets.quotaBanner !== null
-        ? dashlets.quotaBanner !== false
-        : true;
+      if (dashlets.quotaBanner !== undefined && dashlets.quotaBanner !== null) {
+        this.displayQuotaBanner = dashlets.quotaBanner !== false;
+      } else {
+        this.displayQuotaBanner = overviewQuotaDefaultOn;
+      }
 
       this.displayAnalyticsIframe = dashlets.analyticsIframe !== false
       this.displayConnectWhatsApp = dashlets.connectWhatsApp
@@ -3621,6 +3645,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
           }
           this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
+          hookFirstFlowToDefaultDepartment(
+            this.faqKbService,
+            this.departmentService,
+            faqKb._id,
+            subtype,
+          );
           openChatbotEditor(this.router, faqKb, this.projectId, this.appConfigService.getConfig());
         },
         error: (err) => {
@@ -3653,6 +3683,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             return;
           }
           this.botLocalDbService.saveBotsInStorage(faqKb._id, faqKb);
+          hookFirstFlowToDefaultDepartment(
+            this.faqKbService,
+            this.departmentService,
+            faqKb._id,
+            subtype,
+          );
           // Only hand off to CDS vibe coder when the Home box had a prompt (Flussi may omit it).
           if (normalizedPrompt) {
             saveAgentPrompt({

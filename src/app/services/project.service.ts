@@ -6,7 +6,7 @@ import { AuthService } from '../core/auth.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AppConfigService } from '../services/app-config.service';
 import { LoggerService } from '../services/logger/logger.service';
-import { map, shareReplay, tap } from 'rxjs/operators';
+import { catchError, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 import { AllProjectsCacheService } from './cache/all-projects-cache.service';
 import { ProjectCacheService } from './cache/project-cache.service';
 
@@ -240,6 +240,39 @@ export class ProjectService {
     const create$ = this._httpclient
       .post(url, JSON.stringify(body), httpOptions)
       .pipe(
+        switchMap((project: any) => {
+          // Seed Home filter dashlets: Overview + Current usage off; Flows on so home-flow
+          // appears when the first chatbot exists (same as before). dateLimit on Home is safety net.
+          if (!project || !project._id) {
+            return of(project);
+          }
+          const attrsUrl = this.SERVER_BASE_PATH + 'projects/' + project._id + '/attributes';
+          const dashletsBody = {
+            dashlets: {
+              homeFlow: true,
+              overview: false,
+              workspaceOverview: false,
+              quotaBanner: false,
+              homeKbAnalytics: false,
+              convsGraph: false,
+              analyticsIndicators: false,
+              connectWhatsApp: false,
+              createChatbot: true,
+              knowledgeBase: true,
+              inviteTeammate: true,
+              customizeWidget: false,
+              newsFeed: true,
+              analyticsIframe: true,
+            },
+          };
+          return this._httpclient.patch(attrsUrl, dashletsBody, httpOptions).pipe(
+            map(() => project),
+            catchError((err) => {
+              this.logger.error('[PROJECT-SERV] CREATE PROJECT — seed dashlets prefs ERROR', err);
+              return of(project);
+            }),
+          );
+        }),
         tap(() => {
           // Clear the all projects cache after successful creation
           // (no need to clear ProjectCacheService because the new project is not yet in cache)

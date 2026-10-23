@@ -666,6 +666,27 @@ export const appSumoHighlightedFeaturesPlanATier4 = [
 
 
 /**
+ * Cutover for Home filter dashlets **Overview** and **Current usage** (not Flows).
+ * Projects created on/after this date default those to **off** when the preference key is
+ * missing (same idea as the CDS `dateLimit`). Older projects keep missing-key → on.
+ * **Flows** (`homeFlow`) stays default **on** so `home-flow` appears after the first chatbot.
+ * New projects also get prefs written at create (see `ProjectService.createProject`).
+ */
+export const HOME_DASHLET_FILTER_OFF_FROM = new Date('2026-10-22T00:00:00');
+
+/** True when the project should treat missing Overview / Current usage keys as off. */
+export function projectDefaultsDashletFiltersOff(createdAt: any): boolean {
+    if (createdAt == null) {
+        return false;
+    }
+    const created = new Date(createdAt);
+    if (isNaN(created.getTime())) {
+        return false;
+    }
+    return created >= HOME_DASHLET_FILTER_OFF_FROM;
+}
+
+/**
  * An agent managed by the new Design Studio carries the label `ds_version = 'v3'`, a field of the
  * bot written by whoever created it (the server keeps it there since 2.30.0). An agent saved
  * before that date carries the same label in `attributes.dsVersion`, and counts as v3 too: the

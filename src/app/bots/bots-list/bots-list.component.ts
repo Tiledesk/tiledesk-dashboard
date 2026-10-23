@@ -32,6 +32,7 @@ import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-mod
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
 import { CreateAgentModalComponent, CreateAgentModalResult } from './create-agent-modal/create-agent-modal.component';
 import { saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
+import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
 import { aiAgents, automations } from 'app/integrations/utils';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
@@ -1782,6 +1783,14 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (faqKb) {
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(faqKb['_id'], faqKb);
+
+        // First active flow → silently attach to default department (widget can answer).
+        hookFirstFlowToDefaultDepartment(
+          this.faqKbService,
+          this.departmentService,
+          faqKb['_id'],
+          botSubtype,
+        );
 
         // Before the redirect, and only then: the note is addressed to this agent, so it needs
         // the id the server has just answered with. The Design Studio picks it up on the other

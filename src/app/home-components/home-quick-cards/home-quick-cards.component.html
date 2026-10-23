@@ -96,54 +96,52 @@
       </div>
       <div class="home-quick-card__body">
         <div class="home-quick-card__title">{{ 'Flows' | translate }}</div>
-        <ng-container *ngIf="isFlowsEmpty; else flowsCountState">
+        <button
+          *ngIf="isFlowsEmpty"
+          type="button"
+          class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
+          (click)="onAddFlowClick($event)">
+          <span class="home-quick-card__remaining-text">{{ 'HomeQuickCards.CreateFirstFlow' | translate }}</span>
+          <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
+        </button>
+        <button
+          *ngIf="!isFlowsEmpty && showFlowsAddFlow"
+          type="button"
+          class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
+          (click)="onAddFlowClick($event)">
+          <span class="home-quick-card__remaining-text">{{ 'HomeQuickCards.AddFlow' | translate }}</span>
+          <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
+        </button>
+        <div class="home-quick-card__remaining" *ngIf="!isFlowsEmpty && showFlowsUpgradePlan">
           <button
             type="button"
-            class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
-            (click)="onAddFlowClick($event)">
-            <span class="home-quick-card__remaining-text">{{ 'HomeQuickCards.CreateFirstFlow' | translate }}</span>
-            <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
+            class="home-quick-card__invite-btn"
+            (click)="onFlowsUpgradePlanClick($event)">
+            {{ upgradePlanCtaLabelKey | translate }}
           </button>
-        </ng-container>
-        <ng-template #flowsCountState>
-          <button
-            *ngIf="showFlowsAddFlow"
-            type="button"
-            class="home-quick-card__remaining home-quick-card__remaining--link home-quick-card__add-content-btn"
-            (click)="onAddFlowClick($event)">
-            <span class="home-quick-card__remaining-text">{{ 'HomeQuickCards.AddFlow' | translate }}</span>
-            <mat-icon class="home-quick-card__remaining-arrow" aria-hidden="true">arrow_forward</mat-icon>
-          </button>
-          <div class="home-quick-card__remaining" *ngIf="showFlowsUpgradePlan">
-            <button
-              type="button"
-              class="home-quick-card__invite-btn"
-              (click)="onFlowsUpgradePlanClick($event)">
-              {{ upgradePlanCtaLabelKey | translate }}
-            </button>
-          </div>
-          <div class="home-quick-card__value">
-            <span
-              class="home-quick-card__count"
-              [class.home-quick-card__count--over]="flowsCountOverLimit"
-              [class.home-quick-card__count--static]="!canViewFlows">
-              <ng-container *ngIf="showFlowsLimit; else flowsCountOnly">
-                <span
-                  class="home-quick-card__count-current"
-                  [matTooltip]="'HomeQuickCards.LimitExceeded' | translate"
-                  [matTooltipDisabled]="!flowsCountOverLimit"
-                  matTooltipClass="h-custom-mat-tooltip"
-                  matTooltipPosition="above"
-                  matTooltipHideDelay="100"
-                  #flowsLimitTooltip="matTooltip">{{ countOfChatbots | number:'1.0-0' }}</span>
-                <span class="home-quick-card__count-total">/{{ chatBotLimit | number:'1.0-0' }}</span>
-              </ng-container>
-              <ng-template #flowsCountOnly>
-                <span class="home-quick-card__count-current">{{ countOfChatbots | number:'1.0-0' }}</span>
-              </ng-template>
-            </span>
-          </div>
-        </ng-template>
+        </div>
+        <!-- Always show created/limit (incl. 0/N on new projects) -->
+        <div class="home-quick-card__value">
+          <span
+            class="home-quick-card__count"
+            [class.home-quick-card__count--over]="flowsCountOverLimit"
+            [class.home-quick-card__count--static]="!canViewFlows">
+            <ng-container *ngIf="showFlowsLimit; else flowsCountOnly">
+              <span
+                class="home-quick-card__count-current"
+                [matTooltip]="'HomeQuickCards.LimitExceeded' | translate"
+                [matTooltipDisabled]="!flowsCountOverLimit"
+                matTooltipClass="h-custom-mat-tooltip"
+                matTooltipPosition="above"
+                matTooltipHideDelay="100"
+                #flowsLimitTooltip="matTooltip">{{ countOfChatbots | number:'1.0-0' }}</span>
+              <span class="home-quick-card__count-total">/{{ chatBotLimit | number:'1.0-0' }}</span>
+            </ng-container>
+            <ng-template #flowsCountOnly>
+              <span class="home-quick-card__count-current">{{ countOfChatbots | number:'1.0-0' }}</span>
+            </ng-template>
+          </span>
+        </div>
       </div>
       <mat-icon *ngIf="canViewFlows" class="home-quick-card__chevron">chevron_right</mat-icon>
     </article>
@@ -206,8 +204,9 @@
               <span class="home-quick-card__count-current">{{ countOfKbNamespaces | number:'1.0-0' }}</span>
             </ng-template>
           </span>
-          <span class="home-quick-card__kb-sep" *ngIf="hasKbContents" aria-hidden="true">·</span>
-          <span class="home-quick-card__kb-contents" *ngIf="hasKbContents">
+          <!-- Contents N/N always (incl. 0/N on new projects) when plan exposes a contents limit -->
+          <span class="home-quick-card__kb-sep" *ngIf="showKbContentsLimit || hasKbContents" aria-hidden="true">·</span>
+          <span class="home-quick-card__kb-contents" *ngIf="showKbContentsLimit || hasKbContents">
             <ng-container *ngIf="showKbContentsLimit; else kbContentsCountOnly">
               <span
                 class="home-quick-card__remaining-count"

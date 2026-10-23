@@ -1,4 +1,4 @@
-import { configuredUrl, goToCDSVersion, isV3Chatbot, openChatbotEditor } from './util';
+import { configuredUrl, goToCDSVersion, HOME_DASHLET_FILTER_OFF_FROM, isV3Chatbot, openChatbotEditor, projectDefaultsDashletFiltersOff } from './util';
 
 /**
  * Which editor a chatbot opens in: an agent labelled v3 goes to the new Design Studio when its
@@ -36,6 +36,20 @@ describe('util - the Design Studio of a chatbot', () => {
       expect(configuredUrl('${CDS_V3_URL}')).toBeNull();
       expect(configuredUrl(undefined)).toBeNull();
       expect(configuredUrl(null)).toBeNull();
+    });
+  });
+
+  describe('projectDefaultsDashletFiltersOff', () => {
+    it('is false for projects before the cutover (missing filter keys stay on)', () => {
+      expect(projectDefaultsDashletFiltersOff('2026-10-21T23:59:59.000Z')).toBe(false);
+      expect(projectDefaultsDashletFiltersOff(null)).toBe(false);
+      expect(projectDefaultsDashletFiltersOff(undefined)).toBe(false);
+      expect(projectDefaultsDashletFiltersOff('not-a-date')).toBe(false);
+    });
+    it('is true on/after HOME_DASHLET_FILTER_OFF_FROM', () => {
+      expect(projectDefaultsDashletFiltersOff(HOME_DASHLET_FILTER_OFF_FROM)).toBe(true);
+      expect(projectDefaultsDashletFiltersOff('2026-10-22T00:00:00.000Z')).toBe(true);
+      expect(projectDefaultsDashletFiltersOff('2026-12-01T00:00:00.000Z')).toBe(true);
     });
   });
 
