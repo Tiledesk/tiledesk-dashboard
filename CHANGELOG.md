@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.32
+Adds a prompt box on Home that lets users enter a description used by the CDS vibe coder to create an AI Agent
+
 ### 2.8.31
 - Fixes the bug: WhatsApp broadcast CSV template columns did not match actual template parameters
 - Improves Knowledge Base “used by chatbots” list wrapping and chip layout
