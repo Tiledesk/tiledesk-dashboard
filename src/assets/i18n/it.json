@@ -198,6 +198,7 @@
     "ClosedConvsCount": "{{conv_num}} conversazioni chiuse",
     "TotalConversationsUsage": "Utilizzo totale delle conversazioni",
     "TotalAITokensUsage": "Utilizzo totale dei token {{COMPANY_NAME}}",
+    "TotalAIAgentTokensUsage": "Utilizzo totale dei token dell'agente AI (Design Studio)",
     "TotalEmailUsage": "Utilizzo totale delle email",
     "TotalVoiceUsage": "Utilizzo totale della voce",
     "Email": "E-mail",
@@ -993,6 +994,7 @@
     "AddTagToConversation": "Aggiungi Tag alla conversazione...",
     "Info": "Info",
     "AiTokens": "Token {{COMPANY_NAME}}",
+    "AiAgentTokens": "Token agente AI",
     "YouRunOutOfConversations": "Hai esaurito le conversazioni",
     "YouRunOutOfAiTokens": "Hai esaurito i token {{COMPANY_NAME}}",
     "YouRunOutOfEmail": "Hai esaurito l'email",
@@ -3676,6 +3678,8 @@
         "ConversationsReached": "Hai raggiunto la quota di conversazioni per questo mese",
         "EmailReached": "Hai raggiunto la quota email per questo mese",
         "TokensReached": "Hai raggiunto la quota di token {{COMPANY_NAME}} per questo mese",
+        "AgentTokensReached": "Hai raggiunto la quota di token dell'agente AI per questo mese",
+        "AgentTokensHelp": "Token usati dall'agente AI che costruisce i tuoi flussi (Design Studio V3) nel periodo corrente.",
         "VoiceReached": "Hai raggiunto la quota voice per questo mese"
     },
     "AddIntentPage": {

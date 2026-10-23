@@ -197,6 +197,7 @@
     "ClosedConvsCount": "{{conv_num}} kapalı görüşme",
     "TotalConversationsUsage": "Toplam konuşma kullanımı",
     "TotalAITokensUsage": "Toplam {{COMPANY_NAME}} token kullanımı",
+    "TotalAIAgentTokensUsage": "Toplam yapay zeka ajanı token kullanımı (Design Studio)",
     "TotalEmailUsage": "Toplam e-posta kullanımı",
     "TotalVoiceUsage": "Toplam ses kullanımı",
     "Email": "E-posta",
@@ -992,6 +993,7 @@
     "AddTagToConversation": "Konuşmaya etiket ekle...",
     "Info": "Bilgi",
     "AiTokens": "{{COMPANY_NAME}} Tokenları",
+    "AiAgentTokens": "Yapay zeka ajanı tokenları",
     "YouRunOutOfConversations": "Konuşmalarınız tükendi",
     "YouRunOutOfAiTokens": "{{COMPANY_NAME}} tokenlarınız tükendi",
     "YouRunOutOfEmail": "E-postanız tükendi",
@@ -3661,6 +3663,8 @@
         "ConversationsReached": "Bu ay için konuşma kotasına ulaşıldı",
         "EmailReached": "Bu ay için e-posta kotasına ulaşıldı",
         "TokensReached": "Bu ay için {{COMPANY_NAME}} token kotasına ulaşıldı",
+        "AgentTokensReached": "Bu ay için yapay zeka ajanı token kotasına ulaşıldı",
+        "AgentTokensHelp": "Akışlarınızı oluşturan yapay zeka ajanının (Design Studio V3) geçerli dönemde kullandığı tokenlar.",
         "VoiceReached": "Bu ay için Voice kotasına ulaşıldı"
     },
     "AddIntentPage": {

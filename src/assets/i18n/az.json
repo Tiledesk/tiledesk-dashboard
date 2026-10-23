@@ -198,6 +198,7 @@
     "ClosedConvsCount": "{{conv_num}} qapalı söhbət",
     "TotalConversationsUsage": "Ümumi söhbət istifadəsi",
     "TotalAITokensUsage": "{{COMPANY_NAME}} tokenlarının ümumi istifadəsi",
+    "TotalAIAgentTokensUsage": "Sİ agent tokenlərinin ümumi istifadəsi (Design Studio)",
     "TotalEmailUsage": "Ümumi e-poçt istifadəsi",
     "TotalVoiceUsage": "Ümumi səs istifadəsi",
     "Email": "E-poçt",
@@ -991,6 +992,7 @@
     "AddTagToConversation": "Söhbətə etiket əlavə et...",
     "Info": "Məlumat",
     "AiTokens": "{{COMPANY_NAME}} Tokenları",
+    "AiAgentTokens": "Sİ agent tokenləri",
     "YouRunOutOfConversations": "Söhbətləriniz bitdi",
     "YouRunOutOfAiTokens": "{{COMPANY_NAME}} tokenlarınız bitdi",
     "YouRunOutOfEmail": "E-poçtunuz bitdi",
@@ -3661,6 +3663,8 @@
         "ConversationsReached": "Bu ay üçün söhbət kvotasına çatıldı",
         "EmailReached": "Bu ay üçün e-poçt kvotasına çatıldı",
         "TokensReached": "Bu ay üçün {{COMPANY_NAME}} token kvotasına çatıldı",
+        "AgentTokensReached": "Bu ay üçün Sİ agent token kvotasına çatıldı",
+        "AgentTokensHelp": "Cari dövrdə axınlarınızı quran Sİ agentinin (Design Studio V3) istifadə etdiyi tokenlər.",
         "VoiceReached": "Bu ay üçün səs kvotasına çatıldı"
     },
     "AddIntentPage": {

@@ -200,6 +200,7 @@
     "ClosedConvsCount": "{{conv_num}} closed conversations",
     "TotalConversationsUsage": "Total conversations usage",
     "TotalAITokensUsage": "Total {{COMPANY_NAME}} tokens usage",
+    "TotalAIAgentTokensUsage": "Total agent tokens usage",
     "TotalEmailUsage": "Total email usage",
     "TotalVoiceUsage": "Total voice usage",
     "Email": "Email",
@@ -995,6 +996,7 @@
     "AddTagToConversation": "Add Tag to conversation...",
     "Info": "Info",
     "AiTokens": "{{COMPANY_NAME}} tokens",
+    "AiAgentTokens": "Agent tokens",
     "YouRunOutOfConversations": "You run out of conversations",
     "YouRunOutOfAiTokens": "You run out of {{COMPANY_NAME}} tokens",
     "YouRunOutOfEmail": "You run out of Email",
@@ -3680,6 +3682,8 @@
         "ConversationsReached": "Conversations quota reached for this month",
         "EmailReached": "Email quota reached for this month",
         "TokensReached": "{{COMPANY_NAME}} tokens quota reached for this month",
+        "AgentTokensReached": "Agent tokens quota reached for this month",
+        "AgentTokensHelp": "Tokens used by the AI agent that builds your flows (Design Studio V3) in the current period.",
         "VoiceReached": "Voice quota reached for this month"
     },
     "AddIntentPage": {
