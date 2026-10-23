@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.8.33-rc1
+- Adds the Agent tokens quota (tokens used by the AI agent that builds flows in Design Studio V3) to the navbar usage panel and to the Home Current usage, with help popover and translations; hidden when the server does not return agent_tokens
+- Fixes the bug: creating, importing or installing an agent (templates, template detail, community templates, onboarding wizard, knowledge bases, Home) and opening an agent from conversations, activities and departments always opened the previous Design Studio: V3 agents now open in Design Studio V3
+- Adds cdsV3BaseUrl (CDS_V3_URL) and chatbotVersion (CHATBOT_VERSION) to dashboard-config-template.json so the Docker image enables Design Studio V3 from the environment
+
 ### 2.8.32
 - Adds a prompt box on Home that lets users enter a description used by the CDS vibe coder to create an AI Agent
 
