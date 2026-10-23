@@ -56,6 +56,8 @@ import {
   ONBOARDING_FOCUS_VIBE_CODER_STATE,
   ONBOARDING_VIBE_CODER_PROMPT_STATE,
 } from 'app/utils/pending-website-prompt.util';
+import { consumePendingBuild, rememberLastOpenedProject } from 'app/utils/pending-build.util';
+import { AgentPromptSource, AgentPromptsService } from 'app/services/agent-prompts.service';
 
 const Swal = require('sweetalert2')
 
@@ -142,6 +144,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   /** Set from onboarding Get started router state — focus (+ optional prefill) once permissions ready. */
   private focusHomeVibeCoderPending = false;
   private homeVibeCoderInitialPrompt: string | null = null;
+  /** Where the text in the vibe coder field came from, saved with the prompt. */
+  private homeVibeCoderSource: AgentPromptSource = 'home';
+  /** The web page the prompt was written on, when it came from outside the dashboard. */
+  private homeVibeCoderOriginUrl: string | null = null;
 
   public_Key: string;
   isVisibleANA: boolean;
@@ -435,6 +441,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     public rolesService: RolesService,
     private dialog: MatDialog,
     private botLocalDbService: BotLocalDbService,
+    private agentPromptsService: AgentPromptsService,
   ) {
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
@@ -449,6 +456,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     this.consumeOnboardingVibeCoderHandoff();
+    this.consumePendingBuildPrompt();
     this.getLoggedUser()
     this.getCurrentProjectProjectByIdAndBots();
     this.listenHasChangedProjectFroList()
@@ -796,6 +804,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.homeVibeCoderInitialPrompt = typeof prompt === 'string' && prompt.trim()
         ? prompt.trim().slice(0, MAX_PROMPT_LENGTH)
         : null;
+      if (this.homeVibeCoderInitialPrompt) {
+        this.homeVibeCoderSource = 'onboarding';
+      }
       // Avoid re-focus on browser refresh / back.
       history.replaceState({
         ...state,
@@ -805,6 +816,24 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     } catch (e) {
       this.logger.log('[HOME] consumeOnboardingVibeCoderHandoff error', e);
     }
+  }
+
+  /** Prompt written on the website (`/build?prompt=`, BuildFromWebsiteComponent): it fills the vibe
+   *  coder field the same way the onboarding handoff does, and only when the onboarding did not
+   *  hand one over. Read once and removed, so a reload of the Home does not fill it again. */
+  private consumePendingBuildPrompt(): void {
+    if (this.focusHomeVibeCoderPending) {
+      return;
+    }
+    const pending = consumePendingBuild();
+    if (!pending) {
+      return;
+    }
+    this.logger.log('[HOME] website prompt for the vibe coder, from', pending.originUrl);
+    this.focusHomeVibeCoderPending = true;
+    this.homeVibeCoderInitialPrompt = pending.prompt;
+    this.homeVibeCoderSource = 'website';
+    this.homeVibeCoderOriginUrl = pending.originUrl;
   }
 
   private tryFocusHomeVibeCoder(): void {
@@ -852,6 +881,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
           this.project = project
           this.projectId = this.project._id;
           this.projectName = this.project.name
+          // For /build after a login: `last_project` does not survive the logout, this does.
+          const loggedUser: any = this.auth.user_bs?.value;
+          rememberLastOpenedProject(loggedUser?._id || loggedUser?.id, this.projectId);
 
           if (this.projectId) {
             this.displayQuotaSkeleton = true
@@ -3677,8 +3709,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (faqKb: any) => {
-          this.vibeCoderBusy = false;
           if (!faqKb?._id) {
+            this.vibeCoderBusy = false;
             this.vibeCoderError = this.translate.instant('CouldNotCreateAIAgent');
             return;
           }
@@ -3699,7 +3731,35 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             });
           }
           // Server answer carries ds_version — openChatbotEditor picks v2 / v3.
-          openChatbotEditor(this.router, faqKb, this.projectId, this.appConfigService.getConfig());
+          const openEditor = () => openChatbotEditor(this.router, faqKb, this.projectId, this.appConfigService.getConfig());
+          // Only hand off to CDS vibe coder when the Home box had a prompt (Flussi may omit it).
+          if (!normalizedPrompt) {
+            this.vibeCoderBusy = false;
+            openEditor();
+            return;
+          }
+          saveAgentPrompt({
+            botId: faqKb._id,
+            prompt: normalizedPrompt,
+            language,
+            createdAt: Date.now(),
+          });
+          // The prompt is saved with its agent before leaving the page (the editor opens in the
+          // same tab); the save never fails and has a time limit, so the agent always opens.
+          const source = this.homeVibeCoderSource;
+          const originUrl = this.homeVibeCoderOriginUrl;
+          this.homeVibeCoderSource = 'home';
+          this.homeVibeCoderOriginUrl = null;
+          this.agentPromptsService.save(this.projectId, this.auth.user_bs.value?.token, {
+            id_faq_kb: faqKb._id,
+            text: normalizedPrompt,
+            language,
+            source,
+            origin: originUrl ? { kind: 'web', url: originUrl } : { kind: 'dashboard' },
+          }).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+            this.vibeCoderBusy = false;
+            openEditor();
+          });
         },
         error: (error) => {
           this.logger.error('[HOME] Prompt box create agent error', error);

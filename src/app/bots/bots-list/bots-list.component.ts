@@ -33,6 +33,7 @@ import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatb
 import { CreateAgentModalComponent, CreateAgentModalResult } from './create-agent-modal/create-agent-modal.component';
 import { saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
+import { AgentPromptsService } from 'app/services/agent-prompts.service';
 import { aiAgents, automations } from 'app/integrations/utils';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
@@ -236,6 +237,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private roleService: RoleService,
     private rolesService: RolesService,
     // private kbService: KnowledgeBaseService,
+    private agentPromptsService: AgentPromptsService,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -1795,18 +1797,29 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         // Before the redirect, and only then: the note is addressed to this agent, so it needs
         // the id the server has just answered with. The Design Studio picks it up on the other
         // side of the same tab and hands it to the AI chat.
-        if (this.chatbotPrompt) {
-          saveAgentPrompt({
-            botId: faqKb['_id'],
-            prompt: this.chatbotPrompt,
-            language: this.botDefaultLangCode,
-            createdAt: Date.now()
-          });
-        }
-
         // The server's answer carries the version label of the new agent: the editor follows it
-        openChatbotEditor(this.router, faqKb as any, this.project._id, this.appConfigService.getConfig())
-        this.trackChatbotCreated(faqKb, 'Create')
+        const openEditor = () => {
+          openChatbotEditor(this.router, faqKb as any, this.project._id, this.appConfigService.getConfig())
+          this.trackChatbotCreated(faqKb, 'Create')
+        }
+        if (!this.chatbotPrompt) {
+          openEditor()
+          return
+        }
+        saveAgentPrompt({
+          botId: faqKb['_id'],
+          prompt: this.chatbotPrompt,
+          language: this.botDefaultLangCode,
+          createdAt: Date.now()
+        });
+        // The prompt is saved with its agent before leaving the page (the editor opens in the
+        // same tab); the save never fails and has a time limit, so the agent always opens.
+        this.agentPromptsService.save(this.project._id, this.auth.user_bs.value?.token, {
+          id_faq_kb: faqKb['_id'],
+          text: this.chatbotPrompt,
+          language: this.botDefaultLangCode,
+          source: 'bots_list'
+        }).subscribe(() => openEditor())
       }
 
     }, (error) => {
