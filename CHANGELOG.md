@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.265-stage
+- Shows the AI Agent tokens quota (`agent_tokens`, Design Studio V3 vibe coder) in the navbar quota panel and in Home Current usage, with help text in every language
+
 ### 2.7.264-stage
 - Removes the Home vibe-coder badge chip
 - Prevents a stale `/build` redirect from skipping onboarding on signup
