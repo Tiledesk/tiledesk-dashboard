@@ -11,6 +11,9 @@ import { emailDomainWhiteList } from './util';
  */
 export const PENDING_BUILD_KEY = 'tiledesk-pending-build';
 
+/** Route stored in `wannago` so login/signup return to `/build` after auth. */
+export const BUILD_WANNAGO_ROUTE = '/build';
+
 /** Query param names accepted on /build (first match wins). */
 export const PENDING_BUILD_QUERY_KEYS = ['prompt', 'buildPrompt'] as const;
 
@@ -119,6 +122,24 @@ export function consumePendingBuild(now: number = Date.now()): PendingBuild | nu
   const pending = readPendingBuild(now);
   clearPendingBuild();
   return pending;
+}
+
+/** True when `wannago` points at the website `/build` landing (optional query ignored). */
+export function isBuildWannagoRoute(route: string | null | undefined): boolean {
+  if (!route || typeof route !== 'string') {
+    return false;
+  }
+  const path = route.split('?')[0].replace(/\/+$/, '') || '/';
+  return path === BUILD_WANNAGO_ROUTE || path === 'build';
+}
+
+/**
+ * Honor `wannago=/build` only while a pending website prompt is still valid.
+ * Otherwise a leftover `/build` (visit without prompt, abandoned flow, expired prompt)
+ * would skip onboarding on signup or send login to `/build` → Home with no prompt.
+ */
+export function shouldHonorBuildWannago(route: string | null | undefined, now: number = Date.now()): boolean {
+  return isBuildWannagoRoute(route) && !!readPendingBuild(now);
 }
 
 export function clearPendingBuild(): void {

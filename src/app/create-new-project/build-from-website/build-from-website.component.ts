@@ -8,7 +8,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { WidgetService } from 'app/services/widget.service';
 import { tranlatedLanguage } from 'app/utils/util';
 import {
-  chooseProjectForBuild, lastOpenedProjectOf, lastProjectIdFrom, projectNameForUser,
+  BUILD_WANNAGO_ROUTE, chooseProjectForBuild, lastOpenedProjectOf, lastProjectIdFrom, projectNameForUser,
   readBuildOrigin, readBuildPromptFromQuery, savePendingBuild
 } from 'app/utils/pending-build.util';
 import { Subject } from 'rxjs';
@@ -31,8 +31,6 @@ import { filter, take, takeUntil } from 'rxjs/operators';
  */
 /** Where the login and the signup send the user after access (SigninComponent, SignupComponent). */
 const WANNAGO_KEY = 'wannago';
-/** This page, as stored there: no query, the prompt is already saved. */
-const BUILD_ROUTE = '/build';
 
 @Component({
   selector: 'appdashboard-build-from-website',
@@ -56,21 +54,28 @@ export class BuildFromWebsiteComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const prompt = readBuildPromptFromQuery(this.route.snapshot.queryParams);
+    let promptSaved = false;
     if (prompt) {
       const originUrl = readBuildOrigin(this.route.snapshot.queryParams, document.referrer, window.location.origin);
-      const saved = savePendingBuild(prompt, Date.now(), originUrl);
-      this.logger.log('[BUILD-FROM-WEBSITE] prompt received from', originUrl, 'saved:', saved);
+      promptSaved = savePendingBuild(prompt, Date.now(), originUrl);
+      this.logger.log('[BUILD-FROM-WEBSITE] prompt received from', originUrl, 'saved:', promptSaved);
     }
 
     if (!this.loggedUser()) {
-      this.logger.log('[BUILD-FROM-WEBSITE] not logged in: to the login, then back here');
-      this.localDbService.setInStorage(WANNAGO_KEY, BUILD_ROUTE);
+      // Only leave wannago=/build when a prompt was stored — otherwise signup/login would
+      // skip onboarding / bounce through /build → Home with nothing to prefill.
+      if (promptSaved) {
+        this.logger.log('[BUILD-FROM-WEBSITE] not logged in: to the login, then back here');
+        this.localDbService.setInStorage(WANNAGO_KEY, BUILD_WANNAGO_ROUTE);
+      } else {
+        this.logger.log('[BUILD-FROM-WEBSITE] not logged in, no prompt: to the login without wannago');
+      }
       this.router.navigate(['/login'], { replaceUrl: true });
       return;
     }
     // Back from the login: the login does not remove `wannago` itself, and left there it would
     // bring every later login to this page.
-    if (this.localDbService.getFromStorage(WANNAGO_KEY) === BUILD_ROUTE) {
+    if (this.localDbService.getFromStorage(WANNAGO_KEY) === BUILD_WANNAGO_ROUTE) {
       this.localDbService.removeFromStorage(WANNAGO_KEY);
     }
     this.openLastProject(this.loggedUser());

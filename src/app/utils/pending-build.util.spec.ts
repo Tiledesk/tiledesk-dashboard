@@ -1,8 +1,9 @@
 import {
-  PENDING_BUILD_KEY, PENDING_BUILD_MAX_AGE_MS,
+  PENDING_BUILD_KEY, PENDING_BUILD_MAX_AGE_MS, BUILD_WANNAGO_ROUTE,
   chooseProjectForBuild, clearPendingBuild, consumePendingBuild, lastOpenedProjectOf, lastProjectIdFrom,
   rememberLastOpenedProject, LAST_OPENED_PROJECT_KEY_PREFIX, projectNameForUser,
-  readBuildOrigin, readBuildPromptFromQuery, readPendingBuild, savePendingBuild, normalizeOriginUrl, ORIGIN_URL_MAX_LENGTH
+  readBuildOrigin, readBuildPromptFromQuery, readPendingBuild, savePendingBuild, normalizeOriginUrl, ORIGIN_URL_MAX_LENGTH,
+  isBuildWannagoRoute, shouldHonorBuildWannago
 } from './pending-build.util';
 
 describe('pending-build.util (prompt from the website for the Home)', () => {
@@ -130,5 +131,15 @@ describe('pending-build.util (prompt from the website for the Home)', () => {
     expect(projectNameForUser({ email: 'dario@gmail.com', firstname: 'Dario' })).toBe('Dario');
     expect(projectNameForUser({ email: 'dario@gmail.com' })).toBe('dario');
     expect(projectNameForUser(null)).toBe('My project');
+  });
+
+  it('honors wannago=/build only while a pending prompt is valid', () => {
+    expect(isBuildWannagoRoute(BUILD_WANNAGO_ROUTE)).toBe(true);
+    expect(isBuildWannagoRoute('/build?x=1')).toBe(true);
+    expect(isBuildWannagoRoute('/projects')).toBe(false);
+    expect(shouldHonorBuildWannago(BUILD_WANNAGO_ROUTE)).toBe(false);
+    savePendingBuild('Un agente');
+    expect(shouldHonorBuildWannago(BUILD_WANNAGO_ROUTE)).toBe(true);
+    expect(shouldHonorBuildWannago('/projects')).toBe(false);
   });
 });

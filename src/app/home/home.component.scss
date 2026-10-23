@@ -2989,28 +2989,29 @@ img {
   max-width: 100%;
 }
 
-.home-vibe-coder__badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 5px 12px;
-  border-radius: 999px;
-  background: rgba(144, 68, 235, 0.1);
-  border: 1px solid rgba(144, 68, 235, 0.22);
-  color: rgb(144, 68, 235);
-  font-family: var(--header-font-family, inherit);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-
-.home-vibe-coder__badge-star {
-  flex-shrink: 0;
-  font-size: 12px;
-  line-height: 1;
-}
+// .home-vibe-coder__badge / __badge-star — removed from Home (kept commented for restore)
+// .home-vibe-coder__badge {
+//   display: inline-flex;
+//   align-items: center;
+//   gap: 6px;
+//   padding: 5px 12px;
+//   border-radius: 999px;
+//   background: rgba(144, 68, 235, 0.1);
+//   border: 1px solid rgba(144, 68, 235, 0.22);
+//   color: rgb(144, 68, 235);
+//   font-family: var(--header-font-family, inherit);
+//   font-size: 11px;
+//   font-weight: 600;
+//   letter-spacing: 0.06em;
+//   line-height: 1.2;
+//   text-transform: uppercase;
+// }
+//
+// .home-vibe-coder__badge-star {
+//   flex-shrink: 0;
+//   font-size: 12px;
+//   line-height: 1;
+// }
 
 .home-vibe-coder {
   display: flex;
