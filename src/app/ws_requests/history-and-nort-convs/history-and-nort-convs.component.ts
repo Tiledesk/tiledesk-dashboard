@@ -1,4 +1,4 @@
-import { CHANNELS_NAME, isValidEmail } from './../../utils/util';
+import { CHANNELS_NAME, isValidEmail, openChatbotEditor } from './../../utils/util';
 import { Component, OnInit, ElementRef, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MatDateRangePicker } from '@angular/material/datepicker';
 import { Request } from '../../models/request-model';
@@ -11,7 +11,7 @@ import { LocalDbService } from '../../services/users-local-db.service';
 import { BotLocalDbService } from '../../services/bot-local-db.service';
 import { UsersService } from '../../services/users.service';
 import { FaqKbService } from '../../services/faq-kb.service';
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, CHANNELS, getColorBck, goToCDSVersion, PLAN_NAME } from '../../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, CHANNELS, getColorBck, PLAN_NAME } from '../../utils/util';
 import { Subscription } from 'rxjs';
 import { ProjectPlanService } from '../../services/project-plan.service';
 import { TranslateService } from '@ngx-translate/core';
@@ -3703,7 +3703,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
       if (this.ROLE_IS_AGENT === false) {
         // this.router.navigate(['project/' + this.projectId + '/tilebot/intents/', bot_id, botType]);
-        goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, bot, this.projectId, this.appConfigService.getConfig())
       }
     } else {
       if(!this.PERMISSION_TO_UPDATE_APP) {

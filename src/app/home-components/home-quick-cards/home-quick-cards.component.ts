@@ -33,7 +33,7 @@ import { QuotesService } from 'app/services/quotes.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 import { getLastUpdatedChatbot, sortChatbotsByLastUpdated } from 'app/utils/chatbot-sort.util';
-import { goToCDSVersion } from 'app/utils/util';
+import { openChatbotEditor } from 'app/utils/util';
 import { Subject, forkJoin, of } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
@@ -714,12 +714,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
       return;
     }
 
-    goToCDSVersion(
-      this.router,
-      this.lastUpdatedChatbot,
-      this.projectId,
-      this.appConfigService.getConfig().cdsBaseUrl,
-    );
+    openChatbotEditor(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig());
   }
 
   onInviteTeammateClick(event?: Event): void {

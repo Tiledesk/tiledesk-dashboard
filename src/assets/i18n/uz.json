@@ -196,6 +196,7 @@
     "ClosedConvsCount": "{{conv_num}} ta yopiq suhbat",
     "TotalConversationsUsage": "Umumiy suhbatlardan foydalanish",
     "TotalAITokensUsage": "Jami {{COMPANY_NAME}} tokenlari foydalanish",
+    "TotalAIAgentTokensUsage": "Jami AI agent tokenlari foydalanish (Design Studio)",
     "TotalEmailUsage": "Jami elektron pochtadan foydalanish",
     "TotalVoiceUsage": "Ovozdan umumiy foydalanish",
     "Email": "Email",
@@ -991,6 +992,7 @@
     "AddTagToConversation": "Suhbatga teg qo'shish...",
     "Info": "Ma'lumot",
     "AiTokens": "{{COMPANY_NAME}} Tokenlari",
+    "AiAgentTokens": "AI agent tokenlari",
     "YouRunOutOfConversations": "Suhbatlaringiz tugadi",
     "YouRunOutOfAiTokens": "{{COMPANY_NAME}} tokenlaringiz tugadi",
     "YouRunOutOfEmail": "Elektron pochtangiz tugadi",
@@ -3660,6 +3662,8 @@
         "ConversationsReached": "Bu oy uchun suhbatlar kvotasi tugadi",
         "EmailReached": "Bu oy uchun email kvotasi tugadi",
         "TokensReached": "Bu oy uchun {{COMPANY_NAME}} tokenlar kvotasi tugadi",
+        "AgentTokensReached": "Bu oy uchun AI agent tokenlar kvotasi tugadi",
+        "AgentTokensHelp": "Joriy davrda oqimlaringizni quruvchi AI agent (Design Studio V3) ishlatgan tokenlar.",
         "VoiceReached": "Bu oy uchun Voice kvotasi tugadi"
     },
     "AddIntentPage": {

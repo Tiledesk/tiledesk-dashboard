@@ -462,17 +462,19 @@ export enum KB_MAX_NUM {
     Custom = 1000
 };
 
+// agent_tokens: budget of the Design Studio AI agent (flow builder), separate from the chatbot AI tokens.
+// Mirrors tiledesk-server QuoteManager plan limits (same value as tokens for every plan).
 export const PLANS_LIST = {
     // FREE_TRIAL: { requests: 200, messages: 0, tokens: 100000, email: 200, chatbots: 20, namespace: 3, kbs: 50 }, // same as PREMIUM
-    FREE_TRIAL: { requests: 3000, messages: 0, tokens: 5000000,  voice_duration: 120000, email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
-    Sandbox:    { requests: 200,  messages: 0, tokens: 100000,   voice_duration: 0,      email: 200, chatbots: 2,  namespace: 1,  kbs: 50 },
-    Starter:    { requests: 800,  messages: 0, tokens: 2000000,  voice_duration: 0,      email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
-    Pro:        { requests: 3000, messages: 0, tokens: 5000000,  voice_duration: 0,      email: 200, chatbots: 20, namespace: 3,  kbs: 300 },
-    Business:   { requests: 5000, messages: 0, tokens: 10000000, voice_duration: 0,      email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
-    Basic:      { requests: 800,  messages: 0, tokens: 2000000,  voice_duration: 0,      email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
-    Premium:    { requests: 3000, messages: 0, tokens: 5000000,  voice_duration: 0,      email: 200, chatbots: 20, namespace: 3,  kbs: 300 },
-    Team:       { requests: 5000, messages: 0, tokens: 10000000, voice_duration: 0,      email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
-    Custom:     { requests: 5000, messages: 0, tokens: 10000000, voice_duration: 120000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
+    FREE_TRIAL: { requests: 3000, messages: 0, tokens: 5000000,  agent_tokens: 5000000,  voice_duration: 120000, email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
+    Sandbox:    { requests: 200,  messages: 0, tokens: 100000,   agent_tokens: 100000,   voice_duration: 0,      email: 200, chatbots: 2,  namespace: 1,  kbs: 50 },
+    Starter:    { requests: 800,  messages: 0, tokens: 2000000,  agent_tokens: 2000000,  voice_duration: 0,      email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
+    Pro:        { requests: 3000, messages: 0, tokens: 5000000,  agent_tokens: 5000000,  voice_duration: 0,      email: 200, chatbots: 20, namespace: 3,  kbs: 300 },
+    Business:   { requests: 5000, messages: 0, tokens: 10000000, agent_tokens: 10000000, voice_duration: 0,      email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+    Basic:      { requests: 800,  messages: 0, tokens: 2000000,  agent_tokens: 2000000,  voice_duration: 0,      email: 200, chatbots: 5,  namespace: 1,  kbs: 150 },
+    Premium:    { requests: 3000, messages: 0, tokens: 5000000,  agent_tokens: 5000000,  voice_duration: 0,      email: 200, chatbots: 20, namespace: 3,  kbs: 300 },
+    Team:       { requests: 5000, messages: 0, tokens: 10000000, agent_tokens: 10000000, voice_duration: 0,      email: 200, chatbots: 50, namespace: 10, kbs: 1000 },
+    Custom:     { requests: 5000, messages: 0, tokens: 10000000, agent_tokens: 10000000, voice_duration: 120000, email: 200, chatbots: 50, namespace: 10, kbs: 1000 }
 }
 
 // export enum PLAN_SEATS {
@@ -750,8 +752,15 @@ export function goToCDSVersion(router: any, chatbot: Chatbot, project_id, redire
 
 
 
-export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string) {
+export function goToCDSSettings(router: any, chatbot: Chatbot, project_id, redirectBaseUrl: string, redirectV3BaseUrl?: string) {
     // router.navigate(['project/' + project_id + '/cds/',chatbot._id, 'intent', '0']);
+
+    // A v3 agent opens its settings in the new Design Studio (same route) when its URL is configured.
+    const v3BaseUrl = configuredUrl(redirectV3BaseUrl);
+    if (v3BaseUrl && isV3Chatbot(chatbot)) {
+        window.open(`${v3BaseUrl}#/project/${project_id}/chatbot/${chatbot._id}/settings?active=bot_detail`, '_self')
+        return;
+    }
 
     let chatBotDate = new Date(chatbot.createdAt)
     let dateLimit = new Date('2023-10-02T00:00:00')

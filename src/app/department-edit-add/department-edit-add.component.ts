@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from '../core/notify.service';
 import { slideInOutAnimation } from '../_animations/index';
 import { UsersService } from '../services/users.service';
-import { APP_SUMO_PLAN_NAME, PLAN_NAME, group_assignment_doc, avatarPlaceholder, getColorBck, goToCDSVersion } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, PLAN_NAME, group_assignment_doc, avatarPlaceholder, getColorBck, openChatbotEditor } from '../utils/util';
 import { AppConfigService } from '../services/app-config.service';
 import { ComponentCanDeactivate } from '../core/pending-changes.guard';
 import { LoggerService } from '../services/logger/logger.service';
@@ -1643,7 +1643,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
-        goToCDSVersion(this.router, this.selectedBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, this.selectedBot, this.project._id, this.appConfigService.getConfig())
       }
     } else if (this.bot_type === 'tiledesk-ai') {
       botType = 'tiledesk-ai'
@@ -1654,7 +1654,7 @@ export class DepartmentEditAddComponent extends PricingBaseComponent implements 
       if (this.USER_ROLE !== 'agent') {
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.selectedId, botType]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.selectedId, 'intent', '0']);
-        goToCDSVersion(this.router, this.selectedBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, this.selectedBot, this.project._id, this.appConfigService.getConfig())
       }
     } else {
        if(!this.PERMISSION_TO_UPDATE_APP) {

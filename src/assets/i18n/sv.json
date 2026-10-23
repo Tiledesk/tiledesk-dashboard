@@ -196,6 +196,7 @@
     "ClosedConvsCount": "{{conv_num}} stängda konversationer",
     "TotalConversationsUsage": "Total användning av konversationer",
     "TotalAITokensUsage": "Total användning av {{COMPANY_NAME}}-tokens",
+    "TotalAIAgentTokensUsage": "Total användning av AI-agent-tokens (Design Studio)",
     "TotalEmailUsage": "Total e-postanvändning",
     "TotalVoiceUsage": "Total röstanvändning",
     "Email": "E-post",
@@ -991,6 +992,7 @@
     "AddTagToConversation": "Lägg till tagg i konversationen...",
     "Info": "Info",
     "AiTokens": "{{COMPANY_NAME}}-tokens",
+    "AiAgentTokens": "AI-agent-tokens",
     "YouRunOutOfConversations": "Du har slut på konversationer",
     "YouRunOutOfAiTokens": "Du har slut på {{COMPANY_NAME}}-tokens",
     "YouRunOutOfEmail": "Du har slut på e-post",
@@ -3661,6 +3663,8 @@
         "ConversationsReached": "Konversationskvoten för denna månad är nådd",
         "EmailReached": "E-postkvoten för denna månad är nådd",
         "TokensReached": "{{COMPANY_NAME}}-tokenkvoten för denna månad är nådd",
+        "AgentTokensReached": "AI-agent-tokenkvoten för denna månad är nådd",
+        "AgentTokensHelp": "Tokens som AI-agenten som bygger dina flöden (Design Studio V3) har använt under den aktuella perioden.",
         "VoiceReached": "Voice-kvoten för denna månad är nådd"
     },
     "AddIntentPage": {

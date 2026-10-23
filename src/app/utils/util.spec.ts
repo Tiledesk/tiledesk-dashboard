@@ -1,4 +1,4 @@
-import { configuredUrl, goToCDSVersion, HOME_DASHLET_FILTER_OFF_FROM, isV3Chatbot, openChatbotEditor, projectDefaultsDashletFiltersOff } from './util';
+import { configuredUrl, goToCDSSettings, goToCDSVersion, HOME_DASHLET_FILTER_OFF_FROM, isV3Chatbot, openChatbotEditor, projectDefaultsDashletFiltersOff } from './util';
 
 /**
  * Which editor a chatbot opens in: an agent labelled v3 goes to the new Design Studio when its
@@ -121,6 +121,20 @@ describe('util - the Design Studio of a chatbot', () => {
       openChatbotEditor({ navigate: () => {} }, recent({ ds_version: 'v3' }), PROJECT, { cdsBaseUrl: CDS });
       openChatbotEditor({ navigate: () => {} }, recent({ ds_version: 'v3' }), PROJECT, { cdsBaseUrl: CDS, cdsV3BaseUrl: '${CDS_V3_URL}' });
       expect(open.calls.allArgs().map(a => a[0])).toEqual([`${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`, `${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`]);
+    });
+  });
+
+  describe('goToCDSSettings', () => {
+    let open: jasmine.Spy;
+    beforeEach(() => { open = spyOn(window, 'open').and.returnValue(null); });
+
+    it('a v3 agent opens its settings in the new Design Studio when its URL is configured, any other as always', () => {
+      goToCDSSettings({ navigate: () => {} }, recent({ ds_version: 'v3' }), PROJECT, CDS, CDS_V3);
+      goToCDSSettings({ navigate: () => {} }, recent(), PROJECT, CDS, CDS_V3);
+      goToCDSSettings({ navigate: () => {} }, recent({ ds_version: 'v3' }), PROJECT, CDS, '${CDS_V3_URL}');
+      goToCDSSettings({ navigate: () => {} }, recent({ ds_version: 'v3' }), PROJECT, CDS);
+      const settings = (base: string) => `${base}#/project/${PROJECT}/chatbot/${BOT}/settings?active=bot_detail`;
+      expect(open.calls.allArgs().map(a => a[0])).toEqual([settings(CDS_V3), settings(CDS), settings(CDS), settings(CDS)]);
     });
   });
 });

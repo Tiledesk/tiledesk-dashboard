@@ -18,7 +18,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
-import { goToCDSVersion } from 'app/utils/util';
+import { openChatbotEditor } from 'app/utils/util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 const Swal = require('sweetalert2')
@@ -235,7 +235,7 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
           // this.router.navigate(['project/' + this.project._id + '/bots/intents/', this.lastUpdatedChatbot._id, 'external']);
           this.router.navigate(['project/' + this.project._id + '/bots', this.lastUpdatedChatbot._id, 'external']);
         } else {
-          goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
+          openChatbotEditor(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig())
         }
         // goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       } else if (this.chatbots?.length === 0) {

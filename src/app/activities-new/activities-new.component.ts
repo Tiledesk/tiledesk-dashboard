@@ -16,7 +16,7 @@ import { RolesService } from 'app/services/roles.service';
 import { UsersService } from 'app/services/users.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
-import { goToCDSVersion, avatarPlaceholder, getColorBck } from 'app/utils/util';
+import { avatarPlaceholder, getColorBck, openChatbotEditor } from 'app/utils/util';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { ActivityRecord, UnassignedParticipantDisplay } from 'app/models/activity-model';
 import { Chatbot } from 'app/models/faq_kb-model';
@@ -1224,6 +1224,9 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
         type: str(actionObj['type'] || targetObject['type']) || 'tilebot',
         subtype: str(actionObj['subtype'] || targetObject['subtype']),
         createdAt: (targetObject['createdAt'] || activity.createdAt || new Date().toISOString()) as Date,
+        // keep the Design Studio version label when the activity carries it (v3 agents open in V3)
+        ds_version: (actionObj['ds_version'] || targetObject['ds_version']) as string,
+        attributes: actionObj['attributes'] || targetObject['attributes'],
       };
     }
 
@@ -1251,7 +1254,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     }
 
     if (this.PERMISSION_TO_READ_FLOWS && this.PERMISSION_TO_EDIT_FLOWS) {
-      goToCDSVersion(this.router, bot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl);
+      openChatbotEditor(this.router, bot, this.projectId, this.appConfigService.getConfig());
       return;
     }
 

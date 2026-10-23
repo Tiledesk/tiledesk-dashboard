@@ -196,6 +196,7 @@
     "ClosedConvsCount": "{{conv_num}} затворених конверзација",
     "TotalConversationsUsage": "Укупна употреба разговора",
     "TotalAITokensUsage": "Укупна употреба токена {{COMPANY_NAME}}",
+    "TotalAIAgentTokensUsage": "Укупна употреба токена AI агента (Design Studio)",
     "TotalEmailUsage": "Укупна употреба е-поште",
     "TotalVoiceUsage": "Укупна употреба гласа",
     "Email": "Емаил",
@@ -991,6 +992,7 @@
     "AddTagToConversation": "Додај ознаку у разговор...",
     "Info": "Инфо",
     "AiTokens": "Токени {{COMPANY_NAME}}",
+    "AiAgentTokens": "Токени AI агента",
     "YouRunOutOfConversations": "Понестало вам разговора",
     "YouRunOutOfAiTokens": "Понестало вам токена {{COMPANY_NAME}}",
     "YouRunOutOfEmail": "Понестало вам е-поште",
@@ -3661,6 +3663,8 @@
         "ConversationsReached": "Достигнута је квота разговора за овај месец",
         "EmailReached": "Достигнута је email квота за овај месец",
         "TokensReached": "Достигнута је квота токена {{COMPANY_NAME}} за овај месец",
+        "AgentTokensReached": "Достигнута је квота токена AI агента за овај месец",
+        "AgentTokensHelp": "Токени које је AI агент који гради ваше токове (Design Studio V3) искористио у текућем периоду.",
         "VoiceReached": "Достигнута је voice квота за овај месец"
     },
     "AddIntentPage": {

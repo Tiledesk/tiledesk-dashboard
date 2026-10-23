@@ -6,6 +6,9 @@ import { AppConfigService } from './app-config.service';
 import { PLANS_LIST, PLAN_NAME } from 'app/utils/util';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { shareReplay } from 'rxjs/operators';
+import { AgentTokensUsage, calcQuotaUsagePercent, computeAgentTokensUsage } from 'app/utils/quota-usage.util';
+
+export { AgentTokensUsage } from 'app/utils/quota-usage.util';
 
 export interface QuotesDataPayload {
   projectLimits: any;
@@ -240,15 +243,12 @@ export class QuotesService {
    * (Math.floor alone would show 0% for e.g. 2/400).
    */
   calcQuotaUsagePercent(used: number, limit: number): number {
-    if (!Number.isFinite(limit) || limit <= 0) {
-      return 0;
-    }
-    const usedSafe = Number(used) || 0;
-    if (usedSafe <= 0) {
-      return 0;
-    }
-    const perc = Math.floor((usedSafe / limit) * 100);
-    return Math.min(100, Math.max(1, perc));
+    return calcQuotaUsagePercent(used, limit);
+  }
+
+  /** AI agent (Design Studio) token usage; null when the server does not return agent_tokens. */
+  computeAgentTokensUsage(allQuotes: any, limits: any): AgentTokensUsage | null {
+    return computeAgentTokensUsage(allQuotes, limits);
   }
 
 

@@ -21,9 +21,10 @@ import {
   URL_response_bot_images_buttons_videos_and_more,
   URL_handoff_to_human_agents, URL_configure_your_first_chatbot,
   URL_connect_your_dialogflow_agent,
-  goToCDSVersion, dialogflowLanguage,
+  dialogflowLanguage,
   containsXSS,
-  formatBytesWithDecimal
+  formatBytesWithDecimal,
+  openChatbotEditor
 } from '../../utils/util';
 import { FaqService } from 'app/services/faq.service';
 import { FaqKb } from 'app/models/faq_kb-model';
@@ -493,7 +494,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/', this.importedChatbotid, 'tilebot']);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.importedChatbotid, 'intent', '0'])
 
-        goToCDSVersion(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, faqkb, this.project._id, this.appConfigService.getConfig())
       }
 
     }, (error) => {
@@ -851,13 +852,10 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
         // this.translateparamBotName = { bot_name: this.newBot_name }
         // SAVE THE BOT IN LOCAL STORAGE
         this.botLocalDbService.saveBotsInStorage(this.newBot_Id, faqKb);
-        let newfaqkb = {
-          createdAt: new Date(),
-          _id: this.newBot_Id
-        }
         this.trackChatbotCreated(faqKb)
 
-        goToCDSVersion(this.router, newfaqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        // The server's answer carries the version label of the new agent: the editor follows it
+        openChatbotEditor(this.router, faqKb as any, this.project._id, this.appConfigService.getConfig())
       }
 
     }, (error) => {
@@ -1089,13 +1087,13 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
         bot_type = 'tilebot'
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.newBot_Id + "/" + bot_type]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
-        goToCDSVersion(this.router, this.newBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, this.newBot, this.project._id, this.appConfigService.getConfig())
 
       } else if (this.botType === 'tiledesk-ai') {
         bot_type = 'tiledesk-ai'
         // this.router.navigate(['project/' + this.project._id + '/tilebot/intents/' + this.newBot_Id + "/" + bot_type]);
         // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
-        goToCDSVersion(this.router, this.newBot, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        openChatbotEditor(this.router, this.newBot, this.project._id, this.appConfigService.getConfig())
 
       } else {
         bot_type = this.botType;
