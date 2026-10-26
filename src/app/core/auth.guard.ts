@@ -391,7 +391,11 @@ export class AuthGuard implements CanActivate {
       this.router.navigate(['/login']);
 
       const storedRoute = this.localDbService.getFromStorage('wannago');
-      if (!storedRoute) {
+      // After signOut, skip writing wannago from the page we just left (see AuthService.LOGOUT_NO_WANNAGO_KEY).
+      const skipWannagoFromLogout = this.localDbService.getFromStorage(AuthService.LOGOUT_NO_WANNAGO_KEY);
+      if (skipWannagoFromLogout) {
+        this.localDbService.removeFromStorage(AuthService.LOGOUT_NO_WANNAGO_KEY);
+      } else if (!storedRoute) {
         const URLtoStore = url;
         if (URLtoStore !== '/projects') {
           this.localDbService.setInStorage('wannago', URLtoStore);

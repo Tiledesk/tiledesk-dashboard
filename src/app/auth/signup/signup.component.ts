@@ -464,9 +464,11 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
   checkCurrentUrlAndSkipWizard() {
 
     this.storedRoute = this.localDbService.getFromStorage('wannago')
-    // Leftover wannago=/build without a valid pending prompt must not skip onboarding.
-    if (isBuildWannagoRoute(this.storedRoute) && !shouldHonorBuildWannago(this.storedRoute)) {
-      this.logger.log('[SIGN-UP] clear stale wannago=/build (no pending website prompt)')
+    // Only intentional deep-links may skip onboarding after signup.
+    // Leftovers from AuthGuard after logout (e.g. /project/…/home) or stale /build without
+    // pending prompt would otherwise land the new user on projects / a dead project URL.
+    if (this.storedRoute && !this.isIntentionalSignupWannago(this.storedRoute)) {
+      this.logger.log('[SIGN-UP] clear non-intentional wannago (keep onboarding):', this.storedRoute)
       this.localDbService.removeFromStorage('wannago')
       this.storedRoute = null
     }
@@ -509,6 +511,23 @@ export class SignupComponent extends WidgetSetUpBaseComponent implements OnInit,
       this.SKIP_WIZARD = false;
       this.logger.log('[SIGN-UP] checkCurrentUrlAndSkipWizard SKIP_WIZARD ', this.SKIP_WIZARD)
     }
+  }
+
+  /** Wannago routes that should run after signup instead of onboarding. */
+  private isIntentionalSignupWannago(route: string): boolean {
+    if (!route || typeof route !== 'string') {
+      return false
+    }
+    if (shouldHonorBuildWannago(route)) {
+      return true
+    }
+    if (isBuildWannagoRoute(route)) {
+      return false // /build without valid pending — do not skip onboarding
+    }
+    if (route.indexOf('/activate-product') !== -1) {
+      return true
+    }
+    return false
   }
 
   validateEmail(appSumoActivationEmail) {
