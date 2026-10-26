@@ -35,10 +35,10 @@ describe('TemplateDetailComponent - goToBotDetails opens the right Design Studio
     expect(c.dialogRef.close).toHaveBeenCalled();
   });
 
-  it('a legacy-labelled v3 agent (attributes.dsVersion) opens in Design Studio V3 too', () => {
+  it('an agent labelled only in attributes.dsVersion is no longer v3 (master 2.8.34 dropped that fallback): previous Design Studio', () => {
     const c = component(of({ _id: BOT, createdAt: '2026-10-20T00:00:00.000Z', attributes: { dsVersion: 'v3' } }));
     c.goToBotDetails();
-    expect(open.calls.mostRecent().args[0]).toBe(`${CDS_V3}#/project/${PROJECT}/chatbot/${BOT}/blocks`);
+    expect(open.calls.mostRecent().args[0]).toBe(`${CDS}#/project/${PROJECT}/chatbot/${BOT}/blocks`);
   });
 
   it('a v2 agent opens in the previous Design Studio', () => {
