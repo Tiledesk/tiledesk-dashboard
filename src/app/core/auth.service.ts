@@ -1141,6 +1141,9 @@ export class AuthService {
     }
   }
 
+  /** AuthGuard must not rewrite `wannago` with the page we leave on logout (e.g. /project/…/home). */
+  static readonly LOGOUT_NO_WANNAGO_KEY = 'logout-no-wannago'
+
   signOut(calledby: string) {    
     this.cacheService.clearAllProjectsCache()
     // Pulisci anche la cache dei progetti al logout
@@ -1154,6 +1157,9 @@ export class AuthService {
     this.closeSleekplanWidget()
     this.logger.log('[AUTH-SERV] SSO Signout calledby +++++ ', calledby)
     if (calledby !== 'autologin') {
+      // Before clearing user: AuthGuard will re-run on the current protected URL and would
+      // otherwise set wannago to that URL → signup skips onboarding / lands on a stale project.
+      this.localDbService.setInStorage(AuthService.LOGOUT_NO_WANNAGO_KEY, 'true')
       this.localDbService.removeFromStorage('tiledesk_logOut');
       try {
         if (window && window['tiledesk_widget_logout']) {

@@ -494,23 +494,18 @@ export class FaqKbService {
     if(namespaceid) {
       body['namespace_id'] = namespaceid
     }
-    // Which editor the Design Studio opens on an agent is decided by this label (`ds_version`, a
-    // field of the bot since server 2.30.0; the server also builds the flow in that form); without
-    // it the agent opens with the previous editor. Only an agent created from scratch gets it: a
-    // template, a copy or an imported chatbot keeps whatever version it already carries.
+    // Which editor the Design Studio opens on an agent is decided by this label (`ds_version`);
+    // without it the agent opens with the previous editor. Only an agent created from scratch
+    // gets it: a template, a copy or an imported chatbot keeps whatever version it already carries.
     //
     // Webhook / copilot stay on the classic path (same as Master): the server registers them on
     // GET /webhooks/ (e.g. name + "-webhook"). Labelling those subtypes v3 skips that registration
     // and they only show up as faq_kb under AI Agents.
-    //
-    // Also write attributes.dsVersion: servers before 2.30.0 ignore `ds_version`, but still persist
-    // attributes — the list badge / editor picker still treat that as v3 (isV3Chatbot fallback).
     const sub = (botSubtype || 'chatbot').toLowerCase();
     if (sub !== 'webhook' && sub !== 'copilot') {
       const dsVersion = this.chatbotVersion();
       if (dsVersion) {
         body['ds_version'] = dsVersion;
-        body['attributes'] = { dsVersion };
       }
     }
 

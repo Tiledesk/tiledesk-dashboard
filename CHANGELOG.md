@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.8.34
+- Fixes the bug: after logout, signup could skip onboarding and land on Projects 
+- Updates AI Agent create payload to send only `ds_version` (no longer `attributes.dsVersion`)
+
+### 2.8.33
+- Updates dashboard-config-template.json
+
 ### 2.8.32
 - Adds a prompt box on Home that lets users enter a description used by the CDS vibe coder to create an AI Agent
 
