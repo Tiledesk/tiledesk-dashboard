@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
-// import { Observable } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 import { UrlService } from 'app/services/shared/url.service';
 
 import { Project } from 'app/models/project-model';
@@ -279,22 +279,23 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   getMTTValue() {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
-
-    let parts = this.public_Key.split('-');
-
-
-    let mtt = parts.find((part) => part.startsWith('MTT'));
+    if (!this.public_Key || typeof this.public_Key !== 'string') {
+      return false;
+    }
+    const parts = this.public_Key.split('-');
+    const mtt = parts.find((part) => part.startsWith('MTT'));
     this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mtt ', mtt);
-    let mttParts = mtt.split(':');
-    this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mttParts ', mttParts);
-    let mttValue = mttParts[1]
+    if (!mtt || mtt.indexOf(':') === -1) {
+      return false;
+    }
+    const mttValue = mtt.split(':')[1];
     this.logger.log('[ONBOARDING-CONTENT] getMTTValue  mttValue ', mttValue);
     if (mttValue === 'T') {
       return true
     } else if (mttValue === 'F') {
       return false
     }
-
+    return false;
   }
 
   private getLoggedUser() {
@@ -303,34 +304,22 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
         this.user = user;
         this.userFullname = user.displayName ? user.displayName : user.firstname;
         this.logger.log('[ONBOARDING-CONTENT] getLoggedUser:: ', user);
-        // this.projectName = this.setProjectName();
-        // this.logger.log('setProjectName:: ', this.projectName, this.isSignupPrevPage);
         this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject);
-        if (this.isFirstProject) {
 
-          this.projectName = this.setProjectName();
-          if (!this.projectName) {
-            this.logger.log('[ONBOARDING-CONTENT] - CREATE-PRJCT] here yes ', this.projectName);
-            this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
-          }
-          this.setFirstStep();
-
-          this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps);
-        } else {
-          this.isMTT = this.getMTTValue()
-          this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  (else) ', this.isFirstProject, ' this.isMTT ', this.isMTT);
-          if (this.isMTT) {
-            this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
-
-            this.logger.log('[ONBOARDING-CONTENT]  isFirstProject  ', this.isFirstProject, ' arrayOfSteps ', this.arrayOfSteps, ' isMTT ', this.isMTT)
-          } else if (this.isMTT === false) {
-            this.logger.log('[ONBOARDING-CONTENT] isMTT  ', this.isMTT)
+        // No questionnaire: only the project-name field, then create → widget labels → Home.
+        if (!this.isFirstProject) {
+          this.isMTT = this.getMTTValue();
+          if (this.isMTT === false) {
+            this.logger.log('[ONBOARDING-CONTENT] isMTT  ', this.isMTT);
             this.router.navigate(['/unauthorized']);
+            return;
           }
-          // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
-          // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
         }
 
+        this.projectName = this.isFirstProject ? (this.setProjectName() || this.projectName) : this.projectName;
+        this.arrayOfSteps = [TYPE_STEP.NAME_PROJECT];
+        this.activeTypeStepNumber = 0;
+        this.logger.log('[ONBOARDING-CONTENT] name-only steps ', this.arrayOfSteps);
       }
     });
   }
@@ -356,41 +345,37 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
 
   private loadJsonOnboardingConfig(onboardingConfig) {
-    // let lang = "en";
-    // if(this.translate.currentLang){
-    //   lang = this.translate.currentLang;
-    // }
-    // let onboardingConfig = 'assets/config/onboarding-config-'+lang+'.json';
     this.logger.log('loadJsonOnboardingConfig:: onboardingConfig', onboardingConfig);
     let jsonSteps: any;
-    this.httpClient.get(onboardingConfig).subscribe(data => {
-      let jsonString = JSON.stringify(data);
-      jsonString = jsonString.split('${userFullname}').join(this.userFullname);
-      let jsonParse = JSON.parse(jsonString);
-      if (jsonParse) {
-        jsonSteps = jsonParse['steps'];
-        this.logger.log('loadJsonOnboardingConfig:: jsonSteps', jsonSteps);
-        jsonSteps.forEach(step => {
-          this.customSteps.push(step);
-          this.arrayOfSteps.push(TYPE_STEP.CUSTOM_STEP);
-        });
+    this.httpClient.get(onboardingConfig).subscribe({
+      next: (data) => {
+        let jsonString = JSON.stringify(data);
+        jsonString = jsonString.split('${userFullname}').join(this.userFullname);
+        let jsonParse = JSON.parse(jsonString);
+        if (jsonParse) {
+          jsonSteps = jsonParse['steps'] || [];
+          this.logger.log('loadJsonOnboardingConfig:: jsonSteps', jsonSteps);
+          jsonSteps.forEach(step => {
+            this.customSteps.push(step);
+            this.arrayOfSteps.push(TYPE_STEP.CUSTOM_STEP);
+          });
+        }
+        if (this.customSteps.length > 0) {
+          this.activeCustomStepNumber = 0;
+          this.activeStep = this.customSteps[0];
+          this.activeQuestion = this.customSteps[0].questions[0];
+        }
+        this.arrayOfSteps.push(TYPE_STEP.SELECT_TEMPLATE_OR_KB);
+        this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
+        this.logger.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
+      },
+      error: (error) => {
+        // Keep NAME_PROJECT so Add project is never a blank page if the questionnaire JSON fails.
+        this.logger.error('[ONBOARDING-CONTENT] loadJsonOnboardingConfig error — name step only', error);
+        if (!this.arrayOfSteps.includes(TYPE_STEP.NAME_PROJECT)) {
+          this.arrayOfSteps.push(TYPE_STEP.NAME_PROJECT);
+        }
       }
-      if (this.customSteps.length > 0) {
-        // this.arrayOfSteps.push(TYPE_STEP.CUSTOM_STEP);
-        this.activeCustomStepNumber = 0;
-        this.activeStep = this.customSteps[0];
-        this.activeQuestion = this.customSteps[0].questions[0];
-      }
-      // this.arrayOfSteps.push(TYPE_STEP.WELCOME_MESSAGE);
-
-
-      // this.arrayOfSteps.push(TYPE_STEP.WIDGET_INSTALLATION);
-
-      // this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
-      this.arrayOfSteps.push(TYPE_STEP.SELECT_TEMPLATE_OR_KB);
-      this.arrayOfSteps.push(TYPE_STEP.TEMPLATES_INSTALLATION);
-      this.logger.log('[ONBOARDING-CONTENT] arrayOfSteps ', this.arrayOfSteps)
-
     });
   }
 
@@ -447,7 +432,6 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
   // ---------- EVENTS FUNCTIONS -------------- //
   goToSetProjectName($event) {
     this.projectName = $event;
-    this.nextNumberStep();
     this.logger.log('[ONBOARDING-CONTENT] goToSetProjectName ', this.projectName)
     this.createNewProject('goToSetProjectName output of cnp-project-name');
   }
@@ -559,59 +543,108 @@ export class OnboardingContentComponent extends WidgetSetUpBaseComponent impleme
 
   /** 
    * SERVICES  
-   * create project 
+   * create project → ensure widget default language → Home (no questionnaire).
    * */
   private createNewProject(calledBy) {
     this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - calledBy ', calledBy);
     this.DISPLAY_SPINNER_SECTION = true;
     this.DISPLAY_SPINNER = true;
-    this.projectService.createProject(this.projectName, 'onboarding-content').subscribe((project: Project) => {
-      this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
-      if (project) {
-        this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - USER_ROLE ', this.USER_ROLE);
+    this.projectService.createProject(this.projectName, 'onboarding-content').subscribe({
+      next: (project: Project) => {
         this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT - RES ', project);
+        if (!project) {
+          return;
+        }
         project['role'] = 'owner';
-        this.auth.projectSelected(project, 'onboarding-content')
+        this.auth.projectSelected(project, 'onboarding-content');
         localStorage.setItem(project._id, JSON.stringify(project));
         this.newProject = project;
+        this.projectID = project._id;
 
-
-        // WHEN THE USER SELECT A PROJECT ITS ID IS SEND IN THE PROJECT SERVICE THET PUBLISHES IT
-        // THE SIDEBAR SIGNS UP FOR ITS PUBLICATION
-        // const newproject: Project = {
-        //   _id: project['_id'],
-        //   name: project['name'],
-        //   operatingHours: project['activeOperatingHours'],
-        //   profile_type: project['profile'].type,
-        //   profile_name: project['profile'].name,
-        //   trial_expired: project['trialExpired']
-        // }
-        // SENT THE NEW PROJECT TO THE AUTH SERVICE THAT PUBLISH
-        // this.auth.projectSelected(project, 'onboarding-content')
-        // this.logger.log('[ONBOARDING-D] NEW CREATED PROJECT ', newproject)
-        // this.projectID = newproject._id
+        this.auth.project_bs
+          .pipe(
+            filter((selected: any) => !!(selected && selected._id === project._id)),
+            take(1)
+          )
+          .subscribe({
+            next: () => {
+              this.projectService.newProjectCreated(true);
+              try {
+                const trialStarDate = moment(new Date(this.newProject.createdAt)).format("YYYY-MM-DD hh:mm:ss");
+                const trialEndDate = moment(new Date(this.newProject.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss");
+                this.trackNewProjectCreated(trialStarDate, trialEndDate);
+              } catch (err) {
+                this.logger.error('[ONBOARDING-CONTENT] trackNewProjectCreated error', err);
+              }
+              this.getProjectsAndSaveLastProject(this.newProject._id);
+              this.ensureWidgetDefaultLanguage(() => this.goToNewProjectHome());
+            },
+            error: (error) => {
+              this.DISPLAY_SPINNER = false;
+              this.DISPLAY_SPINNER_SECTION = false;
+              this.logger.error('[ONBOARDING-CONTENT] project_bs error', error);
+            }
+          });
+      },
+      error: (error) => {
+        this.DISPLAY_SPINNER = false;
+        this.DISPLAY_SPINNER_SECTION = false;
+        this.logger.error('[ONBOARDING-CONTENT] CREATE NEW PROJECT - ERROR ', error);
       }
-      /* 
-        * !!! NO MORE USED - NOW THE ALL PROJECTS ARE SETTED IN THE STORAGE IN getProjectsAndSaveInStorage()
-        * SET THE project_id IN THE LOCAL STORAGE
-        * WHEN THE PAGE IS RELOADED THE SIDEBAR GET THE PROJECT ID FROM THE LOCAL STORAGE 
-      */
-    }, (error) => {
-      this.DISPLAY_SPINNER = false;
-      this.logger.error('[ONBOARDING-CONTENT] CREATE NEW PROJECT - ERROR ', error);
-    }, () => {
-      this.logger.log('[ONBOARDING-CONTENT] CREATE NEW PROJECT * COMPLETE *');
-      this.projectService.newProjectCreated(true);
-      const trialStarDate = moment(new Date(this.newProject.createdAt)).format("YYYY-MM-DD hh:mm:ss")
-      const trialEndDate = moment(new Date(this.newProject.createdAt)).add(14, 'days').format("YYYY-MM-DD hh:mm:ss")
-      this.trackNewProjectCreated(trialStarDate, trialEndDate)
-
-      this.projectService.newProjectCreated(true);
-      this.getProjectsAndSaveLastProject(this.newProject._id)
-
-      // this.getProjectsAndSaveInStorage();
-      this.callback('createNewProject');
     });
+  }
+
+  /**
+   * If the project has no widget labels yet, clone the default pack (browser lang or EN).
+   * Always continues to `done` so Home is not blocked on clone failure.
+   */
+  private ensureWidgetDefaultLanguage(done: () => void): void {
+    const browserLang = this.translate.getBrowserLang();
+    const langCode = (tranlatedLanguage.includes(browserLang) ? browserLang : 'en').toUpperCase();
+
+    this.widgetService.getLabels().subscribe({
+      next: (labels: any) => {
+        const translations = labels && labels['data'];
+        const hasLabels = Array.isArray(translations) && translations.some((t: any) => t && t._id);
+        if (hasLabels) {
+          this.logger.log('[ONBOARDING-CONTENT] widget labels already present');
+          done();
+          return;
+        }
+        this.logger.log('[ONBOARDING-CONTENT] no widget labels — cloneLabel', langCode);
+        this.widgetService.cloneLabel(langCode).subscribe({
+          next: () => {
+            this.logger.log('[ONBOARDING-CONTENT] cloneLabel OK', langCode);
+            done();
+          },
+          error: (error) => {
+            this.logger.error('[ONBOARDING-CONTENT] cloneLabel ERROR', error);
+            done();
+          }
+        });
+      },
+      error: (error) => {
+        this.logger.error('[ONBOARDING-CONTENT] getLabels ERROR — try cloneLabel', error);
+        this.widgetService.cloneLabel(langCode).subscribe({
+          next: () => done(),
+          error: (cloneErr) => {
+            this.logger.error('[ONBOARDING-CONTENT] cloneLabel ERROR', cloneErr);
+            done();
+          }
+        });
+      }
+    });
+  }
+
+  private goToNewProjectHome(): void {
+    this.DISPLAY_SPINNER = false;
+    this.DISPLAY_SPINNER_SECTION = false;
+    if (!this.newProject || !this.newProject._id) {
+      this.logger.error('[ONBOARDING-CONTENT] goToNewProjectHome: missing project');
+      this.router.navigate(['/projects']);
+      return;
+    }
+    this.router.navigate(['project/' + this.newProject._id + '/home']);
   }
 
   getProjectsAndSaveLastProject(project_id) {

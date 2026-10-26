@@ -1,237 +1,33 @@
 
-
 <!-- [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
 <div class="main-content css-create-project">
-    <div *ngIf="showSpinner" class="on-bording-spinner"
-        [ngClass]="{'on-bording-spinner-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP  || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB}">
-        <!-- <div class="dot-spinner">
-            <div class="dot1"></div>
-            <div class="dot2"></div>
-        </div> -->
+    <div *ngIf="showSpinner" class="on-bording-spinner">
     </div>
-    <!-- <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
-    <div *ngIf="!showSpinner" class="step-header" [ngClass]="{'step-header-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
+
+    <div *ngIf="!showSpinner" class="step-header">
         <img *ngIf="displayLogoWithText" [src]="companyLogo" class="logo" />
         <img *ngIf="!displayLogoWithText" [src]="companyLogoNoText" class="logo no-text" />
         <div class="close-wizard-page">
             <i *ngIf="!CLOSE_BTN_IS_HIDDEN" class="material-icons close-btn" (click)="goBack()">clear</i>
         </div>
-        <!-- STEP NUMBER  arrayOfSteps.length >= activeTypeStepNumber ||  -->
-
-        <div *ngIf="arrayOfSteps.length>1 && arrayOfSteps.length>activeTypeStepNumber" class="box-steps">
-            <div class="step-number">
-                <span class="number-label">
-                    {{ "OnboardPage.Pass" | translate }}
-                    <div class="number-list">
-                        <ul [ngStyle]="{'transform': translateY}">
-                            <li *ngFor="let typeStep of arrayOfSteps; index as i">{{i+1}}</li>
-                        </ul>
-                    </div>
-                </span>
-                <span class="number-of"> / {{arrayOfSteps.length}}</span>
-            </div>
-            <div class="step-points">
-                <span *ngFor="let item of arrayOfSteps; index as i" class="point"
-                    [ngClass]="{'active': activeTypeStepNumber >= i}"></span>
-            </div>
-        </div>
     </div>
 
-
-   
-    <!-- <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}"> -->
-    <div *ngIf="!showSpinner" class="col-left" [ngClass]="{'col-left-full-width':  arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}" 
+    <div *ngIf="!showSpinner" class="col-left"
        [ngStyle]="!IS_SAFARI ? { height: 'calc(100vh - 75px)' } : {}">
-        <!-- arrayOfSteps {{ arrayOfSteps }} arrayOfSteps length {{ arrayOfSteps.length}} -->
-        <div *ngFor="let nameStep of arrayOfSteps; index as i" 
-            class="step-page"
+
+        <div class="step-page"
             [ngClass]="{'hidden': DISPLAY_SPINNER_SECTION}">
 
-            <!-- SET NAME PROJECT -->
-            <!-- nameStep > {{ nameStep }} -->
-            <div *ngIf="nameStep === typeStep.NAME_PROJECT" class="type-step fade-in-right"
-                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.NAME_PROJECT}">
-                <cnp-project-name 
+            <!-- SET NAME PROJECT (only step — no questionnaire) -->
+            <div *ngIf="arrayOfSteps[activeTypeStepNumber] === typeStep.NAME_PROJECT"
+                class="type-step fade-in-right active">
+                <cnp-project-name
                     [projectName]="projectName"
                     (goToSetProjectName)="goToSetProjectName($event)">
                 </cnp-project-name>
             </div>
 
-
-            <!-- STEP QUESTIONS -->
-            <div *ngIf="nameStep === typeStep.CUSTOM_STEP && activeTypeStepNumber === i" 
-                class="type-step fade-in-right"
-                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.CUSTOM_STEP}">
-
-                <!-- <div *ngFor="let step of customSteps; index as j"> -->
-                <!-- <div *ngIf="activeCustomStepNumber === j" class="fade-in-right"> -->
-
-                <div class="title">{{activeStep.title}}</div>
-                <div *ngFor="let question of activeStep.questions; index as i">
-
-                    <div *ngIf="question.type === 'select'" class="question fade-in-left-question" 
-                    [ngClass]="{
-                        'shown': question.answer,
-                        'active': activeQuestionNumber == i,
-                        'disabled': activeQuestionNumber != i}">
-
-                        <cnp-question-select 
-                            class="question-type" 
-                            [index]="i" 
-                            [question]="question"
-                            [segmentAttributes]="segmentIdentifyAttributes"
-                            (goToNext)="goToNextQuestion($event)">
-                        </cnp-question-select>
-                    </div>
-
-                    <div *ngIf="question.type === 'button'" 
-                        class="question fade-in-left-question" 
-                        [ngClass]="{
-                            'shown': (question.answer),
-                            'active': (activeQuestionNumber == i),
-                            'disabled': (activeQuestionNumber != i)}">
-                        <cnp-question-button class="question-type" 
-                            [index]="i" 
-                            [question]="question"
-                            [segmentAttributes]="segmentIdentifyAttributes"
-                            (goToNext)="goToNextQuestion($event)">
-                        </cnp-question-button>
-                    </div>
-
-                </div>
-                <!-- </div> -->
-                <!-- </div> -->
-
-                <!-- BUTTONS -->
-                <!-- <div class="row-navigation">
-                    <div class="navigation-btn">
-                        <button type="button" class="btn-back" 
-                            [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
-                            [disabled]="DISABLED_PREV_BUTTON"
-                            (click)="goToPrevCustomStep()">
-                            <em class="material-icons">arrow_back</em>
-                        </button>
-                        <button class="btn btn-lg btn-primary" 
-                            [disabled]="DISABLED_NEXT_BUTTON"
-                            (click)="goToNextCustomStep()">
-                            {{'OnboardPage.Next' | translate}}
-                        </button>
-                    </div>
-                </div> -->
-
-            </div>
-
-            <!-- BUTTONS -->
-            <div class="row-navigation" *ngIf="nameStep !== typeStep.NAME_PROJECT"
-            [ngClass]="{'row-navigation-full-width': arrayOfSteps[activeTypeStepNumber] === typeStep.CUSTOM_STEP || arrayOfSteps[activeTypeStepNumber] === typeStep.SELECT_TEMPLATE_OR_KB || arrayOfSteps[activeTypeStepNumber] === typeStep.TEMPLATES_INSTALLATION}">
-                <div class="navigation-btn">
-                    <!-- <button type="button" class=" btn-back" 
-                        [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
-                        [disabled]="DISABLED_PREV_BUTTON"
-                        (click)="goToPrevCustomStep()">
-                        <em class="material-icons">arrow_back</em>
-                        <span class="onbording-btn-back-text"> 
-                            {{'Back' | translate }}
-                        </span>
-                    </button> -->
-                    <!-- <button class="btn btn-lg btn-primary" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
-                        [disabled]="DISABLED_NEXT_BUTTON"
-                        (click)="goToNextCustomStep()">
-                        {{'OnboardPage.Next' | translate}}
-                    </button> -->
-                    <button type="button" class="btn btn-gray-no-boxshadow onboarding-btn back" 
-                        [ngClass]="{'hide-prev-btn': DISABLED_PREV_BUTTON}"
-                        [disabled]="DISABLED_PREV_BUTTON"
-                        (click)="goToPrevCustomStep()">
-                        <em class="material-icons">arrow_back</em>
-                        <span class="onbording-btn-back-text"> 
-                            {{'Back' | translate }}
-                        </span>
-                    </button>
-                    
-                    <button class="btn btn-tdblu-no-boxshadow onboarding-btn next" *ngIf="arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION"
-                        [disabled]="DISABLED_NEXT_BUTTON"
-                        (click)="goToNextCustomStep()">
-                        
-                        <span class="onbording-btn-next-text"> 
-                            {{'OnboardPage.Next' | translate}}
-                        </span>
-                        <em class="material-icons">arrow_forward</em>
-                    </button>
-                </div>
-            </div>
-
-            <!-- SELECT TEMPLATES / KB -->
-            <div *ngIf="nameStep === typeStep.SELECT_TEMPLATE_OR_KB" 
-                class="type-step fade-in-right"
-                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.SELECT_TEMPLATE_OR_KB}">
-                <cnp-select-templates-or-kb *ngIf="arrayOfSteps[activeTypeStepNumber]===typeStep.SELECT_TEMPLATE_OR_KB"
-                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION" 
-                    [segmentAttributes]="segmentIdentifyAttributes"
-                    [updatedProject] = "updatedProject"
-                    (nextPage)="goToTemplatesInstallation($event)"
-                    (createProjectFromTemplates)="createProjectFromTemplates() "
-                    (goToNext)="goToNextQuestion($event)"
-                    (prevPage)="goToPrevStep()"
-                    (userSelection)="userSelection($event)">
-                </cnp-select-templates-or-kb>
-            </div>
-
-            <!-- CHATBOT TEMPLATES INSTALLATION -->
-            <!-- typeStep  {{ typeStep.TEMPLATES_INSTALLATION }} nameStep {{ nameStep }} -->
-            <div *ngIf="nameStep === typeStep.TEMPLATES_INSTALLATION" 
-                class="type-step box-welcome-msg"
-                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.TEMPLATES_INSTALLATION}">
-                <cnp-templates *ngIf="arrayOfSteps[activeTypeStepNumber]===typeStep.TEMPLATES_INSTALLATION"
-                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION" 
-                    [hasSelectChatBotOrKb] = "hasSelectChatBotOrKb"
-                    [segmentAttributes]="segmentIdentifyAttributes"
-                    [updatedProject] = "updatedProject"
-                    (nextPage)="goToTemplatesInstallation($event)"
-                    (createProjectFromTemplates)="createProjectFromTemplates() "
-                    (goToNext)="goToNextQuestion($event)"
-                    (prevPage)="goToPrevStep()">
-                </cnp-templates>
-            </div>
-
-
-        
-
-                 <!-- !! Not used -- CHATBOT WELCOME MESSAGE -->
-                 <div *ngIf="nameStep === typeStep.WELCOME_MESSAGE" 
-                 class="type-step box-welcome-msg"
-                 [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WELCOME_MESSAGE}">
-                 <cnp-chatbot-welcome-message 
-                     [welcomeMessage]=welcomeMessage [projectName]="projectName"
-                     [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION" 
-                     (nextPage)="goToSaveWelcomeMessage($event)"
-                     (prevPage)="goToPrevStep()">
-                 </cnp-chatbot-welcome-message>
-             </div>
-
-            <!-- !! Not used WIDGET INSTALLATION -->
-            <!-- <div *ngIf="nameStep === typeStep.WIDGET_INSTALLATION" 
-                class="type-step fade-in-right"
-                [ngClass]="{'active': arrayOfSteps[activeTypeStepNumber]===typeStep.WIDGET_INSTALLATION}">
-                <cnp-widget-installation 
-                    [welcomeMessage]=welcomeMessage 
-                    [projectName]="projectName"
-                    [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
-                    (nextPage)="goToSaveProjectAndCreateBot($event)"
-                    (prevPage)="goToPrevStep()">
-                </cnp-widget-installation>
-            </div> -->
-
         </div>
-
-
-
-        <!-- LOADING SECTION -->
-        <!-- <loading-section
-            [DISPLAY_SPINNER_SECTION]="DISPLAY_SPINNER_SECTION"
-            [DISPLAY_SPINNER]="DISPLAY_SPINNER"
-            (continueToNextStep)="goToNextStep()"
-        ></loading-section> -->
 
         <div class="bck-loader" *ngIf="DISPLAY_SPINNER_SECTION">
             <div class="loader">
@@ -241,25 +37,6 @@
             </div>
         </div>
 
-        <!-- <appdashboard-error-result
-            *ngIf="DISPLAY_SPINNER_SECTION"
-            [DISPLAY_SPINNER]="DISPLAY_SPINNER"
-            [DISPLAY_BOT]="DISPLAY_BOT"
-            [DISPLAY_FAQ]="DISPLAY_FAQ"
-            [CREATE_BOT_ERROR]="CREATE_BOT_ERROR"
-            [CREATE_FAQ_ERROR]="CREATE_FAQ_ERROR"
-            (cancel)="cancel($event)"
-            (continueToNextStep)="goToExitOnboarding()"
-      ></appdashboard-error-result> -->
-
     </div>
-
-
-
-
- 
-    <!-- <div class="col-right" *ngIf="arrayOfSteps[activeTypeStepNumber] !== typeStep.CUSTOM_STEP && arrayOfSteps[activeTypeStepNumber]!==typeStep.SELECT_TEMPLATE_OR_KB && arrayOfSteps[activeTypeStepNumber]!==typeStep.TEMPLATES_INSTALLATION">
-        <appdashboard-sidebar-claims></appdashboard-sidebar-claims>
-    </div> -->
 
 </div>

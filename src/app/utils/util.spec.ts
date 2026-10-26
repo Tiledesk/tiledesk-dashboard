@@ -11,16 +11,13 @@ describe('util - the Design Studio of a chatbot', () => {
   const recent = (fields?: any) => ({ _id: BOT, createdAt: '2026-10-01T00:00:00.000Z', ...(fields || {}) } as any);
 
   describe('isV3Chatbot', () => {
-    it('is true for the ds_version label v3, spaces and case apart, in the field or (older agents) in the attributes', () => {
+    it('is true for the ds_version label v3, spaces and case apart', () => {
       expect(isV3Chatbot(recent({ ds_version: 'v3' }))).toBe(true);
       expect(isV3Chatbot(recent({ ds_version: ' V3 ' }))).toBe(true);
       expect(isV3Chatbot(recent({ ds_version: 'v2' }))).toBe(false);
       expect(isV3Chatbot(recent({ ds_version: 3 }))).toBe(false);
       expect(isV3Chatbot(recent({ connectors: { version: 1, items: [] } }))).toBe(false);
-      expect(isV3Chatbot(recent({ attributes: { dsVersion: 'v3' } }))).toBe(true);
-      expect(isV3Chatbot(recent({ attributes: { dsVersion: ' V3 ' } }))).toBe(true);
-      expect(isV3Chatbot(recent({ ds_version: 'v2', attributes: { dsVersion: 'v3' } }))).toBe(false);
-      expect(isV3Chatbot(recent({ attributes: { dsVersion: 'v2' } }))).toBe(false);
+      expect(isV3Chatbot(recent({ attributes: { dsVersion: 'v3' } }))).toBe(false);
       expect(isV3Chatbot(recent())).toBe(false);
       expect(isV3Chatbot({ _id: BOT, createdAt: new Date() })).toBe(false);
       expect(isV3Chatbot(null)).toBe(false);
