@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.33
+- Updates dashboard-config-template.json
+
 ### 2.8.32
 - Adds a prompt box on Home that lets users enter a description used by the CDS vibe coder to create an AI Agent
 
