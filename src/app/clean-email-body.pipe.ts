@@ -67,13 +67,38 @@ export class CleanEmailBodyPipe implements PipeTransform {
       // Plain-text quoted lines (RFC 3676) — lines starting with ">".
       cleaned = cleaned.replace(/^>.*$/gm, '');
 
-      // RFC 3676 signature delimiter ("-- " on its own line) — drop signature.
-      cleaned = cleaned.replace(/^--\s*$[\s\S]*$/m, '');
+      // RFC 3676 signature delimiter ("-- " on its own line) — drop the signature
+      // only when there is real content *before* it. Emails that are only a
+      // signature + attachment list (body starts with "--") must stay visible;
+      // otherwise the bubble would render empty.
+      cleaned = this.stripTrailingSignature(cleaned);
     }
 
-    // ---------------------------------------------------------------
-    // Cosmetic noise — always stripped in both modes.
-    // ---------------------------------------------------------------
+    cleaned = this.stripCosmeticNoise(cleaned);
+
+    // Safety net: never wipe a non-empty email body to blank in cleaned mode.
+    const result = cleaned.trim();
+    if (!result && text.trim() && mode === 'cleaned') {
+      return this.stripCosmeticNoise(text).trim();
+    }
+    return result;
+  }
+
+  /**
+   * Drops from a lone "-- " line to EOF when there is non-empty content before it.
+   */
+  private stripTrailingSignature(text: string): string {
+    const match = text.match(/^([\s\S]*?)^--\s*$[\s\S]*$/m);
+    if (!match) {
+      return text;
+    }
+    const before = (match[1] || '').trim();
+    return before ? before : text;
+  }
+
+  /** Cosmetic noise shared by cleaned and full modes. */
+  private stripCosmeticNoise(text: string): string {
+    let cleaned = text;
 
     // CID inline-image references: [cid:filename@id]
     cleaned = cleaned.replace(/\[cid:[^\]]+\]/gi, '');
@@ -113,6 +138,6 @@ export class CleanEmailBodyPipe implements PipeTransform {
     // Collapse runs of 3+ blank lines into 2 to keep paragraphs readable.
     cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
 
-    return cleaned.trim();
+    return cleaned;
   }
 }

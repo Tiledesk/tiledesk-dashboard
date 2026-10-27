@@ -2989,26 +2989,30 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
   }
 
 
-  closePaymentMethodModal() {
-    this.displayAddPaymentMethodModal = 'none';
+  openModalAddPaymentMethod() {
+    const contactUsLabel = (this.translate.instant('ContactUs') || 'Contact us').trim();
+    Swal.fire({
+      title: this.translate.instant('PaymentMethod'),
+      text: this.translate.instant('ContactUsToChangeYourPaymentMethod'),
+      icon: 'info',
+      showCloseButton: false,
+      showCancelButton: true,
+      confirmButtonText: contactUsLabel,
+      cancelButtonText: this.cancel || this.translate.instant('Cancel'),
+      focusConfirm: true,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.contactUsToChangePaymentMethod();
+      }
+    });
   }
 
-  openModalAddPaymentMethod() {
-    this.displayAddPaymentMethodModal = 'block'
-
-    this.DISPLAY_ADD_CARD_COMPLETED = false;
-    this.logger.log('openModalAddPaymentMethod DISPLAY_ADD_CARD_COMPLETED ', this.DISPLAY_ADD_CARD_COMPLETED)
-    this.CARD_HAS_ERROR = null;
-    this.SPINNER_IN_ADD_CARD_MODAL = null;
-    this.form.reset()
-
-    if (this.ccNumberField) {
-      const creditCardInput = this.ccNumberField.nativeElement;
-      // this.logger.log('openModalAddPaymentMethod creditCardInput ', creditCardInput) 
-      setTimeout(() => {
-        creditCardInput.focus()
-      }, 200);
-    }
+  /** Opens mailto so sales can change the Stripe payment method for this project. */
+  contactUsToChangePaymentMethod() {
+    const projectId = this.projectId || this.id_project || '';
+    const to = this.salesEmail || this.contactUsEmail || 'sales@tiledesk.com';
+    window.open(`mailto:${to}?subject=${encodeURIComponent('Change payment method for project ' + projectId)}`);
   }
 
   // https://stackoverflow.com/questions/50416301/angular-how-to-do-credit-card-input

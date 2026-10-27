@@ -3935,5 +3935,7 @@
     "SomethingWentWrongSettingUpProject": "Algo correu mal ao configurar o seu projeto. Tente novamente.",
     "AIAgentPromptLabel": "Describe what it should do (optional)",
     "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
-    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting."
+    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
+    "PaymentMethod": "Método de pagamento",
+    "ContactUsToChangeYourPaymentMethod": "Contacte-nos para alterar o seu método de pagamento"
 }

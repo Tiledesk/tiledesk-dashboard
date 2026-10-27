@@ -4071,5 +4071,7 @@
     "SomethingWentWrongSettingUpProject": "Loyihani sozlashda xatolik yuz berdi. Qayta urinib ko‘ring.",
     "AIAgentPromptLabel": "Describe what it should do (optional)",
     "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
-    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting."
+    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
+    "PaymentMethod": "To‘lov usuli",
+    "ContactUsToChangeYourPaymentMethod": "To‘lov usulini o‘zgartirish uchun biz bilan bog‘laning"
 }

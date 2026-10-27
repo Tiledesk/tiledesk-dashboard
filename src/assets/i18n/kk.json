@@ -4072,5 +4072,7 @@
     "SomethingWentWrongSettingUpProject": "Жобаны баптау кезінде қате орын алды. Қайталап көріңіз.",
     "AIAgentPromptLabel": "Describe what it should do (optional)",
     "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
-    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting."
+    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
+    "PaymentMethod": "Төлем әдісі",
+    "ContactUsToChangeYourPaymentMethod": "Төлем әдісін өзгерту үшін бізбен хабарласыңыз"
 }

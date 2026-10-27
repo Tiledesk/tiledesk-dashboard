@@ -3669,8 +3669,27 @@ img {
   fill: #fbce33;
 }
 
-.home-quota-card-alert-icon.quota-help-info-icon svg {
-  fill: #9aa5b1;
+/* Same outline info as Engaged conversations (home-flow__metric-info) */
+.home-quota-card-alert-icon.quota-help-info-icon {
+  width: 16px;
+  height: 16px;
+  cursor: help;
+
+  .mat-icon,
+  mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+    color: #94a3b8;
+  }
+
+  &:hover .mat-icon,
+  &:hover mat-icon,
+  &:focus-visible .mat-icon,
+  &:focus-visible mat-icon {
+    color: #64748b;
+  }
 }
 
 .quote-title.link {

@@ -3288,6 +3288,8 @@
     "PreviewNotAvailable": "Preview not available",
     "TextareaRows": "Textarea rows",
     "ChangeCard": "Change card",
+    "PaymentMethod": "Payment method",
+    "ContactUsToChangeYourPaymentMethod": "Contact us to change your payment method",
     "ExpirationDate": "Expiration date",
     "CardNumber": "Card number",
     "CardChangedSuccessfully": "Card changed successfully",
