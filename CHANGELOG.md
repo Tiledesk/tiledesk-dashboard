@@ -1,9 +1,8 @@
 # tiledesk-dashboard
 
-### features-2610/migrate-to-v3 27/10/2026
-- Adds "Clone to V3" to the actions menu of a V2 agent in the agents list (project owners and admins only, within the plan's agent limit): a dry run first shows the blocks before and after, the sub agents and the points to check; after confirmation the agent is cloned as a new V3 agent "<name> (V3)" and opened in Design Studio V3, while the V2 agent stays as it is. Needs a server with the V2 to V3 migration (3.1.0-rc2) and Design Studio V3 configured (`cdsV3BaseUrl`)
-- The menu does not offer it for V3 agents, sub agents, published versions, non Design Studio agents, nor for agents whose V3 label is still saved in the old form in their attributes
-- When the server refuses the migration the dialog says why: the agent is already V3, the checks that failed, or the server's message
+### 2.7.266-stage
+- Adds "Clone to V3" to the menu of V2 agents (owners and admins): after a preview of the migration report, the agent is cloned as a new V3 agent "<name> (V3)" and opened in Design Studio V3, leaving the V2 agent unchanged
+- Requires server 3.1.0-rc2 and `cdsV3BaseUrl`; not offered for V3 agents, sub agents or published versions, and a refused migration shows its reason
 
 ### 2.7.265-stage
 - Shows the AI Agent tokens quota (`agent_tokens`, Design Studio V3 vibe coder) in the navbar quota panel and in Home Current usage, with help text in every language
