@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.37
+- Fixes the bug: after Google sign-in/sign-up from a website `/build?prompt=`, the Home vibe coder was not prefilled with the prompt
+
 ### 2.8.36
 - Fixes the bug: inbound email messages that are only a signature + attachment links rendered as an empty bubble (`cleanEmailBody` stripped from `--`)
 - Replaces the Subscription “Change card” form with a SweetAlert2 info dialog to change the payment method by email
