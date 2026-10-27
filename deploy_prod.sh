@@ -1,7 +1,8 @@
 # npm version patch
-# version=`node -e 'console.log(require("./package.json").version)'`
-# echo "version $version"
+version=`node -e 'console.log(require("./package.json").version)'`
+echo "version $version"
 
+npm i
 # if [ "$version" != "" ]; then
 #     git tag -a "v$version" -m "`git log -1 --format=%s`"
 #     echo "Created a new tag, v$version"
@@ -10,10 +11,16 @@
 # fi
 
 node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configuration production --output-path=dist --base-href ./
-cd dist
 
-aws s3 sync --cache-control max-age=172800 . s3://panel.tiledesk.com/v3/dashboard/
+################## N A T I V E --- P R O D ##################
+cd dist
+aws s3 sync . s3://panel.tiledesk.com/v3/dashboard/ --cache-control max-age=172800
+aws s3 sync . s3://panel.tiledesk.com/v3/dashboard/$version --cache-control max-age=172800
+cd ..
+
 aws cloudfront create-invalidation --distribution-id E2D4FS8NGUODM4 --paths "/*"
+###############################################################
+
 echo new version deployed on s3://panel.tiledesk.com/v3/dashboard/
 echo available on https://panel.tiledesk.com/v3/dashboard/index.html
 
