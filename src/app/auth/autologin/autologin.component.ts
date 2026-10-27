@@ -13,7 +13,7 @@ import { ProjectService } from '../../services/project.service';
 import { LoggerService } from '../../services/logger/logger.service';
 import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
-import { BUILD_WANNAGO_ROUTE, shouldHonorBuildWannago } from 'app/utils/pending-build.util';
+import { BUILD_WANNAGO_ROUTE, readPendingBuild } from 'app/utils/pending-build.util';
 
 @Component({
   selector: 'appdashboard-autologin',
@@ -204,10 +204,9 @@ export class AutologinComponent implements OnInit {
     
       this.getProject(projectIDGetFromRoute)
 
-      // Google (and other SSO) ignore SigninComponent's wannago redirect: land on the
-      // JWT route (often /projects). Honour /build + pending prompt like email auth.
-      const wannago = this.localDbService.getFromStorage('wannago')
-      const postAuthRoute = shouldHonorBuildWannago(wannago) ? BUILD_WANNAGO_ROUTE : route
+      // Google/SSO skip SigninComponent's wannago redirect (JWT route is often /projects).
+      // Pending website prompt alone is enough — wannago can be missing after OAuth.
+      const postAuthRoute = readPendingBuild() ? BUILD_WANNAGO_ROUTE : route
       this.router.navigate([postAuthRoute]);
 
       // get if user has used Signin with Google
@@ -380,8 +379,7 @@ export class AutologinComponent implements OnInit {
                 localStorage.setItem('tiledesk_token', JWT);
                 this.auth.publishSSOloggedUser();
 
-                const wannago = this.localDbService.getFromStorage('wannago')
-                const postAuthRoute = shouldHonorBuildWannago(wannago) ? BUILD_WANNAGO_ROUTE : route
+                const postAuthRoute = readPendingBuild() ? BUILD_WANNAGO_ROUTE : route
                 this.router.navigate([postAuthRoute]);
 
                 this.logger.log('[AUTOLOGIN] SSO - ssoLoginWithCustomToken JWT before to get permsission ', JWT)

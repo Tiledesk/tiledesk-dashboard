@@ -6,8 +6,7 @@ import { Project } from 'app/models/project-model';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { ProjectService } from 'app/services/project.service';
 import { emailDomainWhiteList } from 'app/utils/util';
-import { BUILD_WANNAGO_ROUTE, shouldHonorBuildWannago } from 'app/utils/pending-build.util';
-import { LocalDbService } from 'app/services/users-local-db.service';
+import { BUILD_WANNAGO_ROUTE, readPendingBuild } from 'app/utils/pending-build.util';
 import moment from 'moment';
 
 @Component({
@@ -25,7 +24,6 @@ export class CreateProjectGsComponent implements OnInit {
     private projectService: ProjectService,
     private router: Router,
     private logger: LoggerService,
-    private localDbService: LocalDbService
   ) { }
 
   ngOnInit(): void {
@@ -38,10 +36,10 @@ export class CreateProjectGsComponent implements OnInit {
         this.getProjects(user)
         this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] USER  ', user)
         this.user = user
-        // Website /#/build?prompt=… : same path as email signup with wannago (skip onboarding).
-        const wannago = this.localDbService.getFromStorage('wannago')
-        if (shouldHonorBuildWannago(wannago)) {
-          this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] honour wannago=/build → /build')
+        // Website /#/build?prompt=… : skip onboarding when a pending prompt is still stored
+        // (wannago alone is unreliable after Google OAuth).
+        if (readPendingBuild()) {
+          this.logger.log('[CREATE-PROJECT-GOOGLE-AUTH] pending website prompt → /build')
           this.router.navigate([BUILD_WANNAGO_ROUTE]);
           return
         }

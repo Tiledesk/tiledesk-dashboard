@@ -56,7 +56,7 @@ import {
   ONBOARDING_FOCUS_VIBE_CODER_STATE,
   ONBOARDING_VIBE_CODER_PROMPT_STATE,
 } from 'app/utils/pending-website-prompt.util';
-import { consumePendingBuild, rememberLastOpenedProject } from 'app/utils/pending-build.util';
+import { consumePendingBuild, readPendingBuild, rememberLastOpenedProject } from 'app/utils/pending-build.util';
 import { AgentPromptSource, AgentPromptsService } from 'app/services/agent-prompts.service';
 
 const Swal = require('sweetalert2')
@@ -835,12 +835,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
 
   /** Prompt written on the website (`/build?prompt=`, BuildFromWebsiteComponent): it fills the vibe
    *  coder field the same way the onboarding handoff does, and only when the onboarding did not
-   *  hand one over. Read once and removed, so a reload of the Home does not fill it again. */
+   *  hand one over. Storage is cleared only after setPrompt succeeds (see applyHomeVibeCoderPrompt). */
   private consumePendingBuildPrompt(): void {
     if (this.focusHomeVibeCoderPending) {
       return;
     }
-    const pending = consumePendingBuild();
+    const pending = readPendingBuild();
     if (!pending) {
       return;
     }
@@ -856,17 +856,38 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
     if (this.USER_ROLE === 'agent' || !this.PERMISSION_TO_ADD_FLOWS) {
+      // Leave tiledesk-pending-build in place: a later Home open can still prefill.
       this.focusHomeVibeCoderPending = false;
       this.homeVibeCoderInitialPrompt = null;
       return;
     }
-    // Wait for *ngIf + CD to create #homeVibeCoder
+    // After Google signup the vibe coder *ngIf may lag permissions; retry before clearing storage.
+    this.applyHomeVibeCoderPrompt(10);
+  }
+
+  private applyHomeVibeCoderPrompt(retriesLeft: number): void {
     setTimeout(() => {
-      if (this.homeVibeCoderInitialPrompt) {
-        this.homeVibeCoder?.setPrompt(this.homeVibeCoderInitialPrompt, true);
-      } else {
-        this.homeVibeCoder?.focusInput();
+      if (!this.focusHomeVibeCoderPending) {
+        return;
       }
+      if (this.homeVibeCoder) {
+        if (this.homeVibeCoderInitialPrompt) {
+          this.homeVibeCoder.setPrompt(this.homeVibeCoderInitialPrompt, true);
+          if (this.homeVibeCoderSource === 'website') {
+            consumePendingBuild();
+          }
+        } else {
+          this.homeVibeCoder.focusInput();
+        }
+        this.focusHomeVibeCoderPending = false;
+        this.homeVibeCoderInitialPrompt = null;
+        return;
+      }
+      if (retriesLeft > 0) {
+        this.applyHomeVibeCoderPrompt(retriesLeft - 1);
+        return;
+      }
+      this.logger.log('[HOME] vibe coder not ready; website prompt kept in storage');
       this.focusHomeVibeCoderPending = false;
       this.homeVibeCoderInitialPrompt = null;
     }, 100);

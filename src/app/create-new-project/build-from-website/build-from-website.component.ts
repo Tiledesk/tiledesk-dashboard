@@ -9,7 +9,7 @@ import { WidgetService } from 'app/services/widget.service';
 import { tranlatedLanguage } from 'app/utils/util';
 import {
   BUILD_WANNAGO_ROUTE, chooseProjectForBuild, lastOpenedProjectOf, lastProjectIdFrom, projectNameForUser,
-  readBuildOrigin, readBuildPromptFromQuery, savePendingBuild
+  readBuildOrigin, readBuildPromptFromQuery, readPendingBuild, savePendingBuild
 } from 'app/utils/pending-build.util';
 import { Subject } from 'rxjs';
 import { filter, take, takeUntil } from 'rxjs/operators';
@@ -112,7 +112,15 @@ export class BuildFromWebsiteComponent implements OnInit, OnDestroy {
             this.createFirstProject(user);
             return;
           }
-          const chosen = chooseProjectForBuild(projectUsers, lastId);
+          let chosen = chooseProjectForBuild(projectUsers, lastId);
+          // With a website prompt waiting, prefer any enabled project over the list so Home
+          // can prefill the vibe coder (multi-project + no last_* after logout/Google).
+          if (!chosen && readPendingBuild()) {
+            chosen = (projectUsers || []).find(pu => pu?.id_project?._id && pu.id_project.status !== 0) || null;
+            if (chosen) {
+              this.logger.log('[BUILD-FROM-WEBSITE] pending prompt: opening first enabled project');
+            }
+          }
           if (!chosen) {
             this.logger.log('[BUILD-FROM-WEBSITE] no last project to open: to the projects list');
             this.router.navigate(['/projects'], { replaceUrl: true });
