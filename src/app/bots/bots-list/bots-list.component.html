@@ -881,6 +881,15 @@
                                   </span>
                                   <!-- <span>Duplicate</span> -->
                                 </button>
+                                <!-- Clone to V3: V2 agents only, a new agent "<name> (V3)" opened in the Design Studio V3 -->
+                                <button class="mat-menu-btn" *ngIf="canMigrateToV3(faqkb)" mat-menu-item
+                                  (click)='PERMISSION_TO_MIGRATE_TO_V3 && migrateToV3(faqkb)'
+                                  [disabled]="!PERMISSION_TO_MIGRATE_TO_V3">
+                                  <mat-icon>upgrade</mat-icon>
+                                  <span>
+                                    {{ 'MigrateToV3.Menu' | translate }}
+                                  </span>
+                                </button>
                                 <button class="mat-menu-btn" *ngIf="!faqkb?.is_system_identity_bot" mat-menu-item
                                   [disabled]="!PERMISSION_TO_DELETE_FLOW"
                                   (click)='PERMISSION_TO_DELETE_FLOW && openDeleteModal(faqkb?._id, faqkb?.name, faqkb?.has_faq, faqkb?.type,faqkb?.subtype)'>

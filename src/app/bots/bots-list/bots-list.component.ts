@@ -33,6 +33,7 @@ import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatb
 import { CreateAgentModalComponent, CreateAgentModalResult } from './create-agent-modal/create-agent-modal.component';
 import { saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
+import { MigrationSummary, canMigrateToV3, escapeHtml, migrationErrorReason, migrationWarningsHtml, summarizeMigrationReport } from 'app/utils/migrate-to-v3.util';
 import { AgentPromptsService } from 'app/services/agent-prompts.service';
 import { aiAgents, automations } from 'app/integrations/utils';
 import { RoleService } from 'app/services/role.service';
@@ -209,6 +210,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   PERMISSION_TO_DELETE_FLOW: boolean;
   PERMISSION_TO_SHARE_FLOW: boolean;
   PERMISSION_TO_EXPORT_FLOW: boolean;
+  // "Clone to V3": the server allows it to project owners and admins only
+  PERMISSION_TO_MIGRATE_TO_V3: boolean;
   PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
   
@@ -468,6 +471,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.PERMISSION_TO_EXPORT_FLOW = status.matchedPermissions.includes(PERMISSIONS.FLOW_EXPORT);
           this.logger.log('BOT-LIST] - Custom role (3)', status.role, 'PERMISSION_TO_EXPORT_FLOW:', this.PERMISSION_TO_EXPORT_FLOW);
         }
+
+        // PERMISSION_TO_MIGRATE_TO_V3: owner and admin only, as on the server
+        this.PERMISSION_TO_MIGRATE_TO_V3 = status.role === 'owner' || status.role === 'admin';
 
 
         // PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH
@@ -2397,6 +2403,96 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   goToCDS(faqKb: FaqKb) {
     // this.router.navigate(['project/' + this.project._id + '/cds/', faqKb._id, 'intent', '0']);
     goToCDSVersion(this.router, faqKb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl, this.appConfigService.getConfig().cdsV3BaseUrl)
+  }
+
+  // --------------------------------------------------------------------------------------
+  // Clone to V3 (see utils/migrate-to-v3.util.ts)
+  // --------------------------------------------------------------------------------------
+  canMigrateToV3(faqKb: FaqKb): boolean {
+    return canMigrateToV3(faqKb, this.appConfigService.getConfig());
+  }
+
+  /** First the dry run: the report is shown and nothing is written until the user confirms. */
+  migrateToV3(faqKb: FaqKb) {
+    if (!this.PERMISSION_TO_MIGRATE_TO_V3) {
+      this.notify.presentDialogNoPermissionToPermomfAction();
+      return;
+    }
+    if (this.chatBotLimit && this.chatBotCount >= this.chatBotLimit) {
+      this.presentDialogReachedChatbotLimit();
+      return;
+    }
+    this.faqKbService.migrateChatbotToV3(faqKb._id, true).subscribe((res: any) => {
+      this.logger.log('[BOTS-LIST] - MIGRATE TO V3 - DRY RUN ', res);
+      this.confirmMigrationToV3(faqKb, summarizeMigrationReport(res?.report));
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] - MIGRATE TO V3 - DRY RUN - ERROR ', error);
+      this.presentMigrationToV3Error(error);
+    });
+  }
+
+  confirmMigrationToV3(faqKb: FaqKb, summary: MigrationSummary) {
+    const params = { name: escapeHtml(faqKb.name), before: summary.blocksBefore, after: summary.blocksAfter, count: summary.subagents };
+    let html = '<p>' + this.translate.instant('MigrateToV3.ConfirmText', params) + '</p>'
+      + '<p>' + this.translate.instant('MigrateToV3.Blocks', params) + '</p>';
+    if (summary.subagents > 0) {
+      html += '<p>' + this.translate.instant('MigrateToV3.Subagents', params) + '</p>';
+    }
+    if (summary.warnings.length > 0) {
+      html += '<p>' + this.translate.instant('MigrateToV3.WarningsTitle', { count: summary.warnings.length }) + '</p>'
+        + migrationWarningsHtml(summary.warnings, this.translate.instant('MigrateToV3.MoreWarnings'));
+    }
+    Swal.fire({
+      title: this.translate.instant('MigrateToV3.ConfirmTitle'),
+      html: html,
+      icon: summary.warnings.length > 0 ? 'warning' : 'info',
+      showCancelButton: true,
+      cancelButtonText: this.translate.instant('Cancel'),
+      confirmButtonText: this.translate.instant('MigrateToV3.Confirm'),
+      focusConfirm: false,
+      reverseButtons: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.runMigrationToV3(faqKb);
+      }
+    });
+  }
+
+  /** The real migration: a new agent "<name> (V3)", opened in the Design Studio V3. */
+  runMigrationToV3(faqKb: FaqKb) {
+    this.faqKbService.migrateChatbotToV3(faqKb._id, false).subscribe((res: any) => {
+      this.logger.log('[BOTS-LIST] - MIGRATE TO V3 - RES ', res);
+      this.faqKbService.getFaqKbById(res.bot_id).subscribe((migrated: any) => {
+        this.botLocalDbService.saveBotsInStorage(migrated._id, migrated);
+        openChatbotEditor(this.router, migrated, this.project._id, this.appConfigService.getConfig());
+      }, (error) => {
+        // the agent exists: it stays in the list
+        this.logger.error('[BOTS-LIST] - MIGRATE TO V3 - GET NEW AGENT - ERROR ', error);
+        this.getFaqKbByProjectId();
+      });
+    }, (error) => {
+      this.logger.error('[BOTS-LIST] - MIGRATE TO V3 - ERROR ', error);
+      this.presentMigrationToV3Error(error);
+    });
+  }
+
+  presentMigrationToV3Error(error: any) {
+    const reason = migrationErrorReason(error);
+    let html = '<p>' + this.translate.instant('MigrateToV3.ErrorText') + '</p>';
+    if (reason.key) {
+      html += '<p>' + this.translate.instant(reason.key) + '</p>';
+    }
+    if (reason.details.length > 0) {
+      html += '<p>' + reason.details.map(escapeHtml).join('<br>') + '</p>';
+    }
+    Swal.fire({
+      title: this.translate.instant('MigrateToV3.ErrorTitle'),
+      html: html,
+      icon: 'error',
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+      focusConfirm: false,
+    });
   }
 
 
