@@ -3588,6 +3588,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       data: {
         subtype: 'chatbot',
         showPromptField: false,
+        hideAgentTypeSelect: true,
         displayTwilioVoiceAgent: this.displayTwilioVoiceAgent,
         displayVXMLVoiceAgent: this.displayVXMLVoiceAgent,
       },

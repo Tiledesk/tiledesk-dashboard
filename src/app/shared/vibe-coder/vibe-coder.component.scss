@@ -33,8 +33,8 @@
 .vibe-coder__input {
   box-sizing: border-box;
   width: 100%;
-  min-height: 44px; /* 2 lines @ 22px */
-  max-height: 132px; /* 6 lines @ 22px */
+  min-height: 36px; /* 2 lines @ 18px */
+  max-height: 108px; /* 6 lines @ 18px */
   border: 0;
   outline: none;
   resize: none;
@@ -42,8 +42,9 @@
   background: transparent;
   color: var(--text-color, #1e293b);
   font-family: var(--header-font-family, inherit);
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 300 !important;
   padding: 0;
 
   &::placeholder {
@@ -108,28 +109,31 @@
 .vibe-coder__examples {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   gap: 10px;
-  margin-top: 10px;
-  width: 100%;
+  margin-top: 14px;
+  width: min(730px, 92vw);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .vibe-coder__examples-label-row {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
+  width: 100%;
 }
 
 .vibe-coder__examples-label {
-  color: var(--secondary-text-color, #94a3b8);
+  color: #94a3b8;
   font-family: var(--header-font-family, inherit);
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.3;
 }
 
-/* Uncomment with the refresh button in the template when cycling pages of examples
+/* Uncomment with the refresh button in the template when cycling pages of examples */
 .vibe-coder__examples-refresh {
   display: inline-flex;
   align-items: center;
@@ -140,7 +144,7 @@
   border: 0;
   border-radius: 999px;
   background: transparent;
-  color: var(--secondary-text-color, #94a3b8);
+  color: #94a3b8;
   cursor: pointer;
 
   svg {
@@ -149,43 +153,62 @@
 
   &:hover {
     background: rgba(148, 163, 184, 0.12);
-    color: var(--text-color, #64748b);
+    color: #64748b;
   }
 }
-*/
 
-.vibe-coder__examples-chips {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 8px;
+.vibe-coder__examples-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
   width: 100%;
 }
 
-.vibe-coder__example-chip {
+.vibe-coder__example-card {
   box-sizing: border-box;
-  flex: 0 1 auto;
-  padding: 8px 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  background: #f8fafc;
-  color: var(--text-color, #334155);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 14px 14px 12px;
+  border: 1px solid #dbe4ee;
+  border-radius: 14px;
+  background: #fff;
+  color: #1e3a5f;
   font-family: var(--header-font-family, inherit);
-  font-size: 13px;
-  font-weight: 400;
-  line-height: 1.3;
-  text-align: center;
-  white-space: nowrap;
+  text-align: left;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
 
   &:hover {
-    background: #f1f5f9;
-    border-color: #cbd5e1;
+    background: #ebf3fe;
+    border-color: #cfd9e6;
   }
 
   &:active {
-    background: #e2e8f0;
+    background: #dde6f0;
+  }
+}
+
+.vibe-coder__example-card-text {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: inherit;
+  padding-right: 4px;
+}
+
+.vibe-coder__example-card-arrow {
+  display: inline-flex;
+  align-self: flex-end;
+  color: #64748b;
+  line-height: 0;
+  transform: rotate(-90deg);
+
+  svg {
+    display: block;
   }
 }
 
@@ -195,11 +218,7 @@
     padding: 16px;
   }
 
-  .vibe-coder__examples-chips {
-    flex-wrap: wrap;
-  }
-
-  .vibe-coder__example-chip {
-    white-space: normal;
+  .vibe-coder__examples-cards {
+    grid-template-columns: 1fr;
   }
 }

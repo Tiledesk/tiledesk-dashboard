@@ -26,6 +26,8 @@ export interface CreateAgentModalData {
   displayTwilioVoiceAgent?: boolean;
   /** When true, also show Voice (VXML) (`customization.voice`). */
   displayVXMLVoiceAgent?: boolean;
+  /** Home vibe coder: name only — hide Conversational / Voice / Copilot select. */
+  hideAgentTypeSelect?: boolean;
 }
 
 /** What the modal hands back, or `undefined` when it was dismissed. */
@@ -86,6 +88,7 @@ export class CreateAgentModalComponent {
       this.showPromptField = data.showPromptField === true;
       this.requirePromptForConversational = data.requirePromptForConversational === true;
       this.homeBuildPrompt = (data.homeBuildPrompt || '').trim();
+      this.showAgentTypeSelect = data.hideAgentTypeSelect !== true;
       this.buildAgentTypeOptions(!!data.displayVXMLVoiceAgent);
     } else {
       this.buildAgentTypeOptions(false);
@@ -108,7 +111,6 @@ export class CreateAgentModalComponent {
   }
 
   private buildAgentTypeOptions(showVxml: boolean): void {
-    this.showAgentTypeSelect = true;
     this.agentTypeOptions = [
       { value: 'chatbot', label: this.translate.instant('AgentTypeConversational') },
       // Always present; Twilio enablement is gated on create-chatbot-modal.

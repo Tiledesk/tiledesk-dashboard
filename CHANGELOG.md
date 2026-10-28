@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.8.38 (No tagged)
+- Improves the Home vibe coder UI (sample prompt cards, typography, start button gated on a non-empty prompt)
+- Adds the ability to select a prebuilt example prompt
+
 ### 2.8.37
 - Fixes the bug: after Google sign-in/sign-up from a website `/build?prompt=`, the Home vibe coder was not prefilled with the prompt
 

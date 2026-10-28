@@ -26,10 +26,10 @@
     </div>
   </div>
 
-  <!-- Example prompts (chips) — hidden for now
   <div class="vibe-coder__examples" *ngIf="!busy">
     <div class="vibe-coder__examples-label-row">
       <span class="vibe-coder__examples-label">{{ 'VibeCoderTryExamplePrompt' | translate }}</span>
+      <!-- Refresh: show when there are more example pages to cycle
       <button
         type="button"
         class="vibe-coder__examples-refresh"
@@ -39,19 +39,24 @@
           <path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/>
         </svg>
       </button>
+      -->
     </div>
 
-    <div class="vibe-coder__examples-chips">
+    <div class="vibe-coder__examples-cards">
       <button
         type="button"
-        class="vibe-coder__example-chip"
+        class="vibe-coder__example-card"
         *ngFor="let example of examplePrompts"
         (click)="applyExamplePrompt(example)">
-        {{ example.labelKey | translate }}
+        <span class="vibe-coder__example-card-text">{{ example.label }}</span>
+        <span class="vibe-coder__example-card-arrow" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+            <path d="M7 17L17 7M17 7H9M17 7V15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
       </button>
     </div>
   </div>
-  -->
 
   <div class="vibe-coder__error" *ngIf="error">
     {{ error }}
