@@ -107,6 +107,7 @@
         "AddCondition": "Lägg till villkor",
         "ApplyFilter": "Tillämpa",
         "ClearFilter": "Återställ filter",
+        "FilterFailed": "Kunde inte tillämpa filtret. Försök igen.",
         "BooleanTrue": "sant",
         "BooleanFalse": "falskt",
         "OperatorEqual": "Lika med",
@@ -120,7 +121,12 @@
         "OperatorLessOrEqual": "Mindre eller lika med",
         "OperatorExists": "Finns",
         "OperatorNotExists": "Finns inte",
-        "tableSize": "Tabellstorlek: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
+        "tableSize": "Tabellstorlek: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>.",
+        "Ttl": "TTL",
+        "ValueInSeconds": "Värde i sekunder",
+        "TtlPlaceholder": "e.g. 3600",
+        "Seconds": "seconds",
+        "InvalidTtl": "Enter a whole number of seconds greater than 0"
     },
     "SelectAkB": "Välj en kunskapsbas",
     "FirstName": "Förnamn",

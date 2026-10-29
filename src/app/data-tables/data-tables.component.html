@@ -248,7 +248,8 @@
                 <ng-select class="dt-ng-select"
                            appendTo="body"
                            dropdownPanelClass="dt-type-select-panel"
-                           [(ngModel)]="newColumnType"
+                           [ngModel]="newColumnType"
+                           (ngModelChange)="onNewColumnTypeChange($event)"
                            [items]="columnTypes"
                            bindLabel="label"
                            bindValue="value"
@@ -267,6 +268,9 @@
                     </span>
                   </ng-template>
                 </ng-select>
+                <div *ngIf="newColumnType === 'ttl'" class="dt-type-copy">
+                  {{ 'DataTables.ValueInSeconds' | translate }}
+                </div>
               </div>
 
               <button mat-flat-button
@@ -382,7 +386,7 @@
 
                   <div class="dt-filter-field">
                     <label class="dt-filter-label">
-                      {{ 'DataTables.Value' | translate }}
+                      {{ (condition.columnType === 'ttl' ? 'DataTables.ValueInSeconds' : 'DataTables.Value') | translate }}
                       <span *ngIf="showFilterValueRequired(condition)" class="dt-required">*</span>
                     </label>
 
@@ -411,6 +415,15 @@
                            [placeholder]="('DataTables.Value' | translate)"
                            autocomplete="off">
 
+                    <input *ngIf="condition.columnType === 'ttl'"
+                           type="text"
+                           class="dt-input"
+                           [(ngModel)]="condition.value"
+                           inputmode="numeric"
+                           pattern="[0-9]*"
+                           [placeholder]="('DataTables.TtlPlaceholder' | translate)"
+                           autocomplete="off">
+
                     <input *ngIf="condition.columnType === 'datetime'"
                            type="datetime-local"
                            class="dt-input"
@@ -428,6 +441,11 @@
                          class="dt-field-hint"
                          role="alert">
                       {{ 'DataTables.RequiredField' | translate }}
+                    </div>
+                    <div *ngIf="showFilterTtlInvalidError(condition)"
+                         class="dt-field-hint"
+                         role="alert">
+                      {{ 'DataTables.InvalidTtl' | translate }}
                     </div>
                   </div>
                 </div>
@@ -595,6 +613,30 @@
                                (paste)="onNumberCellPaste($event, row, col)"
                                (focus)="onNumberCellFocus(row, col.name, $event)"
                                (blur)="onNumberCellBlur(row, col.name)">
+                        <input *ngSwitchCase="'ttl'"
+                               type="text"
+                               class="dt-cell-input dt-cell-input--ttl dt-cell-input--nullable"
+                               readonly
+                               inputmode="numeric"
+                               pattern="[0-9]*"
+                               [placeholder]="('DataTables.Null' | translate)"
+                               [attr.autocomplete]="getCellAutocomplete(row, col)"
+                               autocorrect="off"
+                               autocapitalize="off"
+                               spellcheck="false"
+                               [attr.data-lpignore]="true"
+                               [attr.data-1p-ignore]="true"
+                               [attr.data-form-type]="'other'"
+                               [attr.aria-labelledby]="getColumnHeaderId(col)"
+                               [ngModelOptions]="{standalone: true}"
+                               [ngModel]="getTtlCellDisplayValue(row, col.name)"
+                               (ngModelChange)="onTtlCellChange(row, col, $event)"
+                               (keydown)="onTtlCellKeydown($event)"
+                               (paste)="onTtlCellPaste($event, row, col)"
+                               (focus)="onCellInputFocus($event)"
+                               (keydown.enter)="onCellInputEnterKeydown($event)"
+                               (blur)="onCellBlur(row, col.name)"
+                               (click)="$event.stopPropagation()">
                         <div *ngSwitchCase="'boolean'"
                              class="dt-cell-boolean"
                              (click)="$event.stopPropagation()">

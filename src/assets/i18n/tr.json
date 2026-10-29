@@ -107,6 +107,7 @@
         "AddCondition": "Koşul ekle",
         "ApplyFilter": "Uygula",
         "ClearFilter": "Filtreleri sıfırla",
+        "FilterFailed": "Filtre uygulanamadı. Lütfen tekrar deneyin.",
         "BooleanTrue": "doğru",
         "BooleanFalse": "yanlış",
         "OperatorEqual": "Eşittir",
@@ -120,7 +121,12 @@
         "OperatorLessOrEqual": "Küçük veya eşit",
         "OperatorExists": "Var",
         "OperatorNotExists": "Yok",
-        "tableSize": "Tablo boyutu: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
+        "tableSize": "Tablo boyutu: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>.",
+        "Ttl": "TTL",
+        "ValueInSeconds": "Saniye cinsinden değer",
+        "TtlPlaceholder": "e.g. 3600",
+        "Seconds": "seconds",
+        "InvalidTtl": "Enter a whole number of seconds greater than 0"
     },
     "SelectAkB": "Bir Bilgi Tabanı Seçin",
     "FirstName": "İlk adı",

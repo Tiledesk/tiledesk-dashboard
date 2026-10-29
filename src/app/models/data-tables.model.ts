@@ -2,7 +2,7 @@
 
 export const COLUMN_NAME_PATTERN = /^[a-zA-Z0-9_]+$/;
 
-export type ColumnType = 'string' | 'number' | 'boolean' | 'datetime';
+export type ColumnType = 'string' | 'number' | 'boolean' | 'datetime' | 'ttl';
 
 export type MatchMode = 'all' | 'any';
 
@@ -24,12 +24,16 @@ export interface Column {
   name: string;
   type: ColumnType;
   index: number;
+  /** Duration in whole seconds when type is `ttl` (API property `ttl`). */
+  ttl?: number;
 }
 
 export interface ColumnInput {
   name: string;
   type: ColumnType;
   index?: number;
+  /** Duration in whole seconds when type is `ttl` (API property `ttl`). */
+  ttl?: number;
 }
 
 export interface RenameColumnRequest {

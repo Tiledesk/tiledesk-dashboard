@@ -107,6 +107,7 @@
         "AddCondition": "Ajouter une condition",
         "ApplyFilter": "Appliquer",
         "ClearFilter": "Réinitialiser les filtres",
+        "FilterFailed": "Impossible d'appliquer le filtre. Réessayez.",
         "BooleanTrue": "vrai",
         "BooleanFalse": "faux",
         "OperatorEqual": "Égal",
@@ -120,7 +121,12 @@
         "OperatorLessOrEqual": "Inférieur ou égal",
         "OperatorExists": "Existe",
         "OperatorNotExists": "N'existe pas",
-        "tableSize": "Taille du tableau : <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
+        "tableSize": "Taille du tableau : <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>.",
+        "Ttl": "TTL",
+        "ValueInSeconds": "Valeur en secondes",
+        "TtlPlaceholder": "e.g. 3600",
+        "Seconds": "seconds",
+        "InvalidTtl": "Enter a whole number of seconds greater than 0"
     },
     "SelectAkB": "Sélectionnez une base de connaissances",
     "FirstName": "Prénom",
