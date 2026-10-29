@@ -1,6 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.8.38 (No tagged)
+- Home asks only for the description: with a prompt no name modal opens, the agent is created with a provisional name from the first words of the description, and the Design Studio (3.1.4) renames it after the title the agent runtime generates for its conversation (runtime 0.12.0). In New flow → AI Agent the name becomes optional when a description is written. The note left for the Design Studio carries `provisionalName`
 - Improves the Home vibe coder UI (sample prompt cards, typography, start button gated on a non-empty prompt)
 - Adds the ability to select a prebuilt example prompt
 

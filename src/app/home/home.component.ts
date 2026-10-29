@@ -49,7 +49,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { CreateAgentModalComponent, CreateAgentModalResult } from 'app/bots/bots-list/create-agent-modal/create-agent-modal.component';
 import { CreateChatbotModalComponent } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.component';
-import { MAX_PROMPT_LENGTH, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
+import { MAX_PROMPT_LENGTH, provisionalAgentName, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
 import { VibeCoderComponent } from 'app/shared/vibe-coder/vibe-coder.component';
 import {
@@ -3582,6 +3582,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.pendingHomeBuildPrompt = normalized || null;
     this.vibeCoderError = null;
 
+    // A description is all the Home asks for (29/10/2026): no name modal. The agent is created
+    // with a provisional name from the description, and the Design Studio renames it after the
+    // title the runtime generates for its conversation.
+    if (normalized) {
+      this.pendingHomeBuildPrompt = null;
+      this.createHomeAgentFromPrompt(provisionalAgentName(normalized), normalized, 'chatbot', true);
+      return;
+    }
+
     // Same modal as New Flow → AI Agent; prompt already collected in the home box (may be empty).
     const dialogRef = this.dialog.open(CreateAgentModalComponent, {
       width: '480px',
@@ -3730,7 +3739,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
-  private createHomeAgentFromPrompt(chatbotName: string, prompt: string, subtype: string = 'chatbot'): void {
+  /** `provisionalName`: the name was not asked for, so the Design Studio may replace it with the
+   *  conversation's title. */
+  private createHomeAgentFromPrompt(chatbotName: string, prompt: string, subtype: string = 'chatbot',
+    provisionalName: boolean = false): void {
     if (!chatbotName || !this.projectId) {
       this.vibeCoderError = this.translate.instant('CouldNotCreateAIAgent');
       return;
@@ -3766,6 +3778,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
               prompt: normalizedPrompt,
               language,
               createdAt: Date.now(),
+              ...(provisionalName ? { provisionalName: faqKb.name || chatbotName } : {}),
             });
           }
           // Server answer carries ds_version — openChatbotEditor picks v2 / v3.
@@ -3781,6 +3794,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             prompt: normalizedPrompt,
             language,
             createdAt: Date.now(),
+            ...(provisionalName ? { provisionalName: faqKb.name || chatbotName } : {}),
           });
           // The prompt is saved with its agent before leaving the page (the editor opens in the
           // same tab); the save never fails and has a time limit, so the agent always opens.

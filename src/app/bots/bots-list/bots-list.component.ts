@@ -180,6 +180,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   chatbotName: string;
   /** The description of the agent to build, left for the Design Studio once the agent exists. */
   chatbotPrompt: string = '';
+  /** The name was made from the description, not typed (CreateAgentModalResult.provisionalName). */
+  chatbotNameIsProvisional: boolean = false;
   chatbotToImportSubtype: string;
   showUploadingSpinner: boolean = false;
 
@@ -1810,7 +1812,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           botId: faqKb['_id'],
           prompt: this.chatbotPrompt,
           language: this.botDefaultLangCode,
-          createdAt: Date.now()
+          createdAt: Date.now(),
+          ...(this.chatbotNameIsProvisional ? { provisionalName: faqKb['name'] || this.chatbotName } : {})
         });
         // The prompt is saved with its agent before leaving the page (the editor opens in the
         // same tab); the save never fails and has a time limit, so the agent always opens.
@@ -1831,6 +1834,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.logger.log('[BOT-LIST] CREATE FAQKB - POST REQUEST * COMPLETE *');
       this.chatbotName = null;
       this.chatbotPrompt = '';
+      this.chatbotNameIsProvisional = false;
       // this.getFaqKbByProjectId();
       // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
     })
@@ -2192,6 +2196,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (!result.chatbotName) { return; }
       this.chatbotName = result.chatbotName;
       this.chatbotPrompt = result.prompt || '';
+      this.chatbotNameIsProvisional = result.provisionalName === true;
       this.createBlankTilebot(result.subType);
     });
   }
