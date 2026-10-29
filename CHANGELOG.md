@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.268-stage (No tagged)
+- Home asks only for the description: with a prompt no name modal opens, the agent is created with a provisional name from the first words of the description, and the Design Studio (3.1.4) renames it after the title the agent runtime generates for its conversation (runtime 0.12.0). In New flow → AI Agent the name becomes optional when a description is written. The note left for the Design Studio carries `provisionalName`
+
 ### 2.7.267-stage
 - Aligns conversation visibility with the new request APIs (visibility / agentIds / visibilitySince) 
 

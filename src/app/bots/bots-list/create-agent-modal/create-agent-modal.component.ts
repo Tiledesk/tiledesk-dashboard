@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { MAX_PROMPT_LENGTH } from 'app/utils/agent-from-prompt.util';
+import { MAX_PROMPT_LENGTH, provisionalAgentName } from 'app/utils/agent-from-prompt.util';
 
 /** What the caller hands to the modal. */
 export interface CreateAgentModalData {
@@ -34,6 +34,9 @@ export interface CreateAgentModalResult {
   subType: string;
   /** The description of the agent to build, empty when none was written. */
   prompt?: string;
+  /** True when no name was typed and `chatbotName` was made from the description: the Design
+   *  Studio renames the agent after its conversation's title (29/10/2026). */
+  provisionalName?: boolean;
   /** Parent should open `CreateChatbotModal` for voice / copilot subtypes. */
   openCreateChatbotModal?: boolean;
 }
@@ -144,9 +147,15 @@ export class CreateAgentModalComponent {
     }
   }
 
+  /** A Conversational agent with a description needs no name: it gets one from the description
+   *  until the Design Studio names it after its conversation's title (29/10/2026). */
+  get nameIsOptional(): boolean {
+    return this.showPromptField && this.subtype === 'chatbot' && !!(this.agentPrompt || '').trim();
+  }
+
   /** Name threshold as before; Home Conversational also needs a vibe-box prompt. */
   get canCreate(): boolean {
-    const nameOk = (this.agentName || '').trim().length >= 2;
+    const nameOk = (this.agentName || '').trim().length >= 2 || this.nameIsOptional;
     if (!nameOk) {
       return false;
     }
@@ -165,10 +174,14 @@ export class CreateAgentModalComponent {
       } as CreateAgentModalResult);
       return;
     }
+    const prompt = (this.agentPrompt || '').trim() || this.homeBuildPrompt;
+    const typed = (this.agentName || '').trim();
+    const provisional = typed.length < 2 && this.nameIsOptional;
     this.dialogRef.close({
-      chatbotName: this.agentName.trim(),
+      chatbotName: provisional ? provisionalAgentName(prompt) : typed,
       subType: this.subtype,
-      prompt: (this.agentPrompt || '').trim() || this.homeBuildPrompt
+      prompt: prompt,
+      ...(provisional ? { provisionalName: true } : {})
     } as CreateAgentModalResult);
   }
 

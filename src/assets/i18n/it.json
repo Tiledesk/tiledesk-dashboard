@@ -3757,5 +3757,6 @@
     "SomethingWentWrongSettingUpProject": "Si è verificato un errore durante la configurazione del progetto. Riprova.",
     "AIAgentPromptLabel": "Descrivi cosa deve fare (facoltativo)",
     "AIAgentPromptPlaceholder": "Es. chiede il numero d'ordine e, in base allo stato, risponde se e' spedito, in lavorazione o annullato",
-    "AIAgentPromptHint": "Descrivi la tua idea e l'IA creerà un Agent, pronto per essere perfezionato dialogando."
+    "AIAgentPromptHint": "Descrivi la tua idea e l'IA creerà un Agent, pronto per essere perfezionato dialogando.",
+    "AIAgentNameOptionalHint": "Facoltativo se scrivi una descrizione: l'IA darà il nome all'agente."
 }
