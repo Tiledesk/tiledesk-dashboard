@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.268-stage
+- Adds the ability to create TTL columns in Data Tables
+
 ### 2.7.267-stage
 - Aligns conversation visibility with the new request APIs (visibility / agentIds / visibilitySince) 
 
