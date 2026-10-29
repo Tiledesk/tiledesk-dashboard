@@ -99,7 +99,7 @@ export class WsRequestsService implements OnDestroy {
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public usersLocalDbService: LocalDbService,
-    private _httpClient: HttpClient
+    private _httpClient: HttpClient,
   ) {
     this.getAppConfig();
     // -----------------------------------------------------------------------------------------------------
@@ -133,6 +133,7 @@ export class WsRequestsService implements OnDestroy {
       }
     });
   }
+
   getStoredForegroungNotificationAndPublish() {
     const foregrondNotificationsCount = +this.usersLocalDbService.getForegrondNotificationsCount();
     this.logger.log('[WS-REQUESTS-SERV] foregrondNotificationsCount ', foregrondNotificationsCount)
@@ -219,7 +220,7 @@ export class WsRequestsService implements OnDestroy {
               // ------------------------------------------------
               // @ Agents - pass in data agents get from snapshot
               // ------------------------------------------------
-              // console.log("[WS-REQUESTS-SERV] DSHB - CREATE - DATA ", data);
+              console.log("[WS-REQUESTS-SERV] DSHB - CREATE - DATA snapshot agents", data.snapshot.agents);
               if (data.snapshot && data.snapshot.agents) {
 
                 data.agents = data['snapshot']["agents"]
@@ -438,7 +439,9 @@ export class WsRequestsService implements OnDestroy {
     // });
     // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE hasFound IN wsRequestsList: ", hasFound , 'THE REQUEST ID', request._id);
 
+    // Publish full topic list (visibility filtered only in UI / navbar, like pre-patch).
     const index = this.wsRequestsList.findIndex((e) => e.id === request.id);
+
     if (index === -1) {
 
       this.wsRequestsList.push(request);
