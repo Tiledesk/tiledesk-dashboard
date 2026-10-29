@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.267-stage
+- Aligns conversation visibility with the new request APIs (visibility / agentIds / visibilitySince) 
+
 ### 2.7.266-stage
 - Adds "Clone to V3" to the menu of V2 agents (owners and admins): after a preview of the migration report, the agent is cloned as a new V3 agent "<name> (V3)" and opened in Design Studio V3, leaving the V2 agent unchanged
 - Requires server 3.1.0-rc2 and `cdsV3BaseUrl`; not offered for V3 agents, sub agents or published versions, and a refused migration shows its reason
