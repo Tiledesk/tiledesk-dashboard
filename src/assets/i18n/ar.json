@@ -108,6 +108,7 @@
         "AddCondition": "إضافة شرط",
         "ApplyFilter": "تطبيق",
         "ClearFilter": "إعادة تعيين الفلاتر",
+        "FilterFailed": "تعذر تطبيق الفلتر. يرجى المحاولة مرة أخرى.",
         "BooleanTrue": "صحيح",
         "BooleanFalse": "خطأ",
         "OperatorEqual": "يساوي",
@@ -121,7 +122,12 @@
         "OperatorLessOrEqual": "أقل أو يساوي",
         "OperatorExists": "موجود",
         "OperatorNotExists": "غير موجود",
-        "tableSize": "حجم الجدول: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
+        "tableSize": "حجم الجدول: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>.",
+        "Ttl": "TTL",
+        "ValueInSeconds": "القيمة بالثواني",
+        "TtlPlaceholder": "e.g. 3600",
+        "Seconds": "seconds",
+        "InvalidTtl": "Enter a whole number of seconds greater than 0"
     },
     "SelectAkB": "اختر قاعدة المعرفة",
     "FirstName": "الإسم الشخصي",

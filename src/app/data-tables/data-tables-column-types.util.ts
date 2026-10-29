@@ -11,6 +11,7 @@ export const DATA_TABLE_COLUMN_TYPE_OPTIONS: DataTableColumnTypeOption[] = [
   { label: 'number', value: 'number' },
   { label: 'boolean', value: 'boolean' },
   { label: 'datetime', value: 'datetime' },
+  { label: 'TTL', value: 'ttl' },
 ];
 
 export function isoToDatetimeLocal(value: unknown): string {

@@ -108,6 +108,7 @@
         "AddCondition": "Şərt əlavə et",
         "ApplyFilter": "Tətbiq et",
         "ClearFilter": "Filtrləri sıfırla",
+        "FilterFailed": "Filtr tətbiq edilə bilmədi. Yenidən cəhd edin.",
         "BooleanTrue": "doğru",
         "BooleanFalse": "yanlış",
         "OperatorEqual": "Bərabər",
@@ -121,7 +122,12 @@
         "OperatorLessOrEqual": "Kiçik və ya bərabər",
         "OperatorExists": "Mövcuddur",
         "OperatorNotExists": "Mövcud deyil",
-        "tableSize": "Cədvəl ölçüsü: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
+        "tableSize": "Cədvəl ölçüsü: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>.",
+        "Ttl": "TTL",
+        "ValueInSeconds": "Saniyə ilə dəyər",
+        "TtlPlaceholder": "e.g. 3600",
+        "Seconds": "seconds",
+        "InvalidTtl": "Enter a whole number of seconds greater than 0"
     },
     "SelectAkB": "Bilik bazası seçin",
     "FirstName": "Ad",

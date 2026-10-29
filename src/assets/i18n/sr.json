@@ -108,6 +108,7 @@
         "AddCondition": "Додај услов",
         "ApplyFilter": "Примени",
         "ClearFilter": "Ресетуј филтере",
+        "FilterFailed": "Nije moguće primeniti filter. Pokušajte ponovo.",
         "BooleanTrue": "тачно",
         "BooleanFalse": "нетачно",
         "OperatorEqual": "Једнако",
@@ -121,7 +122,12 @@
         "OperatorLessOrEqual": "Мање или једнако",
         "OperatorExists": "Постоји",
         "OperatorNotExists": "Не постоји",
-        "tableSize": "Veličina tabele: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
+        "tableSize": "Veličina tabele: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>.",
+        "Ttl": "TTL",
+        "ValueInSeconds": "Vrednost u sekundama",
+        "TtlPlaceholder": "e.g. 3600",
+        "Seconds": "seconds",
+        "InvalidTtl": "Enter a whole number of seconds greater than 0"
     },
     "SelectAkB": "Изаберите базу знања",
     "FirstName": "Име",

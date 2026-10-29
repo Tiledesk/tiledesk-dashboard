@@ -7,7 +7,8 @@ info:
     - Ogni tabella appartiene a un `projectId`.
     - Le righe usano chiavi = **nomi colonna** definiti nello schema (non gli id colonna).
     - I nomi colonna ammessi: lettere, numeri e underscore (`^[a-zA-Z0-9_]+$`).
-    - Tipi colonna: `string`, `number`, `boolean`, `datetime`.
+    - Tipi colonna: `string`, `number`, `boolean`, `datetime`, `ttl`.
+    - Tipo `ttl`: durata in secondi interi > 0; proprietà schema opzionale/obbligatoria `ttl` (number, secondi).
     - Colonne aggiunte dopo l'inserimento righe: in lettura i campi mancanti sono `null`.
   version: 1.0.0
 
@@ -503,7 +504,7 @@ components:
   schemas:
     ColumnType:
       type: string
-      enum: [string, number, boolean, datetime]
+      enum: [string, number, boolean, datetime, ttl]
 
     MatchMode:
       type: string
@@ -529,6 +530,11 @@ components:
           type: integer
           description: Ordine colonna (uso futuro)
           example: 0
+        ttl:
+          type: integer
+          minimum: 1
+          description: Durata in secondi (solo type `ttl`); non convertire in ms
+          example: 3600
 
     ColumnInput:
       type: object
@@ -541,6 +547,11 @@ components:
           $ref: '#/components/schemas/ColumnType'
         index:
           type: integer
+        ttl:
+          type: integer
+          minimum: 1
+          description: Durata in secondi quando type è `ttl`
+          example: 3600
 
     Table:
       type: object

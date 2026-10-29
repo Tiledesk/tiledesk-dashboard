@@ -108,6 +108,7 @@
         "AddCondition": "Шарт қосу",
         "ApplyFilter": "Қолдану",
         "ClearFilter": "Сүзгілерді қалпына келтіру",
+        "FilterFailed": "Сүзгіні қолдану мүмкін болмады. Қайталап көріңіз.",
         "BooleanTrue": "ақиқат",
         "BooleanFalse": "жалған",
         "OperatorEqual": "Тең",
@@ -121,7 +122,12 @@
         "OperatorLessOrEqual": "Кіші немесе тең",
         "OperatorExists": "Бар",
         "OperatorNotExists": "Жоқ",
-        "tableSize": "Кесте өлшемі: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
+        "tableSize": "Кесте өлшемі: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>.",
+        "Ttl": "TTL",
+        "ValueInSeconds": "Секундтағы мән",
+        "TtlPlaceholder": "e.g. 3600",
+        "Seconds": "seconds",
+        "InvalidTtl": "Enter a whole number of seconds greater than 0"
     },
     "SelectAkB": "Білім қорын таңдаңыз",
     "FirstName": "Аты",
