@@ -99,7 +99,7 @@ export class WsRequestsService implements OnDestroy {
     public appConfigService: AppConfigService,
     private logger: LoggerService,
     public usersLocalDbService: LocalDbService,
-    private _httpClient: HttpClient,
+    private _httpClient: HttpClient
   ) {
     this.getAppConfig();
     // -----------------------------------------------------------------------------------------------------
