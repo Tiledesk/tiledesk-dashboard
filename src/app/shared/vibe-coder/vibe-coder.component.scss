@@ -33,7 +33,7 @@
 .vibe-coder__input {
   box-sizing: border-box;
   width: 100%;
-  min-height: 36px; /* 2 lines @ 18px */
+  min-height: 54px; /* 3 lines @ 18px */
   max-height: 108px; /* 6 lines @ 18px */
   border: 0;
   outline: none;
@@ -159,7 +159,7 @@
 
 .vibe-coder__examples-cards {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   width: 100%;
 }
