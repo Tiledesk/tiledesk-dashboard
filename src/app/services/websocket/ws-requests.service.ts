@@ -220,7 +220,7 @@ export class WsRequestsService implements OnDestroy {
               // ------------------------------------------------
               // @ Agents - pass in data agents get from snapshot
               // ------------------------------------------------
-              console.log("[WS-REQUESTS-SERV] DSHB - CREATE - DATA snapshot agents", data.snapshot.agents);
+              // console.log("[WS-REQUESTS-SERV] DSHB - CREATE - DATA snapshot agents", data.snapshot.agents);
               if (data.snapshot && data.snapshot.agents) {
 
                 data.agents = data['snapshot']["agents"]
