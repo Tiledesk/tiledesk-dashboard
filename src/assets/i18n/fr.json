@@ -3938,6 +3938,7 @@
     "AIAgentPromptLabel": "Describe what it should do (optional)",
     "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
+    "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Moyen de paiement",
     "ContactUsToChangeYourPaymentMethod": "Contactez-nous pour modifier votre moyen de paiement"
 }

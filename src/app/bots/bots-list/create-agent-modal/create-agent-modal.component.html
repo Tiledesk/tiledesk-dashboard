@@ -33,6 +33,7 @@
             [(ngModel)]="agentName"
             (keydown.enter)="onCreate()"
             cdkFocusInitial>
+        <mat-hint *ngIf="showPromptField && subtype === 'chatbot'">{{'AIAgentNameOptionalHint' | translate}}</mat-hint>
     </mat-form-field>
 
     <ng-container *ngIf="showPromptField">
