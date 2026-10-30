@@ -47,6 +47,7 @@ const DATETIME_OPERATORS: FilterOperatorOption[] = [
 export function operatorsForColumnType(type: ColumnType): FilterOperatorOption[] {
   switch (type) {
     case 'number':
+    case 'ttl':
       return NUMBER_OPERATORS;
     case 'boolean':
       return BOOLEAN_OPERATORS;

@@ -107,6 +107,7 @@
         "AddCondition": "Bedingung hinzufügen",
         "ApplyFilter": "Übernehmen",
         "ClearFilter": "Filter zurücksetzen",
+        "FilterFailed": "Filter konnte nicht angewendet werden. Bitte erneut versuchen.",
         "BooleanTrue": "wahr",
         "BooleanFalse": "falsch",
         "OperatorEqual": "Gleich",
@@ -120,7 +121,12 @@
         "OperatorLessOrEqual": "Kleiner oder gleich",
         "OperatorExists": "Vorhanden",
         "OperatorNotExists": "Nicht vorhanden",
-        "tableSize": "Tabellengröße: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
+        "tableSize": "Tabellengröße: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>.",
+        "Ttl": "TTL",
+        "ValueInSeconds": "Wert in Sekunden",
+        "TtlPlaceholder": "e.g. 3600",
+        "Seconds": "seconds",
+        "InvalidTtl": "Enter a whole number of seconds greater than 0"
     },
     "SelectAkB": "Wählen Sie eine Knowledge Base aus",
     "FirstName": "Vorname",

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ActivatedRoute } from '@angular/router';
@@ -51,6 +51,12 @@ import {
   formatTableDataSizeLabel,
   resolveDataTableMaxSizeLabel,
 } from './data-tables-column-types.util';
+import {
+  finalizeTtlCellValue,
+  formatTtlCellDisplay,
+  isValidTtlSeconds,
+  parseTtlCellValue,
+} from './data-tables-ttl.util';
 import {
   defaultOperatorForColumnType,
   FilterOperatorOption,
@@ -122,6 +128,9 @@ export class DataTablesComponent implements OnInit {
 
   isLoadingTables = true;
   isLoadingRows = false;
+  /** Ignores stale listRows responses when a newer load has started (e.g. filter then reset). */
+  private rowsLoadSeq = 0;
+  private rowsLoadSub: Subscription | null = null;
   rowSearchQuery = '';
   private rowSearchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   isDeletingRows = false;
@@ -280,18 +289,43 @@ export class DataTablesComponent implements OnInit {
       return;
     }
 
+    const isFilteredRequest = !!search?.conditions?.length;
+    const loadSeq = ++this.rowsLoadSeq;
+    this.rowsLoadSub?.unsubscribe();
     this.isLoadingRows = true;
-    this.dataTablesService.listRows(table._id, search).subscribe({
+    this.rowsLoadSub = this.dataTablesService.listRows(table._id, search).subscribe({
       next: (loadedRows) => {
-        this.rows = this.buildRowsFromLoaded(table.schema, loadedRows || []);
+        if (loadSeq !== this.rowsLoadSeq) {
+          return;
+        }
+        const rows = Array.isArray(loadedRows) ? loadedRows : [];
+        if (!Array.isArray(loadedRows)) {
+          this.logger.error('[DATA-TABLES] listRows returned non-array payload', loadedRows);
+        }
+        this.rows = this.buildRowsFromLoaded(table.schema, rows);
         this.syncRowsPagination();
         this.isLoadingRows = false;
         this.maybeFocusFirstColumnCell();
       },
       error: (err) => {
+        if (loadSeq !== this.rowsLoadSeq) {
+          return;
+        }
         this.isLoadingRows = false;
-        this.rows = this.buildRowsFromLoaded(table.schema, []);
         this.logger.error('[DATA-TABLES] listRows error', err);
+        if (isFilteredRequest) {
+          // Keep current rows visible: a failed filter must not wipe the grid.
+          this.clearActiveRowFilter();
+          this.rowSearchQuery = '';
+          this.notify.showWidgetStyleUpdateNotification(
+            this.translate.instant('DataTables.FilterFailed'),
+            4,
+            'report_problem',
+          );
+          this.loadTableRows(table);
+          return;
+        }
+        this.rows = this.buildRowsFromLoaded(table.schema, []);
         this.maybeFocusFirstColumnCell();
       },
     });
@@ -337,6 +371,7 @@ export class DataTablesComponent implements OnInit {
       case 'boolean':
         return false;
       case 'number':
+      case 'ttl':
         return null;
       default:
         return '';
@@ -378,6 +413,12 @@ export class DataTablesComponent implements OnInit {
       if (value === null) { return null; }
       const num = typeof value === 'number' ? value : Number(value);
       return Number.isNaN(num) ? null : num;
+    }
+    if (type === 'ttl') {
+      if (value === null || value === undefined || value === '') {
+        return null;
+      }
+      return finalizeTtlCellValue(value);
     }
     if (type === 'boolean') {
       return !!value;
@@ -423,7 +464,7 @@ export class DataTablesComponent implements OnInit {
     if (type === 'boolean') {
       return value === true || value === false;
     }
-    if (type === 'number') {
+    if (type === 'number' || type === 'ttl') {
       return value !== null && value !== undefined && value !== '';
     }
     return value !== '' && value != null;
@@ -642,11 +683,24 @@ export class DataTablesComponent implements OnInit {
     return String(condition.value).trim() === '';
   }
 
+  showFilterTtlInvalidError(condition: FilterConditionDraft): boolean {
+    if (condition.columnType !== 'ttl' || !this.filterConditionNeedsValue(condition)) {
+      return false;
+    }
+    if (this.isFilterValueMissing(condition)) {
+      return false;
+    }
+    return !isValidTtlSeconds(condition.value);
+  }
+
   isFilterConditionComplete(condition: FilterConditionDraft): boolean {
     if (!condition.column || !condition.operator) {
       return false;
     }
     if (this.filterConditionNeedsValue(condition) && this.isFilterValueMissing(condition)) {
+      return false;
+    }
+    if (this.showFilterTtlInvalidError(condition)) {
       return false;
     }
     return true;
@@ -718,7 +772,10 @@ export class DataTablesComponent implements OnInit {
     this.rowSearchQuery = '';
     this.closeFilterPopover();
     if (table) {
-      this.loadTableRows(table);
+      // Bump load seq / abort in-flight filtered list, then reload unfiltered + refresh stats.
+      this.refreshSelectedTableStats(() => {
+        this.loadTableRows(table);
+      });
     }
   }
 
@@ -824,6 +881,11 @@ export class DataTablesComponent implements OnInit {
       const parsed = parseNumberCellValue(trimmed);
       return typeof parsed === 'number' ? parsed : undefined;
     }
+    if (type === 'ttl') {
+      const parsed = parseTtlCellValue(trimmed);
+      // Keep numeric seconds in the query (same as number filters); never send a string.
+      return typeof parsed === 'number' ? parsed : undefined;
+    }
     if (type === 'datetime') {
       return datetimeLocalToIso(trimmed) || undefined;
     }
@@ -854,7 +916,7 @@ export class DataTablesComponent implements OnInit {
     const numericQuery = this.parseSearchNumber(query);
     if (numericQuery !== null) {
       schema
-        .filter((col) => col.type === 'number')
+        .filter((col) => col.type === 'number' || col.type === 'ttl')
         .forEach((col) => {
           conditions.push({
             column: col.name,
@@ -1766,6 +1828,17 @@ export class DataTablesComponent implements OnInit {
       row.data[columnName] = finalizeNumberCellValue(row.data[columnName]);
     }
 
+    if (column.type === 'ttl') {
+      const finalized = finalizeTtlCellValue(row.data[columnName]);
+      if (row.data[columnName] !== '' && row.data[columnName] != null && finalized === null) {
+        this.revertCellValue(row, columnName, column);
+        this.showInvalidTtlError();
+        this.cdr.detectChanges();
+        return;
+      }
+      row.data[columnName] = finalized;
+    }
+
     if (column.type === 'string' && !isStringCellWithinByteLimit(row.data[columnName])) {
       this.revertCellValue(row, columnName, column);
       this.showCellValueTooLargeError();
@@ -2085,6 +2158,64 @@ export class DataTablesComponent implements OnInit {
     this.isSavingColumn = false;
   }
 
+  onNewColumnTypeChange(type: ColumnType): void {
+    this.newColumnType = type;
+  }
+
+  private showInvalidTtlError(): void {
+    this.notify.showWidgetStyleUpdateNotification(
+      this.translate.instant('DataTables.InvalidTtl'),
+      4,
+      'report_problem',
+    );
+  }
+
+  getTtlCellDisplayValue(row: EditableRow, columnName: string): string {
+    return formatTtlCellDisplay(row.data[columnName]);
+  }
+
+  onTtlCellChange(row: EditableRow, col: ColumnView, value: string | number): void {
+    if (value === '' || value === null || value === undefined) {
+      row.data[col.name] = null;
+      return;
+    }
+    const parsed = parseTtlCellValue(value);
+    if (parsed === null) {
+      return;
+    }
+    row.data[col.name] = parsed;
+  }
+
+  onTtlCellKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      return;
+    }
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+      return;
+    }
+    const allowedKeys = [
+      'Backspace', 'Delete', 'Tab', 'Escape', 'Enter',
+      'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Home', 'End',
+    ];
+    if (allowedKeys.includes(event.key)) {
+      return;
+    }
+    if (/^\d$/.test(event.key)) {
+      return;
+    }
+    event.preventDefault();
+  }
+
+  onTtlCellPaste(event: ClipboardEvent, row: EditableRow, col: ColumnView): void {
+    event.preventDefault();
+    const pasted = (event.clipboardData?.getData('text') ?? '').trim();
+    if (!isValidTtlSeconds(pasted)) {
+      return;
+    }
+    this.onTtlCellChange(row, col, pasted);
+  }
+
   private getAddColumnNameTrimmed(): string {
     return (this.newColumnName || '').trim();
   }
@@ -2126,11 +2257,13 @@ export class DataTablesComponent implements OnInit {
     if (!columnName || !table?._id) { return; }
     if (!isValidColumnName(columnName) || this.showAddColumnDuplicateNameError()) { return; }
 
-    this.isSavingColumn = true;
-    this.dataTablesService.addColumn(table._id, {
+    const body: ColumnInput = {
       name: columnName,
       type: this.newColumnType,
-    }).subscribe({
+    };
+
+    this.isSavingColumn = true;
+    this.dataTablesService.addColumn(table._id, body).subscribe({
       next: (updated) => {
         this.isSavingColumn = false;
         const added = sortColumns(updated?.schema).find((c) => c.name === columnName);

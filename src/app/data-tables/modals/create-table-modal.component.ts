@@ -56,6 +56,10 @@ export class CreateTableModalComponent implements AfterViewInit {
     }));
   }
 
+  isTtlColumn(index: number): boolean {
+    return this.columns.at(index).get('type')?.value === 'ttl';
+  }
+
   private focusTableName(): void {
     setTimeout(() => {
       this.tableNameInput?.nativeElement?.focus();
@@ -153,11 +157,14 @@ export class CreateTableModalComponent implements AfterViewInit {
     if (!this.canSubmit()) { return; }
 
     const name = (this.form.value.name || '').trim();
-    const schema: ColumnInput[] = this.columns.controls.map((col, index) => ({
-      name: (col.value.name || '').trim(),
-      type: (col.value.type || 'string') as ColumnType,
-      index,
-    }));
+    const schema: ColumnInput[] = this.columns.controls.map((col, index) => {
+      const type = (col.value.type || 'string') as ColumnType;
+      return {
+        name: (col.value.name || '').trim(),
+        type,
+        index,
+      };
+    });
 
     this.dialogRef.close({ name, schema });
   }

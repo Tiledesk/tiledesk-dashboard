@@ -86,6 +86,9 @@
                 </span>
               </ng-template>
             </ng-select>
+            <div *ngIf="isTtlColumn(i)" class="ct-type-copy">
+              {{ 'DataTables.ValueInSeconds' | translate }}
+            </div>
           </div>
 
           <button type="button"
