@@ -3710,7 +3710,7 @@
     "HomeVibeCoderBadge": "VIBE CODER - AI BUILDER",
     "HomeVibeCoderSubtitle": "Gʻoyalaringizni daqiqalar ichida suhbat oqimlariga aylantiring — kod yozish shart emas.",
     "NoPermissionToCreateAIAgents": "AI agentlar yaratish uchun ruxsatingiz yo‘q.",
-    "VibeCoderPlaceholder": "Tiledesk’dan AI agent yaratishini so‘rang..",
+    "VibeCoderPlaceholder": "{{BRAND_NAME}}’dan AI agent yaratishini so‘rang..",
     "VibeCoderTryExamplePrompt": "Namuna promptni sinab ko‘ring",
     "VibeCoderExample1Label": "Yetkazib berish va qaytarish savollariga javob",
     "VibeCoderExample2Label": "WhatsApp orqali uchrashuv band qilish",
@@ -4067,8 +4067,13 @@
         "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY": "Men roziman",
         "PRECHAT_REQUIRED_ERROR": "Ushbu qator to'ldirilishi shart"
     },
-    "AIAgentPromptLabel": "Describe what it should do (optional)",
-    "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
-    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
-    "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it."
+    "AIAgentPromptLabel": "Nima qilishi kerakligini tavsiflang (ixtiyoriy)",
+    "AIAgentPromptPlaceholder": "Masalan, buyurtma raqamini so‘rang va jo‘natilganmi, jarayondami yoki bekor qilinganmi deb javob bering",
+    "AIAgentPromptHint": "Tavsiflang — AI oqimni yaratadi: uni tuvalda topib, suhbat orqali takomillashtirasiz.",
+    "AIAgentNameOptionalHint": "Tavsif bilan ixtiyoriy: AI agentni shunga qarab nomlaydi.",
+    "VibeCoderUploadFilesTooltip": "Maksimal {{max}} fayl. Har bir fayl {{file_size_limit}} MB dan oshmasligi kerak.",
+    "VibeCoderMaxFilesReached": "Eng ko‘pi {{max}} fayl biriktira olasiz",
+    "VibeCoderUploading": "Yuklanmoqda…",
+    "VibeCoderUploadFailed": "Yuklash muvaffaqiyatsiz",
+    "VibeCoderRemoveAttachment": "Faylni olib tashlash"
 }

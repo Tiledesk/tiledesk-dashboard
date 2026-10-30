@@ -3717,7 +3717,7 @@
     "HomeVibeCoderBadge": "VIBE CODER - AI BUILDER",
     "HomeVibeCoderSubtitle": "Förvandla dina idéer till konversationsflöden på några minuter — ingen kodning krävs.",
     "NoPermissionToCreateAIAgents": "Du har inte behörighet att skapa AI-agenter.",
-    "VibeCoderPlaceholder": "Be Tiledesk skapa en AI-agent som..",
+    "VibeCoderPlaceholder": "Be {{BRAND_NAME}} skapa en AI-agent som..",
     "VibeCoderTryExamplePrompt": "Prova en exempelprompt",
     "VibeCoderExample1Label": "Svara på frakt- och returfrågor",
     "VibeCoderExample2Label": "Boka möten via WhatsApp",
@@ -4073,8 +4073,13 @@
         "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY": "jag håller med",
         "PRECHAT_REQUIRED_ERROR": "Detta fält är obligatoriskt"
     },
-    "AIAgentPromptLabel": "Describe what it should do (optional)",
-    "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
-    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
-    "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it."
+    "AIAgentPromptLabel": "Beskriv vad den ska göra (valfritt)",
+    "AIAgentPromptPlaceholder": "T.ex. be om ordernumret och svara om den är skickad, under behandling eller avbruten",
+    "AIAgentPromptHint": "Beskriv den så bygger AI:n flödet: du hittar det på canvas och kan förfina det i chatten.",
+    "AIAgentNameOptionalHint": "Valfritt med en beskrivning: AI:n namnger agenten utifrån den.",
+    "VibeCoderUploadFilesTooltip": "Högst {{max}} filer. Varje fil får inte överstiga {{file_size_limit}} MB.",
+    "VibeCoderMaxFilesReached": "Du kan bifoga högst {{max}} filer",
+    "VibeCoderUploading": "Laddar upp…",
+    "VibeCoderUploadFailed": "Uppladdningen misslyckades",
+    "VibeCoderRemoveAttachment": "Ta bort fil"
 }

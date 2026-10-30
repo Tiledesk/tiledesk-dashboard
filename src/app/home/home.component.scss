@@ -2966,7 +2966,7 @@ img {
   box-sizing: border-box;
   margin: 0 0 28px;
   padding: 24px 20px;
-  border: 1px solid #e8ecf1;
+  border: none;
   border-radius: 12px;
   background-color: #fff;
   background-image: radial-gradient(
@@ -2974,7 +2974,7 @@ img {
     color-mix(in srgb, #bee4ff 20%, transparent),
     transparent 90%
   );
-  box-shadow: 0 1px 3px #0000000f;
+  box-shadow: none;
   position: relative;
   z-index: 1;
   overflow: visible;

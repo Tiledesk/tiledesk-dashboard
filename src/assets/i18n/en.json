@@ -3751,7 +3751,7 @@
     "HomeVibeCoderBadge": "VIBE CODER - AI BUILDER",
     "HomeVibeCoderSubtitle": "Turn your ideas into conversational flows in minutes — no coding required.",
     "NoPermissionToCreateAIAgents": "You do not have permission to create AI agents.",
-    "VibeCoderPlaceholder": "Ask Tiledesk to create an AI agent that..",
+    "VibeCoderPlaceholder": "Ask {{BRAND_NAME}} to create an AI agent that..",
     "VibeCoderTryExamplePrompt": "Try an example prompt",
     "VibeCoderExample1Label": "Answer shipping & returns questions",
     "VibeCoderExample2Label": "Book appointments via WhatsApp",
@@ -4171,5 +4171,10 @@
     "AIAgentPromptLabel": "Describe what it should do (optional)",
     "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
-    "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it."
+    "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
+    "VibeCoderUploadFilesTooltip": "Maximum {{max}} files. Each file must not exceed {{file_size_limit}} MB.",
+    "VibeCoderMaxFilesReached": "You can attach up to {{max}} files",
+    "VibeCoderUploading": "Uploading…",
+    "VibeCoderUploadFailed": "Upload failed",
+    "VibeCoderRemoveAttachment": "Remove file"
 }

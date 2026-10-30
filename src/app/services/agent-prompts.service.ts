@@ -4,7 +4,9 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
-import { MAX_PROMPT_LENGTH } from '../utils/agent-from-prompt.util';
+import { AgentPromptAttachment, MAX_PROMPT_LENGTH } from '../utils/agent-from-prompt.util';
+
+export { AgentPromptAttachment };
 
 /** Where the prompt was written: one endpoint for every entry point, told apart by this. */
 export type AgentPromptSource = 'home' | 'website' | 'bots_list' | 'onboarding';
@@ -14,14 +16,6 @@ export type AgentPromptSource = 'home' | 'website' | 'bots_list' | 'onboarding';
 export interface AgentPromptOrigin {
   kind: 'dashboard' | 'web';
   url?: string;
-}
-
-/** A file attached to the prompt: only its link is kept, the file itself lives in the file storage. */
-export interface AgentPromptAttachment {
-  name: string;
-  type: string;
-  size: number;
-  url: string;
 }
 
 /** What the dashboard sends. Author, project and date are not here: the server takes the author

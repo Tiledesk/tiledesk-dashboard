@@ -3717,7 +3717,7 @@
     "HomeVibeCoderBadge": "VIBE CODER - AI BUILDER",
     "HomeVibeCoderSubtitle": "حوّل أفكارك إلى تدفقات محادثة في دقائق — دون الحاجة إلى البرمجة.",
     "NoPermissionToCreateAIAgents": "ليس لديك صلاحية لإنشاء وكلاء الذكاء الاصطناعي.",
-    "VibeCoderPlaceholder": "اطلب من Tiledesk إنشاء وكيل ذكاء اصطناعي يقوم بـ..",
+    "VibeCoderPlaceholder": "اطلب من {{BRAND_NAME}} إنشاء وكيل ذكاء اصطناعي يقوم بـ..",
     "VibeCoderTryExamplePrompt": "جرّب مثالاً على الموجّه",
     "VibeCoderExample1Label": "الرد على أسئلة الشحن والإرجاع",
     "VibeCoderExample2Label": "حجز المواعيد عبر واتساب",
@@ -4036,8 +4036,13 @@
         "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY": "أنا موافق",
         "PRECHAT_REQUIRED_ERROR": "هذه الخانة مطلوبه"
     },
-    "AIAgentPromptLabel": "Describe what it should do (optional)",
-    "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
-    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
-    "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it."
+    "AIAgentPromptLabel": "صف ما يجب أن يفعله (اختياري)",
+    "AIAgentPromptPlaceholder": "مثلاً: اطلب رقم الطلب وأجب عما إذا كان قد شُحن أو قيد المعالجة أو أُلغي",
+    "AIAgentPromptHint": "صفه ويبني الذكاء الاصطناعي التدفق: تجده على اللوحة حيث يمكنك تحسينه عبر المحادثة.",
+    "AIAgentNameOptionalHint": "اختياري مع وصف: يسمي الذكاء الاصطناعي الوكيل بناءً عليه.",
+    "VibeCoderUploadFilesTooltip": "بحد أقصى {{max}} ملفات. يجب ألا يتجاوز حجم كل ملف {{file_size_limit}} ميغابايت.",
+    "VibeCoderMaxFilesReached": "يمكنك إرفاق حتى {{max}} ملفات",
+    "VibeCoderUploading": "جارٍ الرفع…",
+    "VibeCoderUploadFailed": "فشل الرفع",
+    "VibeCoderRemoveAttachment": "إزالة الملف"
 }

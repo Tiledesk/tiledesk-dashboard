@@ -3716,7 +3716,7 @@
     "HomeVibeCoderBadge": "VIBE CODER - AI BUILDER",
     "HomeVibeCoderSubtitle": "Превратите идеи в разговорные сценарии за минуты — без программирования.",
     "NoPermissionToCreateAIAgents": "У вас нет разрешения на создание ИИ-агентов.",
-    "VibeCoderPlaceholder": "Попросите Tiledesk создать ИИ-агента, который..",
+    "VibeCoderPlaceholder": "Попросите {{BRAND_NAME}} создать ИИ-агента, который..",
     "VibeCoderTryExamplePrompt": "Попробуйте пример промпта",
     "VibeCoderExample1Label": "Ответы по доставке и возвратам",
     "VibeCoderExample2Label": "Запись на встречи через WhatsApp",
@@ -3938,8 +3938,13 @@
         "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "изменить свой статус на доступный",
         "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "изменить свой статус на недоступный"
     },
-    "AIAgentPromptLabel": "Describe what it should do (optional)",
-    "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
-    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
-    "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it."
+    "AIAgentPromptLabel": "Опишите, что он должен делать (необязательно)",
+    "AIAgentPromptPlaceholder": "Напр. спросить номер заказа и ответить, отправлен ли он, в обработке или отменён",
+    "AIAgentPromptHint": "Опишите это — ИИ построит сценарий: вы найдёте его на холсте и сможете доработать в чате.",
+    "AIAgentNameOptionalHint": "Необязательно при описании: ИИ назовёт агента по нему.",
+    "VibeCoderUploadFilesTooltip": "Не более {{max}} файлов. Каждый файл не должен превышать {{file_size_limit}} МБ.",
+    "VibeCoderMaxFilesReached": "Можно прикрепить не более {{max}} файлов",
+    "VibeCoderUploading": "Загрузка…",
+    "VibeCoderUploadFailed": "Ошибка загрузки",
+    "VibeCoderRemoveAttachment": "Удалить файл"
 }

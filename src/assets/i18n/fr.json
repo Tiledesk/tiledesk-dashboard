@@ -3717,7 +3717,7 @@
     "HomeVibeCoderBadge": "VIBE CODER - AI BUILDER",
     "HomeVibeCoderSubtitle": "Transformez vos idées en flux conversationnels en quelques minutes — sans coder.",
     "NoPermissionToCreateAIAgents": "Vous n'avez pas l'autorisation de créer des agents IA.",
-    "VibeCoderPlaceholder": "Demandez à Tiledesk de créer un agent IA qui..",
+    "VibeCoderPlaceholder": "Demandez à {{BRAND_NAME}} de créer un agent IA qui..",
     "VibeCoderTryExamplePrompt": "Essayer un prompt d’exemple",
     "VibeCoderExample1Label": "Répondre aux questions livraison & retours",
     "VibeCoderExample2Label": "Prendre des rendez-vous via WhatsApp",
@@ -3939,8 +3939,13 @@
         "CHANGE_TO_YOUR_STATUS_TO_AVAILABLE": "changer votre statut en disponible",
         "CHANGE_TO_YOUR_STATUS_TO_UNAVAILABLE": "changer votre statut en indisponible"
     },
-    "AIAgentPromptLabel": "Describe what it should do (optional)",
-    "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
-    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
-    "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it."
+    "AIAgentPromptLabel": "Décrivez ce qu’il doit faire (facultatif)",
+    "AIAgentPromptPlaceholder": "Ex. demander le numéro de commande et indiquer s’il est expédié, en cours ou annulé",
+    "AIAgentPromptHint": "Décrivez-le et l’IA construit le flux : vous le trouvez sur le canvas, où vous pouvez l’affiner en discutant.",
+    "AIAgentNameOptionalHint": "Facultatif avec une description : l’IA nomme l’agent d’après celle-ci.",
+    "VibeCoderUploadFilesTooltip": "Maximum {{max}} fichiers. Chaque fichier ne doit pas dépasser {{file_size_limit}} Mo.",
+    "VibeCoderMaxFilesReached": "Vous pouvez joindre jusqu’à {{max}} fichiers",
+    "VibeCoderUploading": "Téléversement…",
+    "VibeCoderUploadFailed": "Échec du téléversement",
+    "VibeCoderRemoveAttachment": "Supprimer le fichier"
 }

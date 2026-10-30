@@ -3711,7 +3711,7 @@
     "HomeVibeCoderBadge": "VIBE CODER - AI BUILDER",
     "HomeVibeCoderSubtitle": "Перетворіть ідеї на розмовні сценарії за лічені хвилини — без програмування.",
     "NoPermissionToCreateAIAgents": "У вас немає дозволу створювати ШІ-агентів.",
-    "VibeCoderPlaceholder": "Попросіть Tiledesk створити ШІ-агента, який..",
+    "VibeCoderPlaceholder": "Попросіть {{BRAND_NAME}} створити ШІ-агента, який..",
     "VibeCoderTryExamplePrompt": "Спробуйте приклад промпту",
     "VibeCoderExample1Label": "Відповіді про доставку та повернення",
     "VibeCoderExample2Label": "Запис зустрічей через WhatsApp",
@@ -4068,8 +4068,13 @@
         "LABEL_PRECHAT_ACCEPT_TERMS_PRIVACY": "я згоден",
         "PRECHAT_REQUIRED_ERROR": "Це поле є обов'язковим"
     },
-    "AIAgentPromptLabel": "Describe what it should do (optional)",
-    "AIAgentPromptPlaceholder": "E.g. ask for the order number and answer whether it is shipped, in progress or cancelled",
-    "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
-    "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it."
+    "AIAgentPromptLabel": "Опишіть, що він має робити (необов’язково)",
+    "AIAgentPromptPlaceholder": "Напр. запитати номер замовлення й відповісти, чи відправлено, в обробці чи скасовано",
+    "AIAgentPromptHint": "Опишіть це — ШІ збудує сценарій: ви знайдете його на полотні й зможете вдосконалити в чаті.",
+    "AIAgentNameOptionalHint": "Необов’язково з описом: ШІ назве агента за ним.",
+    "VibeCoderUploadFilesTooltip": "Не більше {{max}} файлів. Кожен файл не повинен перевищувати {{file_size_limit}} МБ.",
+    "VibeCoderMaxFilesReached": "Можна додати не більше {{max}} файлів",
+    "VibeCoderUploading": "Завантаження…",
+    "VibeCoderUploadFailed": "Помилка завантаження",
+    "VibeCoderRemoveAttachment": "Видалити файл"
 }
