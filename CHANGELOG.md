@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.270-stage
+- Adds file attachments to the Home vibe coder (up to 5 files, 10 MB each): upload on Start, chips with preview/remove, and handoff of attachment URLs to Design Studio via `cds-agent-from-prompt` and `agent-prompts`
+
 ### 2.7.269-stage
 - Home asks only for the description: with a prompt no name modal opens, the agent is created with a provisional name from the first words of the description, and the Design Studio (3.1.4) renames it after the title the agent runtime generates for its conversation (runtime 0.12.0). In New flow → AI Agent the name becomes optional when a description is written. The note left for the Design Studio carries `provisionalName`
 
