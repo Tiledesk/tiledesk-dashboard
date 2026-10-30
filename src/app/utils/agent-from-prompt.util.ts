@@ -14,6 +14,14 @@ export const AGENT_FROM_PROMPT_KEY = 'cds-agent-from-prompt';
 /** Past this, it is not a description any more. Better noticed here than at the far end. */
 export const MAX_PROMPT_LENGTH = 2000;
 
+/** A file attached to the prompt: only its link is kept, the file itself lives in the file storage. */
+export interface AgentPromptAttachment {
+    name: string;
+    type: string;
+    size: number;
+    url: string;
+}
+
 export interface PendingAgentPrompt {
     /** The agent the description belongs to: the note is ignored if another agent is opened. */
     botId: string;
@@ -26,6 +34,8 @@ export interface PendingAgentPrompt {
      *  with, which the Design Studio replaces with the title the runtime generates for the agent's
      *  conversation -- only while the agent still has it. */
     provisionalName?: string;
+    /** Files already uploaded (retention URLs); CDS vibe coder ingests them on open. */
+    attachments?: AgentPromptAttachment[];
 }
 
 /** Past this many words or characters the provisional name stops being a name. */
@@ -56,13 +66,17 @@ export function saveAgentPrompt(pending: PendingAgentPrompt): boolean {
     if (!pending?.botId || !prompt) {
         return false;
     }
+    const attachments = Array.isArray(pending.attachments)
+        ? pending.attachments.filter((a) => a && a.url && a.name)
+        : [];
     try {
         sessionStorage.setItem(AGENT_FROM_PROMPT_KEY, JSON.stringify({
             botId: pending.botId,
             prompt: prompt,
             language: pending.language || 'en',
             createdAt: Date.now(),
-            ...(pending.provisionalName ? { provisionalName: pending.provisionalName } : {})
+            ...(pending.provisionalName ? { provisionalName: pending.provisionalName } : {}),
+            ...(attachments.length ? { attachments } : {}),
         }));
         return true;
     } catch (error) {

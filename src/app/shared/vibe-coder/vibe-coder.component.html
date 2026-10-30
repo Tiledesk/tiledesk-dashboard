@@ -1,5 +1,45 @@
 <div class="vibe-coder-wpr">
   <div class="vibe-coder" [class.vibe-coder--busy]="busy">
+    <div class="vibe-coder__attachments" *ngIf="attachments.length > 0">
+      <div
+        class="vibe-coder__attachment"
+        *ngFor="let file of attachments; trackBy: trackAttachment"
+        [class.vibe-coder__attachment--uploading]="file.uploading"
+        [class.vibe-coder__attachment--error]="file.error">
+        <div
+          class="vibe-coder__attachment-icon"
+          [attr.data-type]="typeLabel(file)"
+          aria-hidden="true">
+          <img
+            *ngIf="isImageChip(file) && (file.previewUrl || file.url)"
+            class="vibe-coder__attachment-thumb"
+            [src]="file.previewUrl || file.url"
+            alt="" />
+          <span
+            *ngIf="!(isImageChip(file) && (file.previewUrl || file.url))"
+            class="material-icons vibe-coder__attachment-type-icon">
+            {{ typeMaterialIcon(file) }}
+          </span>
+        </div>
+        <div class="vibe-coder__attachment-meta">
+          <div class="vibe-coder__attachment-name" [title]="file.name">{{ truncatedName(file.name) }}</div>
+          <div class="vibe-coder__attachment-sub">
+            <ng-container *ngIf="file.uploading">{{ 'VibeCoderUploading' | translate }}</ng-container>
+            <ng-container *ngIf="!file.uploading && file.error">{{ 'VibeCoderUploadFailed' | translate }}</ng-container>
+            <ng-container *ngIf="!file.uploading && !file.error">{{ typeLabel(file) }} · {{ sizeLabel(file) }}</ng-container>
+          </div>
+        </div>
+        <button
+          type="button"
+          class="vibe-coder__attachment-remove"
+          [disabled]="busy || isUploadingAttachments"
+          (click)="removeAttachment(file.id); $event.stopPropagation()"
+          [attr.aria-label]="'VibeCoderRemoveAttachment' | translate">
+          <span class="material-icons" aria-hidden="true">close</span>
+        </button>
+      </div>
+    </div>
+
     <textarea
       #vibeCoderTextarea
       class="vibe-coder__input"
@@ -7,19 +47,42 @@
       [attr.maxlength]="maxLength"
       [(ngModel)]="buildPrompt"
       [disabled]="busy"
-      [placeholder]="placeholder || ('VibeCoderPlaceholder' | translate)"
+      [placeholder]="placeholder || ('VibeCoderPlaceholder' | translate: brandParams)"
       (input)="onTextareaInput(vibeCoderTextarea)"></textarea>
 
     <div class="vibe-coder__footer">
+      <input
+        #vibeCoderFileInput
+        type="file"
+        class="vibe-coder__file-input"
+        [attr.accept]="fileAccept"
+        multiple
+        (change)="onFilesSelected($event)" />
+
+      <button
+        type="button"
+        class="vibe-coder__attach"
+        [disabled]="!canAttachMore"
+        (click)="openFilePicker()"
+        matTooltipClass="custom-mat-tooltip"
+        [matTooltip]="'VibeCoderUploadFilesTooltip' | translate:{ max: maxAttachments, file_size_limit: maxFileMb }"
+        matTooltipPosition="above"
+        matTooltipHideDelay="100"
+        [attr.aria-label]="'VibeCoderUploadFilesTooltip' | translate:{ max: maxAttachments, file_size_limit: maxFileMb }">
+        <span class="material-icons" aria-hidden="true">attach_file</span>
+      </button>
+
       <button
         type="button"
         class="vibe-coder__start"
-        [class.vibe-coder__start--ready]="hasTypedContent"
+        [class.vibe-coder__start--ready]="hasTypedContent || isUploadingAttachments"
+        [class.vibe-coder__start--loading]="isUploadingAttachments"
         [disabled]="!canStart"
         (click)="onStart()"
-        [attr.aria-label]="'VibeCoderCreateAriaReady' | translate">
-        <!-- Always up arrow (send); no expand / Create label -->
-        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" aria-hidden="true">
+        [attr.aria-label]="'VibeCoderCreateAriaReady' | translate"
+        [attr.aria-busy]="isUploadingAttachments">
+        <span *ngIf="isUploadingAttachments" class="vibe-coder__start-spinner" aria-hidden="true"></span>
+        <svg *ngIf="!isUploadingAttachments" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" aria-hidden="true">
           <path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/>
         </svg>
       </button>

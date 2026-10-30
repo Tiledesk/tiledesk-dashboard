@@ -56,10 +56,193 @@
   }
 }
 
+.vibe-coder__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 2px;
+}
+
+.vibe-coder__attachment {
+  position: relative;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 240px;
+  min-width: 148px;
+  padding: 10px 30px 10px 10px;
+  border: 1px solid #dbe4ee;
+  border-radius: 14px;
+  background: #f8fafc;
+
+  &:hover .vibe-coder__attachment-remove {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.vibe-coder__attachment--uploading {
+  opacity: 0.75;
+}
+
+.vibe-coder__attachment--error {
+  border-color: #f5c2c2;
+  background: #fff8f8;
+}
+
+.vibe-coder__attachment-icon {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e2e8f0;
+  color: #475569;
+
+  &[data-type="PDF"] {
+    background: #fde8e8;
+    color: #c62828;
+  }
+
+  &[data-type="CSV"] {
+    background: #e6f4ea;
+    color: #137333;
+  }
+
+  &[data-type="TXT"],
+  &[data-type="MD"] {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  &[data-type="PNG"],
+  &[data-type="JPEG"],
+  &[data-type="WEBP"] {
+    background: #f3e8ff;
+    color: #7c3aed;
+  }
+}
+
+.vibe-coder__attachment-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.vibe-coder__attachment-type-icon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.vibe-coder__attachment-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.vibe-coder__attachment-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.vibe-coder__attachment-sub {
+  margin-top: 2px;
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vibe-coder__attachment-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: #334155;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+  z-index: 1;
+
+  .material-icons {
+    font-size: 14px;
+    line-height: 1;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@media (hover: none) {
+  .vibe-coder__attachment-remove {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.vibe-coder__file-input {
+  display: none;
+}
+
 .vibe-coder__footer {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
+  gap: 8px;
+}
+
+.vibe-coder__attach {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  padding: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #fff;
+  color: #64748b;
+  cursor: pointer;
+  line-height: 1;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+
+  .material-icons {
+    font-size: 20px;
+  }
+
+  &:hover:not(:disabled) {
+    background: #f8fafc;
+    color: #334155;
+    border-color: #cbd5e1;
+  }
+
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
 }
 
 .vibe-coder__start {
@@ -69,6 +252,7 @@
   width: 40px;
   height: 40px;
   min-width: 40px;
+  margin-left: auto;
   padding: 0;
   border: 0;
   border-radius: 999px;
@@ -87,7 +271,7 @@
     fill: currentColor;
   }
 
-  &:disabled {
+  &:disabled:not(.vibe-coder__start--loading) {
     background: #dfdfe0;
     color: #8b8b90;
     opacity: 1;
@@ -96,6 +280,31 @@
 
   &:not(:disabled):hover {
     filter: brightness(0.97);
+  }
+}
+
+.vibe-coder__start--loading,
+.vibe-coder__start--loading:disabled {
+  background: #9044eb;
+  color: #fff;
+  cursor: wait;
+  opacity: 1;
+}
+
+.vibe-coder__start-spinner {
+  box-sizing: border-box;
+  display: block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: vibe-coder-spin 0.7s linear infinite;
+}
+
+@keyframes vibe-coder-spin {
+  to {
+    transform: rotate(360deg);
   }
 }
 
