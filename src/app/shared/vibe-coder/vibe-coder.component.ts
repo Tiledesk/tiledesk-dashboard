@@ -52,6 +52,11 @@ export class VibeCoderComponent implements OnDestroy {
   @Input() busy = false;
   @Input() error: string | null = null;
   @Input() maxLength = MAX_PROMPT_LENGTH;
+  /**
+   * Home: Start needs a non-empty prompt.
+   * Create-agent modal: Start stays clickable (Voice / Copilot / blank conversational).
+   */
+  @Input() requirePromptToStart = true;
 
   @Output() start = new EventEmitter<VibeCoderStartPayload>();
 
@@ -112,9 +117,12 @@ export class VibeCoderComponent implements OnDestroy {
     return !this.busy && !this.isUploadingAttachments && this.attachments.length < this.maxAttachments;
   }
 
-  /** Create needs a non-empty prompt (Home opens conversational agent only). */
+  /** Home: needs a non-empty prompt. Modal: always, except while busy / uploading. */
   get canStart(): boolean {
-    return !this.busy && this.hasPrompt && !this.isUploadingAttachments;
+    if (this.busy || this.isUploadingAttachments) {
+      return false;
+    }
+    return this.requirePromptToStart ? this.hasPrompt : true;
   }
 
   onTextareaInput(textarea: HTMLTextAreaElement): void {

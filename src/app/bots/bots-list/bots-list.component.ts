@@ -31,7 +31,7 @@ import { WebhookService } from 'app/services/webhook.service';
 import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-modal.component';
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
 import { CreateAgentModalComponent, CreateAgentModalResult } from './create-agent-modal/create-agent-modal.component';
-import { saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
+import { AgentPromptAttachment, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
 import { MigrationSummary, canMigrateToV3, escapeHtml, migrationErrorReason, migrationWarningsHtml, summarizeMigrationReport } from 'app/utils/migrate-to-v3.util';
 import { AgentPromptsService } from 'app/services/agent-prompts.service';
@@ -181,6 +181,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   chatbotName: string;
   /** The description of the agent to build, left for the Design Studio once the agent exists. */
   chatbotPrompt: string = '';
+  /** Files uploaded in CreateAgentModal for CDS vibe coder (same as Home). */
+  chatbotAttachments: AgentPromptAttachment[] = [];
   /** The name was made from the description, not typed (CreateAgentModalResult.provisionalName). */
   chatbotNameIsProvisional: boolean = false;
   chatbotToImportSubtype: string;
@@ -1814,12 +1816,16 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           openEditor()
           return
         }
+        const readyAttachments = Array.isArray(this.chatbotAttachments)
+          ? this.chatbotAttachments.filter((a) => a && a.url && a.name)
+          : [];
         saveAgentPrompt({
           botId: faqKb['_id'],
           prompt: this.chatbotPrompt,
           language: this.botDefaultLangCode,
           createdAt: Date.now(),
-          ...(this.chatbotNameIsProvisional ? { provisionalName: faqKb['name'] || this.chatbotName } : {})
+          ...(this.chatbotNameIsProvisional ? { provisionalName: faqKb['name'] || this.chatbotName } : {}),
+          ...(readyAttachments.length ? { attachments: readyAttachments } : {}),
         });
         // The prompt is saved with its agent before leaving the page (the editor opens in the
         // same tab); the save never fails and has a time limit, so the agent always opens.
@@ -1827,7 +1833,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           id_faq_kb: faqKb['_id'],
           text: this.chatbotPrompt,
           language: this.botDefaultLangCode,
-          source: 'bots_list'
+          source: 'bots_list',
+          attachments: readyAttachments,
         }).subscribe(() => openEditor())
       }
 
@@ -1840,6 +1847,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.logger.log('[BOT-LIST] CREATE FAQKB - POST REQUEST * COMPLETE *');
       this.chatbotName = null;
       this.chatbotPrompt = '';
+      this.chatbotAttachments = [];
       this.chatbotNameIsProvisional = false;
       // this.getFaqKbByProjectId();
       // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
@@ -2180,7 +2188,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     const dialogRef = this.dialog.open(CreateAgentModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '480px',
+      width: '720px',
+      maxWidth: '92vw',
       data: {
         subtype: subtype,
         // The flag stays in the modal's own interface: it will be opened from places where a
@@ -2202,6 +2211,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (!result.chatbotName) { return; }
       this.chatbotName = result.chatbotName;
       this.chatbotPrompt = result.prompt || '';
+      this.chatbotAttachments = Array.isArray(result.attachments) ? result.attachments : [];
       this.chatbotNameIsProvisional = result.provisionalName === true;
       this.createBlankTilebot(result.subType);
     });
