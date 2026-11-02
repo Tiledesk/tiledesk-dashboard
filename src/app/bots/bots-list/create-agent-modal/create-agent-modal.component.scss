@@ -2,6 +2,11 @@
 .cc-mat-form-field {
     width: 100%;
     font-size: 14px;
+
+    ::ng-deep .mat-mdc-form-field-hint-wrapper {
+        top: -6px;
+        padding: 0;
+    }
 }
 
 .agent-type-field {
@@ -25,26 +30,58 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    padding-right: 4px;
+}
+
+.m-header h1[mat-dialog-title] {
+    margin: 0;
 }
 
 .m-top-right-icon {
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.m-top-right-icon>span {
+#close {
     padding: 8px;
     background: #e4e6eb;
     border-radius: 999px;
-    position: relative;
-    top: 0px;
-    left: 0px;
     font-size: 18px;
     color: rgb(91, 98, 106);
 }
 
-.m-top-right-icon:hover>span {
+#close:hover {
     background-color: rgb(213, 214, 220);
     color: rgb(28, 30, 33);
+}
+
+.create-agent-modal__content {
+    font-family: var(--header-font-family, inherit);
+}
+
+.create-agent-modal__vibe {
+    margin-top: 8px;
+    width: 100%;
+
+    // Stretch Home vibe coder to the dialog content width.
+    ::ng-deep .vibe-coder-wpr,
+    ::ng-deep .vibe-coder,
+    ::ng-deep .vibe-coder__examples {
+        width: 100%;
+        max-width: 100%;
+        align-items: stretch;
+    }
+
+    ::ng-deep .vibe-coder {
+        width: 100%;
+    }
+
+    ::ng-deep .vibe-coder__examples-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 .agent-prompt-hint {
