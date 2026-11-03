@@ -121,6 +121,11 @@
         "OperatorLessOrEqual": "Kichik yoki teng",
         "OperatorExists": "Mavjud",
         "OperatorNotExists": "Mavjud emas",
+        "Ttl": "TTL",
+        "ValueInSeconds": "Qiymat soniyalarda",
+        "TtlPlaceholder": "masalan, 3600",
+        "Seconds": "soniya",
+        "InvalidTtl": "0 dan katta butun soniya sonini kiriting",
         "tableSize": "Jadval hajmi: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
     },
     "SelectAkB": "Bilimlar bazasini tanlang",

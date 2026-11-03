@@ -121,6 +121,11 @@
         "OperatorLessOrEqual": "Менше або дорівнює",
         "OperatorExists": "Існує",
         "OperatorNotExists": "Не існує",
+        "Ttl": "TTL",
+        "ValueInSeconds": "Значення в секундах",
+        "TtlPlaceholder": "напр. 3600",
+        "Seconds": "секунд",
+        "InvalidTtl": "Введіть ціле число секунд більше 0",
         "tableSize": "Розмір таблиці: <b>{{data_table_size}}</b> / <b>{{data_table_max_size}}</b>."
     },
     "SelectAkB": "Виберіть базу знань",
