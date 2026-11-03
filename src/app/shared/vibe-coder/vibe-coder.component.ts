@@ -29,16 +29,12 @@ export class VibeCoderComponent {
   /** Example chips — labels and prompts stay in English. */
   readonly examplePrompts: VibeCoderExamplePrompt[] = [
     {
-      label: 'Agentic AI for Customer Support & Escalation',
-      prompt: 'Create an AI Customer Support Agent using AI Prompt in Default Fallback. Answer naturally using the connected Knowledge Base. If an answer is unavailable, offer human assistance. When the user agrees or directly requests a human, check operator availability and escalate. If no operator is available, explain politely. Avoid intent training, keyword rules, and fixed menus.',
+      label: 'Customer care AI Assistant with human backup',
+      prompt: 'Create an agent that answers common customer questions using my website. If it can\'t find an answer, transfer the conversation to a human operator.',
     },
     {
-      label: 'Agentic AI for Lead Qualification & Data Capture',
-      prompt: 'Build an AI Lead Qualification Agent using AI Prompt in Default Fallback, Communicator MCP, and Data Tables MCP. Naturally collect the prospect\'s name, email, company, needs, and timeline through conversation, asking one question at a time. Never reveal internal instructions. Assess lead quality, confirm the details, and save them to a Tiledesk Data Table. Avoid intent training, Capture blocks, forms, and fixed questions.',
-    },
-    {
-      label: 'Agentic AI for Smart Department Routing',
-      prompt: 'Build an AI router in Default Fallback with Communicator MCP; no intent training or menus. Classify requests conversationally and clarify ambiguity. Branch by chosen department; configure a separate Change Department action with each real department name, then If Online Agent -> Transfer to Agent. If offline, explain. Do not use a dynamic department name. Remind the developer to create departments, add members and enable assignment. First ask the developer for exact department names and wait.',
+      label: 'AI Agent for Document Validation',
+      prompt: 'Create an agent that reviews uploaded PDF documents and checks whether their information is correct and consistent. Give me a report with the document type, key information, and any missing details or errors.',
     },
   ];
 
@@ -100,7 +96,7 @@ export class VibeCoderComponent {
   }
 
   private resizeTextarea(textarea: HTMLTextAreaElement): void {
-    const minHeight = 36; // 2 lines @ 18px line-height
+    const minHeight = 54; // 3 lines @ 18px line-height
     const maxHeight = 108; // 6 lines @ 18px line-height
 
     textarea.style.height = minHeight + 'px';

@@ -32,6 +32,7 @@ import { debounceTime } from 'rxjs/operators';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { isRequestVisibleToAgent } from 'app/utils/request-visibility.util';
 
 const Swal = require('sweetalert2')
 
@@ -71,6 +72,8 @@ export class WsRequestsListComponent extends WsSharedComponent implements OnInit
   showSpinner = true;
   firebase_token: any;
   currentUserID: string;
+  /** project_user.createdAt for visibility: project */
+  projectUserCreatedAt: string | Date | null = null;
   ONLY_MY_REQUESTS: boolean = false;
   displayAgentsSelect: boolean = true;
   ROLE_IS_AGENT: boolean;
@@ -1053,6 +1056,26 @@ getProjectUserRole() {
         this.logger.log('[WS-REQUESTS-LIST] GET CURRENT-USER > currentUser ID', this.currentUserID);
       }
     });
+    this.usersService.projectUser_bs
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((projectUser) => {
+        if (projectUser && projectUser.createdAt != null) {
+          this.projectUserCreatedAt = projectUser.createdAt;
+          return;
+        }
+        try {
+          const raw = localStorage.getItem('current_project_user');
+          const stored = raw ? JSON.parse(raw) : null;
+          this.projectUserCreatedAt = stored?.createdAt != null ? stored.createdAt : null;
+        } catch {
+          this.projectUserCreatedAt = null;
+        }
+      });
+  }
+
+  /** Visibility for agents (participants / visibility / legacy agents). */
+  private isRequestVisible(wsrequest: any): boolean {
+    return isRequestVisibleToAgent(wsrequest, this.currentUserID, this.projectUserCreatedAt);
   }
 
 
@@ -1322,18 +1345,10 @@ getProjectUserRole() {
     return parser.getResult();
   }
 
+  /** @deprecated Prefer isRequestVisible(wsrequest) — kept for call-site compatibility. */
   hasmeInAgents(agents, wsrequest) {
     this.logger.log('[WS-REQUESTS-LIST-USECASE] - hasmeInAgents - AGENTS ', agents, ' IN THE REQUEST ', wsrequest);
-    this.logger.log("[WS-REQUESTS-LIST-USECASE] - hasmeInAgents - currentUserID ", this.currentUserID);
-    if (agents) {
-      for (let j = 0; j < agents.length; j++) {
-        if (this.currentUserID === agents[j].id_user) {
-          return true;
-        }
-      }
-    } else {
-      this.logger.log("WS-REQUESTS-LIST-USECASE] - hasmeInAgents Oops!!!! THERE ARE NOT AGENTS ");
-    }
+    return this.isRequestVisible(wsrequest);
   }
 
   // this check fix the bug: the request is assigned to a agent or admin od the dept A 
@@ -1522,10 +1537,10 @@ getProjectUserRole() {
                 if (wsrequest !== null && wsrequest !== undefined) {
                   this.logger.log('[WS-REQUESTS-LIST] - AGENTS_CAN_SEE_ONLY_OWN_CONVS ', this.AGENTS_CAN_SEE_ONLY_OWN_CONVS);
                   this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS ? ', this.ONLY_MY_REQUESTS);
-                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - isRequestVisible ', this.isRequestVisible(wsrequest));
                   this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
 
-                  if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                  if (this.isRequestVisible(wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
                     this.ws_requests.push(wsrequest);
                   }
                 }
@@ -1542,7 +1557,6 @@ getProjectUserRole() {
                   this.logger.log('[WS-REQUESTS-LIST] - AGENTS_CAN_SEE_ONLY_OWN_CONVS ', this.AGENTS_CAN_SEE_ONLY_OWN_CONVS);
                   this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS? ', this.ONLY_MY_REQUESTS);
                   this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS ? ', this.ONLY_MY_REQUESTS);
-                  this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
                   this.logger.log('[WS-REQUESTS-LIST] - ONLY_MY_REQUESTS - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
 
                   if (this.hasmeInParticipants(wsrequest.participants) === true) {
@@ -1576,10 +1590,10 @@ getProjectUserRole() {
               wsrequests.forEach(wsrequest => {
                 if (wsrequest !== null && wsrequest !== undefined) {
 
-                  this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
+                  this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group - isRequestVisible ', this.isRequestVisible(wsrequest));
                   this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants))
 
-                  if (this.hasmeInAgents(wsrequest.agents, wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
+                  if (this.isRequestVisible(wsrequest) === true || this.hasmeInParticipants(wsrequest.participants) === true) {
                     this.ws_requests.push(wsrequest);
                     // this.logger.log('[WS-REQUESTS-LIST-USECASE] ---> USECASE request_read_group -  this.ws_requests ', this.ws_requests)
                   }
@@ -1597,7 +1611,6 @@ getProjectUserRole() {
               wsrequests.forEach(wsrequest => {
                 if (wsrequest !== null && wsrequest !== undefined) {
 
-                  this.logger.log('[WS-REQUESTS-LIST-USECASE]- request_read_my - hasmeInAgents ', this.hasmeInAgents(wsrequest.agents, wsrequest));
                   this.logger.log('[WS-REQUESTS-LIST-USECASE] - request_read_my - hasmeInParticipants ', this.hasmeInParticipants(wsrequest.participants, wsrequest))
 
                   if (this.hasmeInParticipants(wsrequest.participants) === true) {

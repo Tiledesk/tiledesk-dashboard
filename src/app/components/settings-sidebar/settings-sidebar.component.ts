@@ -595,17 +595,17 @@ export class SettingsSidebarComponent implements OnInit {
           if (status.role === 'owner' || status.role === 'admin') {
             // Owner and admin always has permission
             this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ = true;
-            console.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ);
+            this.logger.log('[SETTINGS-SIDEBAR] - Project user is owner or admin (1)', 'PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ);
 
           } else if (status.role === 'agent') {
             // Agent never have permission
             this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ = false;
-            console.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ);
+            this.logger.log('[SETTINGS-SIDEBAR] - Project user agent (2)', 'PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ);
 
           } else {
             // Custom roles: permission depends on matchedPermissions
             this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ = status.matchedPermissions.includes(PERMISSIONS.PROJECTSETTINGS_RETENTION_READ);
-            console.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ);
+            this.logger.log('[SETTINGS-SIDEBAR] - Custom role (3) role', status.role, 'PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ:', this.PERMISSION_TO_VIEW_PROJECTSETTINGS_RETENTION_READ);
           }
 
           // ------------------------------------------------
