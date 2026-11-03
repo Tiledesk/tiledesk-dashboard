@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.8.40
+- Adds the ability to create TTL columns in Data Tables
+- Fixes the bug: Data Tables grid could go empty after filter reset due to a stale listRows race
+- Removes the deprecated LLM model gpt-4.1-nano from the available AI models
+
 ### 2.8.39
 - Aligns conversation visibility with the new request APIs (visibility / agentIds / visibilitySince) 
 
