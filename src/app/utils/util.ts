@@ -1444,15 +1444,6 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: false  
     },
     { 
-        name: "GPT-4.1 nano",         
-        value: "gpt-4.1-nano",          
-        description: "TYPE_GPT_MODEL.text-davinci-003.description",      
-        status: "active", 
-        min_tokens: 1, 
-        max_output_tokens: 32768, 
-        reasoning: false  
-    },
-    { 
         name: "GPT-4o",               
         value: "gpt-4o",                
         description: "TYPE_GPT_MODEL.gpt-4o.description",                
@@ -1487,6 +1478,15 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         min_tokens: 1, 
         max_output_tokens: 4096,  
         reasoning: false    
+    },
+      { 
+        name: "GPT-4.1 nano",         
+        value: "gpt-4.1-nano",          
+        description: "TYPE_GPT_MODEL.text-davinci-003.description",      
+        status: "inactive", 
+        min_tokens: 1, 
+        max_output_tokens: 32768, 
+        reasoning: false  
     },
 
   { name: "GPT-4 Turbo Preview",  value: "gpt-4-turbo-preview",   description: "TYPE_GPT_MODEL.gpt-4-turbo-preview.description",   status: "inactive", min_tokens: 1, max_output_tokens: 4096, reasoning: false   },
