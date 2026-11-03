@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import Keycloak from 'keycloak-js';
+import { LoggerService } from './logger/logger.service';
 // import Keycloak, { KeycloakInstance } from 'keycloak-js';
 // import * as Keycloak from 'keycloak-js';
 
@@ -9,7 +10,7 @@ import Keycloak from 'keycloak-js';
 export class KeycloakService {
   private keycloak: Keycloak;
   // private keycloak: ReturnType<typeof Keycloak>;
-  constructor() {
+  constructor(private logger: LoggerService) {
     this.keycloak = new Keycloak({
       url: 'https://keycloak.stage.eks.tiledesk.com',
       realm: 'master',
@@ -28,21 +29,21 @@ export class KeycloakService {
       checkLoginIframeInterval: 25
     }).then(authenticated => {
       if (authenticated) {
-        console.log('[KEYCLOAK-SERV] ✅ User authenticated');
+        this.logger.log('[KEYCLOAK-SERV] ✅ User authenticated');
         this.registerLogoutListener();
       } else {
-        console.warn('[KEYCLOAK-SERV] ⚠️ User not authenticated');
+        this.logger.log('[KEYCLOAK-SERV] ⚠️ User not authenticated');
       }
       return authenticated;
     }).catch(err => {
-      console.error('[KEYCLOAK-SERV] ❌ Keycloak initialization failed', err);
+      this.logger.error('[KEYCLOAK-SERV] ❌ Keycloak initialization failed', err);
       return false;
     });
   }
 
   private registerLogoutListener() {
     this.keycloak.onAuthLogout = () => {
-      console.log('[KEYCLOAK-SERV] 🔴 Session ended or user logged out');
+      this.logger.log('[KEYCLOAK-SERV] 🔴 Session ended or user logged out');
       // window.location.href = '/login';
     };
   }
@@ -54,7 +55,7 @@ export class KeycloakService {
   // }
 
   getToken(): string | undefined {
-    console.log('[KEYCLOAK-SERV] getToken keycloak token ', this.keycloak.token);
+    this.logger.log('[KEYCLOAK-SERV] getToken keycloak token ', this.keycloak.token);
     return this.keycloak.token;
   }
 
