@@ -410,6 +410,9 @@ export function formatMaskedApikeyForDisplay(apikey: string | null | undefined):
 
 // ---- Connector hub helpers (pure) ----
 
+export interface ConnectorItemSummary { id: string; name: string; group?: string }
+export interface ConnectorGroupSummary { id: string; name: string }
+
 export const CONNECTOR_ITEM_KEY_PREFIX = 'connector_item:';
 
 // "Add connector" tile; its name is resolved by the component from the i18n key Integration.AddConnector.

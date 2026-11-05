@@ -1,0 +1,59 @@
+<div class="content">
+
+    <div class="form-section" *ngIf="scope; else notAvailable">
+        <div class="form-header">
+            <h4>{{ 'Integration.AddConnector' | translate }}</h4>
+        </div>
+
+        <div class="input-field">
+            <label>{{ 'Integration.ConnectorBaseUrl' | translate }}</label>
+            <input id="connector-url" class="custom-input" type="url" name="connector-url"
+                placeholder="https://my-connector.example.com"
+                [(ngModel)]="baseUrl" (ngModelChange)="onUrlChange()" autocomplete="off" style="font-size: 14px;">
+        </div>
+
+        <div class="input-field" *ngIf="me.hub_admin">
+            <label>{{ 'Integration.ConnectorInternalUrl' | translate }}</label>
+            <input id="connector-internal-url" class="custom-input" type="url" name="connector-internal-url"
+                [(ngModel)]="internalUrl" (ngModelChange)="onUrlChange()" autocomplete="off" style="font-size: 14px;">
+        </div>
+
+        <div class="manifest-preview" *ngIf="preview">
+            <span>{{ 'Integration.ConnectorPreviewSummary' | translate: { name: preview.name, actions: preview.actionCount, triggers: preview.triggerCount } }}</span>
+        </div>
+
+        <div class="manifest-errors" *ngIf="errors.length">
+            <span>{{ 'Integration.ConnectorManifestErrors' | translate }}</span>
+            <ul>
+                <li *ngFor="let e of errors">{{ e }}</li>
+            </ul>
+        </div>
+
+        <div class="form-actions">
+            <button
+                class="btn btn-tdblu-no-boxshadow"
+                (click)="previewManifest()"
+                [disabled]="isLoadingManifest || !baseUrl">
+                <span *ngIf="!isLoadingManifest || loadingBaseUrl !== baseUrl">
+                    {{ 'Integration.ConnectorValidate' | translate }}
+                </span>
+                <span *ngIf="isLoadingManifest && loadingBaseUrl === baseUrl" class="loading-state">
+                    <span class="spinner"></span>
+                    {{ 'Integration.LoadingTools' | translate }}
+                </span>
+            </button>
+
+            <button
+                class="btn btn-tdblu-no-boxshadow"
+                (click)="register()"
+                [disabled]="!preview || isRegistering">
+                {{ 'Integration.ConnectorRegister' | translate }}
+            </button>
+        </div>
+    </div>
+
+    <ng-template #notAvailable>
+        <div class="form-section">{{ 'Integration.ConnectorHubNotAvailable' | translate }}</div>
+    </ng-template>
+
+</div>
