@@ -3012,7 +3012,7 @@
         "ConnectorManifestErrors": "The connector manifest has errors",
         "ConnectorRegistered": "Connector registered",
         "ConnectorHubNotAvailable": "Registering connectors is not available for your role in this project.",
-        "ConnectorPreviewSummary": "{{ name }}: {{ actions }} actions, {{ triggers }} triggers",
+        "ConnectorPreviewSummary": "{{ name }} · Actions: {{ actions }} · Triggers: {{ triggers }}",
         "ConnectorErr_hub_admin_required": "Only connector hub administrators can do this.",
         "ConnectorErr_manager_role_required": "Only project owners and admins can do this.",
         "ConnectorErr_project_connectors_disabled": "Project connectors are not enabled for this project.",
