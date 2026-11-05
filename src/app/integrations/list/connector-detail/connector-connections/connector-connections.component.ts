@@ -103,7 +103,19 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
       relativeTo: this.route,
       queryParams: { name: CONNECTOR_ITEM_KEY_PREFIX + this.connector.id, tab: 'connections' }
     });
-    return window.location.origin + this.location.prepareExternalUrl(this.router.serializeUrl(tree));
+    // Hash routing under a sub-path (/dashboard/, /v3/dashboard/): origin + path, then '#/...' for the route.
+    const page = new URL(this.currentHref());
+    return page.origin + page.pathname + this.location.prepareExternalUrl(this.router.serializeUrl(tree));
+  }
+
+  /** Overridable for tests: the full browser URL (outer query before the '#', hash route after it). */
+  currentHref(): string {
+    return window.location.href;
+  }
+
+  /** Overridable for tests: rewrites the browser URL in place (no navigation, router state kept). */
+  replaceHref(url: string): void {
+    window.history.replaceState(window.history.state, '', url);
   }
 
   /** Overridable for tests: leaves the dashboard for the provider consent page. */
@@ -252,10 +264,15 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
 
   // ---- return from the provider ----
 
-  /** Reports the consent result once (?connection_id=&status=), refreshes the list and strips the params. */
+  /**
+   * Reports the consent result once (?connection_id=&status=), refreshes the list and strips the params.
+   * The hub appends them to the real query, before the '#' (outer); a route query (inner) is read too. Outer wins.
+   */
   handleReturn(params: ParamMap = this.route.snapshot.queryParamMap): void {
-    const connectionId = params.get('connection_id');
-    const status = params.get('status');
+    const outer = new URL(this.currentHref()).searchParams;
+    const fromOuter = !!outer.get('connection_id') && !!outer.get('status');
+    const connectionId = fromOuter ? outer.get('connection_id') : params.get('connection_id');
+    const status = fromOuter ? outer.get('status') : params.get('status');
     if (!connectionId || !status) {
       this.lastReturnKey = '';
       return;
@@ -265,6 +282,9 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
       return;
     }
     this.lastReturnKey = key;
+    if (fromOuter) {
+      this.clearOuterReturnParams();
+    }
     this.clearPoll();
     const token = ++this.pollToken;
     if (status === 'connected') {
@@ -313,6 +333,14 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
     this.router.navigate([], {
       queryParams: { connection_id: null, status: null }, queryParamsHandling: 'merge', replaceUrl: true
     });
+  }
+
+  /** Drops connection_id/status from the real query, keeping its other params and the hash route. */
+  private clearOuterReturnParams(): void {
+    const url = new URL(this.currentHref());
+    url.searchParams.delete('connection_id');
+    url.searchParams.delete('status');
+    this.replaceHref(url.pathname + url.search + url.hash);
   }
 
   private clearPoll(): void {

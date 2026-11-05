@@ -1,4 +1,5 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA, SimpleChange } from '@angular/core';
+import { Location } from '@angular/common';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -19,6 +20,10 @@ describe('ConnectorConnectionsComponent', () => {
   let router: Router;
   let navigate: jasmine.Spy;
   let query$: BehaviorSubject<any>;
+  let replaceHref: jasmine.Spy;
+
+  const PAGE = 'https://app.test/v3/dashboard/';
+  const HASH = '#/project/p1/integrations?name=connector_item:acme&tab=connections';
 
   const me = (o: Partial<HubMe> = {}): HubMe =>
     ({ role: 'owner', manager: true, hub_admin: false, project_connectors_enabled: true, ...o });
@@ -32,7 +37,7 @@ describe('ConnectorConnectionsComponent', () => {
   const rows = (): HTMLElement[] => Array.from(fixture.nativeElement.querySelectorAll('tr.connection-row'));
   const btn = (cls: string) => fixture.nativeElement.querySelector('button.' + cls);
 
-  function setup(meValue: HubMe, query: any = {}, list: HubConnection[] = [conn()]) {
+  function setup(meValue: HubMe, query: any = {}, list: HubConnection[] = [conn()], href: string = PAGE + HASH) {
     query$ = new BehaviorSubject<any>(query);
     hub = jasmine.createSpyObj('ConnectorHubService',
       ['listConnections', 'createConnection', 'install', 'getConnectionStatus', 'renameConnection', 'revokeConnection']);
@@ -63,6 +68,8 @@ describe('ConnectorConnectionsComponent', () => {
     component.connector = connector;
     component.me = meValue;
     navigate = spyOn(component, 'navigate');
+    spyOn(component, 'currentHref').and.callFake(() => href);
+    replaceHref = spyOn(component, 'replaceHref').and.callFake((url: string) => { href = new URL(url, href).href; });
   }
 
   function init(meValue: HubMe, query: any = {}, list?: HubConnection[]) {
@@ -306,11 +313,53 @@ describe('ConnectorConnectionsComponent', () => {
     expect(hub.getConnectionStatus).toHaveBeenCalledTimes(1);
   }));
 
-  it('returnUrl contains name=connector_item:<id> and tab=connections and the current origin', () => {
-    init(me());
-    const url = component.returnUrl();
-    expect(url.startsWith(window.location.origin)).toBe(true);
-    expect(decodeURIComponent(url)).toContain('name=connector_item:acme');
-    expect(url).toContain('tab=connections');
+  it('returnUrl keeps the origin and sub-path and puts the route in the hash (name=connector_item:<id>, tab=connections)', () => {
+    setup(me());
+    spyOn(TestBed.inject(Location), 'prepareExternalUrl').and.callFake((u: string) => '#' + u);
+    fixture.detectChanges();
+    const url = new URL(component.returnUrl());
+    expect(url.origin).toBe('https://app.test');
+    expect(url.pathname).toBe('/v3/dashboard/');
+    expect(url.search).toBe('');
+    expect(url.hash.startsWith('#/')).toBe(true);
+    expect(decodeURIComponent(url.hash)).toContain('name=connector_item:acme');
+    expect(url.hash).toContain('tab=connections');
+  });
+
+  it('a return in the outer query (before the #) is handled once, the outer params stripped and the hash kept', () => {
+    setup(me(), { name: 'connector_item:acme', tab: 'connections' }, [conn()],
+      PAGE + '?connection_id=c1&status=connected&keep=1' + HASH);
+    hub.getConnectionStatus.and.returnValue(of({ connected: true, connection: conn() }));
+    fixture.detectChanges();
+    expect(hub.getConnectionStatus).toHaveBeenCalledWith('c1');
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorAccountConnected', 3, 'success');
+    expect(replaceHref).toHaveBeenCalledTimes(1);
+    expect(replaceHref.calls.mostRecent().args[0]).toBe('/v3/dashboard/?keep=1' + HASH);
+    query$.next({ name: 'connector_item:acme', tab: 'connections' });
+    expect(hub.getConnectionStatus).toHaveBeenCalledTimes(1);
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledTimes(1);
+  });
+
+  it('an outer status=error return toasts once and strips the outer params', () => {
+    setup(me(), { tab: 'connections' }, [conn()], PAGE + '?connection_id=c1&status=error' + HASH);
+    fixture.detectChanges();
+    expect(hub.getConnectionStatus).not.toHaveBeenCalled();
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorAccountFailed', 3, 'error');
+    expect(replaceHref.calls.mostRecent().args[0]).toBe('/v3/dashboard/' + HASH);
+  });
+
+  it('the outer query wins over the inner one', () => {
+    setup(me(), { connection_id: 'inner', status: 'connected' }, [conn()], PAGE + '?connection_id=outer&status=connected' + HASH);
+    hub.getConnectionStatus.and.returnValue(of({ connected: true, connection: conn() }));
+    fixture.detectChanges();
+    expect(hub.getConnectionStatus.calls.allArgs()).toEqual([['outer']]);
+  });
+
+  it('an inner-query return does not rewrite the outer URL', () => {
+    setup(me(), { connection_id: 'c1', status: 'connected' });
+    hub.getConnectionStatus.and.returnValue(of({ connected: true, connection: conn() }));
+    fixture.detectChanges();
+    expect(hub.getConnectionStatus).toHaveBeenCalledWith('c1');
+    expect(replaceHref).not.toHaveBeenCalled();
   });
 });
