@@ -7,8 +7,8 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from 'app/services/users.service';
-import { map, switchMap, takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
+import { EMPTY, Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BrandService } from 'app/services/brand.service';
 import { ProjectPlanService } from 'app/services/project-plan.service';
@@ -50,6 +50,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   connectorMe: HubMe | null = null;
   selectedConnector: HubConnector | null = null;
   private connectorList: HubConnector[] = [];
+  private loadConnectorTiles$ = new Subject<void>();
   integrationLocked: boolean = false;
   intName: string;
   integrationListReady: boolean = false;
@@ -114,6 +115,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.listenConnectorTilesLoad();
     this.getCurrentProject();
     this.getLoggedUser()
     this.getOSCODE();
@@ -348,13 +350,16 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     })
   }
 
-  /** Loads /me and the connector list from the hub and (re)builds the connector tiles; any failure leaves INTEGRATIONS as it is. */
-  loadConnectorTiles(): void {
-    if (!this.connectorHub.isConfigured()) {
-      return;
-    }
-    this.connectorHub.getMe().pipe(
-      switchMap((me) => this.connectorHub.listConnectors(me).pipe(map((connectors) => ({ me, connectors })))),
+  /** Subscribed once: switchMap makes the latest trigger win, so a slow older response can never overwrite newer tiles. */
+  private listenConnectorTilesLoad(): void {
+    this.loadConnectorTiles$.pipe(
+      switchMap(() => this.connectorHub.getMe().pipe(
+        switchMap((me) => this.connectorHub.listConnectors(me).pipe(map((connectors) => ({ me, connectors })))),
+        catchError((error) => {
+          this.onConnectorTilesError(error);
+          return EMPTY;
+        })
+      )),
       takeUntil(this.unsubscribe$)
     ).subscribe(({ me, connectors }) => {
       this.connectorMe = me;
@@ -364,9 +369,25 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.INTEGRATIONS = [...this.INTEGRATIONS.filter((i) => !this.isConnectorKey(i.key)), ...tiles];
       this.reconcileSelectedConnector();
       this.resolveConnectorDeepLink();
-    }, (error) => {
-      this.logger.error('[INTEGRATION-COMP] load connector tiles error: ', error);
     });
+  }
+
+  /** On a hub failure, stale connector state is dropped once the tiles are gone (project switch reset). */
+  private onConnectorTilesError(error: any): void {
+    this.logger.error('[INTEGRATION-COMP] load connector tiles error: ', error);
+    if (!this.INTEGRATIONS.some((i) => this.isConnectorKey(i.key))) {
+      this.connectorMe = null;
+      this.selectedConnector = null;
+      this.connectorList = [];
+    }
+  }
+
+  /** Requests a (re)load of /me and the connector list from the hub; the latest request wins. */
+  loadConnectorTiles(): void {
+    if (!this.connectorHub.isConfigured()) {
+      return;
+    }
+    this.loadConnectorTiles$.next();
   }
 
   onConnectorRegistryChanged(): void {
@@ -384,7 +405,9 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
 
   onSidebarIconError(event: Event): void {
     const img = event.target as HTMLImageElement;
-    img.onerror = null;
+    if (img.src.endsWith('connector-icon.svg')) {
+      return;
+    }
     img.src = 'assets/img/int/connector-icon.svg';
   }
 

@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { BehaviorSubject, Subject, of, throwError } from 'rxjs';
 
 import { IntegrationsComponent } from './integrations.component';
 import { AuthService } from 'app/core/auth.service';
@@ -62,6 +62,7 @@ describe('IntegrationsComponent (connector hub shell)', () => {
     spyOn(router, 'navigate').and.returnValue(Promise.resolve(true));
     component.projectID = 'p1';
     component.INTEGRATIONS = [...INTEGRATION_LIST_ARRAY];
+    (component as any).listenConnectorTilesLoad(); // normally subscribed once in ngOnInit
   });
 
   it('should create', () => {
@@ -207,5 +208,58 @@ describe('IntegrationsComponent (connector hub shell)', () => {
     hub.listConnectors.and.returnValue(of([]));
     component.loadConnectorTiles();
     expect(component.categoryHasTiles(INTEGRATIONS_CATEGORIES.CONNECTOR)).toBe(true);
+  });
+
+  it('latest-wins: when the first response arrives last, tiles reflect the second response only', () => {
+    const me1 = new Subject<HubMe>();
+    const me2 = new Subject<HubMe>();
+    hub.getMe.and.returnValues(me1, me2);
+    hub.listConnectors.and.callFake((m: HubMe) => of(m.hub_admin ? [connector({ id: 'second' })] : [connector({ id: 'first' })]));
+    component.loadConnectorTiles();
+    component.loadConnectorTiles();
+    me2.next(me({ hub_admin: true }));
+    me1.next(me({ hub_admin: false }));
+    expect(connectorTiles().map((t) => t.key)).toEqual(['connector_item:second', INTEGRATIONS_KEYS.CONNECTORS]);
+    expect(component.connectorMe.hub_admin).toBe(true);
+  });
+
+  it('a hub error after the connector tiles were reset clears connectorMe, selectedConnector and connectorList', () => {
+    component.connectorMe = me({});
+    component.selectedConnector = connector({ id: 'a' });
+    (component as any).connectorList = [connector({ id: 'a' })];
+    component.INTEGRATIONS = [...INTEGRATION_LIST_ARRAY];
+    hub.getMe.and.returnValue(throwError(new Error('boom')));
+    component.loadConnectorTiles();
+    expect(component.connectorMe).toBeNull();
+    expect(component.selectedConnector).toBeNull();
+    expect((component as any).connectorList).toEqual([]);
+  });
+
+  it('a hub error keeps the loaded connector state while connector tiles are still listed', async () => {
+    hub.getMe.and.returnValue(of(me({ hub_admin: true })));
+    hub.listConnectors.and.returnValue(of([connector({ id: 'a' })]));
+    component.loadConnectorTiles();
+    hub.getMe.and.returnValue(throwError(new Error('boom')));
+    component.loadConnectorTiles();
+    expect(component.connectorMe).not.toBeNull();
+  });
+
+  it('the sidebar icon fallback does not loop when the fallback itself fails', () => {
+    const img = { src: 'http://localhost/assets/img/int/connector-icon.svg' };
+    component.onSidebarIconError({ target: img } as any);
+    expect(img.src).toBe('http://localhost/assets/img/int/connector-icon.svg');
+    const broken = { src: 'http://x/broken.svg' };
+    component.onSidebarIconError({ target: broken } as any);
+    expect(broken.src).toBe('assets/img/int/connector-icon.svg');
+  });
+
+  it('selecting an existing non-connector integration still initializes it', async () => {
+    const init = spyOn<any>(component, 'initializeIntegration').and.returnValue({ name: 'x' });
+    component.integrations = [];
+    const tile = component.INTEGRATIONS.find((i) => i.category !== INTEGRATIONS_CATEGORIES.CONNECTOR && i.plan === 'Sandbox') || component.INTEGRATIONS[0];
+    await component.onIntegrationSelect(tile);
+    await fixture.whenStable();
+    expect(init).toHaveBeenCalledWith(tile.key);
+    expect(component.selectedIntegration).toEqual({ name: 'x' } as any);
   });
 });
