@@ -5,6 +5,7 @@ import { catchError, map, shareReplay } from 'rxjs/operators';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
+import { registryScopeOf } from 'app/integrations/utils';
 
 export type RegistryScope = 'global' | 'project';
 
@@ -45,6 +46,10 @@ export class ConnectorHubService {
   ) {
     this.TOKEN = this.auth.user_bs.value?.token;
     this.auth.user_bs.subscribe((user) => {
+      if (user?.token !== this.TOKEN) {
+        // a different user or a refreshed token: cached /me answers may no longer hold
+        this.meCache.clear();
+      }
       this.TOKEN = user?.token;
     });
     this.auth.project_bs.subscribe((project) => {
@@ -71,7 +76,8 @@ export class ConnectorHubService {
   }
 
   private headers(): HttpHeaders {
-    return new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.TOKEN });
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.TOKEN ? headers.set('Authorization', this.TOKEN) : headers;
   }
 
   private notConfigured<T>(): Observable<T> {
@@ -116,13 +122,7 @@ export class ConnectorHubService {
   }
 
   registryScope(me: HubMe): RegistryScope | null {
-    if (me.hub_admin) {
-      return 'global';
-    }
-    if (me.manager && me.project_connectors_enabled) {
-      return 'project';
-    }
-    return null;
+    return registryScopeOf(me);
   }
 
   // ---- registry ----

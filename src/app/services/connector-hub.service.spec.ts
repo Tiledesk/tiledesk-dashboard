@@ -11,6 +11,7 @@ describe('ConnectorHubService', () => {
   let service: ConnectorHubService;
   let http: HttpTestingController;
   let projectBs: BehaviorSubject<any>;
+  let userBs: BehaviorSubject<any>;
   let config: any;
 
   const me = (o: Partial<HubMe>): HubMe =>
@@ -19,10 +20,11 @@ describe('ConnectorHubService', () => {
   function setup(cfg: any) {
     config = cfg;
     projectBs = new BehaviorSubject<any>({ _id: 'p1' });
+    userBs = new BehaviorSubject<any>({ token: 'JWT abc' });
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
-        { provide: AuthService, useValue: { user_bs: new BehaviorSubject<any>({ token: 'JWT abc' }), project_bs: projectBs } },
+        { provide: AuthService, useValue: { user_bs: userBs, project_bs: projectBs } },
         { provide: AppConfigService, useValue: { getConfig: () => config } },
         { provide: LoggerService, useValue: jasmine.createSpyObj('LoggerService', ['log', 'debug', 'error', 'warn']) },
       ],
@@ -66,6 +68,25 @@ describe('ConnectorHubService', () => {
       expect(err.status).toBe(403);
       service.getMe().subscribe();
       http.expectOne(HUB + '/projects/p1/me').flush(me({}));
+    });
+
+    it('clears the /me cache when the token changes and omits Authorization without a token', () => {
+      service.getMe().subscribe();
+      http.expectOne(HUB + '/projects/p1/me').flush(me({}));
+      service.getMe().subscribe();
+      http.expectNone(HUB + '/projects/p1/me');
+
+      userBs.next({ token: 'JWT other' });
+      service.getMe().subscribe();
+      const req = http.expectOne(HUB + '/projects/p1/me');
+      expect(req.request.headers.get('Authorization')).toBe('JWT other');
+      req.flush(me({}));
+
+      userBs.next(null);
+      service.getMe().subscribe();
+      const anon = http.expectOne(HUB + '/projects/p1/me');
+      expect(anon.request.headers.has('Authorization')).toBe(false);
+      anon.flush(me({}));
     });
 
     it('registryScope', () => {

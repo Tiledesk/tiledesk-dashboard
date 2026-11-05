@@ -1,3 +1,5 @@
+import type { HubConnector, HubMe, RegistryScope } from 'app/services/connector-hub.service';
+
 export enum INTEGRATIONS_KEYS {
     BREVO = 'brevo',
     CUSTOMERIO = 'customerio',
@@ -34,7 +36,8 @@ export enum INTEGRATIONS_KEYS {
     ELEVENLABS = "elevenlabs",
     CEREBRAS = "cerebras",
     OPENROUTER = 'openrouter',
-    AGENTPLATFORM = 'agentplatform'
+    AGENTPLATFORM = 'agentplatform',
+    CONNECTORS = 'connectors'
 }
 
 //  OLLAMA = 'ollama',
@@ -62,7 +65,8 @@ export enum INTEGRATIONS_CATEGORIES {
     INT_PLAT = "int_plat",
     LIVE_CHAT = "live_chat",
     STORAGE = 'storage',
-    OTHER = 'other'
+    OTHER = 'other',
+    CONNECTOR = 'connector'
 }
 
 export const CATEGORIES_LIST = [
@@ -77,6 +81,7 @@ export const CATEGORIES_LIST = [
     { type: INTEGRATIONS_CATEGORIES.ECOMMERCE, name: "E-Commerce" },
     //{ type: INTEGRATIONS_CATEGORIES.EMAIL, name: "Email Marketing" },
     { type: INTEGRATIONS_CATEGORIES.INT_PLAT, name: "Integration Platform" },
+    { type: INTEGRATIONS_CATEGORIES.CONNECTOR, name: "Connectors" },
     //{ type: INTEGRATIONS_CATEGORIES.LIVE_CHAT, name: "Live Chat Support" },
     //{ type: INTEGRATIONS_CATEGORIES.OTHER, name: "Other" },
 
@@ -403,3 +408,103 @@ export function formatMaskedApikeyForDisplay(apikey: string | null | undefined):
   return `${leading}...${trailing}`;
 }
 
+// ---- Connector hub helpers (pure) ----
+
+export const CONNECTOR_ITEM_KEY_PREFIX = 'connector_item:';
+
+// "Add connector" tile; its name is resolved by the component from the i18n key Integration.AddConnector.
+export const CONNECTOR_ADD_TILE = {
+    name: 'Add connector',
+    category: INTEGRATIONS_CATEGORIES.CONNECTOR,
+    key: INTEGRATIONS_KEYS.CONNECTORS,
+    src_icon: 'assets/img/int/connector-icon.svg',
+    src_logo: 'assets/img/int/connector-icon.svg',
+    pro: false,
+    plan: null as any
+};
+
+/** Connector tiles (never plan-gated) followed, when the user can register, by the "Add connector" tile. */
+export function buildConnectorTiles(connectors: HubConnector[], canRegister: boolean, addTile: any): any[] {
+    const tiles = connectors.map((c) => ({
+        name: c.name,
+        category: INTEGRATIONS_CATEGORIES.CONNECTOR,
+        key: CONNECTOR_ITEM_KEY_PREFIX + c.id,
+        src_icon: c.icon || addTile.src_icon,
+        src_logo: c.icon || addTile.src_logo,
+        pro: false,
+        plan: null,
+        disabled: c.status === 'disabled'
+    }));
+    if (canRegister) {
+        tiles.push({
+            name: addTile.name,
+            category: INTEGRATIONS_CATEGORIES.CONNECTOR,
+            key: INTEGRATIONS_KEYS.CONNECTORS,
+            src_icon: addTile.src_icon,
+            src_logo: addTile.src_logo,
+            pro: false,
+            plan: null,
+            disabled: false
+        });
+    }
+    return tiles;
+}
+
+export function connectorIdFromKey(key: string): string | null {
+    return typeof key === 'string' && key.startsWith(CONNECTOR_ITEM_KEY_PREFIX) && key.length > CONNECTOR_ITEM_KEY_PREFIX.length
+        ? key.substring(CONNECTOR_ITEM_KEY_PREFIX.length)
+        : null;
+}
+
+/** Registry scope from the hub's `/me`: hub admin -> global; project manager with project connectors on -> project; else none. */
+export function registryScopeOf(me: HubMe): RegistryScope | null {
+    if (me.hub_admin) {
+        return 'global';
+    }
+    if (me.manager && me.project_connectors_enabled) {
+        return 'project';
+    }
+    return null;
+}
+
+export interface ConnectorPermissions { canRegister: boolean; canManageConnections: boolean; scope: RegistryScope | null }
+
+export function connectorPermissions(me: HubMe): ConnectorPermissions {
+    const scope = registryScopeOf(me);
+    return { canRegister: scope !== null, canManageConnections: !!me.manager, scope };
+}
+
+// Hub error code -> i18n key (under Integration) of the message to show; unmapped codes fall back to the hub text.
+export const HUB_ERROR_KEYS: { [code: string]: string } = {
+    hub_admin_required: 'Integration.ConnectorErr_hub_admin_required',
+    manager_role_required: 'Integration.ConnectorErr_manager_role_required',
+    project_connectors_disabled: 'Integration.ConnectorErr_project_connectors_disabled',
+    not_a_member: 'Integration.ConnectorErr_not_a_member',
+    unknown_connector: 'Integration.ConnectorErr_unknown_connector',
+    connector_disabled: 'Integration.ConnectorErr_connector_disabled',
+    internal_url_not_allowed: 'Integration.ConnectorErr_internal_url_not_allowed',
+    invalid_url: 'Integration.ConnectorErr_invalid_url',
+    invalid_manifest: 'Integration.ConnectorErr_invalid_manifest',
+    connector_exists: 'Integration.ConnectorErr_connector_exists',
+    connector_in_use: 'Integration.ConnectorErr_connector_in_use',
+    revoke_failed: 'Integration.ConnectorErr_revoke_failed'
+};
+
+export function hubErrorKey(code: string): string | null {
+    return Object.prototype.hasOwnProperty.call(HUB_ERROR_KEYS, code) ? HUB_ERROR_KEYS[code] : null;
+}
+
+/** Normalises an HttpErrorResponse (or Error) from the hub: `{ code, message, details }`. */
+export function hubErrorMessage(err: any): { code: string; message: string; details: string[] } {
+    const body = err?.error;
+    const hasBody = body && typeof body === 'object';
+    let code = hasBody && typeof body.code === 'string' ? body.code : '';
+    if (!code && err?.status === 0) {
+        code = 'network';
+    } else if (!code && err?.message === 'hub_not_configured') {
+        code = 'hub_not_configured';
+    }
+    const message = (hasBody && typeof body.error === 'string' && body.error) || err?.message || 'Unknown error';
+    const details = hasBody && Array.isArray(body.errors) ? body.errors.filter((e: any) => typeof e === 'string') : [];
+    return { code, message, details };
+}
