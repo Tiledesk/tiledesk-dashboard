@@ -6,7 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from 'app/core/notify.service';
 import { ConnectorHubService, HubConnection, HubConnector, HubInstallResult, HubMe } from 'app/services/connector-hub.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { CONNECTOR_ITEM_KEY_PREFIX, HUB_ERROR_GENERIC_KEY, hubErrorMessage, hubErrorTextKey } from 'app/integrations/utils';
+import { CONNECTOR_ITEM_KEY_PREFIX, HUB_ERROR_GENERIC_KEY, hubErrorMessage, hubErrorTextKey, isSafeAuthUrl } from 'app/integrations/utils';
 
 const Swal = require('sweetalert2');
 
@@ -145,13 +145,16 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
   private startInstall(connectionId: string): void {
     this.hub.install(connectionId, this.returnUrl()).subscribe(
       (result: HubInstallResult) => {
-        if (result && result.auth_url) {
+        if (result && result.auth_url && isSafeAuthUrl(result.auth_url)) {
           this.navigate(result.auth_url);
           return;
         }
         this.isBusy = false;
         this.load();
-        if (result && result.fields) {
+        if (result && result.auth_url) {
+          this.logger.error('[CONNECTOR-CONNECTIONS] install answered an auth_url that is not https (or loopback http)');
+          this.toast(HUB_ERROR_GENERIC_KEY, 'error');
+        } else if (result && result.fields) {
           // api_key connectors answer { fields }: there is no submit step yet.
           this.toast('Integration.ConnectorApiKeyNotSupported', 'warning');
         } else {

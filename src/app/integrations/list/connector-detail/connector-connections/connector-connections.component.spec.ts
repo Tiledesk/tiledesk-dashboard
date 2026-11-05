@@ -111,6 +111,28 @@ describe('ConnectorConnectionsComponent', () => {
     expect(navigate).toHaveBeenCalledWith('https://provider.test/consent');
   });
 
+  ['javascript:alert(1)', 'data:text/html,<script>alert(1)</script>', 'http://provider.test/consent'].forEach((unsafe) => {
+    it(`an unsafe auth_url (${unsafe.split(':')[0]}:) is not navigated: generic error, logged, list reloaded`, () => {
+      init(me());
+      hub.createConnection.and.returnValue(of(conn({ id: 'new', status: 'pending' })));
+      hub.install.and.returnValue(of({ auth_url: unsafe }));
+      component.addAccount();
+      expect(navigate).not.toHaveBeenCalled();
+      expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorErr_unknown', 3, 'error');
+      expect(logger.error).toHaveBeenCalled();
+      expect(component.isBusy).toBe(false);
+      expect(hub.listConnections).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it('reconnect with a javascript: auth_url does not navigate', () => {
+    init(me());
+    hub.install.and.returnValue(of({ auth_url: 'javascript:alert(1)' }));
+    component.reconnect(conn());
+    expect(navigate).not.toHaveBeenCalled();
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorErr_unknown', 3, 'error');
+  });
+
   it('install answering { fields } shows the not-supported message and does not navigate', () => {
     init(me());
     hub.createConnection.and.returnValue(of(conn({ id: 'new', status: 'pending' })));

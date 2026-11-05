@@ -1,6 +1,6 @@
 import {
   buildConnectorTiles, canActOnConnector, CONNECTOR_ADD_TILE, CONNECTOR_ITEM_KEY_PREFIX, connectorIdFromKey, connectorPermissions,
-  CATEGORIES_LIST, HUB_ERROR_KEYS, hubErrorKey, hubErrorMessage, hubErrorTextKey, INTEGRATIONS_CATEGORIES, registryScopeOf
+  CATEGORIES_LIST, HUB_ERROR_KEYS, hubErrorKey, hubErrorMessage, hubErrorTextKey, INTEGRATIONS_CATEGORIES, isSafeAuthUrl, registryScopeOf
 } from './utils';
 import { HubConnector, HubMe } from 'app/services/connector-hub.service';
 
@@ -152,4 +152,20 @@ describe('integrations utils (connector hub)', () => {
       expect(HUB_ERROR_KEYS['unknown']).toBeUndefined();
     });
   });
+
+  describe('isSafeAuthUrl', () => {
+    it('allows https, and http only on loopback hosts', () => {
+      expect(isSafeAuthUrl('https://login.provider.test/consent?x=1')).toBe(true);
+      expect(isSafeAuthUrl('http://localhost:3000/oauth')).toBe(true);
+      expect(isSafeAuthUrl('http://127.0.0.1/oauth')).toBe(true);
+      expect(isSafeAuthUrl('http://[::1]:8080/oauth')).toBe(true);
+    });
+
+    it('rejects other schemes, plain http on other hosts and unparsable values', () => {
+      ['javascript:alert(1)', 'data:text/html,<script>alert(1)</script>', 'http://provider.test/consent',
+        'http://localhost.evil.test/x', 'ftp://provider.test', '/relative/path', '', null, undefined]
+        .forEach((u) => expect(isSafeAuthUrl(u as any)).toBe(false, String(u)));
+    });
+  });
+
 });

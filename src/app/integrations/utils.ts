@@ -417,6 +417,19 @@ export function escapeHtml(value: string): string {
         .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
+const LOOPBACK_HOSTS = ['localhost', '127.0.0.1', '[::1]'];
+
+/** A provider consent URL the dashboard may navigate to: https, or http on a loopback host (local dev). */
+export function isSafeAuthUrl(value: string): boolean {
+    let url: URL;
+    try {
+        url = new URL(String(value ?? ''));
+    } catch (e) {
+        return false;
+    }
+    return url.protocol === 'https:' || (url.protocol === 'http:' && LOOPBACK_HOSTS.includes(url.hostname));
+}
+
 export interface ConnectorItemSummary { id: string; name: string; group?: string }
 export interface ConnectorGroupSummary { id: string; name: string }
 
