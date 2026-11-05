@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.9.0
+- Adds the Connectors page on the connector-hub: connector tiles in Integrations, connector detail (actions, triggers, refresh, enable/disable, delete) and a Connections tab (add, rename, reconnect, revoke accounts)
+- Adds connector registration for connector hub admins (validate the manifest, then register)
+- The hub base URL comes from `connectorHubUrl` in dashboard-config.json (`CONNECTOR_HUB_URL`); when it is empty no connector tiles are shown
+- Requires a connector-hub whose `CORS_ORIGINS` and `RETURN_URL_ORIGINS` list the dashboard origin
+- Adds the connector texts to all supported languages
+
 ### 2.8.40
 - Adds the ability to create TTL columns in Data Tables
 - Fixes the bug: Data Tables grid could go empty after filter reset due to a stale listRows race
