@@ -420,19 +420,25 @@ export const CONNECTOR_ADD_TILE = {
     src_icon: 'assets/img/int/connector-icon.svg',
     src_logo: 'assets/img/int/connector-icon.svg',
     pro: false,
-    plan: null as any
+    plan: 'Sandbox' as const
 };
 
+// 'Sandbox' is the plan the integrations gating treats as always available: connector tiles are never locked.
+export interface ConnectorTile {
+    name: string; category: INTEGRATIONS_CATEGORIES; key: string; src_icon: string; src_logo: string;
+    pro: boolean; plan: 'Sandbox'; disabled: boolean;
+}
+
 /** Connector tiles (never plan-gated) followed, when the user can register, by the "Add connector" tile. */
-export function buildConnectorTiles(connectors: HubConnector[], canRegister: boolean, addTile: any): any[] {
-    const tiles = connectors.map((c) => ({
+export function buildConnectorTiles(connectors: HubConnector[], canRegister: boolean, addTile: any): ConnectorTile[] {
+    const tiles: ConnectorTile[] = connectors.map((c) => ({
         name: c.name,
         category: INTEGRATIONS_CATEGORIES.CONNECTOR,
         key: CONNECTOR_ITEM_KEY_PREFIX + c.id,
         src_icon: c.icon || addTile.src_icon,
         src_logo: c.icon || addTile.src_logo,
         pro: false,
-        plan: null,
+        plan: 'Sandbox',
         disabled: c.status === 'disabled'
     }));
     if (canRegister) {
@@ -443,7 +449,7 @@ export function buildConnectorTiles(connectors: HubConnector[], canRegister: boo
             src_icon: addTile.src_icon,
             src_logo: addTile.src_logo,
             pro: false,
-            plan: null,
+            plan: 'Sandbox',
             disabled: false
         });
     }
@@ -474,7 +480,9 @@ export function connectorPermissions(me: HubMe): ConnectorPermissions {
     return { canRegister: scope !== null, canManageConnections: !!me.manager, scope };
 }
 
-// Hub error code -> i18n key (under Integration) of the message to show; unmapped codes fall back to the hub text.
+// Hub error code -> i18n key of the message to show. Unmapped codes use HUB_ERROR_GENERIC_KEY; raw server text is never displayed.
+export const HUB_ERROR_GENERIC_KEY = 'Integration.ConnectorErr_unknown';
+
 export const HUB_ERROR_KEYS: { [code: string]: string } = {
     hub_admin_required: 'Integration.ConnectorErr_hub_admin_required',
     manager_role_required: 'Integration.ConnectorErr_manager_role_required',
@@ -487,11 +495,18 @@ export const HUB_ERROR_KEYS: { [code: string]: string } = {
     invalid_manifest: 'Integration.ConnectorErr_invalid_manifest',
     connector_exists: 'Integration.ConnectorErr_connector_exists',
     connector_in_use: 'Integration.ConnectorErr_connector_in_use',
-    revoke_failed: 'Integration.ConnectorErr_revoke_failed'
+    revoke_failed: 'Integration.ConnectorErr_revoke_failed',
+    network: 'Integration.ConnectorErr_network',
+    hub_not_configured: 'Integration.ConnectorErr_hub_not_configured'
 };
 
 export function hubErrorKey(code: string): string | null {
     return Object.prototype.hasOwnProperty.call(HUB_ERROR_KEYS, code) ? HUB_ERROR_KEYS[code] : null;
+}
+
+/** Translation key for any hub failure; always a key (generic when unmapped). Log `hubErrorMessage(err).message`, never show it. */
+export function hubErrorTextKey(err: any): string {
+    return hubErrorKey(hubErrorMessage(err).code) || HUB_ERROR_GENERIC_KEY;
 }
 
 /** Normalises an HttpErrorResponse (or Error) from the hub: `{ code, message, details }`. */

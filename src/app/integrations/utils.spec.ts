@@ -1,6 +1,6 @@
 import {
   buildConnectorTiles, CONNECTOR_ADD_TILE, CONNECTOR_ITEM_KEY_PREFIX, connectorIdFromKey, connectorPermissions,
-  CATEGORIES_LIST, hubErrorKey, hubErrorMessage, INTEGRATIONS_CATEGORIES, registryScopeOf
+  CATEGORIES_LIST, HUB_ERROR_KEYS, hubErrorKey, hubErrorMessage, hubErrorTextKey, INTEGRATIONS_CATEGORIES, registryScopeOf
 } from './utils';
 import { HubConnector, HubMe } from 'app/services/connector-hub.service';
 
@@ -25,7 +25,7 @@ describe('integrations utils (connector hub)', () => {
       expect(tiles[1].key).toBe('connector_item:microsoft');
       expect(tiles[1].src_icon).toBe(CONNECTOR_ADD_TILE.src_icon);
       expect(tiles[1].src_logo).toBe(CONNECTOR_ADD_TILE.src_logo);
-      expect(tiles.every(t => t.pro === false && t.plan === null && t.disabled === false)).toBe(true);
+      expect(tiles.every(t => t.pro === false && t.plan === 'Sandbox' && t.disabled === false)).toBe(true);
     });
 
     it('appends the add tile last when the user can register', () => {
@@ -34,7 +34,7 @@ describe('integrations utils (connector hub)', () => {
       expect(tiles[1].key).toBe('connectors');
       expect(tiles[1].name).toBe(CONNECTOR_ADD_TILE.name);
       expect(tiles[1].pro).toBe(false);
-      expect(tiles[1].plan).toBeNull();
+      expect(tiles[1].plan).toBe('Sandbox');
       expect(buildConnectorTiles([], true, CONNECTOR_ADD_TILE).length).toBe(1);
     });
 
@@ -106,5 +106,32 @@ describe('integrations utils (connector hub)', () => {
     });
     expect(hubErrorKey('whatever')).toBeNull();
     expect(hubErrorKey('constructor')).toBeNull();
+  });
+
+  describe('hubErrorTextKey (always a translation key, never raw text)', () => {
+    const GENERIC = 'Integration.ConnectorErr_unknown';
+    it('maps a network failure', () => {
+      expect(hubErrorTextKey({ status: 0, message: 'Http failure response for x: 0 Unknown Error', error: new ProgressEvent('error') }))
+        .toBe('Integration.ConnectorErr_network');
+    });
+    it('maps hub_not_configured', () => {
+      expect(hubErrorTextKey(new Error('hub_not_configured'))).toBe('Integration.ConnectorErr_hub_not_configured');
+    });
+    it('falls back to the generic key for an HTML 502 body, an unmapped code and junk', () => {
+      expect(hubErrorTextKey({ status: 502, message: 'Http failure response', error: '<html>Bad Gateway</html>' })).toBe(GENERIC);
+      expect(hubErrorTextKey({ status: 400, error: { code: 'something_new', error: 'raw hub text' } })).toBe(GENERIC);
+      expect(hubErrorTextKey({})).toBe(GENERIC);
+      expect(hubErrorTextKey(null)).toBe(GENERIC);
+      expect(hubErrorTextKey({ error: { code: 'constructor' } })).toBe(GENERIC);
+    });
+    it('maps every code in HUB_ERROR_KEYS', () => {
+      Object.keys(HUB_ERROR_KEYS).forEach((code) => {
+        const err = code === 'network' ? { status: 0 } : code === 'hub_not_configured' ? new Error('hub_not_configured')
+          : { status: 403, error: { code, error: 'x' } };
+        expect(hubErrorTextKey(err)).toBe(HUB_ERROR_KEYS[code]);
+        expect(HUB_ERROR_KEYS[code]).toBe('Integration.ConnectorErr_' + code);
+      });
+      expect(HUB_ERROR_KEYS['unknown']).toBeUndefined();
+    });
   });
 });
