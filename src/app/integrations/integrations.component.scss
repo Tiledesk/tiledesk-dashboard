@@ -72,6 +72,11 @@
 
     }
 
+    // disabled hub connector: still clickable (it can be re-enabled), but greyed
+    .element-disabled {
+        opacity: 0.5;
+    }
+
     .element-selected {
         background-color: aliceblue;
         border: solid 1px #4e96d4;

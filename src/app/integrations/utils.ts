@@ -480,6 +480,18 @@ export function connectorPermissions(me: HubMe): ConnectorPermissions {
     return { canRegister: scope !== null, canManageConnections: !!me.manager, scope };
 }
 
+/**
+ * Whether the caller may enable/disable/refresh/delete this connector. A hub admin works through the global routes (the list is
+ * already limited to global connectors and this project's own); a project manager only on connectors owned by this project.
+ */
+export function canActOnConnector(me: HubMe, connector: HubConnector, projectId: string): boolean {
+    const scope = registryScopeOf(me);
+    if (scope === 'global') {
+        return true;
+    }
+    return scope === 'project' && !!projectId && connector.owner === projectId;
+}
+
 // Hub error code -> i18n key of the message to show. Unmapped codes use HUB_ERROR_GENERIC_KEY; raw server text is never displayed.
 export const HUB_ERROR_GENERIC_KEY = 'Integration.ConnectorErr_unknown';
 

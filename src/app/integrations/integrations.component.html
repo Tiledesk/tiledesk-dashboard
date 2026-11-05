@@ -32,6 +32,7 @@
                             <div class="list" *ngIf="integrationListReady">
 
                                 <mat-accordion *ngFor="let category of CATEGORIES">
+                                  <ng-container *ngIf="category.type !== 'connector' || categoryHasTiles(category.type)">
                                     <mat-expansion-panel expanded="true" class="custom-expansion-panel" hideToggle>
                                         <mat-expansion-panel-header class="disable_ripple">
                                             <mat-panel-title>
@@ -43,10 +44,10 @@
 
                                         <div *ngFor="let integration of INTEGRATIONS">
                                             <div *ngIf="integration.category === category.type" class="element"
-                                                [ngClass]="{'element-selected': integrationSelectedName === integration.key }"
+                                                [ngClass]="{'element-selected': integrationSelectedName === integration.key, 'element-disabled': integration.disabled }"
                                                 (click)="onIntegrationSelect(integration)">
 
-                                                <img [src]="integration.src_icon" alt="{{integration.name}}">
+                                                <img [src]="integration.src_icon" alt="{{integration.name}}" (error)="onSidebarIconError($event)">
                                                 <!-- dispayBadgeAvaibleFromInAppStore >  {{dispayBadgeAvaibleFromInAppStore}} -->
                                                 <div class="integration-name-and-badge">
                                                     <p>{{ integration.name }}</p>
@@ -57,6 +58,7 @@
                                         </div>
 
                                     </mat-expansion-panel>
+                                  </ng-container>
                                 </mat-accordion>
 
                             </div>
@@ -67,7 +69,7 @@
                             <ng-container *ngIf="!showSpinner">
                                 <div *ngIf="integrationSelectedName !== 'none'" class="menu-container">
 
-                                    <integration-header *ngIf="!showInIframe" 
+                                    <integration-header *ngIf="!showInIframe && !isConnectorItemSelected()" 
                                         [integrationModel]="selectedIntegrationModel">
                                     </integration-header>
 
@@ -166,6 +168,18 @@
                                             (onUpdateIntegration)=integrationUpdateEvent($event)
                                             (onDeleteIntegration)=integrationDeletedEvent($event)>
                                         </mcp-integration>
+
+                                        <connector-integration *ngIf="integrationSelectedName === INT_KEYS.CONNECTORS && connectorMe"
+                                            [me]="connectorMe"
+                                            (onChanged)="onConnectorRegistryChanged()">
+                                        </connector-integration>
+
+                                        <connector-detail *ngIf="isConnectorItemSelected() && selectedConnector && connectorMe"
+                                            [connector]="selectedConnector"
+                                            [me]="connectorMe"
+                                            (onChanged)="onConnectorRegistryChanged()">
+                                        </connector-detail>
+
                                         <v-llm *ngIf="integrationSelectedName === INT_KEYS.VLLM"
                                             [integration]="selectedIntegration"
                                             (onUpdateIntegration)=integrationUpdateEvent($event)

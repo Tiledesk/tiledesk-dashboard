@@ -1,5 +1,5 @@
 import {
-  buildConnectorTiles, CONNECTOR_ADD_TILE, CONNECTOR_ITEM_KEY_PREFIX, connectorIdFromKey, connectorPermissions,
+  buildConnectorTiles, canActOnConnector, CONNECTOR_ADD_TILE, CONNECTOR_ITEM_KEY_PREFIX, connectorIdFromKey, connectorPermissions,
   CATEGORIES_LIST, HUB_ERROR_KEYS, hubErrorKey, hubErrorMessage, hubErrorTextKey, INTEGRATIONS_CATEGORIES, registryScopeOf
 } from './utils';
 import { HubConnector, HubMe } from 'app/services/connector-hub.service';
@@ -73,6 +73,24 @@ describe('integrations utils (connector hub)', () => {
     it('non-manager with project connectors on -> none', () => {
       const m = me({ project_connectors_enabled: true });
       expect(connectorPermissions(m)).toEqual({ canRegister: false, canManageConnections: false, scope: null });
+    });
+  });
+
+  describe('canActOnConnector (C12)', () => {
+    it('hub admin may act on global and own-project connectors', () => {
+      const m = me({ hub_admin: true });
+      expect(canActOnConnector(m, connector({ owner: 'global' }), 'p1')).toBe(true);
+      expect(canActOnConnector(m, connector({ owner: 'p1' }), 'p1')).toBe(true);
+    });
+    it('project manager only on connectors owned by this project', () => {
+      const m = me({ manager: true, project_connectors_enabled: true });
+      expect(canActOnConnector(m, connector({ owner: 'p1' }), 'p1')).toBe(true);
+      expect(canActOnConnector(m, connector({ owner: 'global' }), 'p1')).toBe(false);
+      expect(canActOnConnector(m, connector({ owner: 'p2' }), 'p1')).toBe(false);
+    });
+    it('nobody else may act', () => {
+      expect(canActOnConnector(me({ manager: true }), connector({ owner: 'p1' }), 'p1')).toBe(false);
+      expect(canActOnConnector(me({}), connector({ owner: 'p1' }), 'p1')).toBe(false);
     });
   });
 

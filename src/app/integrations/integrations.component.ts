@@ -1,12 +1,13 @@
 import { Component, isDevMode, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from 'app/core/auth.service';
 import { IntegrationService } from 'app/services/integration.service';
-import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration, ElevenLabsIntegration, CerebrasIntegration, OpenRouterIntegration, AgentPlatformIntegration } from './utils';
+import { APPS_TITLE, BrevoIntegration, N8nIntegration, CATEGORIES_LIST, CustomerioIntegration, HubspotIntegration, INTEGRATIONS_CATEGORIES, INTEGRATIONS_KEYS, INTEGRATION_LIST_ARRAY, MakeIntegration, OpenaiIntegration, QaplaIntegration, INTEGRATION_LIST_ARRAY_CLONE, GoogleIntegration, AnthropicIntegration, GroqIntegration, CohereIntegration, DeepseekIntegration, OllamaIntegration, McpIntegration, vLLMIntegration, ElevenLabsIntegration, CerebrasIntegration, OpenRouterIntegration, AgentPlatformIntegration, CONNECTOR_ADD_TILE, CONNECTOR_ITEM_KEY_PREFIX, buildConnectorTiles, connectorIdFromKey, connectorPermissions } from './utils';
+import { ConnectorHubService, HubConnector, HubMe } from 'app/services/connector-hub.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from 'app/services/users.service';
-import { takeUntil } from 'rxjs/operators';
+import { map, switchMap, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { BrandService } from 'app/services/brand.service';
@@ -46,12 +47,15 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   integrations = [];
   selectedIntegration: any;
   selectedIntegrationModel: null;
+  connectorMe: HubMe | null = null;
+  selectedConnector: HubConnector | null = null;
+  private connectorList: HubConnector[] = [];
   integrationLocked: boolean = false;
   intName: string;
   integrationListReady: boolean = false;
 
   INT_KEYS = INTEGRATIONS_KEYS;
-  INTEGRATIONS = INTEGRATION_LIST_ARRAY;
+  INTEGRATIONS: any[] = INTEGRATION_LIST_ARRAY;
 
   CATEGORIES = CATEGORIES_LIST;
 
@@ -98,7 +102,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     private appService: AppStoreService,
     public appConfigService: AppConfigService,
     private roleService: RoleService,
-    public rolesService: RolesService
+    public rolesService: RolesService,
+    private connectorHub: ConnectorHubService
   ) {
     const _brand = this.brand.getBrand();
     this.logger.log("[INTEGRATION-COMP] brand: ", _brand);
@@ -332,10 +337,107 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
 
       if (this.intName) {
-        this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
-        this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
+        const matchedIntegration = this.INTEGRATIONS.find(i => i.key === this.intName);
+        if (matchedIntegration) {
+          this.onIntegrationSelect(matchedIntegration);
+        }
+        this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", matchedIntegration);
       }
+      // connector tiles come from the hub: a deep link to one is resolved when they have loaded
+      this.loadConnectorTiles();
     })
+  }
+
+  /** Loads /me and the connector list from the hub and (re)builds the connector tiles; any failure leaves INTEGRATIONS as it is. */
+  loadConnectorTiles(): void {
+    if (!this.connectorHub.isConfigured()) {
+      return;
+    }
+    this.connectorHub.getMe().pipe(
+      switchMap((me) => this.connectorHub.listConnectors(me).pipe(map((connectors) => ({ me, connectors })))),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(({ me, connectors }) => {
+      this.connectorMe = me;
+      this.connectorList = connectors;
+      const addTile = { ...CONNECTOR_ADD_TILE, name: this.translate.instant('Integration.AddConnector') };
+      const tiles = buildConnectorTiles(connectors, connectorPermissions(me).canRegister, addTile);
+      this.INTEGRATIONS = [...this.INTEGRATIONS.filter((i) => !this.isConnectorKey(i.key)), ...tiles];
+      this.reconcileSelectedConnector();
+      this.resolveConnectorDeepLink();
+    }, (error) => {
+      this.logger.error('[INTEGRATION-COMP] load connector tiles error: ', error);
+    });
+  }
+
+  onConnectorRegistryChanged(): void {
+    this.loadConnectorTiles();
+  }
+
+  isConnectorItemSelected(): boolean {
+    return !!this.integrationSelectedName && this.integrationSelectedName.indexOf(CONNECTOR_ITEM_KEY_PREFIX) === 0;
+  }
+
+  /** Connectors category is listed only when the hub gave at least one connector tile. */
+  categoryHasTiles(type: string): boolean {
+    return this.INTEGRATIONS.some((i) => i.category === type);
+  }
+
+  onSidebarIconError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.onerror = null;
+    img.src = 'assets/img/int/connector-icon.svg';
+  }
+
+  private isConnectorKey(key: string): boolean {
+    return key === INTEGRATIONS_KEYS.CONNECTORS || key.indexOf(CONNECTOR_ITEM_KEY_PREFIX) === 0;
+  }
+
+  get currentUrlName(): string | null {
+    return this.route.snapshot.queryParamMap.get('name');
+  }
+
+  /** After a reload, keeps the open connector in sync with the list, or closes it when it is gone (disabled/deleted elsewhere). */
+  private reconcileSelectedConnector(): void {
+    const id = connectorIdFromKey(this.integrationSelectedName);
+    if (!id) {
+      return;
+    }
+    const current = this.connectorList.find((c) => c.id === id) || null;
+    this.selectedConnector = current;
+    if (!current) {
+      this.integrationSelectedName = 'none';
+      this.router.navigate(['project/' + this.projectID + '/integrations/']);
+    }
+  }
+
+  /** `?name=connector_item:<id>` / `?name=connectors` can only be selected once the hub tiles exist. */
+  private resolveConnectorDeepLink(): void {
+    if (!this.intName || !this.isConnectorKey(this.intName) || this.integrationSelectedName === this.intName) {
+      return;
+    }
+    const tile = this.INTEGRATIONS.find((i) => i.key === this.intName);
+    if (tile) {
+      this.onIntegrationSelect(tile);
+    }
+  }
+
+  /** Sets selectedIntegration / selectedConnector for a tile; connector tiles have no `integration` record. */
+  private selectRecordFor(integration: any): void {
+    const connectorId = connectorIdFromKey(integration.key);
+    if (connectorId) {
+      this.selectedConnector = this.connectorList.find((c) => c.id === connectorId) || null;
+      this.selectedIntegration = null;
+      return;
+    }
+    this.selectedConnector = null;
+    if (integration.key === INTEGRATIONS_KEYS.CONNECTORS) {
+      this.selectedIntegration = null;
+      return;
+    }
+    this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
+    if (!this.selectedIntegration) {
+      this.selectedIntegration = this.initializeIntegration(integration.key);
+    }
   }
 
   getAllIntegrations() {
@@ -511,11 +613,8 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.integrationSelectedName = integration.key;
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect integrationSelectedName", integration.key)
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect this.integrations", this.integrations)
-      this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
+      this.selectRecordFor(integration);
       this.logger.log("[INTEGRATIONS]- onIntegrationSelect selectedIntegration", this.selectedIntegration)
-      if (!this.selectedIntegration) {
-        this.selectedIntegration = this.initializeIntegration(integration.key);
-      }
       const usesAppStoreIframe =
         integration.category === INTEGRATIONS_CATEGORIES.CHANNEL
         || (integration.category === INTEGRATIONS_CATEGORIES.VOICE
@@ -550,10 +649,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.integrationLocked = true;
       this.plan_require = integration.plan;
       this.integrationSelectedName = integration.key;
-      this.selectedIntegration = this.integrations.find(i => i.name === integration.key);
-      if (!this.selectedIntegration) {
-        this.selectedIntegration = this.initializeIntegration(integration.key);
-      }
+      this.selectRecordFor(integration);
       this.selectedIntegrationModel = integration;
       this.changeRoute(integration.key);
 
@@ -672,6 +768,10 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     this.logger.log('[INTEGRATION-COMP] browserRefresh', this.browserRefresh)
     this.logger.log("[INTEGRATION-COMP] change route in ", key);
 
+    // already on this tile (e.g. a deep link): keep tab / connection_id / status of the URL
+    if (key === this.currentUrlName) {
+      return;
+    }
     this.router.navigate(['project/' + this.projectID + '/integrations/'], { queryParams: { name: key } })
 
   }
