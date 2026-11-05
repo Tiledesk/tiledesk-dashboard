@@ -1,0 +1,30 @@
+<h1 mat-dialog-title>
+  <span>{{ title }}</span>
+  <button mat-icon-button class="close-button" (click)="onClose()" aria-label="Close">
+    <mat-icon>close</mat-icon>
+  </button>
+</h1>
+
+<div mat-dialog-content class="items-content">
+  <div class="items-groups" *ngIf="items.length > 0">
+    <div class="item-group" *ngFor="let group of groupedItems">
+      <h3 class="group-name">{{ group.groupName }}</h3>
+      <div class="item-row" *ngFor="let item of group.items">
+        {{ item.name }}
+      </div>
+    </div>
+  </div>
+
+  <div class="no-items" *ngIf="items.length === 0">
+    <div class="no-items-message">
+      <span class="material-icons-outlined">inbox</span>
+      <p>{{ 'Integration.NoToolsFound' | translate }}</p>
+    </div>
+  </div>
+</div>
+
+<div mat-dialog-actions class="dialog-actions">
+  <button mat-button class="btn-close" (click)="onClose()">
+    {{ 'Close' | translate }}
+  </button>
+</div>

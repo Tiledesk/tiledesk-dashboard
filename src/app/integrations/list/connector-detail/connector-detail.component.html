@@ -1,0 +1,62 @@
+<div class="connector-tabs" *ngIf="connector">
+    <button type="button" class="connector-tab tab-details" [class.active]="activeTab === 'details'" (click)="setTab('details')">
+        {{ 'Integration.ConnectorTabDetails' | translate }}
+    </button>
+    <button type="button" class="connector-tab tab-connections" [class.active]="activeTab === 'connections'" (click)="setTab('connections')">
+        {{ 'Integration.ConnectorTabConnections' | translate }}
+    </button>
+</div>
+
+<div class="content" *ngIf="connector && activeTab === 'details'">
+
+    <div class="form-section">
+        <div class="form-header connector-detail-header">
+            <img [src]="iconUrl" alt="{{ connector.name }}" class="connector-detail-icon" (error)="onIconError($event)">
+            <h4 class="connector-name">{{ connector.name }}</h4>
+            <span class="connector-status-disabled" *ngIf="isDisabled">{{ 'Integration.ConnectorStatusDisabled' | translate }}</span>
+        </div>
+
+        <div class="input-field" *ngIf="connector.base_url">
+            <label>URL</label>
+            <p class="connector-detail-value connector-base-url">{{ connector.base_url }}</p>
+        </div>
+
+        <div class="input-field" *ngIf="connector.last_validated_at">
+            <label>{{ 'Integration.ConnectorLastValidated' | translate }}</label>
+            <p class="connector-detail-value">{{ connector.last_validated_at | date: 'medium' }}</p>
+        </div>
+
+        <div class="connector-validation-errors" *ngIf="connector.validation_errors?.length">
+            <span>{{ 'Integration.ConnectorValidationErrors' | translate }}</span>
+            <ul>
+                <li *ngFor="let e of connector.validation_errors">{{ e }}</li>
+            </ul>
+        </div>
+
+        <div class="tools-info-section" *ngIf="manifest">
+            <div class="tools-badge-info">
+                <span class="tools-label">{{ 'Actions' | translate }}:</span>
+                <span class="tools-count-badge actions-count" [class.tools-count-badge--disabled]="!actions.length" (click)="openActionsModal()">{{ actions.length }}</span>
+            </div>
+            <div class="tools-badge-info">
+                <span class="tools-label">{{ 'Triggers' | translate }}:</span>
+                <span class="tools-count-badge triggers-count" [class.tools-count-badge--disabled]="!triggers.length" (click)="openTriggersModal()">{{ triggers.length }}</span>
+            </div>
+        </div>
+
+        <div class="form-actions" *ngIf="canEdit">
+            <button class="btn btn-tdblu-no-boxshadow btn-refresh" [disabled]="isBusy || isDisabled" (click)="refresh()">
+                {{ 'Integration.ConnectorRefresh' | translate }}
+            </button>
+            <button class="btn btn-outlined btn-toggle" [disabled]="isBusy" (click)="toggleEnabled()">
+                {{ (isDisabled ? 'Integration.ConnectorEnable' : 'Integration.ConnectorDisable') | translate }}
+            </button>
+            <button class="btn btn-outlined btn-delete" [disabled]="isBusy" (click)="deleteConnector()">
+                {{ 'Delete' | translate }}
+            </button>
+        </div>
+    </div>
+
+</div>
+
+<connector-connections *ngIf="connector && activeTab === 'connections'" [connector]="connector" [me]="me"></connector-connections>
