@@ -250,6 +250,17 @@ describe('ConnectorDetailComponent', () => {
       expect(el('connector-connections')).not.toBeNull();
     });
 
+    it('with ?tab=connections in the url, selecting another connector still opens on details', () => {
+      setup(me(), connector(), { tab: 'connections' });
+      expect(component.activeTab).toBe('connections');
+      const other = connector({ id: 'other' });
+      component.connector = other;
+      component.ngOnChanges({ connector: { previousValue: connector(), currentValue: other } as any });
+      fixture.detectChanges();
+      expect(component.activeTab).toBe('details');
+      expect(el('connector-connections')).toBeNull();
+    });
+
     it('opens on the connections tab when the url carries ?tab=connections', () => {
       setup(me(), connector(), { tab: 'connections' });
       expect(component.activeTab).toBe('connections');

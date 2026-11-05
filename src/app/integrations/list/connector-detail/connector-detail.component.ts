@@ -53,8 +53,11 @@ export class ConnectorDetailComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.connector) {
       const previous = changes.connector.previousValue as HubConnector | undefined;
-      if (!previous || !this.connector || previous.id !== this.connector.id) {
+      // The url tab (?tab=connections, a consent return) only applies to the first connector shown.
+      if (!previous) {
         this.activeTab = this.tabFromUrl();
+      } else if (!this.connector || previous.id !== this.connector.id) {
+        this.activeTab = 'details';
       }
       this.loadManifest();
     }

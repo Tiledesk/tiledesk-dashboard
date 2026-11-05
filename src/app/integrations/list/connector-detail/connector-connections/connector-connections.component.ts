@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -19,7 +19,7 @@ const POLL_MAX_ATTEMPTS = 10;
   templateUrl: './connector-connections.component.html',
   styleUrls: ['./connector-connections.component.scss']
 })
-export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
+export class ConnectorConnectionsComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() connector: HubConnector;
   @Input() me: HubMe;
@@ -56,6 +56,23 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
     this.initialising = true;
     this.paramsSub = this.route.queryParamMap.subscribe((params) => this.handleReturn(params));
     this.initialising = false;
+  }
+
+  /** Another connector bound to this instance: drop the previous one's accounts and any in-flight return poll. */
+  ngOnChanges(changes: SimpleChanges): void {
+    const change = changes.connector;
+    if (!change || change.firstChange) {
+      return;
+    }
+    const previous = change.previousValue as HubConnector | undefined;
+    if ((previous && previous.id) === (this.connector && this.connector.id)) {
+      return;
+    }
+    this.clearPoll();
+    this.pollToken++;
+    this.connections = [];
+    this.isBusy = false;
+    this.load();
   }
 
   ngOnDestroy(): void {

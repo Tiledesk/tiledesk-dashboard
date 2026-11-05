@@ -86,6 +86,34 @@ describe('ConnectorConnectionsComponent', () => {
     expect(rows()[1].textContent).toContain('Home');
   });
 
+  it('a connector id change resets the list, cancels a pending poll and reloads for the new connector', fakeAsync(() => {
+    setup(me(), { connection_id: 'c1', status: 'connected' }, [conn()]);
+    hub.getConnectionStatus.and.returnValue(of({ connected: false, connection: conn({ status: 'pending' }) }));
+    fixture.detectChanges();
+    expect(rows().length).toBe(1);
+    const pending = new Subject<HubConnection[]>();
+    hub.listConnections.and.returnValue(pending);
+    const other: HubConnector = { ...connector, id: 'other' };
+    component.connector = other;
+    component.ngOnChanges({ connector: new SimpleChange(connector, other, false) });
+    fixture.detectChanges();
+    expect(hub.listConnections.calls.mostRecent().args).toEqual(['other']);
+    expect(rows().length).toBe(0);
+    tick(15000);
+    expect(hub.getConnectionStatus).toHaveBeenCalledTimes(1);
+    pending.next([conn({ id: 'o1', connector_id: 'other', label: 'Other' })]);
+    fixture.detectChanges();
+    expect(rows().length).toBe(1);
+    expect(rows()[0].textContent).toContain('Other');
+  }));
+
+  it('ngOnChanges on the first binding or the same connector id does not reload', () => {
+    init(me());
+    component.ngOnChanges({ connector: new SimpleChange(undefined, connector, true) });
+    component.ngOnChanges({ connector: new SimpleChange(connector, { ...connector }, false) });
+    expect(hub.listConnections).toHaveBeenCalledTimes(1);
+  });
+
   it('non-manager sees no add / rename / reconnect / revoke buttons', () => {
     init(me({ role: 'agent', manager: false }));
     expect(component.canManage).toBe(false);
