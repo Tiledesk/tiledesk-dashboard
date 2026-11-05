@@ -1,11 +1,12 @@
+import { Subscription } from 'rxjs';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { NotifyService } from 'app/core/notify.service';
 import { ConnectorHubService, HubConnection, HubConnector, HubInstallResult, HubMe } from 'app/services/connector-hub.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { CONNECTOR_ITEM_KEY_PREFIX, hubErrorMessage, hubErrorTextKey } from 'app/integrations/utils';
+import { CONNECTOR_ITEM_KEY_PREFIX, HUB_ERROR_GENERIC_KEY, hubErrorMessage, hubErrorTextKey } from 'app/integrations/utils';
 
 const Swal = require('sweetalert2');
 
@@ -29,6 +30,11 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
   private loadRequestId = 0;
   private pollTimer: any = null;
   private destroyed = false;
+  private pollToken = 0;
+  private statusSub: Subscription | null = null;
+  private paramsSub: Subscription | null = null;
+  private lastReturnKey = '';
+  private initialising = false;
 
   constructor(
     private hub: ConnectorHubService,
@@ -45,12 +51,17 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.handleReturn();
+    this.load();
+    // Also reacts to a second return on this same instance; clearing the params re-emits and is ignored (no key).
+    this.initialising = true;
+    this.paramsSub = this.route.queryParamMap.subscribe((params) => this.handleReturn(params));
+    this.initialising = false;
   }
 
   ngOnDestroy(): void {
     this.destroyed = true;
     this.clearPoll();
+    if (this.paramsSub) { this.paramsSub.unsubscribe(); }
   }
 
   load(): void {
@@ -127,13 +138,19 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
           return;
         }
         this.isBusy = false;
+        this.load();
         if (result && result.fields) {
           // api_key connectors answer { fields }: there is no submit step yet.
           this.toast('Integration.ConnectorApiKeyNotSupported', 'warning');
-          this.load();
+        } else {
+          this.logger.error('[CONNECTOR-CONNECTIONS] install answered neither auth_url nor fields');
+          this.toast(HUB_ERROR_GENERIC_KEY, 'error');
         }
       },
-      (error) => this.onError('install', error)
+      (error) => {
+        this.onError('install', error);
+        this.load();
+      }
     );
   }
 
@@ -236,25 +253,37 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
   // ---- return from the provider ----
 
   /** Reports the consent result once (?connection_id=&status=), refreshes the list and strips the params. */
-  handleReturn(): void {
-    const params = this.route.snapshot.queryParamMap;
+  handleReturn(params: ParamMap = this.route.snapshot.queryParamMap): void {
     const connectionId = params.get('connection_id');
     const status = params.get('status');
-    this.load();
     if (!connectionId || !status) {
+      this.lastReturnKey = '';
       return;
     }
+    const key = `${connectionId}:${status}`;
+    if (key === this.lastReturnKey) {
+      return;
+    }
+    this.lastReturnKey = key;
+    this.clearPoll();
+    const token = ++this.pollToken;
     if (status === 'connected') {
-      this.pollStatus(connectionId, 1);
+      this.pollStatus(connectionId, 1, token);
     } else {
       this.toast('Integration.ConnectorAccountFailed', 'error');
+      if (!this.initialising) {
+        this.load();
+      }
       this.clearReturnParams();
     }
   }
 
-  private pollStatus(connectionId: string, attempt: number): void {
-    this.hub.getConnectionStatus(connectionId).subscribe(
+  private pollStatus(connectionId: string, attempt: number, token: number): void {
+    this.statusSub = this.hub.getConnectionStatus(connectionId).subscribe(
       (res) => {
+        if (this.destroyed || token !== this.pollToken) {
+          return;
+        }
         if (res && res.connected) {
           this.toast('Integration.ConnectorAccountConnected', 'success');
           this.finishReturn();
@@ -262,10 +291,13 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
           this.toast('Integration.ConnectorAccountFailed', 'error');
           this.finishReturn();
         } else if (!this.destroyed) {
-          this.pollTimer = setTimeout(() => this.pollStatus(connectionId, attempt + 1), POLL_INTERVAL_MS);
+          this.pollTimer = setTimeout(() => this.pollStatus(connectionId, attempt + 1, token), POLL_INTERVAL_MS);
         }
       },
       (error) => {
+        if (this.destroyed || token !== this.pollToken) {
+          return;
+        }
         this.onError('getConnectionStatus', error);
         this.finishReturn();
       }
@@ -284,6 +316,10 @@ export class ConnectorConnectionsComponent implements OnInit, OnDestroy {
   }
 
   private clearPoll(): void {
+    if (this.statusSub) {
+      this.statusSub.unsubscribe();
+      this.statusSub = null;
+    }
     if (this.pollTimer) {
       clearTimeout(this.pollTimer);
       this.pollTimer = null;

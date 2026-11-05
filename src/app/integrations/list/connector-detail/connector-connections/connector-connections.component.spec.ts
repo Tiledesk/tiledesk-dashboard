@@ -3,7 +3,8 @@ import { ComponentFixture, discardPeriodicTasks, fakeAsync, flush, TestBed, tick
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { of, throwError } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { NotifyService } from 'app/core/notify.service';
 import { ConnectorHubService, HubConnection, HubConnector, HubMe } from 'app/services/connector-hub.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -17,6 +18,7 @@ describe('ConnectorConnectionsComponent', () => {
   let logger: jasmine.SpyObj<LoggerService>;
   let router: Router;
   let navigate: jasmine.Spy;
+  let query$: BehaviorSubject<any>;
 
   const me = (o: Partial<HubMe> = {}): HubMe =>
     ({ role: 'owner', manager: true, hub_admin: false, project_connectors_enabled: true, ...o });
@@ -31,6 +33,7 @@ describe('ConnectorConnectionsComponent', () => {
   const btn = (cls: string) => fixture.nativeElement.querySelector('button.' + cls);
 
   function setup(meValue: HubMe, query: any = {}, list: HubConnection[] = [conn()]) {
+    query$ = new BehaviorSubject<any>(query);
     hub = jasmine.createSpyObj('ConnectorHubService',
       ['listConnections', 'createConnection', 'install', 'getConnectionStatus', 'renameConnection', 'revokeConnection']);
     hub.listConnections.and.returnValue(of(list));
@@ -46,7 +49,10 @@ describe('ConnectorConnectionsComponent', () => {
         { provide: LoggerService, useValue: logger },
         {
           provide: ActivatedRoute, deps: [Router],
-          useFactory: (r: Router) => Object.create(r.routerState.root, { snapshot: { value: { queryParamMap: convertToParamMap(query) } } })
+          useFactory: (r: Router) => Object.create(r.routerState.root, {
+            snapshot: { get: () => ({ queryParamMap: convertToParamMap(query$.value) }) },
+            queryParamMap: { value: query$.pipe(map((q) => convertToParamMap(q))) }
+          })
         }
       ]
     });
@@ -80,10 +86,12 @@ describe('ConnectorConnectionsComponent', () => {
     ['add-account', 'reconnect', 'rename', 'revoke'].forEach((c) => expect(btn(c)).toBeNull());
   });
 
-  it('manager sees the add / rename / reconnect / revoke buttons', () => {
-    init(me());
+  it('manager sees add / rename / revoke, and reconnect only on non-connected rows', () => {
+    init(me(), {}, [conn(), conn({ id: 'c2', status: 'disconnected' })]);
     expect(component.canManage).toBe(true);
-    ['add-account', 'reconnect', 'rename', 'revoke'].forEach((c) => expect(btn(c)).not.toBeNull());
+    ['add-account', 'rename', 'revoke'].forEach((c) => expect(btn(c)).not.toBeNull());
+    expect(fixture.nativeElement.querySelectorAll('button.reconnect').length).toBe(1);
+    expect(rows()[0].querySelector('button.reconnect')).toBeNull();
   });
 
   it('addAccount creates a connection then installs with a return_url on this page and navigates to auth_url', () => {
@@ -113,6 +121,75 @@ describe('ConnectorConnectionsComponent', () => {
     expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorErr_invalid_return_url', 3, 'error');
     expect(notify.showWidgetStyleUpdateNotification).not.toHaveBeenCalledWith('raw hub text', 3, 'error');
     expect(logger.error).toHaveBeenCalled();
+  });
+
+  it('install failing after createConnection reloads the list', () => {
+    init(me());
+    hub.createConnection.and.returnValue(of(conn({ id: 'new', status: 'pending' })));
+    hub.install.and.returnValue(throwError({ status: 500, error: { code: 'x' } }));
+    component.addAccount();
+    expect(hub.listConnections).toHaveBeenCalledTimes(2);
+  });
+
+  it('install answering neither auth_url nor fields shows the generic error', () => {
+    init(me());
+    hub.createConnection.and.returnValue(of(conn({ id: 'new', status: 'pending' })));
+    hub.install.and.returnValue(of({}));
+    component.addAccount();
+    expect(navigate).not.toHaveBeenCalled();
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorErr_unknown', 3, 'error');
+  });
+
+  it('listConnections failing leaves an empty list and shows the error key', () => {
+    init(me());
+    hub.listConnections.and.returnValue(throwError({ status: 403, error: { code: 'not_a_member', error: 'raw' } }));
+    component.load();
+    fixture.detectChanges();
+    expect(rows().length).toBe(0);
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorErr_not_a_member', 3, 'error');
+  });
+
+  it('getConnectionStatus erroring toasts the error key, reloads and clears the params', () => {
+    setup(me(), { connection_id: 'c1', status: 'connected' });
+    hub.getConnectionStatus.and.returnValue(throwError({ status: 500, error: { code: 'x' } }));
+    fixture.detectChanges();
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorErr_unknown', 3, 'error');
+    expect(hub.listConnections).toHaveBeenCalledTimes(2);
+    expect(router.navigate).toHaveBeenCalledTimes(1);
+  });
+
+  it('destroying while the status request is pending: no toast, no reload, no navigate', () => {
+    setup(me(), { connection_id: 'c1', status: 'connected' });
+    const pending = new Subject<any>();
+    hub.getConnectionStatus.and.returnValue(pending);
+    fixture.detectChanges();
+    fixture.destroy();
+    pending.next({ connected: true, connection: conn() });
+    expect(notify.showWidgetStyleUpdateNotification).not.toHaveBeenCalled();
+    expect(router.navigate).not.toHaveBeenCalled();
+    expect(hub.listConnections).toHaveBeenCalledTimes(1);
+  });
+
+  it('a second return on the same instance supersedes an in-flight one (no stale toast)', () => {
+    setup(me(), { connection_id: 'c1', status: 'connected' });
+    const first = new Subject<any>();
+    hub.getConnectionStatus.and.returnValues(first, of({ connected: true, connection: conn({ id: 'c2' }) }));
+    fixture.detectChanges();
+    query$.next({ connection_id: 'c2', status: 'connected' });
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledTimes(1);
+    first.next({ connected: true, connection: conn() });
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledTimes(1);
+    expect(hub.getConnectionStatus.calls.allArgs()).toEqual([['c1'], ['c2']]);
+  });
+
+  it('clearing the params (or re-emitting the same return) does not re-trigger handling', () => {
+    setup(me(), { connection_id: 'c1', status: 'connected' });
+    hub.getConnectionStatus.and.returnValue(of({ connected: true, connection: conn() }));
+    fixture.detectChanges();
+    query$.next({ connection_id: 'c1', status: 'connected', tab: 'connections' });
+    query$.next({ tab: 'connections' });
+    expect(hub.getConnectionStatus).toHaveBeenCalledTimes(1);
+    expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledTimes(1);
   });
 
   it('reconnect installs on the existing connection id (no createConnection)', () => {

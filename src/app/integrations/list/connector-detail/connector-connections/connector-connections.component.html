@@ -31,7 +31,7 @@
                         </td>
                         <td class="actions-column">
                             <ng-container *ngIf="canManage">
-                                <button type="button" class="btn btn-sm reconnect" [disabled]="isBusy" (click)="reconnect(c)">
+                                <button *ngIf="c.status !== 'connected'" type="button" class="btn btn-sm reconnect" [disabled]="isBusy" (click)="reconnect(c)">
                                     {{ 'Integration.ConnectorReconnect' | translate }}
                                 </button>
                                 <button type="button" class="btn btn-sm rename" [disabled]="isBusy" (click)="rename(c)">
