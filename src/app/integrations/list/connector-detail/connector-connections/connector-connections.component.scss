@@ -1,0 +1,37 @@
+.connections-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.accounts-count .count-num {
+    font-weight: 600;
+}
+
+.no-accounts {
+    padding: 16px 0;
+    color: #6b7280;
+}
+
+.connection-row .connection-label {
+    font-weight: 500;
+}
+
+.status-chip {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    background: #eef0f3;
+    color: #555;
+
+    &.status-connected { background: #e3f6e9; color: #1d7a3e; }
+    &.status-disconnected { background: #fdeaea; color: #b3261e; }
+}
+
+.actions-column {
+    text-align: right;
+    white-space: nowrap;
+
+    .btn + .btn { margin-left: 6px; }
+}

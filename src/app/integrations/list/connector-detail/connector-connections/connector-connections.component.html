@@ -1,0 +1,50 @@
+<div class="connections-wrapper">
+    <div class="card contents-card">
+        <div class="card-header connections-header">
+            <div class="accounts-count">
+                {{ 'Integration.ConnectorAccounts' | translate }}: <span class="count-num">{{ connections.length }}</span>
+            </div>
+            <button *ngIf="canManage" type="button" class="btn btn-primary add-account" [disabled]="isBusy" (click)="addAccount()">
+                {{ 'Integration.ConnectorAddAccount' | translate }}
+            </button>
+        </div>
+
+        <div class="table-body card-content table-responsive">
+            <p *ngIf="!isLoading && connections.length === 0" class="no-accounts">
+                {{ 'Integration.ConnectorNoAccounts' | translate }}
+            </p>
+            <table *ngIf="connections.length > 0" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>{{ 'Name' | translate }}</th>
+                        <th>{{ 'Integration.ConnectorAccounts' | translate }}</th>
+                        <th>{{ 'Status' | translate }}</th>
+                        <th class="actions-column"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of connections" class="connection-row">
+                        <td class="name-column"><span class="connection-label">{{ c.label }}</span></td>
+                        <td class="account-column"><span class="connection-account">{{ c.account?.display }}</span></td>
+                        <td class="status-column">
+                            <span class="status-chip" [ngClass]="'status-' + c.status">{{ statusKey(c) | translate }}</span>
+                        </td>
+                        <td class="actions-column">
+                            <ng-container *ngIf="canManage">
+                                <button type="button" class="btn btn-sm reconnect" [disabled]="isBusy" (click)="reconnect(c)">
+                                    {{ 'Integration.ConnectorReconnect' | translate }}
+                                </button>
+                                <button type="button" class="btn btn-sm rename" [disabled]="isBusy" (click)="rename(c)">
+                                    {{ 'Integration.ConnectorRename' | translate }}
+                                </button>
+                                <button type="button" class="btn btn-sm revoke" [disabled]="isBusy" (click)="revoke(c)">
+                                    {{ 'Integration.ConnectorRevoke' | translate }}
+                                </button>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

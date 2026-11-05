@@ -518,6 +518,8 @@ export const HUB_ERROR_KEYS: { [code: string]: string } = {
     connector_exists: 'Integration.ConnectorErr_connector_exists',
     connector_in_use: 'Integration.ConnectorErr_connector_in_use',
     revoke_failed: 'Integration.ConnectorErr_revoke_failed',
+    invalid_return_url: 'Integration.ConnectorErr_invalid_return_url',
+    reconnect_required: 'Integration.ConnectorErr_reconnect_required',
     network: 'Integration.ConnectorErr_network',
     hub_not_configured: 'Integration.ConnectorErr_hub_not_configured'
 };
