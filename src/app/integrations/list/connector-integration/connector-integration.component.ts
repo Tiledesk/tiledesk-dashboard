@@ -71,7 +71,7 @@ export class ConnectorIntegrationComponent {
 
   previewManifest(): void {
     const scope = this.scope;
-    if (!this.baseUrl || !scope) {
+    if (!this.baseUrl || !scope || this.isLoadingManifest) {
       return;
     }
     const baseUrl = this.baseUrl;

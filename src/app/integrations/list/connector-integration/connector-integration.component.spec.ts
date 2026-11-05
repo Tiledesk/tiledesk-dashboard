@@ -144,6 +144,18 @@ describe('ConnectorIntegrationComponent', () => {
       fixture.detectChanges();
       expect(component.scope).toBeNull();
       expect(fixture.nativeElement.querySelector('#connector-url')).toBeNull();
+      expect(fixture.nativeElement.textContent).toContain('Integration.ConnectorHubNotAvailable');
+    });
+
+    it('previewManifest returns early while a validate is in flight', () => {
+      const subj = new Subject<any>();
+      hub.validate.and.returnValue(subj);
+      component.baseUrl = 'http://c.test';
+      component.previewManifest();
+      component.previewManifest();
+      expect(hub.validate).toHaveBeenCalledTimes(1);
+      subj.next({ valid: true, errors: [], manifest });
+      expect(component.preview).not.toBeNull();
     });
   });
 
@@ -164,6 +176,22 @@ describe('ConnectorIntegrationComponent', () => {
       component.internalUrl = 'http://internal';
       component.previewManifest();
       expect(hub.validate).toHaveBeenCalledWith('http://c.test', 'http://internal', 'global');
+    });
+
+    it('register receives internal_url for a hub admin and null when blank', () => {
+      hub.validate.and.returnValue(of({ valid: true, errors: [], manifest }));
+      hub.register.and.returnValue(of({ connector: registered, event_secret: 's' }));
+      component.baseUrl = 'http://c.test';
+      component.internalUrl = 'http://internal';
+      component.previewManifest();
+      component.register();
+      expect(hub.register).toHaveBeenCalledWith('http://c.test', 'http://internal', 'global');
+
+      component.baseUrl = 'http://d.test';
+      component.internalUrl = '';
+      component.previewManifest();
+      component.register();
+      expect(hub.register).toHaveBeenCalledWith('http://d.test', null, 'global');
     });
   });
 });
