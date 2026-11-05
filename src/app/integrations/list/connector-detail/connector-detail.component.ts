@@ -7,12 +7,13 @@ import { NotifyService } from 'app/core/notify.service';
 import { ConnectorHubService, HubConnector, HubMe, RegistryScope } from 'app/services/connector-hub.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import {
-  canActOnConnector, ConnectorGroupSummary, ConnectorItemSummary, hubErrorMessage, hubErrorTextKey, registryScopeOf
+  canActOnConnector, ConnectorGroupSummary, escapeHtml, ConnectorItemSummary, hubErrorMessage, hubErrorTextKey, registryScopeOf
 } from 'app/integrations/utils';
 import { ConnectorItemsModalComponent } from './connector-items-modal/connector-items-modal.component';
 
 const Swal = require('sweetalert2');
 
+const MAX_SHOWN_ERRORS = 5;
 const DEFAULT_CONNECTOR_ICON = 'assets/img/int/connector-icon.svg';
 
 /** Detail of one hub connector: Details tab (manifest summary, registry actions) and Connections tab. */
@@ -42,11 +43,19 @@ export class ConnectorDetailComponent implements OnChanges {
     private auth: AuthService
   ) {
     // Returning from the provider consent page reopens the Connections tab (?tab=connections).
-    this.activeTab = this.route.snapshot.queryParamMap.get('tab') === 'connections' ? 'connections' : 'details';
+    this.activeTab = this.tabFromUrl();
+  }
+
+  private tabFromUrl(): 'details' | 'connections' {
+    return this.route.snapshot.queryParamMap.get('tab') === 'connections' ? 'connections' : 'details';
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.connector) {
+      const previous = changes.connector.previousValue as HubConnector | undefined;
+      if (!previous || !this.connector || previous.id !== this.connector.id) {
+        this.activeTab = this.tabFromUrl();
+      }
       this.loadManifest();
     }
   }
@@ -150,8 +159,12 @@ export class ConnectorDetailComponent implements OnChanges {
         this.isBusy = false;
         if (res && res.valid === false) {
           const errors = Array.isArray(res.errors) ? res.errors : [];
+          const shown = errors.slice(0, MAX_SHOWN_ERRORS);
+          if (errors.length > MAX_SHOWN_ERRORS) {
+            shown.push('…');
+          }
           this.notify.showWidgetStyleUpdateNotification(
-            [this.translate.instant('Integration.ConnectorValidationErrors'), ...errors].join(' - '), 3, 'warning');
+            [this.translate.instant('Integration.ConnectorValidationErrors'), ...shown].join(' - '), 3, 'warning');
         } else {
           this.notify.showWidgetStyleUpdateNotification(this.translate.instant('Integration.ConnectorRefreshed'), 3, 'success');
         }
@@ -179,7 +192,7 @@ export class ConnectorDetailComponent implements OnChanges {
   confirmDelete(): Promise<boolean> {
     return Swal.fire({
       title: this.translate.instant('AreYouSure'),
-      html: this.translate.instant('Integration.ConnectorWillBeDeleted', { serverName: this.connector.name }),
+      html: this.translate.instant('Integration.ConnectorWillBeDeleted', { serverName: escapeHtml(this.connector.name) }),
       icon: 'warning',
       showCloseButton: false,
       showCancelButton: true,

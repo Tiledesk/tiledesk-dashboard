@@ -410,6 +410,13 @@ export function formatMaskedApikeyForDisplay(apikey: string | null | undefined):
 
 // ---- Connector hub helpers (pure) ----
 
+/** Escapes text that comes from a connector manifest before it is placed in an HTML string (e.g. a Swal `html`). */
+export function escapeHtml(value: string): string {
+    return String(value ?? '')
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
 export interface ConnectorItemSummary { id: string; name: string; group?: string }
 export interface ConnectorGroupSummary { id: string; name: string }
 

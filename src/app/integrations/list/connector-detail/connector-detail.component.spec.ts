@@ -2,8 +2,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
-import { BehaviorSubject, of, throwError } from 'rxjs';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject, Subject, of, throwError } from 'rxjs';
 import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ConnectorHubService, HubConnector, HubMe } from 'app/services/connector-hub.service';
@@ -184,6 +184,59 @@ describe('ConnectorDetailComponent', () => {
       await fixture.whenStable();
       expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorErr_connector_in_use', 3, 'error');
       expect(changed).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('hardening', () => {
+    it('escapes the manifest-controlled name before it reaches the Swal html', () => {
+      setup(me(), connector({ name: '<img src=x onerror=alert(1)>' }));
+      const Swal = require('sweetalert2');
+      const fire = spyOn(Swal, 'fire').and.returnValue(Promise.resolve({ isDenied: false }));
+      spyOn(TestBed.inject(TranslateService), 'instant').and.callFake(((k: string, p: any) => p ? `<b>${p.serverName}</b>` : k) as any);
+      component.confirmDelete();
+      const html: string = fire.calls.mostRecent().args[0].html;
+      expect(html).not.toContain('<img');
+      expect(html).toContain('&lt;img src=x onerror=alert(1)&gt;');
+    });
+
+    it('caps the valid:false warning to the first 5 errors', () => {
+      setup(me());
+      hub.refresh.and.returnValue(of({ connector: connector(), valid: false, errors: ['e1', 'e2', 'e3', 'e4', 'e5', 'e6', 'e7'] }));
+      component.refresh();
+      const msg: string = notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0];
+      expect(msg).toContain('e5');
+      expect(msg).not.toContain('e6');
+      expect(msg).toContain('…');
+    });
+
+    it('ignores an older manifest response that arrives last', () => {
+      setup(me());
+      const first = new Subject<any>();
+      const second = new Subject<any>();
+      hub.getManifest.and.returnValues(first, second);
+      component.ngOnChanges({ connector: {} as any });
+      component.ngOnChanges({ connector: {} as any });
+      second.next({ actions: [{ id: 'new', name: 'New' }] });
+      first.next({ actions: [{ id: 'old', name: 'Old' }, { id: 'old2', name: 'Old2' }] });
+      expect(component.actions.length).toBe(1);
+      expect(component.actions[0].id).toBe('new');
+    });
+
+    it('getManifest failure notifies the translated key', () => {
+      setup(me());
+      hub.getManifest.and.returnValue(throwError({ status: 404, error: { code: 'unknown_connector', error: 'raw english' } }));
+      component.ngOnChanges({ connector: {} as any });
+      expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalledWith('Integration.ConnectorErr_unknown_connector', 3, 'error');
+      expect(logger.error).toHaveBeenCalled();
+    });
+
+    it('resets the tab to details when another connector is selected', () => {
+      setup(me());
+      component.setTab('connections');
+      const other = connector({ id: 'other' });
+      component.connector = other;
+      component.ngOnChanges({ connector: { previousValue: connector(), currentValue: other } as any });
+      expect(component.activeTab).toBe('details');
     });
   });
 
