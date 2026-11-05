@@ -1,6 +1,6 @@
 import {
   buildConnectorTiles, canActOnConnector, CONNECTOR_ADD_TILE, CONNECTOR_ITEM_KEY_PREFIX, connectorIdFromKey, connectorPermissions,
-  CATEGORIES_LIST, HUB_ERROR_KEYS, hubErrorKey, hubErrorMessage, hubErrorTextKey, INTEGRATIONS_CATEGORIES, isSafeAuthUrl, registryScopeOf
+  CATEGORIES_LIST, escapeHtml, HUB_ERROR_KEYS, hubErrorKey, hubErrorMessage, hubErrorTextKey, INTEGRATIONS_CATEGORIES, isSafeAuthUrl, registryScopeOf
 } from './utils';
 import { HubConnector, HubMe } from 'app/services/connector-hub.service';
 
@@ -168,4 +168,16 @@ describe('integrations utils (connector hub)', () => {
     });
   });
 
+  describe('escapeHtml', () => {
+    it('escapes the five HTML-significant characters', () => {
+      expect(escapeHtml(`<img src=x onerror="a('b')">&`))
+        .toBe('&lt;img src=x onerror=&quot;a(&#39;b&#39;)&quot;&gt;&amp;');
+    });
+
+    it('turns null / undefined into an empty string and leaves plain text alone', () => {
+      expect(escapeHtml(null as any)).toBe('');
+      expect(escapeHtml(undefined as any)).toBe('');
+      expect(escapeHtml('Google Sheets')).toBe('Google Sheets');
+    });
+  });
 });

@@ -116,6 +116,25 @@ describe('IntegrationsComponent (connector hub shell)', () => {
     expect(connectorTiles().map((t) => t.key)).toEqual(['connector_item:b', INTEGRATIONS_KEYS.CONNECTORS]);
   });
 
+  it('onConnectorRegistryChanged reloads /me bypassing its cache; a plain load uses the cache', () => {
+    hub.getMe.and.returnValue(of(me({ hub_admin: true })));
+    hub.listConnectors.and.returnValue(of([]));
+    component.loadConnectorTiles();
+    component.onConnectorRegistryChanged();
+    expect(hub.getMe.calls.allArgs()).toEqual([[false], [true]]);
+  });
+
+  it('a throw while applying the tiles does not end the load stream', () => {
+    hub.getMe.and.returnValue(of(me({ hub_admin: true })));
+    hub.listConnectors.and.returnValue(of([connector({ id: 'a' })]));
+    spyOn<any>(component, 'resolveConnectorDeepLink').and.throwError('boom');
+    expect(() => component.loadConnectorTiles()).not.toThrow();
+    hub.listConnectors.and.returnValue(of([connector({ id: 'b' })]));
+    component.loadConnectorTiles();
+    expect(connectorTiles().map((t) => t.key)).toEqual(['connector_item:b', INTEGRATIONS_KEYS.CONNECTORS]);
+    expect(TestBed.inject(LoggerService).error).toHaveBeenCalled();
+  });
+
   it('selecting a connector_item tile sets selectedConnector and not selectedIntegration', async () => {
     hub.getMe.and.returnValue(of(me({ hub_admin: true })));
     hub.listConnectors.and.returnValue(of([connector({ id: 'a' })]));

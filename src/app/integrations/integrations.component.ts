@@ -50,7 +50,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   connectorMe: HubMe | null = null;
   selectedConnector: HubConnector | null = null;
   private connectorList: HubConnector[] = [];
-  private loadConnectorTiles$ = new Subject<void>();
+  private loadConnectorTiles$ = new Subject<boolean>();
   integrationLocked: boolean = false;
   intName: string;
   integrationListReady: boolean = false;
@@ -353,7 +353,7 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   /** Subscribed once: switchMap makes the latest trigger win, so a slow older response can never overwrite newer tiles. */
   private listenConnectorTilesLoad(): void {
     this.loadConnectorTiles$.pipe(
-      switchMap(() => this.connectorHub.getMe().pipe(
+      switchMap((forceMe) => this.connectorHub.getMe(forceMe).pipe(
         switchMap((me) => this.connectorHub.listConnectors(me).pipe(map((connectors) => ({ me, connectors })))),
         catchError((error) => {
           this.onConnectorTilesError(error);
@@ -362,14 +362,23 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       )),
       takeUntil(this.unsubscribe$)
     ).subscribe(({ me, connectors }) => {
-      this.connectorMe = me;
-      this.connectorList = connectors;
-      const addTile = { ...CONNECTOR_ADD_TILE, name: this.translate.instant('Integration.AddConnector') };
-      const tiles = buildConnectorTiles(connectors, connectorPermissions(me).canRegister, addTile);
-      this.INTEGRATIONS = [...this.INTEGRATIONS.filter((i) => !this.isConnectorKey(i.key)), ...tiles];
-      this.reconcileSelectedConnector();
-      this.resolveConnectorDeepLink();
+      try {
+        this.applyConnectorTiles(me, connectors);
+      } catch (error) {
+        // a throw here would end the stream: no later reload would ever apply
+        this.logger.error('[INTEGRATION-COMP] apply connector tiles error: ', error);
+      }
     });
+  }
+
+  private applyConnectorTiles(me: HubMe, connectors: HubConnector[]): void {
+    this.connectorMe = me;
+    this.connectorList = connectors;
+    const addTile = { ...CONNECTOR_ADD_TILE, name: this.translate.instant('Integration.AddConnector') };
+    const tiles = buildConnectorTiles(connectors, connectorPermissions(me).canRegister, addTile);
+    this.INTEGRATIONS = [...this.INTEGRATIONS.filter((i) => !this.isConnectorKey(i.key)), ...tiles];
+    this.reconcileSelectedConnector();
+    this.resolveConnectorDeepLink();
   }
 
   /** On a hub failure, stale connector state is dropped once the tiles are gone (project switch reset). */
@@ -383,15 +392,16 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
   }
 
   /** Requests a (re)load of /me and the connector list from the hub; the latest request wins. */
-  loadConnectorTiles(): void {
+  loadConnectorTiles(forceMe: boolean = false): void {
     if (!this.connectorHub.isConfigured()) {
       return;
     }
-    this.loadConnectorTiles$.next();
+    this.loadConnectorTiles$.next(forceMe);
   }
 
+  /** After a registry change the cached /me (e.g. rights) may be stale: it is fetched again. */
   onConnectorRegistryChanged(): void {
-    this.loadConnectorTiles();
+    this.loadConnectorTiles(true);
   }
 
   isConnectorItemSelected(): boolean {

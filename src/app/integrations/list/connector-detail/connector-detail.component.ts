@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, Output, SimpleChanges } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -22,7 +23,7 @@ const DEFAULT_CONNECTOR_ICON = 'assets/img/int/connector-icon.svg';
   templateUrl: './connector-detail.component.html',
   styleUrls: ['./connector-detail.component.scss']
 })
-export class ConnectorDetailComponent implements OnChanges {
+export class ConnectorDetailComponent implements OnChanges, OnDestroy {
 
   @Input() connector: HubConnector;
   @Input() me: HubMe;
@@ -32,6 +33,7 @@ export class ConnectorDetailComponent implements OnChanges {
   manifest: any | null = null;
   isBusy: boolean = false;
   private manifestRequestId = 0;
+  private manifestSub: Subscription | null = null;
 
   constructor(
     private hub: ConnectorHubService,
@@ -60,6 +62,17 @@ export class ConnectorDetailComponent implements OnChanges {
         this.activeTab = 'details';
       }
       this.loadManifest();
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.cancelManifest();
+  }
+
+  private cancelManifest(): void {
+    if (this.manifestSub) {
+      this.manifestSub.unsubscribe();
+      this.manifestSub = null;
     }
   }
 
@@ -112,11 +125,12 @@ export class ConnectorDetailComponent implements OnChanges {
   // A disabled connector has no manifest endpoint answer (hub: connector_disabled): only its registry data is shown.
   private loadManifest(): void {
     const requestId = ++this.manifestRequestId;
+    this.cancelManifest();
     this.manifest = null;
     if (!this.connector || this.isDisabled) {
       return;
     }
-    this.hub.getManifest(this.connector.id).subscribe(
+    this.manifestSub = this.hub.getManifest(this.connector.id).subscribe(
       (manifest) => {
         if (requestId === this.manifestRequestId) {
           this.manifest = manifest || null;
@@ -162,7 +176,8 @@ export class ConnectorDetailComponent implements OnChanges {
         this.isBusy = false;
         if (res && res.valid === false) {
           const errors = Array.isArray(res.errors) ? res.errors : [];
-          const shown = errors.slice(0, MAX_SHOWN_ERRORS);
+          // the toast renders html: hub/manifest error texts are escaped
+          const shown = errors.slice(0, MAX_SHOWN_ERRORS).map((e) => escapeHtml(e));
           if (errors.length > MAX_SHOWN_ERRORS) {
             shown.push('…');
           }

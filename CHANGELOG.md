@@ -2,7 +2,7 @@
 
 ### 2.9.0
 - Adds the Connectors page on the connector-hub: connector tiles in Integrations, connector detail (actions, triggers, refresh, enable/disable, delete) and a Connections tab (add, rename, reconnect, revoke accounts)
-- Adds connector registration for connector hub admins (validate the manifest, then register)
+- Adds connector registration (validate the manifest, then register) for connector hub admins and, when project connectors are enabled, for project managers
 - The hub base URL comes from `connectorHubUrl` in dashboard-config.json (`CONNECTOR_HUB_URL`); when it is empty no connector tiles are shown
 - Requires a connector-hub whose `CORS_ORIGINS` and `RETURN_URL_ORIGINS` list the dashboard origin
 - Adds the connector texts to all supported languages

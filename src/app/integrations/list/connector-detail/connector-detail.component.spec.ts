@@ -199,6 +199,26 @@ describe('ConnectorDetailComponent', () => {
       expect(html).toContain('&lt;img src=x onerror=alert(1)&gt;');
     });
 
+    it('escapes each validation error before it reaches the html toast', () => {
+      setup(me());
+      hub.refresh.and.returnValue(of({ connector: connector(), valid: false, errors: ['<img src=x onerror=alert(1)>'] }));
+      component.refresh();
+      const msg: string = notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0];
+      expect(msg).not.toContain('<img');
+      expect(msg).toContain('&lt;img src=x onerror=alert(1)&gt;');
+    });
+
+    it('a manifest answer after destroy is dropped (no toast, request cancelled)', () => {
+      setup(me());
+      const pending = new Subject<any>();
+      hub.getManifest.and.returnValue(pending);
+      component.ngOnChanges({ connector: {} as any });
+      fixture.destroy();
+      expect(pending.observers.length).toBe(0);
+      pending.error({ status: 500, error: { code: 'x' } });
+      expect(notify.showWidgetStyleUpdateNotification).not.toHaveBeenCalled();
+    });
+
     it('caps the valid:false warning to the first 5 errors', () => {
       setup(me());
       hub.refresh.and.returnValue(of({ connector: connector(), valid: false, errors: ['e1', 'e2', 'e3', 'e4', 'e5', 'e6', 'e7'] }));
