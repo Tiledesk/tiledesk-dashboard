@@ -85,7 +85,7 @@
               <mat-icon *ngIf="row.trace_complete === false" class="exec-warn-icon" [matTooltip]="'Executions.TraceIncomplete' | translate">warning</mat-icon>
             </td>
             <td *ngIf="!agentId" class="exec-agent">{{ row.agent_name || row.agent_id }}</td>
-            <td class="exec-muted">{{ triggerLabel(row) }}</td>
+            <td class="exec-muted">{{ row.trigger?.type ? (("Executions.Triggers." + row.trigger.type) | translate) : '—' }}</td>
             <td>{{ row.started_at | date: 'dd MMM HH:mm' }}</td>
             <td>{{ row.steps_count }}</td>
             <td [class.exec-fail]="row.failure_conditions > 0" [class.exec-muted]="!row.failure_conditions">{{ row.failure_conditions }}</td>
