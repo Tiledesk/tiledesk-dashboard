@@ -3809,6 +3809,85 @@
             "FailureConditions": "Cond. errore",
             "VarsChanged": "Var. modificate",
             "Duration": "Durata"
+        },
+        "Outcomes": {
+            "success": "riuscito",
+            "failure_condition": "condizione di errore",
+            "error": "errore",
+            "interrupted": "interrotto"
+        },
+        "Detail": {
+            "Breadcrumb": "Percorso",
+            "InvalidId": "Questo id di esecuzione non è valido.",
+            "LoadError": "Impossibile caricare questa esecuzione.",
+            "Test": "esecuzione di prova",
+            "Version": "versione",
+            "Execution": "Esecuzione",
+            "Started": "avviata",
+            "Conversation": "conversazione",
+            "NoConversation": "nessuna conversazione (automazione)",
+            "Lineage": {
+                "parent": "padre",
+                "previous": "precedente",
+                "retry_of": "nuovo tentativo di",
+                "retried_as": "ritentata come"
+            },
+            "Timeline": "Cronologia",
+            "TimelineFilter": "Filtro cronologia",
+            "All": "Tutti",
+            "NotSuccessful": "Non riusciti",
+            "BlocksSummary": "{{n}} blocchi · {{f}} condizioni di errore",
+            "NoSteps": "Nessun blocco registrato finora.",
+            "StepDetails": "Mostra o nascondi i dettagli del blocco {{name}}",
+            "Running": "in esecuzione…",
+            "VarsChanged": "{{n}} var. modificate",
+            "VarsChangedOne": "1 var. modificata",
+            "OutsideMessageIn": "{{n}} variabili modificate dal messaggio in arrivo ({{keys}})",
+            "OutsideMessageInOne": "1 variabile modificata dal messaggio in arrivo ({{keys}})",
+            "OutsideExternal": "{{n}} variabili modificate fuori dal flusso",
+            "OutsideExternalOne": "1 variabile modificata fuori dal flusso",
+            "OutsideJumpParams": "{{n}} variabili impostate dai parametri del blocco ({{keys}})",
+            "OutsideJumpParamsOne": "1 variabile impostata dai parametri del blocco ({{keys}})",
+            "Outcome": "esito",
+            "Exit": "uscita",
+            "Time": "tempo",
+            "ErrorCode": "errore"
+        },
+        "FlowState": {
+            "Title": "Stato del flusso",
+            "BeforeAfter": "prima → dopo questo blocco",
+            "ShowSystem": "Mostra variabili di sistema",
+            "Partial": "Lo stato prima di questo blocco potrebbe essere incompleto",
+            "Variable": "Variabile",
+            "Before": "Prima",
+            "After": "Dopo",
+            "ChangedBy": "Modificata da",
+            "Value": "Valore",
+            "Unchanged": "= invariata",
+            "Secret": "segreta",
+            "System": "sistema",
+            "ShowUnchanged": "Mostra invariate ({{n}})",
+            "HideUnchanged": "Nascondi invariate",
+            "Empty": "Nessuna variabile utente qui. Spunta \"Mostra variabili di sistema\" per vedere quelle riservate.",
+            "LoadError": "Impossibile caricare lo stato del flusso.",
+            "Block": "Blocco",
+            "When": "Prima o dopo il blocco",
+            "WholeBefore": "L'intero stato del flusso prima di \"{{block}}\": {{n}} variabili. Clicca su una per la sua cronologia in questa esecuzione.",
+            "WholeAfter": "L'intero stato del flusso dopo \"{{block}}\": {{n}} variabili. Clicca su una per la sua cronologia in questa esecuzione.",
+            "ShowAll": "Mostra tutte ({{n}})",
+            "By": {
+                "message_in": "messaggio in arrivo",
+                "jump_params": "parametri del blocco",
+                "external": "fuori dal flusso"
+            }
+        },
+        "History": {
+            "Title": "Cronologia di",
+            "Open": "Mostra la cronologia di {{key}}",
+            "Close": "Chiudi",
+            "Empty": "Non modificata in questa esecuzione.",
+            "LoadError": "Impossibile caricare la cronologia.",
+            "Step": "blocco {{n}}"
         }
     }
 }

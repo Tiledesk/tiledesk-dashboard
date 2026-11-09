@@ -1,0 +1,54 @@
+<div class="fs-head">
+  <b class="fs-title">{{ "Executions.FlowState.Title" | translate }}</b>
+  <span class="fs-muted">{{ "Executions.FlowState.BeforeAfter" | translate }}</span>
+  <span class="fs-spacer"></span>
+  <label class="fs-check">
+    <input type="checkbox" class="fs-system-toggle" [checked]="showSystem" (change)="toggleSystem()">
+    {{ "Executions.FlowState.ShowSystem" | translate }}
+  </label>
+</div>
+
+<div *ngIf="partial" class="fs-partial" role="note">{{ "Executions.FlowState.Partial" | translate }}</div>
+
+<div class="fs-wrap">
+  <table class="fs-table">
+    <thead>
+      <tr>
+        <th>{{ "Executions.FlowState.Variable" | translate }}</th>
+        <th>{{ "Executions.FlowState.Before" | translate }}</th>
+        <th>{{ "Executions.FlowState.After" | translate }}</th>
+        <th>{{ "Executions.FlowState.ChangedBy" | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let v of changed; trackBy: trackByKey" class="fs-row fs-changed">
+        <ng-container *ngTemplateOutlet="keyCell; context: { $implicit: v }"></ng-container>
+        <td class="fs-before"><exec-masked-value [side]="v.before"></exec-masked-value></td>
+        <td class="fs-after"><exec-masked-value [side]="v.after"></exec-masked-value></td>
+        <td class="fs-by">
+          <ng-container *ngIf="label(v.by) as l">{{ $any(l).key ? ($any(l).key | translate) : $any(l).text }}</ng-container>
+        </td>
+      </tr>
+      <ng-container *ngIf="showUnchanged">
+        <tr *ngFor="let v of unchanged; trackBy: trackByKey" class="fs-row">
+          <ng-container *ngTemplateOutlet="keyCell; context: { $implicit: v }"></ng-container>
+          <td class="fs-before"><exec-masked-value [side]="v.before"></exec-masked-value></td>
+          <td class="fs-after fs-muted">{{ "Executions.FlowState.Unchanged" | translate }}</td>
+          <td class="fs-by"></td>
+        </tr>
+      </ng-container>
+      <tr *ngIf="!changed.length && !unchanged.length">
+        <td colspan="4" class="fs-muted">{{ "Executions.FlowState.Empty" | translate }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<button *ngIf="unchanged.length" type="button" class="fs-link fs-show-unchanged"
+  [attr.aria-expanded]="showUnchanged" (click)="showUnchanged = !showUnchanged">
+  {{ (showUnchanged ? "Executions.FlowState.HideUnchanged" : "Executions.FlowState.ShowUnchanged") | translate: { n: unchanged.length } }}
+</button>
+
+<ng-template #keyCell let-v>
+  <td class="fs-key"><span class="fs-key-name">{{ v.key }}</span><span *ngIf="v.reserved" class="fs-tag">{{ "Executions.FlowState.System" | translate }}</span></td>
+</ng-template>

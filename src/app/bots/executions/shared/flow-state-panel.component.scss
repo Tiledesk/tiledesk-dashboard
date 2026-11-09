@@ -1,0 +1,18 @@
+:host { display: block; font-size: 12.5px; }
+.fs-head { display: flex; gap: 8px 14px; align-items: center; flex-wrap: wrap; margin-bottom: 6px; }
+.fs-title { font-weight: 500; }
+.fs-spacer { flex: 1; }
+.fs-muted { color: #5d6b82; }
+.fs-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-weight: 400; }
+.fs-partial { color: #a15c00; background: #fff3e0; border-radius: 6px; padding: 4px 8px; margin-bottom: 6px; display: inline-block; }
+.fs-wrap { overflow-x: auto; }
+.fs-table {
+  width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #dfe3ed;
+  th { font-size: 11.5px; font-weight: 500; color: #5d6b82; text-align: left; padding: 6px 10px; background: #f6f8fb; }
+  td { padding: 6px 10px; border-top: 1px solid #dfe3ed; vertical-align: top; }
+}
+.fs-changed td { background: #eef4fe; }
+.fs-key { font-family: ui-monospace, Menlo, monospace; font-size: 12px; overflow-wrap: anywhere; }
+.fs-tag { font-family: inherit; font-size: 10.5px; border-radius: 5px; padding: 0 5px; background: #eef1f6; color: #5d6b82; margin-left: 6px; }
+.fs-by { color: #5d6b82; }
+.fs-link { border: 0; background: none; color: #1b6ef3; cursor: pointer; padding: 6px 0; font-size: 12.5px; }
