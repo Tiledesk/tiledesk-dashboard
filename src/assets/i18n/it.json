@@ -3755,6 +3755,8 @@
     "PaymentMethod": "Metodo di pagamento",
     "ContactUsToChangeYourPaymentMethod": "Contattaci per cambiare il metodo di pagamento",
     "Executions": {
+        "OpenExecution": "Esecuzione ↗",
+        "ViewExecutions": "Vedi esecuzioni",
         "Executions": "Esecuzioni",
         "AllExecutions": "Tutte le esecuzioni",
         "NeedAttention": "{{n}} esecuzioni richiedono attenzione nelle ultime 24 ore",

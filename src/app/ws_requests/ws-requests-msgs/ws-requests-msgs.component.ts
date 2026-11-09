@@ -47,6 +47,9 @@ import { Chatbot } from 'app/models/faq_kb-model';
 import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 import { RolesService } from 'app/services/roles.service';
+import { ExecutionsService } from 'app/services/executions.service';
+import { canViewExecutions } from 'app/bots/executions/executions.models';
+import { executionAgentId, executionLink, ExecutionLink } from 'app/bots/executions/execution-links';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
 import { isOnlyEmoji, removeEmojis } from 'app/utils/utils-message';
@@ -434,6 +437,7 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   PERMISSION_TO_BAN_VISITOR: boolean;
   PERMISSION_TO_UPDATE_LEAD: boolean;
   PERMISSION_TO_EDIT_FLOWS: boolean;
+  PERMISSION_TO_VIEW_EXECUTIONS: boolean;
   PERMISSION_TO_READ_TEAMMATE_DETAILS: boolean;
   PERMISSION_TO_UPDATE_APP: boolean;
   PERMISSION_TO_VIEW_RATING_SECTION: boolean;
@@ -493,7 +497,8 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
     public rolesService: RolesService,
     private roleService: RoleService,
     private cacheService: AllProjectsCacheService,
-    private navSvc: NavigationService
+    private navSvc: NavigationService,
+    private executionsService: ExecutionsService
   ) {
     super(botLocalDbService, usersLocalDbService, router, wsRequestsService, faqKbService, usersService, notify, logger, translate)
     this.jira_issue_types = [
@@ -978,6 +983,8 @@ updateTagContainerHeight() {
         }
 
 
+        this.PERMISSION_TO_VIEW_EXECUTIONS = canViewExecutions(status.role, status.matchedPermissions);
+
         // PERMISSION_TO_READ_TEAMMATE_DETAILS
         if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
           if (status.matchedPermissions.includes(PERMISSIONS.TEAMMATE_UPDATE)) {
@@ -1319,6 +1326,15 @@ updateTagContainerHeight() {
     }
   }
 
+
+  /** Link to this conversation's execution; null unless the request has a valid execution_id and the user may see executions. */
+  get executionLink(): ExecutionLink | null {
+    if (!this.PERMISSION_TO_VIEW_EXECUTIONS || !this.executionsService.isConfigured()) return null;
+    const participants: string[] = (this.request && this.request.participants) || [];
+    const botParticipant = participants.find(p => typeof p === 'string' && p.startsWith('bot_'));
+    const bot = botParticipant ? this.botLocalDbService.getBotFromStorage(botParticipant.substr(4)) : null;
+    return executionLink(this.id_project, executionAgentId(bot), this.request && this.request.attributes && this.request.attributes.execution_id);
+  }
 
   getBots() {
     this.faqKbService.getFaqKbByProjectId()

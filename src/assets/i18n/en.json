@@ -4162,6 +4162,8 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "Executions": {
+        "OpenExecution": "Execution ↗",
+        "ViewExecutions": "View executions",
         "Executions": "Executions",
         "AllExecutions": "All executions",
         "NeedAttention": "{{n}} executions need attention in the last 24 hours",
