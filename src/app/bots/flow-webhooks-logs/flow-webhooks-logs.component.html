@@ -111,8 +111,7 @@
                                     </div>
 
                                     <div class="flow-webhook-detail-right">
-                                        <a *ngIf="executionsLink as link" class="view-executions-link" [routerLink]="link"
-                                            style="margin-right: 16px; font-size: 13px;">{{ 'Executions.ViewExecutions' | translate }}</a>
+                                        <a *ngIf="executionsLink as link" class="view-executions-link" [routerLink]="link">{{ 'Executions.ViewExecutions' | translate }}</a>
                                         <div class="wh-onoffswitch">
                                             <input type="checkbox" name="onoffswitch" class="wh-onoffswitch-checkbox"
                                                 id="whonoffswitch" tabindex="0" [checked]="currentWH?.enabled"

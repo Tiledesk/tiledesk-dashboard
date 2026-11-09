@@ -122,9 +122,17 @@ export class FlowWebhooksLogsComponent implements OnInit {
     if (!this.PERMISSION_TO_VIEW_EXECUTIONS || !this.executionsService.isConfigured()) return null;
     const botId = this.currentWH && this.currentWH.chatbot_id;
     if (!this.projectId || !botId) return null;
+    const key = this.projectId + '|' + botId;
+    if (key === this.executionsLinkKey && this.executionsLinkBots === this.allBots) return this.executionsLinkCache;
     const bot = (this.allBots || []).find(b => b._id === botId);
-    return ['/project', this.projectId, 'bots', executionAgentId(bot) || botId, 'executions'];
+    this.executionsLinkKey = key;
+    this.executionsLinkBots = this.allBots;
+    this.executionsLinkCache = ['/project', this.projectId, 'bots', executionAgentId(bot) || botId, 'executions'];
+    return this.executionsLinkCache;
   }
+  private executionsLinkKey: string;
+  private executionsLinkBots: any[];
+  private executionsLinkCache: string[] | null = null;
 
   listenToGoBack() {
     this.backSub = this.navSvc.onBack().subscribe(() => {
