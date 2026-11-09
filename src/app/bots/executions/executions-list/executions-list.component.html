@@ -1,0 +1,120 @@
+<div class="main-content executions-page">
+
+  <!-- no permission -->
+  <div *ngIf="permitted === false" class="unauthorized-message-container-in-page">
+    <h2 class="unauthorized-page-title">{{ "UnauthorizedPage.UnauthorizedAccess" | translate }}</h2>
+    <h3 class="unauthorized-page-subtitle">{{ "UnauthorizedPage.OopsYouDontHave" | translate }}</h3>
+  </div>
+
+  <!-- not configured -->
+  <div *ngIf="permitted !== false && !configured" class="exec-empty exec-not-configured">
+    {{ "Executions.NotConfigured" | translate }}
+  </div>
+
+  <div *ngIf="permitted === true && configured" class="container-fluid">
+
+    <div class="exec-head">
+      <div>
+        <h1 class="exec-title">{{ (agentId ? "Executions.Executions" : "Executions.AllExecutions") | translate }}</h1>
+      </div>
+      <select class="exec-select exec-agent-switcher" aria-label="Agent" (change)="switchAgent($any($event.target).value)">
+        <option value="" [selected]="!agentId">{{ "Executions.AllAgents" | translate }}</option>
+        <option *ngFor="let a of agents" [value]="a.id" [selected]="a.id === agentId">{{ a.name }}</option>
+      </select>
+    </div>
+
+    <!-- counters: one agent only -->
+    <div *ngIf="counters" class="exec-counters" role="group">
+      <button *ngFor="let s of counterStatuses" type="button" class="exec-counter"
+        [class.active]="filters.status === s" [attr.aria-pressed]="filters.status === s"
+        (click)="toggleStatus(s)">
+        {{ "Executions.Status." + s | translate }} <b>{{ counters[s] }}</b>
+      </button>
+      <span class="exec-counters-hint">{{ "Executions.Last24h" | translate }}</span>
+    </div>
+
+    <div class="exec-filters">
+      <input type="search" class="exec-input exec-filter-q" [value]="filters.q"
+        [attr.aria-label]="'Executions.SearchId' | translate" [placeholder]="'Executions.SearchId' | translate"
+        (keyup.enter)="setFilter('q', $any($event.target).value)" (search)="setFilter('q', $any($event.target).value)">
+      <select class="exec-select exec-filter-trigger" [attr.aria-label]="'Executions.Trigger' | translate"
+        (change)="setFilter('trigger', $any($event.target).value)">
+        <option *ngFor="let t of triggerOptions" [value]="t" [selected]="filters.trigger === t">{{ "Executions.Triggers." + t | translate }}</option>
+      </select>
+      <select class="exec-select exec-filter-status" [attr.aria-label]="'Executions.StatusLabel' | translate"
+        (change)="setFilter('status', $any($event.target).value)">
+        <option value="" [selected]="!filters.status">{{ "Executions.AnyStatus" | translate }}</option>
+        <option *ngFor="let s of statusOptions" [value]="s" [selected]="filters.status === s">{{ "Executions.Status." + s | translate }}</option>
+      </select>
+      <label class="exec-check">
+        <input type="checkbox" class="exec-filter-failures" [checked]="filters.has_failures"
+          (change)="setFilter('has_failures', $any($event.target).checked)">
+        {{ "Executions.WithFailureConditions" | translate }}
+      </label>
+      <select class="exec-select exec-filter-period" [attr.aria-label]="'Executions.Period' | translate"
+        (change)="setFilter('period', $any($event.target).value)">
+        <option *ngFor="let p of periodOptions" [value]="p" [selected]="filters.period === p">{{ "Executions.Periods." + p | translate }}</option>
+      </select>
+    </div>
+
+    <div *ngIf="error" class="exec-empty exec-error">
+      {{ "Executions.LoadError" | translate }}
+      <button type="button" class="exec-link" (click)="loadFirstPage()">{{ "Executions.Retry" | translate }}</button>
+    </div>
+
+    <div class="exec-card" *ngIf="!error">
+      <table class="exec-table" *ngIf="rows.length">
+        <thead>
+          <tr>
+            <th>{{ "Executions.Columns.Status" | translate }}</th>
+            <th *ngIf="!agentId">{{ "Executions.Columns.Agent" | translate }}</th>
+            <th>{{ "Executions.Columns.Trigger" | translate }}</th>
+            <th>{{ "Executions.Columns.Started" | translate }}</th>
+            <th>{{ "Executions.Columns.Blocks" | translate }}</th>
+            <th>{{ "Executions.Columns.FailureConditions" | translate }}</th>
+            <th>{{ "Executions.Columns.VarsChanged" | translate }}</th>
+            <th>{{ "Executions.Columns.Duration" | translate }}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows; trackBy: trackById" class="exec-row" tabindex="0"
+            (click)="openExecution(row)" (keyup.enter)="openExecution(row)">
+            <td>
+              <execution-status-chip [status]="row.status"></execution-status-chip>
+              <mat-icon *ngIf="row.trace_complete === false" class="exec-warn-icon" [matTooltip]="'Executions.TraceIncomplete' | translate">warning</mat-icon>
+            </td>
+            <td *ngIf="!agentId" class="exec-agent">{{ row.agent_name || row.agent_id }}</td>
+            <td class="exec-muted">{{ triggerLabel(row) }}</td>
+            <td>{{ row.started_at | date: 'dd MMM HH:mm' }}</td>
+            <td>{{ row.steps_count }}</td>
+            <td [class.exec-fail]="row.failure_conditions > 0" [class.exec-muted]="!row.failure_conditions">{{ row.failure_conditions }}</td>
+            <td class="exec-muted">{{ row.vars_changed }}</td>
+            <td class="exec-muted">{{ formatDuration(row.duration_ms) }}</td>
+            <td class="exec-chevron"><mat-icon>chevron_right</mat-icon></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div *ngIf="!rows.length && !loading" class="exec-empty">
+        <ng-container *ngIf="hasActiveFilters">
+          {{ "Executions.EmptyFiltered" | translate }}
+          <button type="button" class="exec-link" (click)="clearFilters()">{{ "Executions.ClearFilters" | translate }}</button>
+        </ng-container>
+        <ng-container *ngIf="!hasActiveFilters">
+          {{ "Executions.EmptyNone" | translate }}
+          <button type="button" class="exec-link" (click)="showAllTriggers()">{{ "Executions.ShowAllTriggers" | translate }}</button>
+        </ng-container>
+      </div>
+
+      <div *ngIf="loading" class="exec-empty">{{ "Executions.Loading" | translate }}</div>
+
+      <div class="exec-more" *ngIf="nextCursor">
+        <button type="button" class="exec-btn exec-load-more" [disabled]="loadingMore" (click)="loadMore()">
+          {{ "Executions.LoadMore" | translate }}
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>

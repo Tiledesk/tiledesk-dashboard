@@ -4204,6 +4204,58 @@
     "Executions": {
         "Executions": "Executions",
         "AllExecutions": "All executions",
-        "NeedAttention": "{{n}} executions need attention in the last 24 hours"
+        "NeedAttention": "{{n}} executions need attention in the last 24 hours",
+        "NotConfigured": "Executions are not configured for this environment.",
+        "AllAgents": "All agents",
+        "Last24h": "last 24 hours",
+        "SearchId": "Search execution id…",
+        "Trigger": "Trigger",
+        "StatusLabel": "Status",
+        "AnyStatus": "Any status",
+        "WithFailureConditions": "With failure conditions",
+        "Period": "Period",
+        "LoadError": "Could not load the executions.",
+        "Retry": "Retry",
+        "Loading": "Loading…",
+        "LoadMore": "Load more",
+        "EmptyNone": "No executions yet for this agent. They appear here when it runs.",
+        "EmptyFiltered": "No executions match these filters",
+        "ClearFilters": "Clear filters",
+        "ShowAllTriggers": "Show all triggers",
+        "TraceIncomplete": "Trace incomplete",
+        "Status": {
+            "running": "running",
+            "waiting": "waiting",
+            "stopping": "stopping",
+            "stopped": "stopped",
+            "failed": "failed",
+            "completed": "completed",
+            "destroyed": "destroyed"
+        },
+        "Triggers": {
+            "unattended": "Unattended triggers",
+            "all": "All triggers",
+            "scheduled": "scheduled",
+            "webhook": "webhook",
+            "trigger": "connector trigger",
+            "automation": "automation",
+            "widget": "widget",
+            "channel": "channel"
+        },
+        "Periods": {
+            "24h": "Last 24 hours",
+            "7d": "Last 7 days",
+            "30d": "Last 30 days"
+        },
+        "Columns": {
+            "Status": "Status",
+            "Agent": "Agent",
+            "Trigger": "Trigger",
+            "Started": "Started",
+            "Blocks": "Blocks",
+            "FailureConditions": "Failure cond.",
+            "VarsChanged": "Vars changed",
+            "Duration": "Duration"
+        }
     }
 }

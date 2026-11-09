@@ -166,7 +166,7 @@ import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-pa
 
 
 
-const routes: Routes = [
+export const appRoutes: Routes = [
 
   // no-auth page
   {
@@ -1320,6 +1320,20 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
 
+  // Executions (agent execution traceability). Must stay before 'project/:projectid/bots' and
+  // 'project/:projectid/bots/:faqkbid/:type' (FaqComponent), which would otherwise swallow these paths.
+  // The permission is checked in the component (executions_read), the API refuses anyway.
+  {
+    path: 'project/:projectid/bots/executions',
+    loadChildren: () => import('app/bots/executions/executions.module').then(m => m.ExecutionsModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'project/:projectid/bots/:botid/executions',
+    loadChildren: () => import('app/bots/executions/executions.module').then(m => m.ExecutionsModule),
+    canActivate: [AuthGuard],
+  },
+
   {
     path: 'project/:projectid/bots',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
@@ -1720,7 +1734,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     BrowserModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(appRoutes)
   ],
   exports: [RouterModule],
   providers: [AuthGuard, AdminGuard, ProjectProfileGuard, RoleGuard]
