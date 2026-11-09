@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, Subscription, timer } from 'rxjs';
-import { switchMap, takeUntil } from 'rxjs/operators';
+import { of, Subject, Subscription, timer } from 'rxjs';
+import { catchError, switchMap, takeUntil } from 'rxjs/operators';
 import { ExecutionsService } from 'app/services/executions.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { RolesService } from 'app/services/roles.service';
@@ -72,11 +72,16 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     this.configured = this.executionsService.isConfigured();
 
     this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      // values from the URL are validated against the option lists; anything else falls back to the default
+      const pick = (name: string, allowed: string[], fallback: string) => {
+        const v = params.get(name);
+        return allowed.includes(v) ? v : fallback;
+      };
       this.filters = {
-        trigger: params.get('trigger') || DEFAULT_TRIGGER,
-        status: params.get('status') || '',
+        trigger: pick('trigger', this.triggerOptions, DEFAULT_TRIGGER),
+        status: pick('status', this.statusOptions, ''),
         has_failures: params.get('has_failures') === 'true',
-        period: params.get('period') || DEFAULT_PERIOD,
+        period: pick('period', this.periodOptions, DEFAULT_PERIOD),
         q: params.get('q') || '',
       };
       if (this.started) this.loadFirstPage();
@@ -111,19 +116,21 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       switchMap(() => {
         this.loading = true;
         this.error = false;
-        return this.executionsService.list(this.projectId, this.buildParams());
+        return this.executionsService.list(this.projectId, this.buildParams()).pipe(
+          // the error is handled inside, so the pipeline survives it (Retry and filter changes keep working)
+          catchError(err => { this.onListError(err); return of(null); })
+        );
       }),
       takeUntil(this.destroy$)
-    ).subscribe({
-      next: page => this.onFirstPage(page),
-      error: err => this.onListError(err)
-    });
+    ).subscribe(page => { if (page) this.onFirstPage(page); });
     this.loadAgents();
     this.loadFirstPage();
   }
 
   loadFirstPage() {
     this.stopPolling();
+    this.loadingMore = false;
+    // in-flight refresh / load-more calls end on reload$ and cannot merge old-filter rows
     this.reload$.next();
     this.loadCounters();
   }
@@ -159,7 +166,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     if (!this.nextCursor || this.loadingMore) return;
     this.loadingMore = true;
     this.executionsService.list(this.projectId, this.buildParams(this.nextCursor))
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(this.reload$), takeUntil(this.destroy$))
       .subscribe({
         next: page => {
           this.loadingMore = false;
@@ -173,7 +180,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
   /** Counters come from one summary call for the agent; the all-agents view has none (the API needs agent ids). */
   private loadCounters() {
-    this.counters = null;
+    // the old value stays until the new one arrives (no flicker on every poll)
     if (!this.agentId) return;
     this.executionsService.summary(this.projectId, [this.agentId])
       .pipe(takeUntil(this.destroy$))
@@ -223,7 +230,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
   /** Re-reads the first page and merges it: known rows are updated in place, new ones go on top. */
   private refresh() {
-    this.executionsService.list(this.projectId, this.buildParams()).pipe(takeUntil(this.destroy$)).subscribe({
+    this.executionsService.list(this.projectId, this.buildParams()).pipe(takeUntil(this.reload$), takeUntil(this.destroy$)).subscribe({
       next: page => {
         const fresh = new Map(page.items.map(r => [r._id, r] as [string, ExecutionRow]));
         const known = new Set(this.rows.map(r => r._id));
@@ -279,14 +286,6 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
   openExecution(row: ExecutionRow) {
     this.router.navigate(['/project', this.projectId, 'bots', row.agent_id, 'executions', row._id]);
-  }
-
-  backToAgents() {
-    this.router.navigate(['/project', this.projectId, 'bots']);
-  }
-
-  triggerLabel(row: ExecutionRow): string {
-    return (row.trigger && row.trigger.type) || '—';
   }
 
   trackById(_: number, row: ExecutionRow) {

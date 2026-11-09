@@ -250,4 +250,69 @@ describe('ExecutionsListComponent', () => {
       expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/project', 'p1', 'bots', 'a1', 'executions', 'e1']);
     });
   });
+
+  describe('fix round 1', () => {
+    it('survives a list error: Retry and filter changes still reload', () => {
+      setup();
+      executions.list.and.returnValue(throwError(() => new Error('boom')));
+      component.loadFirstPage();
+      fixture.detectChanges();
+      expect(text()).toContain('Executions.LoadError');
+      executions.list.and.returnValue(of({ items: [row('e1')], next_cursor: null }));
+      component.loadFirstPage();
+      fixture.detectChanges();
+      expect(component.error).toBe(false);
+      expect(fixture.nativeElement.querySelectorAll('.exec-row').length).toBe(1);
+
+      executions.list.and.returnValue(throwError(() => new Error('boom')));
+      component.loadFirstPage();
+      executions.list.and.returnValue(of({ items: [row('e2')], next_cursor: null }));
+      query$.next(convertToParamMap({ status: 'failed' }));
+      expect(component.rows.map(r => r._id)).toEqual(['e2']);
+    });
+
+    it('counters are not cleared while polling', fakeAsync(() => {
+      setup({ botid: 'a1', page: { items: [row('e1', 'running')], next_cursor: null } });
+      const pending = new Subject<any>();
+      executions.summary.and.returnValue(pending);
+      tick(10000);
+      expect(component.counters).not.toBeNull();
+      discardPeriodicTasks();
+    }));
+
+    it('a filter change while load-more is pending ignores its result and resets loadingMore', () => {
+      setup({ page: { items: [row('e1')], next_cursor: 'c1' } });
+      const pending = new Subject<any>();
+      executions.list.and.returnValue(pending);
+      component.loadMore();
+      expect(component.loadingMore).toBe(true);
+      executions.list.and.returnValue(of({ items: [row('n1')], next_cursor: null }));
+      query$.next(convertToParamMap({ status: 'failed' }));
+      expect(component.loadingMore).toBe(false);
+      pending.next({ items: [row('old')], next_cursor: null });
+      expect(component.rows.map(r => r._id)).toEqual(['n1']);
+    });
+
+    it('a pending refresh is ignored after a reload', fakeAsync(() => {
+      setup({ page: { items: [row('e1', 'running')], next_cursor: null } });
+      const pending = new Subject<any>();
+      executions.list.and.returnValue(pending);
+      tick(10000);
+      executions.list.and.returnValue(of({ items: [row('n1', 'failed')], next_cursor: null }));
+      query$.next(convertToParamMap({ status: 'failed' }));
+      pending.next({ items: [row('old', 'running')], next_cursor: null });
+      expect(component.rows.map(r => r._id)).toEqual(['n1']);
+    }));
+
+    it('invalid URL values fall back to defaults', () => {
+      setup({ query: { period: 'constructor', trigger: 'bogus', status: 'toString', has_failures: 'yes' } });
+      expect(component.filters).toEqual({ trigger: 'unattended', status: '', has_failures: false, period: '7d', q: '' });
+      expect(executions.list.calls.mostRecent().args[1].from).toBe(new Date(NOW - 7 * 24 * 3600 * 1000).toISOString());
+    });
+
+    it('trigger column uses the Triggers translation', () => {
+      setup({ page: { items: [row('e1')], next_cursor: null } });
+      expect(fixture.nativeElement.querySelector('.exec-row').textContent).toContain('Executions.Triggers.scheduled');
+    });
+  });
 });
