@@ -2228,6 +2228,13 @@
                     </li>
 
 
+                    <!-- Execution trace of the agent run (needs attributes.execution_id and the executions permission) -->
+                    <li class="execution-link" *ngIf="executionLink as link">
+                      <div class="contact-row">
+                        <a class="execution-link-a" [routerLink]="link.commands" [queryParams]="link.queryParams">{{ 'Executions.OpenExecution' | translate }}</a>
+                      </div>
+                    </li>
+
                     <!-- ------------------------------------- -->
                     <!-- Browser & Operating sistem -->
                     <!-- ------------------------------------- -->

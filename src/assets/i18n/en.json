@@ -4202,6 +4202,8 @@
     "VibeCoderUploadFailed": "Upload failed",
     "VibeCoderRemoveAttachment": "Remove file",
     "Executions": {
+        "OpenExecution": "Execution ↗",
+        "ViewExecutions": "View executions",
         "Executions": "Executions",
         "AllExecutions": "All executions",
         "NeedAttention": "{{n}} executions need attention in the last 24 hours",

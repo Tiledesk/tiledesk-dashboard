@@ -3795,6 +3795,8 @@
     "VibeCoderUploadFailed": "Caricamento non riuscito",
     "VibeCoderRemoveAttachment": "Rimuovi file",
     "Executions": {
+        "OpenExecution": "Esecuzione ↗",
+        "ViewExecutions": "Vedi esecuzioni",
         "Executions": "Esecuzioni",
         "AllExecutions": "Tutte le esecuzioni",
         "NeedAttention": "{{n}} esecuzioni richiedono attenzione nelle ultime 24 ore",

@@ -11,7 +11,12 @@ import { NotifyService } from 'app/core/notify.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { FlowWebhooksLogsService } from 'app/services/flow-webhooks-logs.service';
 import { NavigationService } from 'app/services/navigation.service';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { RolesService } from 'app/services/roles.service';
+import { ExecutionsService } from 'app/services/executions.service';
+import { canViewExecutions } from 'app/bots/executions/executions.models';
+import { executionAgentId } from 'app/bots/executions/execution-links';
 const Swal = require('sweetalert2');
 
 export enum LogType {
@@ -67,6 +72,10 @@ export class FlowWebhooksLogsComponent implements OnInit {
   increaseSalesTemplatesCount: number;
 
   private backSub?: Subscription;
+  private destroy$ = new Subject<void>();
+  projectId: string;
+  PERMISSION_TO_VIEW_EXECUTIONS: boolean;
+  private allBots: any[] = [];
 
   constructor(
     private auth: AuthService,
@@ -79,12 +88,15 @@ export class FlowWebhooksLogsComponent implements OnInit {
     public notify: NotifyService,
     private flowWebhooksLogsService: FlowWebhooksLogsService,
     private faqKbService: FaqKbService,
-    private navSvc: NavigationService
+    private navSvc: NavigationService,
+    private rolesService: RolesService,
+    private executionsService: ExecutionsService
   ) { }
 
   async ngOnInit(): Promise<void> {
     await this.getBrowserVersion();
     this.getFaqKbByProjectId();
+    this.listenToExecutionsPermission();
     this.getFlowWebhooks();
     await this.getServerBaseURL();
     await this.getRouteParams();
@@ -94,6 +106,24 @@ export class FlowWebhooksLogsComponent implements OnInit {
 
    ngOnDestroy() {
     this.backSub?.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  listenToExecutionsPermission() {
+    this.rolesService.listenToProjectUserPermissions(this.destroy$);
+    this.rolesService.getUpdateRequestPermission().pipe(takeUntil(this.destroy$)).subscribe(status => {
+      this.PERMISSION_TO_VIEW_EXECUTIONS = canViewExecutions(status.role, status.matchedPermissions);
+    });
+  }
+
+  /** "View executions" target: the webhook's agent (root id when known); null when not allowed, not configured or no agent. */
+  get executionsLink(): string[] | null {
+    if (!this.PERMISSION_TO_VIEW_EXECUTIONS || !this.executionsService.isConfigured()) return null;
+    const botId = this.currentWH && this.currentWH.chatbot_id;
+    if (!this.projectId || !botId) return null;
+    const bot = (this.allBots || []).find(b => b._id === botId);
+    return ['/project', this.projectId, 'bots', executionAgentId(bot) || botId, 'executions'];
   }
 
   listenToGoBack() {
@@ -117,6 +147,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
       this.route.params.subscribe(async (params) => {
         this.log_type = params.type;
         this.log_id = params.id;
+        this.projectId = params.projectid || this.projectId;
 
         this.logger.log('[FLOW-WEBHOOKS-LOGS] params ', params);
         if (this.log_type === LogType.WEBHOOK && this.log_id) {
@@ -151,6 +182,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
   getFaqKbByProjectId() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       if (faqKb) {
+        this.allBots = faqKb;
         this.chatBotCount = faqKb.length
         // this.myChatbotOtherCount = faqKb.length
         this.logger.log('[FLOW-WEBHOOKS] - GET BOTS BY PROJECT ID - myChatbotOtherCount', this.myChatbotOtherCount);
