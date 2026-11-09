@@ -52,6 +52,7 @@ import { browserRefresh } from 'app/app.component';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RolesService } from 'app/services/roles.service';
 import { NavigationService } from 'app/services/navigation.service';
+import { isRequestVisibleToAgent } from 'app/utils/request-visibility.util';
 
 const swal = require('sweetalert');
 const Swal = require('sweetalert2')
@@ -152,6 +153,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   baseUrl: string;
 
   currentUserId: string;
+  /** project_user.createdAt for request visibility: project */
+  projectUserCreatedAt: string | Date | null = null;
   subscription: Subscription;
   ROLE_IS_AGENT: boolean;
   USER_ROLE: string;
@@ -1355,6 +1358,22 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
           }
         }
       });
+
+    this.usersService.projectUser_bs
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((projectUser) => {
+        if (projectUser && projectUser.createdAt != null) {
+          this.projectUserCreatedAt = projectUser.createdAt;
+          return;
+        }
+        try {
+          const raw = localStorage.getItem('current_project_user');
+          const stored = raw ? JSON.parse(raw) : null;
+          this.projectUserCreatedAt = stored?.createdAt != null ? stored.createdAt : null;
+        } catch {
+          this.projectUserCreatedAt = null;
+        }
+      });
   }
 
 
@@ -2148,19 +2167,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   }
 
 
-  hasmeInAgents(agents) {
-    if (agents) {
-      for (let j = 0; j < agents.length; j++) {
-        this.logger.log('[NAVBAR] hasmeInAgents currentUserId  ', this.currentUserId)
-        this.logger.log('[NAVBAR] hasmeInAgents agent  ', agents[j].id_user)
-        if (this.currentUserId === agents[j].id_user) {
-          this.logger.log('[NAVBAR] hasmeInAgents ')
-          return true
-        }
-      }
-    } else {
-      this.logger.log('[NAVBAR] hasmeInAgents OOPS!!! AGENTS THERE ARE NOT ')
-    }
+  /** Request visible to the logged-in agent (visibility / agents / participants). */
+  isRequestVisible(request: any): boolean {
+    return isRequestVisibleToAgent(request, this.currentUserId, this.projectUserCreatedAt);
   }
 
   // NEW
@@ -2178,7 +2187,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             // this.logger.log('NAVBAR - UPDATE-UNSERVED-REQUEST-COUNT request agents', r.agents)
             // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
             if (r.status === 100 && this.ROLE_IS_AGENT === true) {
-              if (this.hasmeInAgents(r.agents) === true) {  // new *bug fix
+              if (this.isRequestVisible(r) === true) {
                 count = count + 1;
               }
             }
@@ -2290,9 +2299,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
             if (r.status === 100 && !storedRequest && this.user !== null) {
 
 
-              // *bug fix: when the user is an agent also for the unserved we have to consider if he is present in agents
+              // *bug fix: when the user is an agent also for the unserved we have to consider visibility
               if (this.ROLE_IS_AGENT === true) {
-                if (this.hasmeInAgents(r.agents) === true) {
+                if (this.isRequestVisible(r) === true) {
 
 
                   this.logger.log('[NAVBAR] notifyLastUnserved - count A ', count)

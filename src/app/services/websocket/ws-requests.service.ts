@@ -438,6 +438,7 @@ export class WsRequestsService implements OnDestroy {
     // });
     // this.logger.log("% »»» WebSocketJs WF +++++ ws-requests--- service ON-UPATE hasFound IN wsRequestsList: ", hasFound , 'THE REQUEST ID', request._id);
 
+    // Publish full topic list (visibility filtered only in UI / navbar, like pre-patch).
     const index = this.wsRequestsList.findIndex((e) => e.id === request.id);
     if (index === -1) {
 
