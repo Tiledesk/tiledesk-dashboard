@@ -160,5 +160,6 @@ export const PERMISSIONS = {
   PROFILE_PAGES: 'profilePages',
   LEAD_DATA: 'leadData',
   IMPORT_DATA: 'importData',
-  MANAGE_TAGS: 'manageTags'
+  MANAGE_TAGS: 'manageTags',
+  EXECUTIONS_READ: 'executions_read'
 };
