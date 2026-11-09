@@ -1,0 +1,198 @@
+<div class="main-content execution-detail-page">
+
+  <!-- no permission -->
+  <div *ngIf="permitted === false" class="unauthorized-message-container-in-page">
+    <h2 class="unauthorized-page-title">{{ "UnauthorizedPage.UnauthorizedAccess" | translate }}</h2>
+    <h3 class="unauthorized-page-subtitle">{{ "UnauthorizedPage.OopsYouDontHave" | translate }}</h3>
+  </div>
+
+  <!-- not configured -->
+  <div *ngIf="permitted !== false && !configured" class="ex-empty">
+    {{ "Executions.NotConfigured" | translate }}
+  </div>
+
+  <div *ngIf="permitted === true && configured" class="container-fluid">
+
+    <nav class="ex-crumb" [attr.aria-label]="'Executions.Detail.Breadcrumb' | translate">
+      <button type="button" class="ex-link" (click)="backToList()">{{ "Executions.Executions" | translate }}</button>
+      <span aria-hidden="true">›</span>
+      <span class="ex-mono">{{ shortId(executionId) }}</span>
+    </nav>
+
+    <div *ngIf="invalid" class="ex-empty">{{ "Executions.Detail.InvalidId" | translate }}</div>
+
+    <div *ngIf="!invalid && error" class="ex-empty ex-error">
+      {{ "Executions.Detail.LoadError" | translate }}
+      <button type="button" class="ex-link ex-retry" (click)="retry()">{{ "Executions.Retry" | translate }}</button>
+    </div>
+
+    <div *ngIf="!invalid && !error && loading && !detail" class="ex-empty">{{ "Executions.Loading" | translate }}</div>
+
+    <ng-container *ngIf="!invalid && detail as d">
+
+      <!-- header -->
+      <section class="ex-card ex-head">
+        <div class="ex-title-row">
+          <h1 class="ex-title">{{ d.execution.agent_name || d.execution.agent_id }}</h1>
+          <execution-status-chip [status]="d.execution.status"></execution-status-chip>
+          <span *ngIf="d.execution.error?.code" class="ex-error-code">{{ d.execution.error.code }}</span>
+          <span *ngIf="d.execution.test" class="ex-tag">{{ "Executions.Detail.Test" | translate }}</span>
+        </div>
+        <div class="ex-meta">
+          <span>{{ d.execution.trigger?.type ? (("Executions.Triggers." + d.execution.trigger.type) | translate) : '—' }}</span>
+          <span *ngIf="d.execution.agent_version">{{ "Executions.Detail.Version" | translate }} <span class="ex-mono">{{ d.execution.agent_version }}</span></span>
+          <span>{{ "Executions.Detail.Execution" | translate }} <span class="ex-mono" [matTooltip]="d.execution._id">{{ shortId(d.execution._id) }}</span></span>
+          <span *ngIf="d.execution.started_at">{{ "Executions.Detail.Started" | translate }} {{ d.execution.started_at | date: 'dd MMM HH:mm:ss' }}</span>
+          <span>{{ formatDuration(d.execution.duration_ms) }}</span>
+          <button *ngIf="d.execution.conversation_link" type="button" class="ex-link ex-conversation" (click)="openConversation()">
+            {{ "Executions.Detail.Conversation" | translate }} ↗
+          </button>
+          <span *ngIf="!d.execution.conversation_link" class="ex-muted">{{ "Executions.Detail.NoConversation" | translate }}</span>
+        </div>
+
+        <div *ngIf="d.lineage && (d.lineage.parent || d.lineage.previous || d.lineage.retry_of || d.lineage.retried_as?.length)" class="ex-lineage">
+          <span *ngIf="d.lineage.parent">{{ "Executions.Detail.Lineage.parent" | translate }}
+            <button type="button" class="ex-link ex-mono ex-lineage-link" (click)="openExecution(d.lineage.parent)">{{ shortId(d.lineage.parent) }} ↗</button></span>
+          <span *ngIf="d.lineage.previous">{{ "Executions.Detail.Lineage.previous" | translate }}
+            <button type="button" class="ex-link ex-mono ex-lineage-link" (click)="openExecution(d.lineage.previous)">{{ shortId(d.lineage.previous) }} ↗</button></span>
+          <span *ngIf="d.lineage.retry_of">{{ "Executions.Detail.Lineage.retry_of" | translate }}
+            <button type="button" class="ex-link ex-mono ex-lineage-link" (click)="openExecution(d.lineage.retry_of)">{{ shortId(d.lineage.retry_of) }} ↗</button></span>
+          <span *ngIf="d.lineage.retried_as?.length">{{ "Executions.Detail.Lineage.retried_as" | translate }}
+            <button *ngFor="let id of d.lineage.retried_as" type="button" class="ex-link ex-mono ex-lineage-link" (click)="openExecution(id)">{{ shortId(id) }} ↗</button></span>
+        </div>
+
+        <div *ngIf="d.execution.trace_complete === false" class="ex-banner">{{ "Executions.TraceIncomplete" | translate }}</div>
+
+        <!-- controls come from the API (empty in Phase 1) -->
+        <div *ngIf="d.allowed_controls?.length" class="ex-controls">
+          <button *ngFor="let c of d.allowed_controls" type="button" class="ex-btn" disabled>{{ ("Executions.Controls." + c) | translate }}</button>
+        </div>
+      </section>
+
+      <!-- tabs -->
+      <section class="ex-card">
+        <div class="ex-tabs" role="tablist">
+          <button type="button" role="tab" class="ex-tab-timeline" [attr.aria-selected]="tab === 'timeline'" (click)="setTab('timeline')">
+            {{ "Executions.Detail.Timeline" | translate }}</button>
+          <button type="button" role="tab" class="ex-tab-state" [attr.aria-selected]="tab === 'state'" (click)="setTab('state')">
+            {{ "Executions.FlowState.Title" | translate }}</button>
+        </div>
+
+        <!-- timeline -->
+        <div *ngIf="tab === 'timeline'" role="tabpanel">
+          <div class="tl-head">
+            <span class="ex-muted">{{ "Executions.Detail.BlocksSummary" | translate: { n: d.steps.length, f: d.execution.failure_conditions } }}</span>
+            <span class="ex-spacer"></span>
+            <div class="ex-seg" role="group" [attr.aria-label]="'Executions.Detail.TimelineFilter' | translate">
+              <button type="button" class="tl-filter-all" [attr.aria-pressed]="!failedOnly" (click)="failedOnly = false">{{ "Executions.Detail.All" | translate }}</button>
+              <button type="button" class="tl-filter-failed" [attr.aria-pressed]="failedOnly" (click)="failedOnly = true">{{ "Executions.Detail.NotSuccessful" | translate }}</button>
+            </div>
+          </div>
+
+          <div *ngIf="!d.steps.length" class="ex-empty">{{ "Executions.Detail.NoSteps" | translate }}</div>
+
+          <ng-container *ngFor="let item of visibleTimeline; trackBy: trackBySeq">
+            <div *ngFor="let g of item.outside" class="tl-outside">
+              {{ g.textKey | translate: { n: g.keys.length, keys: g.keys.join(', ') } }}
+            </div>
+
+            <button type="button" class="tl-step" [class.tl-open]="expanded.has(item.step.seq)"
+              [attr.aria-expanded]="expanded.has(item.step.seq)"
+              [attr.aria-label]="'Executions.Detail.StepDetails' | translate: { name: item.step.block_name || item.step.seq }"
+              (click)="toggleStep(item.step)">
+              <span class="tl-time ex-mono">{{ item.step.started_at | date: 'HH:mm:ss.SSS' }}</span>
+              <mat-icon class="tl-icon" [ngClass]="'o-' + (item.step.outcome || (isRunningStep(item.step) ? 'running' : 'none'))"
+                [class.tl-spin]="isRunningStep(item.step) && !item.step.outcome" aria-hidden="true">{{ outcomeIcon(item.step) }}</mat-icon>
+              <span class="tl-name">{{ item.step.block_name || item.step.block_id }}</span>
+              <span class="tl-outcome ex-muted">{{ item.step.outcome ? (("Executions.Outcomes." + item.step.outcome) | translate) : (isRunningStep(item.step) ? ("Executions.Detail.Running" | translate) : '') }}</span>
+              <span class="tl-vc">
+                <ng-container *ngIf="item.step.changed_keys">{{ (item.step.changed_keys === 1 ? "Executions.Detail.VarsChangedOne" : "Executions.Detail.VarsChanged") | translate: { n: item.step.changed_keys } }}</ng-container>
+              </span>
+              <span class="tl-dur ex-mono ex-muted">{{ stepDuration(item.step) }}</span>
+              <mat-icon class="tl-chevron" aria-hidden="true">{{ expanded.has(item.step.seq) ? 'expand_more' : 'chevron_right' }}</mat-icon>
+            </button>
+
+            <div *ngIf="expanded.has(item.step.seq)" class="tl-body">
+              <div *ngFor="let a of item.step.actions" class="tl-action">
+                <b class="tl-action-type">{{ a.type }}</b>
+                <span *ngIf="a.title" class="ex-muted">"{{ a.title }}"</span>
+                <span *ngIf="a.outcome"><span class="tl-k">{{ "Executions.Detail.Outcome" | translate }}</span> {{ ("Executions.Outcomes." + a.outcome) | translate }}</span>
+                <span *ngIf="a.exit_taken"><span class="tl-k">{{ "Executions.Detail.Exit" | translate }}</span> {{ a.exit_taken }}</span>
+                <span *ngIf="a.duration_ms != null"><span class="tl-k">{{ "Executions.Detail.Time" | translate }}</span> {{ formatDuration(a.duration_ms) }}</span>
+                <span *ngIf="a.error_code"><span class="tl-k">{{ "Executions.Detail.ErrorCode" | translate }}</span> <span class="ex-mono">{{ a.error_code }}</span></span>
+              </div>
+
+              <ng-container *ngIf="states[item.step.seq] as slot">
+                <div *ngIf="slot.loading && !slot.view" class="ex-muted">{{ "Executions.Loading" | translate }}</div>
+                <div *ngIf="slot.error && !slot.view" class="ex-muted">
+                  {{ "Executions.FlowState.LoadError" | translate }}
+                  <button type="button" class="ex-link fs-retry" (click)="retryState(item.step.seq)">{{ "Executions.Retry" | translate }}</button>
+                </div>
+                <flow-state-panel *ngIf="slot.view" [vars]="slot.view.vars" [partial]="slot.view.partial" [actionTitles]="actionTitles"></flow-state-panel>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+
+        <!-- flow state tab -->
+        <div *ngIf="tab === 'state'" role="tabpanel" class="st">
+          <div class="st-pick">
+            <label for="st-step" class="ex-muted">{{ "Executions.FlowState.Block" | translate }}</label>
+            <select id="st-step" class="ex-select st-step" (change)="selectStateStep($any($event.target).value)">
+              <option *ngFor="let s of d.steps; let i = index" [value]="s.seq" [selected]="s.seq === fsSeq">
+                {{ i + 1 }}. {{ s.block_name || s.block_id }} · {{ s.started_at | date: 'HH:mm:ss' }}</option>
+            </select>
+            <div class="ex-seg" role="group" [attr.aria-label]="'Executions.FlowState.When' | translate">
+              <button type="button" class="st-before" [attr.aria-pressed]="fsWhen === 'before'" (click)="setWhen('before')">{{ "Executions.FlowState.Before" | translate }}</button>
+              <button type="button" class="st-after" [attr.aria-pressed]="fsWhen === 'after'" (click)="setWhen('after')">{{ "Executions.FlowState.After" | translate }}</button>
+            </div>
+            <label class="ex-check">
+              <input type="checkbox" class="st-system-toggle" [checked]="fsShowSystem" (change)="fsShowSystem = !fsShowSystem">
+              {{ "Executions.FlowState.ShowSystem" | translate }}
+            </label>
+          </div>
+
+          <ng-container *ngIf="fsSlot as slot">
+            <div *ngIf="slot.loading && !slot.view" class="ex-muted st-pad">{{ "Executions.Loading" | translate }}</div>
+            <div *ngIf="slot.error && !slot.view" class="ex-muted st-pad">
+              {{ "Executions.FlowState.LoadError" | translate }}
+              <button type="button" class="ex-link fs-retry" (click)="retryState(fsSeq)">{{ "Executions.Retry" | translate }}</button>
+            </div>
+            <div *ngIf="slot.view" class="st-pad">
+              <div *ngIf="slot.view.partial" class="ex-partial" role="note">{{ "Executions.FlowState.Partial" | translate }}</div>
+              <div class="ex-muted st-note">
+                {{ (fsWhen === 'before' ? "Executions.FlowState.WholeBefore" : "Executions.FlowState.WholeAfter") | translate: { block: fsBlockName, n: fsVars.length } }}
+              </div>
+              <div class="st-wrap">
+                <table class="st-table">
+                  <thead>
+                    <tr>
+                      <th>{{ "Executions.FlowState.Variable" | translate }}</th>
+                      <th>{{ "Executions.FlowState.Value" | translate }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let v of fsShown; trackBy: trackByKey" class="st-row" tabindex="0" role="button"
+                      [class.st-selected]="historyKey === v.key"
+                      [attr.aria-label]="'Executions.History.Open' | translate: { key: v.key }"
+                      (click)="openHistory(v.key)" (keyup.enter)="openHistory(v.key)">
+                      <td class="st-key"><span class="st-key-name">{{ v.key }}</span><span *ngIf="v.reserved" class="ex-tag">{{ "Executions.FlowState.System" | translate }}</span></td>
+                      <td><exec-masked-value [side]="fsWhen === 'before' ? v.before : v.after"></exec-masked-value></td>
+                    </tr>
+                    <tr *ngIf="!fsVars.length"><td colspan="2" class="ex-muted">{{ "Executions.FlowState.Empty" | translate }}</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <button *ngIf="!fsShowAll && fsVars.length > stateTabLimit" type="button" class="ex-link st-show-all" (click)="fsShowAll = true">
+                {{ "Executions.FlowState.ShowAll" | translate: { n: fsVars.length } }}
+              </button>
+            </div>
+          </ng-container>
+        </div>
+      </section>
+    </ng-container>
+  </div>
+
+  <var-history-drawer *ngIf="historyKey" [varKey]="historyKey" [entries]="history" [loading]="historyLoading"
+    [error]="historyError" [actionTitles]="actionTitles" (closed)="closeHistory()" (retry)="loadHistory()"></var-history-drawer>
+</div>

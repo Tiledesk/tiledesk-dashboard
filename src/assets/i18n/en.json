@@ -4256,6 +4256,85 @@
             "FailureConditions": "Failure cond.",
             "VarsChanged": "Vars changed",
             "Duration": "Duration"
+        },
+        "Outcomes": {
+            "success": "success",
+            "failure_condition": "failure condition",
+            "error": "error",
+            "interrupted": "interrupted"
+        },
+        "Detail": {
+            "Breadcrumb": "Breadcrumb",
+            "InvalidId": "This execution id is not valid.",
+            "LoadError": "Could not load this execution.",
+            "Test": "test run",
+            "Version": "version",
+            "Execution": "Execution",
+            "Started": "started",
+            "Conversation": "conversation",
+            "NoConversation": "no conversation (automation)",
+            "Lineage": {
+                "parent": "parent",
+                "previous": "previous",
+                "retry_of": "retry of",
+                "retried_as": "retried as"
+            },
+            "Timeline": "Timeline",
+            "TimelineFilter": "Timeline filter",
+            "All": "All",
+            "NotSuccessful": "Not successful",
+            "BlocksSummary": "{{n}} blocks · {{f}} failure conditions",
+            "NoSteps": "No blocks recorded yet.",
+            "StepDetails": "Show or hide the details of block {{name}}",
+            "Running": "running…",
+            "VarsChanged": "{{n}} vars changed",
+            "VarsChangedOne": "1 var changed",
+            "OutsideMessageIn": "{{n}} variables changed by the incoming message ({{keys}})",
+            "OutsideMessageInOne": "1 variable changed by the incoming message ({{keys}})",
+            "OutsideExternal": "{{n}} variables changed outside the flow",
+            "OutsideExternalOne": "1 variable changed outside the flow",
+            "OutsideJumpParams": "{{n}} variables set by the block parameters ({{keys}})",
+            "OutsideJumpParamsOne": "1 variable set by the block parameters ({{keys}})",
+            "Outcome": "outcome",
+            "Exit": "exit",
+            "Time": "time",
+            "ErrorCode": "error"
+        },
+        "FlowState": {
+            "Title": "Flow state",
+            "BeforeAfter": "before → after this block",
+            "ShowSystem": "Show system variables",
+            "Partial": "State before this block may be incomplete",
+            "Variable": "Variable",
+            "Before": "Before",
+            "After": "After",
+            "ChangedBy": "Changed by",
+            "Value": "Value",
+            "Unchanged": "= unchanged",
+            "Secret": "secret",
+            "System": "system",
+            "ShowUnchanged": "Show unchanged ({{n}})",
+            "HideUnchanged": "Hide unchanged",
+            "Empty": "No user variables here. Tick \"Show system variables\" to see the reserved ones.",
+            "LoadError": "Could not load the flow state.",
+            "Block": "Block",
+            "When": "Before or after the block",
+            "WholeBefore": "The whole flow state before \"{{block}}\": {{n}} variables. Click one for its history in this execution.",
+            "WholeAfter": "The whole flow state after \"{{block}}\": {{n}} variables. Click one for its history in this execution.",
+            "ShowAll": "Show all ({{n}})",
+            "By": {
+                "message_in": "incoming message",
+                "jump_params": "block parameters",
+                "external": "outside the flow"
+            }
+        },
+        "History": {
+            "Title": "History of",
+            "Open": "Show the history of {{key}}",
+            "Close": "Close",
+            "Empty": "Not changed in this execution.",
+            "LoadError": "Could not load the history.",
+            "Step": "block {{n}}"
         }
     }
 }
