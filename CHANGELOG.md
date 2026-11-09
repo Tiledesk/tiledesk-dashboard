@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.190-AR
+- Aligns conversation visibility with the new request APIs (visibility / agentIds / visibilitySince) 
+
 ### 2.7.189-AR
 - Fixes the bug: New Home Flow/Overview stayed on the legacy Conversations graph when analytics bases were relative paths
 
