@@ -3757,6 +3757,58 @@
     "Executions": {
         "Executions": "Esecuzioni",
         "AllExecutions": "Tutte le esecuzioni",
-        "NeedAttention": "{{n}} esecuzioni richiedono attenzione nelle ultime 24 ore"
+        "NeedAttention": "{{n}} esecuzioni richiedono attenzione nelle ultime 24 ore",
+        "NotConfigured": "Le esecuzioni non sono configurate per questo ambiente.",
+        "AllAgents": "Tutti gli agenti",
+        "Last24h": "ultime 24 ore",
+        "SearchId": "Cerca id esecuzione…",
+        "Trigger": "Trigger",
+        "StatusLabel": "Stato",
+        "AnyStatus": "Qualsiasi stato",
+        "WithFailureConditions": "Con condizioni di errore",
+        "Period": "Periodo",
+        "LoadError": "Impossibile caricare le esecuzioni.",
+        "Retry": "Riprova",
+        "Loading": "Caricamento…",
+        "LoadMore": "Carica altre",
+        "EmptyNone": "Nessuna esecuzione per questo agente. Appariranno qui quando verrà eseguito.",
+        "EmptyFiltered": "Nessuna esecuzione corrisponde a questi filtri",
+        "ClearFilters": "Rimuovi filtri",
+        "ShowAllTriggers": "Mostra tutti i trigger",
+        "TraceIncomplete": "Traccia incompleta",
+        "Status": {
+            "running": "in esecuzione",
+            "waiting": "in attesa",
+            "stopping": "in arresto",
+            "stopped": "arrestata",
+            "failed": "fallita",
+            "completed": "completata",
+            "destroyed": "distrutta"
+        },
+        "Triggers": {
+            "unattended": "Trigger automatici",
+            "all": "Tutti i trigger",
+            "scheduled": "pianificato",
+            "webhook": "webhook",
+            "trigger": "trigger connettore",
+            "automation": "automazione",
+            "widget": "widget",
+            "channel": "canale"
+        },
+        "Periods": {
+            "24h": "Ultime 24 ore",
+            "7d": "Ultimi 7 giorni",
+            "30d": "Ultimi 30 giorni"
+        },
+        "Columns": {
+            "Status": "Stato",
+            "Agent": "Agente",
+            "Trigger": "Trigger",
+            "Started": "Avviata",
+            "Blocks": "Blocchi",
+            "FailureConditions": "Cond. errore",
+            "VarsChanged": "Var. modificate",
+            "Duration": "Durata"
+        }
     }
 }
