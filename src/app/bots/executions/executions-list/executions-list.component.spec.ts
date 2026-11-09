@@ -30,6 +30,7 @@ describe('ExecutionsListComponent', () => {
   let query$: BehaviorSubject<any>;
   let perms$: Subject<any>;
   let faqKb: { getFaqKbByProjectId: jasmine.Spy };
+  let params$: BehaviorSubject<any>;
 
   function setup(opts: { botid?: string; query?: any; configured?: boolean; role?: string; perms?: string[]; page?: any } = {}) {
     executions = {
@@ -39,6 +40,8 @@ describe('ExecutionsListComponent', () => {
     };
     router = { navigate: jasmine.createSpy('navigate') };
     query$ = new BehaviorSubject(convertToParamMap(opts.query || {}));
+    const routeParams = { projectid: 'p1', ...(opts.botid ? { botid: opts.botid } : {}) };
+    params$ = new BehaviorSubject(convertToParamMap(routeParams));
     perms$ = new Subject();
     faqKb = { getFaqKbByProjectId: jasmine.createSpy('faq').and.returnValue(of([
       { _id: 'v2', root_id: 'a1', name: 'Nightly' }, { _id: 'v1', root_id: 'a1', name: 'Nightly' }, { _id: 'b2', name: 'Alpha' }, { _id: 'z', name: 'Gone', trashed: true }])) };
@@ -48,7 +51,7 @@ describe('ExecutionsListComponent', () => {
       providers: [
         { provide: ExecutionsService, useValue: executions },
         { provide: Router, useValue: router },
-        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ projectid: 'p1', ...(opts.botid ? { botid: opts.botid } : {}) }) }, queryParamMap: query$ } },
+        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap(routeParams) }, paramMap: params$, queryParamMap: query$ } },
         { provide: FaqKbService, useValue: faqKb },
         { provide: RolesService, useValue: { listenToProjectUserPermissions() {}, getUpdateRequestPermission: () => perms$ } },
         { provide: LoggerService, useValue: { log() {}, debug() {}, warn() {}, error() {} } },
@@ -59,7 +62,7 @@ describe('ExecutionsListComponent', () => {
     component = fixture.componentInstance;
     spyOn(component, 'now').and.returnValue(NOW);
     fixture.detectChanges();
-    perms$.next({ role: opts.role || 'owner', matchedPermissions: opts.perms || [] });
+    perms$.next({ role: opts.role === undefined ? 'owner' : opts.role, matchedPermissions: opts.perms || [] });
     fixture.detectChanges();
   }
 
@@ -313,6 +316,66 @@ describe('ExecutionsListComponent', () => {
     it('trigger column uses the Triggers translation', () => {
       setup({ page: { items: [row('e1')], next_cursor: null } });
       expect(fixture.nativeElement.querySelector('.exec-row').textContent).toContain('Executions.Triggers.scheduled');
+    });
+  });
+
+  describe('final review fixes', () => {
+    it('switching agent A -> B on the reused component reloads the list and the counters for B (D1)', () => {
+      setup({ botid: 'a1' });
+      component.counters = { running: 1, waiting: 0, failed: 2, stopped: 3, last_started_at: null } as any;
+      executions.summary.and.returnValue(of({ agents: { b2: { running: 0, waiting: 4, failed: 0, stopped: 0, last_started_at: null } } }));
+      const lists = executions.list.calls.count();
+      params$.next(convertToParamMap({ projectid: 'p1', botid: 'b2' }));
+      expect(component.agentId).toBe('b2');
+      expect(executions.list.calls.count()).toBe(lists + 1);
+      expect(executions.list.calls.mostRecent().args[1].agent_id).toBe('b2');
+      expect(executions.summary.calls.mostRecent().args[1]).toEqual(['b2']);
+      expect(component.counters.waiting).toBe(4);
+      params$.next(convertToParamMap({ projectid: 'p1' }));
+      expect(component.agentId).toBeNull();
+      expect(component.counters).toBeNull();
+      expect(executions.list.calls.mostRecent().args[1].agent_id).toBeUndefined();
+    });
+
+    it('a refresh slower than the poll interval still lands, and the next poll follows it (D2)', fakeAsync(() => {
+      setup({ page: { items: [row('e1', 'running')], next_cursor: null } });
+      const slow = new Subject<any>();
+      executions.list.and.returnValue(slow);
+      const n = executions.list.calls.count();
+      tick(10000);
+      expect(executions.list.calls.count()).toBe(n + 1);
+      tick(15000); // response still pending: no second request piles up
+      expect(executions.list.calls.count()).toBe(n + 1);
+      slow.next({ items: [row('e1', 'running', { steps_count: 42 })], next_cursor: null });
+      slow.complete();
+      expect(component.rows[0].steps_count).toBe(42);
+      executions.list.and.returnValue(of({ items: [row('e1', 'completed')], next_cursor: null }));
+      tick(9999);
+      expect(executions.list.calls.count()).toBe(n + 1);
+      tick(1);
+      expect(executions.list.calls.count()).toBe(n + 2);
+      tick(60000);
+      expect(executions.list.calls.count()).toBe(n + 2);
+    }));
+
+    it('a failed refresh still schedules the next one while rows run (D2)', fakeAsync(() => {
+      setup({ page: { items: [row('e1', 'running')], next_cursor: null } });
+      executions.list.and.returnValue(throwError(() => new Error('502')));
+      const n = executions.list.calls.count();
+      tick(10000);
+      tick(10000);
+      expect(executions.list.calls.count()).toBe(n + 2);
+      fixture.destroy();
+    }));
+
+    it('role not known yet (\'\'): neither the no-permission view nor an API call (D4)', () => {
+      setup({ role: '' });
+      expect(component.permitted).toBeNull();
+      expect(text()).not.toContain('UnauthorizedPage.OopsYouDontHave');
+      expect(executions.list).not.toHaveBeenCalled();
+      perms$.next({ role: 'owner', matchedPermissions: [] });
+      expect(component.permitted).toBe(true);
+      expect(executions.list).toHaveBeenCalled();
     });
   });
 });

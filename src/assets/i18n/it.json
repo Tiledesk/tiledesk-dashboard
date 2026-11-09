@@ -3890,6 +3890,11 @@
             "Empty": "Non modificata in questa esecuzione.",
             "LoadError": "Impossibile caricare la cronologia.",
             "Step": "blocco {{n}}"
+        },
+        "Ops": {
+            "add": "aggiunta",
+            "set": "modificata",
+            "del": "eliminata"
         }
     }
 }

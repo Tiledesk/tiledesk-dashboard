@@ -181,6 +181,22 @@ describe('VarHistoryDrawerComponent', () => {
     expect(fixture.nativeElement.textContent).not.toContain('hb');
   });
 
+  it('a deletion shows "deleted" and a dash, not a masked value; op labels are translated (D3)', () => {
+    component.entries = [
+      { ...entry(2, 1, 'start', 'message_in', 5), op: 'add' },
+      entry(4, 2, 'ask', 'act1', 3),
+      { ...entry(9, 3, 'cleanup', 'act1', 0), op: 'del', hash_after: null },
+    ];
+    fixture.detectChanges();
+    const items = Array.from(fixture.nativeElement.querySelectorAll('.vh-entry')) as HTMLElement[];
+    expect(items[0].querySelector('.vh-op').textContent.trim()).toBe('added');
+    expect(items[1].querySelector('.vh-op').textContent.trim()).toBe('changed');
+    expect(items[2].querySelector('.vh-op').textContent.trim()).toBe('deleted');
+    expect(items[2].textContent).toContain('—');
+    expect(items[2].textContent).not.toContain('•••');
+    expect(items[1].textContent).toContain('•••');
+  });
+
   it('shows the empty text, and closes with Esc and the close button', () => {
     component.entries = [];
     fixture.detectChanges();

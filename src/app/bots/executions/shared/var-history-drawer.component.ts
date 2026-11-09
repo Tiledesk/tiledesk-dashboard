@@ -23,8 +23,9 @@ import { byLabel, ByLabel } from './flow-state-panel.component';
         <li *ngFor="let e of ordered" class="vh-entry">
           <span class="vh-block">{{ e.block_name || ("Executions.History.Step" | translate: { n: e.step_seq }) }}</span>
           <span class="vh-by"><ng-container *ngIf="label(e.by) as l">{{ $any(l).key ? ($any(l).key | translate) : $any(l).text }}</ng-container></span>
-          <span class="vh-op">{{ e.op }}</span>
-          <exec-masked-value *ngIf="e.op !== 'delete'" [side]="{ type: e.type, size: e.size, hash: null }"></exec-masked-value>
+          <span class="vh-op">{{ opKey(e.op) ? (opKey(e.op) | translate) : e.op }}</span>
+          <exec-masked-value *ngIf="e.op !== 'del'" [side]="{ type: e.type, size: e.size, hash: null }"></exec-masked-value>
+          <span *ngIf="e.op === 'del'" class="vh-none" aria-hidden="true">—</span>
         </li>
       </ol>
     </aside>`,
@@ -40,6 +41,7 @@ import { byLabel, ByLabel } from './flow-state-panel.component';
     .vh-entry { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 2px 10px; padding: 8px 10px; border: 1px solid #dfe3ed; border-radius: 8px; }
     .vh-block { font-weight: 500; }
     .vh-by, .vh-op, .vh-note { color: #5d6b82; }
+    .vh-none { color: #8a94a8; }
     .vh-link { border: 0; background: none; color: #1b6ef3; cursor: pointer; }
   `]
 })
@@ -59,6 +61,11 @@ export class VarHistoryDrawerComponent {
 
   get ordered(): VarHistoryEntry[] {
     return (this.entries || []).slice().sort((a, b) => a.seq - b.seq);
+  }
+
+  /** Translation key of a change op (add | set | del, as the API sends them); null for anything else. */
+  opKey(op: string | null): string | null {
+    return op === 'add' || op === 'set' || op === 'del' ? 'Executions.Ops.' + op : null;
   }
 
   label(by: string | null): ByLabel {

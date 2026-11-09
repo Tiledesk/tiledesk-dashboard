@@ -4297,6 +4297,11 @@
             "Empty": "Not changed in this execution.",
             "LoadError": "Could not load the history.",
             "Step": "block {{n}}"
+        },
+        "Ops": {
+            "add": "added",
+            "set": "changed",
+            "del": "deleted"
         }
     }
 }
