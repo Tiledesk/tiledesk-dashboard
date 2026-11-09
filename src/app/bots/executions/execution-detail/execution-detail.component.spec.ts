@@ -100,7 +100,7 @@ describe('ExecutionDetailComponent', () => {
     fixture = TestBed.createComponent(ExecutionDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    perms$.next({ role: opts.role || 'owner', matchedPermissions: [] });
+    perms$.next({ role: opts.role === undefined ? 'owner' : opts.role, matchedPermissions: [] });
     fixture.detectChanges();
   }
 
@@ -337,6 +337,25 @@ describe('ExecutionDetailComponent', () => {
       fixture.destroy();
     }));
 
+    it('a response slower than the poll interval still lands, and the next poll follows it (D2)', fakeAsync(() => {
+      setup({ detail: detail('running') });
+      const slow = new Subject<any>();
+      executions.get.and.returnValue(slow);
+      tick(POLL_MS);
+      expect(executions.get).toHaveBeenCalledTimes(2);
+      tick(POLL_MS * 2); // > 2 s pending: not cancelled by a new poll
+      expect(executions.get).toHaveBeenCalledTimes(2);
+      slow.next(detail('running', { steps: [...detail('running').steps, step(3, { block_name: 'Third' })] }));
+      slow.complete();
+      expect(component.timeline.length).toBe(3);
+      executions.get.and.returnValue(of(detail('running')));
+      tick(POLL_MS - 1);
+      expect(executions.get).toHaveBeenCalledTimes(2);
+      tick(1);
+      expect(executions.get).toHaveBeenCalledTimes(3);
+      fixture.destroy();
+    }));
+
     it('a poll error keeps the page and keeps polling', fakeAsync(() => {
       setup({ detail: detail('running') });
       executions.get.and.returnValue(throwError(() => new Error('502')));
@@ -389,5 +408,14 @@ describe('ExecutionDetailComponent', () => {
       expect(executions.get).not.toHaveBeenCalled();
       expect(el().querySelector('.unauthorized-message-container-in-page')).not.toBeNull();
     });
+  });
+
+  it('role not known yet (\'\'): neither the no-permission view nor an API call (D4)', () => {
+    setup({ role: '' });
+    expect(component.permitted).toBeNull();
+    expect(el().querySelector('.unauthorized-message-container-in-page')).toBeNull();
+    expect(executions.get).not.toHaveBeenCalled();
+    perms$.next({ role: 'admin', matchedPermissions: [] });
+    expect(executions.get).toHaveBeenCalledTimes(1);
   });
 });

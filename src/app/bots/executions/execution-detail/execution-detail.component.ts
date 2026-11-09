@@ -122,6 +122,8 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
 
     this.rolesService.listenToProjectUserPermissions(this.destroy$);
     this.rolesService.getUpdateRequestPermission().pipe(takeUntil(this.destroy$)).subscribe(status => {
+      // '' is the service's initial value: the role is not known yet (no "unauthorized" flash)
+      if (!status || !status.role) { this.permitted = null; return; }
       this.permitted = canViewExecutions(status.role, status.matchedPermissions);
       if (this.permitted && this.configured && !this.started) this.start();
     });
@@ -181,8 +183,9 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   private onLoadError(err) {
     this.loading = false;
     this.logger.error('[EXECUTION-DETAIL] load error ', err);
-    // a failed poll keeps the page as it was; only a first load shows the error state
+    // a failed poll keeps the page as it was (and polling goes on); only a first load shows the error state
     if (!this.detail) this.error = true;
+    else this.updatePolling();
   }
 
   private onDetail(d: ExecutionDetail) {
@@ -216,15 +219,19 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return this.detail ? this.detail.steps.find(s => s.seq === seq) : undefined;
   }
 
-  // ---- polling: every 2 s while running (or stopping) ----
+  // ---- polling: 2 s after each answer while running (or stopping) ----
 
+  /**
+   * Called after each response or error: the next poll starts POLL_MS later, so a response slower
+   * than POLL_MS still lands (switchMap would cancel it if a fixed timer fired meanwhile).
+   */
   private updatePolling() {
+    this.stopPolling();
     if (this.isLive) {
-      if (!this.pollSub) {
-        this.pollSub = timer(POLL_MS, POLL_MS).pipe(takeUntil(this.destroy$)).subscribe(() => this.load$.next());
-      }
-    } else {
-      this.stopPolling();
+      this.pollSub = timer(POLL_MS).pipe(takeUntil(this.destroy$)).subscribe(() => {
+        this.pollSub = null;
+        this.load$.next();
+      });
     }
   }
 

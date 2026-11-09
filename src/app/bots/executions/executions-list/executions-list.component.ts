@@ -55,6 +55,8 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   private reload$ = new Subject<void>();
   private pollSub: Subscription | null = null;
+  /** a polling refresh is in flight: the next one is scheduled when it answers */
+  private refreshing = false;
   private started = false;
 
   constructor(
@@ -67,9 +69,22 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit() {
-    this.projectId = this.route.snapshot.paramMap.get('projectid');
-    this.agentId = this.route.snapshot.paramMap.get('botid');
     this.configured = this.executionsService.isConfigured();
+
+    // the agent switcher reuses this component (bots/:botid/executions <-> bots/executions): follow the route
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
+      const projectId = params.get('projectid');
+      const agentId = params.get('botid');
+      const changed = projectId !== this.projectId || agentId !== this.agentId;
+      this.projectId = projectId;
+      this.agentId = agentId;
+      if (changed && this.started) {
+        this.counters = null;
+        this.rows = [];
+        this.nextCursor = null;
+        this.loadFirstPage();
+      }
+    });
 
     this.route.queryParamMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       // values from the URL are validated against the option lists; anything else falls back to the default
@@ -89,6 +104,8 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
     this.rolesService.listenToProjectUserPermissions(this.destroy$);
     this.rolesService.getUpdateRequestPermission().pipe(takeUntil(this.destroy$)).subscribe(status => {
+      // '' is the service's initial value: the role is not known yet (no "unauthorized" flash)
+      if (!status || !status.role) { this.permitted = null; return; }
       this.permitted = canViewExecutions(status.role, status.matchedPermissions);
       if (this.permitted && this.configured && !this.started) this.start();
     });
@@ -205,16 +222,20 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     });
   }
 
-  // ---- polling: every 10 s while a visible row is running ----
+  // ---- polling: 10 s after the previous answer, while a visible row is running ----
 
   private hasRunning(): boolean {
     return this.rows.some(r => r.status === 'running' || r.status === 'stopping');
   }
 
+  /** One timer at a time, started after an answer (a slow response is never cancelled by the next poll). */
   private updatePolling() {
     if (this.hasRunning()) {
-      if (!this.pollSub) {
-        this.pollSub = timer(POLL_MS, POLL_MS).pipe(takeUntil(this.destroy$)).subscribe(() => this.refresh());
+      if (!this.pollSub && !this.refreshing) {
+        this.pollSub = timer(POLL_MS).pipe(takeUntil(this.destroy$)).subscribe(() => {
+          this.pollSub = null;
+          this.refresh();
+        });
       }
     } else {
       this.stopPolling();
@@ -222,6 +243,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   }
 
   private stopPolling() {
+    this.refreshing = false;
     if (this.pollSub) {
       this.pollSub.unsubscribe();
       this.pollSub = null;
@@ -230,8 +252,10 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
   /** Re-reads the first page and merges it: known rows are updated in place, new ones go on top. */
   private refresh() {
+    this.refreshing = true;
     this.executionsService.list(this.projectId, this.buildParams()).pipe(takeUntil(this.reload$), takeUntil(this.destroy$)).subscribe({
       next: page => {
+        this.refreshing = false;
         const fresh = new Map(page.items.map(r => [r._id, r] as [string, ExecutionRow]));
         const known = new Set(this.rows.map(r => r._id));
         this.rows = page.items.filter(r => !known.has(r._id)).concat(this.rows.map(r => fresh.get(r._id) || r));
@@ -239,7 +263,11 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
         this.updatePolling();
         this.loadCounters();
       },
-      error: err => this.logger.error('[EXECUTIONS-LIST] refresh error ', err)
+      error: err => {
+        this.refreshing = false;
+        this.logger.error('[EXECUTIONS-LIST] refresh error ', err);
+        this.updatePolling();
+      }
     });
   }
 
