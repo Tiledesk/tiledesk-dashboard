@@ -50,7 +50,7 @@ import { ContactRequestMessagesDialogComponent } from './contact-request-message
 import { RolesService } from 'app/services/roles.service';
 import { ExecutionsService } from 'app/services/executions.service';
 import { canViewExecutions } from 'app/bots/executions/executions.models';
-import { executionAgentId, executionLink, ExecutionLink } from 'app/bots/executions/execution-links';
+import { executionAgentId, executionLink, ExecutionLink, validExecutionId } from 'app/bots/executions/execution-links';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
 import { isOnlyEmoji, removeEmojis } from 'app/utils/utils-message';
@@ -1342,20 +1342,38 @@ updateTagContainerHeight() {
   }
 
 
-  /** Link to this conversation's execution; null unless the request has a valid execution_id and the user may see executions. */
+  private projectBots: any[] = [];
+  private executionLinkKey: string;
+  private executionLinkCache: ExecutionLink | null = null;
+
+  /**
+   * Link to this conversation's execution; null unless the request has a valid execution_id and the user may see executions.
+   * Memoized: recomputed only when permission, execution id, bot participant, project or the loaded bots change.
+   */
   get executionLink(): ExecutionLink | null {
     if (!this.PERMISSION_TO_VIEW_EXECUTIONS || !this.executionsService.isConfigured()) return null;
+    const executionId = validExecutionId(this.request && this.request.attributes && this.request.attributes.execution_id);
+    if (!executionId) return null;
     const participants: string[] = (this.request && this.request.participants) || [];
     const botParticipant = participants.find(p => typeof p === 'string' && p.startsWith('bot_'));
-    const bot = botParticipant ? this.botLocalDbService.getBotFromStorage(botParticipant.substr(4)) : null;
-    return executionLink(this.id_project, executionAgentId(bot), this.request && this.request.attributes && this.request.attributes.execution_id);
+    const botId = botParticipant ? botParticipant.substr(4) : null;
+    const key = this.id_project + '|' + executionId + '|' + botId + '|' + this.projectBots.length;
+    if (key === this.executionLinkKey && this.executionLinkBots === this.projectBots) return this.executionLinkCache;
+    // loaded bots list first, localStorage cache second
+    const bot = botId ? (this.projectBots.find(b => b._id === botId) || this.botLocalDbService.getBotFromStorage(botId)) : null;
+    this.executionLinkKey = key;
+    this.executionLinkBots = this.projectBots;
+    this.executionLinkCache = executionLink(this.id_project, executionAgentId(bot), executionId);
+    return this.executionLinkCache;
   }
+  private executionLinkBots: any[];
 
   getBots() {
     this.faqKbService.getFaqKbByProjectId()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((bots) => {
         if (bots) {
+          this.projectBots = bots;
           this.logger.log('[WS-REQUESTS-MSGS] GET bots  ', bots);
           let count = 0;
           bots.forEach(bot => {

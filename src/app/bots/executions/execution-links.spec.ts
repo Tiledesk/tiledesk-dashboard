@@ -29,11 +29,12 @@ describe('execution links', () => {
 });
 
 describe('conversation detail: link shown only with execution_id and permission', () => {
-  function make(opts: { perm: boolean; configured?: boolean; attrs?: any; participants?: string[]; bot?: any }) {
+  function make(opts: { perm: boolean; configured?: boolean; attrs?: any; participants?: string[]; bot?: any; bots?: any[] }) {
     const c: any = Object.create(WsRequestsMsgsComponent.prototype);
     c.PERMISSION_TO_VIEW_EXECUTIONS = opts.perm;
     c.executionsService = { isConfigured: () => opts.configured !== false };
     c.botLocalDbService = { getBotFromStorage: () => opts.bot };
+    c.projectBots = opts.bots || [];
     c.id_project = 'p1';
     c.request = { participants: opts.participants || ['bot_s1'], attributes: opts.attrs === undefined ? { execution_id: EID } : opts.attrs };
     return c as WsRequestsMsgsComponent;
@@ -42,6 +43,26 @@ describe('conversation detail: link shown only with execution_id and permission'
   it('is shown with execution_id and permission, using the root id of the bot participant', () => {
     const c = make({ perm: true, bot: { _id: 's1', root_id: 'r1' } });
     expect(c.executionLink.commands).toEqual(['/project', 'p1', 'bots', 'r1', 'executions', EID]);
+  });
+  it('finds the participant in the loaded bots list: snapshot -> root id, root itself -> its own id', () => {
+    const snap = make({ perm: true, bot: null, bots: [{ _id: 's1', root_id: 'r1' }] });
+    expect(snap.executionLink.commands).toEqual(['/project', 'p1', 'bots', 'r1', 'executions', EID]);
+    const root = make({ perm: true, bot: null, bots: [{ _id: 's1' }] });
+    expect(root.executionLink.commands).toEqual(['/project', 'p1', 'bots', 's1', 'executions', EID]);
+  });
+  it('validates execution_id before any lookup and memoizes the result', () => {
+    const c: any = make({ perm: true, attrs: { execution_id: 'bad' } });
+    const spy = jasmine.createSpy('get').and.returnValue(null);
+    c.botLocalDbService.getBotFromStorage = spy;
+    expect(c.executionLink).toBeNull();
+    expect(spy).not.toHaveBeenCalled();
+    c.request.attributes.execution_id = EID;
+    const first = c.executionLink;
+    expect(c.executionLink).toBe(first);
+    expect(c.executionLink).toBe(first);
+    expect(spy).toHaveBeenCalledTimes(1);
+    c.projectBots = [{ _id: 's1', root_id: 'r9' }];
+    expect(c.executionLink.commands[3]).toBe('r9');
   });
   it('falls back to the list with q when the bot is unknown', () => {
     const c = make({ perm: true, bot: null });
@@ -69,6 +90,16 @@ describe('webhook logs: link target', () => {
   it('points at the bot executions, with the root id when known', () => {
     expect(make(true, [{ _id: 'b1', root_id: 'r1' }]).executionsLink).toEqual(['/project', 'p1', 'bots', 'r1', 'executions']);
     expect(make(true, []).executionsLink).toEqual(['/project', 'p1', 'bots', 'b1', 'executions']);
+  });
+  it('is hidden without chatbot_id, projectId or currentWH, and memoizes', () => {
+    const a: any = make(true, []); a.currentWH = { chatbot_id: undefined };
+    expect(a.executionsLink).toBeNull();
+    const b: any = make(true, []); b.projectId = undefined;
+    expect(b.executionsLink).toBeNull();
+    const c: any = make(true, []); c.currentWH = undefined;
+    expect(c.executionsLink).toBeNull();
+    const d: any = make(true, []);
+    expect(d.executionsLink).toBe(d.executionsLink);
   });
   it('is hidden without permission or when not configured', () => {
     expect(make(false, []).executionsLink).toBeNull();
