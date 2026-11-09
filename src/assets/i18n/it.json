@@ -3753,5 +3753,10 @@
     "AIAgentPromptHint": "Descrivi la tua idea e l'IA creerà un Agent, pronto per essere perfezionato dialogando.",
     "AIAgentNameOptionalHint": "Facoltativo se scrivi una descrizione: l'IA darà il nome all'agente.",
     "PaymentMethod": "Metodo di pagamento",
-    "ContactUsToChangeYourPaymentMethod": "Contattaci per cambiare il metodo di pagamento"
+    "ContactUsToChangeYourPaymentMethod": "Contattaci per cambiare il metodo di pagamento",
+    "Executions": {
+        "Executions": "Esecuzioni",
+        "AllExecutions": "Tutte le esecuzioni",
+        "NeedAttention": "{{n}} esecuzioni richiedono attenzione nelle ultime 24 ore"
+    }
 }

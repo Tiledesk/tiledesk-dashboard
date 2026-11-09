@@ -1386,3 +1386,40 @@ input[type="checkbox"]:disabled {
   color: #0d8cff;
   background: rgba(13, 140, 255, .12);
 }
+
+// Executions entry on the agent card: icon button with a failed+stopped count and a running dot
+.executions-btn-wpr {
+  position: relative;
+}
+
+.executions-badge {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 8px;
+  background-color: #d93025;
+  color: #fff;
+  font-size: 10px;
+  line-height: 16px;
+  text-align: center;
+  pointer-events: auto;
+}
+
+.executions-running-dot {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: #1a73e8;
+  pointer-events: none;
+}
+
+.bots-list-all-executions-btn {
+  margin-right: 12px;
+  border-radius: 9999px !important;
+}
