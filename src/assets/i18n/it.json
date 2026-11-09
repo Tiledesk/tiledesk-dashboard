@@ -3793,5 +3793,10 @@
     "VibeCoderMaxFilesReached": "Puoi allegare al massimo {{max}} file",
     "VibeCoderUploading": "Caricamento…",
     "VibeCoderUploadFailed": "Caricamento non riuscito",
-    "VibeCoderRemoveAttachment": "Rimuovi file"
+    "VibeCoderRemoveAttachment": "Rimuovi file",
+    "Executions": {
+        "Executions": "Esecuzioni",
+        "AllExecutions": "Tutte le esecuzioni",
+        "NeedAttention": "{{n}} esecuzioni richiedono attenzione nelle ultime 24 ore"
+    }
 }

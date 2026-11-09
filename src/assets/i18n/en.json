@@ -4200,5 +4200,10 @@
     "VibeCoderMaxFilesReached": "You can attach up to {{max}} files",
     "VibeCoderUploading": "Uploading…",
     "VibeCoderUploadFailed": "Upload failed",
-    "VibeCoderRemoveAttachment": "Remove file"
+    "VibeCoderRemoveAttachment": "Remove file",
+    "Executions": {
+        "Executions": "Executions",
+        "AllExecutions": "All executions",
+        "NeedAttention": "{{n}} executions need attention in the last 24 hours"
+    }
 }

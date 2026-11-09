@@ -8,7 +8,7 @@ import {
   ExecutionDetail, ExecutionListParams, ExecutionPage, StateView, Summary, VarHistoryEntry
 } from 'app/bots/executions/executions.models';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class ExecutionsService {
 
   user: any;
