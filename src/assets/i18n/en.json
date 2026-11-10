@@ -4368,7 +4368,8 @@
                 "hard": "hard stop"
             },
             "Interrupted": "interrupted \"{{action}}\"",
-            "MessagesWhileStopped": "{{n}} messages received while stopped"
+            "MessagesWhileStopped": "{{n}} messages received while stopped",
+            "MessagesWhileStoppedOne": "1 message received while stopped"
         },
         "Dialogs": {
             "StopTitle": "Stop execution",

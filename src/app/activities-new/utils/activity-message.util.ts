@@ -949,6 +949,21 @@ const EXECUTION_VERB_PHRASES: Record<string, string> = {
   EXECUTION_DESTROY: 'destroyed execution',
 };
 
+/** A control refused with a 409 is audited too (actionObj.result `rejected:<status>`): it reads as an attempt. */
+const EXECUTION_TRIED_PHRASES: Record<string, string> = {
+  EXECUTION_STOP_SOFT: 'tried to soft-stop execution',
+  EXECUTION_STOP_HARD: 'tried to hard-stop execution',
+  EXECUTION_DESTROY: 'tried to destroy execution',
+};
+
+/** null when the control was accepted (or the row has no result); otherwise the refusal, e.g. `stopped`. */
+export function executionRejection(activity: ActivityRecord): { reason: string } | null {
+  const result = str(activity.actionObj?.['result']);
+  if (!/^rejected(:|$)/.test(result)) return null;
+  const i = result.indexOf(':');
+  return { reason: i >= 0 ? result.substring(i + 1) : '' };
+}
+
 export function isExecutionVerb(verb: string): boolean {
   return Object.prototype.hasOwnProperty.call(EXECUTION_VERB_PHRASES, verb);
 }
@@ -968,14 +983,18 @@ export function executionAgentId(activity: ActivityRecord): string {
   return str(activity.related?.id || object['agent_id']);
 }
 
-/** Text after the agent name: ` · "<reason>"` when a reason exists. */
+/** Text after the agent name: ` (rejected: <status>)` for a refused control, then ` · "<reason>"` when a reason exists. */
 export function executionReasonSuffix(activity: ActivityRecord): string {
+  const rejected = executionRejection(activity);
+  const refusal = rejected ? ` (rejected${rejected.reason ? ': ' + rejected.reason : ''})` : '';
   const reason = str(activity.actionObj?.['reason']);
-  return reason ? ` · "${reason}"` : '';
+  return refusal + (reason ? ` · "${reason}"` : '');
 }
 
+/** Same sentence as the server's (activityMessageUtil.buildExecutionMessage, en). */
 export function executionPhrase(activity: ActivityRecord): string {
-  return EXECUTION_VERB_PHRASES[effectiveVerb(activity)] || '';
+  const verb = effectiveVerb(activity);
+  return (executionRejection(activity) ? EXECUTION_TRIED_PHRASES[verb] : EXECUTION_VERB_PHRASES[verb]) || '';
 }
 
 export function renderExecutionMessage(activity: ActivityRecord): string {

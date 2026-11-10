@@ -8,7 +8,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
-import { ExecutionDetailComponent, POLL_MS } from './execution-detail.component';
+import { ExecutionDetailComponent, POLL_MS, POLL_WAITING_MS } from './execution-detail.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { StopDialogComponent } from '../shared/stop-dialog.component';
 import { DestroyDialogComponent } from '../shared/destroy-dialog.component';
@@ -190,15 +190,39 @@ describe('ExecutionDetailComponent controls', () => {
     fixture.detectChanges();
     expect(chip()).toBe('stopping…');
 
+    // the execution moved meanwhile (stopped is not polled): the 409 reloads the detail once
+    const calls = executions.get.calls.count();
+    executions.get.and.returnValue(of(detail('stopped', [{ name: 'destroy', allowed: true }])));
     answer$.error(new HttpErrorResponse({ status: 409, error: { error: 'not_allowed', allowed: [{ name: 'destroy', allowed: true }] } }));
     fixture.detectChanges();
-    expect(chip()).toBe('running');
+    expect(executions.get.calls.count()).toBe(calls + 1);
+    expect(chip()).toBe('stopped');
     const msg = el().querySelector('.ex-control-msg').textContent;
     expect(msg).toContain('This control is no longer allowed');
     expect(msg).toContain('Destroy');
     // the server's list replaces the buttons
     expect(btn('stop')).toBeNull();
     expect(btn('destroy')).not.toBeNull();
+    tick(POLL_WAITING_MS * 2);
+    expect(executions.get.calls.count()).toBe(calls + 1);
+    end();
+  }));
+
+  it('a 409 swaps in the allowed list even before the reload answers', fakeAsync(() => {
+    setup(detail('running', ALL_RUNNING));
+    const answer$ = new Subject<any>();
+    executions.stop.and.returnValue(answer$);
+    dialogResult = 'hard';
+    btn('stop').click();
+    const reload$ = new Subject<any>();
+    executions.get.and.returnValue(reload$);
+    answer$.error(new HttpErrorResponse({ status: 409, error: { error: 'not_allowed', allowed: [{ name: 'destroy', allowed: true }] } }));
+    fixture.detectChanges();
+    expect(btn('stop')).toBeNull();
+    expect(btn('destroy')).not.toBeNull();
+    reload$.next(detail('stopped', [{ name: 'destroy', allowed: true }]));
+    fixture.detectChanges();
+    expect(chip()).toBe('stopped');
     end();
   }));
 
@@ -228,15 +252,52 @@ describe('ExecutionDetailComponent controls', () => {
     end();
   }));
 
-  it('polls while running, waiting and stopping; stops on stopped', fakeAsync(() => {
+  it('polls running and stopping every 2 s, waiting every 10 s; stops on stopped', fakeAsync(() => {
     setup(detail('waiting', ALL_RUNNING));
     tick(POLL_MS);
+    expect(executions.get).toHaveBeenCalledTimes(1); // waiting: not after 2 s
+    tick(POLL_WAITING_MS - POLL_MS);
     expect(executions.get).toHaveBeenCalledTimes(2);
+    executions.get.and.returnValue(of(detail('running', ALL_RUNNING)));
+    tick(POLL_WAITING_MS);
+    expect(executions.get).toHaveBeenCalledTimes(3);
+    tick(POLL_MS);
+    expect(executions.get).toHaveBeenCalledTimes(4); // running: every 2 s
+    executions.get.and.returnValue(of(detail('stopping', [{ name: 'stop_hard_now', allowed: true }])));
+    tick(POLL_MS);
+    expect(executions.get).toHaveBeenCalledTimes(5);
     executions.get.and.returnValue(of(detail('stopped', [{ name: 'destroy', allowed: true }])));
     tick(POLL_MS);
-    expect(executions.get).toHaveBeenCalledTimes(3);
-    tick(POLL_MS * 5);
-    expect(executions.get).toHaveBeenCalledTimes(3);
+    expect(executions.get).toHaveBeenCalledTimes(6);
+    tick(POLL_WAITING_MS * 5);
+    expect(executions.get).toHaveBeenCalledTimes(6);
+    end();
+  }));
+
+  it('a control sent on a waiting execution polls every 2 s until the status moves', fakeAsync(() => {
+    setup(detail('waiting', ALL_RUNNING));
+    dialogResult = 'soft';
+    executions.stop.and.returnValue(of({ status: 'stopping' }));
+    btn('stop').click(); // reloads at once, still waiting
+    const after = executions.get.calls.count();
+    tick(POLL_MS);
+    expect(executions.get.calls.count()).toBe(after + 1);
+    end();
+  }));
+
+  it('interrupted action label falls back to #<index>; one message is singular', fakeAsync(() => {
+    setup(detail('stopped', [{ name: 'destroy', allowed: true }], { execution: {
+      stop_mode: 'hard', interrupted_action: { index: 3, action_id: null, type: null, title: null }, messages_while_stopped: 1,
+    } }));
+    let head = el().querySelector('.ex-head').textContent;
+    expect(head).toContain('interrupted "#3"');
+    expect(head).toContain('1 message received while stopped');
+    expect(head).not.toContain('1 messages');
+    fixture.destroy();
+    TestBed.resetTestingModule();
+    setup(detail('stopped', [{ name: 'destroy', allowed: true }], { execution: { messages_while_stopped: 4 } }));
+    head = el().querySelector('.ex-head').textContent;
+    expect(head).toContain('4 messages received while stopped');
     end();
   }));
 
