@@ -1,11 +1,13 @@
 import { EMPTY, forkJoin, fromEvent, Observable, Subscription } from 'rxjs';
-import { expand, map, reduce, startWith } from 'rxjs/operators';
+import { expand, map, reduce, startWith, timeout } from 'rxjs/operators';
 import { ExecutionsService } from 'app/services/executions.service';
 import { ExecutionListParams, ExecutionPage, ExecutionRow } from '../executions.models';
 
 export interface GraphSnapshot { live: ExecutionRow[]; failed: ExecutionRow[]; fetchedAt: number; stale: boolean; }
 
 export const GRAPH_REFRESH_MS = 5000;
+/** Client timeout of one whole cycle (both queries, all their pages). */
+export const GRAPH_REQUEST_TIMEOUT_MS = 10000;
 const PAGE_LIMIT = 100;
 const MAX_PAGES = 3;
 const FAILED_LOOKUP_MS = 24 * 60 * 60 * 1000;
@@ -83,7 +85,7 @@ export function executionGraphFeed(
       const failed$ = fetchPages(service, projectId, {
         status: 'failed', from: new Date(t - FAILED_LOOKUP_MS).toISOString(), limit: PAGE_LIMIT
       });
-      inflight = forkJoin([live$, failed$]).subscribe(
+      inflight = forkJoin([live$, failed$]).pipe(timeout(GRAPH_REQUEST_TIMEOUT_MS)).subscribe(
         ([liveRows, failedRows]) => {
           const seen = new Set<string>();
           const live = dedupe(liveRows, seen);
