@@ -20,6 +20,7 @@ export const EXEC_GRAPH_COLORS = {
   // "+N" node and edges
   moreBorder: '#9aa4b2', moreText: '#4a5361',
   edge: '#c9cfd8',
+  spoke: '#dfe3e8',
 } as const;
 
 const C = EXEC_GRAPH_COLORS;

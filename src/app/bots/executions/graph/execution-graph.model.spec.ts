@@ -1,5 +1,5 @@
 import { ExecutionRow } from '../executions.models';
-import { AGENT_RING_RMAX, buildExecutionGraph, FAILED_WINDOW_MS, MAX_LIVE, MAX_PER_AGENT } from './execution-graph.model';
+import { AGENT_RING_RMAX, agentFootprint, buildExecutionGraph, FAILED_WINDOW_MS, MAX_LIVE, MAX_PER_AGENT } from './execution-graph.model';
 
 const NOW = Date.parse('2026-11-10T12:00:00.000Z');
 
@@ -19,7 +19,7 @@ describe('buildExecutionGraph', () => {
     expect(g.nodes.length).toBe(4);
     const project = g.nodes.find(n => n.kind === 'project');
     expect(project.position).toEqual({ x: 0, y: 0 });
-    g.nodes.filter(n => n.kind === 'agent').forEach(n => expect(Math.abs(dist(n.position) - 300)).toBeLessThan(0.5));
+    g.nodes.filter(n => n.kind === 'agent').forEach(n => expect(Math.abs(dist(n.position) - 170)).toBeLessThan(0.5));
     expect(g.edges.filter(e => e.source === 'project').length).toBe(3);
   });
 
@@ -89,11 +89,13 @@ describe('buildExecutionGraph', () => {
     expect(g.edges.some(e => e.source === 'project' && e.target === 'agent:abcdefghijkl')).toBe(true);
   });
 
-  it('positions are stable across refreshes', () => {
-    const live = [row({ _id: 'e1' }), row({ _id: 'e2', started_at: new Date(NOW - 30000).toISOString() })];
+  it('positions are stable across refreshes while no agent changes bucket', () => {
+    const live = [row({ _id: 'e1' }), row({ _id: 'e2', started_at: new Date(NOW - 30000).toISOString() }), row({ _id: 'e4', agent_id: 'a3' })];
     const g1 = buildExecutionGraph({ projectName: 'P', agents: agents(4), live, failed: [], now: NOW });
     const g2 = buildExecutionGraph({ projectName: 'P', agents: agents(4), live: [...live, row({ _id: 'e3', agent_id: 'a3' })], failed: [], now: NOW + 5000 });
-    g1.nodes.forEach(n => expect(g2.nodes.find(m => m.id === n.id).position).toEqual(n.position));
+    // a3 goes from 1 to 2 shown (same bucket): only a3's own fan is redrawn
+    g1.nodes.filter(n => !(n.kind === 'execution' && n.agentId === 'a3'))
+      .forEach(n => expect(g2.nodes.find(m => m.id === n.id).position).toEqual(n.position, n.id));
   });
 
   it('running edges are animated, others are not', () => {
@@ -178,35 +180,72 @@ describe('buildExecutionGraph', () => {
     expect(g.nodes.some(n => n.kind === 'more')).toBe(false);
   });
 
-  it('agent ring leaves room for the largest capped ring, whatever the live counts', () => {
+  it('agent footprints are bucketed by shown nodes', () => {
     expect(AGENT_RING_RMAX).toBe(74 + 6 * (MAX_PER_AGENT - 8 + 1));
-    [2, 5, 13, 30].forEach(n => {
-      const empty = buildExecutionGraph({ projectName: 'P', agents: agents(n), live: [], failed: [], now: NOW });
-      const busy = buildExecutionGraph({
-        projectName: 'P', agents: agents(n), failed: [], now: NOW,
-        live: Array.from({ length: 50 }, (_, i) => row({ _id: 'e' + i, agent_id: 'a' + (1 + (i % n)) }))
-      });
-      const ring = (g: any) => g.nodes.filter((x: any) => x.kind === 'agent').sort((a: any, b: any) =>
-        Math.atan2(a.position.y, a.position.x) - Math.atan2(b.position.y, b.position.x));
-      const a = ring(empty);
-      expect(ring(busy).map((x: any) => x.position)).toEqual(a.map((x: any) => x.position));
-      for (let i = 0; i < a.length; i++) {
-        const next = a[(i + 1) % a.length];
-        expect(dist(a[i].position, next.position)).toBeGreaterThanOrEqual(2 * AGENT_RING_RMAX, 'n=' + n);
-      }
-      busy.nodes.filter((x: any) => x.kind !== 'project' && x.kind !== 'agent').forEach((x: any) => {
-        const owner = busy.nodes.find((y: any) => y.id === 'agent:' + x.agentId);
-        expect(dist(x.position, owner.position)).toBeLessThanOrEqual(AGENT_RING_RMAX + 0.5);
-      });
-    });
+    expect([0, 1, 4, 5, 8, 9, 13].map(agentFootprint)).toEqual([60, 90, 90, 98, 98, AGENT_RING_RMAX + 20, AGENT_RING_RMAX + 20]);
   });
 
-  it('agent ring grows with the agent count: max(300, (2 RMAX + 48) n / 2pi)', () => {
-    [1, 8, 9, 30].forEach(n => {
+  it('agent ring is sized by the footprints: max(170, sum(2 f + 24) / 2pi), angular width proportional to the footprint', () => {
+    [1, 3, 8, 13, 30].forEach(n => {
       const g = buildExecutionGraph({ projectName: 'P', agents: agents(n), live: [], failed: [], now: NOW });
-      const want = Math.max(300, (2 * AGENT_RING_RMAX + 48) * n / (2 * Math.PI));
+      const want = Math.max(170, n * (2 * 60 + 24) / (2 * Math.PI));
       g.nodes.filter(x => x.kind === 'agent').forEach(x => expect(Math.abs(dist(x.position) - want)).toBeLessThan(0.5, 'n=' + n));
     });
+    // 13 agents, one at the cap and one with 3 shown: the ring follows the sum, the busy agent gets a wider slice
+    const live = [
+      ...Array.from({ length: MAX_PER_AGENT + 5 }, (_, i) => row({ _id: 'c' + String(i).padStart(2, '0'), agent_id: 'a1', status: 'waiting' })),
+      ...[0, 1, 2].map(i => row({ _id: 't' + i, agent_id: 'a2', status: 'waiting' })),
+    ];
+    const list = Array.from({ length: 13 }, (_, i) => ({ id: 'a' + (i + 1), name: 'Agent ' + String(i + 1).padStart(2, '0') }));
+    const g = buildExecutionGraph({ projectName: 'P', agents: list, live, failed: [], now: NOW });
+    const sum = 2 * (AGENT_RING_RMAX + 20) + 24 + 2 * 90 + 24 + 11 * (2 * 60 + 24);
+    const R = sum / (2 * Math.PI);
+    const pos = (id: string) => g.nodes.find(x => x.id === 'agent:' + id).position;
+    ['a1', 'a2', 'a3', 'a13'].forEach(id => expect(Math.abs(dist(pos(id)) - R)).toBeLessThan(0.5, id));
+    const arc = (p: any, q: any) => { let d = Math.abs(Math.atan2(p.y, p.x) - Math.atan2(q.y, q.x)); if (d > Math.PI) { d = 2 * Math.PI - d; } return d * R; };
+    expect(arc(pos('a1'), pos('a2'))).toBeCloseTo((AGENT_RING_RMAX + 20) + 90 + 24, 3);
+    expect(arc(pos('a3'), pos('a4'))).toBeCloseTo(60 + 60 + 24, 3);
+  });
+
+  it('agents move only when a bucket changes: 3 -> 4 shown moves no agent, 4 -> 5 does', () => {
+    const mk = (k: number) => buildExecutionGraph({
+      projectName: 'P', agents: agents(6), failed: [], now: NOW,
+      live: Array.from({ length: k }, (_, i) => row({ _id: 'e' + i, agent_id: 'a2', status: 'waiting' })),
+    });
+    const agentPos = (g: any) => g.nodes.filter((x: any) => x.kind !== 'execution' && x.kind !== 'more').map((x: any) => ({ id: x.id, p: x.position }));
+    expect(agentPos(mk(4))).toEqual(agentPos(mk(3)));
+    expect(agentPos(mk(5))).not.toEqual(agentPos(mk(4)));
+  });
+
+  it('neighbouring agents at any buckets keep their fans a chip (26 px) plus 10 px apart', () => {
+    const ks = [0, 1, 4, 5, 8, 9, 13];
+    for (let n = 2; n <= 20; n++) {
+      for (const k1 of ks) {
+        for (const k2 of ks) {
+          for (const rest of [0, 13]) {
+            // zero-padded names keep a1 and a2 next to each other on the ring; a3 follows a2
+            const list = Array.from({ length: n }, (_, i) => ({ id: 'a' + (i + 1), name: 'Agent ' + String(i + 1).padStart(2, '0') }));
+            const want: { [id: string]: number } = {};
+            list.forEach((a, i) => { want[a.id] = i === 0 ? k1 : i === 1 ? k2 : rest; });
+            const live: ExecutionRow[] = [];
+            // k nodes shown: k executions up to the cap, then 12 + one "+N"
+            list.forEach(a => {
+              const k = want[a.id];
+              const rows = k > MAX_PER_AGENT ? MAX_PER_AGENT + 3 : k;
+              for (let i = 0; i < rows; i++) { live.push(row({ _id: a.id + '-' + String(i).padStart(2, '0'), agent_id: a.id, status: 'waiting' })); }
+            });
+            const g = buildExecutionGraph({ projectName: 'P', agents: list, live, failed: [], now: NOW });
+            const fan = (id: string) => g.nodes.filter(x => (x.kind === 'execution' || x.kind === 'more') && x.agentId === id);
+            const pairs = n > 2 ? [['a1', 'a2'], ['a2', 'a3']] : [['a1', 'a2']];
+            pairs.forEach(([x, y]) => {
+              let min = Infinity;
+              fan(x).forEach(p => fan(y).forEach(q => { min = Math.min(min, dist(p.position, q.position)); }));
+              expect(min).toBeGreaterThanOrEqual(26 + 10, `n=${n} ${x}:${want[x]} ${y}:${want[y]}`);
+            });
+          }
+        }
+      }
+    }
   });
 
   it('executions sit 74 px from their agent, fanned out on the side away from the project', () => {
@@ -226,25 +265,6 @@ describe('buildExecutionGraph', () => {
       });
       if (k === 1) { expect(dist(shown[0].position)).toBeCloseTo(dist(owner.position) + 74, 3); }
     });
-  });
-
-  it('neighbouring agents both at the cap: their fans keep a chip (26 px) plus 10 px apart', () => {
-    for (let n = 2; n <= 40; n++) {
-      // zero-padded names keep a1 and a2 next to each other on the ring
-      const list = Array.from({ length: n }, (_, i) => ({ id: 'a' + (i + 1), name: 'Agent ' + String(i + 1).padStart(2, '0') }));
-      const live: ExecutionRow[] = [];
-      ['a1', 'a2'].forEach(agent => {
-        for (let i = 0; i < MAX_PER_AGENT + 3; i++) { live.push(row({ _id: agent + '-' + String(i).padStart(2, '0'), agent_id: agent, status: 'waiting' })); }
-      });
-      const g = buildExecutionGraph({ projectName: 'P', agents: list, live, failed: [], now: NOW });
-      const fan = (id: string) => g.nodes.filter(x => (x.kind === 'execution' || x.kind === 'more') && x.agentId === id);
-      const f1 = fan('a1'), f2 = fan('a2');
-      expect(f1.length).toBe(MAX_PER_AGENT + 1);
-      expect(f2.length).toBe(MAX_PER_AGENT + 1);
-      let min = Infinity;
-      f1.forEach(x => f2.forEach(y => { min = Math.min(min, dist(x.position, y.position)); }));
-      expect(min).toBeGreaterThanOrEqual(26 + 10, 'n=' + n);
-    }
   });
 
   it('agent is active only when something is running or stopping', () => {
