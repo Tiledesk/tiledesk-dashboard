@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ExecutionsService } from 'app/services/executions.service';
-import { executionLink } from '../execution-links';
+import { executionLink, monitorExecutionsLink } from '../execution-links';
 import { buildExecutionGraph, GraphAgent, GraphCounts, GraphModel, GraphNode, GraphTooltip, ShownStatus } from './execution-graph.model';
 import { executionGraphFeed, GraphSnapshot } from './execution-graph.feed';
 import { EXEC_GRAPH_COLORS as C, EXEC_GRAPH_ICONS as I } from './execution-graph.colors';
@@ -326,7 +326,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
           extras = link.queryParams ? { queryParams: link.queryParams } : undefined;
         }
       } else if ((d.kind === 'agent' || d.kind === 'more') && d.agentId) {
-        commands = ['/project', this.projectId, 'bots', d.agentId, 'executions'];
+        commands = monitorExecutionsLink(this.projectId, d.agentId);
       }
       if (commands) {
         const c = commands;

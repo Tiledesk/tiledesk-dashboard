@@ -16,7 +16,7 @@ import { takeUntil } from 'rxjs/operators';
 import { RolesService } from 'app/services/roles.service';
 import { ExecutionsService } from 'app/services/executions.service';
 import { canViewExecutions } from 'app/bots/executions/executions.models';
-import { executionAgentId } from 'app/bots/executions/execution-links';
+import { executionAgentId, monitorExecutionsLink } from 'app/bots/executions/execution-links';
 const Swal = require('sweetalert2');
 
 export enum LogType {
@@ -127,7 +127,7 @@ export class FlowWebhooksLogsComponent implements OnInit {
     const bot = (this.allBots || []).find(b => b._id === botId);
     this.executionsLinkKey = key;
     this.executionsLinkBots = this.allBots;
-    this.executionsLinkCache = ['/project', this.projectId, 'bots', executionAgentId(bot) || botId, 'executions'];
+    this.executionsLinkCache = monitorExecutionsLink(this.projectId, executionAgentId(bot) || botId);
     return this.executionsLinkCache;
   }
   private executionsLinkKey: string;

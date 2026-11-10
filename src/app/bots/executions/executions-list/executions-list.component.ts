@@ -7,6 +7,7 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { AgentSummary, canViewExecutions, ExecutionListParams, ExecutionRow } from '../executions.models';
+import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration, PERIOD_MS } from '../shared/execution-format';
 
 export const DEFAULT_TRIGGER = 'unattended';
@@ -71,7 +72,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.configured = this.executionsService.isConfigured();
 
-    // the agent switcher reuses this component (bots/:botid/executions <-> bots/executions): follow the route
+    // the agent switcher reuses this component (monitor/:botid/executions <-> monitor/executions): follow the route
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const projectId = params.get('projectid');
       const agentId = params.get('botid');
@@ -308,12 +309,11 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   // ---- navigation ----
 
   switchAgent(agentId: string) {
-    const base = ['/project', this.projectId, 'bots'];
-    this.router.navigate(agentId ? [...base, agentId, 'executions'] : [...base, 'executions'], { queryParamsHandling: 'preserve' });
+    this.router.navigate(monitorExecutionsLink(this.projectId, agentId), { queryParamsHandling: 'preserve' });
   }
 
   openExecution(row: ExecutionRow) {
-    this.router.navigate(['/project', this.projectId, 'bots', row.agent_id, 'executions', row._id]);
+    this.router.navigate([...monitorExecutionsLink(this.projectId, row.agent_id), row._id]);
   }
 
   trackById(_: number, row: ExecutionRow) {

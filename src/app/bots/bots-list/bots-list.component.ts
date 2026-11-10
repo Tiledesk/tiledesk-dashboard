@@ -41,6 +41,7 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { GraphAgent } from '../executions/graph/execution-graph.model';
 import { ExecutionsService } from 'app/services/executions.service';
 import { canViewExecutions } from './../executions/executions.models';
+import { monitorExecutionsLink } from '../executions/execution-links';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
@@ -601,11 +602,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   goToExecutions(bot: any) {
-    this.router.navigate(['project/' + this.project._id + '/bots/' + this.executionsAgentId(bot) + '/executions']);
+    this.router.navigate(monitorExecutionsLink(this.project._id, this.executionsAgentId(bot)));
   }
 
   goToAllExecutions() {
-    this.router.navigate(['project/' + this.project._id + '/bots/executions']);
+    this.router.navigate(monitorExecutionsLink(this.project._id));
   }
 
   checkChromeVersion(): boolean {

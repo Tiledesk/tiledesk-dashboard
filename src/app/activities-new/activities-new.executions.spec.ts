@@ -57,8 +57,8 @@ describe('Activities - Executions audit rows', () => {
     expect(parts.before).toBe(' hard-stopped execution ');
     expect(parts.after).toBe(' of Support Bot · "x"');
     expect(c.executionRouterLink(activity('EXECUTION_STOP_HARD')))
-      .toEqual(['/project', 'pid', 'bots', AGENT, 'executions', EXEC]);
-    expect(executionLink('pid', AGENT, EXEC)!.commands).toEqual(['/project', 'pid', 'bots', AGENT, 'executions', EXEC]);
+      .toEqual(['/project', 'pid', 'monitor', AGENT, 'executions', EXEC]);
+    expect(executionLink('pid', AGENT, EXEC)!.commands).toEqual(['/project', 'pid', 'monitor', AGENT, 'executions', EXEC]);
   });
 
   describe('Executions group', () => {

@@ -143,7 +143,7 @@ describe('ExecutionGraphComponent', () => {
     await ready();
     feed$.next(FIRST());
     component.cy.getElementById('agent:a2').emit('tap');
-    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'bots', 'a2', 'executions']);
+    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a2', 'executions']);
     router.navigate.calls.reset();
     component.cy.getElementById('project').emit('tap');
     expect(router.navigate).not.toHaveBeenCalled();
@@ -189,7 +189,7 @@ describe('ExecutionGraphComponent', () => {
     const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
     expect(lines).toEqual(['3 more not drawn', 'WAIT: 3']);
     more.emit('tap');
-    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'bots', 'a1', 'executions']);
+    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a1', 'executions']);
   });
 
   it('agents get the active class only when something runs or stops', async () => {
