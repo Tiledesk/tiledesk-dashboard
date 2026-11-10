@@ -1,3 +1,4 @@
+import { isMonitorRoute, isFlowsRoute } from './sidebar-routes';
 import { Component, OnInit, AfterViewInit, NgModule, ElementRef, ViewChild, HostListener, EventEmitter, Output, Input, Renderer2 } from '@angular/core';
 
 import { Router, NavigationEnd, Event as NavigationEvent } from '@angular/router';
@@ -1824,7 +1825,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         // Chatbot sidebar
-        if (event.url.indexOf('/bots/my-chatbots/all') !== -1 || event.url.indexOf('/bots') !== -1) {
+        if (isFlowsRoute(event.url)) {
           this.MY_BOTS_ALL_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MY_BOTS_ALL_ROUTE_IS_ACTIVE ', this.MY_BOTS_ALL_ROUTE_IS_ACTIVE);
         } else {
@@ -2021,7 +2022,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
 
-        if (event.url.substring(event.url.lastIndexOf('/') + 1) === 'wsrequests') {
+        if (isMonitorRoute(event.url)) {
           this.MONITOR_ROUTE_IS_ACTIVE = true;
           this.logger.log('[SIDEBAR] NavigationEnd - MONITOR_ROUTE_IS_ACTIVE ', this.MONITOR_ROUTE_IS_ACTIVE);
         } else {

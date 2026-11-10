@@ -1,0 +1,8 @@
+<nav *ngIf="visible" class="monitor-tabs" aria-label="Monitor">
+  <a [routerLink]="conversationsLink" [class.active]="active === 'conversations'"
+    [attr.aria-current]="active === 'conversations' ? 'page' : null">{{ "Monitor.Tabs.Conversations" | translate }}</a>
+  <a [routerLink]="executionsLink" [class.active]="active === 'executions'"
+    [attr.aria-current]="active === 'executions' ? 'page' : null">{{ "Monitor.Tabs.Executions" | translate }}</a>
+  <a [routerLink]="graphLink" [class.active]="active === 'graph'"
+    [attr.aria-current]="active === 'graph' ? 'page' : null">{{ "Monitor.Tabs.Graph" | translate }}</a>
+</nav>

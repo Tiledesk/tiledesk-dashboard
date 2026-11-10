@@ -3798,6 +3798,13 @@
     "VibeCoderUploading": "Caricamento…",
     "VibeCoderUploadFailed": "Caricamento non riuscito",
     "VibeCoderRemoveAttachment": "Rimuovi file",
+    "Monitor": {
+        "Tabs": {
+            "Conversations": "Conversazioni",
+            "Executions": "Esecuzioni",
+            "Graph": "Grafo"
+        }
+    },
     "Executions": {
         "Graph": {
             "SwitchLabel": "Vista",

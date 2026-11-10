@@ -15,6 +15,7 @@ import { VarHistoryDrawerComponent } from './shared/var-history-drawer.component
 import { StopDialogComponent } from './shared/stop-dialog.component';
 import { DestroyDialogComponent } from './shared/destroy-dialog.component';
 import { ExecutionGraphModule } from './graph/execution-graph.module';
+import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { ExecutionGraphModule } from './graph/execution-graph.module';
     FormsModule,
     ExecutionsRoutingModule,
     ExecutionGraphModule,
+    MonitorTabsModule,
   ]
 })
 export class ExecutionsModule { }
