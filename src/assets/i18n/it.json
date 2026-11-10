@@ -3759,6 +3759,19 @@
     "PaymentMethod": "Metodo di pagamento",
     "ContactUsToChangeYourPaymentMethod": "Contattaci per cambiare il metodo di pagamento",
     "Executions": {
+        "Graph": {
+            "Counts": "{{running}} in esecuzione · {{waiting}} in attesa · {{failed}} fallite negli ultimi 15 min",
+            "Truncated": "Sono mostrate le prime 300 esecuzioni attive",
+            "Stale": "I dati potrebbero non essere aggiornati",
+            "Unavailable": "Non è stato possibile caricare il grafo",
+            "Legend": {
+                "Running": "In esecuzione",
+                "Waiting": "In attesa",
+                "Stopping": "In arresto",
+                "Failed": "Fallite (ultimi 15 min)",
+                "Problem": "Con problemi"
+            }
+        },
         "OpenExecution": "Esecuzione ↗",
         "ViewExecutions": "Vedi esecuzioni",
         "Executions": "Esecuzioni",

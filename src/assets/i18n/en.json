@@ -4166,6 +4166,19 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "Executions": {
+        "Graph": {
+            "Counts": "{{running}} running · {{waiting}} waiting · {{failed}} failed in the last 15 min",
+            "Truncated": "Showing the first 300 live executions",
+            "Stale": "Data may be out of date",
+            "Unavailable": "The graph could not be loaded",
+            "Legend": {
+                "Running": "Running",
+                "Waiting": "Waiting",
+                "Stopping": "Stopping",
+                "Failed": "Failed (last 15 min)",
+                "Problem": "Has problems"
+            }
+        },
         "OpenExecution": "Execution ↗",
         "ViewExecutions": "View executions",
         "Executions": "Executions",
