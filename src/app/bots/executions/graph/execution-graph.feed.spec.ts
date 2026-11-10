@@ -1,8 +1,8 @@
 import { fakeAsync, tick } from '@angular/core/testing';
-import { Observable, of, Subject, throwError } from 'rxjs';
+import { NEVER, Observable, of, Subject, throwError } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { ExecutionPage, ExecutionRow } from '../executions.models';
-import { executionGraphFeed, GraphSnapshot, GRAPH_REFRESH_MS } from './execution-graph.feed';
+import { executionGraphFeed, GraphSnapshot, GRAPH_REFRESH_MS, GRAPH_REQUEST_TIMEOUT_MS } from './execution-graph.feed';
 
 const NOW = Date.parse('2026-11-10T12:00:00.000Z');
 const r = (id: string) => ({ _id: id, agent_id: 'a1', status: 'running' } as ExecutionRow);
@@ -97,6 +97,24 @@ describe('executionGraphFeed', () => {
     tick(GRAPH_REFRESH_MS);
     expect(t.calls.length).toBeGreaterThan(n);
     sub.unsubscribe();
+  }));
+
+  it('a never-answering service times out at 10 s: stale snapshot, next call 5 s later', fakeAsync(() => {
+    const t = setup(p => NEVER);
+    const sub = executionGraphFeed(t.service, 'p1', { now: () => NOW, hidden$: new Subject<boolean>() }).subscribe(s => t.snaps.push(s));
+    expect(GRAPH_REQUEST_TIMEOUT_MS).toBe(10000);
+    expect(t.calls.length).toBe(2);
+    tick(9999);
+    expect(t.snaps.length).toBe(0);
+    tick(1);
+    expect(t.snaps.length).toBe(1);
+    expect(t.snaps[0].stale).toBe(true);
+    tick(GRAPH_REFRESH_MS - 1);
+    expect(t.calls.length).toBe(2);
+    tick(1);
+    expect(t.calls.length).toBe(4);
+    sub.unsubscribe();
+    tick(60000);
   }));
 
   it('hidden tab pauses, visible resumes at once', fakeAsync(() => {
