@@ -1,18 +1,50 @@
 /**
- * Colours of the execution graph, copied from the status chip palette
- * (--exec-* in shared/execution-status-chip.component.ts). Cytoscape styles need literal values.
+ * Colours and icons of the execution graph (style C: badges with icon chips).
+ * Cytoscape styles need literal values, so the palette is repeated here.
  */
 export const EXEC_GRAPH_COLORS = {
-  run: '#1b6ef3',
-  runBg: '#e8f0fe',
-  wait: '#5d6b82',
-  waitBg: '#eef1f6',
-  warn: '#a15c00',
-  warnBg: '#fff3e0',
-  bad: '#c62f2f',
-  badBg: '#fdecec',
-  ok: '#1f7a45',
-  okBg: '#e6f4ec',
-  dead: '#3b4250',
-  deadBg: '#e3e6eb',
+  ink: '#1d2433',
+  labelBg: '#fafbfc',
+  // agent badges
+  agentBg: '#efeafd', agentBorder: '#d6ccf7', agentIcon: '#4b2fb3',
+  activeBg: '#e6f0fc', activeBorder: '#b9d3f5', activeIcon: '#0f4c99',
+  idleBg: '#f1f3f6', idleBorder: '#e0e4ea', idleIcon: '#8b95a5',
+  auraBg: '#fde8e6', auraBorder: '#f3b8b2', auraIcon: '#a1170d',
+  // execution chips
+  run: '#1f6fd6',
+  waitBg: '#eef0f3', waitBorder: '#d7dce3', waitIcon: '#4a5361',
+  stopBg: '#fff3dc', stopBorder: '#f2d39a', stopIcon: '#7a4b00',
+  bad: '#d93025',
+  white: '#ffffff',
+  // "+N" node and edges
+  moreBorder: '#9aa4b2', moreText: '#4a5361',
+  edge: '#c9cfd8',
+} as const;
+
+const C = EXEC_GRAPH_COLORS;
+
+/** An inline SVG as a data URI; the `id` is a marker the specs look for. */
+function svgUri(id: string, size: number, attrs: string, body: string): string {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" id="${id}" width="${size}" height="${size}" viewBox="0 0 24 24" ${attrs}>${body}</svg>`;
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+
+const STROKE = 'fill="none" stroke-linecap="round" stroke-linejoin="round"';
+const bot = (color: string) => svgUri('i-bot', 26, `${STROKE} stroke="${color}" stroke-width="2"`,
+  '<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/>' +
+  '<path d="M15 13v2"/><path d="M9 13v2"/>');
+
+/** Background images, built once. */
+export const EXEC_GRAPH_ICONS = {
+  agent: bot(C.agentIcon),
+  agentActive: bot(C.activeIcon),
+  agentIdle: bot(C.idleIcon),
+  agentAura: bot(C.auraIcon),
+  running: svgUri('i-play', 14, `fill="${C.white}" stroke="${C.white}" stroke-width="2" stroke-linejoin="round"`,
+    '<polygon points="7 4 20 12 7 20 7 4"/>'),
+  waiting: svgUri('i-clock', 14, `${STROKE} stroke="${C.waitIcon}" stroke-width="2.2"`,
+    '<circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 14"/>'),
+  stopping: svgUri('i-stop', 12, `fill="${C.stopIcon}"`, '<rect x="5" y="5" width="14" height="14" rx="2"/>'),
+  failed: svgUri('i-alert', 14, `${STROKE} stroke="${C.white}" stroke-width="2.4"`,
+    '<path d="M12 7v6"/><path d="M12 17h.01"/>'),
 } as const;

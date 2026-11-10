@@ -9,7 +9,7 @@ import { ExecutionsService } from 'app/services/executions.service';
 import { executionLink } from '../execution-links';
 import { buildExecutionGraph, GraphAgent, GraphCounts, GraphModel, GraphNode, GraphTooltip, ShownStatus } from './execution-graph.model';
 import { executionGraphFeed, GraphSnapshot } from './execution-graph.feed';
-import { EXEC_GRAPH_COLORS as C } from './execution-graph.colors';
+import { EXEC_GRAPH_COLORS as C, EXEC_GRAPH_ICONS as I } from './execution-graph.colors';
 
 export type ExecutionGraphFeedFactory = (projectId: string) => Observable<GraphSnapshot>;
 export type CytoscapeLoader = () => Promise<any>;
@@ -44,31 +44,82 @@ function classesFor(n: GraphNode): string {
   return out.join(' ');
 }
 
+const FONT = 'Inter, system-ui, sans-serif';
+let measureCtx: CanvasRenderingContext2D | null | undefined;
+
+/** Width of a label in px (canvas metrics, or an estimate when there is no canvas). */
+function textWidth(text: string, font: string, size: number): number {
+  if (measureCtx === undefined) {
+    try { measureCtx = document.createElement('canvas').getContext('2d'); } catch (e) { measureCtx = null; }
+  }
+  if (measureCtx) {
+    measureCtx.font = font;
+    return Math.ceil(measureCtx.measureText(text).width);
+  }
+  return Math.ceil(text.length * size * 0.6);
+}
+
+/** Auto width from the label (Cytoscape's `width: label` is deprecated). */
+const projectWidth = (ele: any) => textWidth(ele.data('label') || '', '600 13px ' + FONT, 13) + 32;
+const moreWidth = (ele: any) => textWidth(ele.data('label') || '', '500 11px ' + FONT, 11) + 16;
+
 const GRAPH_STYLE: any[] = [
   { selector: 'node', style: {
-    'label': 'data(label)', 'font-size': 10, 'color': C.dead, 'text-valign': 'bottom', 'text-margin-y': 4,
-    'background-color': C.wait, 'width': 14, 'height': 14,
+    'label': 'data(label)', 'font-family': FONT, 'font-size': 11, 'color': C.ink,
+    'shape': 'round-rectangle', 'background-color': C.waitBg, 'width': 26, 'height': 26,
   } },
-  { selector: 'node.project', style: { 'background-color': C.dead, 'width': 56, 'height': 56, 'font-size': 13, 'font-weight': 'bold' } },
-  { selector: 'node.agent', style: { 'background-color': C.wait, 'width': 32, 'height': 32, 'font-size': 11 } },
-  { selector: 'node.agent.active', style: { 'background-color': C.run } },
-  { selector: 'node.agent.idle', style: { 'background-color': C.deadBg, 'width': 18, 'height': 18, 'color': C.wait } },
-  { selector: 'node.exec', style: { 'label': '', 'width': 14, 'height': 14 } },
-  { selector: 'node.more', style: {
-    'background-color': C.deadBg, 'border-width': 1, 'border-color': C.wait, 'width': 24, 'height': 24,
-    'font-size': 9, 'color': C.dead, 'text-valign': 'center', 'text-margin-y': 0,
+  { selector: 'node.project', style: {
+    'background-color': C.ink, 'color': C.white, 'font-size': 13, 'font-weight': 600,
+    'text-valign': 'center', 'text-halign': 'center', 'width': projectWidth, 'height': 38, 'corner-radius': 14,
+  } },
+  // agents: a 56px badge with a bot icon, the name below it
+  { selector: 'node.agent', style: {
+    'width': 56, 'height': 56, 'corner-radius': 16, 'border-width': 1,
+    'background-color': C.agentBg, 'border-color': C.agentBorder, 'background-image': I.agent,
+    'background-width': 26, 'background-height': 26,
+    'font-size': 12, 'font-weight': 600, 'text-valign': 'bottom', 'text-halign': 'center', 'text-margin-y': 6,
+    'text-wrap': 'ellipsis', 'text-max-width': 140,
+    'text-background-color': C.labelBg, 'text-background-opacity': 0.9, 'text-background-padding': 2,
+    'text-background-shape': 'round-rectangle',
+  } },
+  { selector: 'node.agent.active', style: { 'background-color': C.activeBg, 'border-color': C.activeBorder, 'background-image': I.agentActive } },
+  { selector: 'node.agent.idle', style: { 'background-color': C.idleBg, 'border-color': C.idleBorder, 'background-image': I.agentIdle } },
+  { selector: 'node.agent.aura', style: {
+    'background-color': C.auraBg, 'border-color': C.auraBorder, 'background-image': I.agentAura,
+    'underlay-color': C.bad, 'underlay-padding': 7, 'underlay-opacity': 0.16, 'underlay-shape': 'round-rectangle',
+    'underlay-corner-radius': 23,
+  } },
+  // executions: a 26px chip with a status icon
+  { selector: 'node.exec', style: {
+    'label': '', 'width': 26, 'height': 26, 'corner-radius': 7, 'border-width': 0,
+    'background-width': 14, 'background-height': 14,
   } },
   { selector: 'node.s-running', style: {
-    'background-color': C.run, 'underlay-color': C.run, 'underlay-padding': 6, 'underlay-opacity': 0.25, 'underlay-shape': 'ellipse',
+    'background-color': C.run, 'background-image': I.running,
+    'underlay-color': C.run, 'underlay-padding': 5, 'underlay-opacity': 0.25, 'underlay-shape': 'round-rectangle',
+    'underlay-corner-radius': 12,
   } },
-  { selector: 'node.s-waiting', style: { 'background-color': C.wait, 'opacity': 0.55 } },
-  { selector: 'node.s-stopping', style: { 'background-color': C.warn } },
-  { selector: 'node.s-failed', style: { 'background-color': C.bad } },
-  { selector: 'node.aura', style: {
-    'underlay-color': C.bad, 'underlay-padding': 8, 'underlay-opacity': 0.35, 'underlay-shape': 'ellipse',
+  { selector: 'node.s-waiting', style: {
+    'background-color': C.waitBg, 'border-width': 1, 'border-color': C.waitBorder, 'background-image': I.waiting,
   } },
-  { selector: 'edge', style: { 'width': 1, 'line-color': C.deadBg, 'curve-style': 'straight' } },
-  { selector: 'edge.edge-animated', style: { 'line-color': C.run, 'line-style': 'dashed', 'line-dash-pattern': [6, 4] } },
+  { selector: 'node.s-stopping', style: {
+    'background-color': C.stopBg, 'border-width': 1, 'border-color': C.stopBorder, 'background-image': I.stopping,
+    'background-width': 12, 'background-height': 12,
+  } },
+  { selector: 'node.s-failed', style: { 'background-color': C.bad, 'background-image': I.failed } },
+  { selector: 'node.exec.aura', style: {
+    'underlay-color': C.bad, 'underlay-padding': 5, 'underlay-opacity': 0.2, 'underlay-shape': 'round-rectangle',
+    'underlay-corner-radius': 12,
+  } },
+  // "+N": an auto-width dashed pill
+  { selector: 'node.more', style: {
+    'width': moreWidth, 'height': 22, 'corner-radius': 11, 'background-color': C.white,
+    'border-width': 1, 'border-style': 'dashed', 'border-color': C.moreBorder,
+    'font-size': 11, 'font-weight': 500, 'color': C.moreText, 'text-valign': 'center', 'text-halign': 'center',
+  } },
+  { selector: 'edge', style: { 'width': 1, 'line-color': C.edge, 'curve-style': 'straight' } },
+  { selector: 'edge.edge-animated', style: { 'width': 1.5, 'line-color': C.run, 'line-style': 'dashed', 'line-dash-pattern': [5, 4] } },
+  { selector: 'edge.edge-failed', style: { 'width': 1.5, 'line-color': C.bad } },
 ];
 
 @Component({
@@ -85,7 +136,6 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLElement>;
 
-  readonly colors = C;
   cy: any = null;
   counts: GraphCounts | null = null;
   stale = false;
@@ -228,8 +278,9 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
           el.position({ x: n.position.x, y: n.position.y });
         }
       }
+      const failedIds = new Set(model.nodes.filter(n => n.status === 'failed').map(n => n.id));
       for (const e of model.edges) {
-        const classes = e.animated ? 'edge-animated' : '';
+        const classes = e.animated ? 'edge-animated' : failedIds.has(e.target) ? 'edge-failed' : '';
         const el = cy.getElementById(e.id);
         if (el.empty()) {
           add.push({ group: 'edges', data: { id: e.id, source: e.source, target: e.target }, classes });
