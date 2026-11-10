@@ -74,7 +74,7 @@ describe('executionGraphFeed', () => {
 
   it('an error keeps the last snapshot and marks it stale', fakeAsync(() => {
     let fail = false;
-    const t = setup(p => fail ? throwError(() => new Error('503')) : of(page(p.status === LIVE ? ['l1'] : [])));
+    const t = setup(p => fail ? throwError(new Error('503')) : of(page(p.status === LIVE ? ['l1'] : [])));
     const sub = executionGraphFeed(t.service, 'p1', { now: () => NOW, hidden$: new Subject<boolean>() }).subscribe(s => t.snaps.push(s));
     expect(t.snaps[0].stale).toBe(false);
     fail = true;
@@ -90,7 +90,7 @@ describe('executionGraphFeed', () => {
   }));
 
   it('an error before any data emits an empty stale snapshot and keeps retrying', fakeAsync(() => {
-    const t = setup(p => throwError(() => new Error('down')));
+    const t = setup(p => throwError(new Error('down')));
     const sub = executionGraphFeed(t.service, 'p1', { now: () => NOW, hidden$: new Subject<boolean>() }).subscribe(s => t.snaps.push(s));
     expect(t.snaps[0]).toEqual({ live: [], failed: [], fetchedAt: NOW, stale: true });
     const n = t.calls.length;
@@ -129,5 +129,85 @@ describe('executionGraphFeed', () => {
     tick(60000);
     expect(t.snaps.length).toBe(0);
     expect(t.calls.length).toBe(2);
+  }));
+
+  it('hidden while a timer is pending: no call fires', fakeAsync(() => {
+    const hidden$ = new Subject<boolean>();
+    const t = setup(p => of(page([])));
+    const sub = executionGraphFeed(t.service, 'p1', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    tick(GRAPH_REFRESH_MS - 1);
+    hidden$.next(true);
+    tick(60000);
+    expect(t.calls.length).toBe(2);
+    sub.unsubscribe();
+  }));
+
+  it('hidden while a request is in flight: its result emits, nothing is scheduled after', fakeAsync(() => {
+    const hidden$ = new Subject<boolean>();
+    const t = setup(p => of(page(['l1'])).pipe(delay(2000)));
+    const sub = executionGraphFeed(t.service, 'p1', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    tick(1000);
+    hidden$.next(true);
+    tick(1000);
+    expect(t.snaps.length).toBe(1);
+    expect(t.snaps[0].stale).toBe(false);
+    tick(60000);
+    expect(t.calls.length).toBe(2);
+    sub.unsubscribe();
+  }));
+
+  it('visible while in flight: no second call', fakeAsync(() => {
+    const hidden$ = new Subject<boolean>();
+    const t = setup(p => of(page([])).pipe(delay(2000)));
+    const sub = executionGraphFeed(t.service, 'p1', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    tick(500);
+    hidden$.next(true);
+    hidden$.next(false);
+    expect(t.calls.length).toBe(2);
+    tick(1500);
+    expect(t.snaps.length).toBe(1);
+    tick(GRAPH_REFRESH_MS);
+    expect(t.calls.length).toBe(4);
+    sub.unsubscribe();
+    tick(10000);
+  }));
+
+  it('repeated visible events start no extra calls', fakeAsync(() => {
+    const hidden$ = new Subject<boolean>();
+    const t = setup(p => of(page([])));
+    const sub = executionGraphFeed(t.service, 'p1', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    hidden$.next(false);
+    hidden$.next(false);
+    expect(t.calls.length).toBe(2);
+    sub.unsubscribe();
+  }));
+
+  it('hidden then visible while in flight: no double cycle', fakeAsync(() => {
+    const hidden$ = new Subject<boolean>();
+    const t = setup(p => of(page([])).pipe(delay(2000)));
+    const sub = executionGraphFeed(t.service, 'p1', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    hidden$.next(true);
+    tick(100);
+    hidden$.next(false);
+    tick(1900);
+    expect(t.snaps.length).toBe(1);
+    expect(t.calls.length).toBe(2);
+    tick(GRAPH_REFRESH_MS);
+    expect(t.calls.length).toBe(4);
+    sub.unsubscribe();
+    tick(10000);
+  }));
+
+  it('the default hidden$ listener is removed on unsubscribe', fakeAsync(() => {
+    const t = setup(p => of(page([])));
+    const added: any[] = [];
+    const removed: any[] = [];
+    const add = spyOn(document, 'addEventListener').and.callFake((type: string, fn: any) => { if (type === 'visibilitychange') { added.push(fn); } });
+    spyOn(document, 'removeEventListener').and.callFake((type: string, fn: any) => { if (type === 'visibilitychange') { removed.push(fn); } });
+    const sub = executionGraphFeed(t.service, 'p1', { now: () => NOW }).subscribe(s => t.snaps.push(s));
+    expect(added.length).toBe(1);
+    sub.unsubscribe();
+    expect(removed).toEqual(added);
+    tick(60000);
   }));
 });

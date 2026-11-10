@@ -54,10 +54,12 @@ export function executionGraphFeed(
     let last: GraphSnapshot | null = null;
     let timer: any = null;
     let inflight: Subscription | null = null;
+    let running = false;
 
     const clear = () => {
       if (timer !== null) { clearTimeout(timer); timer = null; }
       if (inflight) { inflight.unsubscribe(); inflight = null; }
+      running = false;
     };
 
     const schedule = () => {
@@ -67,6 +69,7 @@ export function executionGraphFeed(
 
     const done = (snap: GraphSnapshot) => {
       inflight = null;
+      running = false;
       last = snap;
       subscriber.next(snap);
       schedule();
@@ -74,6 +77,7 @@ export function executionGraphFeed(
 
     const run = () => {
       clear();
+      running = true;
       const t = now();
       const live$ = fetchPages(service, projectId, { status: 'running,waiting,stopping', limit: PAGE_LIMIT });
       const failed$ = fetchPages(service, projectId, {
@@ -90,14 +94,21 @@ export function executionGraphFeed(
           ? { ...last, stale: true }
           : { live: [], failed: [], fetchedAt: t, stale: true })
       );
+      // a synchronous source has already completed (done ran): nothing is in flight
+      if (!running) { inflight = null; }
     };
 
     const hiddenSub = (opts.hidden$ || documentHidden$()).subscribe(h => {
       if (h === hidden) { return; }
       hidden = h;
-      if (hidden) { clear(); } else { run(); }
+      if (hidden) {
+        // pause: drop the pending timer only; an in-flight request still delivers its result
+        if (timer !== null) { clearTimeout(timer); timer = null; }
+      } else if (!running) {
+        run();
+      }
     });
-    if (!hidden && !inflight && timer === null) { run(); }
+    if (!hidden && !running && timer === null) { run(); }
 
     return () => { hiddenSub.unsubscribe(); clear(); };
   });
