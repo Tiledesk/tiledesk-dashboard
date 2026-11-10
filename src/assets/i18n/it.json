@@ -3921,7 +3921,8 @@
                 "hard": "arresto immediato"
             },
             "Interrupted": "interrotta \"{{action}}\"",
-            "MessagesWhileStopped": "{{n}} messaggi ricevuti durante l'arresto"
+            "MessagesWhileStopped": "{{n}} messaggi ricevuti durante l'arresto",
+            "MessagesWhileStoppedOne": "1 messaggio ricevuto durante l'arresto"
         },
         "Dialogs": {
             "StopTitle": "Arresta esecuzione",

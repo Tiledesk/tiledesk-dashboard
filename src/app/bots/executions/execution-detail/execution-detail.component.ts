@@ -16,6 +16,8 @@ import { StopDialogComponent, StopDialogData, StopMode } from '../shared/stop-di
 import { DestroyDialogComponent, DestroyDialogData } from '../shared/destroy-dialog.component';
 
 export const POLL_MS = 2000;
+/** A waiting execution can wait for days: poll it less often (2 s again while a control is pending). */
+export const POLL_WAITING_MS = 10000;
 /** The Flow state tab shows this many variables before "show all" (spec §15). */
 export const STATE_TAB_LIMIT = 50;
 /** A block may be running (spinner, elapsed time). */
@@ -254,7 +256,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return this.detail ? this.detail.steps.find(s => s.seq === seq) : undefined;
   }
 
-  // ---- polling: 2 s after each answer while running, waiting or stopping ----
+  // ---- polling: 2 s after each answer while running or stopping, 10 s while waiting ----
 
   /**
    * Called after each response or error: the next poll starts POLL_MS later, so a response slower
@@ -264,7 +266,8 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.stopPolling();
     const status = this.detail && this.detail.execution.status;
     if (POLL_STATUSES.includes(status) || this.pending) {
-      this.pollSub = timer(POLL_MS).pipe(takeUntil(this.destroy$)).subscribe(() => {
+      const delay = status === 'waiting' && !this.pending ? POLL_WAITING_MS : POLL_MS;
+      this.pollSub = timer(delay).pipe(takeUntil(this.destroy$)).subscribe(() => {
         this.pollSub = null;
         this.load$.next();
       });
@@ -441,6 +444,16 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return c.name === 'destroy' ? 'Executions.Controls.NoPermissionDestroy' : 'Executions.Controls.NoPermissionStop';
   }
 
+  /** Label of the interrupted action: title, type or id, else its position. */
+  interruptedLabel(ia: { index?: number | null; action_id?: string | null; type?: string | null; title?: string | null }): string {
+    if (!ia) return '';
+    return ia.title || ia.type || ia.action_id || (ia.index !== null && ia.index !== undefined ? '#' + ia.index : '');
+  }
+
+  messagesWhileStoppedKey(n: number): string {
+    return 'Executions.Controls.MessagesWhileStopped' + (n === 1 ? 'One' : '');
+  }
+
   /** The action running now: the last action of the running block. */
   currentActionTitle(): string | null {
     const steps = (this.detail && this.detail.steps) || [];
@@ -493,7 +506,12 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
         this.clearPending();
         this.logger.error('[EXECUTION-DETAIL] control error ', err);
         this.controlMessage = this.controlError(err);
-        this.updatePolling();
+        const status = err instanceof HttpErrorResponse ? err.status : err && err.status;
+        if (status === 409) {
+          // the execution moved on its own (stopped and failed are not polled): reload once so the chip is current
+          this.stopPolling();
+          this.load$.next();
+        } else this.updatePolling();
       }
     });
   }
