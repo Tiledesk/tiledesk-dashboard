@@ -331,6 +331,64 @@ describe('ExecutionGraphComponent', () => {
     expect(component.failed).toBe(false);
   });
 
+  it('agent and execution nodes use style C (shape, size, background image per status, label below the agent)', async () => {
+    setup({ agents: [{ id: 'a1', name: 'Nightly' }, { id: 'a2', name: 'Alpha' }, { id: 'a3', name: 'Quiet' }] });
+    await ready();
+    const E4 = '44444444-4444-4444-4444-444444444444';
+    const many = Array.from({ length: 14 }, (_, i) => row('w' + String(i).padStart(2, '0') + '-0000-0000', 'waiting', 'a3'));
+    feed$.next(snap([row(E1, 'running', 'a1'), row(E2, 'waiting', 'a2'), row(E4, 'stopping', 'a1')], [row(E3, 'failed', 'a2')]));
+    const cy = component.cy;
+    const img = (id: string) => decodeURIComponent(String(cy.getElementById(id).style('background-image')));
+
+    const agent = cy.getElementById('agent:a1');
+    expect(agent.style('shape')).toBe('round-rectangle');
+    expect(agent.numericStyle('width')).toBe(56);
+    expect(agent.numericStyle('height')).toBe(56);
+    expect(agent.style('text-valign')).toBe('bottom');
+    expect(agent.numericStyle('font-size')).toBe(12);
+    expect(img('agent:a1')).toContain('i-bot');
+    expect(img('agent:a1')).toContain('#0f4c99');            // active
+    expect(img('agent:a2')).toContain('#a1170d');            // aura wins over default
+    expect(cy.getElementById('agent:a2').numericStyle('underlay-padding')).toBe(7);
+
+    const exec = cy.getElementById('exec:' + E1);
+    expect(exec.style('shape')).toBe('round-rectangle');
+    expect(exec.numericStyle('width')).toBe(26);
+    expect(exec.numericStyle('height')).toBe(26);
+    expect(img('exec:' + E1)).toContain('i-play');
+    expect(img('exec:' + E2)).toContain('i-clock');
+    expect(img('exec:' + E3)).toContain('i-alert');
+    expect(img('exec:' + E4)).toContain('i-stop');
+    expect(cy.getElementById('exec:' + E2).numericStyle('opacity')).toBe(1);
+    expect(cy.getElementById('project').style('shape')).toBe('round-rectangle');
+    expect(cy.getElementById('project').numericStyle('width')).toBeGreaterThan(32); // grows with the name
+
+    expect(cy.getElementById('agent:a2->exec:' + E3).hasClass('edge-failed')).toBe(true);
+    expect(cy.getElementById('agent:a2->exec:' + E3).numericStyle('width')).toBe(1.5);
+    expect(cy.getElementById('agent:a1->exec:' + E1).numericStyle('width')).toBe(1.5);
+    expect(cy.getElementById('agent:a2->exec:' + E2).numericStyle('width')).toBe(1);
+
+    // default (executions, none active) and idle agents
+    feed$.next(snap([...many, row(E2, 'waiting', 'a2')]));
+    expect(img('agent:a2')).toContain('#4b2fb3');
+    expect(img('agent:a1')).toContain('#8b95a5');
+    const more = cy.getElementById('more:a3');
+    expect(more.style('border-style')).toBe('dashed');
+    expect(more.numericStyle('height')).toBe(22);
+    expect(more.numericStyle('font-size')).toBe(11);
+    expect(more.numericStyle('width')).toBeGreaterThan(22);   // auto width from '+N'
+  });
+
+  it('legend shows a chip swatch per status', async () => {
+    setup();
+    await ready();
+    const swatches = (fixture.nativeElement as HTMLElement).querySelectorAll('.graph-legend .chip');
+    expect(swatches.length).toBe(5);
+    expect(Array.from(swatches).map(s => s.className)).toEqual([
+      'chip chip-running', 'chip chip-waiting', 'chip chip-stopping', 'chip chip-failed', 'chip chip-aura',
+    ]);
+  });
+
   it('a new projectId resets the graph and subscribes the new feed', async () => {
     setup();
     await ready();
