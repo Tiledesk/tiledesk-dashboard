@@ -3758,6 +3758,13 @@
     "AIAgentNameOptionalHint": "Facoltativo se scrivi una descrizione: l'IA darà il nome all'agente.",
     "PaymentMethod": "Metodo di pagamento",
     "ContactUsToChangeYourPaymentMethod": "Contattaci per cambiare il metodo di pagamento",
+    "Monitor": {
+        "Tabs": {
+            "Conversations": "Conversazioni",
+            "Executions": "Esecuzioni",
+            "Graph": "Grafo"
+        }
+    },
     "Executions": {
         "Graph": {
             "SwitchLabel": "Vista",
