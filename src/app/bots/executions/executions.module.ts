@@ -14,7 +14,7 @@ import { FlowStatePanelComponent, MaskedValueComponent } from './shared/flow-sta
 import { VarHistoryDrawerComponent } from './shared/var-history-drawer.component';
 import { StopDialogComponent } from './shared/stop-dialog.component';
 import { DestroyDialogComponent } from './shared/destroy-dialog.component';
-import { ExecutionGraphComponent } from './graph/execution-graph.component';
+import { ExecutionGraphModule } from './graph/execution-graph.module';
 
 @NgModule({
   declarations: [
@@ -26,9 +26,8 @@ import { ExecutionGraphComponent } from './graph/execution-graph.component';
     VarHistoryDrawerComponent,
     StopDialogComponent,
     DestroyDialogComponent,
-    ExecutionGraphComponent,
   ],
-  exports: [ExecutionGraphComponent],
+  exports: [ExecutionGraphModule],
   imports: [
     CommonModule,
     TranslateModule,
@@ -38,6 +37,7 @@ import { ExecutionGraphComponent } from './graph/execution-graph.component';
     MatRadioModule,
     FormsModule,
     ExecutionsRoutingModule,
+    ExecutionGraphModule,
   ]
 })
 export class ExecutionsModule { }
