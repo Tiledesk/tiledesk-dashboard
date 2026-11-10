@@ -11,6 +11,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import {
   AllowedControl, canViewExecutions, ControlName, ExecutionDetail, StateView, Step, VarHistoryEntry, VarView
 } from '../executions.models';
+import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration } from '../shared/execution-format';
 import { StopDialogComponent, StopDialogData, StopMode } from '../shared/stop-dialog.component';
 import { DestroyDialogComponent, DestroyDialogData } from '../shared/destroy-dialog.component';
@@ -81,7 +82,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   readonly stateTabLimit = STATE_TAB_LIMIT;
 
   projectId: string | null = null;
-  /** :botid of the route (absent on bots/executions/:executionid) */
+  /** :botid of the route (absent on monitor/executions/:executionid) */
   routeAgentId: string | null = null;
   executionId: string | null = null;
   invalid = false;
@@ -555,12 +556,12 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   }
 
   backToList() {
-    this.router.navigate(['/project', this.projectId, 'bots', this.agentForLinks(), 'executions']);
+    this.router.navigate(monitorExecutionsLink(this.projectId, this.agentForLinks()));
   }
 
   openExecution(id: string) {
     if (!id || !ID_RE.test(id)) return;
-    this.router.navigate(['/project', this.projectId, 'bots', this.agentForLinks(), 'executions', id]);
+    this.router.navigate([...monitorExecutionsLink(this.projectId, this.agentForLinks()), id]);
   }
 
   openConversation() {

@@ -1320,18 +1320,32 @@ export const appRoutes: Routes = [
   //   canActivate: [AuthGuard]
   // },
 
-  // Executions (agent execution traceability). Must stay before 'project/:projectid/bots' and
-  // 'project/:projectid/bots/:faqkbid/:type' (FaqComponent), which would otherwise swallow these paths.
-  // The permission is checked in the component (executions_read), the API refuses anyway.
+  // Executions (agent execution traceability) live under Monitor. The permission is checked in the
+  // component (executions_read), the API refuses anyway.
   {
-    path: 'project/:projectid/bots/executions',
+    path: 'project/:projectid/monitor/executions',
     loadChildren: () => import('app/bots/executions/executions.module').then(m => m.ExecutionsModule),
     canActivate: [AuthGuard],
   },
   {
-    path: 'project/:projectid/bots/:botid/executions',
+    path: 'project/:projectid/monitor/:botid/executions',
     loadChildren: () => import('app/bots/executions/executions.module').then(m => m.ExecutionsModule),
     canActivate: [AuthGuard],
+  },
+  // Old addresses (bookmarks, emails): redirect to Monitor, query params are kept by the router.
+  // Must stay before 'project/:projectid/bots' and 'project/:projectid/bots/:faqkbid/:type' (FaqComponent),
+  // which would otherwise swallow these paths. Prefix match so a trailing :executionid follows along.
+  {
+    path: 'project/:projectid/bots/executions',
+    redirectTo: 'project/:projectid/monitor/executions',
+  },
+  {
+    path: 'project/:projectid/bots/:botid/executions/:executionid',
+    redirectTo: 'project/:projectid/monitor/:botid/executions/:executionid',
+  },
+  {
+    path: 'project/:projectid/bots/:botid/executions',
+    redirectTo: 'project/:projectid/monitor/:botid/executions',
   },
 
   {

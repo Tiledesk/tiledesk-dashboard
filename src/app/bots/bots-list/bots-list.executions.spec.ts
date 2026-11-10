@@ -141,8 +141,8 @@ describe('BotListComponent executions entry', () => {
     setup(true, 'owner');
     fixture.detectChanges();
     fixture.nativeElement.querySelectorAll('.executions-btn')[0].click();
-    expect(router.navigate).toHaveBeenCalledWith(['project/p1/bots/root1/executions']);
+    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'root1', 'executions']);
     component.goToAllExecutions();
-    expect(router.navigate).toHaveBeenCalledWith(['project/p1/bots/executions']);
+    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'executions']);
   });
 });

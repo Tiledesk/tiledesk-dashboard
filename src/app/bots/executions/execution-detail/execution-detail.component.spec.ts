@@ -126,7 +126,7 @@ describe('ExecutionDetailComponent', () => {
       (el().querySelector('.ex-conversation') as HTMLButtonElement).click();
       expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'wsrequest', 'support-group-p1-r1', 'messages']);
       (el().querySelector('.ex-lineage-link') as HTMLButtonElement).click();
-      expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'bots', 'a1', 'executions', '0193b7aa-1111']);
+      expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a1', 'executions', '0193b7aa-1111']);
     });
 
     it('renders the control row from allowed_controls (empty in Phase 1: nothing shows)', () => {

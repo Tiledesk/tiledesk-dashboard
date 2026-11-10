@@ -238,9 +238,9 @@ describe('ExecutionsListComponent', () => {
       expect(faqKb.getFaqKbByProjectId.calls.count()).toBe(1);
       expect(component.agents).toEqual([{ id: 'b2', name: 'Alpha' }, { id: 'a1', name: 'Nightly' }]);
       component.switchAgent('a1');
-      expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/project', 'p1', 'bots', 'a1', 'executions']);
+      expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/project', 'p1', 'monitor', 'a1', 'executions']);
       component.switchAgent('');
-      expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/project', 'p1', 'bots', 'executions']);
+      expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/project', 'p1', 'monitor', 'executions']);
     });
   });
 
@@ -250,7 +250,7 @@ describe('ExecutionsListComponent', () => {
       expect(fixture.nativeElement.querySelectorAll('.exec-warn-icon').length).toBe(1);
       expect(text()).toContain('2.1 s');
       fixture.nativeElement.querySelector('.exec-row').click();
-      expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/project', 'p1', 'bots', 'a1', 'executions', 'e1']);
+      expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/project', 'p1', 'monitor', 'a1', 'executions', 'e1']);
     });
   });
 

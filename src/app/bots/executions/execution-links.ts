@@ -11,14 +11,21 @@ export interface ExecutionLink {
 }
 
 /**
- * Link into the executions pages for one execution. With an agent id it goes straight to the detail;
+ * Link into the executions pages (under Monitor) for one execution. With an agent id it goes straight to the detail;
  * without it falls back to the all-agents list filtered by the execution id.
  */
 export function executionLink(projectId: string, agentId: string | null | undefined, executionId: any): ExecutionLink | null {
   const id = validExecutionId(executionId);
   if (!projectId || !id) return null;
-  if (agentId) return { commands: ['/project', projectId, 'bots', agentId, 'executions', id] };
-  return { commands: ['/project', projectId, 'bots', 'executions'], queryParams: { q: id } };
+  if (agentId) return { commands: [...monitorExecutionsLink(projectId, agentId), id] };
+  return { commands: monitorExecutionsLink(projectId), queryParams: { q: id } };
+}
+
+/** Executions list inside Monitor: the agent's, or the all-agents one when no agent is given. */
+export function monitorExecutionsLink(projectId: string, agentId?: string | null): string[] {
+  return agentId
+    ? ['/project', projectId, 'monitor', agentId, 'executions']
+    : ['/project', projectId, 'monitor', 'executions'];
 }
 
 /** Agent id of an execution: root id when the bot has one, else the bot's own id. */
