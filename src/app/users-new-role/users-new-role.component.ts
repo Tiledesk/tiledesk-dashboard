@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { RolesService } from 'app/services/roles.service';
 import { TranslateService } from '@ngx-translate/core';
-import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { PERMISSIONS, PERMISSION_DEPENDENCIES } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
 
 
@@ -236,6 +236,21 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.FLOW_WEBHOOK_EDIT, label: 'Able to enable/disable Webhooks' },
         { key: PERMISSIONS.FLOW_WEBHOOK_DELETE, label: 'Able to delete Webhooks' },
         // { key: PERMISSIONS.FLOW_VIEW_MESSAGE_GRAPH, label: 'Able to view messages graph' },
+      ]
+    },
+
+    {
+      key: 'executionsManagement',
+      title: 'Executions',
+      parentLabel: 'Select all',
+      type: 'checkbox',
+      expanded: false,
+      children: [
+        { key: PERMISSIONS.EXECUTIONS_READ, label: 'Able to view executions' },
+        { key: PERMISSIONS.EXECUTIONS_CONTROL, label: 'Able to stop executions' },
+        { key: PERMISSIONS.EXECUTIONS_DESTROY, label: 'Able to destroy executions' },
+        { key: PERMISSIONS.EXECUTIONS_DATA_ACCESS, label: 'Able to view execution data' },
+        { key: PERMISSIONS.EXECUTIONS_AUDIT_READ, label: 'Able to view execution audit entries in Activities' },
       ]
     },
 
@@ -510,6 +525,9 @@ export class UsersNewRoleComponent implements OnInit {
   nameExists: boolean = false;
   isAuthorized = false;
   permissionChecked = false;
+  private enforcingDependencies = false;
+  private loadingRole = false;
+  private autoTicked = new Set<string>();
 
   constructor(
     private router: Router,
@@ -620,6 +638,8 @@ export class UsersNewRoleComponent implements OnInit {
   }
 
   getRoleById(roleId) {
+    this.loadingRole = true;
+    this.autoTicked.clear();
     this.rolesService.getRoleById(roleId)
       .subscribe((res: any) => {
         this.logger.log('[USERS-ROLES] - GET ROLE BY ID - RES ', res);
@@ -652,14 +672,17 @@ export class UsersNewRoleComponent implements OnInit {
       },
         error => {
           this.logger.error('[USERS-ROLES] - GET ROLE BY ID - ERROR: ', error);
+          this.loadingRole = false;
         },
         () => {
           this.logger.log('[USERS-ROLES] - GET ROLE BY ID * COMPLETE *')
+          this.loadingRole = false;
           this.syncAfterPatch()
         });
   }
 
   syncAfterPatch() {
+    this.enforcePermissionDependencies();
     // Manually trigger syncing after patch
     this.sections.forEach(section => {
       if (section.type !== 'radio') {
@@ -720,10 +743,53 @@ export class UsersNewRoleComponent implements OnInit {
         });
       });
     });
+    this.setupPermissionDependencies();
     this.onValuesChanges()
   }
 
+  // Tick-and-lock: ticking a permission ticks its prerequisites and disables them
+  // while any dependent is ticked. A prerequisite ticked only by this rule is unticked
+  // again when its last dependent goes; one the user ticked (or a stored role had) stays.
+  // Locked controls stay in the form (getSelectedPermissions reads control.value, so
+  // disabled ones are still saved).
+  private setupPermissionDependencies() {
+    Object.keys(PERMISSION_DEPENDENCIES).forEach(key => {
+      this.form.get(key)?.valueChanges.subscribe(() => this.enforcePermissionDependencies());
+    });
+  }
 
+  enforcePermissionDependencies() {
+    if (this.enforcingDependencies || this.loadingRole) return;
+    this.enforcingDependencies = true;
+    try {
+      const needed = new Set<string>();
+      Object.keys(PERMISSION_DEPENDENCIES).forEach(dependent => {
+        if (!this.form.get(dependent)?.value || this.autoTicked.has(dependent)) return;
+        PERMISSION_DEPENDENCIES[dependent].forEach(pre => needed.add(pre));
+      });
+      const prerequisites = new Set<string>();
+      Object.keys(PERMISSION_DEPENDENCIES).forEach(k => PERMISSION_DEPENDENCIES[k].forEach(p => prerequisites.add(p)));
+      prerequisites.forEach(pre => {
+        const c = this.form.get(pre);
+        if (!c) return;
+        if (needed.has(pre)) {
+          if (!c.value) {
+            c.setValue(true);
+            this.autoTicked.add(pre);
+          }
+          if (c.enabled) c.disable({ emitEvent: false });
+        } else {
+          if (c.disabled) c.enable({ emitEvent: false });
+          if (this.autoTicked.has(pre)) {
+            this.autoTicked.delete(pre);
+            if (c.value) c.setValue(false);
+          }
+        }
+      });
+    } finally {
+      this.enforcingDependencies = false;
+    }
+  }
 
   onValuesChanges() {
     this.form.valueChanges.subscribe(() => {
@@ -862,6 +928,8 @@ export class UsersNewRoleComponent implements OnInit {
     section.children.forEach(child => {
       this.form.get(child.key)?.setValue(isChecked);
     });
+    // a locked prerequisite must stay ticked while one of its dependents is
+    this.enforcePermissionDependencies();
   }
 
   get isSubmitDisabled(): boolean {
