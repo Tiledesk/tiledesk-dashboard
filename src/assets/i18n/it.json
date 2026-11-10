@@ -3763,6 +3763,9 @@
             "Conversations": "Conversazioni",
             "Executions": "Esecuzioni",
             "Graph": "Grafo"
+        },
+        "Graph": {
+            "LoadError": "Impossibile caricare il grafo."
         }
     },
     "Executions": {

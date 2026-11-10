@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, EventEmitter, Inject, inject, InjectionToken, Input, NgZone, OnChanges, OnDestroy, OnInit,
+  Component, ElementRef, EventEmitter, HostBinding, Inject, inject, InjectionToken, Input, NgZone, OnChanges, OnDestroy, OnInit,
   Output, SimpleChanges, ViewChild
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -141,6 +141,8 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() projectId: string;
   @Input() projectName = '';
   @Input() agents: GraphAgent[] = [];
+  /** Fill the height of the host (a full-page host) instead of the default 70vh canvas. */
+  @Input() @HostBinding('class.fill') fill = false;
   /** Emitted when Cytoscape cannot be loaded or created, so the host can switch back to List. */
   @Output() unavailable = new EventEmitter<void>();
 
