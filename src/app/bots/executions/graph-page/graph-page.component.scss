@@ -8,6 +8,8 @@
   padding-top: 61px;
 }
 
+.graph-page-top ::ng-deep .monitor-tabs { top: 0; }
+
 .graph-page-body {
   flex: 1 1 auto;
   min-height: 480px;

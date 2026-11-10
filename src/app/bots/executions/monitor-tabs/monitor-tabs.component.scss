@@ -1,6 +1,12 @@
 :host { display: block; }
 
 .monitor-tabs {
+  // The dashboard header is absolute and 61px high, and the conversations and executions pages
+  // already start their own content far enough below it: draw the bar just under the header
+  // without moving the page. The graph page starts under the header itself and resets this.
+  position: relative;
+  top: 61px;
+  z-index: 2;
   display: flex;
   gap: 24px;
   padding: 0 24px;
