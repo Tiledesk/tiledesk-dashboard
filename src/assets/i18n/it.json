@@ -3935,6 +3935,44 @@
             "add": "aggiunta",
             "set": "modificata",
             "del": "eliminata"
+        },
+        "Controls": {
+            "stop": "Arresta",
+            "stop_hard_now": "Arresta subito",
+            "destroy": "Distruggi",
+            "NoPermissionStop": "Non hai il permesso di arrestare le esecuzioni",
+            "NoPermissionDestroy": "Solo il proprietario del progetto può distruggere le esecuzioni",
+            "Pending": {
+                "stopping": "in arresto…",
+                "destroying": "in distruzione…"
+            },
+            "NotAllowed": "Questo controllo non è più consentito. Consentiti ora: {{allowed}}",
+            "NotAllowedNone": "Questo controllo non è più consentito. Nessun controllo è consentito ora.",
+            "Unavailable": "I controlli sono temporaneamente non disponibili",
+            "Forbidden": "Non hai il permesso per questo controllo",
+            "ConfirmMismatch": "Il codice di conferma non corrisponde",
+            "Failed": "Il controllo non è riuscito. Riprova.",
+            "StopMode": {
+                "soft": "arresto morbido",
+                "hard": "arresto immediato"
+            },
+            "Interrupted": "interrotta \"{{action}}\"",
+            "MessagesWhileStopped": "{{n}} messaggi ricevuti durante l'arresto"
+        },
+        "Dialogs": {
+            "StopTitle": "Arresta esecuzione",
+            "StopNowTitle": "Arresta subito",
+            "Soft": "Arresto morbido — termina l'azione corrente, poi si ferma",
+            "Hard": "Arresto immediato — interrompe subito l'azione corrente",
+            "HardNow": "Arresto immediato — interrompe subito l'azione corrente, senza attendere che finisca.",
+            "HardAction": "\"{{action}}\" viene interrotta.",
+            "Stop": "Arresta",
+            "StopNow": "Arresta subito",
+            "Cancel": "Annulla",
+            "DestroyTitle": "Distruggi esecuzione",
+            "DestroyText": "La arresta, chiude la sua conversazione e ne rimuove lo stato attivo. Non può essere ripresa. La traccia e l'audit vengono conservati.",
+            "DestroyType": "Digita {{code}} per confermare",
+            "Destroy": "Distruggi"
         }
     }
 }

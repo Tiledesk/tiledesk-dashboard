@@ -33,6 +33,10 @@
 .ex-banner { background: var(--exec-warn-bg); color: var(--exec-warn); border-radius: 8px; padding: 6px 10px; font-size: 13px; }
 .ex-controls { display: flex; gap: 8px; flex-wrap: wrap; }
 .ex-btn { border: 1px solid var(--exec-line-strong); background: #fff; border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }
+.ex-btn:disabled { cursor: not-allowed; opacity: .55; }
+.ex-btn-danger:not(:disabled) { color: var(--exec-bad); border-color: var(--exec-bad); }
+.ex-ctl-wrap { display: inline-block; }
+.ex-control-msg { background: var(--exec-warn-bg); color: var(--exec-warn); border-radius: 8px; padding: 6px 10px; font-size: 13px; }
 
 .ex-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--exec-line); padding: 0 8px; overflow-x: auto; }
 .ex-tabs button { border: 0; background: transparent; padding: 10px 12px; cursor: pointer; color: var(--exec-muted); border-bottom: 2px solid transparent; font-weight: 500; white-space: nowrap; }

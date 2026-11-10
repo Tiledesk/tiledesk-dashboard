@@ -1,17 +1,35 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, Subject, Subscription, timer } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, of, Subject, Subscription, timer } from 'rxjs';
 import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
 import { ExecutionsService } from 'app/services/executions.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { canViewExecutions, ExecutionDetail, StateView, Step, VarHistoryEntry, VarView } from '../executions.models';
+import {
+  AllowedControl, canViewExecutions, ControlName, ExecutionDetail, StateView, Step, VarHistoryEntry, VarView
+} from '../executions.models';
 import { formatDuration } from '../shared/execution-format';
+import { StopDialogComponent, StopDialogData, StopMode } from '../shared/stop-dialog.component';
+import { DestroyDialogComponent, DestroyDialogData } from '../shared/destroy-dialog.component';
 
 export const POLL_MS = 2000;
 /** The Flow state tab shows this many variables before "show all" (spec §15). */
 export const STATE_TAB_LIMIT = 50;
+/** A block may be running (spinner, elapsed time). */
 const LIVE_STATUSES = ['running', 'stopping'];
+/** The detail polls while the status can still move on its own. */
+const POLL_STATUSES = ['running', 'waiting', 'stopping'];
+const CONTROL_NAMES: ControlName[] = ['stop', 'stop_hard_now', 'destroy'];
+
+export type PendingControl = 'stopping' | 'destroying';
+
+export interface ControlMessage {
+  key: string;
+  params?: { [k: string]: string };
+}
 const ID_RE = /^[A-Za-z0-9_-]{1,128}$/;
 
 export interface OutsideGroup {
@@ -91,6 +109,14 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   historyLoading = false;
   historyError = false;
 
+  // controls (Phase 2): optimistic chip until a poll returns the new status
+  pending: PendingControl | null = null;
+  controlBusy = false;
+  controlMessage: ControlMessage | null = null;
+  /** status when the control was sent, and the one the API answered */
+  private pendingFrom: string | null = null;
+  private pendingTo: string | null = null;
+
   private destroy$ = new Subject<void>();
   /** emits when the execution changes: in-flight state / history loads end */
   private reset$ = new Subject<void>();
@@ -104,7 +130,9 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     private executionsService: ExecutionsService,
     private rolesService: RolesService,
-    private logger: LoggerService
+    private logger: LoggerService,
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) { }
 
   ngOnInit() {
@@ -178,6 +206,9 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.fsSeq = null;
     this.fsShowAll = false;
     this.closeHistory();
+    this.clearPending();
+    this.controlBusy = false;
+    this.controlMessage = null;
   }
 
   private onLoadError(err) {
@@ -201,6 +232,10 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     if (this.fsSeq === null && steps.length) this.fsSeq = steps[steps.length - 1].seq;
     this.refreshLiveStates();
     if (this.tab === 'state' && this.fsSeq !== null) this.loadState(this.fsSeq);
+    if (this.pending && !this.controlBusy) {
+      const s = d.execution.status;
+      if (s !== this.pendingFrom || (this.pendingTo && s === this.pendingTo)) this.clearPending();
+    }
     this.updatePolling();
   }
 
@@ -219,7 +254,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return this.detail ? this.detail.steps.find(s => s.seq === seq) : undefined;
   }
 
-  // ---- polling: 2 s after each answer while running (or stopping) ----
+  // ---- polling: 2 s after each answer while running, waiting or stopping ----
 
   /**
    * Called after each response or error: the next poll starts POLL_MS later, so a response slower
@@ -227,7 +262,8 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
    */
   private updatePolling() {
     this.stopPolling();
-    if (this.isLive) {
+    const status = this.detail && this.detail.execution.status;
+    if (POLL_STATUSES.includes(status) || this.pending) {
       this.pollSub = timer(POLL_MS).pipe(takeUntil(this.destroy$)).subscribe(() => {
         this.pollSub = null;
         this.load$.next();
@@ -391,6 +427,103 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.history = null;
     this.historyLoading = false;
     this.historyError = false;
+  }
+
+  // ---- controls (spec §11.5, §11.8) ----
+
+  /** The controls the API allows for the status; none when the service is not configured. */
+  get controls(): AllowedControl[] {
+    if (!this.configured || !this.detail || !Array.isArray(this.detail.allowed_controls)) return [];
+    return this.detail.allowed_controls.filter(c => c && typeof c === 'object' && CONTROL_NAMES.includes(c.name));
+  }
+
+  noPermissionKey(c: AllowedControl): string {
+    return c.name === 'destroy' ? 'Executions.Controls.NoPermissionDestroy' : 'Executions.Controls.NoPermissionStop';
+  }
+
+  /** The action running now: the last action of the running block. */
+  currentActionTitle(): string | null {
+    const steps = (this.detail && this.detail.steps) || [];
+    const last = steps[steps.length - 1];
+    if (!last || !this.isRunningStep(last)) return null;
+    const actions = last.actions || [];
+    const a = actions[actions.length - 1];
+    return a ? a.title || a.type || null : null;
+  }
+
+  runControl(c: AllowedControl) {
+    if (!c.allowed || this.controlBusy || this.pending || !this.detail) return;
+    this.controlMessage = null;
+    const pid = this.projectId;
+    const id = this.executionId;
+    if (c.name === 'destroy') {
+      const data: DestroyDialogData = { executionId: id };
+      this.dialog.open(DestroyDialogComponent, { data, width: '480px' }).afterClosed()
+        .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
+        .subscribe((code: string | null) => {
+          if (code && id === this.executionId) this.sendControl('destroying', this.executionsService.destroy(pid, id, code));
+        });
+      return;
+    }
+    const data: StopDialogData = { action: this.currentActionTitle(), hardOnly: c.name === 'stop_hard_now' };
+    this.dialog.open(StopDialogComponent, { data, width: '480px' }).afterClosed()
+      .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
+      .subscribe((mode: StopMode | null) => {
+        if ((mode === 'soft' || mode === 'hard') && id === this.executionId) {
+          this.sendControl('stopping', this.executionsService.stop(pid, id, mode));
+        }
+      });
+  }
+
+  private sendControl(pending: PendingControl, req: Observable<{ status: string }>) {
+    this.pending = pending;
+    this.pendingFrom = this.detail.execution.status;
+    this.pendingTo = null;
+    this.controlBusy = true;
+    req.pipe(takeUntil(this.reset$), takeUntil(this.destroy$)).subscribe({
+      next: r => {
+        this.controlBusy = false;
+        this.pendingTo = (r && r.status) || null;
+        // reload now; the chip stays until a response shows the new status
+        this.stopPolling();
+        this.load$.next();
+      },
+      error: err => {
+        this.controlBusy = false;
+        this.clearPending();
+        this.logger.error('[EXECUTION-DETAIL] control error ', err);
+        this.controlMessage = this.controlError(err);
+        this.updatePolling();
+      }
+    });
+  }
+
+  private controlError(err: any): ControlMessage {
+    const status = err instanceof HttpErrorResponse ? err.status : err && err.status;
+    const body = err && err.error;
+    if (status === 409) {
+      const allowed: AllowedControl[] | null = body && Array.isArray(body.allowed) ? body.allowed : null;
+      if (allowed && this.detail) this.detail.allowed_controls = allowed;
+      const names = (allowed || []).filter(a => a && a.allowed && CONTROL_NAMES.includes(a.name))
+        .map(a => this.translate.instant('Executions.Controls.' + a.name));
+      return names.length
+        ? { key: 'Executions.Controls.NotAllowed', params: { allowed: names.join(', ') } }
+        : { key: 'Executions.Controls.NotAllowedNone' };
+    }
+    if (status === 503) return { key: 'Executions.Controls.Unavailable' };
+    if (status === 403) return { key: 'Executions.Controls.Forbidden' };
+    if (status === 400 && body && body.error === 'confirm_mismatch') return { key: 'Executions.Controls.ConfirmMismatch' };
+    return { key: 'Executions.Controls.Failed' };
+  }
+
+  private clearPending() {
+    this.pending = null;
+    this.pendingFrom = null;
+    this.pendingTo = null;
+  }
+
+  trackByControl(_: number, c: AllowedControl) {
+    return c.name;
   }
 
   // ---- navigation ----

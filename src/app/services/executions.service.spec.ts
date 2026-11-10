@@ -81,6 +81,20 @@ describe('ExecutionsService', () => {
     expect(h.request.params.get('key')).toBe('my key');
     h.flush([]);
   });
+
+  it('stop and destroy POST their bodies to the control routes', () => {
+    setup('/executions/api/v1');
+    service.stop('p1', 'e1', 'hard').subscribe();
+    const s = http.expectOne('/executions/api/v1/projects/p1/executions/e1/stop');
+    expect(s.request.method).toBe('POST');
+    expect(s.request.body).toEqual({ mode: 'hard' });
+    s.flush({ status: 'stopping' });
+    service.destroy('p1', 'e1', 'e1abcd').subscribe();
+    const d = http.expectOne('/executions/api/v1/projects/p1/executions/e1/destroy');
+    expect(d.request.method).toBe('POST');
+    expect(d.request.body).toEqual({ confirm: 'e1abcd' });
+    d.flush({ status: 'destroyed', close: 'skipped' });
+  });
 });
 
 describe('canViewExecutions', () => {

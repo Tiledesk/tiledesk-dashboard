@@ -4342,6 +4342,44 @@
             "add": "added",
             "set": "changed",
             "del": "deleted"
+        },
+        "Controls": {
+            "stop": "Stop",
+            "stop_hard_now": "Stop now",
+            "destroy": "Destroy",
+            "NoPermissionStop": "You don't have permission to stop executions",
+            "NoPermissionDestroy": "Only the project owner can destroy executions",
+            "Pending": {
+                "stopping": "stopping…",
+                "destroying": "destroying…"
+            },
+            "NotAllowed": "This control is no longer allowed. Allowed now: {{allowed}}",
+            "NotAllowedNone": "This control is no longer allowed. No control is allowed now.",
+            "Unavailable": "Controls are temporarily unavailable",
+            "Forbidden": "You don't have permission for this control",
+            "ConfirmMismatch": "The confirmation code does not match",
+            "Failed": "The control failed. Try again.",
+            "StopMode": {
+                "soft": "soft stop",
+                "hard": "hard stop"
+            },
+            "Interrupted": "interrupted \"{{action}}\"",
+            "MessagesWhileStopped": "{{n}} messages received while stopped"
+        },
+        "Dialogs": {
+            "StopTitle": "Stop execution",
+            "StopNowTitle": "Stop now",
+            "Soft": "Soft stop — finish the current action, then stop",
+            "Hard": "Hard stop — interrupt the current action now",
+            "HardNow": "Hard stop — interrupt the current action now, without waiting for it to finish.",
+            "HardAction": "\"{{action}}\" is interrupted.",
+            "Stop": "Stop",
+            "StopNow": "Stop now",
+            "Cancel": "Cancel",
+            "DestroyTitle": "Destroy execution",
+            "DestroyText": "This stops it, closes its conversation and removes its live state. It cannot be resumed. The trace and audit are kept.",
+            "DestroyType": "Type {{code}} to confirm",
+            "Destroy": "Destroy"
         }
     }
 }

@@ -71,6 +71,28 @@ export interface Execution {
   has_checkpoint: boolean;
   has_data: boolean;
   retention: ExecutionRetention | null;
+  // Phase 2 (stop / destroy)
+  stop_mode?: 'soft' | 'hard' | null;
+  stopped_at?: string | null;
+  interrupted_action?: InterruptedAction | null;
+  messages_while_stopped?: number | null;
+  conversation_closed_at?: string | null;
+}
+
+export interface InterruptedAction {
+  index: number;
+  action_id: string | null;
+  type: string | null;
+  title: string | null;
+}
+
+export type ControlName = 'stop' | 'stop_hard_now' | 'destroy';
+
+/** A control allowed for the status; allowed:false when the role lacks it (reason 'role'). */
+export interface AllowedControl {
+  name: ControlName;
+  allowed: boolean;
+  reason?: 'role';
 }
 
 export interface StepAction {
@@ -119,7 +141,7 @@ export interface Lineage {
 export interface ExecutionDetail {
   execution: Execution;
   steps: Step[];
-  allowed_controls: string[];
+  allowed_controls: AllowedControl[];
   lineage: Lineage;
 }
 

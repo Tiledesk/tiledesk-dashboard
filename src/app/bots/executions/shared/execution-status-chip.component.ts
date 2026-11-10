@@ -4,7 +4,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 @Component({
   selector: 'execution-status-chip',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<span class="chip" [ngClass]="'s-' + status">{{ ('Executions.Status.' + status) | translate }}</span>`,
+  template: `<span class="chip" [ngClass]="'s-' + (pending ? (pending === 'destroying' ? 'destroying' : 'stopping') : status)">{{
+    (pending ? 'Executions.Controls.Pending.' + pending : 'Executions.Status.' + status) | translate }}</span>`,
   styles: [`
     :host {
       --exec-run: #1b6ef3; --exec-run-bg: #e8f0fe;
@@ -22,13 +23,16 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
     .s-stopping, .s-stopped { color: var(--exec-warn); background: var(--exec-warn-bg); }
     .s-failed { color: var(--exec-bad); background: var(--exec-bad-bg); }
     .s-completed { color: var(--exec-ok); background: var(--exec-ok-bg); }
+    .s-destroying { color: var(--exec-dead); background: var(--exec-dead-bg); }
     .s-destroyed { color: var(--exec-dead); background: var(--exec-dead-bg); text-decoration: line-through; }
     @media (prefers-reduced-motion: no-preference) {
-      .s-running::before, .s-stopping::before { animation: exec-pulse 1.2s ease-in-out infinite; }
+      .s-running::before, .s-stopping::before, .s-destroying::before { animation: exec-pulse 1.2s ease-in-out infinite; }
     }
     @keyframes exec-pulse { 50% { opacity: .25; } }
   `]
 })
 export class ExecutionStatusChipComponent {
   @Input() status: string;
+  /** Optimistic state after a control, until a poll returns the new status. */
+  @Input() pending: 'stopping' | 'destroying' | null = null;
 }
