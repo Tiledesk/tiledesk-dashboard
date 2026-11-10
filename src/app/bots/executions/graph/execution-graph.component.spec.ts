@@ -103,13 +103,17 @@ describe('ExecutionGraphComponent', () => {
     feed$.next(FIRST());
     const cy = component.cy;
     const before = ['project', 'agent:a1', 'agent:a2', 'exec:' + E1].map(id => ({ ...cy.getElementById(id).position() }));
-    feed$.next(snap([row(E1, 'running', 'a1')]));
+    // a2 keeps one execution, so no agent changes footprint bucket and the agents stay put
+    const E4 = '44444444-4444-4444-4444-444444444444';
+    feed$.next(snap([row(E1, 'running', 'a1'), row(E4, 'waiting', 'a2')]));
     expect(cy.getElementById('exec:' + E2).empty()).toBe(true);
     expect(cy.getElementById('exec:' + E3).empty()).toBe(true);
     expect(cy.getElementById('agent:a2->exec:' + E2).empty()).toBe(true);
-    expect(cy.nodes().length).toBe(4);
+    expect(cy.nodes().length).toBe(5);
     const after = ['project', 'agent:a1', 'agent:a2', 'exec:' + E1].map(id => ({ ...cy.getElementById(id).position() }));
     expect(after).toEqual(before);
+    feed$.next(snap([row(E1, 'running', 'a1')]));
+    expect(cy.nodes().length).toBe(4);
     expect(cy.getElementById('agent:a2').hasClass('idle')).toBe(true);
   });
 
@@ -367,6 +371,10 @@ describe('ExecutionGraphComponent', () => {
     expect(cy.getElementById('agent:a2->exec:' + E3).numericStyle('width')).toBe(1.5);
     expect(cy.getElementById('agent:a1->exec:' + E1).numericStyle('width')).toBe(1.5);
     expect(cy.getElementById('agent:a2->exec:' + E2).numericStyle('width')).toBe(1);
+    const spoke = cy.getElementById('project->agent:a1');
+    expect(spoke.hasClass('edge-spoke')).toBe(true);
+    expect(spoke.style('line-color')).toBe('rgb(223,227,232)');   // #dfe3e8: structure, lighter than the fan edges
+    expect(spoke.numericStyle('width')).toBe(1);
 
     // default (executions, none active) and idle agents
     feed$.next(snap([...many, row(E2, 'waiting', 'a2')]));

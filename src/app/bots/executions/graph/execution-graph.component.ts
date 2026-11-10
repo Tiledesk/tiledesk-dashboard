@@ -126,6 +126,8 @@ const GRAPH_STYLE: any[] = [
     'font-size': 11, 'font-weight': 500, 'color': C.moreText, 'text-valign': 'center', 'text-halign': 'center',
   } },
   { selector: 'edge', style: { 'width': 1, 'line-color': C.edge, 'curve-style': 'straight' } },
+  // project -> agent: short structural spokes, lighter than the fan edges
+  { selector: 'edge.edge-spoke', style: { 'width': 1, 'line-color': C.spoke } },
   { selector: 'edge.edge-animated', style: { 'width': 1.5, 'line-color': C.run, 'line-style': 'dashed', 'line-dash-pattern': [5, 4] } },
   { selector: 'edge.edge-failed', style: { 'width': 1.5, 'line-color': C.bad } },
 ];
@@ -291,7 +293,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
       }
       const failedIds = new Set(model.nodes.filter(n => n.status === 'failed').map(n => n.id));
       for (const e of model.edges) {
-        const classes = e.animated ? 'edge-animated' : failedIds.has(e.target) ? 'edge-failed' : '';
+        const classes = e.animated ? 'edge-animated' : failedIds.has(e.target) ? 'edge-failed' : e.source === 'project' ? 'edge-spoke' : '';
         const el = cy.getElementById(e.id);
         if (el.empty()) {
           add.push({ group: 'edges', data: { id: e.id, source: e.source, target: e.target }, classes });

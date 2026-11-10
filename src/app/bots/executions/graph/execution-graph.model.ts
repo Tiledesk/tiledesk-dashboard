@@ -45,6 +45,22 @@ function execRingRadius(k: number): number {
   return 74 + 6 * Math.max(0, k - 8);
 }
 
+/** Gap between neighbouring agents' footprints on the ring, and the smallest ring. */
+const AGENT_GAP = 24;
+const RING_MIN = 170;
+
+/**
+ * Space an agent takes on the ring (a radius), bucketed by the nodes it shows (executions plus "+N"),
+ * so that a refresh moves agents only when a bucket changes. The cap bucket is wider than the fan
+ * radius: a full fan curls round the agent's sides, towards its neighbours.
+ */
+export function agentFootprint(shown: number): number {
+  if (shown <= 0) return 60;          // badge and label
+  if (shown <= 4) return 74 + 16;
+  if (shown <= 8) return 98;
+  return AGENT_RING_RMAX + 20;
+}
+
 function cmp(a: string, b: string): number {
   return a < b ? -1 : a > b ? 1 : 0;
 }
@@ -111,25 +127,34 @@ export function buildExecutionGraph(input: {
   }];
   const edges: GraphEdge[] = [];
 
-  // the agent ring depends on the agent count only, so agents keep their place whatever runs
-  const n = sortedAgents.length;
-  // wide enough that two neighbouring fans at the cap keep a chip plus 10 px apart
-  const R = Math.max(300, (n * (2 * AGENT_RING_RMAX + 48)) / (2 * Math.PI));
-  sortedAgents.forEach((a, i) => {
-    const angle = (2 * Math.PI * i) / n - Math.PI / 2;
-    const pos = { x: R * Math.cos(angle), y: R * Math.sin(angle) };
+  type Placed = { agent: GraphAgent; all: Shown[]; drawn: Shown[]; hidden: Shown[]; k: number; width: number };
+  const placed: Placed[] = sortedAgents.map(a => {
     const all = byAgent.get(a.id) || [];
+    const picked = all.slice().sort((x, y) =>
+      PRIORITY[x.status] - PRIORITY[y.status] || cmp(y.row.started_at || '', x.row.started_at || '') || cmp(y.row._id, x.row._id));
+    const drawn = picked.slice(0, MAX_PER_AGENT).sort((x, y) =>
+      cmp(x.row.started_at || '', y.row.started_at || '') || cmp(x.row._id, y.row._id));
+    const hidden = picked.slice(MAX_PER_AGENT);
+    const k = drawn.length + (hidden.length ? 1 : 0);
+    return { agent: a, all, drawn, hidden, k, width: 2 * agentFootprint(k) + AGENT_GAP };
+  });
+
+  // The ring is sized by the agents' footprints, and each agent gets a slice of it proportional to its
+  // footprint (sorted order). Footprints are bucketed, so agents move only when an agent's bucket
+  // changes or agents are added or removed; within a bucket, only the agent's own fan is redrawn.
+  const total = placed.reduce((acc, p) => acc + p.width, 0);
+  const R = Math.max(RING_MIN, total / (2 * Math.PI));
+  let along = 0;
+  placed.forEach(({ agent: a, all, drawn, hidden, k, width }) => {
+    const angle = (2 * Math.PI * (along + width / 2)) / total - Math.PI / 2;
+    along += width;
+    const pos = { x: R * Math.cos(angle), y: R * Math.sin(angle) };
     // aura, warn and activity come from all of the agent's rows, drawn or not:
     // aura for a failure, warn (amber) for an error branch taken without a failure
     const aura = all.some(s => s.status === 'failed');
     const errorBranches = all.reduce((acc, s) => acc + Math.max(0, s.row.failure_conditions || 0), 0);
     const warn = !aura && errorBranches > 0;
     const active = all.some(s => s.status === 'running' || s.status === 'stopping');
-    const picked = all.slice().sort((x, y) =>
-      PRIORITY[x.status] - PRIORITY[y.status] || cmp(y.row.started_at || '', x.row.started_at || '') || cmp(y.row._id, x.row._id));
-    const drawn = picked.slice(0, MAX_PER_AGENT).sort((x, y) =>
-      cmp(x.row.started_at || '', y.row.started_at || '') || cmp(x.row._id, y.row._id));
-    const hidden = picked.slice(MAX_PER_AGENT);
     const agentNodeId = 'agent:' + a.id;
     nodes.push({
       id: agentNodeId, kind: 'agent', label: a.name, agentId: a.id, aura, warn, idle: all.length === 0, active,
@@ -137,7 +162,6 @@ export function buildExecutionGraph(input: {
     });
     edges.push({ id: 'project->' + agentNodeId, source: 'project', target: agentNodeId, animated: false });
 
-    const k = drawn.length + (hidden.length ? 1 : 0);
     const r = execRingRadius(k);
     // a fan centred on the agent's own angle, i.e. on the side facing away from the project
     const step = k > 1 ? Math.min(FAN_STEP, FAN_MAX / (k - 1)) : 0;
