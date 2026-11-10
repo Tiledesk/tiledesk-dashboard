@@ -151,16 +151,16 @@ describe('ExecutionDetailComponent', () => {
       setup();
       expect(stepButtons().length).toBe(2);
       expect(stepButtons()[1].textContent).toContain('Call status API');
-      expect(stepButtons()[1].textContent).toContain('2 vars changed');
-      expect(stepButtons()[0].textContent).toContain('1 var changed');
+      expect(stepButtons()[1].textContent).toContain('2 attributes changed');
+      expect(stepButtons()[0].textContent).toContain('1 attribute changed');
     });
 
     it('outside row text for message_in and external', () => {
       setup();
       const outside = Array.from(el().querySelectorAll('.tl-outside')).map(e => e.textContent.replace(/\s+/g, ' ').trim());
       expect(outside).toEqual([
-        '2 variables changed by the incoming message (lastUserText, transcript)',
-        '1 variable changed outside the flow',
+        '2 attributes changed by the incoming message (lastUserText, transcript)',
+        '1 attribute changed outside the flow',
       ]);
     });
 
@@ -229,7 +229,7 @@ describe('ExecutionDetailComponent', () => {
       fixture.detectChanges();
       expect(tabKeys()).toEqual(['removed']);
       expect((el().querySelector('.st-before') as HTMLElement).getAttribute('aria-pressed')).toBe('true');
-      // system variables only when toggled
+      // system attributes only when toggled
       (el().querySelector('.st-system-toggle') as HTMLInputElement).click();
       fixture.detectChanges();
       expect(tabKeys()).toEqual(['removed', 'sys']);

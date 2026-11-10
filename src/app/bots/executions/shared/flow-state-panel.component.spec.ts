@@ -47,6 +47,13 @@ describe('FlowStatePanelComponent', () => {
   const keys = () => rows().map(r => r.querySelector('.fs-key-name').textContent.trim());
   const text = () => fixture.nativeElement.textContent as string;
 
+  it('header of the flow-state table says Attribute (not Variable)', () => {
+    render([v('alpha', { changed: true, by: 'act1' })]);
+    const th = Array.from(fixture.nativeElement.querySelectorAll('th')).map((e: any) => e.textContent.trim());
+    expect(th[0]).toBe('Attribute');
+    expect(text()).not.toMatch(/variable/i);
+  });
+
   it('panel sorts changed first and masks values', () => {
     render([
       v('alpha'),
