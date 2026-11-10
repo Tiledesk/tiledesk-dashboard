@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SimpleChange } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -32,7 +33,7 @@ describe('ExecutionGraphComponent', () => {
   let feedFactory: jasmine.Spy;
   let router: { navigate: jasmine.Spy };
 
-  function setup(opts: { loader?: () => Promise<any> } = {}) {
+  function setup(opts: { loader?: () => Promise<any>; agents?: any[] } = {}) {
     feed$ = new Subject<GraphSnapshot>();
     feedFactory = jasmine.createSpy('feed').and.returnValue(feed$.asObservable());
     router = { navigate: jasmine.createSpy('navigate') };
@@ -60,7 +61,7 @@ describe('ExecutionGraphComponent', () => {
     component = fixture.componentInstance;
     component.projectId = 'p1';
     component.projectName = 'Acme';
-    component.agents = [{ id: 'a1', name: 'Nightly' }, { id: 'a2', name: 'Alpha' }];
+    component.agents = opts.agents || [{ id: 'a1', name: 'Nightly' }, { id: 'a2', name: 'Alpha' }];
     fixture.nativeElement.style.display = 'block';
     fixture.nativeElement.style.width = '800px';
     fixture.detectChanges();
@@ -208,5 +209,57 @@ describe('ExecutionGraphComponent', () => {
     expect(emitted).toHaveBeenCalledTimes(1);
     expect((fixture.nativeElement as HTMLElement).textContent).toContain('The graph could not be loaded');
     expect(feedFactory).not.toHaveBeenCalled();
+  });
+  it('fits once the graph has more than the project node, within maxZoom', async () => {
+    setup({ agents: [] });
+    await ready();
+    feed$.next(snap([]));
+    const cy = component.cy;
+    expect(cy.nodes().length).toBe(1);
+    feed$.next(FIRST());
+    expect(cy.nodes().length).toBe(6);
+    expect(cy.zoom()).toBeLessThanOrEqual(1.75);
+    const ext = cy.extent();
+    cy.nodes().forEach((n: any) => {
+      const p = n.position();
+      expect(p.x >= ext.x1 && p.x <= ext.x2 && p.y >= ext.y1 && p.y <= ext.y2).toBe(true, n.id());
+    });
+  });
+
+  it('destroyed before the loader resolves: no cytoscape, no feed subscription', async () => {
+    let resolve: (m: any) => void;
+    const real = await import('cytoscape');
+    setup({ loader: () => new Promise(r => { resolve = r; }) });
+    fixture.destroy();
+    fixture = null;
+    resolve(real);
+    await component.ready;
+    expect(component.cy).toBeNull();
+    expect(feedFactory).not.toHaveBeenCalled();
+  });
+
+  it('destroyed before the loader rejects: unavailable is not emitted', async () => {
+    let reject: (e: any) => void;
+    setup({ loader: () => new Promise((_, r) => { reject = r; }) });
+    const emitted = jasmine.createSpy('unavailable');
+    component.unavailable.subscribe(emitted);
+    fixture.destroy();
+    fixture = null;
+    reject(new Error('chunk load failed'));
+    await component.ready;
+    expect(emitted).not.toHaveBeenCalled();
+    expect(component.failed).toBe(false);
+  });
+
+  it('a new projectId resets the graph and subscribes the new feed', async () => {
+    setup();
+    await ready();
+    feed$.next(FIRST());
+    expect(component.cy.nodes().length).toBe(6);
+    component.projectId = 'p2';
+    component.ngOnChanges({ projectId: new SimpleChange('p1', 'p2', false) });
+    expect(feedFactory).toHaveBeenCalledWith('p2');
+    expect(component.cy.elements().length).toBe(0);
+    expect(component.counts).toBeNull();
   });
 });

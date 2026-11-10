@@ -30,6 +30,7 @@ export const CYTOSCAPE_LOADER = new InjectionToken<CytoscapeLoader>('CYTOSCAPE_L
 
 export const PULSE_MS = 1200;
 export const DASH_MS = 100;
+export const MAX_ZOOM = 1.75;
 
 interface TooltipState { lines: string[]; x: number; y: number; }
 
@@ -105,6 +106,10 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   private destroyed = false;
   private pulseOn = false;
   private dashOffset = 0;
+  /** Edges with marching dashes, refreshed on each apply. */
+  private animatedEdges: any = null;
+  /** Nodes that carry pulse bypasses from the last paint. */
+  private pulsed: any = null;
 
   constructor(
     private zone: NgZone,
@@ -120,6 +125,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges(changes: SimpleChanges): void {
     if (!this.cy) { return; }
     if (changes.projectId && !changes.projectId.firstChange) {
+      this.resetGraph();
       this.subscribeFeed();
     } else if ((changes.agents || changes.projectName) && this.last) {
       this.zone.runOutsideAngular(() => this.apply(this.last));
@@ -146,6 +152,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
           style: GRAPH_STYLE,
           layout: { name: 'preset' },
           userZoomingEnabled: true,
+          maxZoom: MAX_ZOOM,
           boxSelectionEnabled: false,
           autoungrabify: true,
         });
@@ -153,11 +160,25 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
         this.startTimers();
       });
     } catch (e) {
+      if (this.destroyed) { return; }
       this.failed = true;
       this.unavailable.emit();
       return;
     }
     this.subscribeFeed();
+  }
+
+  /** Drops the previous project's graph state, so the next snapshot starts from scratch. */
+  private resetGraph(): void {
+    if (this.sub) { this.sub.unsubscribe(); this.sub = null; }
+    this.last = null;
+    this.fitted = false;
+    this.cy.elements().remove();
+    this.animatedEdges = this.cy.collection();
+    this.pulsed = this.cy.collection();
+    this.counts = null;
+    this.stale = false;
+    this.tooltip = null;
   }
 
   private subscribeFeed(): void {
@@ -208,9 +229,11 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
       if (add.length) { cy.add(add); }
+      this.animatedEdges = cy.edges('.edge-animated');
       if (this.pulseTimer !== null) { this.paintPulse(); }
     });
-    if (!this.fitted) {
+    // fit once there is more than the project node (agents may still be loading on the first snapshot)
+    if (!this.fitted && model.nodes.length > 1) {
       this.fitted = true;
       cy.fit(undefined, 40);
     }
@@ -257,14 +280,21 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     }, PULSE_MS);
     this.dashTimer = setInterval(() => {
       this.dashOffset = (this.dashOffset - 2) % 1000;
-      this.cy.edges('.edge-animated').style('line-dash-offset', this.dashOffset);
+      const edges = this.animatedEdges;
+      if (edges && edges.length) { this.cy.batch(() => edges.style('line-dash-offset', this.dashOffset)); }
     }, DASH_MS);
   }
 
-  /** Pulse phase as style bypasses; cleared first so a node that changed status falls back to its class style. */
+  /**
+   * Pulse phase as style bypasses. Only the nodes painted last time are cleared, so a node that left
+   * running/stopping falls back to its class style.
+   */
   private paintPulse(): void {
-    this.cy.nodes().removeStyle('underlay-opacity opacity');
-    this.cy.nodes('.s-running').not('.aura').style('underlay-opacity', this.pulseOn ? 0.45 : 0.1);
-    this.cy.nodes('.s-stopping').style('opacity', this.pulseOn ? 0.35 : 1);
+    const running = this.cy.nodes('.s-running').not('.aura');
+    const stopping = this.cy.nodes('.s-stopping');
+    if (this.pulsed) { this.pulsed.filter((n: any) => !n.removed()).removeStyle('underlay-opacity opacity'); }
+    running.style('underlay-opacity', this.pulseOn ? 0.45 : 0.1);
+    stopping.style('opacity', this.pulseOn ? 0.35 : 1);
+    this.pulsed = running.union(stopping);
   }
 }
