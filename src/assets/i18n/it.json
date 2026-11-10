@@ -3800,6 +3800,7 @@
     "VibeCoderRemoveAttachment": "Rimuovi file",
     "Monitor": {
         "Tabs": {
+            "Label": "Monitor",
             "Conversations": "Conversazioni",
             "Executions": "Esecuzioni",
             "Graph": "Grafo"

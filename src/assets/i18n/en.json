@@ -4207,6 +4207,7 @@
     "VibeCoderRemoveAttachment": "Remove file",
     "Monitor": {
         "Tabs": {
+            "Label": "Monitor",
             "Conversations": "Conversations",
             "Executions": "Executions",
             "Graph": "Graph"

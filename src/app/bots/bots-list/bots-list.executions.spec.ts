@@ -165,4 +165,12 @@ describe('BotListComponent executions entry', () => {
     expect(getItem).not.toHaveBeenCalledWith('tiledesk_agents_view');
     expect(setItem).not.toHaveBeenCalledWith('tiledesk_agents_view', jasmine.anything());
   });
+
+  it('agent executions button has an accessible name', () => {
+    setup(true, 'owner');
+    fixture.detectChanges();
+    const btns = fixture.nativeElement.querySelectorAll('.executions-btn');
+    expect(btns.length).toBe(2);
+    btns.forEach((b: HTMLElement) => expect(b.getAttribute('aria-label')).toBe('Executions.Executions'));
+  });
 });

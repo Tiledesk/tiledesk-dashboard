@@ -22,6 +22,7 @@
     margin-bottom: -1px;
 
     &:hover { color: #1a73e8; }
+    &:focus-visible { outline: 2px solid #1a73e8; outline-offset: 2px; border-radius: 2px; }
     &.active { color: #1a73e8; border-bottom-color: #1a73e8; font-weight: 500; }
   }
 }

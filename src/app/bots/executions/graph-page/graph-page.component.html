@@ -6,7 +6,12 @@
   <h3 class="unauthorized-page-subtitle">{{ "UnauthorizedPage.OopsYouDontHave" | translate }}</h3>
 </div>
 
-<div *ngIf="permitted === true" class="graph-page-body">
+<!-- not configured: same message as the executions list -->
+<div *ngIf="permitted !== false && !configured" class="exec-empty exec-not-configured">
+  {{ "Executions.NotConfigured" | translate }}
+</div>
+
+<div *ngIf="permitted === true && configured" class="graph-page-body">
   <div *ngIf="error" class="graph-page-error">{{ "Monitor.Graph.LoadError" | translate }}</div>
   <execution-graph *ngIf="agents" [fill]="true" [projectId]="projectId" [projectName]="projectName" [agents]="agents"></execution-graph>
 </div>

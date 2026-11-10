@@ -51,4 +51,9 @@ describe('MonitorTabsComponent', () => {
       '/project/p1/wsrequests', '/project/p1/monitor/executions', '/project/p1/monitor/graph']);
     expect(a.map(x => x.getAttribute('aria-current'))).toEqual([null, 'page', null]);
   });
+
+  it('nav label is translated', () => {
+    setup({ active: 'graph' });
+    expect(fixture.nativeElement.querySelector('nav').getAttribute('aria-label')).toBe('Monitor.Tabs.Label');
+  });
 });
