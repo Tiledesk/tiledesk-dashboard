@@ -19,7 +19,7 @@ describe('buildExecutionGraph', () => {
     expect(g.nodes.length).toBe(4);
     const project = g.nodes.find(n => n.kind === 'project');
     expect(project.position).toEqual({ x: 0, y: 0 });
-    g.nodes.filter(n => n.kind === 'agent').forEach(n => expect(Math.abs(dist(n.position) - 260)).toBeLessThan(0.5));
+    g.nodes.filter(n => n.kind === 'agent').forEach(n => expect(Math.abs(dist(n.position) - 300)).toBeLessThan(0.5));
     expect(g.edges.filter(e => e.source === 'project').length).toBe(3);
   });
 
@@ -163,7 +163,7 @@ describe('buildExecutionGraph', () => {
   });
 
   it('agent ring leaves room for the largest capped ring, whatever the live counts', () => {
-    expect(AGENT_RING_RMAX).toBe(46 + 6 * (MAX_PER_AGENT - 8 + 1));
+    expect(AGENT_RING_RMAX).toBe(74 + 6 * (MAX_PER_AGENT - 8 + 1));
     [2, 5, 13, 30].forEach(n => {
       const empty = buildExecutionGraph({ projectName: 'P', agents: agents(n), live: [], failed: [], now: NOW });
       const busy = buildExecutionGraph({
@@ -182,6 +182,33 @@ describe('buildExecutionGraph', () => {
         const owner = busy.nodes.find((y: any) => y.id === 'agent:' + x.agentId);
         expect(dist(x.position, owner.position)).toBeLessThanOrEqual(AGENT_RING_RMAX + 0.5);
       });
+    });
+  });
+
+  it('agent ring grows with the agent count: max(300, 110 n / pi)', () => {
+    [1, 8, 9, 30].forEach(n => {
+      const g = buildExecutionGraph({ projectName: 'P', agents: agents(n), live: [], failed: [], now: NOW });
+      const want = Math.max(300, 110 * n / Math.PI);
+      g.nodes.filter(x => x.kind === 'agent').forEach(x => expect(Math.abs(dist(x.position) - want)).toBeLessThan(0.5, 'n=' + n));
+    });
+  });
+
+  it('executions sit 74 px from their agent, fanned out on the side away from the project', () => {
+    [1, 3, 8, 13].forEach(k => {
+      const live = Array.from({ length: k }, (_, i) => row({ _id: 'e' + String(i).padStart(2, '0'), status: 'waiting' }));
+      const g = buildExecutionGraph({ projectName: 'P', agents: agents(4), live, failed: [], now: NOW });
+      const owner = g.nodes.find(n => n.id === 'agent:a1');
+      const out = Math.atan2(owner.position.y, owner.position.x);
+      const shown = g.nodes.filter(n => n.kind === 'execution' || n.kind === 'more');
+      const r = 74 + 6 * Math.max(0, shown.length - 8);
+      shown.forEach(x => {
+        expect(Math.abs(dist(x.position, owner.position) - r)).toBeLessThan(0.5, 'k=' + k);
+        const a = Math.atan2(x.position.y - owner.position.y, x.position.x - owner.position.x);
+        let d = Math.abs(a - out) % (2 * Math.PI);
+        if (d > Math.PI) { d = 2 * Math.PI - d; }
+        expect(d).toBeLessThan(Math.PI * 0.75, 'k=' + k + ' ' + x.id);   // never on the project side
+      });
+      if (k === 1) { expect(dist(shown[0].position)).toBeCloseTo(dist(owner.position) + 74, 3); }
     });
   });
 

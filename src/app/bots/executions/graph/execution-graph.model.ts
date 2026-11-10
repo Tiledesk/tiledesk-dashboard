@@ -36,8 +36,12 @@ export const AGENT_RING_RMAX = execRingRadius(MAX_PER_AGENT + 1);
 /** Drawing priority: a problem first, waiting last. */
 const PRIORITY: { [S in ShownStatus]: number } = { failed: 0, stopping: 1, running: 2, waiting: 3 };
 
+/** Angle between neighbouring executions of a fan, and the widest fan (the side facing the project stays clear). */
+const FAN_STEP = 0.42;
+const FAN_MAX = 4.5;
+
 function execRingRadius(k: number): number {
-  return 46 + 6 * Math.max(0, k - 8);
+  return 74 + 6 * Math.max(0, k - 8);
 }
 
 function cmp(a: string, b: string): number {
@@ -108,7 +112,7 @@ export function buildExecutionGraph(input: {
 
   // the agent ring depends on the agent count only, so agents keep their place whatever runs
   const n = sortedAgents.length;
-  const R = Math.max(260, (n * (2 * AGENT_RING_RMAX + 20)) / (2 * Math.PI));
+  const R = Math.max(300, (110 * n) / Math.PI);
   sortedAgents.forEach((a, i) => {
     const angle = (2 * Math.PI * i) / n - Math.PI / 2;
     const pos = { x: R * Math.cos(angle), y: R * Math.sin(angle) };
@@ -130,8 +134,10 @@ export function buildExecutionGraph(input: {
 
     const k = drawn.length + (hidden.length ? 1 : 0);
     const r = execRingRadius(k);
+    // a fan centred on the agent's own angle, i.e. on the side facing away from the project
+    const step = k > 1 ? Math.min(FAN_STEP, FAN_MAX / (k - 1)) : 0;
     const at = (j: number) => {
-      const ang = (2 * Math.PI * j) / k;
+      const ang = angle + (j - (k - 1) / 2) * step;
       return { x: pos.x + r * Math.cos(ang), y: pos.y + r * Math.sin(ang) };
     };
     drawn.forEach((s, j) => {
