@@ -14,6 +14,9 @@ export type ActivityVerb =
   | 'FAQ_KB_CREATE'
   | 'FAQ_KB_DELETE'
   | 'FAQ_KB_PUBLISH'
+  | 'EXECUTION_STOP_SOFT'
+  | 'EXECUTION_STOP_HARD'
+  | 'EXECUTION_DESTROY'
   | 'KB_NAMESPACE_CREATE'
   | 'KB_NAMESPACE_DELETE'
   | 'KB_CONTENTS_ADD'
@@ -64,6 +67,8 @@ export interface ActivityRecord {
   verb?: ActivityVerb;
   actionObj?: Record<string, unknown>;
   target?: ActivityTarget;
+  /** Related entity (EXECUTION_* rows: the agent). */
+  related?: { role?: string; type?: string; id?: string; name?: string };
   message?: string;
   date?: string;
   renderedMessage?: string;

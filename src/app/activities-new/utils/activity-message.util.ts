@@ -943,6 +943,45 @@ export function isProjectUserInviteTargetLinkable(activity: ActivityRecord): boo
   return !!(resolveProjectUserTargetDisplay(activity)?.profileId || getTargetUserId(activity));
 }
 
+const EXECUTION_VERB_PHRASES: Record<string, string> = {
+  EXECUTION_STOP_SOFT: 'soft-stopped execution',
+  EXECUTION_STOP_HARD: 'hard-stopped execution',
+  EXECUTION_DESTROY: 'destroyed execution',
+};
+
+export function isExecutionVerb(verb: string): boolean {
+  return Object.prototype.hasOwnProperty.call(EXECUTION_VERB_PHRASES, verb);
+}
+
+/** First 6 characters of the execution id (target.id), as the server writes it. */
+export function executionShortId(activity: ActivityRecord): string {
+  return str(activity.target?.id).substring(0, 6);
+}
+
+export function executionAgentLabel(activity: ActivityRecord): string {
+  const object = activity.target?.object || {};
+  return str(object['agent_name'] || activity.related?.name || object['agent_id']) || 'agent';
+}
+
+export function executionAgentId(activity: ActivityRecord): string {
+  const object = activity.target?.object || {};
+  return str(activity.related?.id || object['agent_id']);
+}
+
+/** Text after the agent name: ` · "<reason>"` when a reason exists. */
+export function executionReasonSuffix(activity: ActivityRecord): string {
+  const reason = str(activity.actionObj?.['reason']);
+  return reason ? ` · "${reason}"` : '';
+}
+
+export function executionPhrase(activity: ActivityRecord): string {
+  return EXECUTION_VERB_PHRASES[effectiveVerb(activity)] || '';
+}
+
+export function renderExecutionMessage(activity: ActivityRecord): string {
+  return `${actorName(activity)} ${executionPhrase(activity)} ${executionShortId(activity)} of ${executionAgentLabel(activity)}${executionReasonSuffix(activity)}`;
+}
+
 export function renderActivity(activity: ActivityRecord): string {
   if (activity.message && !activity.verb) {
     return activity.message;
@@ -961,6 +1000,11 @@ export function renderActivity(activity: ActivityRecord): string {
   const namespace = namespaceName(activity);
 
   switch (verb) {
+    case 'EXECUTION_STOP_SOFT':
+    case 'EXECUTION_STOP_HARD':
+    case 'EXECUTION_DESTROY':
+      return renderExecutionMessage(activity);
+
     case 'REQUEST_ASSIGNED_SELF':
       return `${actor} joined the conversation: ${conversation}`;
 
