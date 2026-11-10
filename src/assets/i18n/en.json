@@ -4180,14 +4180,16 @@
                 "Trigger": "Trigger: {{trigger}}",
                 "Steps": "Steps: {{steps}}",
                 "More": "{{n}} more executions not drawn",
-                "MoreStatus": "{{status}}: {{n}}"
+                "MoreStatus": "{{status}}: {{n}}",
+                "ErrorBranches": "{{n}} error branches"
             },
             "Legend": {
                 "Running": "Running",
                 "Waiting": "Waiting",
                 "Stopping": "Stopping",
                 "Failed": "Failed (last 15 min)",
-                "Problem": "Has problems"
+                "AgentFailed": "Agent with a failure",
+                "ErrorBranch": "Took an error branch"
             }
         },
         "OpenExecution": "Execution ↗",

@@ -56,7 +56,7 @@ describe('ExecutionGraphComponent', () => {
         Unavailable: 'The graph could not be loaded',
         Tip: {
           Status: 'State: {{status}}', Started: 'Began: {{time}}', Trigger: 'Source: {{trigger}}', Steps: 'Blocks: {{steps}}',
-          More: '{{n}} more not drawn', MoreStatus: '{{status}}: {{n}}',
+          More: '{{n}} more not drawn', MoreStatus: '{{status}}: {{n}}', ErrorBranches: '{{n}} error branches',
         },
       },
       Status: { running: 'RUN', waiting: 'WAIT', stopping: 'STOP', failed: 'FAIL' } }
@@ -379,14 +379,40 @@ describe('ExecutionGraphComponent', () => {
     expect(more.numericStyle('width')).toBeGreaterThan(22);   // auto width from '+N'
   });
 
-  it('legend shows a chip swatch per status', async () => {
+  it('legend shows a chip swatch per status and two agent swatches, coloured from the palette', async () => {
     setup();
     await ready();
-    const swatches = (fixture.nativeElement as HTMLElement).querySelectorAll('.graph-legend .chip');
-    expect(swatches.length).toBe(5);
-    expect(Array.from(swatches).map(s => s.className)).toEqual([
-      'chip chip-running', 'chip chip-waiting', 'chip chip-stopping', 'chip chip-failed', 'chip chip-aura',
+    const swatches = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-legend .chip')) as HTMLElement[];
+    expect(swatches.map(s => s.className)).toEqual([
+      'chip chip-running', 'chip chip-waiting', 'chip chip-stopping', 'chip chip-failed', 'chip chip-agent chip-aura', 'chip chip-agent chip-warn',
     ]);
+    const bg = (el: HTMLElement) => getComputedStyle(el).backgroundColor;
+    const border = (el: HTMLElement) => getComputedStyle(el).borderTopColor;
+    expect(bg(swatches[0])).toBe('rgb(31, 111, 214)');     // run #1f6fd6
+    expect(border(swatches[1])).toBe('rgb(215, 220, 227)'); // waitBorder #d7dce3
+    expect(bg(swatches[3])).toBe('rgb(217, 48, 37)');      // bad #d93025
+    expect(border(swatches[4])).toBe('rgb(243, 184, 178)'); // auraBorder #f3b8b2
+    expect(border(swatches[5])).toBe('rgb(217, 138, 0)');   // warn #d98a00
+  });
+
+  it('an agent that only took an error branch gets the amber warn outline and an error-branch tooltip line', async () => {
+    setup();
+    await ready();
+    feed$.next(snap([row(E1, 'running', 'a1', { failure_conditions: 2 })], [row(E3, 'failed', 'a2')]));
+    const cy = component.cy;
+    const a1 = cy.getElementById('agent:a1');
+    expect(a1.hasClass('warn')).toBe(true);
+    expect(a1.hasClass('aura')).toBe(false);
+    expect(a1.style('border-color')).toBe('rgb(217,138,0)');
+    expect(a1.style('underlay-color')).toBe('rgb(217,138,0)');
+    expect(a1.numericStyle('underlay-opacity')).toBeCloseTo(0.16, 2);
+    expect(a1.numericStyle('text-max-width')).toBe(160);
+    expect(cy.getElementById('agent:a2').hasClass('aura')).toBe(true);
+    expect(cy.getElementById('agent:a2').hasClass('warn')).toBe(false);
+    a1.emit('mouseover');
+    fixture.detectChanges();
+    const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
+    expect(lines).toEqual(['Nightly', '2 error branches']);
   });
 
   it('a new projectId resets the graph and subscribes the new feed', async () => {

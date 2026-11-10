@@ -40,6 +40,7 @@ function classesFor(n: GraphNode): string {
   if (n.active) { out.push('active'); }
   if (n.status) { out.push('s-' + n.status); }
   if (n.aura) { out.push('aura'); }
+  if (n.warn) { out.push('warn'); }
   if (n.idle) { out.push('idle'); }
   return out.join(' ');
 }
@@ -59,9 +60,12 @@ function textWidth(text: string, font: string, size: number): number {
   return Math.ceil(text.length * size * 0.6);
 }
 
+/** Measured widths get a little slack, so a web font that loads after the measure does not clip the label. */
+const LABEL_SLACK = 6;
+
 /** Auto width from the label (Cytoscape's `width: label` is deprecated). */
-const projectWidth = (ele: any) => textWidth(ele.data('label') || '', '600 13px ' + FONT, 13) + 32;
-const moreWidth = (ele: any) => textWidth(ele.data('label') || '', '500 11px ' + FONT, 11) + 16;
+const projectWidth = (ele: any) => textWidth(ele.data('label') || '', '600 13px ' + FONT, 13) + 32 + LABEL_SLACK;
+const moreWidth = (ele: any) => textWidth(ele.data('label') || '', '500 11px ' + FONT, 11) + 16 + LABEL_SLACK;
 
 const GRAPH_STYLE: any[] = [
   { selector: 'node', style: {
@@ -78,12 +82,16 @@ const GRAPH_STYLE: any[] = [
     'background-color': C.agentBg, 'border-color': C.agentBorder, 'background-image': I.agent,
     'background-width': 26, 'background-height': 26,
     'font-size': 12, 'font-weight': 600, 'text-valign': 'bottom', 'text-halign': 'center', 'text-margin-y': 6,
-    'text-wrap': 'ellipsis', 'text-max-width': 140,
+    'text-wrap': 'ellipsis', 'text-max-width': 160,
     'text-background-color': C.labelBg, 'text-background-opacity': 0.9, 'text-background-padding': 2,
     'text-background-shape': 'round-rectangle',
   } },
   { selector: 'node.agent.active', style: { 'background-color': C.activeBg, 'border-color': C.activeBorder, 'background-image': I.agentActive } },
   { selector: 'node.agent.idle', style: { 'background-color': C.idleBg, 'border-color': C.idleBorder, 'background-image': I.agentIdle } },
+  { selector: 'node.agent.warn', style: {
+    'border-color': C.warn, 'underlay-color': C.warn, 'underlay-padding': 7, 'underlay-opacity': 0.16,
+    'underlay-shape': 'round-rectangle', 'underlay-corner-radius': 23,
+  } },
   { selector: 'node.agent.aura', style: {
     'background-color': C.auraBg, 'border-color': C.auraBorder, 'background-image': I.agentAura,
     'underlay-color': C.bad, 'underlay-padding': 7, 'underlay-opacity': 0.16, 'underlay-shape': 'round-rectangle',
@@ -135,6 +143,9 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Output() unavailable = new EventEmitter<void>();
 
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLElement>;
+
+  /** The legend swatches use the graph's own palette. */
+  readonly colors = C;
 
   cy: any = null;
   counts: GraphCounts | null = null;
@@ -336,7 +347,9 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     if (!tip) { return []; }
     const t = (key: string, params?: any) => this.translate.instant('Executions.Graph.Tip.' + key, params);
     const status = (st: ShownStatus) => this.translate.instant('Executions.Status.' + st);
-    if (tip.kind === 'text') { return [tip.text]; }
+    if (tip.kind === 'text') {
+      return tip.errorBranches > 0 ? [tip.text, t('ErrorBranches', { n: tip.errorBranches })] : [tip.text];
+    }
     if (tip.kind === 'more') {
       const order: ShownStatus[] = ['failed', 'stopping', 'running', 'waiting'];
       const total = order.reduce((acc, st) => acc + tip.hidden[st], 0);

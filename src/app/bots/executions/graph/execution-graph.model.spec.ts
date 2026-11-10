@@ -46,16 +46,31 @@ describe('buildExecutionGraph', () => {
     expect(g.counts.failed).toBe(1);
   });
 
-  it('agent aura when a shown execution failed or a live one has failure_conditions > 0', () => {
+  it('agent aura (red) when a shown execution failed; warn (amber) for failure_conditions > 0 without a failure', () => {
+    const failed = (id: string, agent: string) =>
+      row({ _id: id, agent_id: agent, status: 'failed', duration_ms: 1000, started_at: new Date(NOW - 5000).toISOString() });
     const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(3), now: NOW,
-      live: [row({ _id: 'e1', agent_id: 'a2', failure_conditions: 1 })],
-      failed: [row({ _id: 'e2', agent_id: 'a1', status: 'failed', duration_ms: 1000, started_at: new Date(NOW - 5000).toISOString() })]
+      projectName: 'P', agents: agents(4), now: NOW,
+      live: [row({ _id: 'e1', agent_id: 'a2', failure_conditions: 1 }), row({ _id: 'e3', agent_id: 'a2', status: 'waiting', failure_conditions: 2 }),
+        row({ _id: 'e4', agent_id: 'a4', failure_conditions: 1 })],
+      failed: [failed('e2', 'a1'), failed('e5', 'a4')]
     });
-    expect(g.nodes.find(n => n.id === 'agent:a1').aura).toBe(true);
-    expect(g.nodes.find(n => n.id === 'agent:a2').aura).toBe(true);
-    expect(g.nodes.find(n => n.id === 'agent:a3').aura).toBe(false);
-    expect(g.nodes.find(n => n.id === 'exec:e2').aura).toBe(true);
+    const node = (id: string) => g.nodes.find(n => n.id === id);
+    expect(node('agent:a1').aura).toBe(true);
+    expect(node('agent:a1').warn).toBe(false);
+    expect(node('agent:a2').aura).toBe(false);
+    expect(node('agent:a2').warn).toBe(true);
+    expect(node('agent:a3').aura).toBe(false);
+    expect(node('agent:a3').warn).toBe(false);
+    expect(node('agent:a4').aura).toBe(true);     // a failure wins over the error branch
+    expect(node('agent:a4').warn).toBe(false);
+    expect(node('exec:e2').aura).toBe(true);
+    expect(node('exec:e1').aura).toBe(false);
+    // the agent tooltip carries the error-branch count only when there is one
+    expect(node('agent:a2').tooltip).toEqual({ kind: 'text', text: 'Agent 2', errorBranches: 3 });
+    expect(node('agent:a4').tooltip).toEqual({ kind: 'text', text: 'Agent 4', errorBranches: 1 });
+    expect(node('agent:a3').tooltip).toEqual({ kind: 'text', text: 'Agent 3' });
+    expect(g.counts).toEqual({ running: 2, waiting: 1, stopping: 0, failed: 2, truncated: false });
   });
 
   it('idle agent when nothing is shown', () => {
@@ -146,13 +161,14 @@ describe('buildExecutionGraph', () => {
     expect(g.nodes.find(n => n.id === 'more:a1').tooltip).toEqual({ kind: 'more', hidden: { running: 0, waiting: 3, stopping: 0, failed: 0 } });
   });
 
-  it('a capped-out live row with failure_conditions still gives the agent its aura', () => {
+  it('a capped-out live row with failure_conditions still gives the agent its warn outline', () => {
     const live = Array.from({ length: 13 }, (_, i) =>
       row({ _id: 'w' + String(i).padStart(2, '0'), status: 'waiting', started_at: new Date(NOW - 600000 + i * 1000).toISOString(),
         failure_conditions: i === 0 ? 2 : 0 }));
     const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), live, failed: [], now: NOW });
     expect(g.nodes.some(n => n.id === 'exec:w00')).toBe(false);
-    expect(g.nodes.find(n => n.id === 'agent:a1').aura).toBe(true);
+    expect(g.nodes.find(n => n.id === 'agent:a1').aura).toBe(false);
+    expect(g.nodes.find(n => n.id === 'agent:a1').warn).toBe(true);
   });
 
   it('no overflow node at or under the cap', () => {
@@ -185,10 +201,10 @@ describe('buildExecutionGraph', () => {
     });
   });
 
-  it('agent ring grows with the agent count: max(300, 110 n / pi)', () => {
+  it('agent ring grows with the agent count: max(300, (2 RMAX + 48) n / 2pi)', () => {
     [1, 8, 9, 30].forEach(n => {
       const g = buildExecutionGraph({ projectName: 'P', agents: agents(n), live: [], failed: [], now: NOW });
-      const want = Math.max(300, 110 * n / Math.PI);
+      const want = Math.max(300, (2 * AGENT_RING_RMAX + 48) * n / (2 * Math.PI));
       g.nodes.filter(x => x.kind === 'agent').forEach(x => expect(Math.abs(dist(x.position) - want)).toBeLessThan(0.5, 'n=' + n));
     });
   });
@@ -210,6 +226,25 @@ describe('buildExecutionGraph', () => {
       });
       if (k === 1) { expect(dist(shown[0].position)).toBeCloseTo(dist(owner.position) + 74, 3); }
     });
+  });
+
+  it('neighbouring agents both at the cap: their fans keep a chip (26 px) plus 10 px apart', () => {
+    for (let n = 2; n <= 40; n++) {
+      // zero-padded names keep a1 and a2 next to each other on the ring
+      const list = Array.from({ length: n }, (_, i) => ({ id: 'a' + (i + 1), name: 'Agent ' + String(i + 1).padStart(2, '0') }));
+      const live: ExecutionRow[] = [];
+      ['a1', 'a2'].forEach(agent => {
+        for (let i = 0; i < MAX_PER_AGENT + 3; i++) { live.push(row({ _id: agent + '-' + String(i).padStart(2, '0'), agent_id: agent, status: 'waiting' })); }
+      });
+      const g = buildExecutionGraph({ projectName: 'P', agents: list, live, failed: [], now: NOW });
+      const fan = (id: string) => g.nodes.filter(x => (x.kind === 'execution' || x.kind === 'more') && x.agentId === id);
+      const f1 = fan('a1'), f2 = fan('a2');
+      expect(f1.length).toBe(MAX_PER_AGENT + 1);
+      expect(f2.length).toBe(MAX_PER_AGENT + 1);
+      let min = Infinity;
+      f1.forEach(x => f2.forEach(y => { min = Math.min(min, dist(x.position, y.position)); }));
+      expect(min).toBeGreaterThanOrEqual(26 + 10, 'n=' + n);
+    }
   });
 
   it('agent is active only when something is running or stopping', () => {

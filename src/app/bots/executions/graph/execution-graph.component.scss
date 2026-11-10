@@ -4,12 +4,9 @@
 .graph-stale { color: #a15c00; }
 .graph-legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: #5d6b82; margin-bottom: 8px; }
 .legend-item { display: inline-flex; align-items: center; gap: 6px; }
+/* swatch colours come from EXEC_GRAPH_COLORS through [style] bindings; agent swatches are larger, like the badges */
 .chip { display: inline-block; width: 14px; height: 14px; border-radius: 4px; box-sizing: border-box; border: 1px solid transparent; }
-.chip-running { background: #1f6fd6; }
-.chip-waiting { background: #eef0f3; border-color: #d7dce3; }
-.chip-stopping { background: #fff3dc; border-color: #f2d39a; }
-.chip-failed { background: #d93025; }
-.chip-aura { background: #fde8e6; border-color: #f3b8b2; box-shadow: 0 0 0 3px rgba(217, 48, 37, .16); margin: 0 3px; }
+.chip-agent { width: 16px; height: 16px; border-radius: 5px; border-width: 1.5px; }
 .graph-stage { position: relative; }
 .graph-canvas { width: 100%; height: 70vh; min-height: 480px; border: 1px solid #e3e6eb; border-radius: 6px; background: #fff; }
 .graph-tooltip {
