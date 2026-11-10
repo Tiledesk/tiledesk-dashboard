@@ -49,7 +49,7 @@ describe('BotListComponent list / graph switch', () => {
     { _id: 'b2', name: 'B', type: 'tilebot' },
   ];
 
-  function setup(configured: boolean, role: string, stored?: string) {
+  function setup(configured: boolean, role: string, stored?: string, url = '/project/p1/bots/my-chatbots/all', faqKb: any = {}) {
     store = stored ? { tiledesk_agents_view: stored } : {};
     spyOn(localStorage, 'getItem').and.callFake((k: string) => (k in store ? store[k] : null));
     spyOn(localStorage, 'setItem').and.callFake((k: string, v: string) => { store[k] = v; });
@@ -59,10 +59,12 @@ describe('BotListComponent list / graph switch', () => {
       imports: [TranslateModule.forRoot(), MatIconModule, MatMenuModule, MatTooltipModule, MatButtonModule, NoopAnimationsModule, MomentModule],
       providers: [
         { provide: ExecutionsService, useValue: { isConfigured: () => configured, summary: () => of({ agents: {} }) } },
-        { provide: Router, useValue: { navigate() {}, url: '/project/p1/bots/my-chatbots/all' } },
+        { provide: Router, useValue: { navigate() {}, url } },
         { provide: BrandService, useValue: { getBrand: () => ({}) } },
         { provide: LoggerService, useValue: { log() {}, debug() {}, warn() {}, error() {} } },
-        ...[FaqKbService, FaqService, AuthService, Location, NotifyService, AppConfigService, DepartmentService,
+        { provide: FaqKbService, useValue: faqKb },
+        { provide: AppConfigService, useValue: { getConfig: () => ({}) } },
+        ...[FaqService, AuthService, Location, NotifyService, DepartmentService,
           ProjectService, BotLocalDbService, MatDialog, ProjectPlanService, UsersService, Clipboard, WebhookService,
           ActivatedRoute, RoleService, RolesService, AgentPromptsService].map(t => ({ provide: t, useValue: {} })),
       ],
@@ -121,5 +123,28 @@ describe('BotListComponent list / graph switch', () => {
     expect(component.showGraph).toBe(false);
     expect(el().querySelector('execution-graph')).toBeNull();
     expect(el().querySelectorAll('.card-list').length).toBe(2);
+  });
+
+  it('aria-pressed reflects the mode and the group is labelled', () => {
+    setup(true, 'owner');
+    const group = el().querySelector('.bots-list-view-switch');
+    expect(group.getAttribute('aria-label')).toBeTruthy();
+    const btns = el().querySelectorAll('.bots-list-view-switch-btn');
+    expect(btns[0].getAttribute('aria-pressed')).toBe('true');
+    expect(btns[1].getAttribute('aria-pressed')).toBe('false');
+    component.setViewMode('graph');
+    fixture.detectChanges();
+    expect(btns[0].getAttribute('aria-pressed')).toBe('false');
+    expect(btns[1].getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('graphAgents come from the final list of a flows route', () => {
+    const list = [
+      { _id: 'c1', name: 'Chat', type: 'tilebot' },
+      { _id: 'w1', root_id: 'wr', name: 'Hook', type: 'tilebot', subtype: 'webhook' },
+    ];
+    setup(true, 'owner', undefined, '/project/p1/flows/flow-automations', { getFaqKbByProjectId: () => of(list) });
+    component.getFaqKbByProjectId();
+    expect(component.graphAgents).toEqual([{ id: 'wr', name: 'Hook' }]);
   });
 });

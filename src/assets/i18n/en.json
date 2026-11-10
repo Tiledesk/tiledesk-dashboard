@@ -4167,6 +4167,7 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "Executions": {
         "Graph": {
+            "SwitchLabel": "View",
             "SwitchList": "List",
             "SwitchGraph": "Graph",
             "Counts": "{{running}} running · {{waiting}} waiting · {{failed}} failed in the last 15 min",

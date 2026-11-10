@@ -1248,7 +1248,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (faqKb) {
 
         this.faqkbList = faqKb;
-        this.buildGraphAgents();
         this.currentPage = 1
         this.updatePagedFaqkbList();
 
@@ -1383,7 +1382,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.updatePagedFaqkbList();
           this.logger.log('/flows/automations ', this.faqkbList);
         } 
-        
+
+        this.buildGraphAgents(); // from the final list (route-filtered)
+
         if (this.faqkbList) {
           if (this.faqkbList.length === 0) {
             this.showSpinner = false;

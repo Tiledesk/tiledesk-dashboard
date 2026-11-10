@@ -125,10 +125,11 @@
                 {{ 'Executions.AllExecutions' | translate }}
               </button>
 
-              <div *ngIf="executionsEnabled" class="pull-right bots-list-view-switch" role="group">
-                <button type="button" class="bots-list-view-switch-btn" [class.active]="viewMode === 'list'"
+              <div *ngIf="executionsEnabled" class="pull-right bots-list-view-switch" role="group"
+                [attr.aria-label]="'Executions.Graph.SwitchLabel' | translate">
+                <button type="button" class="bots-list-view-switch-btn" [class.active]="viewMode === 'list'" [attr.aria-pressed]="viewMode === 'list'"
                   (click)="setViewMode('list')">{{ 'Executions.Graph.SwitchList' | translate }}</button>
-                <button type="button" class="bots-list-view-switch-btn" [class.active]="viewMode === 'graph'"
+                <button type="button" class="bots-list-view-switch-btn" [class.active]="viewMode === 'graph'" [attr.aria-pressed]="viewMode === 'graph'"
                   (click)="setViewMode('graph')">{{ 'Executions.Graph.SwitchGraph' | translate }}</button>
               </div>
 

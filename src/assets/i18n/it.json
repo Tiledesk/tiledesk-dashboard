@@ -3760,6 +3760,7 @@
     "ContactUsToChangeYourPaymentMethod": "Contattaci per cambiare il metodo di pagamento",
     "Executions": {
         "Graph": {
+            "SwitchLabel": "Vista",
             "SwitchList": "Elenco",
             "SwitchGraph": "Grafo",
             "Counts": "{{running}} in esecuzione · {{waiting}} in attesa · {{failed}} fallite negli ultimi 15 min",

@@ -1439,6 +1439,11 @@ input[type="checkbox"]:disabled {
   font-size: 13px;
   cursor: pointer;
 
+  &:focus-visible {
+    outline: 2px solid var(--blue-500, #1a73e8);
+    outline-offset: -2px;
+  }
+
   &.active {
     background-color: var(--blue-20, #c9d6f0);
     font-weight: 600;
