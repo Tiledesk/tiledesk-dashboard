@@ -4214,6 +4214,14 @@
             "Truncated": "Showing the first 300 live executions",
             "Stale": "Data may be out of date",
             "Unavailable": "The graph could not be loaded",
+            "Tip": {
+                "Status": "Status: {{status}}",
+                "Started": "Started: {{time}}",
+                "Trigger": "Trigger: {{trigger}}",
+                "Steps": "Steps: {{steps}}",
+                "More": "{{n}} more executions not drawn",
+                "MoreStatus": "{{status}}: {{n}}"
+            },
             "Legend": {
                 "Running": "Running",
                 "Waiting": "Waiting",

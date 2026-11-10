@@ -54,7 +54,12 @@ describe('ExecutionGraphComponent', () => {
         Truncated: 'Showing the first 300 live executions',
         Stale: 'Data may be out of date',
         Unavailable: 'The graph could not be loaded',
-      } }
+        Tip: {
+          Status: 'State: {{status}}', Started: 'Began: {{time}}', Trigger: 'Source: {{trigger}}', Steps: 'Blocks: {{steps}}',
+          More: '{{n}} more not drawn', MoreStatus: '{{status}}: {{n}}',
+        },
+      },
+      Status: { running: 'RUN', waiting: 'WAIT', stopping: 'STOP', failed: 'FAIL' } }
     });
     translate.use('en');
     fixture = TestBed.createComponent(ExecutionGraphComponent);
@@ -152,6 +157,81 @@ describe('ExecutionGraphComponent', () => {
     feed$.next({ ...FIRST(), stale: true });
     fixture.detectChanges();
     expect(text()).toContain('Data may be out of date');
+  });
+
+  it('hover on an execution shows a translated tooltip with a formatted start time', async () => {
+    setup();
+    await ready();
+    const started = new Date(Date.now() - 90 * 1000).toISOString();
+    feed$.next(snap([row(E2, 'waiting', 'a2', { started_at: started })]));
+    component.cy.getElementById('exec:' + E2).emit('mouseover');
+    fixture.detectChanges();
+    const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
+    expect(lines).toEqual(['State: WAIT', 'Began: ' + new Date(started).toLocaleString(), 'Source: chat', 'Blocks: 3']);
+  });
+
+  it('an agent over the cap gets a +N node: hidden counts on hover, tap opens the agent executions', async () => {
+    setup();
+    await ready();
+    const many = Array.from({ length: 14 }, (_, i) => row('w' + String(i).padStart(2, '0') + '-0000-0000', 'waiting', 'a1'));
+    feed$.next(snap([...many, row(E1, 'running', 'a1')]));
+    const more = component.cy.getElementById('more:a1');
+    expect(more.empty()).toBe(false);
+    expect(more.hasClass('more')).toBe(true);
+    expect(more.data('label')).toBe('+3');
+    expect(component.cy.nodes('.exec').length).toBe(12);
+    more.emit('mouseover');
+    fixture.detectChanges();
+    const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
+    expect(lines).toEqual(['3 more not drawn', 'WAIT: 3']);
+    more.emit('tap');
+    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'bots', 'a1', 'executions']);
+  });
+
+  it('agents get the active class only when something runs or stops', async () => {
+    setup();
+    await ready();
+    feed$.next(FIRST());
+    expect(component.cy.getElementById('agent:a1').hasClass('active')).toBe(true);
+    expect(component.cy.getElementById('agent:a2').hasClass('active')).toBe(false);
+    expect(component.cy.getElementById('agent:a2').hasClass('idle')).toBe(false);
+  });
+
+  it('no counts line until the first successful snapshot', async () => {
+    setup();
+    await ready();
+    const el = fixture.nativeElement as HTMLElement;
+    feed$.next(snap([], [], true));
+    fixture.detectChanges();
+    expect(el.querySelector('.graph-counts')).toBeNull();
+    expect(el.textContent).toContain('Data may be out of date');
+    feed$.next(FIRST());
+    fixture.detectChanges();
+    expect(el.querySelector('.graph-counts')).not.toBeNull();
+    feed$.next({ ...FIRST(), stale: true });
+    fixture.detectChanges();
+    expect(el.querySelector('.graph-counts').textContent).toContain('1 running');
+    expect(el.textContent).toContain('Data may be out of date');
+  });
+
+  it('a snapshot that breaks apply is logged, keeps the previous render and the feed', async () => {
+    setup();
+    await ready();
+    feed$.next(FIRST());
+    const cy = component.cy;
+    expect(cy.nodes().length).toBe(6);
+    const log = spyOn(console, 'error');
+    expect(() => feed$.next(snap([row(null, 'running', 'a1')]))).not.toThrow();
+    fixture.detectChanges();
+    expect(log).toHaveBeenCalled();
+    expect(cy.nodes().length).toBe(6);
+    expect(cy.getElementById('exec:' + E1).empty()).toBe(false);
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Data may be out of date');
+    expect(feed$.observers.length).toBe(1);
+    feed$.next(snap([row(E1, 'running', 'a1')]));
+    fixture.detectChanges();
+    expect(cy.nodes().length).toBe(4);
+    expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('Data may be out of date');
   });
 
   it('hover shows the node tooltip lines as text', async () => {
