@@ -125,6 +125,13 @@
                 {{ 'Executions.AllExecutions' | translate }}
               </button>
 
+              <div *ngIf="executionsEnabled" class="pull-right bots-list-view-switch" role="group">
+                <button type="button" class="bots-list-view-switch-btn" [class.active]="viewMode === 'list'"
+                  (click)="setViewMode('list')">{{ 'Executions.Graph.SwitchList' | translate }}</button>
+                <button type="button" class="bots-list-view-switch-btn" [class.active]="viewMode === 'graph'"
+                  (click)="setViewMode('graph')">{{ 'Executions.Graph.SwitchGraph' | translate }}</button>
+              </div>
+
               <!-- New Flow dropdown (AI Agents / Automations) — kept commented; button above only
               <div class="dropdown pull-right">
                 <a class="btn dropdown-toggle select-flow-btn"
@@ -178,7 +185,7 @@
                     <!-- {{ pageName }} -->
                   </div>
                   <!-- faqkbList length  {{ faqkbList?.length}} -->
-                  <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0">
+                  <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0 && !showGraph">
                     <span class="order-by-label">{{'OrderBy' | translate}} </span>
 
                     <div class="dropdown">
@@ -634,6 +641,11 @@
                 </div>
 
 
+                <execution-graph *ngIf="showGraph" class="bots-list-graph"
+                  [projectId]="project?._id" [projectName]="project?.name" [agents]="graphAgents"
+                  (unavailable)="onGraphUnavailable()"></execution-graph>
+
+                <ng-container *ngIf="!showGraph">
                 <div class="card-list" *ngFor="let faqkb of pagedFaqkbList; let i = index; trackBy: trackByFaqkbId">
 
                   <!-- matTooltipClass="custom-mat-tooltip"
@@ -992,6 +1004,7 @@
                     <!-- </span> -->
                   <!-- </div> -->
                 </div>
+                </ng-container>
 
               </div>
 

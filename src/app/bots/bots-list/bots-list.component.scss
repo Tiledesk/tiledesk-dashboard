@@ -1423,3 +1423,29 @@ input[type="checkbox"]:disabled {
   margin-right: 12px;
   border-radius: 9999px !important;
 }
+
+.bots-list-view-switch {
+  display: inline-flex;
+  margin-right: 12px;
+  border: 1px solid var(--blue-20, #c9d6f0);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.bots-list-view-switch-btn {
+  border: 0;
+  background: transparent;
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+
+  &.active {
+    background-color: var(--blue-20, #c9d6f0);
+    font-weight: 600;
+  }
+}
+
+.bots-list-graph {
+  display: block;
+  width: 100%;
+}
