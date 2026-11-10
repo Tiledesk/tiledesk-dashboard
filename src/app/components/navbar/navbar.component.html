@@ -172,6 +172,10 @@
                 donut_large
               </mat-icon>
               <span>{{ 'CurrentUsage' | translate }}</span>
+              <span *ngIf="credits" class="credits-chip" [class.credits-chip--low]="credits.balance?.available <= 0"
+                [class.credits-chip--warning]="credits.billing?.status === 'grace'">
+                {{ credits.balance?.available | credits }} {{ 'Credits.CreditsShort' | translate }}
+              </span>
               <mat-icon class="quote-caret-icon" [class.quote-caret-icon--up]="isOpenCurrentUsageMenu"
                 aria-hidden="true">
                 arrow_drop_down
@@ -183,7 +187,42 @@
               <ng-template matMenuContent>
               <div class="menu-container">
 
-                <div aria-label="Quotas usage" class="quotas-usage-container-wpr">
+                <!-- Credits project: the plan quotas do not apply -->
+                <div *ngIf="credits" aria-label="Credits usage" class="credits-usage">
+                  <div class="credits-usage-row">
+                    <span class="credits-usage-label">{{ 'Credits.Available' | translate }}</span>
+                    <span class="credits-usage-value" [class.credits-usage-value--low]="credits.balance?.available <= 0">
+                      {{ credits.balance?.available | credits }}
+                    </span>
+                  </div>
+                  <div class="credits-usage-row">
+                    <span class="credits-usage-label">{{ 'Credits.Grant' | translate }}</span>
+                    <span>{{ credits.balance?.grant | credits }} / {{ credits.grant | credits: 0 }}</span>
+                  </div>
+                  <div class="credits-usage-bar">
+                    <div class="credits-usage-bar-fill"
+                      [style.width.%]="credits.grant ? (credits.balance?.grant > 0 ? credits.balance.grant / credits.grant * 100 : 0) : 0">
+                    </div>
+                  </div>
+                  <div class="credits-usage-row">
+                    <span class="credits-usage-label">{{ 'Credits.Packs' | translate }}</span>
+                    <span>{{ credits.balance?.packs | credits }}
+                      <span *ngIf="credits.balance?.packsFrozen">({{ 'Credits.Frozen' | translate }})</span>
+                    </span>
+                  </div>
+                  <div *ngIf="credits.billing?.status !== 'active'" class="credits-usage-status">
+                    {{ ('Credits.Billing.' + credits.billing?.status) | translate }}
+                    <span *ngIf="credits.billing?.graceUntil">· {{ credits.billing.graceUntil | amDateFormat: 'LLL' }}</span>
+                  </div>
+                  <div class="quota-resets" *ngIf="credits.period">
+                    {{ 'Credits.GrantResets' | translate }}: {{ credits.period.end | amDateFormat: 'LL' }}
+                  </div>
+                  <button class="btn credits-usage-btn" (click)="goToCredits()">
+                    {{ 'Credits.SeeCosts' | translate }}
+                  </button>
+                </div>
+
+                <div *ngIf="!credits" aria-label="Quotas usage" class="quotas-usage-container-wpr">
                   <div class="quotas-usage-container">
 
                     <div aria-label="Usage limit for Conversations" class="quota-section-main">

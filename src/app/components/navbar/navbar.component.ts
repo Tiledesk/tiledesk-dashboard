@@ -50,6 +50,7 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RolesService } from 'app/services/roles.service';
 import { NavigationService } from 'app/services/navigation.service';
 import { isRequestVisibleToAgent } from 'app/utils/request-visibility.util';
+import { CreditsService, CreditsSummary } from 'app/services/credits.service';
 
 
 const Swal = require('sweetalert2')
@@ -247,6 +248,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
   endSlot: string;
   /** Data fine periodo quota da POST /quotes (`slot.endDate`), formattata per il menu usage. */
   quotaResetEndDateLabel: string | null = null;
+  /** Credits of the project when it is metered in credits: replaces the quotas in the usage menu */
+  credits: CreditsSummary | null = null;
 
   newChangelogCount: boolean;
   // lastSeen: number = 0; // Replace with actual last seen timestamp (e.g., from user preferences)
@@ -296,7 +299,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     private sleekplanService: SleekplanService,
     public rolesService: RolesService,
     private navSvc: NavigationService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private creditsService: CreditsService
   ) {
 
     super(prjctPlanService, notifyService);
@@ -382,6 +386,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     // this.listenToWSRequestsDataCallBack()
 
     this.listenToHomeRequestQuotes();
+    this.listenToCredits();
     this.listenToProjectUser()
     this.getPageTitle()
      this.listenSidebarIsOpened()
@@ -861,6 +866,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     });
   }
 
+  listenToCredits() {
+    this.creditsService.credits$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((credits) => {
+        this.credits = credits && credits.projectId === this.projectId ? credits.summary : null;
+      });
+  }
+
+  goToCredits() {
+    this.router.navigate(['/project', this.projectId, 'credits']);
+  }
+
 
   listenSoundPreference() {
     this.wsRequestsService.hasChangedSoundPreference$
@@ -891,6 +908,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
           this.projectId = project._id;
           this.projectName = project.name;
+          this.creditsService.watch(project._id);
           // this.OPERATING_HOURS_ACTIVE = this.project.operatingHours
           // this.getProjectQuotes();
           // this.getQuotasCount()
@@ -1029,6 +1047,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
       this.logger.log("[NAVBAR] getAllQuotes response: ", resp)
       this.logger.log("[NAVBAR] project_limits: ", project_limits)
       this.logger.log("[NAVBAR] resp.quotes: ", resp.quotes)
+      if (resp && resp.credits !== undefined) {
+        this.creditsService.publish(projectId, resp.credits);
+      }
       // this.quotaResetEndDateLabel = this.formatQuotaSlotEndDate(resp?.slot?.endDate);
       if(resp?.slot?.endDate) {
         this.quotaResetEndDateLabel = resp?.slot?.endDate

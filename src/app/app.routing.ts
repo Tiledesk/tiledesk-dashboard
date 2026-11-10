@@ -421,6 +421,13 @@ const routes: Routes = [
     canActivate: [AuthGuard, ProjectProfileGuard]
   },
 
+  // Credits and costs: also for the projects on plan quotas, which see when their switch is scheduled
+  {
+    path: 'project/:projectid/credits',
+    loadChildren: () => import('app/credits/credits.module').then(m => m.CreditsModule),
+    canActivate: [AuthGuard]
+  },
+
   // { path: 'project/:projectid/messages-analytics', component: MessagesComponent, canActivate: [AuthGuard] }, // doesn't works
   // { path: 'project/:projectid/conversation-analytics', component: RequestsComponent, canActivate: [AuthGuard] }, // doesn't works
 
