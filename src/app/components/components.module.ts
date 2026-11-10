@@ -23,6 +23,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { MomentModule } from 'ngx-moment';
 import { UnservedNotificationsComponent } from './unserved-notifications/unserved-notifications.component';
+import { CreditsPipe } from 'app/credits/credits.pipe';
 
 
 @NgModule({
@@ -44,6 +45,7 @@ import { UnservedNotificationsComponent } from './unserved-notifications/unserve
     MatSortModule,
     MatInputModule,
     MomentModule,
+    CreditsPipe,
   ],
   declarations: [
     FooterComponent,

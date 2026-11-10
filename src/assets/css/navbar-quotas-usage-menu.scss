@@ -35,6 +35,29 @@
   background-color: rgb(220, 233, 255);
 }
 
+// Credits balance next to "Current usage", only for the projects metered in credits
+.quote-modal-btn > span.credits-chip {
+  margin-left: 4px;
+  padding: 1px 8px;
+  border-radius: 9999px;
+  background-color: #e8f4fd;
+  color: #1a73b8;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+
+  &.credits-chip--warning {
+    background-color: #fff4e5;
+    color: #b26a00;
+  }
+
+  &.credits-chip--low {
+    background-color: #fdecea;
+    color: #c62828;
+  }
+}
+
 .quote-modal-btn .data-usage-icon {
   font-size: 20px !important;
   width: 20px !important;
@@ -365,6 +388,63 @@
     .btn {
       height: 40px !important;
     }
+  }
+
+  // Credits project
+  .credits-usage {
+    padding: 14px 16px 8px;
+    font-size: 14px;
+    color: #1a1f36;
+    min-width: 300px;
+  }
+
+  .credits-usage-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 6px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .credits-usage-label {
+    color: #566787;
+  }
+
+  .credits-usage-value {
+    font-size: 20px;
+    font-weight: 600;
+
+    &.credits-usage-value--low {
+      color: #c62828;
+    }
+  }
+
+  .credits-usage-bar {
+    height: 4px;
+    border-radius: 2px;
+    background-color: #e8e9ed;
+    overflow: hidden;
+    margin: 2px 0 10px;
+  }
+
+  .credits-usage-bar-fill {
+    height: 100%;
+    background-color: #3ea9f5;
+  }
+
+  .credits-usage-status {
+    color: #b26a00;
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .credits-usage-btn {
+    display: block;
+    width: 100%;
+    margin: 10px 0 4px;
+    background-color: #3ea9f5;
+    color: #fff;
   }
 
 

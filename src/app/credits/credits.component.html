@@ -1,0 +1,282 @@
+<div class="main-content">
+<div class="credits-page">
+
+  <div class="credits-header">
+    <div>
+      <h1 class="credits-title">{{ 'Credits.Title' | translate }}</h1>
+      <p class="credits-subtitle" *ngIf="isCredits && summary?.period">
+        {{ 'Credits.CurrentPeriod' | translate }}:
+        {{ summary.period.start | amDateFormat: 'LL' }} – {{ summary.period.end | amDateFormat: 'LL' }}
+      </p>
+    </div>
+    <div class="credits-toolbar" *ngIf="isCredits">
+      <label class="credits-auto-refresh">
+        <input type="checkbox" [(ngModel)]="autoRefresh" (change)="onAutoRefreshChange()">
+        {{ 'Credits.AutoRefresh' | translate }}
+      </label>
+      <button type="button" class="btn btn-tdblu-no-boxshadow credits-refresh-btn" (click)="load()">
+        {{ 'Credits.Refresh' | translate }}
+      </button>
+      <span class="credits-last-update" *ngIf="lastUpdate">
+        {{ 'Credits.LastUpdate' | translate }} {{ lastUpdate | amDateFormat: 'LTS' }}
+      </span>
+    </div>
+  </div>
+
+  <div *ngIf="checkoutOutcome === 'success'" class="credits-notice credits-notice--success">
+    {{ 'Credits.CheckoutSuccess' | translate }}
+  </div>
+  <div *ngIf="checkoutOutcome === 'cancel'" class="credits-notice">
+    {{ 'Credits.CheckoutCancel' | translate }}
+  </div>
+
+  <div *ngIf="loading" class="credits-state">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading && loadError" class="credits-notice credits-notice--error">
+    {{ 'Credits.LoadError' | translate }}
+  </div>
+
+  <!-- Project still on plan quotas -->
+  <div *ngIf="!loading && !loadError && !isCredits" class="credits-card">
+    <h2 class="credits-card-title">{{ 'Credits.QuotesMetering' | translate }}</h2>
+    <p *ngIf="summary?.creditsFrom">
+      {{ 'Credits.SwitchScheduled' | translate }} {{ summary.creditsFrom | amDateFormat: 'LL' }}
+    </p>
+    <p *ngIf="!summary?.creditsFrom">{{ 'Credits.NotCreditsProject' | translate }}</p>
+  </div>
+
+  <ng-container *ngIf="!loading && !loadError && isCredits">
+
+    <div *ngIf="summary.billing?.status === 'grace'" class="credits-notice credits-notice--warning">
+      {{ 'Credits.GraceNotice' | translate }} {{ summary.billing.graceUntil | amDateFormat: 'LLL' }}
+    </div>
+    <div *ngIf="summary.billing?.status === 'suspended'" class="credits-notice credits-notice--error">
+      {{ 'Credits.SuspendedNotice' | translate }}
+    </div>
+    <div *ngIf="summary.balance.available <= 0 && summary.billing?.status !== 'suspended'" class="credits-notice credits-notice--error">
+      {{ 'Credits.ExhaustedNotice' | translate }}
+    </div>
+
+    <!-- Balance -->
+    <div class="credits-cards">
+      <div class="credits-card credits-card--main">
+        <div class="credits-card-label">{{ 'Credits.Available' | translate }}</div>
+        <div class="credits-card-value" [class.credits-negative]="summary.balance.available <= 0">
+          {{ summary.balance.available | credits }}
+        </div>
+        <div class="credits-card-hint">{{ 'Credits.AvailableHint' | translate }}</div>
+      </div>
+
+      <div class="credits-card">
+        <div class="credits-card-label">{{ 'Credits.Grant' | translate }}</div>
+        <div class="credits-card-value" [class.credits-negative]="summary.balance.grant < 0">
+          {{ summary.balance.grant | credits }} <span class="credits-of">/ {{ summary.grant | credits: 0 }}</span>
+        </div>
+        <div class="credits-progress"><div class="credits-progress-fill" [style.width.%]="grantLeftPerc"></div></div>
+        <div class="credits-card-hint">{{ 'Credits.GrantHint' | translate }}</div>
+      </div>
+
+      <div class="credits-card">
+        <div class="credits-card-label">{{ 'Credits.Packs' | translate }}</div>
+        <div class="credits-card-value">{{ summary.balance.packs | credits }}</div>
+        <div class="credits-card-hint" *ngIf="!summary.balance.packsFrozen">{{ 'Credits.PacksHint' | translate }}</div>
+        <div class="credits-card-hint credits-negative" *ngIf="summary.balance.packsFrozen">{{ 'Credits.PacksFrozen' | translate }}</div>
+      </div>
+
+      <div class="credits-card">
+        <div class="credits-card-label">{{ 'Credits.BillingStatus' | translate }}</div>
+        <div class="credits-card-value credits-status" [ngClass]="'credits-status--' + summary.billing?.status">
+          {{ ('Credits.Billing.' + summary.billing?.status) | translate }}
+        </div>
+        <div class="credits-card-hint" *ngIf="current">
+          {{ 'Credits.ConsumedInPeriod' | translate }}: {{ current.consumed | credits }}
+        </div>
+      </div>
+    </div>
+
+    <div class="credits-columns">
+
+      <!-- Consumption of the current period -->
+      <div class="credits-card">
+        <h2 class="credits-card-title">{{ 'Credits.PeriodConsumption' | translate }}</h2>
+        <p *ngIf="!resourceRows.length" class="credits-empty">{{ 'Credits.NoConsumption' | translate }}</p>
+        <table *ngIf="resourceRows.length" class="credits-table">
+          <thead>
+            <tr>
+              <th>{{ 'Credits.Resource' | translate }}</th>
+              <th class="num">{{ 'Credits.Units' | translate }}</th>
+              <th class="num">{{ 'Credits.Credits' | translate }}</th>
+              <th class="num">%</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of resourceRows">
+              <td>{{ ('Credits.Resources.' + row.resource) | translate }}</td>
+              <td class="num">{{ row.units }}<span *ngIf="row.tokens" class="credits-muted"> · {{ row.tokens | number }} token</span></td>
+              <td class="num">{{ row.credits | credits }}</td>
+              <td class="num">{{ row.perc | number: '1.0-0' }}%</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>{{ 'Credits.Total' | translate }}</td>
+              <td></td>
+              <td class="num">{{ current.consumed | credits }}</td>
+              <td></td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <ng-container *ngIf="current?.llm?.length">
+          <h3 class="credits-card-subtitle">{{ 'Credits.LlmByModel' | translate }}</h3>
+          <table class="credits-table">
+            <thead>
+              <tr>
+                <th>{{ 'Credits.Model' | translate }}</th>
+                <th class="num">{{ 'Credits.Calls' | translate }}</th>
+                <th class="num">Token</th>
+                <th class="num">{{ 'Credits.Credits' | translate }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let usage of current.llm">
+                <td>
+                  {{ usage.provider }}/{{ usage.model }}
+                  <span *ngIf="usage.unpriced" class="credits-badge credits-badge--warning"
+                    title="{{ 'Credits.UnpricedHint' | translate }}">
+                    {{ 'Credits.Unpriced' | translate }}: {{ usage.unpriced }}
+                  </span>
+                </td>
+                <td class="num">{{ usage.calls }}</td>
+                <td class="num">{{ usage.tokens | number }}</td>
+                <td class="num">{{ usage.credits | credits: 4 }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+      </div>
+
+      <!-- Live charges -->
+      <div class="credits-card">
+        <div class="credits-card-title-row">
+          <h2 class="credits-card-title">{{ 'Credits.LiveCharges' | translate }}</h2>
+          <a *ngIf="liveCharges.length" href="javascript:void(0)" (click)="clearLiveCharges()">{{ 'Credits.Clear' | translate }}</a>
+        </div>
+        <p class="credits-card-hint">{{ 'Credits.LiveChargesHint' | translate }}</p>
+        <p *ngIf="!liveCharges.length" class="credits-empty">{{ 'Credits.NoLiveCharges' | translate }}</p>
+        <table *ngIf="liveCharges.length" class="credits-table">
+          <tbody>
+            <tr *ngFor="let charge of liveCharges">
+              <td class="credits-muted">{{ charge.at | amDateFormat: 'LTS' }}</td>
+              <td>
+                {{ ('Credits.Resources.' + charge.resource) | translate }}
+                <span *ngIf="charge.model" class="credits-muted">{{ charge.model }}</span>
+                <span *ngIf="charge.units > 1" class="credits-muted">×{{ charge.units }}</span>
+              </td>
+              <td class="num credits-charge">−{{ charge.credits | credits: 4 }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="credits-card">
+      <h2 class="credits-card-title">{{ 'Credits.History' | translate }}</h2>
+      <table class="credits-table">
+        <thead>
+          <tr>
+            <th>{{ 'Credits.Period' | translate }}</th>
+            <th class="num">{{ 'Credits.Grant' | translate }}</th>
+            <th class="num">{{ 'Credits.Consumed' | translate }}</th>
+            <th class="num">{{ 'Credits.FromGrant' | translate }}</th>
+            <th class="num">{{ 'Credits.FromPacks' | translate }}</th>
+            <th class="num">{{ 'Credits.PacksPurchased' | translate }}</th>
+            <th class="num">{{ 'Credits.Expired' | translate }}</th>
+            <th>{{ 'Credits.Breakdown' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let period of history; let first = first">
+            <td>
+              {{ period.start | amDateFormat: 'll' }} – {{ period.end | amDateFormat: 'll' }}
+              <span *ngIf="first && !period.closed" class="credits-badge">{{ 'Credits.InProgress' | translate }}</span>
+            </td>
+            <td class="num">{{ period.grant | credits: 0 }}</td>
+            <td class="num">{{ period.consumed | credits }}</td>
+            <td class="num">{{ period.fromGrant | credits }}</td>
+            <td class="num">{{ period.fromPacks | credits }}</td>
+            <td class="num">{{ period.packsPurchased | credits: 0 }}</td>
+            <td class="num">{{ period.expired | credits }}</td>
+            <td class="credits-breakdown">
+              <span *ngFor="let resource of objectKeys(period.resources)">
+                {{ ('Credits.Resources.' + resource) | translate }} {{ period.resources[resource].credits | credits }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="credits-columns">
+
+      <!-- Price list -->
+      <div class="credits-card">
+        <h2 class="credits-card-title">{{ 'Credits.PriceList' | translate }}</h2>
+        <table class="credits-table">
+          <tbody>
+            <tr *ngFor="let resource of objectKeys(summary.fees)">
+              <td>{{ ('Credits.Resources.' + resource) | translate }}</td>
+              <td class="num">{{ summary.fees[resource] | credits }}</td>
+              <td class="credits-muted">{{ 'Credits.PerUse' | translate }}</td>
+            </tr>
+            <tr *ngFor="let resource of objectKeys(summary.monthlyFees)">
+              <td>{{ ('Credits.Resources.' + resource) | translate }}</td>
+              <td class="num">{{ summary.monthlyFees[resource] | credits }}</td>
+              <td class="credits-muted">{{ 'Credits.PerMonth' | translate }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 class="credits-card-subtitle">{{ 'Credits.LlmPrices' | translate }}</h3>
+        <p *ngIf="!llmPriceRows.length" class="credits-empty">{{ 'Credits.NoLlmPrices' | translate }}</p>
+        <table *ngIf="llmPriceRows.length" class="credits-table">
+          <thead>
+            <tr>
+              <th>{{ 'Credits.Model' | translate }}</th>
+              <th class="num">Input</th>
+              <th class="num">Output</th>
+              <th class="num">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let price of llmPriceRows">
+              <td>{{ price.provider }}/{{ price.model }}</td>
+              <td class="num">{{ price.input | credits: 4 }}</td>
+              <td class="num">{{ price.output | credits: 4 }}</td>
+              <td class="num">{{ price.total | credits: 4 }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="credits-card-hint">{{ 'Credits.LlmPricesHint' | translate }}</p>
+      </div>
+
+      <!-- Credit packs -->
+      <div class="credits-card">
+        <h2 class="credits-card-title">{{ 'Credits.BuyPack' | translate }}</h2>
+        <p class="credits-card-hint">{{ 'Credits.BuyPackHint' | translate: { min: (summary.packMin | credits: 0) } }}</p>
+        <div class="credits-pack-form">
+          <input type="number" class="form-control" [min]="summary.packMin" step="100" [(ngModel)]="packCredits">
+          <button type="button" class="btn btn-tdblu-no-boxshadow" [disabled]="buyingPack" (click)="buyPack()">
+            {{ 'Credits.BuyPackBtn' | translate }}
+          </button>
+        </div>
+        <p *ngIf="packError" class="credits-negative">{{ packError | translate: { min: (summary.packMin | credits: 0) } }}</p>
+      </div>
+    </div>
+
+  </ng-container>
+</div>
+</div>
