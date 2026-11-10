@@ -133,14 +133,6 @@
                 </svg>
               </button>
 
-              <div *ngIf="executionsEnabled" class="pull-right bots-list-view-switch" role="group"
-                [attr.aria-label]="'Executions.Graph.SwitchLabel' | translate">
-                <button type="button" class="bots-list-view-switch-btn" [class.active]="viewMode === 'list'" [attr.aria-pressed]="viewMode === 'list'"
-                  (click)="setViewMode('list')">{{ 'Executions.Graph.SwitchList' | translate }}</button>
-                <button type="button" class="bots-list-view-switch-btn" [class.active]="viewMode === 'graph'" [attr.aria-pressed]="viewMode === 'graph'"
-                  (click)="setViewMode('graph')">{{ 'Executions.Graph.SwitchGraph' | translate }}</button>
-              </div>
-
               <!-- New Flow dropdown (AI Agents / Automations) — kept commented; button above only
               <div class="dropdown pull-right">
                 <a class="btn dropdown-toggle select-flow-btn"
@@ -194,7 +186,7 @@
                     <!-- {{ pageName }} -->
                   </div>
                   <!-- faqkbList length  {{ faqkbList?.length}} -->
-                  <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0 && !showGraph">
+                  <div class="page--actions" *ngIf="faqkbList && faqkbList?.length > 0">
                     <span class="order-by-label">{{'OrderBy' | translate}} </span>
 
                     <div class="dropdown">
@@ -650,11 +642,6 @@
                 </div>
 
 
-                <execution-graph *ngIf="showGraph" class="bots-list-graph"
-                  [projectId]="project?._id" [projectName]="project?.name" [agents]="graphAgents"
-                  (unavailable)="onGraphUnavailable()"></execution-graph>
-
-                <ng-container *ngIf="!showGraph">
                 <div class="card-list" *ngFor="let faqkb of pagedFaqkbList; let i = index; trackBy: trackByFaqkbId">
 
                   <!-- matTooltipClass="custom-mat-tooltip"
@@ -1013,7 +1000,6 @@
                     <!-- </span> -->
                   <!-- </div> -->
                 </div>
-                </ng-container>
 
               </div>
 

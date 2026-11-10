@@ -137,12 +137,32 @@ describe('BotListComponent executions entry', () => {
     expect(executions.summary.calls.mostRecent().args).toEqual(['p1', ['b2']]);
   });
 
-  it('click navigates to the agent executions route with the root id', () => {
+  it('agent executions button opens monitor', () => {
     setup(true, 'owner');
     fixture.detectChanges();
     fixture.nativeElement.querySelectorAll('.executions-btn')[0].click();
     expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'root1', 'executions']);
-    component.goToAllExecutions();
+  });
+
+  it('all executions button opens monitor', () => {
+    setup(true, 'owner');
+    fixture.detectChanges();
+    fixture.nativeElement.querySelector('.bots-list-all-executions-btn').click();
     expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'executions']);
+  });
+
+  it('agents page has no list/graph switch', () => {
+    const getItem = spyOn(localStorage, 'getItem').and.callThrough();
+    const setItem = spyOn(localStorage, 'setItem').and.callThrough();
+    setup(true, 'owner');
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    expect(el.querySelector('.bots-list-view-switch')).toBeNull();
+    expect(el.querySelector('execution-graph')).toBeNull();
+    expect(el.querySelectorAll('.card-list').length).toBe(2);
+    expect((component as any).viewMode).toBeUndefined();
+    expect((component as any).graphAgents).toBeUndefined();
+    expect(getItem).not.toHaveBeenCalledWith('tiledesk_agents_view');
+    expect(setItem).not.toHaveBeenCalledWith('tiledesk_agents_view', jasmine.anything());
   });
 });
