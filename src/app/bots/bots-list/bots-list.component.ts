@@ -39,7 +39,6 @@ import { aiAgents, automations } from 'app/integrations/utils';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
-import { GraphAgent } from '../executions/graph/execution-graph.model';
 import { ExecutionsService } from 'app/services/executions.service';
 import { canViewExecutions } from './../executions/executions.models';
 import { monitorExecutionsLink } from '../executions/execution-links';
@@ -532,37 +531,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   applyExecutionsPermission(role: string, matchedPermissions: string[]) {
     this.PERMISSION_TO_VIEW_EXECUTIONS = canViewExecutions(role, matchedPermissions);
     this.loadExecutionsSummary();
-  }
-
-  // List / Graph switch (graph only when executions are enabled)
-  viewMode: 'list' | 'graph' = BotListComponent.readViewMode();
-  graphAgents: GraphAgent[] = [];
-
-  private static readViewMode(): 'list' | 'graph' {
-    try {
-      return localStorage.getItem('tiledesk_agents_view') === 'graph' ? 'graph' : 'list';
-    } catch (e) {
-      return 'list';
-    }
-  }
-
-  get showGraph(): boolean {
-    return this.viewMode === 'graph' && this.executionsEnabled;
-  }
-
-  setViewMode(mode: 'list' | 'graph') {
-    this.viewMode = mode;
-    try {
-      localStorage.setItem('tiledesk_agents_view', mode);
-    } catch (e) { }
-  }
-
-  onGraphUnavailable() {
-    this.viewMode = 'list';
-  }
-
-  private buildGraphAgents() {
-    this.graphAgents = (this.faqkbList || []).map(bot => ({ id: this.executionsAgentId(bot), name: bot.name }));
   }
 
   get executionsEnabled(): boolean {
@@ -1391,8 +1359,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.updatePagedFaqkbList();
           this.logger.log('/flows/automations ', this.faqkbList);
         } 
-
-        this.buildGraphAgents(); // from the final list (route-filtered)
 
         if (this.faqkbList) {
           if (this.faqkbList.length === 0) {

@@ -4217,9 +4217,6 @@
     },
     "Executions": {
         "Graph": {
-            "SwitchLabel": "View",
-            "SwitchList": "List",
-            "SwitchGraph": "Graph",
             "Counts": "{{running}} running · {{waiting}} waiting · {{failed}} failed in the last 15 min",
             "Truncated": "Showing the first 300 live executions",
             "Stale": "Data may be out of date",

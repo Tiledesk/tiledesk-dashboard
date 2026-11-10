@@ -3810,9 +3810,6 @@
     },
     "Executions": {
         "Graph": {
-            "SwitchLabel": "Vista",
-            "SwitchList": "Elenco",
-            "SwitchGraph": "Grafo",
             "Counts": "{{running}} in esecuzione · {{waiting}} in attesa · {{failed}} fallite negli ultimi 15 min",
             "Truncated": "Sono mostrate le prime 300 esecuzioni attive",
             "Stale": "I dati potrebbero non essere aggiornati",
