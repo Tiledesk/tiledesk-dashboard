@@ -430,7 +430,8 @@
             "Assignments": "Assegnazioni",
             "Team": "Team",
             "Chatbot": "Agente IA",
-            "KnowledgeBase": "Knowledge Base"
+            "KnowledgeBase": "Knowledge Base",
+            "Executions": "Esecuzioni"
         },
         "FilterVerb": {
             "REQUEST_CREATE": "Nuova conversazione",
@@ -452,7 +453,10 @@
             "KB_NAMESPACE_DELETE": "Namespace eliminato",
             "KB_CONTENTS_ADD": "Contenuti aggiunti",
             "KB_CONTENTS_DELETE": "Contenuti eliminati",
-            "KB_CONTENT_DELETE": "Contenuto eliminato"
+            "KB_CONTENT_DELETE": "Contenuto eliminato",
+            "EXECUTION_STOP_SOFT": "Esecuzione fermata (soft)",
+            "EXECUTION_STOP_HARD": "Esecuzione fermata (hard)",
+            "EXECUTION_DESTROY": "Esecuzione eliminata"
         }
     },
     "NewRequest": "Nuova conversazione",

@@ -26,7 +26,7 @@ import { TeammateAvatarView } from './components/activities-teammate-avatar/acti
 
 import { ActivitiesService } from './activities-service/activities.service';
 import { ActivitiesTeammateLookupService } from './services/activities-teammate-lookup.service';
-import { ACTIVITY_FILTER_OPTION_DEFINITIONS, ActivityFilterOption, MANUAL_ASSIGNMENT_BOT_ACTOR_ICON, REQUEST_CLOSE_BOT_ACTOR_ICON } from './utils/activity-verbs.constants';
+import { ACTIVITY_FILTER_OPTION_DEFINITIONS, ActivityFilterOption, canViewExecutionsAudit, MANUAL_ASSIGNMENT_BOT_ACTOR_ICON, REQUEST_CLOSE_BOT_ACTOR_ICON } from './utils/activity-verbs.constants';
 import {
   buildRequestCloseDisplayContext,
   findEnrichedParticipantName,
@@ -85,7 +85,14 @@ import {
   targetUserName,
   resolveProjectUserTargetDisplay,
   ProjectUserTargetDisplay,
+  executionAgentId,
+  executionAgentLabel,
+  executionPhrase,
+  executionReasonSuffix,
+  executionShortId,
+  isExecutionVerb,
 } from './utils/activity-message.util';
+import { executionLink } from 'app/bots/executions/execution-links';
 
 @Component({
   selector: 'appdashboard-activities-new',
@@ -138,6 +145,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   PERMISSION_TO_READ_DEPARTMENT_DETAIL: boolean;
   PERMISSION_TO_READ_LEADS: boolean;
   PERMISSION_TO_READ_KB: boolean;
+  PERMISSION_TO_READ_EXECUTIONS_AUDIT = false;
   browserLang: string;
   teammateMenuParticipantId: string | null = null;
   teammateMenuActivityDate: Date | null = null;
@@ -194,6 +202,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     this.rolesService.getUpdateRequestPermission()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(status => {
+        this.applyExecutionsAuditPermission(status);
         if (status.role === 'owner' || status.role === 'admin') {
           this.PERMISSION_TO_EDIT_FLOWS = true;
           this.PERMISSION_TO_READ_FLOWS = true;
@@ -1503,6 +1512,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     afterNamespace: string;
     chatbotLink: string | null;
     chatbotId: string | null;
+    executionLinkLabel: string | null;
   } {
     const message = this.activityMessage(activity);
     const parts = {
@@ -1519,6 +1529,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       afterNamespace: '',
       chatbotLink: null as string | null,
       chatbotId: null as string | null,
+      executionLinkLabel: null as string | null,
     };
 
     const namespaceId = namespaceIdFromActivity(activity);
@@ -1549,6 +1560,13 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       }
       parts.before = `${actorName(activity)}${actionText}`;
     };
+
+    if (isExecutionVerb(effectiveVerb(activity))) {
+      applyKbActorLink(` ${executionPhrase(activity)} `);
+      parts.executionLinkLabel = executionShortId(activity);
+      parts.after = ` of ${executionAgentLabel(activity)}${executionReasonSuffix(activity)}`;
+      return parts;
+    }
 
     if (effectiveVerb(activity) === 'KB_CONTENTS_ADD') {
       const actionObj = activity.actionObj || {};
@@ -1686,8 +1704,32 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     return parts;
   }
 
+  applyExecutionsAuditPermission(status: { role: string; matchedPermissions?: string[] }): void {
+    const allowed = canViewExecutionsAudit(status.role, status.matchedPermissions);
+    const changed = allowed !== this.PERMISSION_TO_READ_EXECUTIONS_AUDIT;
+    this.PERMISSION_TO_READ_EXECUTIONS_AUDIT = allowed;
+    if (changed) {
+      this.buildActivityFilterOptions();
+    }
+  }
+
+  /** Router commands to the execution detail of an EXECUTION_* activity, or null. */
+  executionRouterLink(activity: ActivityRecord): string[] | null {
+    const link = executionLink(this.projectId, executionAgentId(activity), activity.target?.id);
+    return link ? link.commands : null;
+  }
+
+  goToExecution(activity: ActivityRecord): void {
+    const commands = this.executionRouterLink(activity);
+    if (commands) {
+      this.router.navigate(commands);
+    }
+  }
+
   private buildActivityFilterOptions(): void {
-    this.activityFilterOptions = ACTIVITY_FILTER_OPTION_DEFINITIONS.map((option) => ({
+    this.activityFilterOptions = ACTIVITY_FILTER_OPTION_DEFINITIONS
+      .filter((option) => option.groupKey !== 'Executions' || this.PERMISSION_TO_READ_EXECUTIONS_AUDIT)
+      .map((option) => ({
       id: option.id,
       name: this.translate.instant(`ActivitiesNew.FilterVerb.${option.id}`),
       group: this.translate.instant(`ActivitiesNew.FilterGroup.${option.groupKey}`),

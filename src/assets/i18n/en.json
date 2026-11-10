@@ -432,7 +432,8 @@
             "Assignments": "Assignments",
             "Team": "Team",
             "Chatbot": "AI Agent",
-            "KnowledgeBase": "Knowledge Base"
+            "KnowledgeBase": "Knowledge Base",
+            "Executions": "Executions"
         },
         "FilterVerb": {
             "REQUEST_CREATE": "New conversation",
@@ -454,7 +455,10 @@
             "KB_NAMESPACE_DELETE": "Namespace deleted",
             "KB_CONTENTS_ADD": "Contents added",
             "KB_CONTENTS_DELETE": "Contents deleted",
-            "KB_CONTENT_DELETE": "Content deleted"
+            "KB_CONTENT_DELETE": "Content deleted",
+            "EXECUTION_STOP_SOFT": "Execution soft-stopped",
+            "EXECUTION_STOP_HARD": "Execution hard-stopped",
+            "EXECUTION_DESTROY": "Execution destroyed"
         }
     },
     "NewRequest": "New conversation",
