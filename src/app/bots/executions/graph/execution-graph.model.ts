@@ -6,7 +6,7 @@ export type ShownStatus = 'running' | 'waiting' | 'stopping' | 'failed';
 export type GraphStatusCounts = { [S in ShownStatus]: number };
 /** Tooltip data; the component translates and formats it. */
 export type GraphTooltip =
-  | { kind: 'text'; text: string }
+  | { kind: 'text'; text: string; errorBranches?: number }
   | { kind: 'execution'; status: ShownStatus; startedAt: string | null; trigger: string | null; steps: number }
   | { kind: 'more'; hidden: GraphStatusCounts };
 export interface GraphNode {
@@ -17,6 +17,7 @@ export interface GraphNode {
   agentId?: string;
   executionId?: string;
   aura: boolean;               // red aura
+  warn?: boolean;              // amber outline: an error branch taken, no failure
   idle?: boolean;              // agent with nothing shown
   active?: boolean;            // agent with something running or stopping
   position: { x: number; y: number };
@@ -112,13 +113,17 @@ export function buildExecutionGraph(input: {
 
   // the agent ring depends on the agent count only, so agents keep their place whatever runs
   const n = sortedAgents.length;
-  const R = Math.max(300, (110 * n) / Math.PI);
+  // wide enough that two neighbouring fans at the cap keep a chip plus 10 px apart
+  const R = Math.max(300, (n * (2 * AGENT_RING_RMAX + 48)) / (2 * Math.PI));
   sortedAgents.forEach((a, i) => {
     const angle = (2 * Math.PI * i) / n - Math.PI / 2;
     const pos = { x: R * Math.cos(angle), y: R * Math.sin(angle) };
     const all = byAgent.get(a.id) || [];
-    // aura and activity come from all of the agent's rows, drawn or not
-    const aura = all.some(s => s.status === 'failed' || (s.row.failure_conditions || 0) > 0);
+    // aura, warn and activity come from all of the agent's rows, drawn or not:
+    // aura for a failure, warn (amber) for an error branch taken without a failure
+    const aura = all.some(s => s.status === 'failed');
+    const errorBranches = all.reduce((acc, s) => acc + Math.max(0, s.row.failure_conditions || 0), 0);
+    const warn = !aura && errorBranches > 0;
     const active = all.some(s => s.status === 'running' || s.status === 'stopping');
     const picked = all.slice().sort((x, y) =>
       PRIORITY[x.status] - PRIORITY[y.status] || cmp(y.row.started_at || '', x.row.started_at || '') || cmp(y.row._id, x.row._id));
@@ -127,8 +132,8 @@ export function buildExecutionGraph(input: {
     const hidden = picked.slice(MAX_PER_AGENT);
     const agentNodeId = 'agent:' + a.id;
     nodes.push({
-      id: agentNodeId, kind: 'agent', label: a.name, agentId: a.id, aura, idle: all.length === 0, active,
-      position: pos, tooltip: { kind: 'text', text: a.name }
+      id: agentNodeId, kind: 'agent', label: a.name, agentId: a.id, aura, warn, idle: all.length === 0, active,
+      position: pos, tooltip: errorBranches > 0 ? { kind: 'text', text: a.name, errorBranches } : { kind: 'text', text: a.name }
     });
     edges.push({ id: 'project->' + agentNodeId, source: 'project', target: agentNodeId, animated: false });
 

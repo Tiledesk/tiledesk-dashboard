@@ -3813,14 +3813,16 @@
                 "Trigger": "Trigger: {{trigger}}",
                 "Steps": "Passi: {{steps}}",
                 "More": "Altre {{n}} esecuzioni non mostrate",
-                "MoreStatus": "{{status}}: {{n}}"
+                "MoreStatus": "{{status}}: {{n}}",
+                "ErrorBranches": "{{n}} rami di errore"
             },
             "Legend": {
                 "Running": "In esecuzione",
                 "Waiting": "In attesa",
                 "Stopping": "In arresto",
                 "Failed": "Fallite (ultimi 15 min)",
-                "Problem": "Con problemi"
+                "AgentFailed": "Agente con un errore",
+                "ErrorBranch": "Ha seguito un ramo di errore"
             }
         },
         "OpenExecution": "Esecuzione ↗",

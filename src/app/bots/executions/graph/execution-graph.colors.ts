@@ -10,6 +10,7 @@ export const EXEC_GRAPH_COLORS = {
   activeBg: '#e6f0fc', activeBorder: '#b9d3f5', activeIcon: '#0f4c99',
   idleBg: '#f1f3f6', idleBorder: '#e0e4ea', idleIcon: '#8b95a5',
   auraBg: '#fde8e6', auraBorder: '#f3b8b2', auraIcon: '#a1170d',
+  warn: '#d98a00',                                    // amber outline: an error branch taken, no failure
   // execution chips
   run: '#1f6fd6',
   waitBg: '#eef0f3', waitBorder: '#d7dce3', waitIcon: '#4a5361',

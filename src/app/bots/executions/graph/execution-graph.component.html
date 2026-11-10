@@ -7,11 +7,12 @@
       <span class="graph-note graph-stale" *ngIf="stale">{{ 'Executions.Graph.Stale' | translate }}</span>
     </div>
     <div class="graph-legend">
-      <span class="legend-item"><i class="chip chip-running"></i>{{ 'Executions.Graph.Legend.Running' | translate }}</span>
-      <span class="legend-item"><i class="chip chip-waiting"></i>{{ 'Executions.Graph.Legend.Waiting' | translate }}</span>
-      <span class="legend-item"><i class="chip chip-stopping"></i>{{ 'Executions.Graph.Legend.Stopping' | translate }}</span>
-      <span class="legend-item"><i class="chip chip-failed"></i>{{ 'Executions.Graph.Legend.Failed' | translate }}</span>
-      <span class="legend-item"><i class="chip chip-aura"></i>{{ 'Executions.Graph.Legend.Problem' | translate }}</span>
+      <span class="legend-item"><i class="chip chip-running" [style.background]="colors.run" [style.border-color]="colors.run"></i>{{ 'Executions.Graph.Legend.Running' | translate }}</span>
+      <span class="legend-item"><i class="chip chip-waiting" [style.background]="colors.waitBg" [style.border-color]="colors.waitBorder"></i>{{ 'Executions.Graph.Legend.Waiting' | translate }}</span>
+      <span class="legend-item"><i class="chip chip-stopping" [style.background]="colors.stopBg" [style.border-color]="colors.stopBorder"></i>{{ 'Executions.Graph.Legend.Stopping' | translate }}</span>
+      <span class="legend-item"><i class="chip chip-failed" [style.background]="colors.bad" [style.border-color]="colors.bad"></i>{{ 'Executions.Graph.Legend.Failed' | translate }}</span>
+      <span class="legend-item"><i class="chip chip-agent chip-aura" [style.background]="colors.auraBg" [style.border-color]="colors.auraBorder"></i>{{ 'Executions.Graph.Legend.AgentFailed' | translate }}</span>
+      <span class="legend-item"><i class="chip chip-agent chip-warn" [style.background]="colors.agentBg" [style.border-color]="colors.warn"></i>{{ 'Executions.Graph.Legend.ErrorBranch' | translate }}</span>
     </div>
   </ng-container>
   <div class="graph-stage" [hidden]="failed">
