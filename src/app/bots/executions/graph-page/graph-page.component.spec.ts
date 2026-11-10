@@ -23,14 +23,17 @@ describe('GraphPageComponent', () => {
   let fixture: ComponentFixture<GraphPageComponent>;
   let perms$: Subject<any>;
 
-  function setup(bots$: any, perm: any = { role: 'owner', matchedPermissions: [] }) {
+  let getAgents: jasmine.Spy;
+
+  function setup(bots$: any, perm: any = { role: 'owner', matchedPermissions: [] }, configured = true) {
+    getAgents = jasmine.createSpy('getFaqKbByProjectId').and.returnValue(bots$);
     perms$ = new Subject();
     TestBed.configureTestingModule({
       declarations: [GraphPageComponent, GraphStubComponent, MonitorTabsComponent],
       imports: [TranslateModule.forRoot()],
       providers: [
-        { provide: ExecutionsService, useValue: { isConfigured: () => true } },
-        { provide: FaqKbService, useValue: { getFaqKbByProjectId: () => bots$ } },
+        { provide: ExecutionsService, useValue: { isConfigured: () => configured } },
+        { provide: FaqKbService, useValue: { getFaqKbByProjectId: getAgents } },
         { provide: AuthService, useValue: { project_bs: new BehaviorSubject({ _id: 'p1', name: 'Proj' }) } },
         { provide: RolesService, useValue: { listenToProjectUserPermissions() {}, getUpdateRequestPermission: () => perms$ } },
         { provide: LoggerService, useValue: { log() {}, error() {}, debug() {}, warn() {} } },
@@ -73,5 +76,21 @@ describe('GraphPageComponent', () => {
     setup(of([]));
     const tabs = fixture.debugElement.query(By.directive(MonitorTabsComponent)).componentInstance as MonitorTabsComponent;
     expect(tabs.active).toBe('graph');
+  });
+
+  it('not configured: shows the not-configured message, no agents load, no graph', () => {
+    setup(of([{ _id: 'b1', name: 'One' }]), { role: 'owner', matchedPermissions: [] }, false);
+    expect(getAgents).not.toHaveBeenCalled();
+    expect(graph()).toBeNull();
+    const msg = fixture.nativeElement.querySelector('.exec-not-configured');
+    expect(msg).not.toBeNull();
+    expect(msg.textContent.trim()).toBe('Executions.NotConfigured');
+  });
+
+  it('not configured: no unauthorized message for an unpermitted role either way', () => {
+    setup(of([]), { role: 'agent', matchedPermissions: [] }, false);
+    expect(getAgents).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('.unauthorized-message-container-in-page')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('.exec-not-configured')).toBeNull();
   });
 });

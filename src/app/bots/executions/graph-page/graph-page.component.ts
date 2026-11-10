@@ -5,6 +5,7 @@ import { AuthService } from 'app/core/auth.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { ExecutionsService } from 'app/services/executions.service';
 import { canViewExecutions } from '../executions.models';
 import { GraphAgent } from '../graph/execution-graph.model';
 
@@ -20,6 +21,7 @@ export class GraphPageComponent implements OnInit, OnDestroy {
   agents: GraphAgent[] = null;
   permitted: boolean | null = null;
   error = false;
+  configured = false;
   private requested = false;
   private destroy$ = new Subject<void>();
 
@@ -28,9 +30,12 @@ export class GraphPageComponent implements OnInit, OnDestroy {
     private faqKbService: FaqKbService,
     private rolesService: RolesService,
     private logger: LoggerService,
+    private executionsService: ExecutionsService,
   ) { }
 
   ngOnInit() {
+    // Same check as the executions list: without a base URL the feed would poll the dashboard's own origin.
+    this.configured = this.executionsService.isConfigured();
     this.auth.project_bs.pipe(takeUntil(this.destroy$)).subscribe(project => {
       this.projectId = project ? project._id : undefined;
       this.projectName = project && project.name ? project.name : '';
@@ -40,7 +45,7 @@ export class GraphPageComponent implements OnInit, OnDestroy {
       // '' is the service's initial value: the role is not known yet (no "unauthorized" flash)
       if (!status || !status.role) { this.permitted = null; return; }
       this.permitted = canViewExecutions(status.role, status.matchedPermissions);
-      if (this.permitted) this.loadAgents();
+      if (this.permitted && this.configured) this.loadAgents();
     });
   }
 

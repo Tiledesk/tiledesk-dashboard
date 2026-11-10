@@ -4167,6 +4167,7 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "Monitor": {
         "Tabs": {
+            "Label": "Monitor",
             "Conversations": "Conversations",
             "Executions": "Executions",
             "Graph": "Graph"

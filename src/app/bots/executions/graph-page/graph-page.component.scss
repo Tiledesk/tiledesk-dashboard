@@ -21,3 +21,6 @@
 }
 
 .graph-page-error { padding: 24px; text-align: center; color: #c62f2f; font-size: 14px; }
+
+// Same look as the executions list empty line (executions-list.component.scss .exec-empty).
+.exec-not-configured { padding: 40px 16px; text-align: center; color: #5d6b82; }

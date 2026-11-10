@@ -143,7 +143,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() agents: GraphAgent[] = [];
   /** Fill the height of the host (a full-page host) instead of the default 70vh canvas. */
   @Input() @HostBinding('class.fill') fill = false;
-  /** Emitted when Cytoscape cannot be loaded or created, so the host can switch back to List. */
+  /** Emitted when Cytoscape cannot be loaded or created; the graph shows its own Unavailable message. */
   @Output() unavailable = new EventEmitter<void>();
 
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLElement>;

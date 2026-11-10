@@ -3760,6 +3760,7 @@
     "ContactUsToChangeYourPaymentMethod": "Contattaci per cambiare il metodo di pagamento",
     "Monitor": {
         "Tabs": {
+            "Label": "Monitor",
             "Conversations": "Conversazioni",
             "Executions": "Esecuzioni",
             "Graph": "Grafo"
