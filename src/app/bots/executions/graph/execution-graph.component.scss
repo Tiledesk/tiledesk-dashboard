@@ -15,3 +15,9 @@
   white-space: nowrap; box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
 }
 .graph-unavailable { padding: 24px; text-align: center; color: #c62f2f; font-size: 14px; }
+
+/* full-page host: the canvas takes the height left by the legend */
+:host(.fill) { height: 100%; }
+:host(.fill) .graph-wrap { display: flex; flex-direction: column; height: 100%; }
+:host(.fill) .graph-stage { flex: 1 1 auto; min-height: 480px; }
+:host(.fill) .graph-canvas { height: 100%; }

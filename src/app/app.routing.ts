@@ -1328,6 +1328,11 @@ export const appRoutes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'project/:projectid/monitor/graph',
+    loadChildren: () => import('app/bots/executions/graph-page/graph-page.module').then(m => m.GraphPageModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'project/:projectid/monitor/:botid/executions',
     loadChildren: () => import('app/bots/executions/executions.module').then(m => m.ExecutionsModule),
     canActivate: [AuthGuard],

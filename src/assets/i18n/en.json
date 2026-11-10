@@ -4210,6 +4210,9 @@
             "Conversations": "Conversations",
             "Executions": "Executions",
             "Graph": "Graph"
+        },
+        "Graph": {
+            "LoadError": "The graph could not be loaded."
         }
     },
     "Executions": {

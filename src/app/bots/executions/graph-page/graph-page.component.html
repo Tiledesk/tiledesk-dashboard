@@ -1,0 +1,12 @@
+<div class="graph-page-top"><monitor-tabs active="graph"></monitor-tabs></div>
+
+<!-- no permission -->
+<div *ngIf="permitted === false" class="unauthorized-message-container-in-page">
+  <h2 class="unauthorized-page-title">{{ "UnauthorizedPage.UnauthorizedAccess" | translate }}</h2>
+  <h3 class="unauthorized-page-subtitle">{{ "UnauthorizedPage.OopsYouDontHave" | translate }}</h3>
+</div>
+
+<div *ngIf="permitted === true" class="graph-page-body">
+  <div *ngIf="error" class="graph-page-error">{{ "Monitor.Graph.LoadError" | translate }}</div>
+  <execution-graph *ngIf="agents" [fill]="true" [projectId]="projectId" [projectName]="projectName" [agents]="agents"></execution-graph>
+</div>
