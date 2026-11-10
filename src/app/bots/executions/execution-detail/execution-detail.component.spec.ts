@@ -5,6 +5,7 @@ import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialogModule } from '@angular/material/dialog';
 import { ExecutionDetailComponent, POLL_MS } from './execution-detail.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { FlowStatePanelComponent, MaskedValueComponent } from '../shared/flow-state-panel.component';
@@ -84,7 +85,7 @@ describe('ExecutionDetailComponent', () => {
     perms$ = new Subject();
     TestBed.configureTestingModule({
       declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent, FlowStatePanelComponent, MaskedValueComponent, VarHistoryDrawerComponent],
-      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule],
+      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, MatDialogModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
         { provide: Router, useValue: router },
@@ -132,7 +133,7 @@ describe('ExecutionDetailComponent', () => {
       setup();
       expect(el().querySelector('.ex-controls')).toBeNull();
       TestBed.resetTestingModule();
-      setup({ detail: detail('running', { allowed_controls: ['stop'] }) });
+      setup({ detail: detail('running', { allowed_controls: [{ name: 'stop', allowed: true }] }) });
       expect(el().querySelectorAll('.ex-controls button').length).toBe(1);
       fixture.destroy();
     });

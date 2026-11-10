@@ -34,7 +34,7 @@
       <section class="ex-card ex-head">
         <div class="ex-title-row">
           <h1 class="ex-title">{{ d.execution.agent_name || d.execution.agent_id }}</h1>
-          <execution-status-chip [status]="d.execution.status"></execution-status-chip>
+          <execution-status-chip [status]="d.execution.status" [pending]="pending"></execution-status-chip>
           <span *ngIf="d.execution.error?.code" class="ex-error-code">{{ d.execution.error.code }}</span>
           <span *ngIf="d.execution.test" class="ex-tag">{{ "Executions.Detail.Test" | translate }}</span>
         </div>
@@ -48,6 +48,9 @@
             {{ "Executions.Detail.Conversation" | translate }} ↗
           </button>
           <span *ngIf="!d.execution.conversation_link" class="ex-muted">{{ "Executions.Detail.NoConversation" | translate }}</span>
+          <span *ngIf="d.execution.stop_mode" class="ex-stop-mode">{{ ("Executions.Controls.StopMode." + d.execution.stop_mode) | translate }}</span>
+          <span *ngIf="d.execution.interrupted_action as ia" class="ex-interrupted">{{ "Executions.Controls.Interrupted" | translate: { action: ia.title || ia.type || ia.action_id } }}</span>
+          <span *ngIf="d.execution.messages_while_stopped" class="ex-while-stopped">{{ "Executions.Controls.MessagesWhileStopped" | translate: { n: d.execution.messages_while_stopped } }}</span>
         </div>
 
         <div *ngIf="d.lineage && (d.lineage.parent || d.lineage.previous || d.lineage.retry_of || d.lineage.retried_as?.length)" class="ex-lineage">
@@ -63,10 +66,15 @@
 
         <div *ngIf="d.execution.trace_complete === false" class="ex-banner">{{ "Executions.TraceIncomplete" | translate }}</div>
 
-        <!-- controls come from the API (empty in Phase 1) -->
-        <div *ngIf="d.allowed_controls?.length" class="ex-controls">
-          <button *ngFor="let c of d.allowed_controls" type="button" class="ex-btn" disabled>{{ ("Executions.Controls." + c) | translate }}</button>
+        <!-- controls come from the API: hidden when not allowed for the status, disabled when not for the role -->
+        <div *ngIf="controls.length" class="ex-controls">
+          <span *ngFor="let c of controls; trackBy: trackByControl" class="ex-ctl-wrap"
+            [matTooltip]="c.allowed ? '' : (noPermissionKey(c) | translate)" [matTooltipDisabled]="c.allowed">
+            <button type="button" class="ex-btn" [ngClass]="'ex-ctl-' + c.name" [class.ex-btn-danger]="c.name === 'destroy'"
+              [disabled]="!c.allowed || controlBusy || !!pending" (click)="runControl(c)">{{ ("Executions.Controls." + c.name) | translate }}</button>
+          </span>
         </div>
+        <div *ngIf="controlMessage" class="ex-control-msg" role="alert">{{ controlMessage.key | translate: controlMessage.params }}</div>
       </section>
 
       <!-- tabs -->

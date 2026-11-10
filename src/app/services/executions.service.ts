@@ -89,4 +89,19 @@ export class ExecutionsService {
     const params = new HttpParams().set('key', key);
     return this.httpClient.get<VarHistoryEntry[]>(this.url(projectId, '/' + encodeURIComponent(id) + '/state/history'), { headers: this.headers(), params });
   }
+
+  /** 202 {status}; 409 {error:'not_allowed', allowed}; 503 {error:'control_unavailable'}; 403. */
+  stop(projectId: string, id: string, mode: 'soft' | 'hard', reason?: string): Observable<{ status: string }> {
+    const body: any = { mode };
+    if (reason) body.reason = reason;
+    return this.httpClient.post<{ status: string }>(this.url(projectId, '/' + encodeURIComponent(id) + '/stop'), body, { headers: this.headers() });
+  }
+
+  /** confirm = first 6 characters of the id. 200 {status:'destroyed', close}; 400 confirm_mismatch; 409; 503. */
+  destroy(projectId: string, id: string, confirm: string, reason?: string): Observable<{ status: string; close: 'closed' | 'skipped' | 'failed' }> {
+    const body: any = { confirm };
+    if (reason) body.reason = reason;
+    return this.httpClient.post<{ status: string; close: 'closed' | 'skipped' | 'failed' }>(
+      this.url(projectId, '/' + encodeURIComponent(id) + '/destroy'), body, { headers: this.headers() });
+  }
 }
