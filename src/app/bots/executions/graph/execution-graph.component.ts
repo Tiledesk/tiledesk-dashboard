@@ -4,9 +4,10 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 import { ExecutionsService } from 'app/services/executions.service';
 import { executionLink } from '../execution-links';
-import { buildExecutionGraph, GraphAgent, GraphCounts, GraphModel, GraphNode } from './execution-graph.model';
+import { buildExecutionGraph, GraphAgent, GraphCounts, GraphModel, GraphNode, GraphTooltip, ShownStatus } from './execution-graph.model';
 import { executionGraphFeed, GraphSnapshot } from './execution-graph.feed';
 import { EXEC_GRAPH_COLORS as C } from './execution-graph.colors';
 
@@ -34,19 +35,9 @@ export const MAX_ZOOM = 1.75;
 
 interface TooltipState { lines: string[]; x: number; y: number; }
 
-const STARTED = 'Started: ';
-
-/** Tooltip lines for display: the raw ISO start time becomes a locale string. */
-function displayLines(lines: string[]): string[] {
-  return (lines || []).map(l => {
-    if (l.indexOf(STARTED) !== 0) { return l; }
-    const t = Date.parse(l.substring(STARTED.length));
-    return isNaN(t) ? l : STARTED + new Date(t).toLocaleString();
-  });
-}
-
 function classesFor(n: GraphNode): string {
   const out = [n.kind === 'execution' ? 'exec' : n.kind];
+  if (n.active) { out.push('active'); }
   if (n.status) { out.push('s-' + n.status); }
   if (n.aura) { out.push('aura'); }
   if (n.idle) { out.push('idle'); }
@@ -59,9 +50,14 @@ const GRAPH_STYLE: any[] = [
     'background-color': C.wait, 'width': 14, 'height': 14,
   } },
   { selector: 'node.project', style: { 'background-color': C.dead, 'width': 56, 'height': 56, 'font-size': 13, 'font-weight': 'bold' } },
-  { selector: 'node.agent', style: { 'background-color': C.run, 'width': 32, 'height': 32, 'font-size': 11 } },
+  { selector: 'node.agent', style: { 'background-color': C.wait, 'width': 32, 'height': 32, 'font-size': 11 } },
+  { selector: 'node.agent.active', style: { 'background-color': C.run } },
   { selector: 'node.agent.idle', style: { 'background-color': C.deadBg, 'width': 18, 'height': 18, 'color': C.wait } },
   { selector: 'node.exec', style: { 'label': '', 'width': 14, 'height': 14 } },
+  { selector: 'node.more', style: {
+    'background-color': C.deadBg, 'border-width': 1, 'border-color': C.wait, 'width': 24, 'height': 24,
+    'font-size': 9, 'color': C.dead, 'text-valign': 'center', 'text-margin-y': 0,
+  } },
   { selector: 'node.s-running', style: {
     'background-color': C.run, 'underlay-color': C.run, 'underlay-padding': 6, 'underlay-opacity': 0.25, 'underlay-shape': 'ellipse',
   } },
@@ -102,6 +98,8 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
 
   private sub: Subscription | null = null;
   private last: GraphSnapshot | null = null;
+  /** A successful snapshot was seen: until then the counts line stays hidden (unknown, not zero). */
+  private loaded = false;
   private fitted = false;
   private destroyed = false;
   private pulseOn = false;
@@ -114,6 +112,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private zone: NgZone,
     private router: Router,
+    private translate: TranslateService,
     @Inject(EXECUTION_GRAPH_FEED) private feed: ExecutionGraphFeedFactory,
     @Inject(CYTOSCAPE_LOADER) private loader: CytoscapeLoader,
   ) { }
@@ -172,6 +171,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   private resetGraph(): void {
     if (this.sub) { this.sub.unsubscribe(); this.sub = null; }
     this.last = null;
+    this.loaded = false;
     this.fitted = false;
     this.cy.elements().remove();
     this.animatedEdges = this.cy.collection();
@@ -185,9 +185,18 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     if (this.sub) { this.sub.unsubscribe(); }
     this.zone.runOutsideAngular(() => {
       this.sub = this.feed(this.projectId).subscribe(snap => {
+        let model: GraphModel;
+        try {
+          model = this.apply(snap);
+        } catch (e) {
+          // a bad snapshot must not end the feed (rxjs 6 would unsubscribe): keep the previous render
+          console.error('[execution-graph] could not apply a snapshot', e);
+          this.zone.run(() => { this.stale = true; });
+          return;
+        }
         this.last = snap;
-        const model = this.apply(snap);
-        this.zone.run(() => { this.counts = model.counts; this.stale = snap.stale; });
+        if (!snap.stale) { this.loaded = true; }
+        this.zone.run(() => { this.counts = this.loaded ? model.counts : null; this.stale = snap.stale; });
       });
     });
   }
@@ -252,7 +261,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
           commands = link.commands;
           extras = link.queryParams ? { queryParams: link.queryParams } : undefined;
         }
-      } else if (d.kind === 'agent' && d.agentId) {
+      } else if ((d.kind === 'agent' || d.kind === 'more') && d.agentId) {
         commands = ['/project', this.projectId, 'bots', d.agentId, 'executions'];
       }
       if (commands) {
@@ -263,12 +272,33 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     cy.on('mouseover', 'node', (evt: any) => {
       const node = evt.target;
       const p = node.renderedPosition();
-      const tip = { lines: displayLines(node.data('tooltip')), x: p.x, y: p.y + node.renderedOuterHeight() / 2 + 6 };
+      const tip = { lines: this.tooltipLines(node.data('tooltip')), x: p.x, y: p.y + node.renderedOuterHeight() / 2 + 6 };
       this.zone.run(() => { this.tooltip = tip; });
     });
     const hide = () => { if (this.tooltip) { this.zone.run(() => { this.tooltip = null; }); } };
     cy.on('mouseout', 'node', hide);
     cy.on('viewport', hide);
+  }
+
+  /** Tooltip lines in the current language; the start time in the browser's locale. */
+  private tooltipLines(tip: GraphTooltip): string[] {
+    if (!tip) { return []; }
+    const t = (key: string, params?: any) => this.translate.instant('Executions.Graph.Tip.' + key, params);
+    const status = (st: ShownStatus) => this.translate.instant('Executions.Status.' + st);
+    if (tip.kind === 'text') { return [tip.text]; }
+    if (tip.kind === 'more') {
+      const order: ShownStatus[] = ['failed', 'stopping', 'running', 'waiting'];
+      const total = order.reduce((acc, st) => acc + tip.hidden[st], 0);
+      return [t('More', { n: total })].concat(
+        order.filter(st => tip.hidden[st] > 0).map(st => t('MoreStatus', { status: status(st), n: tip.hidden[st] })));
+    }
+    const started = tip.startedAt ? Date.parse(tip.startedAt) : NaN;
+    return [
+      t('Status', { status: status(tip.status) }),
+      t('Started', { time: isNaN(started) ? (tip.startedAt || '-') : new Date(started).toLocaleString() }),
+      t('Trigger', { trigger: tip.trigger || '-' }),
+      t('Steps', { steps: tip.steps }),
+    ];
   }
 
   private startTimers(): void {

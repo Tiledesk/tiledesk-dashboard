@@ -3767,6 +3767,14 @@
             "Truncated": "Sono mostrate le prime 300 esecuzioni attive",
             "Stale": "I dati potrebbero non essere aggiornati",
             "Unavailable": "Non è stato possibile caricare il grafo",
+            "Tip": {
+                "Status": "Stato: {{status}}",
+                "Started": "Avviata: {{time}}",
+                "Trigger": "Trigger: {{trigger}}",
+                "Steps": "Passi: {{steps}}",
+                "More": "Altre {{n}} esecuzioni non mostrate",
+                "MoreStatus": "{{status}}: {{n}}"
+            },
             "Legend": {
                 "Running": "In esecuzione",
                 "Waiting": "In attesa",
