@@ -1,5 +1,5 @@
 import { ExecutionRow } from '../executions.models';
-import { AGENT_RING_RMAX, agentFootprint, buildExecutionGraph, FAILED_WINDOW_MS, MAX_LIVE, MAX_PER_AGENT } from './execution-graph.model';
+import { AGENT_RING_RMAX, agentFootprint, buildExecutionGraph, fanOffsets, FAILED_WINDOW_MS, MAX_LIVE, MAX_PER_AGENT } from './execution-graph.model';
 
 const NOW = Date.parse('2026-11-10T12:00:00.000Z');
 
@@ -265,6 +265,34 @@ describe('buildExecutionGraph', () => {
       });
       if (k === 1) { expect(dist(shown[0].position)).toBeCloseTo(dist(owner.position) + 74, 3); }
     });
+  });
+
+  it('chips keep clear of the agent name: at every ring angle (15 deg steps) and k = 1..13', () => {
+    // the label: 160 x 18 px, 6 px under the 56 px badge; a chip centre must stay out of it grown by a chip half (13 px)
+    const box = { x1: -80 - 13, x2: 80 + 13, y1: 28 + 6 - 13, y2: 28 + 6 + 18 + 13 };
+    for (let deg = 0; deg < 360; deg += 15) {
+      const theta = deg * Math.PI / 180;
+      for (let k = 1; k <= 13; k++) {
+        const { r, offsets } = fanOffsets(theta, k);
+        expect(offsets.length).toBe(k);
+        const pts = offsets.map(o => ({ x: r * Math.cos(theta + o), y: r * Math.sin(theta + o) }));
+        pts.forEach(p => {
+          const inside = p.x >= box.x1 && p.x <= box.x2 && p.y >= box.y1 && p.y <= box.y2;
+          expect(inside).toBe(false, `deg=${deg} k=${k} at ${Math.round(p.x)},${Math.round(p.y)}`);
+        });
+        // never towards the project, chips of a fan never on top of each other
+        offsets.forEach(o => expect(Math.abs(o)).toBeLessThan(Math.PI * 0.75, `deg=${deg} k=${k}`));
+        for (let i = 1; i < pts.length; i++) {
+          expect(dist(pts[i], pts[i - 1])).toBeGreaterThanOrEqual(30.8, `deg=${deg} k=${k}`);
+        }
+      }
+    }
+  });
+
+  it('a fan with nothing in the way keeps the plain outward fan', () => {
+    const { r, offsets } = fanOffsets(-Math.PI / 2, 3);   // agent straight above the project
+    expect(r).toBe(74);
+    expect(offsets.map(o => +o.toFixed(6))).toEqual([-0.42, 0, 0.42]);
   });
 
   it('agent is active only when something is running or stopping', () => {

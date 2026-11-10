@@ -45,6 +45,69 @@ function execRingRadius(k: number): number {
   return 74 + 6 * Math.max(0, k - 8);
 }
 
+/** The agent's name label relative to the agent centre (160 x 18 px, 6 px under the 56 px badge), grown by a chip half and 2 px. */
+const LABEL_KEEP_OUT = { x: 80 + 13 + 2, top: 28 + 6 - 13 - 2, bottom: 28 + 6 + 18 + 13 + 2 };
+/** Farthest a chip may sit from the outward direction (rad): the side facing the project stays clear. */
+const FAN_LIMIT = 2.35;
+/** Closest two chips of a fan may get (centre to centre) when the fan has to squeeze round the label. */
+const MIN_CHIP_GAP = 31;
+const FAN_SEARCH = Math.PI / 360;
+
+/**
+ * Chip angles of a fan, as offsets from the agent's outward angle `theta` (screen coordinates, y down).
+ * The plain fan (FAN_STEP apart, centred on `theta`) when it misses the agent's name; otherwise chips are
+ * placed outwards from the centre, alternating sides, each skipping past the label, and the step shrinks
+ * (down to MIN_CHIP_GAP) until all k fit within FAN_LIMIT. Depends on theta and k only, so it is stable.
+ */
+export function fanOffsets(theta: number, k: number): { r: number; offsets: number[] } {
+  const r = execRingRadius(k);
+  const onLabel = (o: number) => {
+    const x = r * Math.cos(theta + o), y = r * Math.sin(theta + o);
+    return Math.abs(x) <= LABEL_KEEP_OUT.x && y >= LABEL_KEEP_OUT.top && y <= LABEL_KEEP_OUT.bottom;
+  };
+  const free = (o: number) => Math.abs(o) <= FAN_LIMIT && !onLabel(o);
+  const place = (step: number): number[] | null => {
+    const offs: number[] = [];
+    let right: number, left: number;
+    if (k % 2) {
+      let centre: number | null = null;
+      for (let d = 0; d <= FAN_LIMIT && centre === null; d += FAN_SEARCH) {
+        if (free(d)) { centre = d; } else if (free(-d)) { centre = -d; }
+      }
+      if (centre === null) { return null; }
+      offs.push(centre);
+      right = left = centre;
+    } else {
+      right = -step / 2;
+      left = step / 2;
+    }
+    const open = { right: true, left: true };
+    while (offs.length < k) {
+      if (!open.right && !open.left) { return null; }
+      for (const side of [1, -1]) {
+        const key = side > 0 ? 'right' : 'left';
+        if (offs.length >= k || !open[key]) { continue; }
+        let o = side > 0 ? right + step : left - step;
+        while (Math.abs(o) <= FAN_LIMIT && !free(o)) { o += side * FAN_SEARCH; }
+        if (Math.abs(o) > FAN_LIMIT) { open[key] = false; continue; }
+        offs.push(o);
+        if (side > 0) { right = o; } else { left = o; }
+      }
+    }
+    return offs.sort((x, y) => x - y);
+  };
+  const plain = k > 1 ? Math.min(FAN_STEP, FAN_MAX / (k - 1)) : FAN_STEP;
+  const minStep = 2 * Math.asin(MIN_CHIP_GAP / 2 / r);
+  for (let step = plain; ; step = Math.max(minStep, step * 0.92)) {
+    const offs = place(step);
+    if (offs) { return { r, offsets: offs }; }
+    if (step <= minStep) { break; }
+  }
+  // cannot happen for k <= MAX_PER_AGENT + 1 (see the spec); keep the plain fan rather than drop chips
+  const step = k > 1 ? Math.min(FAN_STEP, FAN_MAX / (k - 1)) : 0;
+  return { r, offsets: Array.from({ length: k }, (_, j) => (j - (k - 1) / 2) * step) };
+}
+
 /** Gap between neighbouring agents' footprints on the ring, and the smallest ring. */
 const AGENT_GAP = 24;
 const RING_MIN = 170;
@@ -162,11 +225,10 @@ export function buildExecutionGraph(input: {
     });
     edges.push({ id: 'project->' + agentNodeId, source: 'project', target: agentNodeId, animated: false });
 
-    const r = execRingRadius(k);
-    // a fan centred on the agent's own angle, i.e. on the side facing away from the project
-    const step = k > 1 ? Math.min(FAN_STEP, FAN_MAX / (k - 1)) : 0;
+    // a fan centred on the agent's own angle (the side facing away from the project), clear of the agent's name
+    const { r, offsets } = fanOffsets(angle, k);
     const at = (j: number) => {
-      const ang = angle + (j - (k - 1) / 2) * step;
+      const ang = angle + offsets[j];
       return { x: pos.x + r * Math.cos(ang), y: pos.y + r * Math.sin(ang) };
     };
     drawn.forEach((s, j) => {
