@@ -6,7 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NotifyService } from 'app/core/notify.service';
 import { McpToolsModalComponent } from './mcp-tools-modal/mcp-tools-modal.component';
 import { TranslateService } from '@ngx-translate/core';
-import { McpOAuthAuthorizeBody, McpOAuthMode, McpOAuthReference, McpOAuthResult, McpOAuthService } from 'app/services/mcp-oauth.service';
+import { McpOAuthAuthorizeBody, McpOAuthConnection, McpOAuthMode, McpOAuthReference, McpOAuthResult, McpOAuthService } from 'app/services/mcp-oauth.service';
 
 const Swal = require('sweetalert2');
 
@@ -54,6 +54,9 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
   authorizedUrl: string = '';
   urlChanged: boolean = false;
   waitingForAuthorization: boolean = false;
+  oauthConnections: { [id: string]: McpOAuthConnection } = {};
+  reconnectRequired: { [id: string]: boolean } = {};
+  oauthStatusUnavailable = false;
 
   private originalOAuth: McpOAuthReference | null = null;
   private stashedOAuth: McpOAuthReference | null = null;
@@ -82,6 +85,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     if (!this.integration.value.servers) {
       this.integration.value.servers = [];
     }
+    this.loadOAuthConnections();
   }
 
   ngOnDestroy(): void {
@@ -254,6 +258,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
           }
           
           this.saveIntegration();
+          this.revokeConnectionIfUnused(server.oauth && server.oauth.connection_id);
           
           // Show success notification
           Swal.fire({
@@ -454,6 +459,10 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       this.authorizedUrl = this.currentServer.url;
       this.urlChanged = false;
       this.stashedOAuth = null;
+      if (result.connection && result.connection._id) {
+        this.reconnectRequired[result.connection._id] = false;
+      }
+      this.loadOAuthConnections();
       this.loadToolsForCurrentServer();
     });
   }
@@ -514,8 +523,10 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         this.loadingServerUrl = '';
         this.toolsRetrieved = false;
         
-        const errorMessage = error?.error?.error || error?.error?.message || error?.message || 'Failed to retrieve tools from server';
-        this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
+        const errorMessage = this.mcpToolsErrorMessage(error, this.currentServer, 'Failed to retrieve tools from server');
+        if (errorMessage) {
+          this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
+        }
       }
     );
   }
@@ -590,8 +601,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         this.isLoadingTools = false;
         this.loadingServerUrl = '';
         
-        const errorMessage = error?.error?.error || error?.error?.message || error?.message || 'Failed to refresh tools';
-        this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
+        this.finishMcpToolsError(error, server, 'Failed to refresh tools');
       }
     );
   }
@@ -724,8 +734,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         this.isLoadingTools = false;
         this.loadingServerUrl = '';
         
-        const errorMessage = error?.error?.error || error?.error?.message || error?.message || 'Failed to refresh tools';
-        this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
+        this.finishMcpToolsError(error, this.currentServer, 'Failed to refresh tools');
       }
     );
   }
@@ -799,11 +808,97 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     }
     this.mcpOAuthService.deleteConnection(connectionId).subscribe(() => {
       this.logger.log('[INT-MCP] OAuth connection revoked', connectionId);
+      this.loadOAuthConnections();
     }, (error) => {
-      if (error && error.status !== 404) {
+      if (error && error.status !== 404 && error.status !== 503) {
         this.logger.error('[INT-MCP] delete connection error', error);
       }
     });
+  }
+
+  reconnectServer(server: McpServer): void {
+    const mode = (server.oauth && server.oauth.mode) || 'mcp';
+    if (mode === 'manual') {
+      this.onSelectServer(server);
+      this.authType = 'manual';
+      return;
+    }
+
+    const popup = this.mcpOAuthService.openPopup();
+    this.oauthPopup = popup;
+    this.waitingForAuthorization = true;
+    const body: McpOAuthAuthorizeBody = {
+      mode: mode as McpOAuthMode,
+      server_url: server.url
+    };
+    if (server.name) {
+      body.name = server.name;
+    }
+    if (mode === 'google' && server.oauth) {
+      const connection = this.oauthConnections[server.oauth.connection_id];
+      body.scopes = connection && connection.scopes ? connection.scopes : [];
+    }
+
+    const savedOAuth = server.oauth ? { ...server.oauth } : null;
+    this.mcpOAuthService.connect(body, popup).then((result) => {
+      this.waitingForAuthorization = false;
+      this.oauthPopup = null;
+      if (!result.ok) {
+        this.notifyAuthorizationFailure(result);
+        return;
+      }
+      server.oauth = savedOAuth;
+      if (savedOAuth && savedOAuth.connection_id) {
+        const next = { ...this.reconnectRequired };
+        next[savedOAuth.connection_id] = false;
+        this.reconnectRequired = next;
+      }
+      this.loadOAuthConnections();
+      this.refreshTools(server);
+    });
+  }
+
+  loadOAuthConnections(): void {
+    const servers = (this.integration && this.integration.value && this.integration.value.servers) || [];
+    const hasOAuth = servers.some((server: McpServer) => server.oauth && server.oauth.connection_id);
+    if (!hasOAuth) {
+      this.oauthConnections = {};
+      return;
+    }
+    this.mcpOAuthService.listConnections().subscribe((connections) => {
+      const map: { [id: string]: McpOAuthConnection } = {};
+      (connections || []).forEach((connection) => {
+        map[connection._id] = connection;
+      });
+      this.oauthConnections = map;
+      this.oauthStatusUnavailable = false;
+    }, (error) => {
+      if (error && error.status === 503) {
+        this.oauthStatusUnavailable = true;
+        return;
+      }
+      this.logger.error('[INT-MCP] list OAuth connections error', error);
+    });
+  }
+
+  private mcpToolsErrorMessage(error: any, server: McpServer, fallback: string): string | null {
+    if (error && error.status === 409 && server && server.oauth && server.oauth.connection_id) {
+      this.reconnectRequired = { ...this.reconnectRequired, [server.oauth.connection_id]: true };
+      this.notify.showWidgetStyleUpdateNotification(
+        this.translate.instant('Integration.AuthorizationExpiredReconnect'),
+        4,
+        'error'
+      );
+      return null;
+    }
+    return (error && error.error && (error.error.error || error.error.message)) || (error && error.message) || fallback;
+  }
+
+  private finishMcpToolsError(error: any, server: McpServer, fallback: string): void {
+    const errorMessage = this.mcpToolsErrorMessage(error, server, fallback);
+    if (errorMessage) {
+      this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
+    }
   }
 
   // Get display value for transport

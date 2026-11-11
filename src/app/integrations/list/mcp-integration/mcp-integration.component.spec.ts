@@ -18,6 +18,7 @@ describe('McpIntegrationComponent OAuth', () => {
     connect: jasmine.Spy;
     cancel: jasmine.Spy;
     deleteConnection: jasmine.Spy;
+    listConnections: jasmine.Spy;
   };
   let notify: { showWidgetStyleUpdateNotification: jasmine.Spy };
 
@@ -34,7 +35,8 @@ describe('McpIntegrationComponent OAuth', () => {
         connection: { _id: 'C1', mode: 'mcp', server_url: serverUrl, status: 'active', updatedAt: 'T1' }
       })),
       cancel: jasmine.createSpy('cancel'),
-      deleteConnection: jasmine.createSpy('deleteConnection').and.returnValue(of({ success: true, revoked: true }))
+      deleteConnection: jasmine.createSpy('deleteConnection').and.returnValue(of({ success: true, revoked: true })),
+      listConnections: jasmine.createSpy('listConnections').and.returnValue(of([]))
     };
     notify = { showWidgetStyleUpdateNotification: jasmine.createSpy('notify') };
 
@@ -174,3 +176,126 @@ describe('McpIntegrationComponent OAuth', () => {
     expect(mcpOAuth.deleteConnection).not.toHaveBeenCalled();
   });
 });
+
+describe('McpIntegrationComponent OAuth status', () => {
+  let component: McpIntegrationComponent;
+  let integrationService: { getMcpTools: jasmine.Spy };
+  let mcpOAuth: { openPopup: jasmine.Spy; connect: jasmine.Spy; cancel: jasmine.Spy; deleteConnection: jasmine.Spy; listConnections: jasmine.Spy };
+  let notify: { showWidgetStyleUpdateNotification: jasmine.Spy };
+  const serverUrl = 'https://mcp.example/sse';
+
+  beforeEach(async () => {
+    integrationService = {
+      getMcpTools: jasmine.createSpy('getMcpTools').and.returnValue(of({ tools: [{ name: 'echo' }] }))
+    };
+    mcpOAuth = {
+      openPopup: jasmine.createSpy('openPopup').and.returnValue({ closed: false, location: { href: '' }, close() {} }),
+      connect: jasmine.createSpy('connect').and.returnValue(Promise.resolve({
+        ok: true,
+        connection: { _id: 'C1', mode: 'mcp', server_url: serverUrl, status: 'active', updatedAt: 'T1' }
+      })),
+      cancel: jasmine.createSpy('cancel'),
+      deleteConnection: jasmine.createSpy('deleteConnection').and.returnValue(of({ success: true, revoked: true })),
+      listConnections: jasmine.createSpy('listConnections').and.returnValue(of([]))
+    };
+    notify = { showWidgetStyleUpdateNotification: jasmine.createSpy('notify') };
+
+    await TestBed.configureTestingModule({
+      declarations: [McpIntegrationComponent],
+      imports: [FormsModule, TranslateModule.forRoot()],
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        { provide: IntegrationService, useValue: integrationService },
+        { provide: McpOAuthService, useValue: mcpOAuth },
+        { provide: MatDialog, useValue: { open: () => ({ afterClosed: () => of(null) }) } },
+        { provide: NotifyService, useValue: notify },
+        { provide: LoggerService, useValue: { log: () => {}, debug: () => {}, error: () => {}, warn: () => {}, info: () => {} } }
+      ]
+    }).compileComponents();
+
+    const fixture = TestBed.createComponent(McpIntegrationComponent);
+    component = fixture.componentInstance;
+    component.integration = { value: { servers: [] } };
+    fixture.detectChanges();
+  });
+
+  it('reconnects an mcp server without changing the saved oauth reference', fakeAsync(() => {
+    const server = { name: 'Demo', url: serverUrl, transport: 'streamable_http', oauth: { connection_id: 'C1', mode: 'mcp' as const } };
+    component.integration.value.servers = [server];
+
+    component.reconnectServer(server);
+    tick();
+
+    expect(mcpOAuth.openPopup).toHaveBeenCalled();
+    expect(mcpOAuth.connect).toHaveBeenCalledWith(
+      { mode: 'mcp', server_url: serverUrl, name: 'Demo' },
+      jasmine.anything()
+    );
+    expect(component.integration.value.servers[0].oauth).toEqual({ connection_id: 'C1', mode: 'mcp' });
+  }));
+
+  it('passes the granted scopes when reconnecting a Google server', fakeAsync(() => {
+    const server = { name: 'Gmail', url: serverUrl, transport: 'streamable_http', oauth: { connection_id: 'C1', mode: 'google' as const } };
+    component.integration.value.servers = [server];
+    component.oauthConnections = {
+      C1: { _id: 'C1', mode: 'google', server_url: serverUrl, status: 'needs_reauth', scopes: ['openid', 'email'], updatedAt: 'T1' }
+    };
+
+    component.reconnectServer(server);
+    tick();
+
+    expect(mcpOAuth.connect).toHaveBeenCalledWith(
+      { mode: 'google', server_url: serverUrl, name: 'Gmail', scopes: ['openid', 'email'] },
+      jasmine.anything()
+    );
+  }));
+
+  it('opens the manual form instead of calling connect', () => {
+    const server = { name: 'Manual', url: serverUrl, transport: 'streamable_http', oauth: { connection_id: 'C1', mode: 'manual' as const } };
+    component.integration.value.servers = [server];
+
+    component.reconnectServer(server);
+
+    expect(mcpOAuth.connect).not.toHaveBeenCalled();
+    expect(component.isEditing).toBe(true);
+    expect(component.authType).toBe('manual');
+  });
+
+  it('revokes the connection on delete only when no other server uses it', fakeAsync(() => {
+    const Swal = require('sweetalert2');
+    spyOn(Swal, 'fire').and.returnValue(Promise.resolve({ isDenied: true }));
+    const server = { name: 'Demo', url: serverUrl, transport: 'streamable_http', oauth: { connection_id: 'C1', mode: 'mcp' as const } };
+    component.integration.value.servers = [server];
+
+    component.onDeleteServer(server);
+    tick();
+
+    expect(mcpOAuth.deleteConnection).toHaveBeenCalledWith('C1');
+
+    mcpOAuth.deleteConnection.calls.reset();
+    const shared = { connection_id: 'C1', mode: 'mcp' as const };
+    component.integration.value.servers = [
+      { name: 'A', url: serverUrl, transport: 'streamable_http', oauth: { ...shared } },
+      { name: 'B', url: 'https://mcp.example/other', transport: 'streamable_http', oauth: { ...shared } }
+    ];
+    component.onDeleteServer(component.integration.value.servers[0]);
+    tick();
+
+    expect(mcpOAuth.deleteConnection).not.toHaveBeenCalled();
+  }));
+
+  it('marks the server for reconnect when listing tools returns 409', () => {
+    const { throwError } = require('rxjs');
+    integrationService.getMcpTools.and.returnValue(throwError({ status: 409, error: { error: 'revoked' } }));
+    const server = { name: 'Demo', url: serverUrl, transport: 'streamable_http', oauth: { connection_id: 'C1', mode: 'mcp' as const } };
+    component.integration.value.servers = [server];
+
+    component.refreshTools(server);
+
+    expect(component.reconnectRequired['C1']).toBe(true);
+    const args = notify.showWidgetStyleUpdateNotification.calls.mostRecent().args;
+    expect(args[0]).toContain('AuthorizationExpiredReconnect');
+    expect(args[2]).toBe('error');
+  });
+});
+
