@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
+import type { McpOAuthReference } from 'app/services/mcp-oauth.service';
 
 export interface McpTool {
   name: string;
@@ -12,6 +13,8 @@ export interface McpServer {
   url: string;
   transport: string;
   tools?: McpTool[];
+  /** Null removes a stored OAuth reference. Omitting the key keeps the previous value on save. */
+  oauth?: McpOAuthReference | null;
 }
 
 @Component({

@@ -235,7 +235,8 @@ describe('McpOAuthService', () => {
     expect(pending.result()).toEqual({
       ok: false,
       reason: 'request_failed',
-      message: 'OAuth is not configured'
+      message: 'OAuth is not configured',
+      code: 'not_configured'
     });
     expect(popup.closed).toBe(true);
     http.expectNone(connectionUrl('C1'));

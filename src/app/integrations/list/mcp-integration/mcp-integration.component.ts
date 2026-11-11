@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { McpServer, McpTool } from './mcp-server-table/mcp-server-table.component';
@@ -6,15 +6,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { NotifyService } from 'app/core/notify.service';
 import { McpToolsModalComponent } from './mcp-tools-modal/mcp-tools-modal.component';
 import { TranslateService } from '@ngx-translate/core';
+import { McpOAuthAuthorizeBody, McpOAuthMode, McpOAuthReference, McpOAuthResult, McpOAuthService } from 'app/services/mcp-oauth.service';
 
 const Swal = require('sweetalert2');
+
+type McpAuthType = 'none' | McpOAuthMode;
 
 @Component({
   selector: 'mcp-integration',
   templateUrl: './mcp-integration.component.html',
   styleUrls: ['./mcp-integration.component.scss']
 })
-export class McpIntegrationComponent implements OnInit {
+export class McpIntegrationComponent implements OnInit, OnDestroy {
 
   @Input() integration: any;
   @Output() onUpdateIntegration = new EventEmitter;
@@ -32,6 +35,22 @@ export class McpIntegrationComponent implements OnInit {
   isEditing: boolean = false;
   editingIndex: number = -1;
 
+  authType: McpAuthType = 'none';
+  scopesText: string = '';
+  manualAuthorizationUrl: string = '';
+  manualTokenUrl: string = '';
+  manualClientId: string = '';
+  manualClientSecret: string = '';
+  manualRevocationUrl: string = '';
+  /** URL the current OAuth connection was granted for. A different URL invalidates it. */
+  authorizedUrl: string = '';
+  urlChanged: boolean = false;
+  waitingForAuthorization: boolean = false;
+
+  private originalOAuth: McpOAuthReference | null = null;
+  private stashedOAuth: McpOAuthReference | null = null;
+  private oauthPopup: Window | null = null;
+
   // Connect/Tools state
   isLoadingTools: boolean = false;
   toolsRetrieved: boolean = false;
@@ -43,7 +62,8 @@ export class McpIntegrationComponent implements OnInit {
     private logger: LoggerService,
     private dialog: MatDialog,
     private notify: NotifyService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private mcpOAuthService: McpOAuthService
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +76,10 @@ export class McpIntegrationComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.mcpOAuthService.cancel();
+  }
+
   addOrUpdateServer(): void {
     this.logger.log('[INT-MCP] addOrUpdateServer', this.currentServer, 'isEditing:', this.isEditing);
     
@@ -63,6 +87,15 @@ export class McpIntegrationComponent implements OnInit {
     if (!this.currentServer.name || !this.currentServer.url || !this.currentServer.transport) {
       this.logger.error('[INT-MCP] Missing required fields');
       return;
+    }
+
+    const previousConnectionId = this.isEditing && this.authType === 'none'
+      ? this.originalOAuth && this.originalOAuth.connection_id
+      : null;
+
+    // None must send oauth: null so the server merge drops the stored reference.
+    if (this.authType === 'none') {
+      this.currentServer.oauth = null;
     }
 
     // Preserve tools if they were retrieved
@@ -73,6 +106,7 @@ export class McpIntegrationComponent implements OnInit {
       const existingServer = this.integration.value.servers[this.editingIndex];
       const serverToSave: McpServer = { 
         ...this.currentServer,
+        oauth: this.authType === 'none' ? null : this.currentServer.oauth,
         tools: toolsToPreserve.length > 0 ? toolsToPreserve : existingServer.tools
       };
       this.integration.value.servers[this.editingIndex] = serverToSave;
@@ -81,12 +115,14 @@ export class McpIntegrationComponent implements OnInit {
       // Add new server with tools if available
       const serverToAdd: McpServer = { 
         ...this.currentServer,
+        oauth: this.authType === 'none' ? null : this.currentServer.oauth,
         tools: toolsToPreserve
       };
       this.integration.value.servers.push(serverToAdd);
       this.logger.log('[INT-MCP] Added new server');
     }
 
+    this.revokeConnectionIfUnused(previousConnectionId);
     this.resetForm();
     this.saveIntegration();
   }
@@ -98,10 +134,61 @@ export class McpIntegrationComponent implements OnInit {
     );
     
     if (index >= 0) {
-      this.currentServer = { ...server };
+      this.currentServer = {
+        ...server,
+        oauth: server.oauth ? { ...server.oauth } : server.oauth
+      };
       this.isEditing = true;
       this.editingIndex = index;
+      this.originalOAuth = server.oauth && server.oauth.connection_id ? { ...server.oauth } : null;
+      this.authType = this.originalOAuth ? (this.originalOAuth.mode || 'mcp') : 'none';
+      this.authorizedUrl = this.originalOAuth ? server.url : '';
+      this.urlChanged = false;
+      this.stashedOAuth = null;
+      this.scopesText = '';
+      this.manualAuthorizationUrl = '';
+      this.manualTokenUrl = '';
+      this.manualClientId = '';
+      this.manualClientSecret = '';
+      this.manualRevocationUrl = '';
     }
+  }
+
+  /**
+   * An OAuth connection is bound to the server URL. Changing it requires a new grant.
+   */
+  onServerUrlChange(): void {
+    if (this.authType === 'none' || !this.authorizedUrl) {
+      return;
+    }
+    if (this.currentServer.url !== this.authorizedUrl) {
+      if (this.currentServer.oauth) {
+        this.stashedOAuth = this.currentServer.oauth;
+      }
+      this.currentServer.oauth = null;
+      this.urlChanged = true;
+      this.toolsRetrieved = false;
+      return;
+    }
+    if (this.stashedOAuth) {
+      this.currentServer.oauth = this.stashedOAuth;
+      this.stashedOAuth = null;
+    }
+    this.urlChanged = false;
+  }
+
+  keepsStoredClientSecret(): boolean {
+    return this.isEditing && !!this.originalOAuth;
+  }
+
+  isUpdateDisabled(): boolean {
+    if (!this.currentServer.name || !this.currentServer.url || this.isLoadingTools || this.waitingForAuthorization) {
+      return true;
+    }
+    if (this.authType === 'none') {
+      return false;
+    }
+    return this.urlChanged || !this.currentServer.oauth || !this.currentServer.oauth.connection_id;
   }
 
   onDeleteServer(server: McpServer): void {
@@ -164,6 +251,18 @@ export class McpIntegrationComponent implements OnInit {
     this.editingIndex = -1;
     this.toolsRetrieved = false;
     this.currentTools = [];
+    this.authType = 'none';
+    this.scopesText = '';
+    this.manualAuthorizationUrl = '';
+    this.manualTokenUrl = '';
+    this.manualClientId = '';
+    this.manualClientSecret = '';
+    this.manualRevocationUrl = '';
+    this.authorizedUrl = '';
+    this.urlChanged = false;
+    this.originalOAuth = null;
+    this.stashedOAuth = null;
+    this.waitingForAuthorization = false;
   }
 
   /**
@@ -185,22 +284,70 @@ export class McpIntegrationComponent implements OnInit {
   }
 
   /**
-   * Connect to MCP server and retrieve tools
+   * Connect to MCP server and retrieve tools.
+   * OAuth opens the provider popup synchronously in this click handler.
    */
   connectToServer(): void {
-    // Validation
     if (!this.currentServer.url) {
       this.notify.showWidgetStyleUpdateNotification('Please enter a server URL', 3, 'error');
       return;
     }
 
+    if (this.authType !== 'none') {
+      this.beginOAuthConnect();
+      return;
+    }
+
+    this.currentServer.oauth = null;
+    this.loadToolsForCurrentServer();
+  }
+
+  cancelAuthorization(): void {
+    if (this.oauthPopup) {
+      this.oauthPopup.close();
+      this.oauthPopup = null;
+    }
+    this.waitingForAuthorization = false;
+    this.mcpOAuthService.cancel();
+  }
+
+  private beginOAuthConnect(): void {
+    const popup = this.mcpOAuthService.openPopup();
+    this.oauthPopup = popup;
+    this.waitingForAuthorization = true;
+    this.mcpOAuthService.connect(this.authorizeBody(), popup).then((result) => {
+      this.waitingForAuthorization = false;
+      this.oauthPopup = null;
+      if (!result.ok) {
+        this.notifyAuthorizationFailure(result);
+        return;
+      }
+      this.currentServer.oauth = {
+        connection_id: result.connection._id,
+        mode: this.authType as McpOAuthMode
+      };
+      this.authorizedUrl = this.currentServer.url;
+      this.urlChanged = false;
+      this.stashedOAuth = null;
+      this.loadToolsForCurrentServer();
+    });
+  }
+
+  private loadToolsForCurrentServer(): void {
     this.isLoadingTools = true;
     this.loadingServerUrl = this.currentServer.url;
     this.toolsRetrieved = false;
 
     this.logger.log('[INT-MCP] Connecting to server:', this.currentServer.url);
 
-    this.integrationService.getMcpTools(this.currentServer.url).subscribe(
+    const oauth = this.currentServer.oauth && this.currentServer.oauth.connection_id
+      ? this.currentServer.oauth
+      : undefined;
+    const toolsRequest = oauth
+      ? this.integrationService.getMcpTools(this.currentServer.url, oauth)
+      : this.integrationService.getMcpTools(this.currentServer.url);
+
+    toolsRequest.subscribe(
       (response: any) => {
         this.logger.log('[INT-MCP] Tools retrieved:', response);
         
@@ -242,7 +389,7 @@ export class McpIntegrationComponent implements OnInit {
         this.loadingServerUrl = '';
         this.toolsRetrieved = false;
         
-        const errorMessage = error?.error?.message || error?.message || 'Failed to retrieve tools from server';
+        const errorMessage = error?.error?.error || error?.error?.message || error?.message || 'Failed to retrieve tools from server';
         this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
       }
     );
@@ -262,7 +409,11 @@ export class McpIntegrationComponent implements OnInit {
 
     this.logger.log('[INT-MCP] Refreshing tools for server:', server.url);
 
-    this.integrationService.getMcpTools(server.url).subscribe(
+    const toolsRequest = server.oauth && server.oauth.connection_id
+      ? this.integrationService.getMcpTools(server.url, server.oauth)
+      : this.integrationService.getMcpTools(server.url);
+
+    toolsRequest.subscribe(
       (response: any) => {
         this.logger.log('[INT-MCP] Tools refreshed:', response);
         
@@ -313,7 +464,7 @@ export class McpIntegrationComponent implements OnInit {
         this.isLoadingTools = false;
         this.loadingServerUrl = '';
         
-        const errorMessage = error?.error?.message || error?.message || 'Failed to refresh tools';
+        const errorMessage = error?.error?.error || error?.error?.message || error?.message || 'Failed to refresh tools';
         this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
       }
     );
@@ -396,7 +547,14 @@ export class McpIntegrationComponent implements OnInit {
 
     this.logger.log('[INT-MCP] Refreshing tools for current server:', this.currentServer.url);
 
-    this.integrationService.getMcpTools(this.currentServer.url).subscribe(
+    const currentOauth = this.currentServer.oauth && this.currentServer.oauth.connection_id
+      ? this.currentServer.oauth
+      : undefined;
+    const currentToolsRequest = currentOauth
+      ? this.integrationService.getMcpTools(this.currentServer.url, currentOauth)
+      : this.integrationService.getMcpTools(this.currentServer.url);
+
+    currentToolsRequest.subscribe(
       (response: any) => {
         this.logger.log('[INT-MCP] Tools refreshed:', response);
         
@@ -440,10 +598,86 @@ export class McpIntegrationComponent implements OnInit {
         this.isLoadingTools = false;
         this.loadingServerUrl = '';
         
-        const errorMessage = error?.error?.message || error?.message || 'Failed to refresh tools';
+        const errorMessage = error?.error?.error || error?.error?.message || error?.message || 'Failed to refresh tools';
         this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
       }
     );
+  }
+
+  private authorizeBody(): McpOAuthAuthorizeBody {
+    const body: McpOAuthAuthorizeBody = {
+      mode: this.authType as McpOAuthMode,
+      server_url: this.currentServer.url
+    };
+    if (this.currentServer.name) {
+      body.name = this.currentServer.name;
+    }
+    if (this.authType === 'google' || this.authType === 'manual') {
+      const scopes = this.parseScopes(this.scopesText);
+      if (scopes.length) {
+        body.scopes = scopes;
+      }
+    }
+    if (this.authType === 'manual') {
+      body.manual = {
+        authorization_endpoint: this.manualAuthorizationUrl,
+        token_endpoint: this.manualTokenUrl,
+        client_id: this.manualClientId
+      };
+      if (this.manualClientSecret) {
+        body.manual.client_secret = this.manualClientSecret;
+      }
+      if (this.manualRevocationUrl) {
+        body.manual.revocation_endpoint = this.manualRevocationUrl;
+      }
+    }
+    return body;
+  }
+
+  private parseScopes(value: string): string[] {
+    if (!value) {
+      return [];
+    }
+    return value.split(/[\s,]+/).map((scope) => scope.trim()).filter((scope) => !!scope);
+  }
+
+  private notifyAuthorizationFailure(result: McpOAuthResult): void {
+    if (result.ok !== false) {
+      return;
+    }
+    const failure = result as { reason: string; message?: string; code?: string };
+    let message: string;
+    if (failure.reason === 'popup_blocked') {
+      message = this.translate.instant('Integration.AllowPopups');
+    } else if (failure.reason === 'closed') {
+      message = this.translate.instant('Integration.AuthorizationCancelled');
+    } else if (failure.reason === 'timeout') {
+      message = this.translate.instant('Integration.AuthorizationExpired');
+    } else if (failure.code === 'not_configured') {
+      message = this.translate.instant('Integration.OAuthNotAvailable');
+    } else {
+      message = failure.message || this.translate.instant('Integration.OAuthNotAvailable');
+    }
+    this.notify.showWidgetStyleUpdateNotification(message, 4, 'error');
+  }
+
+  private revokeConnectionIfUnused(connectionId: string | null | undefined): void {
+    if (!connectionId) {
+      return;
+    }
+    const stillUsed = (this.integration.value.servers || []).some((server: McpServer) =>
+      server.oauth && server.oauth.connection_id === connectionId
+    );
+    if (stillUsed) {
+      return;
+    }
+    this.mcpOAuthService.deleteConnection(connectionId).subscribe(() => {
+      this.logger.log('[INT-MCP] OAuth connection revoked', connectionId);
+    }, (error) => {
+      if (error && error.status !== 404) {
+        this.logger.error('[INT-MCP] delete connection error', error);
+      }
+    });
   }
 
   // Get display value for transport
