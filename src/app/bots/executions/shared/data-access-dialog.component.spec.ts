@@ -127,7 +127,41 @@ describe('DataAccessDialogComponent', () => {
     fixture.detectChanges();
     expect(text()).toContain('The data of this execution is no longer kept');
     expect(text()).not.toContain('retention');
+    fixture.destroy();
+
+    TestBed.resetTestingModule();
+    setup({ ...BASE, retentionDays: 1 }, fail(410, 'data_expired'));
+    type('look at it');
+    confirmBtn().click();
+    tick();
+    fixture.detectChanges();
+    expect(text()).toContain('The data of this execution is no longer kept (retention 1 day)');
+    expect(text()).not.toContain('1 days');
   }));
+
+  it('404 tells a missing execution apart from no stored data, by error code', fakeAsync(() => {
+    setup(BASE, fail(404, 'not_found'));
+    type('look at it');
+    confirmBtn().click();
+    tick();
+    fixture.detectChanges();
+    expect(text()).toContain('This execution was not found');
+    expect(text()).not.toContain('No data was stored');
+    fixture.destroy();
+
+    TestBed.resetTestingModule();
+    setup(BASE, fail(404, 'no_data'));
+    type('look at it');
+    confirmBtn().click();
+    tick();
+    fixture.detectChanges();
+    expect(text()).toContain('No data was stored for this execution');
+  }));
+
+  it('Italian: 1 day singular', () => {
+    expect(IT.Executions.DataAccess.Expired_one).toBe('I dati di questa esecuzione non sono più conservati (conservazione 1 giorno)');
+    expect(EN.Executions.DataAccess.Expired_one).toBe('The data of this execution is no longer kept (retention 1 day)');
+  });
 
   it('403 shows a permission message; 404 no data; other errors a retry', fakeAsync(() => {
     setup(BASE, fail(403, 'forbidden'));

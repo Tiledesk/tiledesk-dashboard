@@ -18,6 +18,11 @@ export interface DataAccessDialogData {
   retentionDays: number | null;
 }
 
+function errorCodeOf(err: any): string | null {
+  const body = err && err.error;
+  return body && typeof body === 'object' && typeof body.error === 'string' ? body.error : null;
+}
+
 interface DialogError {
   key: string;
   params?: { [k: string]: any };
@@ -25,7 +30,7 @@ interface DialogError {
 
 /**
  * View data (spec §5): asks a reason and a scope, requests the grant and closes with it, or with null on cancel.
- * Refusals stay in the dialog: 410 no longer kept, 403 permission, 404 nothing stored.
+ * Refusals stay in the dialog: 410 no longer kept, 403 permission, 404 nothing stored (no_data) or no such execution.
  */
 @Component({
   selector: 'execution-data-access-dialog',
@@ -160,11 +165,12 @@ export class DataAccessDialogComponent implements OnDestroy {
     if (status === 410) {
       const n = this.data.retentionDays;
       return Number.isInteger(n) && n > 0
-        ? { key: 'Executions.DataAccess.Expired', params: { n } }
+        ? { key: n === 1 ? 'Executions.DataAccess.Expired_one' : 'Executions.DataAccess.Expired', params: { n } }
         : { key: 'Executions.DataAccess.ExpiredNoDays' };
     }
     if (status === 403) return { key: 'Executions.DataAccess.Forbidden' };
-    if (status === 404) return { key: 'Executions.DataAccess.NoData' };
+    // 404 no_data: the run stored nothing (or was captured at data 0); any other 404: the execution is gone
+    if (status === 404) return { key: errorCodeOf(err) === 'no_data' ? 'Executions.DataAccess.NoData' : 'Executions.DataAccess.NotFound' };
     if (status === 400) return { key: 'Executions.DataAccess.InvalidBody', params: { min: REASON_MIN, max: REASON_MAX } };
     return { key: 'Executions.DataAccess.Failed' };
   }
