@@ -2,6 +2,7 @@
 
 ### 2.7.271-stage
 - Updates the New Flow → AI Agent modal: embeds the Home vibe coder (prompt, examples, file attachments), replaces Create with Start, widens the dialog, and passes attachment URLs to Design Studio the same way as Home
+- Adds OAuth authentication for MCP servers in Integrations → MCP Servers: automatic (MCP discovery), Google and manual; connection status with reconnect.
 
 ### 2.7.270-stage
 - Adds file attachments to the Home vibe coder (up to 5 files, 10 MB each): upload on Start, chips with preview/remove, and handoff of attachment URLs to Design Studio via `cds-agent-from-prompt` and `agent-prompts`
