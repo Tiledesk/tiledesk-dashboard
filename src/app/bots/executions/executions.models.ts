@@ -295,3 +295,29 @@ export function canViewExecutionData(role: string, perms: string[] | undefined):
   if (role === 'supervisor' || role === 'agent') return false;
   return !!perms && perms.includes(PERMISSIONS.EXECUTIONS_DATA_ACCESS);
 }
+
+/** One row of GET .../executions/:id/audit (newest first). Never holds a value. */
+export interface AuditView {
+  audit_id: string;
+  at: string;
+  actor: { name: string; role: string };
+  action: string;
+  reason: string | null;
+  details: {
+    result?: string;
+    scope?: { type: 'execution' } | { type: 'step'; step_seq: number };
+    step_seq?: number;
+    grant_id?: string;
+    role?: string;
+    key?: string;
+    purpose?: string;
+    mode?: string;
+    of_audit_id?: string;
+    [k: string]: any;
+  };
+}
+
+export interface AuditPage {
+  entries: AuditView[];
+  next_cursor: string | null;
+}

@@ -5,6 +5,15 @@ import { executionLink } from '../bots/executions/execution-links';
 const EXEC = '0a1b2c3d-1111-4222-8333-444455556666';
 const AGENT = '65f000000000000000000001';
 
+function retention(before: any, after: any): any {
+  return {
+    verb: 'EXECUTION_RETENTION_UPDATE',
+    actor: { type: 'user', id: 'u1', name: 'Anna Rossi' },
+    target: { type: 'project', id: '65f0000000000000000000aa', object: {} },
+    actionObj: { retention: { before, after } },
+  };
+}
+
 function activity(verb: string, extra: any = {}): any {
   return {
     verb,
@@ -92,6 +101,47 @@ describe('Activities - Executions audit rows', () => {
     expect(executionLink('pid', AGENT, EXEC)!.commands).toEqual(['/project', 'pid', 'monitor', AGENT, 'executions', EXEC]);
   });
 
+  describe('data access and retention verbs', () => {
+    function parts(a: any) {
+      const c: any = Object.create(ActivitiesNewComponent.prototype);
+      c.projectId = 'pid';
+      c.activityMessage = (x: any) => renderActivity(x);
+      return { c, parts: c.getActivityParts(a) };
+    }
+
+    it('three new verbs render the server sentences', () => {
+      expect(renderActivity(activity('EXECUTION_DATA_ACCESS', { reason: 'ticket 42', scope: { type: 'step', step_seq: 3 } })))
+        .toBe('Anna Rossi viewed the data of execution 556666 of Support Bot · "ticket 42" · 1 block');
+      expect(renderActivity(activity('EXECUTION_DATA_ACCESS', { scope: { type: 'execution' } })))
+        .toBe('Anna Rossi viewed the data of execution 556666 of Support Bot · whole execution');
+      expect(renderActivity(activity('EXECUTION_DATA_ACCESS_DENIED', { role: 'supervisor', reason: 'x' })))
+        .toBe('Anna Rossi was denied access to the data of execution 556666 of Support Bot (role supervisor)');
+      expect(renderActivity(activity('EXECUTION_DATA_ACCESS_DENIED', { result: 'rejected:forbidden', role: 'agent' })))
+        .toBe('Anna Rossi was denied access to the data of execution 556666 of Support Bot (role agent)');
+      expect(renderActivity(retention({ trace_days: 90, data_days: 30 }, { trace_days: 30, data_days: 30 })))
+        .toBe('Anna Rossi changed executions retention: trace 90 → 30 days');
+      expect(renderActivity(retention({ trace_days: 90, data_days: 30 }, { trace_days: 60, data_days: 7 })))
+        .toBe('Anna Rossi changed executions retention: trace 90 → 60 days, data 30 → 7 days');
+    });
+
+    it('data access rows link to the execution', () => {
+      const { c, parts: p } = parts(activity('EXECUTION_DATA_ACCESS', { scope: { type: 'execution' } }));
+      expect(p.executionLinkLabel).toBe('556666');
+      expect(p.before).toBe(' viewed the data of execution ');
+      expect(p.after).toBe(' of Support Bot · whole execution');
+      expect(c.executionRouterLink(activity('EXECUTION_DATA_ACCESS'))).toEqual(['/project', 'pid', 'monitor', AGENT, 'executions', EXEC]);
+    });
+
+    it('a retention row renders without an execution link', () => {
+      const a = retention({ trace_days: 90, data_days: 30 }, { trace_days: 30, data_days: 30 });
+      const { c, parts: p } = parts(a);
+      expect(p.executionLinkLabel).toBeNull();
+      expect(c.executionRouterLink(a)).toBeNull();
+      expect(p.before).toBe(' changed executions retention');
+      expect(p.after).toBe(': trace 90 → 30 days');
+    });
+  });
+
   describe('Executions group', () => {
     function build(role: string, matched: string[]) {
       const c: any = Object.create(ActivitiesNewComponent.prototype);
@@ -104,7 +154,7 @@ describe('Activities - Executions audit rows', () => {
     it('Executions group hidden for admin, shown for owner', () => {
       expect(build('admin', [])).not.toContain('EXECUTION_STOP_SOFT');
       expect(build('admin', [])).not.toContain('EXECUTION_RESUME');
-      expect(build('owner', [])).toEqual(jasmine.arrayContaining(['EXECUTION_STOP_SOFT', 'EXECUTION_STOP_HARD', 'EXECUTION_DESTROY', 'EXECUTION_RESUME', 'EXECUTION_START_NEW']));
+      expect(build('owner', [])).toEqual(jasmine.arrayContaining(['EXECUTION_STOP_SOFT', 'EXECUTION_STOP_HARD', 'EXECUTION_DESTROY', 'EXECUTION_RESUME', 'EXECUTION_START_NEW', 'EXECUTION_DATA_ACCESS', 'EXECUTION_DATA_ACCESS_DENIED', 'EXECUTION_RETENTION_UPDATE']));
     });
 
     it('is shown to a custom role only with executions_audit_read', () => {

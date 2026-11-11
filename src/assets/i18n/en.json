@@ -460,7 +460,10 @@
             "EXECUTION_STOP_HARD": "Execution hard-stopped",
             "EXECUTION_DESTROY": "Execution destroyed",
             "EXECUTION_RESUME": "Execution resumed",
-            "EXECUTION_START_NEW": "New run started"
+            "EXECUTION_START_NEW": "New run started",
+            "EXECUTION_DATA_ACCESS": "Execution data viewed",
+            "EXECUTION_DATA_ACCESS_DENIED": "Execution data access denied",
+            "EXECUTION_RETENTION_UPDATE": "Executions retention changed"
         }
     },
     "NewRequest": "New conversation",
@@ -4301,6 +4304,15 @@
             "Exit": "exit",
             "Time": "time",
             "ErrorCode": "error"
+        },
+        "Audit": {
+            "Title": "Audit",
+            "Hint": "Who did what to this execution, newest first",
+            "OpenActivities": "Open in Activities",
+            "Loading": "Loading…",
+            "LoadError": "The audit could not be loaded",
+            "Empty": "No audit entries for this execution yet",
+            "LoadMore": "Load more"
         },
         "FlowState": {
             "Title": "Flow state",

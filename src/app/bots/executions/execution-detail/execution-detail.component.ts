@@ -10,9 +10,11 @@ import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import {
   AllowedControl, canViewExecutionData, canViewExecutions, CONTROL_REASONS, ControlName, dataRetentionDays, ExecutionDetail,
-  GrantInfo, ResumeAction, StateView, Step, ValueOrState, VarHistoryEntry, VarSide, VarView
+  AuditView, GrantInfo, ResumeAction, StateView, Step, ValueOrState, VarHistoryEntry, VarSide, VarView
 } from '../executions.models';
 import { monitorExecutionsLink } from '../execution-links';
+import { auditResultKind, auditResultLabel, auditSentence } from '../execution-audit';
+import { canViewExecutionsAudit } from 'app/activities-new/utils/activity-verbs.constants';
 import { formatDuration } from '../shared/execution-format';
 import { StopDialogComponent, StopDialogData, StopMode } from '../shared/stop-dialog.component';
 import { DestroyDialogComponent, DestroyDialogData } from '../shared/destroy-dialog.component';
@@ -130,7 +132,17 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   loading = false;
   error = false;
 
-  tab: 'timeline' | 'state' = 'timeline';
+  tab: 'timeline' | 'state' | 'audit' = 'timeline';
+
+  // Audit tab (owner or executions_audit_read), newest first, 50 per page
+  canViewAudit = false;
+  auditEntries: AuditView[] = [];
+  auditNext: string | null = null;
+  auditLoading = false;
+  auditError = false;
+  readonly auditSentence = auditSentence;
+  readonly auditResultLabel = auditResultLabel;
+  readonly auditResultKind = auditResultKind;
   failedOnly = false;
   expanded = new Set<number>();
   states: { [seq: number]: StateSlot } = {};
@@ -221,6 +233,8 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       if (!status || !status.role) { this.permitted = null; return; }
       this.permitted = canViewExecutions(status.role, status.matchedPermissions);
       this.canViewData = this.permitted && canViewExecutionData(status.role, status.matchedPermissions);
+      this.canViewAudit = this.permitted && canViewExecutionsAudit(status.role, status.matchedPermissions);
+      if (!this.canViewAudit && this.tab === 'audit') this.tab = 'timeline';
       // the role lost data access while a grant is open: close it and drop the values
       if (!this.canViewData && (this.session.active || this.grantFor)) this.endGrant(true);
       if (this.permitted && this.configured && !this.started) this.start();
@@ -279,6 +293,11 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.states = {};
     this.fsSeq = null;
     this.fsShowAll = false;
+    this.auditEntries = [];
+    this.auditNext = null;
+    this.auditLoading = false;
+    this.auditError = false;
+    if (this.tab === 'audit') this.tab = 'timeline';
     this.closeHistory();
     this.clearTrigger();
     this.clearPending();
@@ -481,9 +500,47 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
 
   // ---- Flow state tab ----
 
-  setTab(tab: 'timeline' | 'state') {
+  setTab(tab: 'timeline' | 'state' | 'audit') {
+    if (tab === 'audit' && !this.canViewAudit) return;
     this.tab = tab;
     if (tab === 'state' && this.fsSeq !== null) this.loadState(this.fsSeq);
+    if (tab === 'audit') this.loadAudit(false);
+  }
+
+  // ---- Audit tab ----
+
+  /** First page (more = false, replaces the list) or the next one by `next_cursor` (appends). */
+  loadAudit(more: boolean) {
+    if (!this.canViewAudit || this.auditLoading || !this.executionId) return;
+    if (more && !this.auditNext) return;
+    const pid = this.projectId;
+    const id = this.executionId;
+    this.auditLoading = true;
+    this.auditError = false;
+    this.executionsService.audit(pid, id, more ? this.auditNext : null).pipe(takeUntil(this.destroy$)).subscribe({
+      next: page => {
+        if (pid !== this.projectId || id !== this.executionId) return;
+        this.auditEntries = more ? [...this.auditEntries, ...page.entries] : page.entries;
+        this.auditNext = page.next_cursor || null;
+        this.auditLoading = false;
+      },
+      error: err => {
+        this.logger.error('[EXECUTION-DETAIL] audit error ', err);
+        if (pid !== this.projectId || id !== this.executionId) return;
+        this.auditLoading = false;
+        this.auditError = true;
+      }
+    });
+  }
+
+  trackByAudit(_i: number, e: AuditView) { return e.audit_id; }
+
+  auditText(e: AuditView): string {
+    return auditSentence(e, this.executionId, this.detail ? this.detail.execution.agent_name : '');
+  }
+
+  goToActivities() {
+    this.router.navigate(['/project', this.projectId, 'activities']);
   }
 
   selectStateStep(value: string) {

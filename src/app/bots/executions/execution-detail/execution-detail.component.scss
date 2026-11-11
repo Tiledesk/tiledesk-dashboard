@@ -119,3 +119,15 @@
 .st-key { font-family: ui-monospace, Menlo, monospace; font-size: 12px; overflow-wrap: anywhere; }
 
 .unauthorized-message-container-in-page { text-align: center; padding: 80px 16px; }
+
+.au-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; flex-wrap: wrap; }
+.au-list { list-style: none; margin: 0; padding: 0; }
+.au-row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 10px 16px; border-top: 1px solid var(--exec-line); }
+.au-time { min-width: 150px; font-size: 12px; }
+.au-sentence { flex: 1 1 260px; }
+.au-chip { border-radius: 10px; padding: 1px 8px; font-size: 12px; border: 1px solid var(--exec-line); }
+.au-chip-ok { color: #1b7f3b; border-color: #1b7f3b; }
+.au-chip-pending { color: var(--exec-muted); }
+.au-chip-bad { color: #b3261e; border-color: #b3261e; }
+.au-reason { flex-basis: 100%; font-size: 13px; }
+.au-error, .au-loading, .au-empty, .au-more { padding: 12px 16px; margin: 0; }

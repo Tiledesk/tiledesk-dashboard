@@ -119,6 +119,8 @@
             {{ "Executions.Detail.Timeline" | translate }}</button>
           <button type="button" role="tab" class="ex-tab-state" [attr.aria-selected]="tab === 'state'" (click)="setTab('state')">
             {{ "Executions.FlowState.Title" | translate }}</button>
+          <button *ngIf="canViewAudit" type="button" role="tab" class="ex-tab-audit" [attr.aria-selected]="tab === 'audit'" (click)="setTab('audit')">
+            {{ "Executions.Audit.Title" | translate }}</button>
         </div>
 
         <!-- timeline -->
@@ -177,6 +179,28 @@
               </ng-container>
             </div>
           </ng-container>
+        </div>
+
+        <!-- audit tab -->
+        <div *ngIf="tab === 'audit' && canViewAudit" role="tabpanel" class="au">
+          <div class="au-head">
+            <span class="ex-muted">{{ "Executions.Audit.Hint" | translate }}</span>
+            <button type="button" class="ex-link au-activities" (click)="goToActivities()">{{ "Executions.Audit.OpenActivities" | translate }}</button>
+          </div>
+          <p *ngIf="auditLoading && !auditEntries.length" class="ex-muted au-loading">{{ "Executions.Audit.Loading" | translate }}</p>
+          <p *ngIf="auditError" class="au-error">{{ "Executions.Audit.LoadError" | translate }}
+            <button type="button" class="ex-link au-retry" (click)="loadAudit(false)">{{ "Executions.Retry" | translate }}</button></p>
+          <p *ngIf="!auditLoading && !auditError && !auditEntries.length" class="ex-muted au-empty">{{ "Executions.Audit.Empty" | translate }}</p>
+          <ul *ngIf="auditEntries.length" class="au-list">
+            <li *ngFor="let e of auditEntries; trackBy: trackByAudit" class="au-row">
+              <span class="au-time ex-muted">{{ e.at | date:'medium' }}</span>
+              <span class="au-sentence">{{ auditText(e) }}</span>
+              <span *ngIf="auditResultLabel(e)" class="au-chip" [ngClass]="'au-chip-' + auditResultKind(e)">{{ auditResultLabel(e) }}</span>
+              <span *ngIf="e.reason" class="au-reason ex-muted">"{{ e.reason }}"</span>
+            </li>
+          </ul>
+          <button *ngIf="auditNext" type="button" class="ex-link au-more" [disabled]="auditLoading" (click)="loadAudit(true)">
+            {{ "Executions.Audit.LoadMore" | translate }}</button>
         </div>
 
         <!-- flow state tab -->

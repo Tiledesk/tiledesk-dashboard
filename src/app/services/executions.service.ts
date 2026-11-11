@@ -5,7 +5,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import {
-  ExecutionDetail, ExecutionListParams, ExecutionPage, GrantInfo, GrantScope, StartNewInput, StateView, Summary, ValueOrState,
+  AuditPage, ExecutionDetail, ExecutionListParams, ExecutionPage, GrantInfo, GrantScope, StartNewInput, StateView, Summary, ValueOrState,
   VarHistoryEntry
 } from 'app/bots/executions/executions.models';
 
@@ -158,5 +158,12 @@ export class ExecutionsService {
     if (reason) body.reason = reason;
     return this.httpClient.post<{ status: string; request_id?: string }>(
       this.url(projectId, '/' + encodeURIComponent(id) + '/start-new'), body, { headers: this.headers() });
+  }
+
+  /** Audit of one execution, newest first, 50 per page; `next_cursor` is null on the last page. 403 without executions_audit_read. */
+  audit(projectId: string, id: string, cursor?: string | null): Observable<AuditPage> {
+    let params = new HttpParams();
+    if (cursor) params = params.set('cursor', cursor);
+    return this.httpClient.get<AuditPage>(this.url(projectId, '/' + encodeURIComponent(id) + '/audit'), { headers: this.headers(), params });
   }
 }
