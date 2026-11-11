@@ -4,6 +4,8 @@ import { VALUE_STATES, ValueState, VarSide } from '../executions.models';
 /** A value longer than this many lines (as indented JSON) is collapsed behind "Show all". */
 export const VALUE_COLLAPSE_LINES = 10;
 
+const EMPTY_JSON: { text: string; head: string; collapsible: boolean } = { text: '', head: '', collapsible: false };
+
 /** Label of a value that has no value to show (spec §5). */
 const STATE_KEYS: { [s in ValueState]: string } = {
   secret: 'Executions.Values.Secret',
@@ -33,7 +35,9 @@ const STATE_KEYS: { [s in ValueState]: string } = {
     </ng-container>`,
   styles: [`
     .vc-value { display: inline-block; max-width: 100%; }
+    /* other pages set global pre rules (line-height 0, box-shadow, counters): override every one of them here */
     .vc-json { margin: 0; padding: 0; background: none; border: 0; font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+      line-height: 1.45; box-shadow: none; border-radius: 0; counter-reset: none;
       white-space: pre-wrap; word-break: break-word; color: #1f2a3d; }
     .vc-toggle { border: 0; background: none; padding: 0; color: #1b6ef3; cursor: pointer; font-size: 12px; }
     .vc-toggle:focus-visible { outline: 2px solid #1b6ef3; }
@@ -48,7 +52,6 @@ export class ValueCellComponent implements OnChanges {
   @Input() reveal = true;
 
   expanded = false;
-  private cache: { value: any } | null = null;
 
   get mode(): 'value' | 'state' | 'mask' {
     const s = this.side;
@@ -62,12 +65,19 @@ export class ValueCellComponent implements OnChanges {
     return STATE_KEYS[this.side.value_state];
   }
 
-  /** The JSON text, worked out again only when the value itself changes (a new side object around it does not). */
-  json: { text: string; head: string; collapsible: boolean } = { text: '', head: '', collapsible: false };
+  /**
+   * The JSON text, built only while the value is shown (never while masked). A new side holding the same JSON text
+   * (a poll's fresh objects) keeps "Show all" as the user left it; another value collapses it again.
+   */
+  json: { text: string; head: string; collapsible: boolean } = EMPTY_JSON;
 
   ngOnChanges() {
-    const value = this.side ? this.side.value : undefined;
-    if (this.cache && this.cache.value === value) return;
+    if (this.mode !== 'value') {
+      this.json = EMPTY_JSON;
+      this.expanded = false;
+      return;
+    }
+    const value = this.side.value;
     let text: string;
     try {
       text = JSON.stringify(value, null, 2);
@@ -75,9 +85,9 @@ export class ValueCellComponent implements OnChanges {
       text = String(value);
     }
     if (text === undefined) text = String(value);
+    if (this.json !== EMPTY_JSON && this.json.text === text) return;
     const lines = text.split('\n');
     const collapsible = lines.length > VALUE_COLLAPSE_LINES;
-    this.cache = { value };
     this.json = { text, head: collapsible ? lines.slice(0, VALUE_COLLAPSE_LINES).join('\n') : text, collapsible };
     this.expanded = false;
   }

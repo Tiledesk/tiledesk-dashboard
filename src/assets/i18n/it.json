@@ -4090,7 +4090,7 @@
             "Close": "Chiudi"
         },
         "Values": {
-            "Secret": "[segreto]",
+            "Secret": "[secret]",
             "TooLarge": "troppo grande per essere memorizzato",
             "NotStored": "non memorizzato",
             "Expired": "non più conservato",

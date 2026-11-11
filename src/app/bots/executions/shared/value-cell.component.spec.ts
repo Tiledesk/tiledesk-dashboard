@@ -70,7 +70,7 @@ describe('ValueCellComponent', () => {
 
   it('each value_state has its label', () => {
     const en = { secret: '[secret]', too_large: 'too large to store', not_stored: 'not stored', expired: 'no longer kept', unreadable: 'unreadable' };
-    const it = { secret: '[segreto]', too_large: 'troppo grande per essere memorizzato', not_stored: 'non memorizzato', expired: 'non più conservato', unreadable: 'illeggibile' };
+    const it = { secret: '[secret]', too_large: 'troppo grande per essere memorizzato', not_stored: 'non memorizzato', expired: 'non più conservato', unreadable: 'illeggibile' };
     let first = true;
     (['en', 'it'] as const).forEach(lang => VALUE_STATES.forEach(s => {
       if (!first) { fixture.destroy(); TestBed.resetTestingModule(); }
@@ -104,6 +104,58 @@ describe('ValueCellComponent', () => {
     render({ ...base, value: { secret_ish: 'VALUE-1' } }, { reveal: false });
     expect(text()).not.toContain('VALUE-1');
     expect(el().querySelector('.mv-mask')).toBeTruthy();
+  });
+
+  it('stays readable under the global pre rules of other pages (line-height 0, box-shadow)', () => {
+    const style = document.createElement('style');
+    style.textContent = 'pre { line-height: 0; box-shadow: 0 0 0 3px red; border-radius: 6px; counter-reset: line; }';
+    document.head.appendChild(style);
+    try {
+      render({ ...base, value: { order_id: 'A-1001', lines: [1, 2, 3] } });
+      const pre = el().querySelector('pre.vc-json') as HTMLElement;
+      const cs = getComputedStyle(pre);
+      expect(cs.lineHeight).not.toBe('0px');
+      expect(pre.offsetHeight).toBeGreaterThan(0);
+      expect(cs.boxShadow).toBe('none');
+      expect(cs.borderRadius).toBe('0px');
+      expect(cs.counterReset).toBe('none');
+    } finally {
+      style.remove();
+    }
+  });
+
+  it('a new side with the same value keeps Show all open; another value collapses it', () => {
+    const value = Array.from({ length: 30 }, (_, i) => i);
+    render({ ...base, value });
+    (el().querySelector('.vc-toggle') as HTMLButtonElement).click();
+    fixture.detectChanges();
+    const c = fixture.componentInstance;
+    expect(c.expanded).toBe(true);
+    // a poll answers with new objects holding the same value
+    c.side = { ...base, value: JSON.parse(JSON.stringify(value)) };
+    c.ngOnChanges();
+    expect(c.expanded).toBe(true);
+    c.side = { ...base, value: [...value, 30] };
+    c.ngOnChanges();
+    expect(c.expanded).toBe(false);
+  });
+
+  it('builds no JSON while masked', () => {
+    render({ ...base, value: { order_id: 'A-1001' } }, { reveal: false });
+    const c = fixture.componentInstance;
+    expect(c.json.text).toBe('');
+    expect(JSON.stringify(c.json)).not.toContain('A-1001');
+    c.reveal = true;
+    c.ngOnChanges();
+    expect(c.json.text).toContain('A-1001');
+    c.reveal = false;
+    c.ngOnChanges();
+    expect(JSON.stringify(c.json)).not.toContain('A-1001');
+  });
+
+  it('the secret label is [secret] in every language (the marker the API puts in values)', () => {
+    expect(EN.Executions.Values.Secret).toBe('[secret]');
+    expect(IT.Executions.Values.Secret).toBe('[secret]');
   });
 
   it('new strings exist in en and it and never say variable', () => {
