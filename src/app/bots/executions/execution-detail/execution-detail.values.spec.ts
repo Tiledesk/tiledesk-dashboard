@@ -154,7 +154,7 @@ describe('ExecutionDetailComponent values under a grant', () => {
 
   /** Nothing in memory or on the page holds a value. */
   function expectNoValues() {
-    const json = JSON.stringify({ s: Object.values(cmp().states).map(s => s.view), h: cmp().history, t: cmp().triggerValue });
+    const json = JSON.stringify({ s: Object.values(cmp().states).map(s => s.view), h: cmp().history, t: cmp().triggerSide });
     expect(json).not.toContain('VAL-');
     expect(json).not.toContain('HIST-');
     expect(json).not.toContain('A-1001');
@@ -364,17 +364,19 @@ describe('ExecutionDetailComponent values under a grant', () => {
     setup();
     openGrant(grant('g1'));
     expect(cmp().triggerGrantId).toBe('g1');
-    expect(cmp().triggerValue).toEqual(triggerAnswer);
+    expect(cmp().triggerSide.value).toEqual(triggerAnswer.value);
+    // one copy of the trigger input in memory: the side the strip shows
+    expect('triggerValue' in cmp()).toBe(false);
     cmp().closeGrant();
     render();
     expect(cmp().triggerGrantId).toBeNull();
-    expect(cmp().triggerValue).toBeNull();
+    expect(cmp().triggerSide).toBeNull();
     expect(trigger()).toBeNull();
     // replaced by a block grant: the trigger of the first grant goes too
     openGrant(grant('g2'));
     expect(cmp().triggerGrantId).toBe('g2');
     openGrant(grant('g3', { type: 'step', step_seq: 1 }), 1);
-    expect(cmp().triggerValue).toBeNull();
+    expect(cmp().triggerSide).toBeNull();
     expect(cmp().triggerGrantId).toBeNull();
     cmp().closeGrant();
   }));

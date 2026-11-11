@@ -193,10 +193,13 @@ describe('ExecutionDetailComponent data access', () => {
   }
 
   function expectNoValues() {
-    const json = JSON.stringify({ states: Object.values(cmp().states).map(s => s.view), history: cmp().history });
+    const json = JSON.stringify({ states: Object.values(cmp().states).map(s => s.view), history: cmp().history, trigger: cmp().triggerSide });
     expect(json).not.toContain('"value"');
     expect(json).not.toContain('after_value');
     expect(json).not.toContain('500');
+    fixture.detectChanges();
+    expect(el().textContent).not.toContain('"500"');
+    expect(el().querySelector('.ex-grant-trigger')).toBeNull();
   }
 
   it('Close revokes and clears values', fakeAsync(() => {

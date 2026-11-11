@@ -172,8 +172,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   private destroyed = false;
   /** false while leaving the execution: views read with the grant are dropped, not read again */
   private reloadAfterGrant = true;
-  /** trigger input read with an execution grant (strip), and the grant it was read with */
-  triggerValue: ValueOrState | null = null;
+  /** the grant the trigger input (triggerSide, in the strip) was read with: an execution grant */
   triggerGrantId: string | null = null;
 
   // controls (Phase 2): optimistic chip until a poll returns the new status
@@ -735,7 +734,6 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
         next: r => {
           if (!this.session.accept(grantId) || this.triggerGrantId !== grantId) return;
           const v: ValueOrState = r && typeof r === 'object' ? r : {};
-          this.triggerValue = v;
           this.triggerSide = { type: null, size: null, hash: null, value: v.value, value_state: v.value_state };
           this.triggerLoading = false;
         },
@@ -753,7 +751,6 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   private clearTrigger() {
     if (this.triggerSub) this.triggerSub.unsubscribe();
     this.triggerSub = null;
-    this.triggerValue = null;
     this.triggerSide = null;
     this.triggerGrantId = null;
     this.triggerLoading = false;
