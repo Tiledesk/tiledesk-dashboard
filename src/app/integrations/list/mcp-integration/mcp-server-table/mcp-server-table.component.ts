@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
-import type { McpOAuthReference } from 'app/services/mcp-oauth.service';
+import type { McpOAuthConnection, McpOAuthReference } from 'app/services/mcp-oauth.service';
 
 export interface McpTool {
   name: string;
@@ -24,8 +24,12 @@ export interface McpServer {
 })
 export class McpServerTableComponent implements OnInit {
   @Input() mcpServers: McpServer[] = [];
+  @Input() oauthConnections: { [id: string]: McpOAuthConnection } = {};
+  @Input() reconnectRequired: { [id: string]: boolean } = {};
+  @Input() oauthStatusUnavailable = false;
   @Output() onSelectServer = new EventEmitter<McpServer>();
   @Output() onDeleteServer = new EventEmitter<McpServer>();
+  @Output() onReconnectServer = new EventEmitter<McpServer>();
 
   filteredServers: McpServer[] = [];
   filterText: string = '';
@@ -124,6 +128,65 @@ export class McpServerTableComponent implements OnInit {
 
   getToolsCount(server: McpServer): number {
     return server.tools && Array.isArray(server.tools) ? server.tools.length : 0;
+  }
+
+  authStatus(server: McpServer): 'none' | 'connected' | 'reconnect' | 'missing' | 'pending' {
+    const connectionId = server.oauth && server.oauth.connection_id;
+    if (!connectionId) {
+      return 'none';
+    }
+    if (this.reconnectRequired && this.reconnectRequired[connectionId]) {
+      return 'reconnect';
+    }
+    const connection = this.oauthConnections && this.oauthConnections[connectionId];
+    if (!connection) {
+      return 'missing';
+    }
+    if (connection.status === 'active') {
+      return 'connected';
+    }
+    if (connection.status === 'pending') {
+      return 'pending';
+    }
+    return 'reconnect';
+  }
+
+  authModeKey(server: McpServer): string {
+    const mode = (server.oauth && server.oauth.mode) || 'mcp';
+    if (mode === 'google') {
+      return 'Integration.AuthGoogle';
+    }
+    if (mode === 'manual') {
+      return 'Integration.AuthManual';
+    }
+    return 'Integration.AuthOAuth';
+  }
+
+  authStatusKey(server: McpServer): string {
+    const status = this.authStatus(server);
+    if (status === 'connected') {
+      return 'Integration.Connected';
+    }
+    if (status === 'pending') {
+      return 'Integration.Pending';
+    }
+    if (status === 'missing') {
+      return 'Integration.NotConnected';
+    }
+    return 'Integration.Reconnect';
+  }
+
+  authChipClickable(server: McpServer): boolean {
+    const status = this.authStatus(server);
+    return status === 'reconnect' || status === 'missing';
+  }
+
+  onAuthChipClick(server: McpServer, event: Event): void {
+    event.stopPropagation();
+    if (!this.authChipClickable(server)) {
+      return;
+    }
+    this.onReconnectServer.emit(server);
   }
 }
 

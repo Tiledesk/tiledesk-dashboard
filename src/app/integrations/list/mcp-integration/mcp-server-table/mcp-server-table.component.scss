@@ -228,6 +228,50 @@
           }
         }
 
+        &.auth-column {
+          width: 180px;
+          min-width: 160px;
+
+          .auth-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            border: 0;
+            background-color: #eceff1;
+            color: #455a64;
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+
+            .auth-mode {
+              font-weight: 600;
+            }
+          }
+
+          .auth-chip.connected {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+          }
+
+          .auth-chip.pending {
+            background-color: #fff8e1;
+            color: #f57f17;
+          }
+
+          .auth-chip.reconnect {
+            background-color: #ffebee;
+            color: #c62828;
+            cursor: pointer;
+          }
+
+          .auth-chip:disabled {
+            cursor: default;
+            opacity: 1;
+          }
+        }
+
         &.tools-column {
           width: 100px;
           min-width: 100px;
