@@ -40,6 +40,7 @@ export class CreditsComponent implements OnInit, OnDestroy {
   buyingPack = false;
   packError: string | null = null;
   checkoutOutcome: 'success' | 'cancel' | null = null;
+  llmPriceFilter = '';
 
   private refreshTimer: ReturnType<typeof setInterval> | null = null;
   private unsubscribe$ = new Subject<void>();
@@ -102,10 +103,13 @@ export class CreditsComponent implements OnInit, OnDestroy {
 
   get llmPriceRows(): { provider: string; model: string; input: number; output: number; total: number }[] {
     const prices = this.summary?.llmPrices || {};
+    const filter = this.llmPriceFilter.trim().toLowerCase();
     const rows = [];
-    Object.keys(prices).forEach((provider) => {
-      Object.keys(prices[provider]).forEach((model) => {
-        rows.push(Object.assign({ provider, model }, prices[provider][model]));
+    Object.keys(prices).sort().forEach((provider) => {
+      Object.keys(prices[provider]).sort().forEach((model) => {
+        if (!filter || (provider + '/' + model).toLowerCase().includes(filter)) {
+          rows.push(Object.assign({ provider, model }, prices[provider][model]));
+        }
       });
     });
     return rows;

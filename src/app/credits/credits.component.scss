@@ -189,6 +189,16 @@ $credits-green: #2e7d32;
   }
 }
 
+.credits-price-filter {
+  max-width: 280px;
+  margin-bottom: 8px;
+}
+
+.credits-price-scroll {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
 .credits-table {
   width: 100%;
   border-collapse: collapse;
