@@ -137,6 +137,7 @@
                 <th>{{ 'Credits.Model' | translate }}</th>
                 <th class="num">{{ 'Credits.Calls' | translate }}</th>
                 <th class="num">Token</th>
+                <th class="num">{{ 'Credits.Cost' | translate }}</th>
                 <th class="num">{{ 'Credits.Credits' | translate }}</th>
               </tr>
             </thead>
@@ -151,6 +152,7 @@
                 </td>
                 <td class="num">{{ usage.calls }}</td>
                 <td class="num">{{ usage.tokens | number }}</td>
+                <td class="num">{{ usage.cost ? ('$' + (usage.cost | number: '1.2-6')) : '–' }}</td>
                 <td class="num">{{ usage.credits | credits: 4 }}</td>
               </tr>
             </tbody>
@@ -241,8 +243,11 @@
         </table>
 
         <h3 class="credits-card-subtitle">{{ 'Credits.LlmPrices' | translate }}</h3>
+        <input *ngIf="objectKeys(summary.llmPrices).length" type="search" class="form-control credits-price-filter"
+          [(ngModel)]="llmPriceFilter" placeholder="{{ 'Credits.FilterModels' | translate }}">
         <p *ngIf="!llmPriceRows.length" class="credits-empty">{{ 'Credits.NoLlmPrices' | translate }}</p>
-        <table *ngIf="llmPriceRows.length" class="credits-table">
+        <div *ngIf="llmPriceRows.length" class="credits-price-scroll">
+        <table class="credits-table">
           <thead>
             <tr>
               <th>{{ 'Credits.Model' | translate }}</th>
@@ -260,6 +265,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
         <p class="credits-card-hint">{{ 'Credits.LlmPricesHint' | translate }}</p>
       </div>
 

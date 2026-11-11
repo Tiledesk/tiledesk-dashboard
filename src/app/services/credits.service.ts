@@ -34,6 +34,8 @@ export interface CreditsLlmUsage {
   model: string;
   credits: number;
   tokens: number;
+  /** provider cost, USD */
+  cost?: number;
   calls: number;
   unpriced: number;
 }

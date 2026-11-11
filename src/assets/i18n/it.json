@@ -2697,6 +2697,8 @@
         "LlmPrices": "Modelli AI (crediti ogni 1000 token)",
         "NoLlmPrices": "Nessun modello AI con prezzo: le chiamate con la chiave Tiledesk non sono disponibili.",
         "LlmPricesHint": "Quando è noto solo il totale dei token si applica la tariffa total.",
+        "FilterModels": "Filtra i modelli",
+        "Cost": "Costo AI",
         "BuyPack": "Acquista crediti",
         "BuyPackHint": "Pacchetto una tantum di almeno {{min}} crediti. I crediti dei pacchetti non scadono.",
         "BuyPackBtn": "Vai al pagamento",

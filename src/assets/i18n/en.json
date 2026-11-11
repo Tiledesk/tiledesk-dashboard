@@ -2699,6 +2699,8 @@
         "LlmPrices": "AI models (credits per 1000 tokens)",
         "NoLlmPrices": "No AI model priced: the calls with the Tiledesk key are not available.",
         "LlmPricesHint": "When only the total tokens are known the total rate applies.",
+        "FilterModels": "Filter models",
+        "Cost": "AI cost",
         "BuyPack": "Buy credits",
         "BuyPackHint": "One-off pack of at least {{min}} credits. The pack credits never expire.",
         "BuyPackBtn": "Go to payment",
