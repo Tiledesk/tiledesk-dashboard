@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { ExecutionsRoutingModule } from './executions-routing.module';
 import { ExecutionsListComponent } from './executions-list/executions-list.component';
@@ -42,6 +43,7 @@ import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
     MatTooltipModule,
     MatDialogModule,
     MatRadioModule,
+    MatButtonModule,
     FormsModule,
     ExecutionsRoutingModule,
     MonitorTabsModule,
