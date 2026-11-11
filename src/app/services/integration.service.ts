@@ -3,6 +3,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { McpOAuthReference } from './mcp-oauth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -223,14 +224,20 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
   }
 
   /**
-   * Retrieve MCP tools from server
+   * Retrieve MCP tools from server.
+   * When the server is connected with OAuth, send the connection id:
+   * the server attaches the bearer token and refreshes it.
+   * The second argument is either the enabled custom headers or an OAuth
+   * reference, so existing callers and the OAuth flow both keep working.
    * @param serverUrl The URL of the MCP server
-   * @param customHeaders Optional headers forwarded to the MCP server (enabled only)
+   * @param customHeadersOrOAuth Enabled headers, or an OAuth connection reference
+   * @param oauth Connection reference when custom headers are passed as the second argument
    * @returns Observable with tools array
    */
   getMcpTools(
     serverUrl: string,
-    customHeaders?: Array<{ key: string; value: string }>,
+    customHeadersOrOAuth?: Array<{ key: string; value: string }> | McpOAuthReference | null,
+    oauth?: McpOAuthReference | null,
   ) {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -243,15 +250,25 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
     this.logger.debug('[INTEGRATION.SERV] - get MCP tools URL: ', url);
     this.logger.debug('[INTEGRATION.SERV] - server URL: ', serverUrl);
 
+    const customHeaders = Array.isArray(customHeadersOrOAuth) ? customHeadersOrOAuth : undefined;
+    const oauthRef = Array.isArray(customHeadersOrOAuth) || customHeadersOrOAuth == null
+      ? oauth
+      : customHeadersOrOAuth;
+
     const body: {
       url: string;
       customHeaders?: Array<{ key: string; value: string }>;
+      oauth?: { connection_id: string };
     } = {
       url: serverUrl
     };
 
-    if (Array.isArray(customHeaders) && customHeaders.length) {
+    if (customHeaders && customHeaders.length) {
       body.customHeaders = customHeaders;
+    }
+
+    if (oauthRef && oauthRef.connection_id) {
+      body.oauth = { connection_id: oauthRef.connection_id };
     }
 
     return this.http.post(url, body, httpOptions);
