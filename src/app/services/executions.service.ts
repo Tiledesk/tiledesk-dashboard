@@ -5,7 +5,8 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import {
-  ExecutionDetail, ExecutionListParams, ExecutionPage, StartNewInput, StateView, Summary, VarHistoryEntry
+  ExecutionDetail, ExecutionListParams, ExecutionPage, GrantInfo, GrantScope, StartNewInput, StateView, Summary, ValueOrState,
+  VarHistoryEntry
 } from 'app/bots/executions/executions.models';
 
 @Injectable({ providedIn: 'root' })
@@ -80,14 +81,41 @@ export class ExecutionsService {
     return this.httpClient.get<ExecutionDetail>(this.url(projectId, '/' + encodeURIComponent(id)), { headers: this.headers() });
   }
 
-  state(projectId: string, id: string, stepSeq: number): Observable<StateView> {
-    const params = new HttpParams().set('step_seq', String(stepSeq));
+  /**
+   * The block's state. With a grant covering it, each side gains `value` or `value_state` (403 grant_invalid /
+   * grant_out_of_scope, 410 data_expired). Values are returned to the caller only: never stored or cached here.
+   */
+  state(projectId: string, id: string, stepSeq: number, grantId?: string): Observable<StateView> {
+    let params = new HttpParams().set('step_seq', String(stepSeq));
+    if (grantId) params = params.set('grant', grantId);
     return this.httpClient.get<StateView>(this.url(projectId, '/' + encodeURIComponent(id) + '/state'), { headers: this.headers(), params });
   }
 
-  history(projectId: string, id: string, key: string): Observable<VarHistoryEntry[]> {
-    const params = new HttpParams().set('key', key);
+  /** With a grant, entries in covered steps gain before_value/after_value or before_state/after_state. */
+  history(projectId: string, id: string, key: string, grantId?: string): Observable<VarHistoryEntry[]> {
+    let params = new HttpParams().set('key', key);
+    if (grantId) params = params.set('grant', grantId);
     return this.httpClient.get<VarHistoryEntry[]>(this.url(projectId, '/' + encodeURIComponent(id) + '/state/history'), { headers: this.headers(), params });
+  }
+
+  /**
+   * Opens the execution's sealed data for 15 minutes. 201/200 {grant_id, expires_at, scope} (an active grant for the
+   * same scope comes back again); 403 forbidden (audited denial); 410 data_expired; 404 no_data; 400 invalid_body.
+   */
+  requestDataAccess(projectId: string, id: string, body: { reason: string; scope: GrantScope }): Observable<GrantInfo> {
+    return this.httpClient.post<GrantInfo>(this.url(projectId, '/' + encodeURIComponent(id) + '/data-access'), body, { headers: this.headers() });
+  }
+
+  /** Close: ends the grant on the service (204). */
+  revokeDataAccess(projectId: string, id: string, grantId: string): Observable<void> {
+    return this.httpClient.post<void>(
+      this.url(projectId, '/' + encodeURIComponent(id) + '/data-access/' + encodeURIComponent(grantId) + '/revoke'), {}, { headers: this.headers() });
+  }
+
+  /** The trigger input under an execution grant: {value} or {value_state}; a step grant gets 403 grant_out_of_scope. */
+  triggerData(projectId: string, id: string, grantId: string): Observable<ValueOrState> {
+    const params = new HttpParams().set('grant', grantId);
+    return this.httpClient.get<ValueOrState>(this.url(projectId, '/' + encodeURIComponent(id) + '/data/trigger'), { headers: this.headers(), params });
   }
 
   /** 202 {status}; 409 {error:'not_allowed', allowed}; 503 {error:'control_unavailable'}; 403. */

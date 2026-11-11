@@ -4441,6 +4441,29 @@
             "StartNewInvalidJson": "The input is not valid JSON",
             "StartNewNotObject": "The input must be a JSON object",
             "StartNew": "Start new"
+        },
+        "DataAccess": {
+            "ViewData": "View data",
+            "Title": "View execution data",
+            "Reason": "Reason",
+            "ReasonHint": "Why you need to see the data ({{min}}–{{max}} characters)",
+            "Scope": "Scope",
+            "ScopeStep": "This block ({{block}})",
+            "ScopeExecution": "Whole execution",
+            "Audited": "Your access is recorded in the audit log and shown to the owner",
+            "Open": "View data",
+            "Expired": "The data of this execution is no longer kept (retention {{n}} days)",
+            "ExpiredNoDays": "The data of this execution is no longer kept",
+            "Forbidden": "You don't have permission to view the data of this execution",
+            "NoData": "No data was stored for this execution",
+            "InvalidBody": "The reason needs {{min}} to {{max}} characters",
+            "Failed": "Could not open the data. Try again.",
+            "Strip": "Sealed data",
+            "StripScopeExecution": "whole execution",
+            "StripScopeStep": "block {{block}}",
+            "ExpiresIn": "access expires in {{time}}",
+            "Recorded": "recorded in the audit log",
+            "Close": "Close"
         }
     }
 }

@@ -194,10 +194,24 @@ export interface Summary {
   agents: { [agentId: string]: AgentSummary };
 }
 
+/** Why a value is not returned under a grant (tiledesk-executions stateValues.ts). */
+export type ValueState = 'secret' | 'too_large' | 'not_stored' | 'expired' | 'unreadable';
+
+export const VALUE_STATES: ValueState[] = ['secret', 'too_large', 'not_stored', 'expired', 'unreadable'];
+
+/** A value read behind a grant: the JSON value, or why there is none. */
+export interface ValueOrState {
+  value?: any;
+  value_state?: ValueState;
+}
+
 export interface VarSide {
   type: string | null;
   size: number | null;
   hash: string | null;
+  /** only in a state view read with a grant covering the block */
+  value?: any;
+  value_state?: ValueState;
 }
 
 export interface VarView {
@@ -213,6 +227,9 @@ export interface StateView {
   step_seq: number;
   partial: boolean;
   vars: VarView[];
+  /** only when read with a grant */
+  grant?: { expires_at: string };
+  actions?: any[];
 }
 
 export interface VarHistoryEntry {
@@ -227,6 +244,37 @@ export interface VarHistoryEntry {
   hash_before: string | null;
   hash_after: string | null;
   omitted?: string;
+  /** only in steps a grant covers */
+  before_value?: any;
+  after_value?: any;
+  before_state?: ValueState;
+  after_state?: ValueState;
+}
+
+/** What a data access grant opens: the whole execution (blocks and trigger input) or one block. */
+export type GrantScope = { type: 'execution' } | { type: 'step'; step_seq: number };
+
+/** POST data-access answer: valid until expires_at (15 min), closed earlier by revoke. */
+export interface GrantInfo {
+  grant_id: string;
+  expires_at: string;
+  scope: GrantScope;
+}
+
+const DAY_MS = 86400000;
+
+/**
+ * Days the execution's sealed data is kept: data_until minus started_at (the service dates both from the start),
+ * or null when they are missing or do not span a whole number of days (data set to 0, shortened to "now").
+ */
+export function dataRetentionDays(execution: Pick<Execution, 'started_at' | 'retention'> | null): number | null {
+  const start = execution && execution.started_at ? Date.parse(execution.started_at) : NaN;
+  const until = execution && execution.retention && execution.retention.data_until ? Date.parse(execution.retention.data_until) : NaN;
+  if (!Number.isFinite(start) || !Number.isFinite(until)) return null;
+  const days = (until - start) / DAY_MS;
+  const n = Math.round(days);
+  if (n < 1 || Math.abs(days - n) * DAY_MS > 60000) return null;
+  return n;
 }
 
 /** Who may see execution traces: owner/admin/supervisor yes, agent no, custom roles need executions_read. */
@@ -234,4 +282,11 @@ export function canViewExecutions(role: string, matchedPermissions: string[] | u
   if (role === 'owner' || role === 'admin' || role === 'supervisor') return true;
   if (role === 'agent') return false;
   return !!matchedPermissions && matchedPermissions.includes(PERMISSIONS.EXECUTIONS_READ);
+}
+
+/** Who may open execution data (spec §5): owner and admin; custom roles need executions_data_access. */
+export function canViewExecutionData(role: string, perms: string[] | undefined): boolean {
+  if (role === 'owner' || role === 'admin') return true;
+  if (role === 'supervisor' || role === 'agent') return false;
+  return !!perms && perms.includes(PERMISSIONS.EXECUTIONS_DATA_ACCESS);
 }
