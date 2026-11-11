@@ -968,6 +968,11 @@ export function executionRejection(activity: ActivityRecord): { reason: string }
   return { reason: i >= 0 ? result.substring(i + 1) : '' };
 }
 
+/** A start new whose refire got no answer: the run may have started, so it reads as started and flagged. */
+export function executionUnconfirmed(activity: ActivityRecord): boolean {
+  return effectiveVerb(activity) === 'EXECUTION_START_NEW' && executionRejection(activity)?.reason === 'refire_unconfirmed';
+}
+
 export function isExecutionVerb(verb: string): boolean {
   return Object.prototype.hasOwnProperty.call(EXECUTION_VERB_PHRASES, verb);
 }
@@ -989,8 +994,8 @@ export function executionAgentId(activity: ActivityRecord): string {
 
 /** Text after the agent name: ` (rejected: <status>)` for a refused control, then ` · "<reason>"` when a reason exists. */
 export function executionReasonSuffix(activity: ActivityRecord): string {
-  const rejected = executionRejection(activity);
-  const refusal = rejected ? ` (rejected${rejected.reason ? ': ' + rejected.reason : ''})` : '';
+  const rejected = executionUnconfirmed(activity) ? null : executionRejection(activity);
+  const refusal = executionUnconfirmed(activity) ? ' (unconfirmed)' : rejected ? ` (rejected${rejected.reason ? ': ' + rejected.reason : ''})` : '';
   const reason = str(activity.actionObj?.['reason']);
   return refusal + (reason ? ` · "${reason}"` : '');
 }
@@ -998,7 +1003,7 @@ export function executionReasonSuffix(activity: ActivityRecord): string {
 /** Same sentence as the server's (activityMessageUtil.buildExecutionMessage, en). */
 export function executionPhrase(activity: ActivityRecord): string {
   const verb = effectiveVerb(activity);
-  return (executionRejection(activity) ? EXECUTION_TRIED_PHRASES[verb] : EXECUTION_VERB_PHRASES[verb]) || '';
+  return (executionRejection(activity) && !executionUnconfirmed(activity) ? EXECUTION_TRIED_PHRASES[verb] : EXECUTION_VERB_PHRASES[verb]) || '';
 }
 
 export function renderExecutionMessage(activity: ActivityRecord): string {
