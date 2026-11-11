@@ -947,6 +947,8 @@ const EXECUTION_VERB_PHRASES: Record<string, string> = {
   EXECUTION_STOP_SOFT: 'soft-stopped execution',
   EXECUTION_STOP_HARD: 'hard-stopped execution',
   EXECUTION_DESTROY: 'destroyed execution',
+  EXECUTION_RESUME: 'resumed execution',
+  EXECUTION_START_NEW: 'started a new run of execution',
 };
 
 /** A control refused with a 409 is audited too (actionObj.result `rejected:<status>`): it reads as an attempt. */
@@ -954,6 +956,8 @@ const EXECUTION_TRIED_PHRASES: Record<string, string> = {
   EXECUTION_STOP_SOFT: 'tried to soft-stop execution',
   EXECUTION_STOP_HARD: 'tried to hard-stop execution',
   EXECUTION_DESTROY: 'tried to destroy execution',
+  EXECUTION_RESUME: 'tried to resume execution',
+  EXECUTION_START_NEW: 'tried to start a new run of execution',
 };
 
 /** null when the control was accepted (or the row has no result); otherwise the refusal, e.g. `stopped`. */
@@ -1022,6 +1026,8 @@ export function renderActivity(activity: ActivityRecord): string {
     case 'EXECUTION_STOP_SOFT':
     case 'EXECUTION_STOP_HARD':
     case 'EXECUTION_DESTROY':
+    case 'EXECUTION_RESUME':
+    case 'EXECUTION_START_NEW':
       return renderExecutionMessage(activity);
 
     case 'REQUEST_ASSIGNED_SELF':

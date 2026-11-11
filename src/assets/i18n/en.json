@@ -458,7 +458,9 @@
             "KB_CONTENT_DELETE": "Content deleted",
             "EXECUTION_STOP_SOFT": "Execution soft-stopped",
             "EXECUTION_STOP_HARD": "Execution hard-stopped",
-            "EXECUTION_DESTROY": "Execution destroyed"
+            "EXECUTION_DESTROY": "Execution destroyed",
+            "EXECUTION_RESUME": "Execution resumed",
+            "EXECUTION_START_NEW": "New run started"
         }
     },
     "NewRequest": "New conversation",

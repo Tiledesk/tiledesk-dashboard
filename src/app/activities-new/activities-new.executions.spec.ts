@@ -47,6 +47,23 @@ describe('Activities - Executions audit rows', () => {
     expect(parts.after).toBe(' of Support Bot (rejected: stopped) · "x"');
   });
 
+  it('EXECUTION_RESUME and EXECUTION_START_NEW render the server sentences (done and tried)', () => {
+    expect(renderActivity(activity('EXECUTION_RESUME'))).toBe('Anna Rossi resumed execution 0a1b2c of Support Bot');
+    expect(renderActivity(activity('EXECUTION_START_NEW', { reason: 'retry' })))
+      .toBe('Anna Rossi started a new run of execution 0a1b2c of Support Bot · "retry"');
+    expect(renderActivity(activity('EXECUTION_RESUME', { result: 'rejected:newer_execution' })))
+      .toBe('Anna Rossi tried to resume execution 0a1b2c of Support Bot (rejected: newer_execution)');
+    expect(renderActivity(activity('EXECUTION_START_NEW', { result: 'rejected:already_started' })))
+      .toBe('Anna Rossi tried to start a new run of execution 0a1b2c of Support Bot (rejected: already_started)');
+    const c: any = Object.create(ActivitiesNewComponent.prototype);
+    c.projectId = 'pid';
+    c.activityMessage = (a: any) => renderActivity(a);
+    const parts = c.getActivityParts(activity('EXECUTION_START_NEW'));
+    expect(parts.before).toBe(' started a new run of execution ');
+    expect(parts.executionLinkLabel).toBe('0a1b2c');
+    expect(c.executionRouterLink(activity('EXECUTION_RESUME'))).toEqual(['/project', 'pid', 'monitor', AGENT, 'executions', EXEC]);
+  });
+
   it('execution link targets bots/<agent>/executions/<id>', () => {
     const c: any = Object.create(ActivitiesNewComponent.prototype);
     c.projectId = 'pid';
@@ -72,7 +89,8 @@ describe('Activities - Executions audit rows', () => {
 
     it('Executions group hidden for admin, shown for owner', () => {
       expect(build('admin', [])).not.toContain('EXECUTION_STOP_SOFT');
-      expect(build('owner', [])).toEqual(jasmine.arrayContaining(['EXECUTION_STOP_SOFT', 'EXECUTION_STOP_HARD', 'EXECUTION_DESTROY']));
+      expect(build('admin', [])).not.toContain('EXECUTION_RESUME');
+      expect(build('owner', [])).toEqual(jasmine.arrayContaining(['EXECUTION_STOP_SOFT', 'EXECUTION_STOP_HARD', 'EXECUTION_DESTROY', 'EXECUTION_RESUME', 'EXECUTION_START_NEW']));
     });
 
     it('is shown to a custom role only with executions_audit_read', () => {
