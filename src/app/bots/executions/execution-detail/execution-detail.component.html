@@ -129,8 +129,8 @@
             <span class="ex-muted">{{ "Executions.Detail.BlocksSummary" | translate: { n: d.steps.length, f: d.execution.failure_conditions } }}</span>
             <span class="ex-spacer"></span>
             <div class="ex-seg" role="group" [attr.aria-label]="'Executions.Detail.TimelineFilter' | translate">
-              <button type="button" class="tl-filter-all" [attr.aria-pressed]="!failedOnly" (click)="failedOnly = false">{{ "Executions.Detail.All" | translate }}</button>
-              <button type="button" class="tl-filter-failed" [attr.aria-pressed]="failedOnly" (click)="failedOnly = true">{{ "Executions.Detail.NotSuccessful" | translate }}</button>
+              <button type="button" class="tl-filter-all" [attr.aria-pressed]="!failedOnly" (click)="setFailedOnly(false)">{{ "Executions.Detail.All" | translate }}</button>
+              <button type="button" class="tl-filter-failed" [attr.aria-pressed]="failedOnly" (click)="setFailedOnly(true)">{{ "Executions.Detail.NotSuccessful" | translate }}</button>
             </div>
           </div>
 

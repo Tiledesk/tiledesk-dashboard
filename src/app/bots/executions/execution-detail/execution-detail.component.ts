@@ -38,6 +38,8 @@ const CONTROL_NAMES: ControlName[] = ['stop', 'stop_hard_now', 'resume', 'start_
 export const START_NEW_WAIT_MS = 30000;
 /** Any pending control gives up after this long without the expected change (also when every poll fails). */
 export const PENDING_WAIT_MS = 30000;
+/** A live block read with a grant is read again on poll only when its step moved, or after this long anyway. */
+export const LIVE_REFETCH_MAX_MS = 30000;
 
 export type PendingControl = 'stopping' | 'destroying' | 'resuming' | 'starting';
 
@@ -92,6 +94,18 @@ interface StateSlot {
   sub?: Subscription;
   /** the grant the view was read with (it holds values): dropped when that grant ends */
   grantId?: string | null;
+  /** the step as it was when the read was sent (stepFingerprint), and when (now()) */
+  fp?: string;
+  fetchedAt?: number;
+}
+
+/** What moves while a block runs: a read with a grant is repeated on poll only when this changed. */
+export function stepFingerprint(step: Step | undefined): string {
+  if (!step) return '';
+  const actions = step.actions || [];
+  const last = actions[actions.length - 1];
+  return JSON.stringify([step.ended_at, step.outcome, step.changed_keys, actions.length,
+    last ? last.at : null, last ? last.outcome : null, last ? last.duration_ms : null, (step.outside || []).length]);
 }
 
 /** Text of an outside-change row, by origin; plural and singular. */
@@ -405,14 +419,20 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** States fetched while their block was running are stale: refetch the visible ones, drop the others. */
+  /**
+   * States fetched while their block was running are stale: refetch the visible ones, drop the others. A view read
+   * with the active grant is read again only when its step moved (or LIVE_REFETCH_MAX_MS later): every read with a
+   * grant is a data_viewed entry in the audit log.
+   */
   private refreshLiveStates() {
     Object.keys(this.states).map(Number).forEach(seq => {
       const slot = this.states[seq];
       if (!slot.live) return;
-      const visible = this.expanded.has(seq) || (this.tab === 'state' && this.fsSeq === seq);
-      if (visible) {
-        this.loadState(seq, true);
+      if (this.isVisible(seq)) {
+        const unchanged = !!slot.grantId && slot.grantId === this.session.grantId && !slot.error
+          && (!!slot.view || slot.loading) && slot.fp === stepFingerprint(this.stepBySeq(seq))
+          && this.now() - (slot.fetchedAt || 0) < LIVE_REFETCH_MAX_MS;
+        if (!unchanged) this.loadState(seq, true);
       } else {
         if (slot.sub) slot.sub.unsubscribe();
         delete this.states[seq];
@@ -435,12 +455,12 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     if (existing && !force && sameGrant && (existing.view || existing.loading)) return;
     if (existing && existing.sub) existing.sub.unsubscribe();
     // a refetch keeps the old view until the new one arrives, unless it was read with another grant
+    const step = this.stepBySeq(seq);
     const slot: StateSlot = {
       view: existing && sameGrant ? existing.view : null, loading: true, error: false, live: existing ? existing.live : false,
-      grantId,
+      grantId, fp: stepFingerprint(step), fetchedAt: this.now(),
     };
     this.states[seq] = slot;
-    const step = this.stepBySeq(seq);
     const liveAtFetch = !!step && this.isRunningStep(step);
     const req = grantId
       ? this.executionsService.state(this.projectId, this.executionId, seq, grantId)
@@ -471,6 +491,12 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
 
   get visibleTimeline(): TimelineItem[] {
     return this.failedOnly ? this.timeline.filter(i => i.step.outcome !== 'success') : this.timeline;
+  }
+
+  /** The Not successful filter: expanded blocks it shows again are loaded (with the grant when it covers them). */
+  setFailedOnly(v: boolean) {
+    this.failedOnly = v;
+    this.visibleSeqs().forEach(seq => this.loadState(seq));
   }
 
   toggleStep(step: Step) {
@@ -700,11 +726,15 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     if (scope && scope.type === 'execution') this.loadTrigger();
   }
 
-  /** Blocks on screen: expanded in the timeline, or picked in the Flow state tab. */
+  /** Blocks on screen: expanded and not hidden by the timeline filter, or picked in the Flow state tab. */
   private visibleSeqs(): number[] {
-    const seqs = new Set<number>(this.expanded);
+    const seqs = new Set<number>(this.visibleTimeline.map(i => i.step.seq).filter(seq => this.expanded.has(seq)));
     if (this.tab === 'state' && this.fsSeq !== null) seqs.add(this.fsSeq);
     return Array.from(seqs);
+  }
+
+  private isVisible(seq: number): boolean {
+    return this.visibleSeqs().includes(seq);
   }
 
   // ---- trigger input (execution grant only), shown in the strip ----
@@ -815,8 +845,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       if (!slot.grantId || slot.grantId !== grantId) return;
       if (slot.sub) slot.sub.unsubscribe();
       delete this.states[seq];
-      const visible = this.expanded.has(seq) || (this.tab === 'state' && this.fsSeq === seq);
-      if (visible && this.detail && this.reloadAfterGrant) this.loadState(seq);
+      if (this.isVisible(seq) && this.detail && this.reloadAfterGrant) this.loadState(seq);
     });
     if (this.historyGrantId === grantId) {
       if (this.historySub) this.historySub.unsubscribe();
