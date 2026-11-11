@@ -1,0 +1,54 @@
+<div class="row er-row" *ngIf="configured && settings">
+  <div class="col-md-6">
+    <h3 class="card_title__underlined">
+      <span class="card_title__underline">{{ 'Executions.Retention.Title' | translate }}</span>
+    </h3>
+    <p class="er-intro">{{ 'Executions.Retention.Intro' | translate }}</p>
+
+    <div class="er">
+      <div class="er-field er-trace">
+        <label for="er-trace-input" class="er-label">{{ 'Executions.Retention.Trace' | translate }}</label>
+        <div class="er-control">
+          <input id="er-trace-input" type="number" class="er-input" step="1"
+            [min]="traceRange.min" [max]="traceRange.max" [disabled]="!settings.can_edit"
+            [class.er-invalid]="fieldError === 'trace_days'"
+            [(ngModel)]="traceDays" (ngModelChange)="edited()">
+          <span class="er-unit">{{ 'Executions.Retention.Days' | translate }}</span>
+          <span class="er-range">({{ traceRange.min }}–{{ traceRange.max }})</span>
+        </div>
+        <div class="er-error" *ngIf="fieldError === 'trace_days'" role="alert">
+          {{ 'Executions.Retention.OutOfRange' | translate: { min: traceRange.min, max: traceRange.max } }}
+        </div>
+      </div>
+
+      <div class="er-field er-data">
+        <label for="er-data-input" class="er-label">{{ 'Executions.Retention.Data' | translate }}</label>
+        <div class="er-control">
+          <input id="er-data-input" type="number" class="er-input" step="1"
+            [min]="dataRange.min" [max]="dataRange.max" [disabled]="!settings.can_edit"
+            [class.er-invalid]="fieldError === 'data_days'"
+            [(ngModel)]="dataDays" (ngModelChange)="edited()">
+          <span class="er-unit">{{ 'Executions.Retention.Days' | translate }}</span>
+          <span class="er-range">({{ dataRange.min }}–{{ dataRange.max }}; {{ 'Executions.Retention.ZeroHint' | translate }})</span>
+        </div>
+        <div class="er-error" *ngIf="fieldError === 'data_days'" role="alert">
+          {{ 'Executions.Retention.OutOfRange' | translate: { min: dataRange.min, max: dataRange.max } }}
+        </div>
+      </div>
+
+      <p class="er-fixed">
+        {{ 'Executions.Retention.AuditFixed' | translate }} · {{ 'Executions.Retention.TestFixed' | translate: { days: settings.test_days } }}
+      </p>
+
+      <p class="er-readonly" *ngIf="!settings.can_edit">{{ 'Executions.Retention.ReadOnly' | translate }}</p>
+
+      <div class="er-actions" *ngIf="settings.can_edit">
+        <button type="button" class="btn btn-primary er-save" [disabled]="!canSave" (click)="save()">
+          {{ 'Executions.Retention.Save' | translate }}
+        </button>
+        <span class="er-saved" *ngIf="saved" role="status">{{ 'Executions.Retention.Saved' | translate }}</span>
+        <span class="er-error er-failed" *ngIf="saveFailed" role="alert">{{ 'Executions.Retention.SaveFailed' | translate }}</span>
+      </div>
+    </div>
+  </div>
+</div>

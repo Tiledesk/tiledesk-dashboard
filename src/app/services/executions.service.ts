@@ -5,7 +5,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import {
-  AuditPage, ExecutionDetail, ExecutionListParams, ExecutionPage, GrantInfo, GrantScope, StartNewInput, StateView, Summary, ValueOrState,
+  AuditPage, ExecutionDetail, RetentionSettings, ExecutionListParams, ExecutionPage, GrantInfo, GrantScope, StartNewInput, StateView, Summary, ValueOrState,
   VarHistoryEntry
 } from 'app/bots/executions/executions.models';
 
@@ -165,5 +165,20 @@ export class ExecutionsService {
     let params = new HttpParams();
     if (cursor) params = params.set('cursor', cursor);
     return this.httpClient.get<AuditPage>(this.url(projectId, '/' + encodeURIComponent(id) + '/audit'), { headers: this.headers(), params });
+  }
+
+  /** Retention of executions of the project (trace and sealed data days). */
+  getRetention(projectId: string): Observable<RetentionSettings> {
+    return this.httpClient.get<RetentionSettings>(this.settingsUrl(projectId), { headers: this.headers() });
+  }
+
+  /** 200 with the GET shape; 400 out_of_range {field}; 403 without executions_audit_read. */
+  putRetention(projectId: string, body: { trace_days: number; data_days: number }): Observable<RetentionSettings> {
+    return this.httpClient.put<RetentionSettings>(this.settingsUrl(projectId), body, { headers: this.headers() });
+  }
+
+  private settingsUrl(projectId: string): string {
+    const base = this.baseUrl().replace(/\/+$/, '');
+    return `${base}/projects/${projectId}/settings/retention`;
   }
 }

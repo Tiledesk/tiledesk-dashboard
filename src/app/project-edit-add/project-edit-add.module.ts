@@ -10,6 +10,7 @@ import { MomentModule } from 'ngx-moment';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 import { UrlsWhitelistComponent } from './urls-whitelist/urls-whitelist.component';
+import { ExecutionsRetentionComponent, RetentionConfirmDialogComponent } from './executions-retention/executions-retention.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -25,7 +26,9 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     ProjectEditAddComponent,
-    UrlsWhitelistComponent
+    UrlsWhitelistComponent,
+    ExecutionsRetentionComponent,
+    RetentionConfirmDialogComponent
   ],
   imports: [
     RouterModule.forChild(routes),

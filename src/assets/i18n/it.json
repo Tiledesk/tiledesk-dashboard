@@ -4087,6 +4087,25 @@
             "StartNewNotObject": "L'input deve essere un oggetto JSON",
             "StartNew": "Avvia nuova"
         },
+        "Retention": {
+            "Title": "Esecuzioni",
+            "Intro": "Per quanto tempo vengono conservati la traccia e i dati protetti delle esecuzioni degli agenti.",
+            "Trace": "Traccia (esecuzioni e passi)",
+            "Data": "Dati protetti (valori degli attributi, input del trigger, checkpoint)",
+            "Days": "giorni",
+            "ZeroHint": "0 = non acquisire",
+            "OutOfRange": "Inserisci un numero da {{min}} a {{max}} (i dati protetti non possono superare la traccia)",
+            "AuditFixed": "Registro di audit: 1 anno (fisso)",
+            "TestFixed": "Esecuzioni di test: {{days}} giorni (fisso)",
+            "ReadOnly": "Solo il proprietario del progetto può modificare queste impostazioni.",
+            "Save": "Salva",
+            "Saved": "Salvato",
+            "SaveFailed": "Impossibile salvare le impostazioni. Riprova.",
+            "ConfirmTitle": "Riduci la conservazione",
+            "ConfirmDelete": "I dati più vecchi di {{days}} giorni verranno eliminati entro pochi minuti. L'operazione non può essere annullata.",
+            "ConfirmCapture": "I valori degli attributi e gli input non verranno più acquisiti; le esecuzioni arrestate non potranno più essere riprese dai dati memorizzati.",
+            "ConfirmAction": "Riduci ed elimina"
+        },
         "DataAccess": {
             "ViewData": "Visualizza dati",
             "Title": "Visualizza i dati dell'esecuzione",
