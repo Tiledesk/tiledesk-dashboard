@@ -45,18 +45,18 @@ describe('DestroyDialogComponent', () => {
     setup();
     const t = el().textContent.replace(/\s+/g, ' ');
     expect(t).toContain('This stops it, closes its conversation and removes its live state. It cannot be resumed. The trace and audit are kept.');
-    expect(t).toContain('Type 0193a2 to confirm');
+    expect(t).toContain('Type 000001 to confirm');
     expect(confirmBtn().disabled).toBe(true);
-    type('0193a');
+    type('00000');
     expect(confirmBtn().disabled).toBe(true);
-    type('0193A2');
+    type('00000A');
     expect(confirmBtn().disabled).toBe(true);
-    type('0193a2f');
+    type('0000001');
     expect(confirmBtn().disabled).toBe(true);
-    type('0193a2');
+    type('000001');
     expect(confirmBtn().disabled).toBe(false);
     confirmBtn().click();
-    expect(ref.close).toHaveBeenCalledWith('0193a2');
+    expect(ref.close).toHaveBeenCalledWith('000001');
   }));
 
   it('cancel returns null', fakeAsync(() => {
