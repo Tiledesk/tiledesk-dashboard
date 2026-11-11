@@ -6,7 +6,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
-import { ExecutionDetailComponent, POLL_MS } from './execution-detail.component';
+import { ExecutionDetailComponent, LIVE_REFETCH_MAX_MS, POLL_MS } from './execution-detail.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { FlowStatePanelComponent, MaskedValueComponent } from '../shared/flow-state-panel.component';
 import { VarHistoryDrawerComponent } from '../shared/var-history-drawer.component';
@@ -443,8 +443,9 @@ describe('ExecutionDetailComponent values under a grant', () => {
     cmp().closeGrant();
   }));
 
-  it('[6] poll reloads of a live step carry the covering grant', fakeAsync(() => {
-    setup('owner', detail(true));
+  it('[6] poll reloads of a live step carry the covering grant, only when the step changed', fakeAsync(() => {
+    const d0 = detail(true);
+    setup('owner', d0);
     const d = cmp().detail;
     cmp().toggleStep(d.steps[1]);
     render();
@@ -452,19 +453,72 @@ describe('ExecutionDetailComponent values under a grant', () => {
     openGrant(grant('g1'));
     expect(panels()[0].textContent).toContain('VAL-2-g1');
     executions.state.calls.reset();
+    // the step did not move: no new read with the grant (each one is a data_viewed audit entry)
     tick(POLL_MS);
     render();
+    tick(POLL_MS);
+    render();
+    expect(executions.get.calls.count()).toBeGreaterThan(2);
+    expect(executions.state).not.toHaveBeenCalled();
+    expect(panels()[0].textContent).toContain('VAL-2-g1');
+    // the step moved (a new action): read again, with the grant
+    d0.steps[1].actions.push({ index: 0, action_id: 'x1', type: 'reply', title: null, outcome: 'success', exit_taken: null,
+      duration_ms: 5, error_code: null, has_data: true, hard_degraded: false, at: '2026-11-09T03:00:00.400Z' });
+    d0.steps[1].changed_keys = 2;
+    tick(POLL_MS);
+    render();
+    expect(executions.state).toHaveBeenCalledTimes(1);
     expect(executions.state).toHaveBeenCalledWith('p1', EXEC_ID, 2, 'g1');
     expect(executions.state).not.toHaveBeenCalledWith('p1', EXEC_ID, 2);
     expect(panels()[0].textContent).toContain('VAL-2-g1');
     expect(strip()).toBeTruthy();
-    // a block grant on another block: the live block is polled without it
+    // unchanged again: a safety re-read at most every 30 s
+    executions.state.calls.reset();
+    tick(LIVE_REFETCH_MAX_MS - POLL_MS);
+    render();
+    expect(executions.state).not.toHaveBeenCalled();
+    tick(POLL_MS * 2);
+    render();
+    expect(executions.state).toHaveBeenCalledTimes(1);
+    // a block grant on another block: the live block is polled without it, on every poll as before
     openGrant(grant('g2', { type: 'step', step_seq: 1 }), 1);
     executions.state.calls.reset();
     tick(POLL_MS);
     render();
     expect(executions.state).toHaveBeenCalledWith('p1', EXEC_ID, 2);
     expect(panels()[0].textContent).not.toContain('VAL-');
+    cmp().closeGrant();
+    fixture.destroy();
+    discardPeriodicTasks();
+  }));
+
+  it('[7] expanded blocks hidden by the Not successful filter are not read with the grant', fakeAsync(() => {
+    setup('owner', detail(true));
+    const d = cmp().detail;
+    expandBoth();
+    cmp().setFailedOnly(true);
+    render();
+    // block 1 succeeded: hidden; block 2 is still running: shown
+    expect(panels().length).toBe(1);
+    executions.state.calls.reset();
+    openGrant(grant('g1'));
+    expect(executions.state).toHaveBeenCalledWith('p1', EXEC_ID, 2, 'g1');
+    expect(executions.state).not.toHaveBeenCalledWith('p1', EXEC_ID, 1, 'g1');
+    // shown again: read with the grant now
+    cmp().setFailedOnly(false);
+    render();
+    expect(executions.state).toHaveBeenCalledWith('p1', EXEC_ID, 1, 'g1');
+    expect(panels()[0].textContent).toContain('VAL-1-g1');
+    // the template's filter buttons go through setFailedOnly
+    executions.state.calls.reset();
+    (el().querySelector('.tl-filter-failed') as HTMLButtonElement).click();
+    render();
+    expect(cmp().failedOnly).toBe(true);
+    (el().querySelector('.tl-filter-all') as HTMLButtonElement).click();
+    render();
+    expect(cmp().failedOnly).toBe(false);
+    expect(executions.state).not.toHaveBeenCalled(); // block 1 is cached with the same grant
+    expect(d.steps.length).toBe(2);
     cmp().closeGrant();
     fixture.destroy();
     discardPeriodicTasks();
