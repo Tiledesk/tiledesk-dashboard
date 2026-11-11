@@ -90,6 +90,7 @@ import {
   executionPhrase,
   executionReasonSuffix,
   executionShortId,
+  isExecutionRetentionVerb,
   isExecutionVerb,
 } from './utils/activity-message.util';
 import { executionLink } from 'app/bots/executions/execution-links';
@@ -1562,6 +1563,12 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     };
 
     if (isExecutionVerb(effectiveVerb(activity))) {
+      if (isExecutionRetentionVerb(effectiveVerb(activity))) {
+        // project-level row: no execution, no agent, nothing to link
+        applyKbActorLink(` ${executionPhrase(activity)}`);
+        parts.after = executionReasonSuffix(activity);
+        return parts;
+      }
       applyKbActorLink(` ${executionPhrase(activity)} `);
       parts.executionLinkLabel = executionShortId(activity);
       parts.after = ` of ${executionAgentLabel(activity)}${executionReasonSuffix(activity)}`;
@@ -1715,6 +1722,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
 
   /** Router commands to the execution detail of an EXECUTION_* activity, or null. */
   executionRouterLink(activity: ActivityRecord): string[] | null {
+    if (activity.target?.type !== 'execution') return null;
     const link = executionLink(this.projectId, executionAgentId(activity), activity.target?.id);
     return link ? link.commands : null;
   }

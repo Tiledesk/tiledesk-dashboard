@@ -458,7 +458,10 @@
             "EXECUTION_STOP_HARD": "Esecuzione fermata (hard)",
             "EXECUTION_DESTROY": "Esecuzione eliminata",
             "EXECUTION_RESUME": "Esecuzione ripresa",
-            "EXECUTION_START_NEW": "Nuova esecuzione avviata"
+            "EXECUTION_START_NEW": "Nuova esecuzione avviata",
+            "EXECUTION_DATA_ACCESS": "Dati esecuzione visualizzati",
+            "EXECUTION_DATA_ACCESS_DENIED": "Accesso ai dati esecuzione negato",
+            "EXECUTION_RETENTION_UPDATE": "Conservazione esecuzioni modificata"
         }
     },
     "NewRequest": "Nuova conversazione",
@@ -3934,6 +3937,15 @@
             "Exit": "uscita",
             "Time": "tempo",
             "ErrorCode": "errore"
+        },
+        "Audit": {
+            "Title": "Audit",
+            "Hint": "Chi ha fatto cosa su questa esecuzione, dalla più recente",
+            "OpenActivities": "Apri in Attività",
+            "Loading": "Caricamento…",
+            "LoadError": "Impossibile caricare l'audit",
+            "Empty": "Nessuna voce di audit per questa esecuzione",
+            "LoadMore": "Carica altro"
         },
         "FlowState": {
             "Title": "Stato del flusso",
