@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { CreditsPeriod, CreditsService, CreditsSummary } from 'app/services/credits.service';
+import { CreditsLlmPrice, CreditsPeriod, CreditsService, CreditsSummary } from 'app/services/credits.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 /** Charge seen between two refreshes of the page (the server has no movements API) */
@@ -10,12 +10,14 @@ export interface CreditsLiveCharge {
   at: Date;
   resource: string;
   model?: string;
+  ownKey?: boolean;
   units: number;
   credits: number;
 }
 
 const LIVE_REFRESH_MS = 10000;
 const LIVE_LOG_SIZE = 50;
+const LLM_PRICES_SHOWN = 50;
 
 @Component({
   selector: 'appdashboard-credits',
@@ -36,10 +38,11 @@ export class CreditsComponent implements OnInit, OnDestroy {
   autoRefresh = true;
   liveCharges: CreditsLiveCharge[] = [];
 
-  packCredits: number;
-  buyingPack = false;
-  packError: string | null = null;
+  extraCredits: number;
+  buyingExtra = false;
+  extraError: string | null = null;
   checkoutOutcome: 'success' | 'cancel' | null = null;
+  llmPrices: CreditsLlmPrice[] = [];
   llmPriceFilter = '';
 
   private refreshTimer: ReturnType<typeof setInterval> | null = null;
@@ -58,8 +61,10 @@ export class CreditsComponent implements OnInit, OnDestroy {
       this.history = [];
       this.current = null;
       this.liveCharges = [];
+      this.llmPrices = [];
       this.loading = true;
       this.load();
+      this.loadLlmPrices();
     });
     this.route.queryParamMap.pipe(takeUntil(this.unsubscribe$)).subscribe((params) => {
       const outcome = params.get('credits_checkout');
@@ -78,14 +83,14 @@ export class CreditsComponent implements OnInit, OnDestroy {
     return this.summary?.metering === 'credits';
   }
 
-  /** Share of the grant still available, 0-100 */
-  get grantLeftPerc(): number {
-    const grant = this.summary?.grant;
-    const left = this.summary?.balance?.grant;
-    if (!grant || left === undefined) {
+  /** Share of the included credits still available, 0-100 */
+  get includedLeftPerc(): number {
+    const included = this.summary?.includedCredits;
+    const left = this.summary?.balance?.included;
+    if (!included || left === undefined) {
       return 0;
     }
-    return Math.max(0, Math.min(100, (left / grant) * 100));
+    return Math.max(0, Math.min(100, (left / included) * 100));
   }
 
   get resourceRows(): { resource: string; credits: number; units: number; tokens?: number; perc: number }[] {
@@ -101,18 +106,14 @@ export class CreditsComponent implements OnInit, OnDestroy {
       .sort((a, b) => b.credits - a.credits);
   }
 
-  get llmPriceRows(): { provider: string; model: string; input: number; output: number; total: number }[] {
-    const prices = this.summary?.llmPrices || {};
+  /** The models used in the period, or the ones matching the search (at most LLM_PRICES_SHOWN) */
+  get llmPriceRows(): CreditsLlmPrice[] {
     const filter = this.llmPriceFilter.trim().toLowerCase();
-    const rows = [];
-    Object.keys(prices).sort().forEach((provider) => {
-      Object.keys(prices[provider]).sort().forEach((model) => {
-        if (!filter || (provider + '/' + model).toLowerCase().includes(filter)) {
-          rows.push(Object.assign({ provider, model }, prices[provider][model]));
-        }
-      });
-    });
-    return rows;
+    if (filter) {
+      return this.llmPrices.filter((price) => price.id.toLowerCase().includes(filter)).slice(0, LLM_PRICES_SHOWN);
+    }
+    const used = (this.current?.llm || []).map((usage) => usage.model);
+    return this.llmPrices.filter((price) => used.some((model) => price.id === model || price.id.endsWith('/' + model)));
   }
 
   objectKeys(value: object): string[] {
@@ -136,8 +137,8 @@ export class CreditsComponent implements OnInit, OnDestroy {
         this.summary = summary;
         this.history = history || [];
         this.current = this.history.length ? this.history[0] : null;
-        if (!this.packCredits && summary.packMin) {
-          this.packCredits = summary.packMin;
+        if (!this.extraCredits && summary.extraCreditsMin) {
+          this.extraCredits = summary.extraCreditsMin;
         }
         this.trackCharges(previous, this.current);
         this.loading = false;
@@ -149,6 +150,21 @@ export class CreditsComponent implements OnInit, OnDestroy {
         this.loading = false;
         this.loadError = true;
       }
+    });
+  }
+
+  loadLlmPrices() {
+    const projectId = this.projectId;
+    if (!projectId) {
+      return;
+    }
+    this.creditsService.getLlmPrices(projectId).subscribe({
+      next: (prices) => {
+        if (projectId === this.projectId) {
+          this.llmPrices = prices || [];
+        }
+      },
+      error: (err) => this.logger.error('[CREDITS] - getLlmPrices ERROR ', err)
     });
   }
 
@@ -165,25 +181,25 @@ export class CreditsComponent implements OnInit, OnDestroy {
     this.liveCharges = [];
   }
 
-  buyPack() {
-    this.packError = null;
-    const credits = Number(this.packCredits);
-    const packMin = this.summary?.packMin || 0;
-    if (!Number.isInteger(credits) || credits < packMin) {
-      this.packError = 'Credits.PackMinError';
+  buyExtraCredits() {
+    this.extraError = null;
+    const credits = Number(this.extraCredits);
+    const min = this.summary?.extraCreditsMin || 0;
+    if (!Number.isInteger(credits) || credits < min) {
+      this.extraError = 'Credits.ExtraMinError';
       return;
     }
-    this.buyingPack = true;
-    this.creditsService.buyPack(this.projectId, credits).subscribe({
+    this.buyingExtra = true;
+    this.creditsService.buyExtraCredits(this.projectId, credits).subscribe({
       next: (session) => {
         window.location.href = session.url;
       },
       error: (err) => {
-        this.logger.error('[CREDITS] - buyPack ERROR ', err);
-        this.buyingPack = false;
-        this.packError = err?.status === 501 ? 'Credits.PacksNotAvailable'
-          : err?.status === 403 ? 'Credits.PacksAdminOnly'
-            : 'Credits.PackCheckoutError';
+        this.logger.error('[CREDITS] - buyExtraCredits ERROR ', err);
+        this.buyingExtra = false;
+        this.extraError = err?.status === 501 ? 'Credits.ExtraNotAvailable'
+          : err?.status === 403 ? 'Credits.ExtraAdminOnly'
+            : 'Credits.ExtraCheckoutError';
       }
     });
   }
@@ -209,11 +225,11 @@ export class CreditsComponent implements OnInit, OnDestroy {
     });
 
     next.llm.forEach((usage) => {
-      const before = previous.llm.find((u) => u.provider === usage.provider && u.model === usage.model);
+      const before = previous.llm.find((u) => u.provider === usage.provider && u.model === usage.model && u.ownKey === usage.ownKey);
       const credits = round(usage.credits - (before ? before.credits : 0));
       const calls = usage.calls - (before ? before.calls : 0);
       if (credits > 0 || calls > 0) {
-        charges.push({ at, resource: 'llm', model: usage.provider + '/' + usage.model, units: calls, credits });
+        charges.push({ at, resource: 'llm', model: usage.provider + '/' + usage.model, ownKey: usage.ownKey, units: calls, credits });
       }
     });
 
@@ -243,5 +259,5 @@ export class CreditsComponent implements OnInit, OnDestroy {
 }
 
 function round(value: number): number {
-  return Math.round(value * 10000) / 10000;
+  return Math.round(value * 1000000) / 1000000;
 }
