@@ -1248,7 +1248,7 @@ export const DEEPSEEK_MODEL: Array<{ name: string, value: string, description:st
 export var OPENAI_MODEL: Array<{ name: string, value: string, description:string, status: "active" | "inactive", additionalText?: string,  min_tokens: number, max_output_tokens: number, reasoning: boolean}> = [
      
     {
-        name: "Gpt-6 Astra",
+        name: "GPT-6 Astra",
         value: "gpt-6-astra",
         description: "TYPE_GPT_MODEL.gpt-6-astra.description",
         status: "active",
@@ -1257,7 +1257,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true
     },
     {
-        name: "Gpt-6.1 Sol",
+        name: "GPT-6.1 Sol",
         value: "gpt-6.1-sol",
         description: "TYPE_GPT_MODEL.gpt-6.1-sol.description",
         status: "active",
@@ -1266,7 +1266,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true
     },
     {
-        name: "Gpt-6.1 Terra",
+        name: "GPT-6.1 Terra",
         value: "gpt-6.1-terra",
         description: "TYPE_GPT_MODEL.gpt-6.1-terra.description",
         status: "active",
@@ -1275,7 +1275,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true
     },
     {
-        name: "Gpt-6 Luna",
+        name: "GPT-6 Luna",
         value: "gpt-6-luna",
         description: "TYPE_GPT_MODEL.gpt-6-luna.description",
         status: "active",
@@ -1283,8 +1283,17 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         max_output_tokens: 128000,
         reasoning: true
     },
+    {
+        name: "GPT-6 Sol",
+        value: "gpt-6-sol",
+        description: "TYPE_GPT_MODEL.gpt-6-sol.description",
+        status: "active",
+        min_tokens: 1,
+        max_output_tokens: 128000,
+        reasoning: true
+    },
     { 
-        name: "Gpt-5.6 Sol",
+        name: "GPT-5.6 Sol",
         value: "gpt-5.6-sol",           
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1293,7 +1302,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true   
     }, 
     { 
-        name: "Gpt-5.6 Terra",        
+        name: "GPT-5.6 Terra",        
         value: "gpt-5.6-terra",         
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1302,7 +1311,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true   
     },
     { 
-        name: "Gpt-5.6 Luna",         
+        name: "GPT-5.6 Luna",         
         value: "gpt-5.6-luna",          
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1311,7 +1320,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true   
     },      
     { 
-        name: "Gpt-5.5",              
+        name: "GPT-5.5",              
         value: "gpt-5.5",               
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1320,7 +1329,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true   
     }, 
     { 
-        name: "Gpt-5.4",              
+        name: "GPT-5.4",              
         value: "gpt-5.4",               
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1329,7 +1338,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true  
     },
     { 
-        name: "Gpt-5.4 mini",         
+        name: "GPT-5.4 mini",         
         value: "gpt-5.4-mini",          
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1337,7 +1346,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         max_output_tokens: 128000, 
         reasoning: true  },  
     { 
-        name: "Gpt-5.4 nano",         
+        name: "GPT-5.4 nano",         
         value: "gpt-5.4-nano",          
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1346,7 +1355,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true  
     },  
     { 
-        name: "Gpt-5.2",              
+        name: "GPT-5.2",              
         value: "gpt-5.2",               
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1355,7 +1364,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true  
     },   
     { 
-        name: "Gpt-5.1",              
+        name: "GPT-5.1",              
         value: "gpt-5.1",               
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1364,7 +1373,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true  
     },
     { 
-        name: "Gpt-5",                
+        name: "GPT-5",                
         value: "gpt-5",                 
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1372,7 +1381,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         max_output_tokens: 128000, 
         reasoning: true  
     },
-    {   name: "Gpt-5-mini",           
+    {   name: "GPT-5-mini",           
         value: "gpt-5-mini",            
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1381,7 +1390,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: true  
     },
     { 
-        name: "Gpt-5-nano",           
+        name: "GPT-5-nano",           
         value: "gpt-5-nano",            
         description: "TYPE_GPT_MODEL.deepseek-chat.description",         
         status: "active", 
@@ -1426,7 +1435,7 @@ export var OPENAI_MODEL: Array<{ name: string, value: string, description:string
         reasoning: false  
     },
 
-   { name: "Gpt-5.3",              value: "gpt-5.3-chat-latest",   description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "inactive", min_tokens: 1, max_output_tokens: 128000, reasoning: true  }, 
+   { name: "GPT-5.3",              value: "gpt-5.3-chat-latest",   description: "TYPE_GPT_MODEL.deepseek-chat.description",         status: "inactive", min_tokens: 1, max_output_tokens: 128000, reasoning: true  }, 
    { name: "GPT-4 (Legacy)",       value: "gpt-4",                 description: "TYPE_GPT_MODEL.gpt-4.description",                 status: "inactive", min_tokens: 1, max_output_tokens: 8192,   reasoning: false  },
    { name: "GPT-3.5 Turbo",        value: "gpt-3.5-turbo",         description: "TYPE_GPT_MODEL.gpt-3.5-turbo.description",         status: "inactive", min_tokens: 1, max_output_tokens: 4096,   reasoning: false  },
    { name: "GPT-4.1 nano",         value: "gpt-4.1-nano",          description: "TYPE_GPT_MODEL.text-davinci-003.description",      status: "inactive", min_tokens: 1, max_output_tokens: 32768,  reasoning: false  },
