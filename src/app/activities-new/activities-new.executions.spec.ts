@@ -52,6 +52,13 @@ describe('Activities - Executions audit rows', () => {
       .toBe('Anna Rossi tried to start a new run of execution 556666 of Support Bot (rejected: refire_failed)');
     expect(renderActivity(activity('EXECUTION_START_NEW', { result: 'rejected:not_startable:webhook_not_found' })))
       .toBe('Anna Rossi tried to start a new run of execution 556666 of Support Bot (rejected: not_startable:webhook_not_found)');
+    // the refire got no answer: the run may have started, so it reads as started (same sentence as the server's)
+    expect(renderActivity(activity('EXECUTION_START_NEW', { result: 'rejected:refire_unconfirmed' })))
+      .toBe('Anna Rossi started a new run of execution 556666 of Support Bot (unconfirmed)');
+    expect(renderActivity(activity('EXECUTION_START_NEW', { result: 'rejected:refire_unconfirmed', reason: 'retry' })))
+      .toBe('Anna Rossi started a new run of execution 556666 of Support Bot (unconfirmed) · "retry"');
+    expect(renderActivity(activity('EXECUTION_RESUME', { result: 'rejected:refire_unconfirmed' })))
+      .toBe('Anna Rossi tried to resume execution 556666 of Support Bot (rejected: refire_unconfirmed)');
   });
 
   it('EXECUTION_RESUME and EXECUTION_START_NEW render the server sentences (done and tried)', () => {

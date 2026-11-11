@@ -234,7 +234,7 @@ export function buildExecutionGraph(input: {
     drawn.forEach((s, j) => {
       const execId = 'exec:' + s.row._id;
       nodes.push({
-        id: execId, kind: 'execution', label: s.row._id.substring(0, 8), status: s.status,
+        id: execId, kind: 'execution', label: s.row._id.replace(/-/g, '').slice(-8), status: s.status,
         agentId: a.id, executionId: s.row._id, aura: s.status === 'failed',
         position: at(j), tooltip: tooltipFor(s.row, s.status)
       });

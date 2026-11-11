@@ -23,6 +23,11 @@ describe('buildExecutionGraph', () => {
     expect(g.edges.filter(e => e.source === 'project').length).toBe(3);
   });
 
+  it('the execution label is the last 8 hex chars of the id without dashes', () => {
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(2), live: [row({ _id: '019e1a2b-3c4d-7e5f-8a6b-0123456789ab' })], failed: [], now: NOW });
+    expect(g.nodes.find(n => n.kind === 'execution').label).toBe('456789ab');
+  });
+
   it('live executions attach to their agent with their status', () => {
     const g = buildExecutionGraph({ projectName: 'P', agents: agents(2), live: [row({ _id: 'e1', status: 'waiting' })], failed: [], now: NOW });
     const e = g.nodes.find(n => n.id === 'exec:e1');
@@ -30,6 +35,7 @@ describe('buildExecutionGraph', () => {
     expect(e.status).toBe('waiting');
     expect(e.agentId).toBe('a1');
     expect(g.edges.some(x => x.source === 'agent:a1' && x.target === 'exec:e1')).toBe(true);
+    expect(e.label).toBe('e1');
     expect(e.tooltip).toEqual({ kind: 'execution', status: 'waiting', startedAt: new Date(NOW - 60000).toISOString(), trigger: 'message', steps: 2 });
   });
 
