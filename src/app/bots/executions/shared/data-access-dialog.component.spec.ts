@@ -19,11 +19,14 @@ const GRANT = { grant_id: 'g1', expires_at: '2026-11-11T10:15:00.000Z', scope: {
 describe('DataAccessDialogComponent', () => {
   let fixture: ComponentFixture<DataAccessDialogComponent>;
   let ref: { close: jasmine.Spy };
-  let executions: { requestDataAccess: jasmine.Spy };
+  let executions: { requestDataAccess: jasmine.Spy; revokeDataAccess: jasmine.Spy };
 
   function setup(data: DataAccessDialogData, response: any = of(GRANT)) {
     ref = { close: jasmine.createSpy('close') };
-    executions = { requestDataAccess: jasmine.createSpy('requestDataAccess').and.returnValue(response) };
+    executions = {
+      requestDataAccess: jasmine.createSpy('requestDataAccess').and.returnValue(response),
+      revokeDataAccess: jasmine.createSpy('revokeDataAccess').and.returnValue(of(null)),
+    };
     TestBed.configureTestingModule({
       declarations: [DataAccessDialogComponent],
       imports: [TranslateModule.forRoot(), FormsModule, MatDialogModule, MatRadioModule],
@@ -72,7 +75,7 @@ describe('DataAccessDialogComponent', () => {
     confirmBtn().click();
     tick();
     expect(executions.requestDataAccess).toHaveBeenCalledWith('p1', 'e1', { reason: '500 from status API', scope: { type: 'execution' } });
-    expect(ref.close).toHaveBeenCalledWith(GRANT);
+    expect(ref.close).toHaveBeenCalledWith(jasmine.objectContaining(GRANT));
   }));
 
   it('header opens on the whole execution with no block option', fakeAsync(() => {
@@ -90,7 +93,7 @@ describe('DataAccessDialogComponent', () => {
     confirmBtn().click();
     tick();
     expect(executions.requestDataAccess).toHaveBeenCalledWith('p1', 'e1', { reason: 'check the answer', scope: { type: 'step', step_seq: 2 } });
-    expect(ref.close).toHaveBeenCalledWith(step);
+    expect(ref.close).toHaveBeenCalledWith(jasmine.objectContaining(step));
 
     ref.close.calls.reset();
     executions.requestDataAccess.calls.reset();
@@ -165,6 +168,42 @@ describe('DataAccessDialogComponent', () => {
     expect(ref.close).toHaveBeenCalledWith(null);
     pending.next(GRANT);
     expect(ref.close).toHaveBeenCalledTimes(1);
+  }));
+
+  it('a grant that arrives after cancel is revoked, not used', fakeAsync(() => {
+    const pending = new Subject<any>();
+    setup(BASE, pending);
+    type('look at it');
+    confirmBtn().click();
+    (el().querySelector('.da-cancel') as HTMLElement).click();
+    expect(executions.revokeDataAccess).not.toHaveBeenCalled();
+    pending.next(GRANT);
+    pending.complete();
+    expect(executions.revokeDataAccess).toHaveBeenCalledWith('p1', 'e1', 'g1');
+    expect(ref.close).toHaveBeenCalledTimes(1);
+  }));
+
+  it('a grant that arrives after the dialog was destroyed (navigation) is revoked', fakeAsync(() => {
+    const pending = new Subject<any>();
+    setup(BASE, pending);
+    type('look at it');
+    confirmBtn().click();
+    fixture.destroy();
+    pending.next(GRANT);
+    expect(executions.revokeDataAccess).toHaveBeenCalledWith('p1', 'e1', 'g1');
+  }));
+
+  it('falls back to the requested scope when the response omits it; stamps the arrival time', fakeAsync(() => {
+    setup({ ...BASE, stepSeq: 2, blockName: 'Call status API' }, of({ grant_id: 'g3', expires_at: GRANT.expires_at, ttl_s: 900 }));
+    type('check the answer');
+    const before = Date.now();
+    confirmBtn().click();
+    tick();
+    const closed = ref.close.calls.mostRecent().args[0];
+    expect(closed.grant_id).toBe('g3');
+    expect(closed.scope).toEqual({ type: 'step', step_seq: 2 });
+    expect(closed.ttl_s).toBe(900);
+    expect(closed.received_at).toBeGreaterThanOrEqual(before);
   }));
 
   it('every DataAccess string has an Italian translation', () => {

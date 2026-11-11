@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, of, Subject, Subscription, timer } from 'rxjs';
-import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
+import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { ExecutionsService } from 'app/services/executions.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
@@ -58,6 +58,15 @@ function errorCode(err: any): string | null {
   return body && typeof body === 'object' && typeof body.error === 'string' ? body.error : null;
 }
 const ID_RE = /^[A-Za-z0-9_-]{1,128}$/;
+
+/**
+ * What a failed read may log: the status and the API's error code. Never the response body: on a read made with
+ * a grant (state, history, trigger, stored input) it could hold values.
+ */
+export function errorSummary(err: any): { status: number | null; error: string | null } {
+  const status = httpStatus(err);
+  return { status: typeof status === 'number' ? status : null, error: errorCode(err) };
+}
 
 export interface OutsideGroup {
   by: string;
@@ -144,8 +153,9 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   canViewData = false;
   readonly session = new GrantSession();
   grantRemaining = 0;
-  /** the execution the active grant belongs to (revoked there on Close or when leaving it) */
-  private grantFor: { pid: string; id: string } | null = null;
+  /** the active grant and the execution it belongs to (revoked there on Close or when leaving it) */
+  private grantFor: { pid: string; id: string; grantId: string } | null = null;
+  private destroyed = false;
   /** false while leaving the execution: views read with the grant are dropped, not read again */
   private reloadAfterGrant = true;
 
@@ -208,11 +218,14 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       if (!status || !status.role) { this.permitted = null; return; }
       this.permitted = canViewExecutions(status.role, status.matchedPermissions);
       this.canViewData = this.permitted && canViewExecutionData(status.role, status.matchedPermissions);
+      // the role lost data access while a grant is open: close it and drop the values
+      if (!this.canViewData && (this.session.active || this.grantFor)) this.endGrant(true);
       if (this.permitted && this.configured && !this.started) this.start();
     });
   }
 
   ngOnDestroy() {
+    this.destroyed = true;
     this.endGrant(true, false);
     this.stopPolling();
     this.reset$.next();
@@ -404,7 +417,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
         error: err => {
           slot.loading = false;
           slot.error = true;
-          this.logger.error('[EXECUTION-DETAIL] state error ', err);
+          this.logger.error('[EXECUTION-DETAIL] state error ', errorSummary(err));
         }
       });
   }
@@ -508,7 +521,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
         error: err => {
           this.historyLoading = false;
           this.historyError = true;
-          this.logger.error('[EXECUTION-DETAIL] history error ', err);
+          this.logger.error('[EXECUTION-DETAIL] history error ', errorSummary(err));
         }
       });
   }
@@ -541,16 +554,21 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       blockName: step ? step.block_name || null : null,
       retentionDays: dataRetentionDays(this.detail.execution),
     };
+    // not cut by reset$/destroy$: a grant that comes back after the page moved on must still be revoked
     this.dialog.open(DataAccessDialogComponent, { data, width: '520px' }).afterClosed()
-      .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
+      .pipe(take(1))
       .subscribe((info: GrantInfo | null) => {
-        if (!info || typeof info.grant_id !== 'string' || id !== this.executionId) return;
+        if (!info || typeof info.grant_id !== 'string') return;
+        if (this.destroyed || id !== this.executionId || pid !== this.projectId || !this.canViewData) {
+          this.revoke(pid, id, info.grant_id);
+          return;
+        }
         // an active grant for the same scope comes back with the same id: it is already open
         if (this.session.grantId === info.grant_id) return;
         // a new grant replaces the open one
-        if (this.session.active) this.endGrant(true);
-        this.session.start(info);
-        if (this.session.active) this.grantFor = { pid, id };
+        if (this.session.active || this.grantFor) this.endGrant(true);
+        this.session.start(info, info.received_at);
+        if (this.session.active) this.grantFor = { pid, id, grantId: info.grant_id };
       });
   }
 
@@ -576,7 +594,6 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
    * `reload` false when leaving the execution: the views are dropped without reading them again.
    */
   private endGrant(revoke: boolean, reload = true) {
-    const grantId = this.session.grantId;
     const ctx = this.grantFor;
     this.grantFor = null;
     this.reloadAfterGrant = reload;
@@ -585,11 +602,19 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     } finally {
       this.reloadAfterGrant = true;
     }
-    if (revoke && grantId && ctx) {
-      this.executionsService.revokeDataAccess(ctx.pid, ctx.id, grantId).subscribe({
-        error: err => this.logger.warn('[EXECUTION-DETAIL] revoke error ', err && err.status),
-      });
-    }
+    if (revoke && ctx) this.revoke(ctx.pid, ctx.id, ctx.grantId);
+  }
+
+  private revoke(pid: string, id: string, grantId: string) {
+    this.executionsService.revokeDataAccess(pid, id, grantId).subscribe({
+      error: err => this.logger.warn('[EXECUTION-DETAIL] revoke error ', errorSummary(err)),
+    });
+  }
+
+  /** A hidden tab throttles the countdown: when it is shown again, a grant past its deadline ends at once. */
+  @HostListener('document:visibilitychange')
+  onVisibilityChange() {
+    this.session.checkExpiry();
   }
 
   /**
@@ -734,7 +759,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       },
       error: err => {
         this.controlBusy = false;
-        this.logger.error('[EXECUTION-DETAIL] start new input error ', err);
+        this.logger.error('[EXECUTION-DETAIL] start new input error ', errorSummary(err));
         this.controlMessage = this.controlError(err);
         if (httpStatus(err) === 409) this.load$.next();
       }

@@ -1,7 +1,8 @@
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -56,6 +57,10 @@ describe('ExecutionDetailComponent data access', () => {
   let dialog: { open: jasmine.Spy };
   let dialogResult: any;
   let perms$: Subject<any>;
+  let params$: BehaviorSubject<any>;
+  let logger: { log: jasmine.Spy; debug: jasmine.Spy; warn: jasmine.Spy; error: jasmine.Spy };
+  /** when set, the dialog's afterClosed is this subject (the test decides when it closes) */
+  let closed$: Subject<any> | null;
 
   function grant(seconds = 900, scope: GrantInfo['scope'] = { type: 'execution' }): GrantInfo {
     return { grant_id: 'g1', expires_at: new Date(Date.now() + seconds * 1000).toISOString(), scope };
@@ -70,8 +75,11 @@ describe('ExecutionDetailComponent data access', () => {
       revokeDataAccess: jasmine.createSpy('revokeDataAccess').and.returnValue(of(null)),
     };
     dialogResult = null;
-    dialog = { open: jasmine.createSpy('open').and.callFake(() => ({ afterClosed: () => of(dialogResult) })) };
+    closed$ = null;
+    dialog = { open: jasmine.createSpy('open').and.callFake(() => ({ afterClosed: () => closed$ || of(dialogResult) })) };
     perms$ = new Subject<any>();
+    params$ = new BehaviorSubject(convertToParamMap({ projectid: 'p1', botid: 'a1', executionid: EXEC_ID }));
+    logger = { log: jasmine.createSpy('log'), debug: jasmine.createSpy('debug'), warn: jasmine.createSpy('warn'), error: jasmine.createSpy('error') };
     TestBed.configureTestingModule({
       declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent],
       imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule],
@@ -79,9 +87,9 @@ describe('ExecutionDetailComponent data access', () => {
         { provide: ExecutionsService, useValue: executions },
         { provide: MatDialog, useValue: dialog },
         { provide: Router, useValue: { navigate: jasmine.createSpy('navigate') } },
-        { provide: ActivatedRoute, useValue: { paramMap: new BehaviorSubject(convertToParamMap({ projectid: 'p1', botid: 'a1', executionid: EXEC_ID })) } },
+        { provide: ActivatedRoute, useValue: { paramMap: params$ } },
         { provide: RolesService, useValue: { listenToProjectUserPermissions() {}, getUpdateRequestPermission: () => perms$ } },
-        { provide: LoggerService, useValue: { log() {}, debug() {}, warn() {}, error() {} } },
+        { provide: LoggerService, useValue: logger },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
@@ -248,5 +256,130 @@ describe('ExecutionDetailComponent data access', () => {
     tick(3000);
     fixture.detectChanges();
     expect(setItem).not.toHaveBeenCalled();
+  }));
+
+  const OTHER_ID = '0193a2f4-0000-7000-8000-000000000002';
+
+  it('route change to another execution revokes and drops values without reloading', fakeAsync(() => {
+    setup('owner');
+    openGrant(grant(900));
+    seedValues('g1');
+    executions.state.calls.reset();
+    executions.history.calls.reset();
+    params$.next(convertToParamMap({ projectid: 'p1', botid: 'a1', executionid: OTHER_ID }));
+    fixture.detectChanges();
+    expect(executions.revokeDataAccess).toHaveBeenCalledWith('p1', EXEC_ID, 'g1');
+    expect(cmp().session.active).toBe(false);
+    expect(executions.state).not.toHaveBeenCalled();
+    expect(executions.history).not.toHaveBeenCalled();
+    expectNoValues();
+    expect(Object.keys(cmp().states).length).toBe(0);
+  }));
+
+  it('leaving the page drops values, not only revokes', fakeAsync(() => {
+    setup('owner');
+    openGrant(grant(900));
+    seedValues('g1');
+    executions.state.calls.reset();
+    const c = cmp();
+    fixture.destroy();
+    expect(executions.revokeDataAccess).toHaveBeenCalledWith('p1', EXEC_ID, 'g1');
+    expect(executions.state).not.toHaveBeenCalled();
+    expect(c.states[1]).toBeUndefined();
+    expect(c.states[2]).toBeUndefined();
+    expect(c.history).toBeNull();
+  }));
+
+  it('replacing a grant revokes the first', fakeAsync(() => {
+    setup('owner');
+    openGrant(grant(900));
+    openGrant({ ...grant(900, { type: 'step', step_seq: 2 }), grant_id: 'g2' });
+    expect(executions.revokeDataAccess).toHaveBeenCalledTimes(1);
+    expect(executions.revokeDataAccess).toHaveBeenCalledWith('p1', EXEC_ID, 'g1');
+    expect(cmp().session.grantId).toBe('g2');
+    cmp().closeGrant();
+    expect(executions.revokeDataAccess).toHaveBeenCalledWith('p1', EXEC_ID, 'g2');
+  }));
+
+  it('same grant_id returned is a no-op', fakeAsync(() => {
+    setup('owner');
+    openGrant(grant(900));
+    seedValues('g1');
+    tick(5000);
+    fixture.detectChanges();
+    executions.state.calls.reset();
+    openGrant(grant(900));
+    expect(executions.revokeDataAccess).not.toHaveBeenCalled();
+    expect(cmp().session.grantId).toBe('g1');
+    expect(cmp().grantRemaining).toBe(895);
+    expect(executions.state).not.toHaveBeenCalled();
+    expect(cmp().states[1].grantId).toBe('g1');
+    cmp().closeGrant();
+  }));
+
+  it('losing data access mid-grant ends the grant and drops values', fakeAsync(() => {
+    setup('owner');
+    openGrant(grant(900));
+    seedValues('g1');
+    perms$.next({ role: 'supervisor', matchedPermissions: [] });
+    fixture.detectChanges();
+    expect(viewData()).toBeNull();
+    expect(strip()).toBeNull();
+    expect(cmp().session.active).toBe(false);
+    expect(executions.revokeDataAccess).toHaveBeenCalledWith('p1', EXEC_ID, 'g1');
+    expectNoValues();
+  }));
+
+  it('a grant that comes back after the execution changed is revoked, not started', fakeAsync(() => {
+    setup('owner');
+    closed$ = new Subject<any>();
+    viewData().click();
+    params$.next(convertToParamMap({ projectid: 'p1', botid: 'a1', executionid: OTHER_ID }));
+    closed$.next(grant(900));
+    closed$.complete();
+    expect(cmp().session.active).toBe(false);
+    expect(executions.revokeDataAccess).toHaveBeenCalledWith('p1', EXEC_ID, 'g1');
+  }));
+
+  it('a grant that comes back after the page was left is revoked', fakeAsync(() => {
+    setup('owner');
+    closed$ = new Subject<any>();
+    viewData().click();
+    const c = cmp();
+    fixture.destroy();
+    closed$.next(grant(900));
+    closed$.complete();
+    expect(c.session.active).toBe(false);
+    expect(executions.revokeDataAccess).toHaveBeenCalledWith('p1', EXEC_ID, 'g1');
+  }));
+
+  it('a hidden tab past the deadline ends the grant when it becomes visible', fakeAsync(() => {
+    setup('owner');
+    openGrant(grant(900));
+    seedValues('g1');
+    // a throttled tab: time passes without the countdown ticking
+    const realNow = Date.now;
+    const later = realNow() + 901000;
+    spyOn(Date, 'now').and.returnValue(later);
+    document.dispatchEvent(new Event('visibilitychange'));
+    fixture.detectChanges();
+    expect(strip()).toBeNull();
+    expect(cmp().session.active).toBe(false);
+    expectNoValues();
+  }));
+
+  it('grant read failures log no response body', fakeAsync(() => {
+    const MARKER = 'VALUE-MARKER-7f3a';
+    setup('owner');
+    const err = new HttpErrorResponse({ status: 403, error: { error: 'grant_invalid', leaked: MARKER } });
+    executions.state.and.returnValue(throwError(err)); // rxjs 6: the value, not a factory
+    executions.history.and.returnValue(throwError(err));
+    cmp().loadState(1, true);
+    cmp().openHistory('last_status');
+    const logged = JSON.stringify([logger.error.calls.allArgs(), logger.warn.calls.allArgs(), logger.log.calls.allArgs()]);
+    expect(logger.error).toHaveBeenCalled();
+    expect(logged).not.toContain(MARKER);
+    expect(logged).toContain('grant_invalid');
+    expect(logged).toContain('403');
   }));
 });
