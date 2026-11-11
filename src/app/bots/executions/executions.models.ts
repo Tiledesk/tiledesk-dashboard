@@ -86,13 +86,43 @@ export interface InterruptedAction {
   title: string | null;
 }
 
-export type ControlName = 'stop' | 'stop_hard_now' | 'destroy';
+export type ControlName = 'stop' | 'stop_hard_now' | 'destroy' | 'resume' | 'start_new';
 
-/** A control allowed for the status; allowed:false when the role lacks it (reason 'role'). */
+/** Why a control the status offers is not allowed (version_gone only comes back from a resume attempt). */
+export type ControlReason =
+  | 'role'
+  | 'test_run'
+  | 'no_checkpoint'
+  | 'conversation_closed'
+  | 'newer_execution'
+  | 'already_resumed'
+  | 'not_unattended'
+  | 'unsupported_trigger'
+  | 'version_gone';
+
+export const CONTROL_REASONS: ControlReason[] = [
+  'role', 'test_run', 'no_checkpoint', 'conversation_closed', 'newer_execution', 'already_resumed',
+  'not_unattended', 'unsupported_trigger', 'version_gone',
+];
+
+/** A control offered for the status; allowed:false with the reason when the role or the execution blocks it. */
 export interface AllowedControl {
   name: ControlName;
   allowed: boolean;
-  reason?: 'role';
+  reason?: ControlReason;
+}
+
+/** The action a resume would run first, as a 409 confirm_required names it. */
+export interface ResumeAction {
+  index: number | null;
+  type: string | null;
+  title: string | null;
+}
+
+/** GET start-new/input: the stored trigger input, masked values set to null and listed by path. */
+export interface StartNewInput {
+  input: { [k: string]: any };
+  masked: string[];
 }
 
 export interface StepAction {

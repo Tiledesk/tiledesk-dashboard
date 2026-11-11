@@ -37,6 +37,8 @@
 .ex-btn-danger:not(:disabled) { color: var(--exec-bad); border-color: var(--exec-bad); }
 .ex-ctl-wrap { display: inline-block; }
 .ex-control-msg { background: var(--exec-warn-bg); color: var(--exec-warn); border-radius: 8px; padding: 6px 10px; font-size: 13px; }
+.ex-offer-start-new { margin-left: 8px; font-weight: 500; }
+.ex-control-note { font-size: 13px; color: var(--exec-muted); }
 
 .ex-tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--exec-line); padding: 0 8px; overflow-x: auto; }
 .ex-tabs button { border: 0; background: transparent; padding: 10px 12px; cursor: pointer; color: var(--exec-muted); border-bottom: 2px solid transparent; font-weight: 500; white-space: nowrap; }

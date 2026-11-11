@@ -4389,7 +4389,9 @@
             "NoPermissionDestroy": "Only the project owner can destroy executions",
             "Pending": {
                 "stopping": "stopping…",
-                "destroying": "destroying…"
+                "destroying": "destroying…",
+                "resuming": "resuming…",
+                "starting": "starting…"
             },
             "NotAllowed": "This control is no longer allowed. Allowed now: {{allowed}}",
             "NotAllowedNone": "This control is no longer allowed. No control is allowed now.",
@@ -4403,7 +4405,42 @@
             },
             "Interrupted": "interrupted \"{{action}}\"",
             "MessagesWhileStopped": "{{n}} messages received while stopped",
-            "MessagesWhileStoppedOne": "1 message received while stopped"
+            "MessagesWhileStoppedOne": "1 message received while stopped",
+            "resume": "Resume",
+            "start_new": "Start new",
+            "NoPermissionControl": "You don't have permission to control executions",
+            "Reasons": {
+                "role": "You don't have permission for this control",
+                "test_run": "Not available for Design Studio test runs",
+                "no_checkpoint": "There is no saved point to continue from",
+                "conversation_closed": "The conversation is closed",
+                "newer_execution": "A newer execution runs on the same conversation",
+                "already_resumed": "It was already resumed from this point",
+                "not_unattended": "Only for scheduled, webhook and automation runs",
+                "unsupported_trigger": "Not available yet for connector triggers",
+                "version_gone": "The agent version it ran is no longer available"
+            },
+            "NotResumable": {
+                "default": "It cannot be resumed.",
+                "test_run": "It cannot be resumed: Design Studio test runs cannot be resumed.",
+                "no_checkpoint": "It cannot be resumed: there is no saved point to continue from.",
+                "conversation_closed": "It cannot be resumed: the conversation is closed.",
+                "newer_execution": "It cannot be resumed: a newer execution runs on the same conversation.",
+                "already_resumed": "It cannot be resumed: it was already resumed from this point.",
+                "not_unattended": "It cannot be resumed.",
+                "unsupported_trigger": "It cannot be resumed.",
+                "version_gone": "It cannot be resumed: the agent version it ran is no longer available."
+            },
+            "Busy": "A server is still releasing this execution. Try again in a few seconds.",
+            "NoAgentServer": "No agent server is available right now. Try again shortly.",
+            "VersionCheckFailed": "The agent version could not be checked. Try again.",
+            "UnsealFailed": "The saved state of this execution could not be read.",
+            "RefireFailed": "The new execution could not be started. Try again.",
+            "MissingInput": "Some required fields of the input are empty.",
+            "AlreadyStarted": "A new run was just started",
+            "Starting": "Starting a new execution…",
+            "StartedNew": "New execution started:",
+            "StartedNotYet": "The new execution has not appeared yet. Check the executions list in a moment."
         },
         "Dialogs": {
             "StopTitle": "Stop execution",
@@ -4418,7 +4455,23 @@
             "DestroyTitle": "Destroy execution",
             "DestroyText": "This stops it, closes its conversation and removes its live state. It cannot be resumed. The trace and audit are kept.",
             "DestroyType": "Type {{code}} to confirm",
-            "Destroy": "Destroy"
+            "Destroy": "Destroy",
+            "ResumeTitle": "Resume execution",
+            "ResumeFrom": "Continues from \"{{action}}\".",
+            "ResumeFromUnknown": "Continues from where it stopped.",
+            "ResumeWarning": "This action calls an external system and may already have reached it. Run it again?",
+            "ResumeAutomation": "The original caller won't get the answer: the resumed run cannot reply to the first webhook request.",
+            "Resume": "Resume",
+            "StartNewTitle": "Start new execution",
+            "StartNewText": "Runs {{agent}} again with the input below, using the current published version. This execution stays as it is.",
+            "StartNewMasked": "These fields were hidden as secrets when stored. Fill them in:",
+            "StartNewServerMissing": "Fill in the highlighted fields: they are still empty.",
+            "StartNewFieldRequired": "required",
+            "StartNewFieldFilled": "filled",
+            "StartNewInput": "Input (JSON)",
+            "StartNewInvalidJson": "The input is not valid JSON",
+            "StartNewNotObject": "The input must be a JSON object",
+            "StartNew": "Start new"
         }
     }
 }

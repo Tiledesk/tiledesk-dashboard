@@ -5,7 +5,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import {
-  ExecutionDetail, ExecutionListParams, ExecutionPage, StateView, Summary, VarHistoryEntry
+  ExecutionDetail, ExecutionListParams, ExecutionPage, StartNewInput, StateView, Summary, VarHistoryEntry
 } from 'app/bots/executions/executions.models';
 
 @Injectable({ providedIn: 'root' })
@@ -103,5 +103,32 @@ export class ExecutionsService {
     if (reason) body.reason = reason;
     return this.httpClient.post<{ status: string; close: 'closed' | 'skipped' | 'failed' }>(
       this.url(projectId, '/' + encodeURIComponent(id) + '/destroy'), body, { headers: this.headers() });
+  }
+  /**
+   * 202 {status: running | waiting}. 409 confirm_required {action} (send again with confirm), not_resumable
+   * {reason, allowed}, busy, not_allowed {allowed}; 502 version_check_failed; 503 no_agent_server / control_unavailable;
+   * 500 unseal_failed; 403.
+   */
+  resume(projectId: string, id: string, confirm = false, reason?: string): Observable<{ status: string }> {
+    const body: any = {};
+    if (confirm) body.confirm = true;
+    if (reason) body.reason = reason;
+    return this.httpClient.post<{ status: string }>(this.url(projectId, '/' + encodeURIComponent(id) + '/resume'), body, { headers: this.headers() });
+  }
+
+  /** The stored input for start new: masked values are null and listed in `masked`. */
+  startNewInput(projectId: string, id: string): Observable<StartNewInput> {
+    return this.httpClient.get<StartNewInput>(this.url(projectId, '/' + encodeURIComponent(id) + '/start-new/input'), { headers: this.headers() });
+  }
+
+  /**
+   * Sends exactly the input the user confirmed. 202 {status:'started', request_id?}; 400 missing_input {fields};
+   * 409 already_started / not_allowed; 502 refire_failed; 503 control_unavailable.
+   */
+  startNew(projectId: string, id: string, input: { [k: string]: any }, reason?: string): Observable<{ status: string; request_id?: string }> {
+    const body: any = { input };
+    if (reason) body.reason = reason;
+    return this.httpClient.post<{ status: string; request_id?: string }>(
+      this.url(projectId, '/' + encodeURIComponent(id) + '/start-new'), body, { headers: this.headers() });
   }
 }

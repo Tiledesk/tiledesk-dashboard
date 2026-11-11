@@ -14,6 +14,8 @@ import { FlowStatePanelComponent, MaskedValueComponent } from './shared/flow-sta
 import { VarHistoryDrawerComponent } from './shared/var-history-drawer.component';
 import { StopDialogComponent } from './shared/stop-dialog.component';
 import { DestroyDialogComponent } from './shared/destroy-dialog.component';
+import { ResumeDialogComponent } from './shared/resume-dialog.component';
+import { StartNewDialogComponent } from './shared/start-new-dialog.component';
 import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
 
 @NgModule({
@@ -26,6 +28,8 @@ import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
     VarHistoryDrawerComponent,
     StopDialogComponent,
     DestroyDialogComponent,
+    ResumeDialogComponent,
+    StartNewDialogComponent,
   ],
   imports: [
     CommonModule,
