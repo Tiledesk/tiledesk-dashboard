@@ -314,6 +314,13 @@ p {
       opacity: 0.6;
       cursor: not-allowed;
     }
+
+    .cancel-auth {
+      color: #3ea9f5;
+      cursor: pointer;
+      font-size: 13px;
+      text-decoration: underline;
+    }
   }
 
   @keyframes spin {
@@ -348,6 +355,18 @@ p {
     border-radius: 5px;
     border: solid 1px #e0e0e0;
     font-size: 14px;
+  }
+
+  .field-hint {
+    margin: 6px 0 0;
+    max-width: 500px;
+    color: #7695a5;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .field-hint.warn {
+    color: #c62828;
   }
 
   select.custom-input {

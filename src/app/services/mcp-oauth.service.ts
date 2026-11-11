@@ -49,7 +49,7 @@ export interface McpOAuthAuthorizeResponse {
 
 export type McpOAuthResult =
   | { ok: true; connection: McpOAuthConnection }
-  | { ok: false; reason: 'popup_blocked' | 'closed' | 'timeout' | 'provider_error' | 'request_failed'; message?: string };
+  | { ok: false; reason: 'popup_blocked' | 'closed' | 'timeout' | 'provider_error' | 'request_failed'; message?: string; code?: string };
 
 @Injectable({
   providedIn: 'root'
@@ -183,7 +183,8 @@ export class McpOAuthService {
         return {
           ok: false as const,
           reason: 'request_failed' as const,
-          message: err && err.error ? err.error.error : undefined
+          message: err && err.error ? err.error.error : undefined,
+          code: err && err.error ? err.error.code : undefined
         };
       });
   }
