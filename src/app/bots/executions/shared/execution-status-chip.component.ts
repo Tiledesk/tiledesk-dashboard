@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 @Component({
   selector: 'execution-status-chip',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<span class="chip" [ngClass]="'s-' + (pending ? (pending === 'destroying' ? 'destroying' : 'stopping') : status)">{{
+  template: `<span class="chip" [ngClass]="'s-' + (pending ? pendingClass : status)">{{
     (pending ? 'Executions.Controls.Pending.' + pending : 'Executions.Status.' + status) | translate }}</span>`,
   styles: [`
     :host {
@@ -34,5 +34,11 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class ExecutionStatusChipComponent {
   @Input() status: string;
   /** Optimistic state after a control, until a poll returns the new status. */
-  @Input() pending: 'stopping' | 'destroying' | null = null;
+  @Input() pending: 'stopping' | 'destroying' | 'resuming' | 'starting' | null = null;
+
+  get pendingClass(): string {
+    if (this.pending === 'destroying') return 'destroying';
+    if (this.pending === 'resuming' || this.pending === 'starting') return 'running';
+    return 'stopping';
+  }
 }

@@ -35,7 +35,7 @@
       <section class="ex-card ex-head">
         <div class="ex-title-row">
           <h1 class="ex-title">{{ d.execution.agent_name || d.execution.agent_id }}</h1>
-          <execution-status-chip [status]="d.execution.status" [pending]="pending"></execution-status-chip>
+          <execution-status-chip [status]="d.execution.status" [pending]="chipPending"></execution-status-chip>
           <span *ngIf="d.execution.error?.code" class="ex-error-code">{{ d.execution.error.code }}</span>
           <span *ngIf="d.execution.test" class="ex-tag">{{ "Executions.Detail.Test" | translate }}</span>
         </div>
@@ -75,7 +75,13 @@
               [disabled]="!c.allowed || controlBusy || !!pending" (click)="runControl(c)">{{ ("Executions.Controls." + c.name) | translate }}</button>
           </span>
         </div>
-        <div *ngIf="controlMessage" class="ex-control-msg" role="alert">{{ controlMessage.key | translate: controlMessage.params }}</div>
+        <div *ngIf="controlMessage" class="ex-control-msg" role="alert">{{ controlMessage.key | translate: controlMessage.params }}
+          <button *ngIf="controlMessage.offerStartNew" type="button" class="ex-link ex-offer-start-new" (click)="offerStartNew()">{{ "Executions.Controls.start_new" | translate }}</button>
+        </div>
+        <div *ngIf="pending === 'starting'" class="ex-control-note ex-starting" role="status">{{ "Executions.Controls.Starting" | translate }}</div>
+        <div *ngIf="startedId" class="ex-control-note ex-started" role="status">{{ "Executions.Controls.StartedNew" | translate }}
+          <button type="button" class="ex-link ex-mono ex-started-link" (click)="openExecution(startedId)">{{ shortId(startedId) }} ↗</button>
+        </div>
       </section>
 
       <!-- tabs -->

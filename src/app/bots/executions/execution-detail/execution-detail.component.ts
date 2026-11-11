@@ -9,12 +9,15 @@ import { ExecutionsService } from 'app/services/executions.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import {
-  AllowedControl, canViewExecutions, ControlName, ExecutionDetail, StateView, Step, VarHistoryEntry, VarView
+  AllowedControl, canViewExecutions, CONTROL_REASONS, ControlName, ExecutionDetail, ResumeAction, StateView, Step,
+  VarHistoryEntry, VarView
 } from '../executions.models';
 import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration } from '../shared/execution-format';
 import { StopDialogComponent, StopDialogData, StopMode } from '../shared/stop-dialog.component';
 import { DestroyDialogComponent, DestroyDialogData } from '../shared/destroy-dialog.component';
+import { ResumeDialogComponent, ResumeDialogData } from '../shared/resume-dialog.component';
+import { StartNewDialogComponent, StartNewDialogData } from '../shared/start-new-dialog.component';
 
 export const POLL_MS = 2000;
 /** A waiting execution can wait for days: poll it less often (2 s again while a control is pending). */
@@ -25,13 +28,30 @@ export const STATE_TAB_LIMIT = 50;
 const LIVE_STATUSES = ['running', 'stopping'];
 /** The detail polls while the status can still move on its own. */
 const POLL_STATUSES = ['running', 'waiting', 'stopping'];
-const CONTROL_NAMES: ControlName[] = ['stop', 'stop_hard_now', 'destroy'];
+/** Known controls, in the order the buttons are shown (destroy last). */
+const CONTROL_NAMES: ControlName[] = ['stop', 'stop_hard_now', 'resume', 'start_new', 'destroy'];
+/** After start new, polls this long for the new execution to show in retried_as. */
+export const START_NEW_WAIT_MS = 30000;
 
-export type PendingControl = 'stopping' | 'destroying';
+export type PendingControl = 'stopping' | 'destroying' | 'resuming' | 'starting';
 
 export interface ControlMessage {
   key: string;
   params?: { [k: string]: string };
+  /** not_resumable while start new is allowed: the message offers it. */
+  offerStartNew?: boolean;
+}
+
+/** Handles a control error itself (true) instead of the generic message. */
+type ControlErrorHandler = (err: any) => boolean;
+
+function httpStatus(err: any): number | undefined {
+  return err instanceof HttpErrorResponse ? err.status : err && err.status;
+}
+
+function errorCode(err: any): string | null {
+  const body = err && err.error;
+  return body && typeof body === 'object' && typeof body.error === 'string' ? body.error : null;
 }
 const ID_RE = /^[A-Za-z0-9_-]{1,128}$/;
 
@@ -119,6 +139,11 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   /** status when the control was sent, and the one the API answered */
   private pendingFrom: string | null = null;
   private pendingTo: string | null = null;
+  /** start new: retried_as when it was sent, and when */
+  private retriedBefore: string[] = [];
+  private startingSince = 0;
+  /** the execution start new created, once retried_as shows it */
+  startedId: string | null = null;
 
   private destroy$ = new Subject<void>();
   /** emits when the execution changes: in-flight state / history loads end */
@@ -212,6 +237,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.clearPending();
     this.controlBusy = false;
     this.controlMessage = null;
+    this.startedId = null;
   }
 
   private onLoadError(err) {
@@ -235,7 +261,18 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     if (this.fsSeq === null && steps.length) this.fsSeq = steps[steps.length - 1].seq;
     this.refreshLiveStates();
     if (this.tab === 'state' && this.fsSeq !== null) this.loadState(this.fsSeq);
-    if (this.pending && !this.controlBusy) {
+    if (this.pending === 'starting' && !this.controlBusy) {
+      // the old execution keeps its status: the new one shows up in retried_as
+      const retried = (d.lineage && Array.isArray(d.lineage.retried_as)) ? d.lineage.retried_as : [];
+      const created = retried.find(r => typeof r === 'string' && !this.retriedBefore.includes(r));
+      if (created) {
+        this.startedId = created;
+        this.clearPending();
+      } else if (this.now() - this.startingSince >= START_NEW_WAIT_MS) {
+        this.clearPending();
+        this.controlMessage = { key: 'Executions.Controls.StartedNotYet' };
+      }
+    } else if (this.pending && !this.controlBusy) {
       const s = d.execution.status;
       if (s !== this.pendingFrom || (this.pendingTo && s === this.pendingTo)) this.clearPending();
     }
@@ -438,11 +475,24 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   /** The controls the API allows for the status; none when the service is not configured. */
   get controls(): AllowedControl[] {
     if (!this.configured || !this.detail || !Array.isArray(this.detail.allowed_controls)) return [];
-    return this.detail.allowed_controls.filter(c => c && typeof c === 'object' && CONTROL_NAMES.includes(c.name));
+    return this.detail.allowed_controls
+      .filter(c => c && typeof c === 'object' && CONTROL_NAMES.includes(c.name))
+      .sort((a, b) => CONTROL_NAMES.indexOf(a.name) - CONTROL_NAMES.indexOf(b.name));
   }
 
+  /** The status chip: start new leaves this execution's status as it is, so it shows no pending chip. */
+  get chipPending(): PendingControl | null {
+    return this.pending === 'starting' ? null : this.pending;
+  }
+
+  /** Tooltip of a disabled control: the role, or why the execution blocks it. */
   noPermissionKey(c: AllowedControl): string {
-    return c.name === 'destroy' ? 'Executions.Controls.NoPermissionDestroy' : 'Executions.Controls.NoPermissionStop';
+    if (c.reason && c.reason !== 'role') {
+      return CONTROL_REASONS.includes(c.reason) ? 'Executions.Controls.Reasons.' + c.reason : 'Executions.Controls.NotAllowedNone';
+    }
+    if (c.name === 'destroy') return 'Executions.Controls.NoPermissionDestroy';
+    if (c.name === 'resume' || c.name === 'start_new') return 'Executions.Controls.NoPermissionControl';
+    return 'Executions.Controls.NoPermissionStop';
   }
 
   /** Label of the interrupted action: title, type or id, else its position. */
@@ -468,8 +518,18 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   runControl(c: AllowedControl) {
     if (!c.allowed || this.controlBusy || this.pending || !this.detail) return;
     this.controlMessage = null;
+    this.startedId = null;
     const pid = this.projectId;
     const id = this.executionId;
+    if (c.name === 'resume') {
+      const ia = this.detail.execution.interrupted_action;
+      this.openResume(pid, id, { action: (ia && this.interruptedLabel(ia)) || null, calling: false, automation: this.isAutomation() }, false);
+      return;
+    }
+    if (c.name === 'start_new') {
+      this.loadStartNew(pid, id);
+      return;
+    }
     if (c.name === 'destroy') {
       const data: DestroyDialogData = { executionId: id };
       this.dialog.open(DestroyDialogComponent, { data, width: '480px' }).afterClosed()
@@ -489,7 +549,73 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       });
   }
 
-  private sendControl(pending: PendingControl, req: Observable<{ status: string }>) {
+  /** Start new offered by a not_resumable message. */
+  offerStartNew() {
+    const c = this.controls.find(x => x.name === 'start_new' && x.allowed);
+    if (c) this.runControl(c);
+  }
+
+  private isAutomation(): boolean {
+    const t = this.detail && this.detail.execution.trigger;
+    return !!t && t.type === 'automation';
+  }
+
+  // ---- resume (spec §9.4): a calling action first asks to confirm (409 confirm_required) ----
+
+  private openResume(pid: string, id: string, data: ResumeDialogData, confirm: boolean) {
+    this.dialog.open(ResumeDialogComponent, { data, width: '480px' }).afterClosed()
+      .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
+      .subscribe((ok: true | null) => {
+        if (ok !== true || id !== this.executionId) return;
+        this.sendControl('resuming', this.executionsService.resume(pid, id, confirm), err => {
+          if (httpStatus(err) !== 409 || errorCode(err) !== 'confirm_required') return false;
+          const action: ResumeAction | null = err.error.action && typeof err.error.action === 'object' ? err.error.action : null;
+          this.openResume(pid, id, { action: (action && this.interruptedLabel(action)) || null, calling: true, automation: data.automation }, true);
+          return true;
+        });
+      });
+  }
+
+  // ---- start new (spec §9.5, U2): the user confirms the input ----
+
+  private loadStartNew(pid: string, id: string) {
+    this.controlBusy = true;
+    this.executionsService.startNewInput(pid, id).pipe(takeUntil(this.reset$), takeUntil(this.destroy$)).subscribe({
+      next: r => {
+        this.controlBusy = false;
+        if (id !== this.executionId) return;
+        const input = r && r.input && typeof r.input === 'object' && !Array.isArray(r.input) ? r.input : {};
+        const masked = r && Array.isArray(r.masked) ? r.masked.filter(m => typeof m === 'string') : [];
+        const agentName = this.detail.execution.agent_name || this.detail.execution.agent_id;
+        this.openStartNew(pid, id, { agentName, input, masked });
+      },
+      error: err => {
+        this.controlBusy = false;
+        this.logger.error('[EXECUTION-DETAIL] start new input error ', err);
+        this.controlMessage = this.controlError(err);
+        if (httpStatus(err) === 409) this.load$.next();
+      }
+    });
+  }
+
+  private openStartNew(pid: string, id: string, data: StartNewDialogData) {
+    this.dialog.open(StartNewDialogComponent, { data, width: '600px' }).afterClosed()
+      .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
+      .subscribe((input: { [k: string]: any } | null) => {
+        if (!input || typeof input !== 'object' || Array.isArray(input) || id !== this.executionId) return;
+        const lineage = this.detail.lineage;
+        this.retriedBefore = lineage && Array.isArray(lineage.retried_as) ? lineage.retried_as.slice() : [];
+        this.startingSince = this.now();
+        this.sendControl('starting', this.executionsService.startNew(pid, id, input), err => {
+          if (httpStatus(err) !== 400 || errorCode(err) !== 'missing_input') return false;
+          const fields = Array.isArray(err.error.fields) ? err.error.fields.filter(f => typeof f === 'string') : [];
+          this.openStartNew(pid, id, { ...data, missing: fields, text: JSON.stringify(input, null, 2) });
+          return true;
+        });
+      });
+  }
+
+  private sendControl(pending: PendingControl, req: Observable<{ status: string }>, handle?: ControlErrorHandler) {
     this.pending = pending;
     this.pendingFrom = this.detail.execution.status;
     this.pendingTo = null;
@@ -506,8 +632,9 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
         this.controlBusy = false;
         this.clearPending();
         this.logger.error('[EXECUTION-DETAIL] control error ', err);
+        if (handle && handle(err)) return;
         this.controlMessage = this.controlError(err);
-        const status = err instanceof HttpErrorResponse ? err.status : err && err.status;
+        const status = httpStatus(err);
         if (status === 409) {
           // the execution moved on its own (stopped and failed are not polled): reload once so the chip is current
           this.stopPolling();
@@ -518,18 +645,30 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   }
 
   private controlError(err: any): ControlMessage {
-    const status = err instanceof HttpErrorResponse ? err.status : err && err.status;
+    const status = httpStatus(err);
     const body = err && err.error;
+    const code = errorCode(err);
     if (status === 409) {
       const allowed: AllowedControl[] | null = body && Array.isArray(body.allowed) ? body.allowed : null;
       if (allowed && this.detail) this.detail.allowed_controls = allowed;
+      if (code === 'busy') return { key: 'Executions.Controls.Busy' };
+      if (code === 'already_started') return { key: 'Executions.Controls.AlreadyStarted' };
+      if (code === 'not_resumable') {
+        const reason = typeof body.reason === 'string' && CONTROL_REASONS.includes(body.reason) && body.reason !== 'role' ? body.reason : 'default';
+        const offerStartNew = (allowed || this.controls).some(a => a && a.name === 'start_new' && a.allowed);
+        return { key: 'Executions.Controls.NotResumable.' + reason, offerStartNew };
+      }
       const names = (allowed || []).filter(a => a && a.allowed && CONTROL_NAMES.includes(a.name))
         .map(a => this.translate.instant('Executions.Controls.' + a.name));
       return names.length
         ? { key: 'Executions.Controls.NotAllowed', params: { allowed: names.join(', ') } }
         : { key: 'Executions.Controls.NotAllowedNone' };
     }
-    if (status === 503) return { key: 'Executions.Controls.Unavailable' };
+    if (status === 503) return { key: code === 'no_agent_server' ? 'Executions.Controls.NoAgentServer' : 'Executions.Controls.Unavailable' };
+    if (status === 502 && code === 'version_check_failed') return { key: 'Executions.Controls.VersionCheckFailed' };
+    if (status === 502 && code === 'refire_failed') return { key: 'Executions.Controls.RefireFailed' };
+    if (status === 500 && code === 'unseal_failed') return { key: 'Executions.Controls.UnsealFailed' };
+    if (status === 400 && code === 'missing_input') return { key: 'Executions.Controls.MissingInput' };
     if (status === 403) return { key: 'Executions.Controls.Forbidden' };
     if (status === 400 && body && body.error === 'confirm_mismatch') return { key: 'Executions.Controls.ConfirmMismatch' };
     return { key: 'Executions.Controls.Failed' };

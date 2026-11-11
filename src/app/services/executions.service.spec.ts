@@ -95,6 +95,30 @@ describe('ExecutionsService', () => {
     expect(d.request.body).toEqual({ confirm: 'e1abcd' });
     d.flush({ status: 'destroyed', close: 'skipped' });
   });
+
+  it('resume sends confirm only when asked; start new reads the input and posts it as is', () => {
+    setup('/executions/api/v1');
+    service.resume('p1', 'e1').subscribe();
+    const r1 = http.expectOne('/executions/api/v1/projects/p1/executions/e1/resume');
+    expect(r1.request.method).toBe('POST');
+    expect(r1.request.body).toEqual({});
+    r1.flush({ status: 'running' });
+    service.resume('p1', 'e1', true).subscribe();
+    const r2 = http.expectOne('/executions/api/v1/projects/p1/executions/e1/resume');
+    expect(r2.request.body).toEqual({ confirm: true });
+    r2.flush({ status: 'running' });
+
+    service.startNewInput('p1', 'e1').subscribe();
+    const g = http.expectOne('/executions/api/v1/projects/p1/executions/e1/start-new/input');
+    expect(g.request.method).toBe('GET');
+    g.flush({ input: {}, masked: [] });
+    const input = { customer: { api_key: 'k' }, items: [1] };
+    service.startNew('p1', 'e1', input).subscribe();
+    const s = http.expectOne('/executions/api/v1/projects/p1/executions/e1/start-new');
+    expect(s.request.method).toBe('POST');
+    expect(s.request.body).toEqual({ input });
+    s.flush({ status: 'started' });
+  });
 });
 
 describe('canViewExecutions', () => {

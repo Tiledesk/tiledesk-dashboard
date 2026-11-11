@@ -3942,7 +3942,9 @@
             "NoPermissionDestroy": "Solo il proprietario del progetto può distruggere le esecuzioni",
             "Pending": {
                 "stopping": "in arresto…",
-                "destroying": "in distruzione…"
+                "destroying": "in distruzione…",
+                "resuming": "in ripresa…",
+                "starting": "in avvio…"
             },
             "NotAllowed": "Questo controllo non è più consentito. Consentiti ora: {{allowed}}",
             "NotAllowedNone": "Questo controllo non è più consentito. Nessun controllo è consentito ora.",
@@ -3956,7 +3958,42 @@
             },
             "Interrupted": "interrotta \"{{action}}\"",
             "MessagesWhileStopped": "{{n}} messaggi ricevuti durante l'arresto",
-            "MessagesWhileStoppedOne": "1 messaggio ricevuto durante l'arresto"
+            "MessagesWhileStoppedOne": "1 messaggio ricevuto durante l'arresto",
+            "resume": "Riprendi",
+            "start_new": "Avvia nuova",
+            "NoPermissionControl": "Non hai il permesso di controllare le esecuzioni",
+            "Reasons": {
+                "role": "Non hai il permesso per questo controllo",
+                "test_run": "Non disponibile per le esecuzioni di test di Design Studio",
+                "no_checkpoint": "Non c'è un punto salvato da cui continuare",
+                "conversation_closed": "La conversazione è chiusa",
+                "newer_execution": "Sulla stessa conversazione è in corso un'esecuzione più recente",
+                "already_resumed": "È già stata ripresa da questo punto",
+                "not_unattended": "Solo per esecuzioni pianificate, webhook e automazioni",
+                "unsupported_trigger": "Non ancora disponibile per i trigger dei connettori",
+                "version_gone": "La versione dell'agente eseguita non è più disponibile"
+            },
+            "NotResumable": {
+                "default": "Non può essere ripresa.",
+                "test_run": "Non può essere ripresa: le esecuzioni di test di Design Studio non si riprendono.",
+                "no_checkpoint": "Non può essere ripresa: non c'è un punto salvato da cui continuare.",
+                "conversation_closed": "Non può essere ripresa: la conversazione è chiusa.",
+                "newer_execution": "Non può essere ripresa: sulla stessa conversazione è in corso un'esecuzione più recente.",
+                "already_resumed": "Non può essere ripresa: è già stata ripresa da questo punto.",
+                "not_unattended": "Non può essere ripresa.",
+                "unsupported_trigger": "Non può essere ripresa.",
+                "version_gone": "Non può essere ripresa: la versione dell'agente eseguita non è più disponibile."
+            },
+            "Busy": "Un server sta ancora rilasciando questa esecuzione. Riprova tra qualche secondo.",
+            "NoAgentServer": "Nessun server agente è disponibile ora. Riprova a breve.",
+            "VersionCheckFailed": "Non è stato possibile verificare la versione dell'agente. Riprova.",
+            "UnsealFailed": "Non è stato possibile leggere lo stato salvato di questa esecuzione.",
+            "RefireFailed": "Non è stato possibile avviare la nuova esecuzione. Riprova.",
+            "MissingInput": "Alcuni campi obbligatori dell'input sono vuoti.",
+            "AlreadyStarted": "È appena stata avviata una nuova esecuzione",
+            "Starting": "Avvio di una nuova esecuzione…",
+            "StartedNew": "Nuova esecuzione avviata:",
+            "StartedNotYet": "La nuova esecuzione non è ancora comparsa. Controlla l'elenco delle esecuzioni tra poco."
         },
         "Dialogs": {
             "StopTitle": "Arresta esecuzione",
@@ -3971,7 +4008,23 @@
             "DestroyTitle": "Distruggi esecuzione",
             "DestroyText": "La arresta, chiude la sua conversazione e ne rimuove lo stato attivo. Non può essere ripresa. La traccia e l'audit vengono conservati.",
             "DestroyType": "Digita {{code}} per confermare",
-            "Destroy": "Distruggi"
+            "Destroy": "Distruggi",
+            "ResumeTitle": "Riprendi esecuzione",
+            "ResumeFrom": "Continua da \"{{action}}\".",
+            "ResumeFromUnknown": "Continua dal punto in cui si è fermata.",
+            "ResumeWarning": "Questa azione chiama un sistema esterno e potrebbe averlo già raggiunto. Eseguirla di nuovo?",
+            "ResumeAutomation": "Il chiamante originale non riceverà la risposta: l'esecuzione ripresa non può rispondere alla prima richiesta webhook.",
+            "Resume": "Riprendi",
+            "StartNewTitle": "Avvia nuova esecuzione",
+            "StartNewText": "Esegue di nuovo {{agent}} con l'input qui sotto, usando la versione pubblicata attuale. Questa esecuzione resta com'è.",
+            "StartNewMasked": "Questi campi sono stati nascosti come segreti al salvataggio. Compilali:",
+            "StartNewServerMissing": "Compila i campi evidenziati: sono ancora vuoti.",
+            "StartNewFieldRequired": "obbligatorio",
+            "StartNewFieldFilled": "compilato",
+            "StartNewInput": "Input (JSON)",
+            "StartNewInvalidJson": "L'input non è un JSON valido",
+            "StartNewNotObject": "L'input deve essere un oggetto JSON",
+            "StartNew": "Avvia nuova"
         }
     }
 }
