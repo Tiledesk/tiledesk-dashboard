@@ -3,6 +3,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { McpOAuthReference } from './mcp-oauth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -223,11 +224,14 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
   }
 
   /**
-   * Retrieve MCP tools from server
+   * Retrieve MCP tools from server.
+   * When the server is connected with OAuth, send only the connection id:
+   * the server attaches the bearer token and refreshes it.
    * @param serverUrl The URL of the MCP server
+   * @param oauth Connection reference, or null when the server has no OAuth
    * @returns Observable with tools array
    */
-  getMcpTools(serverUrl: string) {
+  getMcpTools(serverUrl: string, oauth?: McpOAuthReference | null) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -239,9 +243,13 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
     this.logger.debug('[INTEGRATION.SERV] - get MCP tools URL: ', url);
     this.logger.debug('[INTEGRATION.SERV] - server URL: ', serverUrl);
 
-    const body = {
+    const body: { url: string; oauth?: { connection_id: string } } = {
       url: serverUrl
     };
+
+    if (oauth && oauth.connection_id) {
+      body.oauth = { connection_id: oauth.connection_id };
+    }
 
     return this.http.post(url, body, httpOptions);
   }
