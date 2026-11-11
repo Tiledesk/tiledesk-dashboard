@@ -3,6 +3,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { FlowStatePanelComponent, MaskedValueComponent, byLabel } from './flow-state-panel.component';
 import { VarHistoryDrawerComponent } from './var-history-drawer.component';
+import { ValueCellComponent } from './value-cell.component';
 import { formatSize } from './execution-format';
 import { VarView } from '../executions.models';
 import * as enJson from '../../../../assets/i18n/en.json';
@@ -30,7 +31,7 @@ describe('FlowStatePanelComponent', () => {
 
   function render(vars: VarView[], opts: { titles?: any; partial?: boolean } = {}) {
     TestBed.configureTestingModule({
-      declarations: [FlowStatePanelComponent, MaskedValueComponent],
+      declarations: [FlowStatePanelComponent, MaskedValueComponent, ValueCellComponent],
       imports: [TranslateModule.forRoot()],
     });
     useEnglish();
@@ -160,7 +161,7 @@ describe('VarHistoryDrawerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [VarHistoryDrawerComponent, MaskedValueComponent],
+      declarations: [VarHistoryDrawerComponent, MaskedValueComponent, ValueCellComponent],
       imports: [TranslateModule.forRoot(), MatIconModule],
     });
     useEnglish();

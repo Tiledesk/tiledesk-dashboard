@@ -11,6 +11,7 @@ import { ExecutionsListComponent } from './executions-list/executions-list.compo
 import { ExecutionDetailComponent } from './execution-detail/execution-detail.component';
 import { ExecutionStatusChipComponent } from './shared/execution-status-chip.component';
 import { FlowStatePanelComponent, MaskedValueComponent } from './shared/flow-state-panel.component';
+import { ValueCellComponent } from './shared/value-cell.component';
 import { VarHistoryDrawerComponent } from './shared/var-history-drawer.component';
 import { StopDialogComponent } from './shared/stop-dialog.component';
 import { DestroyDialogComponent } from './shared/destroy-dialog.component';
@@ -26,6 +27,7 @@ import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
     ExecutionStatusChipComponent,
     FlowStatePanelComponent,
     MaskedValueComponent,
+    ValueCellComponent,
     VarHistoryDrawerComponent,
     StopDialogComponent,
     DestroyDialogComponent,

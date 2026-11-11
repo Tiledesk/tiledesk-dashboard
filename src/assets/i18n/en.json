@@ -4504,6 +4504,18 @@
             "ExpiresIn": "access expires in {{time}}",
             "Recorded": "recorded in the audit log",
             "Close": "Close"
+        },
+        "Values": {
+            "Secret": "[secret]",
+            "TooLarge": "too large to store",
+            "NotStored": "not stored",
+            "Expired": "no longer kept",
+            "Unreadable": "unreadable",
+            "ShowAll": "Show all",
+            "ShowLess": "Show less",
+            "ViewValues": "View values",
+            "TriggerInput": "Trigger input",
+            "TriggerError": "Could not load the trigger input."
         }
     }
 }

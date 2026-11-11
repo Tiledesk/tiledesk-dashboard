@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { VarSide, VarView } from '../executions.models';
 import { formatSize } from './execution-format';
 
@@ -46,7 +46,10 @@ export class MaskedValueComponent {
   }
 }
 
-/** The Flow state of one block: before → after, changed first, the rest behind "show unchanged (n)". */
+/**
+ * The Flow state of one block: before → after, changed first, the rest behind "show unchanged (n)". Values show only
+ * when `covered` (the view was read with a grant on this block); otherwise the masks.
+ */
 @Component({
   selector: 'flow-state-panel',
   templateUrl: './flow-state-panel.component.html',
@@ -58,6 +61,12 @@ export class FlowStatePanelComponent implements OnChanges {
   @Input() showSystem = false;
   /** the state before this block was rebuilt without a keyframe */
   @Input() partial = false;
+  /** the active grant covers this block: its values are shown (Phase 4) */
+  @Input() covered = false;
+  /** the user may ask for data access: outside a covering grant, "View values" is offered */
+  @Input() canViewValues = false;
+  /** "View values": the page opens the data access dialog on this block */
+  @Output() viewValues = new EventEmitter<void>();
 
   showUnchanged = false;
   changed: VarView[] = [];

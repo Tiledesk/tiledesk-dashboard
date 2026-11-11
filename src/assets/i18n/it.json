@@ -4097,6 +4097,18 @@
             "ExpiresIn": "l'accesso scade tra {{time}}",
             "Recorded": "registrato nel registro di audit",
             "Close": "Chiudi"
+        },
+        "Values": {
+            "Secret": "[segreto]",
+            "TooLarge": "troppo grande per essere memorizzato",
+            "NotStored": "non memorizzato",
+            "Expired": "non più conservato",
+            "Unreadable": "illeggibile",
+            "ShowAll": "Mostra tutto",
+            "ShowLess": "Mostra meno",
+            "ViewValues": "Visualizza valori",
+            "TriggerInput": "Input del trigger",
+            "TriggerError": "Impossibile caricare l'input del trigger."
         }
     }
 }
