@@ -102,6 +102,14 @@
         <span class="ex-grant-recorded">{{ "Executions.DataAccess.Recorded" | translate }}</span>
         <span class="ex-spacer"></span>
         <button type="button" class="ex-btn ex-grant-close" (click)="closeGrant()">{{ "Executions.DataAccess.Close" | translate }}</button>
+        <!-- the trigger input: only an execution grant opens it -->
+        <div *ngIf="showTrigger" class="ex-grant-trigger">
+          <span class="ex-grant-trigger-label">{{ "Executions.Values.TriggerInput" | translate }}</span>
+          <span *ngIf="triggerLoading && !triggerSide" class="ex-muted">{{ "Executions.Loading" | translate }}</span>
+          <span *ngIf="triggerError" class="ex-muted">{{ "Executions.Values.TriggerError" | translate }}
+            <button type="button" class="ex-link ex-trigger-retry" (click)="loadTrigger()">{{ "Executions.Retry" | translate }}</button></span>
+          <exec-value-cell *ngIf="triggerSide" class="ex-grant-trigger-value" [side]="triggerSide" [showType]="false"></exec-value-cell>
+        </div>
       </section>
 
       <!-- tabs -->
@@ -163,7 +171,9 @@
                   {{ "Executions.FlowState.LoadError" | translate }}
                   <button type="button" class="ex-link fs-retry" (click)="retryState(item.step.seq)">{{ "Executions.Retry" | translate }}</button>
                 </div>
-                <flow-state-panel *ngIf="slot.view" [vars]="slot.view.vars" [partial]="slot.view.partial" [actionTitles]="actionTitles"></flow-state-panel>
+                <flow-state-panel *ngIf="slot.view" [vars]="slot.view.vars" [partial]="slot.view.partial" [actionTitles]="actionTitles"
+                  [covered]="slot.grantId === session.grantId && session.covers(item.step.seq)" [canViewValues]="canViewData"
+                  (viewValues)="openDataAccess(item.step.seq)"></flow-state-panel>
               </ng-container>
             </div>
           </ng-container>
@@ -197,6 +207,8 @@
               <div *ngIf="slot.view.partial" class="ex-partial" role="note">{{ "Executions.FlowState.Partial" | translate }}</div>
               <div class="ex-muted st-note">
                 {{ (fsWhen === 'before' ? "Executions.FlowState.WholeBefore" : "Executions.FlowState.WholeAfter") | translate: { block: fsBlockName, n: fsVars.length } }}
+                <button *ngIf="canViewData && !fsCovered" type="button" class="ex-link st-view-values" (click)="openDataAccess(fsSeq)">
+                  {{ "Executions.Values.ViewValues" | translate }}</button>
               </div>
               <div class="st-wrap">
                 <table class="st-table">
@@ -212,7 +224,7 @@
                       [attr.aria-label]="'Executions.History.Open' | translate: { key: v.key }"
                       (click)="openHistory(v.key)" (keyup.enter)="openHistory(v.key)">
                       <td class="st-key"><span class="st-key-name">{{ v.key }}</span><span *ngIf="v.reserved" class="ex-tag">{{ "Executions.FlowState.System" | translate }}</span></td>
-                      <td><exec-masked-value [side]="fsWhen === 'before' ? v.before : v.after"></exec-masked-value></td>
+                      <td><exec-value-cell [side]="fsWhen === 'before' ? v.before : v.after" [reveal]="fsCovered"></exec-value-cell></td>
                     </tr>
                     <tr *ngIf="!fsVars.length"><td colspan="2" class="ex-muted">{{ "Executions.FlowState.Empty" | translate }}</td></tr>
                   </tbody>
@@ -229,5 +241,5 @@
   </div>
 
   <var-history-drawer *ngIf="historyKey" [varKey]="historyKey" [entries]="history" [loading]="historyLoading"
-    [error]="historyError" [actionTitles]="actionTitles" (closed)="closeHistory()" (retry)="loadHistory()"></var-history-drawer>
+    [error]="historyError" [actionTitles]="actionTitles" [covers]="coversStep" (closed)="closeHistory()" (retry)="loadHistory()"></var-history-drawer>
 </div>

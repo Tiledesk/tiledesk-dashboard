@@ -2,7 +2,10 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { VarHistoryEntry } from '../executions.models';
 import { byLabel, ByLabel } from './flow-state-panel.component';
 
-/** Every change of one variable in this execution, in order, with who changed it and at which block. */
+/**
+ * Every change of one attribute in this execution, in order, with who changed it and at which block. Under a grant,
+ * entries in covered blocks show the value set (masks elsewhere).
+ */
 @Component({
   selector: 'var-history-drawer',
   template: `
@@ -24,7 +27,8 @@ import { byLabel, ByLabel } from './flow-state-panel.component';
           <span class="vh-block">{{ e.block_name || ("Executions.History.Step" | translate: { n: e.step_seq }) }}</span>
           <span class="vh-by"><ng-container *ngIf="label(e.by) as l">{{ $any(l).key ? ($any(l).key | translate) : $any(l).text }}</ng-container></span>
           <span class="vh-op">{{ opKey(e.op) ? (opKey(e.op) | translate) : e.op }}</span>
-          <exec-masked-value *ngIf="e.op !== 'del'" [side]="{ type: e.type, size: e.size, hash: null }"></exec-masked-value>
+          <exec-value-cell *ngIf="e.op !== 'del'" [reveal]="covers(e.step_seq)"
+            [side]="{ type: e.type, size: e.size, hash: null, value: e.after_value, value_state: e.after_state }"></exec-value-cell>
           <span *ngIf="e.op === 'del'" class="vh-none" aria-hidden="true">—</span>
         </li>
       </ol>
@@ -51,6 +55,8 @@ export class VarHistoryDrawerComponent {
   @Input() loading = false;
   @Input() error = false;
   @Input() actionTitles: { [actionId: string]: string } = {};
+  /** whether the active grant covers a block: only those entries show their value (none without a grant) */
+  @Input() covers: (stepSeq: number | null) => boolean = () => false;
   @Output() closed = new EventEmitter<void>();
   @Output() retry = new EventEmitter<void>();
 

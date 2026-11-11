@@ -3,14 +3,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
-import { Observable, of, Subject, Subscription, timer } from 'rxjs';
+import { MonoTypeOperatorFunction, Observable, of, Subject, Subscription, timer } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { ExecutionsService } from 'app/services/executions.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import {
   AllowedControl, canViewExecutionData, canViewExecutions, CONTROL_REASONS, ControlName, dataRetentionDays, ExecutionDetail,
-  GrantInfo, ResumeAction, StateView, Step, VarHistoryEntry, VarView
+  GrantInfo, ResumeAction, StateView, Step, ValueOrState, VarHistoryEntry, VarSide, VarView
 } from '../executions.models';
 import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration } from '../shared/execution-format';
@@ -158,6 +158,9 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   private destroyed = false;
   /** false while leaving the execution: views read with the grant are dropped, not read again */
   private reloadAfterGrant = true;
+  /** trigger input read with an execution grant (strip), and the grant it was read with */
+  triggerValue: ValueOrState | null = null;
+  triggerGrantId: string | null = null;
 
   // controls (Phase 2): optimistic chip until a poll returns the new status
   pending: PendingControl | null = null;
@@ -277,6 +280,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.fsSeq = null;
     this.fsShowAll = false;
     this.closeHistory();
+    this.clearTrigger();
     this.clearPending();
     this.controlBusy = false;
     this.controlMessage = null;
@@ -398,22 +402,38 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
 
   // ---- flow state per block, loaded on demand and cached while the page lives ----
 
+  /**
+   * Loads a block's state, with the active grant when it covers the block (values) or without it (masks). A cached
+   * view read with another grant (or none) than the one that applies now is read again, so a covered block never
+   * shows masks from before the grant. `force` reads again in any case (polls of a live block, a new grant).
+   */
   loadState(seq: number, force = false) {
     const existing = this.states[seq];
-    if (existing && !force && (existing.view || existing.loading)) return;
+    // the grant this request is made with, fixed now: the slot is marked with it before the answer comes
+    const grantId = this.session.covers(seq) ? this.session.grantId : null;
+    const sameGrant = !!existing && (existing.grantId || null) === grantId;
+    if (existing && !force && sameGrant && (existing.view || existing.loading)) return;
     if (existing && existing.sub) existing.sub.unsubscribe();
-    // a refetch keeps the old view until the new one arrives
+    // a refetch keeps the old view until the new one arrives, unless it was read with another grant
     const slot: StateSlot = {
-      view: existing ? existing.view : null, loading: true, error: false, live: existing ? existing.live : false,
-      grantId: existing ? existing.grantId : null,
+      view: existing && sameGrant ? existing.view : null, loading: true, error: false, live: existing ? existing.live : false,
+      grantId,
     };
     this.states[seq] = slot;
     const step = this.stepBySeq(seq);
     const liveAtFetch = !!step && this.isRunningStep(step);
-    slot.sub = this.executionsService.state(this.projectId, this.executionId, seq)
-      .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
+    const req = grantId
+      ? this.executionsService.state(this.projectId, this.executionId, seq, grantId)
+      : this.executionsService.state(this.projectId, this.executionId, seq);
+    slot.sub = req
+      .pipe(this.grantGuard<StateView>(grantId), takeUntil(this.reset$), takeUntil(this.destroy$))
       .subscribe({
-        next: view => { slot.view = view; slot.loading = false; slot.live = liveAtFetch; slot.grantId = null; },
+        next: view => {
+          // values only while the grant they were read with is still the active one
+          if (grantId && !this.session.accept(grantId)) return;
+          if (this.states[seq] !== slot) return;
+          slot.view = view; slot.loading = false; slot.live = liveAtFetch;
+        },
         error: err => {
           slot.loading = false;
           slot.error = true;
@@ -497,6 +517,12 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return this.fsShowAll ? all : all.slice(0, STATE_TAB_LIMIT);
   }
 
+  /** The Flow state tab block was read with the active grant and the grant covers it: values, not masks. */
+  get fsCovered(): boolean {
+    const slot = this.fsSlot;
+    return !!slot && !!slot.grantId && slot.grantId === this.session.grantId && this.session.covers(this.fsSeq);
+  }
+
   get fsBlockName(): string {
     const step = this.fsSeq === null ? null : this.stepBySeq(this.fsSeq);
     return step ? step.block_name || String(step.seq) : '';
@@ -509,15 +535,25 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.loadHistory();
   }
 
+  /** Loads the open history, with the active grant if any (the service adds values only in the blocks it covers). */
   loadHistory() {
     if (this.historySub) this.historySub.unsubscribe();
+    const grantId = this.session.grantId;
     this.history = null;
     this.historyLoading = true;
     this.historyError = false;
-    this.historySub = this.executionsService.history(this.projectId, this.executionId, this.historyKey)
-      .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
+    // marked at request time: if the grant ends before the answer, clearGrantData finds and drops this load
+    this.historyGrantId = grantId;
+    const req = grantId
+      ? this.executionsService.history(this.projectId, this.executionId, this.historyKey, grantId)
+      : this.executionsService.history(this.projectId, this.executionId, this.historyKey);
+    this.historySub = req
+      .pipe(this.grantGuard<VarHistoryEntry[]>(grantId), takeUntil(this.reset$), takeUntil(this.destroy$))
       .subscribe({
-        next: entries => { this.history = entries || []; this.historyLoading = false; this.historyGrantId = null; },
+        next: entries => {
+          if (grantId && !this.session.accept(grantId)) return;
+          this.history = entries || []; this.historyLoading = false;
+        },
         error: err => {
           this.historyLoading = false;
           this.historyError = true;
@@ -568,9 +604,90 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
         // a new grant replaces the open one
         if (this.session.active || this.grantFor) this.endGrant(true);
         this.session.start(info, info.received_at);
-        if (this.session.active) this.grantFor = { pid, id, grantId: info.grant_id };
+        if (this.session.active) {
+          this.grantFor = { pid, id, grantId: info.grant_id };
+          this.reloadWithGrant();
+        }
       });
   }
+
+  /** A read made with a grant goes through the session's guard (dropped once that grant ended or was replaced). */
+  private grantGuard<T>(grantId: string | null): MonoTypeOperatorFunction<T> {
+    return grantId ? this.session.guard<T>(grantId) : (source: Observable<T>) => source;
+  }
+
+  /**
+   * A grant started (or replaced another): the visible blocks it covers, the open history and, for the whole
+   * execution, the trigger input are read again with it. Forced, so the reloads without a grant made when the
+   * previous one ended are cancelled and cannot land over the values.
+   */
+  private reloadWithGrant() {
+    this.visibleSeqs().filter(seq => this.session.covers(seq)).forEach(seq => this.loadState(seq, true));
+    if (this.historyKey) this.loadHistory();
+    const scope = this.session.scope;
+    if (scope && scope.type === 'execution') this.loadTrigger();
+  }
+
+  /** Blocks on screen: expanded in the timeline, or picked in the Flow state tab. */
+  private visibleSeqs(): number[] {
+    const seqs = new Set<number>(this.expanded);
+    if (this.tab === 'state' && this.fsSeq !== null) seqs.add(this.fsSeq);
+    return Array.from(seqs);
+  }
+
+  // ---- trigger input (execution grant only), shown in the strip ----
+
+  /** the side the strip's value cell shows (built once per answer) */
+  triggerSide: VarSide | null = null;
+  triggerLoading = false;
+  triggerError = false;
+  private triggerSub: Subscription | null = null;
+
+  /** Whether the strip shows the trigger input: only an execution grant opens it. */
+  get showTrigger(): boolean {
+    const scope = this.session.scope;
+    return !!scope && scope.type === 'execution';
+  }
+
+  loadTrigger() {
+    const grantId = this.session.grantId;
+    const scope = this.session.scope;
+    if (!grantId || !scope || scope.type !== 'execution') return;
+    this.clearTrigger();
+    this.triggerGrantId = grantId;
+    this.triggerLoading = true;
+    this.triggerSub = this.executionsService.triggerData(this.projectId, this.executionId, grantId)
+      .pipe(this.grantGuard<ValueOrState>(grantId), takeUntil(this.reset$), takeUntil(this.destroy$))
+      .subscribe({
+        next: r => {
+          if (!this.session.accept(grantId) || this.triggerGrantId !== grantId) return;
+          const v: ValueOrState = r && typeof r === 'object' ? r : {};
+          this.triggerValue = v;
+          this.triggerSide = { type: null, size: null, hash: null, value: v.value, value_state: v.value_state };
+          this.triggerLoading = false;
+        },
+        error: err => {
+          if (this.triggerGrantId !== grantId) return;
+          this.triggerLoading = false;
+          this.triggerError = true;
+          this.logger.error('[EXECUTION-DETAIL] trigger error ', errorSummary(err));
+        }
+      });
+  }
+
+  /** Drops the trigger input from memory (and any read of it in flight). */
+  private clearTrigger() {
+    if (this.triggerSub) this.triggerSub.unsubscribe();
+    this.triggerSub = null;
+    this.triggerValue = null;
+    this.triggerSide = null;
+    this.triggerGrantId = null;
+    this.triggerLoading = false;
+    this.triggerError = false;
+  }
+
+  /** For the history drawer: the blocks whose values it may show. */
+  readonly coversStep = (stepSeq: number | null): boolean => this.session.covers(stepSeq);
 
   /** Close: revokes the grant on the service; values go with it. */
   closeGrant() {
@@ -631,10 +748,14 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       if (visible && this.detail && this.reloadAfterGrant) this.loadState(seq);
     });
     if (this.historyGrantId === grantId) {
+      if (this.historySub) this.historySub.unsubscribe();
+      this.historySub = null;
       this.historyGrantId = null;
       this.history = null;
+      this.historyLoading = false;
       if (this.historyKey && this.detail && this.reloadAfterGrant) this.loadHistory();
     }
+    if (this.triggerGrantId === grantId) this.clearTrigger();
   }
 
   // ---- controls (spec §11.5, §11.8) ----

@@ -9,6 +9,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ExecutionDetailComponent, POLL_MS } from './execution-detail.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { FlowStatePanelComponent, MaskedValueComponent } from '../shared/flow-state-panel.component';
+import { ValueCellComponent } from '../shared/value-cell.component';
 import { VarHistoryDrawerComponent } from '../shared/var-history-drawer.component';
 import { ExecutionsService } from '../../../services/executions.service';
 import { RolesService } from '../../../services/roles.service';
@@ -84,7 +85,7 @@ describe('ExecutionDetailComponent', () => {
     params$ = new BehaviorSubject(convertToParamMap({ projectid: 'p1', botid: 'a1', executionid: opts.executionid || EXEC_ID }));
     perms$ = new Subject();
     TestBed.configureTestingModule({
-      declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent, FlowStatePanelComponent, MaskedValueComponent, VarHistoryDrawerComponent],
+      declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent, FlowStatePanelComponent, MaskedValueComponent, ValueCellComponent, VarHistoryDrawerComponent],
       imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, MatDialogModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
