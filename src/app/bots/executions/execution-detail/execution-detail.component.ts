@@ -32,6 +32,8 @@ const POLL_STATUSES = ['running', 'waiting', 'stopping'];
 const CONTROL_NAMES: ControlName[] = ['stop', 'stop_hard_now', 'resume', 'start_new', 'destroy'];
 /** After start new, polls this long for the new execution to show in retried_as. */
 export const START_NEW_WAIT_MS = 30000;
+/** Any pending control gives up after this long without the expected change (also when every poll fails). */
+export const PENDING_WAIT_MS = 30000;
 
 export type PendingControl = 'stopping' | 'destroying' | 'resuming' | 'starting';
 
@@ -139,9 +141,12 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   /** status when the control was sent, and the one the API answered */
   private pendingFrom: string | null = null;
   private pendingTo: string | null = null;
-  /** start new: retried_as when it was sent, and when */
+  /** start new: retried_as when it was sent */
   private retriedBefore: string[] = [];
-  private startingSince = 0;
+  /** when the pending control was sent (its deadline starts here) */
+  private pendingSince = 0;
+  /** resume: resumed_at when it was sent; a newer one means the resume was accepted */
+  private resumedBefore: string | null = null;
   /** the execution start new created, once retried_as shows it */
   startedId: string | null = null;
 
@@ -245,7 +250,10 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.logger.error('[EXECUTION-DETAIL] load error ', err);
     // a failed poll keeps the page as it was (and polling goes on); only a first load shows the error state
     if (!this.detail) this.error = true;
-    else this.updatePolling();
+    else {
+      this.checkPendingDeadline();
+      this.updatePolling();
+    }
   }
 
   private onDetail(d: ExecutionDetail) {
@@ -268,15 +276,31 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       if (created) {
         this.startedId = created;
         this.clearPending();
-      } else if (this.now() - this.startingSince >= START_NEW_WAIT_MS) {
-        this.clearPending();
-        this.controlMessage = { key: 'Executions.Controls.StartedNotYet' };
-      }
+        if (this.controlMessage && this.controlMessage.key === 'Executions.Controls.RefireUnconfirmed') this.controlMessage = null;
+      } else this.checkPendingDeadline();
     } else if (this.pending && !this.controlBusy) {
       const s = d.execution.status;
-      if (s !== this.pendingFrom || (this.pendingTo && s === this.pendingTo)) this.clearPending();
+      const resumedAt = d.execution.resumed_at || null;
+      // a resume that was accepted but ended where it started (failed again) still moves resumed_at
+      const resumed = this.pending === 'resuming' && !!resumedAt && resumedAt !== this.resumedBefore;
+      if (resumed || s !== this.pendingFrom || (this.pendingTo && s === this.pendingTo)) this.clearPending();
+      else this.checkPendingDeadline();
     }
     this.updatePolling();
+  }
+
+  /** Ends a pending control the expected change never showed for (not while its request is in flight). */
+  private checkPendingDeadline() {
+    if (!this.pending || this.controlBusy || this.now() - this.pendingSince < PENDING_WAIT_MS) return;
+    const starting = this.pending === 'starting';
+    this.clearPending();
+    this.controlMessage = { key: starting ? 'Executions.Controls.StartedNotYet' : 'Executions.Controls.PendingTimeout' };
+  }
+
+  /** The stop mode and interrupted action describe a stop that is on now, not one that was resumed from. */
+  get showStopInfo(): boolean {
+    const s = this.detail && this.detail.execution.status;
+    return s === 'stopping' || s === 'stopped';
   }
 
   get isLive(): boolean {
@@ -587,7 +611,8 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
         const input = r && r.input && typeof r.input === 'object' && !Array.isArray(r.input) ? r.input : {};
         const masked = r && Array.isArray(r.masked) ? r.masked.filter(m => typeof m === 'string') : [];
         const agentName = this.detail.execution.agent_name || this.detail.execution.agent_id;
-        this.openStartNew(pid, id, { agentName, input, masked });
+        const stored = r && ['ok', 'none', 'unreadable', 'structure_only'].includes(r.stored) ? r.stored : undefined;
+        this.openStartNew(pid, id, { agentName, input, masked, stored });
       },
       error: err => {
         this.controlBusy = false;
@@ -605,7 +630,6 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
         if (!input || typeof input !== 'object' || Array.isArray(input) || id !== this.executionId) return;
         const lineage = this.detail.lineage;
         this.retriedBefore = lineage && Array.isArray(lineage.retried_as) ? lineage.retried_as.slice() : [];
-        this.startingSince = this.now();
         this.sendControl('starting', this.executionsService.startNew(pid, id, input), err => {
           if (httpStatus(err) !== 400 || errorCode(err) !== 'missing_input') return false;
           const fields = Array.isArray(err.error.fields) ? err.error.fields.filter(f => typeof f === 'string') : [];
@@ -619,6 +643,8 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.pending = pending;
     this.pendingFrom = this.detail.execution.status;
     this.pendingTo = null;
+    this.pendingSince = this.now();
+    this.resumedBefore = this.detail.execution.resumed_at || null;
     this.controlBusy = true;
     req.pipe(takeUntil(this.reset$), takeUntil(this.destroy$)).subscribe({
       next: r => {
@@ -630,6 +656,14 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       },
       error: err => {
         this.controlBusy = false;
+        // the server could not confirm the refire (504): the new run may exist, so keep looking for it
+        if (pending === 'starting' && httpStatus(err) === 504 && errorCode(err) === 'refire_unconfirmed') {
+          this.logger.warn('[EXECUTION-DETAIL] start new unconfirmed ', err);
+          this.controlMessage = { key: 'Executions.Controls.RefireUnconfirmed' };
+          this.stopPolling();
+          this.load$.next();
+          return;
+        }
         this.clearPending();
         this.logger.error('[EXECUTION-DETAIL] control error ', err);
         if (handle && handle(err)) return;
@@ -653,6 +687,10 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       if (allowed && this.detail) this.detail.allowed_controls = allowed;
       if (code === 'busy') return { key: 'Executions.Controls.Busy' };
       if (code === 'already_started') return { key: 'Executions.Controls.AlreadyStarted' };
+      if (code === 'not_startable') {
+        const reason = body && typeof body.reason === 'string' && body.reason ? body.reason : 'unknown';
+        return { key: 'Executions.Controls.NotStartable', params: { reason } };
+      }
       if (code === 'not_resumable') {
         const reason = typeof body.reason === 'string' && CONTROL_REASONS.includes(body.reason) && body.reason !== 'role' ? body.reason : 'default';
         const offerStartNew = (allowed || this.controls).some(a => a && a.name === 'start_new' && a.allowed);
@@ -687,7 +725,8 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   // ---- navigation ----
 
   shortId(id: string | null): string {
-    return id ? id.slice(0, 8) : '';
+    // uuid v7 starts with a timestamp: the random tail tells runs apart
+    return id ? id.replace(/-/g, '').slice(-8) : '';
   }
 
   private agentForLinks(): string {

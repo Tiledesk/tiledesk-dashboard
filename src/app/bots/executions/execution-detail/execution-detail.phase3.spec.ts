@@ -20,6 +20,8 @@ import * as enJson from '../../../../assets/i18n/en.json';
 const EN = (enJson as any).default || enJson;
 const EXEC_ID = '0193a2f4-0000-7000-8000-000000000001';
 const NEW_ID = '0193a2f4-0000-7000-8000-000000000099';
+/** short id: the last 8 characters of the id without dashes */
+const NEW_TAIL = NEW_ID.replace(/-/g, '').slice(-8);
 
 function detail(status: string, controls: any[], extra: any = {}): any {
   return {
@@ -259,7 +261,7 @@ describe('ExecutionDetailComponent resume and start new', () => {
     fixture.detectChanges();
     expect(el().querySelector('.ex-starting')).toBeNull();
     const link = el().querySelector('.ex-started-link') as HTMLButtonElement;
-    expect(link.textContent).toContain(NEW_ID.slice(0, 8));
+    expect(link.textContent).toContain(NEW_TAIL);
     link.click();
     expect(TestBed.inject(Router).navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a1', 'executions', NEW_ID]);
     end();
@@ -277,7 +279,7 @@ describe('ExecutionDetailComponent resume and start new', () => {
     executions.get.and.returnValue(of(detail('failed', STOPPED, { lineage: { retried_as: [OLD, NEW_ID] } })));
     tick(POLL_MS);
     fixture.detectChanges();
-    expect(el().querySelector('.ex-started-link').textContent).toContain(NEW_ID.slice(0, 8));
+    expect(el().querySelector('.ex-started-link').textContent).toContain(NEW_TAIL);
     end();
   }));
 
@@ -334,6 +336,146 @@ describe('ExecutionDetailComponent resume and start new', () => {
     expect(executions.startNew).not.toHaveBeenCalled();
     expect(msg()).toContain('Controls are temporarily unavailable');
     expect(btn('start_new').disabled).toBe(false);
+    end();
+  }));
+
+  // ---- fix wave: contracts 1-4, M3/M4, deadlines ----
+
+  it('no_trigger_source has its own tooltip', fakeAsync(() => {
+    setup(detail('completed', [{ name: 'start_new', allowed: false, reason: 'no_trigger_source' }]));
+    const tips = fixture.debugElement.queryAll(By.directive(MatTooltip)).map(d => d.injector.get(MatTooltip))
+      .map(t => t.message).filter(m => !!m);
+    expect(tips).toContain('Started by a direct call, not through a webhook: there is nothing to run again');
+    end();
+  }));
+
+  ['not_unattended', 'unsupported_trigger'].forEach(reason => {
+    it('not_resumable ' + reason + ' has a specific message', fakeAsync(() => {
+      setup(detail('stopped', STOPPED));
+      results.push(true);
+      executions.resume.and.returnValue(throwError(err409({ error: 'not_resumable', reason, allowed: [{ name: 'destroy', allowed: true }] })));
+      btn('resume').click();
+      fixture.detectChanges();
+      expect(msg()).toContain(reason === 'not_unattended'
+        ? 'only scheduled, webhook and automation runs can be resumed'
+        : 'connector triggers are not supported yet');
+      end();
+    }));
+  });
+
+  it('start new: 409 not_startable shows the reason and stops pending', fakeAsync(() => {
+    setup(detail('completed', [{ name: 'start_new', allowed: true }]));
+    executions.startNew.and.returnValue(throwError(err409({ error: 'not_startable', reason: 'webhook_not_found' })));
+    results.push({ customer: { api_key: 'k' } });
+    btn('start_new').click();
+    fixture.detectChanges();
+    expect(msg()).toContain('This run cannot be started again (webhook_not_found).');
+    expect(el().querySelector('.ex-starting')).toBeNull();
+    expect(btn('start_new').disabled).toBe(false);
+    end();
+  }));
+
+  it('start new: 504 refire_unconfirmed says it may have started and keeps polling for retried_as', fakeAsync(() => {
+    setup(detail('completed', [{ name: 'start_new', allowed: true }]));
+    executions.startNew.and.returnValue(throwError(new HttpErrorResponse({ status: 504, error: { error: 'refire_unconfirmed' } })));
+    results.push({ customer: { api_key: 'k' } });
+    btn('start_new').click();
+    fixture.detectChanges();
+    expect(msg()).toContain('The new run may have started. Checking…');
+    expect(el().querySelector('.ex-starting')).not.toBeNull();
+    executions.get.and.returnValue(of(detail('completed', [{ name: 'start_new', allowed: true }], { lineage: { retried_as: [NEW_ID] } })));
+    tick(POLL_MS);
+    fixture.detectChanges();
+    expect(el().querySelector('.ex-started-link').textContent).toContain(NEW_TAIL);
+    expect(msg()).not.toContain('may have started');
+    end();
+  }));
+
+  it('start new: 504 refire_unconfirmed gives up at the same deadline', fakeAsync(() => {
+    setup(detail('completed', [{ name: 'start_new', allowed: true }]));
+    executions.startNew.and.returnValue(throwError(new HttpErrorResponse({ status: 504, error: { error: 'refire_unconfirmed' } })));
+    results.push({ customer: { api_key: 'k' } });
+    btn('start_new').click();
+    tick(START_NEW_WAIT_MS + POLL_MS);
+    fixture.detectChanges();
+    expect(el().querySelector('.ex-starting')).toBeNull();
+    expect(msg()).toContain('has not appeared yet');
+    end();
+  }));
+
+  it('start new: 502 refire_failed keeps the Try again copy', fakeAsync(() => {
+    setup(detail('completed', [{ name: 'start_new', allowed: true }]));
+    executions.startNew.and.returnValue(throwError(new HttpErrorResponse({ status: 502, error: { error: 'refire_failed' } })));
+    results.push({ customer: { api_key: 'k' } });
+    btn('start_new').click();
+    fixture.detectChanges();
+    expect(msg()).toContain('could not be started. Try again.');
+    end();
+  }));
+
+  it('start new: polling gives up even when every poll fails', fakeAsync(() => {
+    setup(detail('completed', [{ name: 'start_new', allowed: true }]));
+    results.push({ customer: { api_key: 'k' } });
+    btn('start_new').click();
+    executions.get.and.returnValue(throwError(new HttpErrorResponse({ status: 500 })));
+    tick(START_NEW_WAIT_MS + POLL_MS * 2);
+    fixture.detectChanges();
+    expect(el().querySelector('.ex-starting')).toBeNull();
+    expect(msg()).toContain('has not appeared yet');
+    const calls = executions.get.calls.count();
+    tick(POLL_MS * 5);
+    expect(executions.get.calls.count()).toBe(calls);
+    end();
+  }));
+
+  it('a pending resume ends at the deadline when every poll fails', fakeAsync(() => {
+    setup(detail('stopped', STOPPED));
+    results.push(true);
+    executions.resume.and.returnValue(of({ status: 'running' }));
+    executions.get.and.returnValue(throwError(new HttpErrorResponse({ status: 500 })));
+    btn('resume').click();
+    tick(START_NEW_WAIT_MS + POLL_MS * 2);
+    fixture.detectChanges();
+    expect(chip()).toBe('stopped');
+    const calls = executions.get.calls.count();
+    tick(POLL_MS * 5);
+    expect(executions.get.calls.count()).toBe(calls);
+    end();
+  }));
+
+  it('resumed_at clears a pending resume even if the status is back to the one it started from', fakeAsync(() => {
+    setup(detail('stopped', STOPPED));
+    results.push(true);
+    executions.resume.and.returnValue(of({ status: 'running' }));
+    executions.get.and.returnValue(of(detail('stopped', STOPPED, { execution: { resumed_at: '2026-11-11T10:00:00.000Z' } })));
+    btn('resume').click();
+    fixture.detectChanges();
+    expect(chip()).toBe('stopped');
+    expect(btn('resume').disabled).toBe(false);
+    end();
+  }));
+
+  it('the stop banner and interrupted action show only while stopping or stopped', fakeAsync(() => {
+    const stale = { stop_mode: 'hard', interrupted_action: { index: 0, action_id: 'x1', type: 'webrequestv2', title: 'GET status' } };
+    setup(detail('running', [{ name: 'stop', allowed: true }], { execution: stale }));
+    expect(el().querySelector('.ex-stop-mode')).toBeNull();
+    expect(el().querySelector('.ex-interrupted')).toBeNull();
+    end();
+  }));
+
+  it('the stop banner shows while stopped', fakeAsync(() => {
+    const info = { stop_mode: 'hard', interrupted_action: { index: 0, action_id: 'x1', type: 'webrequestv2', title: 'GET status' } };
+    setup(detail('stopped', STOPPED, { execution: info }));
+    expect(el().querySelector('.ex-stop-mode')).not.toBeNull();
+    expect(el().querySelector('.ex-interrupted').textContent).toContain('GET status');
+    end();
+  }));
+
+  it('start new passes stored to the dialog', fakeAsync(() => {
+    setup(detail('completed', [{ name: 'start_new', allowed: true }]));
+    executions.startNewInput.and.returnValue(of({ input: {}, masked: [], stored: 'none' }));
+    btn('start_new').click();
+    expect(dialog.open.calls.argsFor(0)[1].data.stored).toBe('none');
     end();
   }));
 });

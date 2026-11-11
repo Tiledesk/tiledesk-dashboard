@@ -3973,6 +3973,7 @@
                 "already_resumed": "È già stata ripresa da questo punto",
                 "not_unattended": "Solo per esecuzioni pianificate, webhook e automazioni",
                 "unsupported_trigger": "Non ancora disponibile per i trigger dei connettori",
+                "no_trigger_source": "Avviata con una chiamata diretta, non da un webhook: non c'è nulla da rieseguire",
                 "version_gone": "La versione dell'agente eseguita non è più disponibile"
             },
             "NotResumable": {
@@ -3982,8 +3983,9 @@
                 "conversation_closed": "Non può essere ripresa: la conversazione è chiusa.",
                 "newer_execution": "Non può essere ripresa: sulla stessa conversazione è in corso un'esecuzione più recente.",
                 "already_resumed": "Non può essere ripresa: è già stata ripresa da questo punto.",
-                "not_unattended": "Non può essere ripresa.",
-                "unsupported_trigger": "Non può essere ripresa.",
+                "not_unattended": "Non può essere ripresa: si riprendono solo le esecuzioni pianificate, webhook e automazioni.",
+                "unsupported_trigger": "Non può essere ripresa: i trigger dei connettori non sono ancora supportati.",
+                "no_trigger_source": "Non può essere ripresa.",
                 "version_gone": "Non può essere ripresa: la versione dell'agente eseguita non è più disponibile."
             },
             "Busy": "Un server sta ancora rilasciando questa esecuzione. Riprova tra qualche secondo.",
@@ -3991,6 +3993,9 @@
             "VersionCheckFailed": "Non è stato possibile verificare la versione dell'agente. Riprova.",
             "UnsealFailed": "Non è stato possibile leggere lo stato salvato di questa esecuzione.",
             "RefireFailed": "Non è stato possibile avviare la nuova esecuzione. Riprova.",
+            "RefireUnconfirmed": "La nuova esecuzione potrebbe essere partita. Verifica in corso…",
+            "NotStartable": "Questa esecuzione non può essere riavviata ({{reason}}).",
+            "PendingTimeout": "La modifica non è ancora comparsa. Ricarica la pagina tra poco.",
             "MissingInput": "Alcuni campi obbligatori dell'input sono vuoti.",
             "AlreadyStarted": "È appena stata avviata una nuova esecuzione",
             "Starting": "Avvio di una nuova esecuzione…",
@@ -4021,6 +4026,8 @@
             "StartNewText": "Esegue di nuovo {{agent}} con l'input qui sotto, usando la versione pubblicata attuale. Questa esecuzione resta com'è.",
             "StartNewMasked": "Questi campi sono stati nascosti come segreti al salvataggio. Compilali:",
             "StartNewServerMissing": "Compila i campi evidenziati: sono ancora vuoti.",
+            "StartNewStoredNone": "Nessun input memorizzato per questa esecuzione: inserisci l'input da inviare.",
+            "StartNewStoredHidden": "I valori sono nascosti per il tuo ruolo: compila l'input.",
             "StartNewFieldRequired": "obbligatorio",
             "StartNewFieldFilled": "compilato",
             "StartNewInput": "Input (JSON)",

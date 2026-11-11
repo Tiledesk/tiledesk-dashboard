@@ -49,8 +49,8 @@
             {{ "Executions.Detail.Conversation" | translate }} ↗
           </button>
           <span *ngIf="!d.execution.conversation_link" class="ex-muted">{{ "Executions.Detail.NoConversation" | translate }}</span>
-          <span *ngIf="d.execution.stop_mode" class="ex-stop-mode">{{ ("Executions.Controls.StopMode." + d.execution.stop_mode) | translate }}</span>
-          <span *ngIf="d.execution.interrupted_action as ia" class="ex-interrupted">{{ "Executions.Controls.Interrupted" | translate: { action: interruptedLabel(ia) } }}</span>
+          <span *ngIf="showStopInfo && d.execution.stop_mode" class="ex-stop-mode">{{ ("Executions.Controls.StopMode." + d.execution.stop_mode) | translate }}</span>
+          <span *ngIf="showStopInfo && d.execution.interrupted_action as ia" class="ex-interrupted">{{ "Executions.Controls.Interrupted" | translate: { action: interruptedLabel(ia) } }}</span>
           <span *ngIf="d.execution.messages_while_stopped" class="ex-while-stopped">{{ messagesWhileStoppedKey(d.execution.messages_while_stopped) | translate: { n: d.execution.messages_while_stopped } }}</span>
         </div>
 
