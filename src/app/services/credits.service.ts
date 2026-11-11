@@ -6,32 +6,36 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 
-export type CreditsBillingStatus = 'active' | 'grace' | 'suspended' | 'canceled';
+export type CreditsBillingStatus = 'active' | 'payment_failed' | 'suspended' | 'canceled';
 
+/** One model of GET /:projectid/credits/llm-prices, credits per 1000 tokens */
 export interface CreditsLlmPrice {
-  input: number;
-  output: number;
-  total: number;
+  id: string;
+  /** available with the Tiledesk key */
+  managed: boolean;
+  tiledeskKey?: { input: number; output: number };
+  ownKey: { input: number; output: number };
 }
 
-/** GET /:projectid/credits (and `credits` of POST /:projectid/quotes, without the price list) */
+/** GET /:projectid/credits (and `credits` of POST /:projectid/quotes, without the costs) */
 export interface CreditsSummary {
   metering: 'credits' | 'quotes';
-  grant?: number;
+  includedCredits?: number;
   period?: { start: string; end: string };
-  balance?: { grant: number; packs: number; packsFrozen: boolean; available: number };
-  billing?: { status: CreditsBillingStatus; graceUntil?: string };
+  balance?: { included: number; extra: number; extraFrozen: boolean; available: number };
+  billing?: { status: CreditsBillingStatus; courtesyUntil?: string };
   creditsFrom?: string;
-  packs?: number;
-  fees?: { [resource: string]: number };
-  monthlyFees?: { [resource: string]: number };
-  llmPrices?: { [provider: string]: { [model: string]: CreditsLlmPrice } };
-  packMin?: number;
+  extraCredits?: number;
+  usageCosts?: { [resource: string]: number };
+  monthlyCosts?: { [resource: string]: number };
+  extraCreditsMin?: number;
 }
 
 export interface CreditsLlmUsage {
   provider: string;
   model: string;
+  /** call with the project's own key */
+  ownKey: boolean;
   credits: number;
   tokens: number;
   /** provider cost, USD */
@@ -45,12 +49,12 @@ export interface CreditsPeriod {
   start: string;
   end: string;
   closed: boolean;
-  grant: number;
+  includedCredits: number;
   expired: number;
   consumed: number;
-  fromGrant: number;
-  fromPacks: number;
-  packsPurchased: number;
+  fromIncluded: number;
+  fromExtra: number;
+  extraPurchased: number;
   adjustments: { [kind: string]: number };
   resources: { [resource: string]: { credits: number; units: number; tokens?: number } };
   llm: CreditsLlmUsage[];
@@ -110,9 +114,13 @@ export class CreditsService implements OnDestroy {
     return this.http.get<CreditsPeriod[]>(this.url(projectId, '/history?limit=' + limit), this.httpOptions());
   }
 
-  /** Stripe checkout of a credits pack: the caller redirects to `url` */
-  buyPack(projectId: string, credits: number): Observable<{ id: string; url: string }> {
-    return this.http.post<{ id: string; url: string }>(this.url(projectId, '/packs'), { credits }, this.httpOptions());
+  getLlmPrices(projectId: string): Observable<CreditsLlmPrice[]> {
+    return this.http.get<CreditsLlmPrice[]>(this.url(projectId, '/llm-prices'), this.httpOptions());
+  }
+
+  /** Stripe checkout of extra credits: the caller redirects to `url` */
+  buyExtraCredits(projectId: string, credits: number): Observable<{ id: string; url: string }> {
+    return this.http.post<{ id: string; url: string }>(this.url(projectId, '/extra'), { credits }, this.httpOptions());
   }
 
   /** Called on project change: loads the credits of the project */
@@ -143,7 +151,7 @@ export class CreditsService implements OnDestroy {
     }
     const credits = summary && summary.metering === 'credits' ? summary : null;
     const current = this.creditsSubject.value?.summary;
-    // POST /quotes returns the summary without the price list: keep the one already loaded
+    // POST /quotes returns the summary without the costs: keep the ones already loaded
     const merged = credits && current ? Object.assign({}, current, credits) : credits;
     this.creditsSubject.next({ projectId, summary: merged });
     if (merged) {
