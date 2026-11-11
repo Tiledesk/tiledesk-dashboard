@@ -4454,6 +4454,25 @@
             "StartNewNotObject": "The input must be a JSON object",
             "StartNew": "Start new"
         },
+        "Retention": {
+            "Title": "Executions",
+            "Intro": "How long the trace and the sealed data of agent executions are kept.",
+            "Trace": "Trace (executions and steps)",
+            "Data": "Sealed data (attribute values, trigger input, checkpoints)",
+            "Days": "days",
+            "ZeroHint": "0 = don't capture",
+            "OutOfRange": "Enter a number from {{min}} to {{max}} (sealed data cannot exceed the trace)",
+            "AuditFixed": "Audit log: 1 year (fixed)",
+            "TestFixed": "Test runs: {{days}} days (fixed)",
+            "ReadOnly": "Only the project owner can change these settings.",
+            "Save": "Save",
+            "Saved": "Saved",
+            "SaveFailed": "The settings could not be saved. Try again.",
+            "ConfirmTitle": "Shorten retention",
+            "ConfirmDelete": "Data older than {{days}} days will be deleted within a few minutes. This cannot be undone.",
+            "ConfirmCapture": "Attribute values and inputs will no longer be captured; stopped runs can no longer be resumed from stored data.",
+            "ConfirmAction": "Shorten and delete"
+        },
         "DataAccess": {
             "ViewData": "View data",
             "Title": "View execution data",

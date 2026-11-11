@@ -61,6 +61,20 @@ describe('ExecutionsService', () => {
     http.expectOne('/executions/api/v1/projects/p1/executions/e1').flush({});
   });
 
+  it('getRetention and putRetention call the settings route', () => {
+    setup('/executions/api/v1/');
+    service.getRetention('p1').subscribe();
+    const get = http.expectOne('/executions/api/v1/projects/p1/settings/retention');
+    expect(get.request.method).toBe('GET');
+    expect(get.request.headers.get('Authorization')).toBe('JWT abc');
+    get.flush({});
+    service.putRetention('p1', { trace_days: 60, data_days: 7 }).subscribe();
+    const put = http.expectOne('/executions/api/v1/projects/p1/settings/retention');
+    expect(put.request.method).toBe('PUT');
+    expect(put.request.body).toEqual({ trace_days: 60, data_days: 7 });
+    put.flush({});
+  });
+
   it('summary joins agent_ids with commas', () => {
     setup('/executions/api/v1/');
     service.summary('p1', ['a', 'b']).subscribe();

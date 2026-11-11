@@ -321,3 +321,13 @@ export interface AuditPage {
   entries: AuditView[];
   next_cursor: string | null;
 }
+
+/** GET/PUT /projects/:pid/settings/retention. `can_edit` is false without executions_audit_read. */
+export interface RetentionSettings {
+  trace_days: number;
+  data_days: number;
+  defaults: { trace_days: number; data_days: number };
+  test_days: number;
+  audit_days: number;
+  can_edit: boolean;
+}

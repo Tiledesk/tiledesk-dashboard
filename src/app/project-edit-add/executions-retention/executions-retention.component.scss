@@ -1,0 +1,16 @@
+.er-row { margin-top: 32px; }
+.er-intro { font-size: 14px; color: #5d6b82; margin: 8px 0 16px; }
+.er-field { margin-bottom: 16px; }
+.er-label { display: block; font-weight: 400; font-size: 14px; margin-bottom: 4px; }
+.er-control { display: flex; align-items: center; gap: 8px; }
+.er-input { width: 90px; height: 34px; border: 1px solid #c9d0de; border-radius: 8px; padding: 0 10px; }
+.er-input.er-invalid { border-color: #d93025; }
+.er-input:disabled { background: #f3f5f9; color: #5d6b82; }
+.er-unit { font-size: 14px; }
+.er-range { font-size: 13px; color: #5d6b82; }
+.er-error { margin-top: 4px; font-size: 13px; color: #d93025; }
+.er-fixed { font-size: 13px; color: #5d6b82; margin: 8px 0 16px; }
+.er-readonly { font-size: 13px; color: #5d6b82; }
+.er-actions { display: flex; align-items: center; gap: 12px; }
+.er-actions .er-error { margin-top: 0; }
+.er-saved { font-size: 14px; color: #1e8e3e; }
