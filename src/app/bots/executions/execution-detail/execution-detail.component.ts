@@ -564,8 +564,14 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   trackByAudit(_i: number, e: AuditView) { return e.audit_id; }
 
   auditText(e: AuditView): string {
-    return auditSentence(e, this.executionId, this.detail ? this.detail.execution.agent_name : '');
+    return auditSentence(e, this.executionId, this.detail ? this.detail.execution.agent_name : '', this.blockNameOf);
   }
+
+  /** Block name by step_seq on this execution, for the audit rows. */
+  private readonly blockNameOf = (seq: number): string | null => {
+    const step = this.stepBySeq(seq);
+    return step ? step.block_name || null : null;
+  };
 
   goToActivities() {
     this.router.navigate(['/project', this.projectId, 'activities']);
