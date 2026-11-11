@@ -8,20 +8,32 @@ export const TRACE_RANGE = { min: 7, max: 365 };
 export const DATA_RANGE = { min: 0, max: 90 };
 
 export interface RetentionConfirmData {
-  /** Data older than this many days is deleted. */
-  days: number;
-  /** Sealed data lowered to 0: capture stops. */
+  /** Trace lowered to this many days (absent when not lowered). */
+  traceDays?: number;
+  /** Sealed data lowered to this many days (absent when not lowered). */
+  dataDays?: number;
+  /** Sealed data lowered to 0: everything stored goes and capture stops. */
   dataZero: boolean;
 }
 
-/** Confirm shown only when a value is lowered. Closes with true to go on. */
+/** "<key>" or "<key>_one" for 1 day. */
+function daysKey(key: string, days: number): string {
+  return days === 1 ? key + '_one' : key;
+}
+
+/** Confirm shown only when a value is lowered: one line per lowered setting. Closes with true to go on. */
 @Component({
   selector: 'executions-retention-confirm-dialog',
   template: `
     <h2 mat-dialog-title>{{ "Executions.Retention.ConfirmTitle" | translate }}</h2>
     <mat-dialog-content class="rcd">
-      <p class="rcd-delete">{{ "Executions.Retention.ConfirmDelete" | translate: { days: data.days } }}</p>
-      <p *ngIf="data.dataZero" class="rcd-capture">{{ "Executions.Retention.ConfirmCapture" | translate }}</p>
+      <p *ngIf="hasTrace" class="rcd-trace">{{ traceKey | translate: { days: data.traceDays } }}</p>
+      <p *ngIf="hasData && !data.dataZero" class="rcd-data">{{ dataKey | translate: { days: data.dataDays } }}</p>
+      <ng-container *ngIf="data.dataZero">
+        <p class="rcd-data rcd-data-zero">{{ "Executions.Retention.ConfirmDataZero" | translate }}</p>
+        <p class="rcd-capture">{{ "Executions.Retention.ConfirmCapture" | translate }}</p>
+      </ng-container>
+      <p class="rcd-undo">{{ "Executions.Retention.ConfirmIrreversible" | translate }}</p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button type="button" class="mat-dialog-close-btn rcd-cancel" (click)="dialogRef.close(false)">{{ "Executions.Dialogs.Cancel" | translate }}</button>
@@ -35,6 +47,11 @@ export class RetentionConfirmDialogComponent {
     public dialogRef: MatDialogRef<RetentionConfirmDialogComponent, boolean>,
     @Inject(MAT_DIALOG_DATA) public data: RetentionConfirmData
   ) { }
+
+  get hasTrace(): boolean { return Number.isInteger(this.data.traceDays); }
+  get hasData(): boolean { return Number.isInteger(this.data.dataDays); }
+  get traceKey(): string { return daysKey('Executions.Retention.ConfirmTrace', this.data.traceDays); }
+  get dataKey(): string { return daysKey('Executions.Retention.ConfirmData', this.data.dataDays); }
 }
 
 /** "Executions" card of the project settings retention page (spec phase 4 §5, §6.4). */
@@ -57,6 +74,8 @@ export class ExecutionsRetentionComponent implements OnInit {
   saved = false;
   /** Field the last save was refused for (out of range). */
   fieldError: 'trace_days' | 'data_days' | null = null;
+  /** Sealed data set longer than the trace (checked here, before any confirm). */
+  dataOverTrace = false;
   saveFailed = false;
 
   constructor(
@@ -81,14 +100,21 @@ export class ExecutionsRetentionComponent implements OnInit {
     this.dataDays = s.data_days;
   }
 
+  /** Whether a value differs from the saved one (saving the same values would only add an audit entry). */
+  get changed(): boolean {
+    return !!this.settings && (this.traceDays !== this.settings.trace_days || this.dataDays !== this.settings.data_days);
+  }
+
   get canSave(): boolean {
-    return !!this.settings && this.settings.can_edit && !this.saving && Number.isInteger(this.traceDays) && Number.isInteger(this.dataDays);
+    return !!this.settings && this.settings.can_edit && !this.saving && this.changed
+      && Number.isInteger(this.traceDays) && Number.isInteger(this.dataDays);
   }
 
   edited() {
     this.saved = false;
     this.saveFailed = false;
     this.fieldError = null;
+    this.dataOverTrace = false;
   }
 
   save() {
@@ -96,18 +122,21 @@ export class ExecutionsRetentionComponent implements OnInit {
     this.saved = false;
     this.saveFailed = false;
     this.fieldError = null;
+    this.dataOverTrace = false;
     const body = { trace_days: this.traceDays, data_days: this.dataDays };
-    const lowered: number[] = [];
-    if (body.trace_days < this.settings.trace_days) { lowered.push(body.trace_days); }
-    if (body.data_days < this.settings.data_days) { lowered.push(body.data_days); }
-    if (lowered.length === 0) {
+    if (body.data_days > body.trace_days) {
+      this.dataOverTrace = true;
+      return;
+    }
+    const traceLowered = body.trace_days < this.settings.trace_days;
+    const dataLowered = body.data_days < this.settings.data_days;
+    if (!traceLowered && !dataLowered) {
       this.put(body);
       return;
     }
-    const data: RetentionConfirmData = {
-      days: Math.min(...lowered),
-      dataZero: body.data_days === 0 && this.settings.data_days > 0
-    };
+    const data: RetentionConfirmData = { dataZero: dataLowered && body.data_days === 0 };
+    if (traceLowered) { data.traceDays = body.trace_days; }
+    if (dataLowered) { data.dataDays = body.data_days; }
     this.dialog.open(RetentionConfirmDialogComponent, { data, width: '480px' }).afterClosed().subscribe((ok) => {
       if (ok) { this.put(body); }
     });

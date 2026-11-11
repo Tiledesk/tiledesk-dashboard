@@ -34,6 +34,9 @@
         <div class="er-error" *ngIf="fieldError === 'data_days'" role="alert">
           {{ 'Executions.Retention.OutOfRange' | translate: { min: dataRange.min, max: dataRange.max } }}
         </div>
+        <div class="er-error er-over-trace" *ngIf="dataOverTrace" role="alert">
+          {{ 'Executions.Retention.DataOverTrace' | translate: { days: traceDays } }}
+        </div>
       </div>
 
       <p class="er-fixed">

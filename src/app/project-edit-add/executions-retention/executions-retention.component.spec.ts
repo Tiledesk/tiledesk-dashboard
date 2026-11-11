@@ -88,7 +88,42 @@ describe('ExecutionsRetentionComponent', () => {
     expect(input('data').value).toBe('30');
     expect(el().querySelector('.er-fixed').textContent).toContain('Audit log: 1 year (fixed)');
     expect(el().querySelector('.er-fixed').textContent).toContain('Test runs: 7 days (fixed)');
+    // nothing changed yet: nothing to save
+    expect(save().disabled).toBe(true);
+  }));
+
+  it('saving without a change sends nothing', fakeAsync(() => {
+    setup();
+    fixture.componentInstance.save();
+    expect(executions.putRetention).not.toHaveBeenCalled();
+    type('trace', 60);
     expect(save().disabled).toBe(false);
+    type('trace', 90);
+    expect(save().disabled).toBe(true);
+    clickSave();
+    expect(dialog.open).not.toHaveBeenCalled();
+    expect(executions.putRetention).not.toHaveBeenCalled();
+  }));
+
+  it('both lowered: one confirm line each', fakeAsync(() => {
+    setup();
+    type('trace', 30);
+    type('data', 7);
+    clickSave();
+    expect(dialog.open.calls.mostRecent().args[1].data).toEqual({ traceDays: 30, dataDays: 7, dataZero: false });
+    expect(executions.putRetention).toHaveBeenCalledWith('p1', { trace_days: 30, data_days: 7 });
+  }));
+
+  it('sealed data longer than the trace: own message, no confirm, no save', fakeAsync(() => {
+    setup();
+    type('trace', 20);
+    type('data', 25);
+    clickSave();
+    expect(dialog.open).not.toHaveBeenCalled();
+    expect(executions.putRetention).not.toHaveBeenCalled();
+    expect(el().querySelector('.er-data .er-error').textContent).toContain('Sealed data cannot be kept longer than the trace (20 days).');
+    type('data', 20);
+    expect(el().querySelector('.er-data .er-error')).toBeNull();
   }));
 
   it('read-only without can_edit', fakeAsync(() => {
@@ -96,7 +131,8 @@ describe('ExecutionsRetentionComponent', () => {
     expect(input('trace').disabled).toBe(true);
     expect(input('data').disabled).toBe(true);
     expect(el().querySelector('.er-save')).toBeNull();
-    expect(el().querySelector('.er-readonly').textContent).toContain('Only the project owner can change these settings.');
+    expect(el().querySelector('.er-readonly').textContent)
+      .toContain('Only the project owner, or a role allowed to read the executions audit, can change these settings.');
   }));
 
   it('shortening asks to confirm', fakeAsync(() => {
@@ -105,7 +141,7 @@ describe('ExecutionsRetentionComponent', () => {
     clickSave();
     expect(dialog.open).toHaveBeenCalledTimes(1);
     const data = dialog.open.calls.mostRecent().args[1].data;
-    expect(data).toEqual({ days: 60, dataZero: false });
+    expect(data).toEqual({ traceDays: 60, dataZero: false });
     expect(executions.putRetention).toHaveBeenCalledWith('p1', { trace_days: 60, data_days: 30 });
   }));
 
@@ -122,7 +158,7 @@ describe('ExecutionsRetentionComponent', () => {
     setup();
     type('data', 0);
     clickSave();
-    expect(dialog.open.calls.mostRecent().args[1].data).toEqual({ days: 0, dataZero: true });
+    expect(dialog.open.calls.mostRecent().args[1].data).toEqual({ dataDays: 0, dataZero: true });
     expect(executions.putRetention).toHaveBeenCalledWith('p1', { trace_days: 90, data_days: 0 });
   }));
 
@@ -180,18 +216,52 @@ describe('RetentionConfirmDialogComponent', () => {
     return f.nativeElement as HTMLElement;
   }
 
-  it('says what is deleted, and the capture warning only at data 0', () => {
-    const a = render({ days: 60, dataZero: false });
-    expect(a.textContent).toContain('Data older than 60 days will be deleted within a few minutes. This cannot be undone.');
-    expect(a.textContent).not.toContain('no longer be captured');
+  const p = (h: HTMLElement) => Array.from(h.querySelectorAll('p')).map(x => x.textContent.trim());
+
+  it('one line per lowered setting, "This cannot be undone." once and last', () => {
+    const a = render({ traceDays: 60, dataZero: false });
+    expect(p(a)).toEqual(['Traces of runs older than 60 days will be deleted within a few minutes.', 'This cannot be undone.']);
     TestBed.resetTestingModule();
-    const b = render({ days: 0, dataZero: true });
-    expect(b.textContent).toContain('Attribute values and inputs will no longer be captured; stopped runs can no longer be resumed from stored data.');
+    const b = render({ traceDays: 30, dataDays: 7, dataZero: false });
+    expect(p(b)).toEqual([
+      'Traces of runs older than 30 days will be deleted within a few minutes.',
+      'Attribute values, inputs and checkpoints of runs older than 7 days will be deleted within a few minutes.',
+      'This cannot be undone.',
+    ]);
+    expect(b.textContent).not.toContain('no longer be captured');
+  });
+
+  it('data 0: everything stored goes, capture stops, no "0 days"', () => {
+    const a = render({ dataDays: 0, dataZero: true });
+    expect(p(a)).toEqual([
+      'All stored attribute values, inputs and checkpoints will be deleted within a few minutes.',
+      'Attribute values and inputs will no longer be captured; stopped runs can no longer be resumed from stored data.',
+      'This cannot be undone.',
+    ]);
+    expect(a.textContent).not.toContain('0 days');
+  });
+
+  it('1 day is singular', () => {
+    const a = render({ dataDays: 1, dataZero: false });
+    expect(a.textContent).toContain('Attribute values, inputs and checkpoints of runs older than 1 day will be deleted within a few minutes.');
+    TestBed.resetTestingModule();
+    const b = render({ dataDays: 1, dataZero: false }, 'it');
+    expect(b.textContent).toContain('1 giorno');
+    expect(b.textContent).not.toContain('1 giorni');
   });
 
   it('is translated to Italian', () => {
-    const a = render({ days: 60, dataZero: true }, 'it');
+    const a = render({ traceDays: 60, dataDays: 0, dataZero: true }, 'it');
     expect(a.textContent).toContain('60 giorni');
+    expect(a.textContent).toContain("L'operazione non può essere annullata.");
     expect(a.textContent).not.toContain('Executions.Retention');
+  });
+
+  it('every Retention string has an Italian translation and none says variable', () => {
+    Object.keys(EN.Executions.Retention).forEach(k => expect(typeof IT.Executions.Retention[k]).toBe('string', k));
+    expect(IT.Executions.Retention.ReadOnly)
+      .toBe("Solo il proprietario del progetto, o un ruolo autorizzato a leggere l'audit delle esecuzioni, può modificare queste impostazioni.");
+    const all = (JSON.stringify(EN.Executions.Retention) + JSON.stringify(IT.Executions.Retention)).toLowerCase();
+    expect(all).not.toContain('variab');
   });
 });
