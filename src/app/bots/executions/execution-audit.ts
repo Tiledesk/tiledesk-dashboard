@@ -20,14 +20,23 @@ export function auditShortId(executionId: string): string {
   return String(executionId || '').replace(/-/g, '').slice(-6);
 }
 
+/** The name of a block by its step_seq, on the execution on screen; null when unknown. */
+export type BlockNameOf = (stepSeq: number) => string | null;
+
+/** "block <name>", or "block <step_seq>" when the name is unknown. */
+function blockLabel(seq: any, blockName?: BlockNameOf): string {
+  const name = blockName && typeof seq === 'number' ? blockName(seq) : null;
+  return `block ${name || seq}`;
+}
+
 /** What a data_viewed row showed: a block, an attribute's history, the trigger input, or the start new prefill. */
-export function auditViewedTarget(e: AuditView): string {
+export function auditViewedTarget(e: AuditView, blockName?: BlockNameOf): string {
   const d = e.details || {};
   if (d.key) return `attribute ${d.key}`;
   if (d.purpose === 'trigger') return 'trigger input';
   if (d.purpose === 'start_new_prefill') return 'start new input';
-  if (d.step_seq !== undefined && d.step_seq !== null) return `block ${d.step_seq}`;
-  if (d.scope && d.scope.type === 'step') return `block ${d.scope.step_seq}`;
+  if (d.step_seq !== undefined && d.step_seq !== null) return blockLabel(d.step_seq, blockName);
+  if (d.scope && d.scope.type === 'step') return blockLabel(d.scope.step_seq, blockName);
   return 'whole execution';
 }
 
@@ -54,9 +63,9 @@ export function auditResultKind(e: AuditView): 'ok' | 'pending' | 'bad' | 'none'
 
 /**
  * One sentence per row, in the words Activities uses for the same actions (the reason and the result are shown apart).
- * `executionId` and `agent` are the execution on screen.
+ * `executionId` and `agent` are the execution on screen; `blockName` names its blocks (else their number).
  */
-export function auditSentence(e: AuditView, executionId: string, agent: string): string {
+export function auditSentence(e: AuditView, executionId: string, agent: string, blockName?: BlockNameOf): string {
   const actor = (e.actor && e.actor.name) || 'someone';
   const id6 = auditShortId(executionId);
   const where = `${id6} of ${agent || 'agent'}`;
@@ -69,7 +78,7 @@ export function auditSentence(e: AuditView, executionId: string, agent: string):
     case 'start_new':
       return `${actor} ${rejected ? TRIED[e.action] : PHRASES[e.action]} ${where}`;
     case 'data_viewed':
-      return `${actor} viewed data (${auditViewedTarget(e)})`;
+      return `${actor} viewed data (${auditViewedTarget(e, blockName)})`;
     case 'data_access_requested': {
       const scope = e.details && e.details.scope && e.details.scope.type === 'step' ? '1 block' : 'whole execution';
       return `${actor} requested access to the data of execution ${where} · ${scope}`;

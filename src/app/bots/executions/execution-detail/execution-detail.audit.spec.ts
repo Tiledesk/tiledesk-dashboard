@@ -119,6 +119,20 @@ describe('ExecutionDetailComponent audit tab', () => {
     discardPeriodicTasks();
   }));
 
+  it('rows name the block from the timeline', fakeAsync(() => {
+    setup('owner');
+    const d = detail();
+    d.steps = [{ seq: 2, block_id: 'b2', block_name: 'Call status API', started_at: null, ended_at: null, duration_ms: null,
+      outcome: 'success', changed_keys: 0, outside: [], actions: [] }];
+    executions.get.and.returnValue(of(d));
+    fixture.componentInstance.retry();
+    fixture.detectChanges();
+    tabBtn().click();
+    fixture.detectChanges();
+    expect(rows()[0]).toContain('Anna Rossi viewed data (block Call status API)');
+    discardPeriodicTasks();
+  }));
+
   it('a failed audit read logs the status and code, not the response', fakeAsync(() => {
     setup('owner');
     const logger = TestBed.inject(LoggerService);
@@ -147,5 +161,14 @@ describe('auditSentence', () => {
       .toBe('Anna Rossi requested access to the data of execution 000001 of Bot · 1 block');
     expect(s('data_access_denied', { result: 'rejected:forbidden', role: 'admin' }))
       .toBe('Anna Rossi was denied access to the data of execution 000001 of Bot (role admin)');
+  });
+
+  it('names the block when the execution on screen has it, else its number', () => {
+    const names = (seq: number) => (seq === 2 ? 'Call status API' : null);
+    const n = (d: any) => auditSentence(entry(1, 'data_viewed', d), EXEC_ID, 'Bot', names);
+    expect(n({ result: 'accepted', step_seq: 2 })).toBe('Anna Rossi viewed data (block Call status API)');
+    expect(n({ result: 'accepted', scope: { type: 'step', step_seq: 2 } })).toBe('Anna Rossi viewed data (block Call status API)');
+    expect(n({ result: 'accepted', step_seq: 7 })).toBe('Anna Rossi viewed data (block 7)');
+    expect(s('data_viewed', { result: 'accepted', step_seq: 2 })).toBe('Anna Rossi viewed data (block 2)');
   });
 });
