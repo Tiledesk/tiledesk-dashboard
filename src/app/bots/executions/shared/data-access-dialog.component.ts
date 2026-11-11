@@ -1,7 +1,6 @@
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
 import { ExecutionsService } from 'app/services/executions.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { GrantInfo, GrantScope } from '../executions.models';
@@ -70,7 +69,8 @@ export class DataAccessDialogComponent implements OnDestroy {
   scopeType: 'step' | 'execution';
   busy = false;
   error: DialogError | null = null;
-  private sub: Subscription | null = null;
+  /** cancelled or destroyed while the request ran: a grant that still arrives is revoked, not used */
+  private abandoned = false;
 
   constructor(
     public dialogRef: MatDialogRef<DataAccessDialogComponent, GrantInfo | null>,
@@ -111,35 +111,48 @@ export class DataAccessDialogComponent implements OnDestroy {
     if (!this.canConfirm) return;
     this.busy = true;
     this.error = null;
-    const body = { reason: this.trimmedReason, scope: this.scope };
-    this.sub = this.executionsService.requestDataAccess(this.data.projectId, this.data.executionId, body).subscribe({
+    const requested = this.scope;
+    const body = { reason: this.trimmedReason, scope: requested };
+    const { projectId, executionId } = this.data;
+    this.executionsService.requestDataAccess(projectId, executionId, body).subscribe({
       next: info => {
         this.busy = false;
-        if (info && typeof info.grant_id === 'string' && typeof info.expires_at === 'string') this.dialogRef.close(info);
-        else this.error = { key: 'Executions.DataAccess.Failed' };
+        const valid = !!info && typeof info.grant_id === 'string' && typeof info.expires_at === 'string';
+        if (this.abandoned) {
+          // nobody will use it: close it on the service now instead of leaving it open for 15 minutes
+          if (valid) this.revokeOrphan(projectId, executionId, info.grant_id);
+          return;
+        }
+        if (!valid) {
+          this.error = { key: 'Executions.DataAccess.Failed' };
+          return;
+        }
+        const scope = info.scope && typeof info.scope === 'object' && typeof (info.scope as any).type === 'string' ? info.scope : requested;
+        this.dialogRef.close({ ...info, scope, received_at: Date.now() });
       },
       error: err => {
         this.busy = false;
+        if (this.abandoned) return;
         this.logger.error('[EXECUTION-DATA-ACCESS] request error ', err && err.status);
         this.error = this.errorFor(err);
       }
     });
   }
 
+  /** The request in flight is not cancelled (the grant may already exist): its answer is revoked when it comes. */
   cancel() {
-    this.dropRequest();
+    this.abandoned = true;
     this.dialogRef.close(null);
   }
 
   ngOnDestroy() {
-    this.dropRequest();
+    this.abandoned = true;
   }
 
-  private dropRequest() {
-    if (this.sub) {
-      this.sub.unsubscribe();
-      this.sub = null;
-    }
+  private revokeOrphan(projectId: string, executionId: string, grantId: string) {
+    this.executionsService.revokeDataAccess(projectId, executionId, grantId).subscribe({
+      error: err => this.logger.warn('[EXECUTION-DATA-ACCESS] revoke error ', err && err.status),
+    });
   }
 
   private errorFor(err: any): DialogError {

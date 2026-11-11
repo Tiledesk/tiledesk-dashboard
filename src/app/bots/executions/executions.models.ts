@@ -257,8 +257,13 @@ export type GrantScope = { type: 'execution' } | { type: 'step'; step_seq: numbe
 /** POST data-access answer: valid until expires_at (15 min), closed earlier by revoke. */
 export interface GrantInfo {
   grant_id: string;
+  /** server clock: shown for reference, the countdown runs on ttl_s */
   expires_at: string;
   scope: GrantScope;
+  /** whole seconds left when the service answered (absent from older services) */
+  ttl_s?: number;
+  /** client only, not from the API: Date.now() when the answer arrived (ttl_s counts from here) */
+  received_at?: number;
 }
 
 const DAY_MS = 86400000;

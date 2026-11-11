@@ -124,6 +124,56 @@ describe('GrantSession', () => {
     discardPeriodicTasks();
   }));
 
+  it('anchors the deadline on ttl_s, not on the client clock vs expires_at', fakeAsync(() => {
+    // the browser is 1 h behind the server: expires_at looks 75 min away, the grant has 60 s left
+    const ahead: GrantInfo = { grant_id: 'g1', expires_at: new Date(T0 + 75 * 60000).toISOString(), scope: { type: 'execution' }, ttl_s: 60 };
+    session.start(ahead);
+    expect(session.remaining).toBe(60);
+    advance(59000);
+    expect(session.active).toBe(true);
+    advance(1000);
+    expect(session.active).toBe(false);
+    // the browser is 20 min ahead: expires_at is already past locally, ttl_s still says 900 s
+    const behind: GrantInfo = { grant_id: 'g2', expires_at: new Date(clock - 20 * 60000).toISOString(), scope: { type: 'execution' }, ttl_s: 900 };
+    session.start(behind);
+    expect(session.active).toBe(true);
+    expect(session.remaining).toBe(900);
+    session.end();
+  }));
+
+  it('ttl_s counts from when the response arrived', fakeAsync(() => {
+    const info: GrantInfo = { grant_id: 'g1', expires_at: new Date(T0 + 900000).toISOString(), scope: { type: 'execution' }, ttl_s: 10 };
+    session.start(info, clock - 4000);
+    expect(session.remaining).toBe(6);
+    session.end();
+  }));
+
+  it('without ttl_s the deadline is expires_at, capped at 15 minutes from arrival', fakeAsync(() => {
+    session.start({ grant_id: 'g1', expires_at: new Date(T0 + 3600000).toISOString(), scope: { type: 'execution' } });
+    expect(session.remaining).toBe(900);
+    session.end();
+    session.start(grant('g2', 120));
+    expect(session.remaining).toBe(120);
+    session.end();
+  }));
+
+  it('past the deadline nothing is covered even before the next tick; checkExpiry ends it', fakeAsync(() => {
+    const ended: string[] = [];
+    session.ended$.subscribe(id => ended.push(id));
+    session.start(grant('g1', 10, { type: 'step', step_seq: 2 }));
+    // a throttled background tab: the clock moves, the interval does not fire
+    clock += 11000;
+    expect(session.active).toBe(false);
+    expect(session.grantId).toBeNull();
+    expect(session.covers(2)).toBe(false);
+    expect(session.accept('g1')).toBe(false);
+    expect(ended).toEqual([]);
+    session.checkExpiry();
+    expect(ended).toEqual(['g1']);
+    session.checkExpiry();
+    expect(ended).toEqual(['g1']);
+  }));
+
   it('formats the countdown as m:ss', () => {
     expect(formatCountdown(900)).toBe('15:00');
     expect(formatCountdown(872)).toBe('14:32');
