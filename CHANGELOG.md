@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### Unreleased
+- Adds OAuth authentication for MCP servers in Integrations → MCP Servers: automatic (MCP discovery), Google and manual; connection status with reconnect.
+
 ### 2.8.40
 - Adds the ability to create TTL columns in Data Tables
 - Fixes the bug: Data Tables grid could go empty after filter reset due to a stale listRows race
