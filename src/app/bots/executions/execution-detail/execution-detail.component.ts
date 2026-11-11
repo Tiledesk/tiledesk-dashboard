@@ -60,6 +60,8 @@ function errorCode(err: any): string | null {
   return body && typeof body === 'object' && typeof body.error === 'string' ? body.error : null;
 }
 const ID_RE = /^[A-Za-z0-9_-]{1,128}$/;
+/** 403 codes of a value read whose grant the service no longer honours. */
+const GRANT_REFUSALS = ['grant_invalid', 'grant_out_of_scope'];
 
 /**
  * What a failed read may log: the status and the API's error code. Never the response body: on a read made with
@@ -457,6 +459,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
           slot.loading = false;
           slot.error = true;
           this.logger.error('[EXECUTION-DETAIL] state error ', errorSummary(err));
+          this.onGrantReadError(grantId, err);
         }
       });
   }
@@ -525,7 +528,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
         this.auditLoading = false;
       },
       error: err => {
-        this.logger.error('[EXECUTION-DETAIL] audit error ', err);
+        this.logger.error('[EXECUTION-DETAIL] audit error ', errorSummary(err));
         if (pid !== this.projectId || id !== this.executionId) return;
         this.auditLoading = false;
         this.auditError = true;
@@ -615,6 +618,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
           this.historyLoading = false;
           this.historyError = true;
           this.logger.error('[EXECUTION-DETAIL] history error ', errorSummary(err));
+          this.onGrantReadError(grantId, err);
         }
       });
   }
@@ -666,6 +670,18 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
           this.reloadWithGrant();
         }
       });
+  }
+
+  /**
+   * A read made with the active grant was refused because the service no longer honours that grant (revoked or
+   * expired there, out of scope, data gone): the session ends here too and the values go with it. The service has
+   * closed it already, so no revoke. Refusals of reads made without a grant, and other errors, leave the grant open.
+   */
+  private onGrantReadError(grantId: string | null, err: any) {
+    if (!grantId || this.session.grantId !== grantId) return;
+    const status = httpStatus(err);
+    const code = errorCode(err);
+    if ((status === 403 && GRANT_REFUSALS.includes(code)) || status === 410) this.endGrant(false);
   }
 
   /** A read made with a grant goes through the session's guard (dropped once that grant ended or was replaced). */
@@ -728,6 +744,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
           this.triggerLoading = false;
           this.triggerError = true;
           this.logger.error('[EXECUTION-DETAIL] trigger error ', errorSummary(err));
+          this.onGrantReadError(grantId, err);
         }
       });
   }

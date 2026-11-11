@@ -1,7 +1,8 @@
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
-import { BehaviorSubject, of, Subject } from 'rxjs';
+import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -115,6 +116,21 @@ describe('ExecutionDetailComponent audit tab', () => {
     const router = TestBed.inject(Router) as any;
     (el().querySelector('.au-activities') as HTMLButtonElement).click();
     expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'activities']);
+    discardPeriodicTasks();
+  }));
+
+  it('a failed audit read logs the status and code, not the response', fakeAsync(() => {
+    setup('owner');
+    const logger = TestBed.inject(LoggerService);
+    spyOn(logger, 'error');
+    executions.audit.and.returnValue(throwError(new HttpErrorResponse({ status: 500, error: { error: 'boom', reason: 'MARKER-REASON-91' } })));
+    tabBtn().click();
+    fixture.detectChanges();
+    expect(el().querySelector('.au-error')).not.toBeNull();
+    const logged = JSON.stringify((logger.error as jasmine.Spy).calls.allArgs());
+    expect(logged).toContain('500');
+    expect(logged).toContain('boom');
+    expect(logged).not.toContain('MARKER-REASON-91');
     discardPeriodicTasks();
   }));
 });

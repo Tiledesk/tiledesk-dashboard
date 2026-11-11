@@ -377,10 +377,76 @@ describe('ExecutionDetailComponent data access', () => {
     executions.history.and.returnValue(throwError(err));
     cmp().loadState(1, true);
     cmp().openHistory('last_status');
+    // the trigger input is read only with an execution grant: its failure is logged the same way
+    // (history closed first: its refused re-read with the grant would end the grant before the trigger read)
+    cmp().closeHistory();
+    executions.triggerData.and.returnValue(throwError(err));
+    openGrant(grant(900));
+    expect(executions.triggerData).toHaveBeenCalled();
+    expect(logger.error.calls.allArgs().some(a => String(a[0]).includes('trigger error'))).toBe(true);
     const logged = JSON.stringify([logger.error.calls.allArgs(), logger.warn.calls.allArgs(), logger.log.calls.allArgs()]);
     expect(logger.error).toHaveBeenCalled();
     expect(logged).not.toContain(MARKER);
     expect(logged).toContain('grant_invalid');
     expect(logged).toContain('403');
+  }));
+  // ---- a grant the service ended (revoked elsewhere, expired there, data gone) ----
+
+  function refusal(status: number, error: string) {
+    return throwError(new HttpErrorResponse({ status, error: { error } }));
+  }
+
+  function expectGrantEnded() {
+    fixture.detectChanges();
+    expect(cmp().session.active).toBe(false);
+    expect(strip()).toBeNull();
+    // the service already closed it: no revoke from here
+    expect(executions.revokeDataAccess).not.toHaveBeenCalled();
+    expectNoValues();
+  }
+
+  it('a 403 grant_invalid on a state read with the active grant ends the session and drops values', fakeAsync(() => {
+    setup('owner');
+    openGrant(grant(900));
+    seedValues('g1');
+    executions.state.and.returnValue(refusal(403, 'grant_invalid'));
+    cmp().loadState(1, true);
+    expectGrantEnded();
+  }));
+
+  it('a 403 grant_out_of_scope on the history read ends the session', fakeAsync(() => {
+    setup('owner');
+    openGrant(grant(900));
+    seedValues('g1');
+    executions.history.and.returnValue(refusal(403, 'grant_out_of_scope'));
+    cmp().loadHistory();
+    expectGrantEnded();
+  }));
+
+  it('a 410 on the trigger read with the active grant ends the session', fakeAsync(() => {
+    setup('owner');
+    executions.triggerData.and.returnValue(refusal(410, 'data_expired'));
+    openGrant(grant(900));
+    expect(executions.triggerData).toHaveBeenCalled();
+    expectGrantEnded();
+    expect(cmp().triggerSide).toBeNull();
+  }));
+
+  it('other failures, and refusals of reads made without the grant, keep the grant', fakeAsync(() => {
+    setup('owner');
+    openGrant(grant(900, { type: 'step', step_seq: 2 }));
+    // block 1 is outside the grant: read without it, its 403 is not about the grant
+    executions.state.and.returnValue(refusal(403, 'forbidden'));
+    cmp().loadState(1, true);
+    expect(executions.state.calls.mostRecent().args.length).toBe(3);
+    expect(cmp().session.active).toBe(true);
+    // a server error on a read made with the grant
+    executions.state.and.returnValue(refusal(500, 'boom'));
+    cmp().loadState(2, true);
+    expect(executions.state.calls.mostRecent().args[3]).toBe('g1');
+    expect(cmp().session.active).toBe(true);
+    fixture.detectChanges();
+    expect(strip()).toBeTruthy();
+    cmp().closeGrant();
   }));
 });
