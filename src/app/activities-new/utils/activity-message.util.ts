@@ -972,9 +972,9 @@ export function isExecutionVerb(verb: string): boolean {
   return Object.prototype.hasOwnProperty.call(EXECUTION_VERB_PHRASES, verb);
 }
 
-/** First 6 characters of the execution id (target.id), as the server writes it. */
+/** Last 6 characters of the execution id (target.id) without dashes, as the server writes it (uuid v7 starts with a timestamp). */
 export function executionShortId(activity: ActivityRecord): string {
-  return str(activity.target?.id).substring(0, 6);
+  return str(activity.target?.id).replace(/-/g, '').slice(-6);
 }
 
 export function executionAgentLabel(activity: ActivityRecord): string {

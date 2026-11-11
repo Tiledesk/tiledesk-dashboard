@@ -5,9 +5,9 @@ export interface DestroyDialogData {
   executionId: string;
 }
 
-/** The confirm the API checks: the first 6 characters of the execution id (spec §9.6). */
+/** The confirm the API checks: the last 6 characters of the execution id without dashes (uuid v7 starts with a timestamp). */
 export function destroyConfirmCode(executionId: string): string {
-  return (executionId || '').slice(0, 6);
+  return (executionId || '').replace(/-/g, '').slice(-6);
 }
 
 /** Destroy execution (spec §11.5). Closes with the confirm code, or null on cancel. */

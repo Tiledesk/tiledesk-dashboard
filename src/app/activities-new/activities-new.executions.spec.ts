@@ -17,50 +17,57 @@ function activity(verb: string, extra: any = {}): any {
 
 describe('Activities - Executions audit rows', () => {
   it('EXECUTION_STOP_HARD renders "<actor> hard-stopped execution <id> of <agent>"', () => {
-    expect(renderActivity(activity('EXECUTION_STOP_HARD'))).toBe('Anna Rossi hard-stopped execution 0a1b2c of Support Bot');
+    expect(renderActivity(activity('EXECUTION_STOP_HARD'))).toBe('Anna Rossi hard-stopped execution 556666 of Support Bot');
   });
 
   it('EXECUTION_STOP_SOFT and EXECUTION_DESTROY render like the server, with the reason appended', () => {
-    expect(renderActivity(activity('EXECUTION_STOP_SOFT'))).toBe('Anna Rossi soft-stopped execution 0a1b2c of Support Bot');
+    expect(renderActivity(activity('EXECUTION_STOP_SOFT'))).toBe('Anna Rossi soft-stopped execution 556666 of Support Bot');
     expect(renderActivity(activity('EXECUTION_DESTROY', { reason: 'stuck' })))
-      .toBe('Anna Rossi destroyed execution 0a1b2c of Support Bot · "stuck"');
+      .toBe('Anna Rossi destroyed execution 556666 of Support Bot · "stuck"');
   });
 
   it('a rejected control reads as an attempt with the refusal, like the server sentence', () => {
     expect(renderActivity(activity('EXECUTION_STOP_HARD', { result: 'rejected:stopped' })))
-      .toBe('Anna Rossi tried to hard-stop execution 0a1b2c of Support Bot (rejected: stopped)');
+      .toBe('Anna Rossi tried to hard-stop execution 556666 of Support Bot (rejected: stopped)');
     expect(renderActivity(activity('EXECUTION_STOP_SOFT', { result: 'rejected:completed' })))
-      .toBe('Anna Rossi tried to soft-stop execution 0a1b2c of Support Bot (rejected: completed)');
+      .toBe('Anna Rossi tried to soft-stop execution 556666 of Support Bot (rejected: completed)');
     expect(renderActivity(activity('EXECUTION_DESTROY', { result: 'rejected:destroyed', reason: 'again' })))
-      .toBe('Anna Rossi tried to destroy execution 0a1b2c of Support Bot (rejected: destroyed) · "again"');
+      .toBe('Anna Rossi tried to destroy execution 556666 of Support Bot (rejected: destroyed) · "again"');
     expect(renderActivity(activity('EXECUTION_DESTROY', { result: 'rejected' })))
-      .toBe('Anna Rossi tried to destroy execution 0a1b2c of Support Bot (rejected)');
+      .toBe('Anna Rossi tried to destroy execution 556666 of Support Bot (rejected)');
     expect(renderActivity(activity('EXECUTION_STOP_HARD', { result: 'accepted' })))
-      .toBe('Anna Rossi hard-stopped execution 0a1b2c of Support Bot');
+      .toBe('Anna Rossi hard-stopped execution 556666 of Support Bot');
 
     const c: any = Object.create(ActivitiesNewComponent.prototype);
     c.projectId = 'pid';
     c.activityMessage = (a: any) => renderActivity(a);
     const parts = c.getActivityParts(activity('EXECUTION_STOP_HARD', { result: 'rejected:stopped', reason: 'x' }));
     expect(parts.before).toBe(' tried to hard-stop execution ');
-    expect(parts.executionLinkLabel).toBe('0a1b2c');
+    expect(parts.executionLinkLabel).toBe('556666');
     expect(parts.after).toBe(' of Support Bot (rejected: stopped) · "x"');
   });
 
+  it('a start new refire failure renders as an attempt with the code', () => {
+    expect(renderActivity(activity('EXECUTION_START_NEW', { result: 'rejected:refire_failed' })))
+      .toBe('Anna Rossi tried to start a new run of execution 556666 of Support Bot (rejected: refire_failed)');
+    expect(renderActivity(activity('EXECUTION_START_NEW', { result: 'rejected:not_startable:webhook_not_found' })))
+      .toBe('Anna Rossi tried to start a new run of execution 556666 of Support Bot (rejected: not_startable:webhook_not_found)');
+  });
+
   it('EXECUTION_RESUME and EXECUTION_START_NEW render the server sentences (done and tried)', () => {
-    expect(renderActivity(activity('EXECUTION_RESUME'))).toBe('Anna Rossi resumed execution 0a1b2c of Support Bot');
+    expect(renderActivity(activity('EXECUTION_RESUME'))).toBe('Anna Rossi resumed execution 556666 of Support Bot');
     expect(renderActivity(activity('EXECUTION_START_NEW', { reason: 'retry' })))
-      .toBe('Anna Rossi started a new run of execution 0a1b2c of Support Bot · "retry"');
+      .toBe('Anna Rossi started a new run of execution 556666 of Support Bot · "retry"');
     expect(renderActivity(activity('EXECUTION_RESUME', { result: 'rejected:newer_execution' })))
-      .toBe('Anna Rossi tried to resume execution 0a1b2c of Support Bot (rejected: newer_execution)');
+      .toBe('Anna Rossi tried to resume execution 556666 of Support Bot (rejected: newer_execution)');
     expect(renderActivity(activity('EXECUTION_START_NEW', { result: 'rejected:already_started' })))
-      .toBe('Anna Rossi tried to start a new run of execution 0a1b2c of Support Bot (rejected: already_started)');
+      .toBe('Anna Rossi tried to start a new run of execution 556666 of Support Bot (rejected: already_started)');
     const c: any = Object.create(ActivitiesNewComponent.prototype);
     c.projectId = 'pid';
     c.activityMessage = (a: any) => renderActivity(a);
     const parts = c.getActivityParts(activity('EXECUTION_START_NEW'));
     expect(parts.before).toBe(' started a new run of execution ');
-    expect(parts.executionLinkLabel).toBe('0a1b2c');
+    expect(parts.executionLinkLabel).toBe('556666');
     expect(c.executionRouterLink(activity('EXECUTION_RESUME'))).toEqual(['/project', 'pid', 'monitor', AGENT, 'executions', EXEC]);
   });
 
@@ -69,7 +76,7 @@ describe('Activities - Executions audit rows', () => {
     c.projectId = 'pid';
     c.activityMessage = (a: any) => renderActivity(a);
     const parts = c.getActivityParts(activity('EXECUTION_STOP_HARD', { reason: 'x' }));
-    expect(parts.executionLinkLabel).toBe('0a1b2c');
+    expect(parts.executionLinkLabel).toBe('556666');
     expect(parts.actorLink).toBe('Anna Rossi');
     expect(parts.before).toBe(' hard-stopped execution ');
     expect(parts.after).toBe(' of Support Bot · "x"');
