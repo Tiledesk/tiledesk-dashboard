@@ -67,13 +67,19 @@
 
         <div *ngIf="d.execution.trace_complete === false" class="ex-banner">{{ "Executions.TraceIncomplete" | translate }}</div>
 
-        <!-- controls come from the API: hidden when not allowed for the status, disabled when not for the role -->
-        <div *ngIf="controls.length" class="ex-controls">
-          <span *ngFor="let c of controls; trackBy: trackByControl" class="ex-ctl-wrap"
-            [matTooltip]="c.allowed ? '' : (noPermissionKey(c) | translate)" [matTooltipDisabled]="c.allowed">
-            <button type="button" class="ex-btn" [ngClass]="'ex-ctl-' + c.name" [class.ex-btn-danger]="c.name === 'destroy'"
-              [disabled]="!c.allowed || controlBusy || !!pending" (click)="runControl(c)">{{ ("Executions.Controls." + c.name) | translate }}</button>
-          </span>
+        <div *ngIf="controls.length || canViewData" class="ex-actions">
+          <!-- controls come from the API: hidden when not allowed for the status, disabled when not for the role -->
+          <div *ngIf="controls.length" class="ex-controls">
+            <span *ngFor="let c of controls; trackBy: trackByControl" class="ex-ctl-wrap"
+              [matTooltip]="c.allowed ? '' : (noPermissionKey(c) | translate)" [matTooltipDisabled]="c.allowed">
+              <button type="button" class="ex-btn" [ngClass]="'ex-ctl-' + c.name" [class.ex-btn-danger]="c.name === 'destroy'"
+                [disabled]="!c.allowed || controlBusy || !!pending" (click)="runControl(c)">{{ ("Executions.Controls." + c.name) | translate }}</button>
+            </span>
+          </div>
+          <span class="ex-spacer"></span>
+          <!-- data access (owner, admin, executions_data_access): opens on the whole execution -->
+          <button *ngIf="canViewData" type="button" class="ex-btn ex-view-data" (click)="openDataAccess()">
+            {{ "Executions.DataAccess.ViewData" | translate }}</button>
         </div>
         <div *ngIf="controlMessage" class="ex-control-msg" role="alert">{{ controlMessage.key | translate: controlMessage.params }}
           <button *ngIf="controlMessage.offerStartNew" type="button" class="ex-link ex-offer-start-new" (click)="offerStartNew()">{{ "Executions.Controls.start_new" | translate }}</button>
@@ -82,6 +88,20 @@
         <div *ngIf="startedId" class="ex-control-note ex-started" role="status">{{ "Executions.Controls.StartedNew" | translate }}
           <button type="button" class="ex-link ex-mono ex-started-link" (click)="openExecution(startedId)">{{ shortId(startedId) }} ↗</button>
         </div>
+      </section>
+
+      <!-- active data access grant: values are shown only while this strip is (Close or expiry clears them) -->
+      <section *ngIf="session.active" class="ex-grant-strip" role="region" [attr.aria-label]="'Executions.DataAccess.Strip' | translate">
+        <mat-icon class="ex-grant-icon" aria-hidden="true">lock_open</mat-icon>
+        <span class="ex-grant-title">{{ "Executions.DataAccess.Strip" | translate }}</span>
+        <span class="ex-grant-sep" aria-hidden="true">·</span>
+        <span class="ex-grant-scope">{{ grantScopeLabel.key | translate: grantScopeLabel.params }}</span>
+        <span class="ex-grant-sep" aria-hidden="true">·</span>
+        <span class="ex-grant-countdown">{{ "Executions.DataAccess.ExpiresIn" | translate: { time: grantCountdown } }}</span>
+        <span class="ex-grant-sep" aria-hidden="true">·</span>
+        <span class="ex-grant-recorded">{{ "Executions.DataAccess.Recorded" | translate }}</span>
+        <span class="ex-spacer"></span>
+        <button type="button" class="ex-btn ex-grant-close" (click)="closeGrant()">{{ "Executions.DataAccess.Close" | translate }}</button>
       </section>
 
       <!-- tabs -->

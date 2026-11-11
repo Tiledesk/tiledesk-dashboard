@@ -5,7 +5,7 @@ import { ExecutionsService } from './executions.service';
 import { AppConfigService } from './app-config.service';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from './logger/logger.service';
-import { canViewExecutions } from 'app/bots/executions/executions.models';
+import { canViewExecutionData, canViewExecutions } from 'app/bots/executions/executions.models';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 
 describe('ExecutionsService', () => {
@@ -119,6 +119,46 @@ describe('ExecutionsService', () => {
     expect(s.request.body).toEqual({ input });
     s.flush({ status: 'started' });
   });
+
+  it('data access: request, revoke and the grant on value reads', () => {
+    setup('/executions/api/v1');
+    const scope = { type: 'step' as const, step_seq: 2 };
+    let info: any;
+    service.requestDataAccess('p1', 'e1', { reason: 'check the 500', scope }).subscribe(r => (info = r));
+    const a = http.expectOne('/executions/api/v1/projects/p1/executions/e1/data-access');
+    expect(a.request.method).toBe('POST');
+    expect(a.request.body).toEqual({ reason: 'check the 500', scope });
+    a.flush({ grant_id: 'g1', expires_at: '2026-11-11T10:15:00.000Z', scope }, { status: 201, statusText: 'Created' });
+    expect(info).toEqual({ grant_id: 'g1', expires_at: '2026-11-11T10:15:00.000Z', scope });
+
+    service.revokeDataAccess('p1', 'e1', 'g/1').subscribe();
+    const r = http.expectOne('/executions/api/v1/projects/p1/executions/e1/data-access/g%2F1/revoke');
+    expect(r.request.method).toBe('POST');
+    r.flush(null, { status: 204, statusText: 'No Content' });
+
+    service.state('p1', 'e1', 2, 'g1').subscribe();
+    const s = http.expectOne((x) => x.url === '/executions/api/v1/projects/p1/executions/e1/state');
+    expect(s.request.params.get('step_seq')).toBe('2');
+    expect(s.request.params.get('grant')).toBe('g1');
+    s.flush({ step_seq: 2, partial: false, vars: [] });
+
+    service.state('p1', 'e1', 2).subscribe();
+    const s2 = http.expectOne((x) => x.url === '/executions/api/v1/projects/p1/executions/e1/state');
+    expect(s2.request.params.has('grant')).toBe(false);
+    s2.flush({ step_seq: 2, partial: false, vars: [] });
+
+    service.history('p1', 'e1', 'k', 'g1').subscribe();
+    const h = http.expectOne((x) => x.url === '/executions/api/v1/projects/p1/executions/e1/state/history');
+    expect(h.request.params.get('key')).toBe('k');
+    expect(h.request.params.get('grant')).toBe('g1');
+    h.flush([]);
+
+    service.triggerData('p1', 'e1', 'g1').subscribe();
+    const t = http.expectOne((x) => x.url === '/executions/api/v1/projects/p1/executions/e1/data/trigger');
+    expect(t.request.method).toBe('GET');
+    expect(t.request.params.get('grant')).toBe('g1');
+    t.flush({ value: { order_id: 'A-1001' } });
+  });
 });
 
 describe('canViewExecutions', () => {
@@ -132,5 +172,19 @@ describe('canViewExecutions', () => {
     expect(canViewExecutions('custom', undefined)).toBe(false);
     expect(canViewExecutions('custom', ['other'])).toBe(false);
     expect(canViewExecutions('custom', [PERMISSIONS.EXECUTIONS_READ])).toBe(true);
+  });
+});
+
+describe('canViewExecutionData', () => {
+  it('owner and admin yes; supervisor and agent no', () => {
+    expect(canViewExecutionData('owner', undefined)).toBe(true);
+    expect(canViewExecutionData('admin', [])).toBe(true);
+    expect(canViewExecutionData('supervisor', [PERMISSIONS.EXECUTIONS_DATA_ACCESS])).toBe(false);
+    expect(canViewExecutionData('agent', [PERMISSIONS.EXECUTIONS_DATA_ACCESS])).toBe(false);
+  });
+  it('custom roles need executions_data_access', () => {
+    expect(canViewExecutionData('custom', undefined)).toBe(false);
+    expect(canViewExecutionData('custom', [PERMISSIONS.EXECUTIONS_READ])).toBe(false);
+    expect(canViewExecutionData('custom', [PERMISSIONS.EXECUTIONS_DATA_ACCESS])).toBe(true);
   });
 });

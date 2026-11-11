@@ -9,8 +9,8 @@ import { ExecutionsService } from 'app/services/executions.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import {
-  AllowedControl, canViewExecutions, CONTROL_REASONS, ControlName, ExecutionDetail, ResumeAction, StateView, Step,
-  VarHistoryEntry, VarView
+  AllowedControl, canViewExecutionData, canViewExecutions, CONTROL_REASONS, ControlName, dataRetentionDays, ExecutionDetail,
+  GrantInfo, ResumeAction, StateView, Step, VarHistoryEntry, VarView
 } from '../executions.models';
 import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration } from '../shared/execution-format';
@@ -18,6 +18,8 @@ import { StopDialogComponent, StopDialogData, StopMode } from '../shared/stop-di
 import { DestroyDialogComponent, DestroyDialogData } from '../shared/destroy-dialog.component';
 import { ResumeDialogComponent, ResumeDialogData } from '../shared/resume-dialog.component';
 import { StartNewDialogComponent, StartNewDialogData } from '../shared/start-new-dialog.component';
+import { DataAccessDialogComponent, DataAccessDialogData } from '../shared/data-access-dialog.component';
+import { formatCountdown, GrantSession } from '../shared/grant-session';
 
 export const POLL_MS = 2000;
 /** A waiting execution can wait for days: poll it less often (2 s again while a control is pending). */
@@ -75,6 +77,8 @@ interface StateSlot {
   /** fetched while the step was still running: refetched on poll */
   live: boolean;
   sub?: Subscription;
+  /** the grant the view was read with (it holds values): dropped when that grant ends */
+  grantId?: string | null;
 }
 
 /** Text of an outside-change row, by origin; plural and singular. */
@@ -133,6 +137,17 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   history: VarHistoryEntry[] | null = null;
   historyLoading = false;
   historyError = false;
+  /** the grant the history was read with (it holds values): reloaded without when that grant ends */
+  historyGrantId: string | null = null;
+
+  // data access (Phase 4): one grant per page, values only in memory
+  canViewData = false;
+  readonly session = new GrantSession();
+  grantRemaining = 0;
+  /** the execution the active grant belongs to (revoked there on Close or when leaving it) */
+  private grantFor: { pid: string; id: string } | null = null;
+  /** false while leaving the execution: views read with the grant are dropped, not read again */
+  private reloadAfterGrant = true;
 
   // controls (Phase 2): optimistic chip until a poll returns the new status
   pending: PendingControl | null = null;
@@ -181,16 +196,24 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       if (this.started && !this.invalid) this.load$.next();
     });
 
+    this.session.remaining$.pipe(takeUntil(this.destroy$)).subscribe(s => (this.grantRemaining = s));
+    this.session.ended$.pipe(takeUntil(this.destroy$)).subscribe(id => {
+      if (!this.session.active) this.grantFor = null;
+      this.clearGrantData(id);
+    });
+
     this.rolesService.listenToProjectUserPermissions(this.destroy$);
     this.rolesService.getUpdateRequestPermission().pipe(takeUntil(this.destroy$)).subscribe(status => {
       // '' is the service's initial value: the role is not known yet (no "unauthorized" flash)
       if (!status || !status.role) { this.permitted = null; return; }
       this.permitted = canViewExecutions(status.role, status.matchedPermissions);
+      this.canViewData = this.permitted && canViewExecutionData(status.role, status.matchedPermissions);
       if (this.permitted && this.configured && !this.started) this.start();
     });
   }
 
   ngOnDestroy() {
+    this.endGrant(true, false);
     this.stopPolling();
     this.reset$.next();
     this.reset$.complete();
@@ -227,6 +250,8 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   }
 
   private resetExecution() {
+    // a grant belongs to one execution: leaving it closes the grant
+    this.endGrant(true, false);
     this.stopPolling();
     this.reset$.next();
     this.detail = null;
@@ -365,14 +390,17 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     if (existing && !force && (existing.view || existing.loading)) return;
     if (existing && existing.sub) existing.sub.unsubscribe();
     // a refetch keeps the old view until the new one arrives
-    const slot: StateSlot = { view: existing ? existing.view : null, loading: true, error: false, live: existing ? existing.live : false };
+    const slot: StateSlot = {
+      view: existing ? existing.view : null, loading: true, error: false, live: existing ? existing.live : false,
+      grantId: existing ? existing.grantId : null,
+    };
     this.states[seq] = slot;
     const step = this.stepBySeq(seq);
     const liveAtFetch = !!step && this.isRunningStep(step);
     slot.sub = this.executionsService.state(this.projectId, this.executionId, seq)
       .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
       .subscribe({
-        next: view => { slot.view = view; slot.loading = false; slot.live = liveAtFetch; },
+        next: view => { slot.view = view; slot.loading = false; slot.live = liveAtFetch; slot.grantId = null; },
         error: err => {
           slot.loading = false;
           slot.error = true;
@@ -476,7 +504,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.historySub = this.executionsService.history(this.projectId, this.executionId, this.historyKey)
       .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
       .subscribe({
-        next: entries => { this.history = entries || []; this.historyLoading = false; },
+        next: entries => { this.history = entries || []; this.historyLoading = false; this.historyGrantId = null; },
         error: err => {
           this.historyLoading = false;
           this.historyError = true;
@@ -490,8 +518,98 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.historySub = null;
     this.historyKey = null;
     this.history = null;
+    this.historyGrantId = null;
     this.historyLoading = false;
     this.historyError = false;
+  }
+
+  // ---- data access (Phase 4 spec §5): View data, the grant strip, Close ----
+
+  /**
+   * Opens the data access dialog: from the header on the whole execution (`stepSeq` null), from a block's
+   * "View values" with "this block" preselected. The grant it returns starts the session.
+   */
+  openDataAccess(stepSeq: number | null = null) {
+    if (!this.canViewData || !this.detail) return;
+    const pid = this.projectId;
+    const id = this.executionId;
+    const step = stepSeq === null ? undefined : this.stepBySeq(stepSeq);
+    const data: DataAccessDialogData = {
+      projectId: pid,
+      executionId: id,
+      stepSeq: step ? step.seq : null,
+      blockName: step ? step.block_name || null : null,
+      retentionDays: dataRetentionDays(this.detail.execution),
+    };
+    this.dialog.open(DataAccessDialogComponent, { data, width: '520px' }).afterClosed()
+      .pipe(takeUntil(this.reset$), takeUntil(this.destroy$))
+      .subscribe((info: GrantInfo | null) => {
+        if (!info || typeof info.grant_id !== 'string' || id !== this.executionId) return;
+        // an active grant for the same scope comes back with the same id: it is already open
+        if (this.session.grantId === info.grant_id) return;
+        // a new grant replaces the open one
+        if (this.session.active) this.endGrant(true);
+        this.session.start(info);
+        if (this.session.active) this.grantFor = { pid, id };
+      });
+  }
+
+  /** Close: revokes the grant on the service; values go with it. */
+  closeGrant() {
+    this.endGrant(true);
+  }
+
+  get grantCountdown(): string {
+    return formatCountdown(this.grantRemaining);
+  }
+
+  /** Strip text for the scope: the whole execution or the block's name. */
+  get grantScopeLabel(): { key: string; params?: { [k: string]: string } } {
+    const scope = this.session.scope;
+    if (!scope || scope.type === 'execution') return { key: 'Executions.DataAccess.StripScopeExecution' };
+    const step = this.stepBySeq(scope.step_seq);
+    return { key: 'Executions.DataAccess.StripScopeStep', params: { block: (step && step.block_name) || String(scope.step_seq) } };
+  }
+
+  /**
+   * Ends the session; `revoke` also tells the service (Close, leaving the execution). Expiry needs no revoke.
+   * `reload` false when leaving the execution: the views are dropped without reading them again.
+   */
+  private endGrant(revoke: boolean, reload = true) {
+    const grantId = this.session.grantId;
+    const ctx = this.grantFor;
+    this.grantFor = null;
+    this.reloadAfterGrant = reload;
+    try {
+      this.session.end();
+    } finally {
+      this.reloadAfterGrant = true;
+    }
+    if (revoke && grantId && ctx) {
+      this.executionsService.revokeDataAccess(ctx.pid, ctx.id, grantId).subscribe({
+        error: err => this.logger.warn('[EXECUTION-DETAIL] revoke error ', err && err.status),
+      });
+    }
+  }
+
+  /**
+   * The grant ended (Close, expiry, replaced, page left): every view read with it is dropped from memory. Visible
+   * blocks and the open history are read again without values; the others are dropped.
+   */
+  private clearGrantData(grantId: string) {
+    Object.keys(this.states).map(Number).forEach(seq => {
+      const slot = this.states[seq];
+      if (!slot.grantId || slot.grantId !== grantId) return;
+      if (slot.sub) slot.sub.unsubscribe();
+      delete this.states[seq];
+      const visible = this.expanded.has(seq) || (this.tab === 'state' && this.fsSeq === seq);
+      if (visible && this.detail && this.reloadAfterGrant) this.loadState(seq);
+    });
+    if (this.historyGrantId === grantId) {
+      this.historyGrantId = null;
+      this.history = null;
+      if (this.historyKey && this.detail && this.reloadAfterGrant) this.loadHistory();
+    }
   }
 
   // ---- controls (spec §11.5, §11.8) ----
