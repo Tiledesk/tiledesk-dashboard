@@ -66,10 +66,15 @@ export function valueAtPath(root: any, segs: PathSegment[]): any {
   return cur;
 }
 
-/** A masked field counts as filled unless it is null, missing, blank or still the secret marker. */
+/**
+ * A masked field counts as filled unless it is null, missing, blank, still the secret marker, or an empty
+ * object or array. 0 and false are values the user may mean.
+ */
 export function isFilled(v: any): boolean {
   if (v === null || v === undefined) return false;
   if (typeof v === 'string') return v.trim() !== '' && v !== SECRET_MARKER;
+  if (Array.isArray(v)) return v.length > 0;
+  if (typeof v === 'object') return Object.keys(v).length > 0;
   return true;
 }
 
@@ -91,6 +96,8 @@ export interface StartNewDialogData {
   missing?: string[];
   /** Text of a previous attempt: the editor reopens with it. */
   text?: string;
+  /** How much of the stored input the service returned (note above the editor unless 'ok'). */
+  stored?: 'ok' | 'none' | 'unreadable' | 'structure_only';
 }
 
 interface FieldView {
@@ -109,6 +116,8 @@ interface FieldView {
     <h2 mat-dialog-title>{{ "Executions.Dialogs.StartNewTitle" | translate }}</h2>
     <mat-dialog-content class="sn">
       <p class="sn-p">{{ "Executions.Dialogs.StartNewText" | translate: { agent: data.agentName } }}</p>
+
+      <p *ngIf="storedNoteKey" class="sn-p sn-stored" role="note">{{ storedNoteKey | translate }}</p>
 
       <div *ngIf="fields.length" class="sn-masked">
         <p class="sn-p sn-masked-title">{{ "Executions.Dialogs.StartNewMasked" | translate }}</p>
@@ -135,6 +144,7 @@ interface FieldView {
   styles: [`
     .sn { max-width: 560px; min-width: 320px; display: grid; gap: 8px; }
     .sn-p { margin: 0; }
+    .sn-stored { font-size: 13px; color: #a15c00; }
     .sn-masked-title { font-weight: 500; font-size: 13px; }
     .sn-server-note { font-size: 13px; color: #c62f2f; }
     .sn-fields { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
@@ -162,6 +172,16 @@ export class StartNewDialogComponent {
   ) {
     this.text = typeof data.text === 'string' ? data.text : JSON.stringify(data.input || {}, null, 2);
     this.evaluate();
+  }
+
+  /** none and unreadable read the same: there is nothing to prefill. */
+  get storedNoteKey(): string | null {
+    switch (this.data.stored) {
+      case 'none':
+      case 'unreadable': return 'Executions.Dialogs.StartNewStoredNone';
+      case 'structure_only': return 'Executions.Dialogs.StartNewStoredHidden';
+      default: return null;
+    }
   }
 
   get canStart(): boolean {

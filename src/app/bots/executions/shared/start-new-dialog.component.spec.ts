@@ -41,7 +41,15 @@ describe('start new masked paths', () => {
 
   it('filled means not null, not blank and not the [secret] marker', () => {
     [null, undefined, '', '   ', '[secret]'].forEach(v => expect(isFilled(v)).toBe(false));
-    ['x', 0, false, {}, []].forEach(v => expect(isFilled(v)).toBe(true));
+    ['x', 0, false, { a: 1 }, [0]].forEach(v => expect(isFilled(v)).toBe(true));
+  });
+
+  it('0 and false are filled; an empty object or array is not', () => {
+    expect(isFilled(0)).toBe(true);
+    expect(isFilled(false)).toBe(true);
+    expect(isFilled({})).toBe(false);
+    expect(isFilled([])).toBe(false);
+    expect(missingMasked({ n: 0, b: false, o: {} }, ['n', 'b', 'o'])).toEqual(['o']);
   });
 
   it('lists the masked paths not filled in', () => {
@@ -116,6 +124,32 @@ describe('StartNewDialogComponent', () => {
     startBtn().click();
     // exactly what the user confirmed, the extra key and the renamed customer included
     expect(ref.close).toHaveBeenCalledWith(edited);
+  }));
+
+  it('stored none and unreadable show the no-stored-input note', fakeAsync(() => {
+    setup({ agentName: 'A', input: {}, masked: [], stored: 'none' });
+    expect(el().querySelector('.sn-stored').textContent).toContain('No stored input for this run: enter the input to send.');
+    fixture.destroy();
+    TestBed.resetTestingModule();
+    setup({ agentName: 'A', input: {}, masked: [], stored: 'unreadable' });
+    expect(el().querySelector('.sn-stored').textContent).toContain('No stored input for this run: enter the input to send.');
+  }));
+
+  it('stored structure_only shows the hidden-values note; masked fields stay empty and required', fakeAsync(() => {
+    setup({ agentName: 'A', input: { customer: { name: null, api_key: null } }, masked: ['customer.api_key'], stored: 'structure_only' });
+    expect(el().querySelector('.sn-stored').textContent).toContain('Values are hidden for your role: fill in the input.');
+    expect(el().querySelectorAll('.sn-field.sn-missing').length).toBe(1);
+    expect(startBtn().disabled).toBe(true);
+    const edited = { customer: { name: 'x', api_key: 'k' } };
+    type(JSON.stringify(edited));
+    expect(startBtn().disabled).toBe(false);
+    startBtn().click();
+    expect(ref.close).toHaveBeenCalledWith(edited);
+  }));
+
+  it('stored ok or absent shows no note', fakeAsync(() => {
+    setup({ agentName: 'A', input: { a: 1 }, masked: [], stored: 'ok' });
+    expect(el().querySelector('.sn-stored')).toBeNull();
   }));
 
   it('invalid JSON keeps start disabled', fakeAsync(() => {
