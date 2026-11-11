@@ -74,6 +74,8 @@ export interface Execution {
   // Phase 2 (stop / destroy)
   stop_mode?: 'soft' | 'hard' | null;
   stopped_at?: string | null;
+  /** when the last resume was accepted (ISO), null if never */
+  resumed_at?: string | null;
   interrupted_action?: InterruptedAction | null;
   messages_while_stopped?: number | null;
   conversation_closed_at?: string | null;
@@ -98,11 +100,12 @@ export type ControlReason =
   | 'already_resumed'
   | 'not_unattended'
   | 'unsupported_trigger'
+  | 'no_trigger_source'
   | 'version_gone';
 
 export const CONTROL_REASONS: ControlReason[] = [
   'role', 'test_run', 'no_checkpoint', 'conversation_closed', 'newer_execution', 'already_resumed',
-  'not_unattended', 'unsupported_trigger', 'version_gone',
+  'not_unattended', 'unsupported_trigger', 'no_trigger_source', 'version_gone',
 ];
 
 /** A control offered for the status; allowed:false with the reason when the role or the execution blocks it. */
@@ -120,9 +123,13 @@ export interface ResumeAction {
 }
 
 /** GET start-new/input: the stored trigger input, masked values set to null and listed by path. */
+export type StartNewStored = 'ok' | 'none' | 'unreadable' | 'structure_only';
+
 export interface StartNewInput {
   input: { [k: string]: any };
   masked: string[];
+  /** ok: values returned; none/unreadable: nothing to prefill; structure_only: values hidden for the role */
+  stored?: StartNewStored;
 }
 
 export interface StepAction {

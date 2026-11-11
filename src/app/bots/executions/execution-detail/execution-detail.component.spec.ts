@@ -118,7 +118,7 @@ describe('ExecutionDetailComponent', () => {
       expect(head).toContain('scheduled');
       expect(head).toContain('v1abcdef');
       expect(head).toContain('web_request_error');
-      expect(head).toContain('0193a2f4');
+      expect(head).toContain('00000001');
       expect(el().querySelector('execution-status-chip')).not.toBeNull();
       expect(head).toContain('retry of');
       expect(head).toContain('retried as');

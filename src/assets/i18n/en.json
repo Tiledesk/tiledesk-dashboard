@@ -4420,6 +4420,7 @@
                 "already_resumed": "It was already resumed from this point",
                 "not_unattended": "Only for scheduled, webhook and automation runs",
                 "unsupported_trigger": "Not available yet for connector triggers",
+                "no_trigger_source": "Started by a direct call, not through a webhook: there is nothing to run again",
                 "version_gone": "The agent version it ran is no longer available"
             },
             "NotResumable": {
@@ -4429,8 +4430,9 @@
                 "conversation_closed": "It cannot be resumed: the conversation is closed.",
                 "newer_execution": "It cannot be resumed: a newer execution runs on the same conversation.",
                 "already_resumed": "It cannot be resumed: it was already resumed from this point.",
-                "not_unattended": "It cannot be resumed.",
-                "unsupported_trigger": "It cannot be resumed.",
+                "not_unattended": "It cannot be resumed: only scheduled, webhook and automation runs can be resumed.",
+                "unsupported_trigger": "It cannot be resumed: connector triggers are not supported yet.",
+                "no_trigger_source": "It cannot be resumed.",
                 "version_gone": "It cannot be resumed: the agent version it ran is no longer available."
             },
             "Busy": "A server is still releasing this execution. Try again in a few seconds.",
@@ -4438,6 +4440,9 @@
             "VersionCheckFailed": "The agent version could not be checked. Try again.",
             "UnsealFailed": "The saved state of this execution could not be read.",
             "RefireFailed": "The new execution could not be started. Try again.",
+            "RefireUnconfirmed": "The new run may have started. Checking…",
+            "NotStartable": "This run cannot be started again ({{reason}}).",
+            "PendingTimeout": "The change has not shown up yet. Reload the page in a moment.",
             "MissingInput": "Some required fields of the input are empty.",
             "AlreadyStarted": "A new run was just started",
             "Starting": "Starting a new execution…",
@@ -4468,6 +4473,8 @@
             "StartNewText": "Runs {{agent}} again with the input below, using the current published version. This execution stays as it is.",
             "StartNewMasked": "These fields were hidden as secrets when stored. Fill them in:",
             "StartNewServerMissing": "Fill in the highlighted fields: they are still empty.",
+            "StartNewStoredNone": "No stored input for this run: enter the input to send.",
+            "StartNewStoredHidden": "Values are hidden for your role: fill in the input.",
             "StartNewFieldRequired": "required",
             "StartNewFieldFilled": "filled",
             "StartNewInput": "Input (JSON)",
