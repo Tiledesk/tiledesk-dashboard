@@ -56,9 +56,9 @@ describe('StopDialogComponent', () => {
     expect(ref.close).toHaveBeenCalledWith(null);
   }));
 
-  it('hard text without a known action does not name one', fakeAsync(() => {
+  it('hard text without a known action says "the current action"', fakeAsync(() => {
     setup({ action: null, hardOnly: false });
-    expect(el().querySelector('.sd-hard-text')).toBeNull();
+    expect(el().querySelector('.sd-hard-text').textContent.trim()).toBe('The current action is interrupted.');
   }));
 
   it('hard-only mode is a confirm of a hard stop', fakeAsync(() => {

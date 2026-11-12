@@ -1,3 +1,4 @@
+import { actionLabel } from '../shared/execution-format';
 import { ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { By } from '@angular/platform-browser';
@@ -153,6 +154,40 @@ describe('ExecutionDetailComponent controls', () => {
     expect(executions.stop).not.toHaveBeenCalled();
     end();
   }));
+
+  it('stop names the running web request even when the step already has finished replies', fakeAsync(() => {
+    const d = detail('running', ALL_RUNNING);
+    d.steps[1].actions = [
+      { index: 0, action_id: 'x2', type: 'reply', title: 'Say hi', outcome: 'success', duration_ms: 5 },
+      { index: 1, action_id: 'x4', type: 'reply', title: 'Wait please', outcome: 'success', duration_ms: 4 },
+      { index: 2, action_id: 'x3', type: 'webrequestv2', title: null, outcome: null, duration_ms: null },
+    ];
+    setup(d);
+    btn('stop').click();
+    expect(dialog.open).toHaveBeenCalledWith(StopDialogComponent, jasmine.objectContaining({
+      data: jasmine.objectContaining({ action: 'webrequestv2' }),
+    }));
+    end();
+  }));
+
+  it('stop names no action when none is open, and never a finished one', fakeAsync(() => {
+    const d = detail('running', ALL_RUNNING);
+    d.steps[1].actions = [
+      { index: 0, action_id: 'x2', type: 'reply', title: 'Say hi', outcome: 'success', duration_ms: 5 },
+    ];
+    setup(d);
+    btn('stop').click();
+    expect(dialog.open).toHaveBeenCalledWith(StopDialogComponent, jasmine.objectContaining({
+      data: jasmine.objectContaining({ action: null }),
+    }));
+    end();
+  }));
+
+  it('action label is the one the timeline panels use (title, else type)', () => {
+    expect(actionLabel({ type: 'webrequestv2', title: 'GET status' })).toBe('GET status');
+    expect(actionLabel({ type: 'webrequestv2', title: null })).toBe('webrequestv2');
+    expect(actionLabel(null)).toBeNull();
+  });
 
   it('stop_hard_now calls stop(hard)', fakeAsync(() => {
     setup(detail('stopping', [{ name: 'stop_hard_now', allowed: true }, { name: 'destroy', allowed: true }]));

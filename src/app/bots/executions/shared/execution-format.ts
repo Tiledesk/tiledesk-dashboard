@@ -20,3 +20,13 @@ export function formatSize(bytes: number | null | undefined): string {
   if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
   return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
 }
+
+/**
+ * Label of an action, as the timeline names it everywhere outside its own row (flow state
+ * panel, interrupted header, stop dialog): the title, else the type, else the id.
+ * The timeline has no friendlier name per type than the raw type.
+ */
+export function actionLabel(a: { title?: string | null; type?: string | null; action_id?: string | null } | null | undefined): string | null {
+  if (!a) return null;
+  return a.title || a.type || a.action_id || null;
+}
