@@ -370,6 +370,28 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       .filter((row) => !!row.key && !!row.value);
   }
 
+  /**
+   * Pass headers only when there are some, and pass an OAuth reference as the
+   * second argument when there are no headers, so both call styles stay valid.
+   */
+  private requestMcpTools(
+    serverUrl: string,
+    customHeaders: Array<{ key: string; value: string }>,
+    oauth?: McpOAuthReference,
+  ) {
+    const headers = customHeaders && customHeaders.length ? customHeaders : undefined;
+    if (headers && oauth) {
+      return this.integrationService.getMcpTools(serverUrl, headers, oauth);
+    }
+    if (headers) {
+      return this.integrationService.getMcpTools(serverUrl, headers);
+    }
+    if (oauth) {
+      return this.integrationService.getMcpTools(serverUrl, oauth);
+    }
+    return this.integrationService.getMcpTools(serverUrl);
+  }
+
   /** Enabled headers only, for Connect / Refresh tools proxy calls. */
   private getEnabledHeadersForRequest(): Array<{ key: string; value: string }> {
     return this.serializeCustomHeaders()
@@ -477,7 +499,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     const oauth = this.currentServer.oauth && this.currentServer.oauth.connection_id
       ? this.currentServer.oauth
       : undefined;
-    this.integrationService.getMcpTools(
+    this.requestMcpTools(
       this.currentServer.url,
       this.getEnabledHeadersForRequest(),
       oauth,
@@ -546,7 +568,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     this.logger.log('[INT-MCP] Refreshing tools for server:', server.url);
 
     const serverOauth = server.oauth && server.oauth.connection_id ? server.oauth : undefined;
-    this.integrationService.getMcpTools(
+    this.requestMcpTools(
       server.url,
       this.getEnabledHeadersFromServer(server),
       serverOauth,
@@ -686,7 +708,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     const currentOauth = this.currentServer.oauth && this.currentServer.oauth.connection_id
       ? this.currentServer.oauth
       : undefined;
-    this.integrationService.getMcpTools(
+    this.requestMcpTools(
       this.currentServer.url,
       this.getEnabledHeadersForRequest(),
       currentOauth,
