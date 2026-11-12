@@ -75,6 +75,27 @@ describe('McpIntegrationComponent OAuth', () => {
     expect(integrationService.getMcpTools).toHaveBeenCalledWith(serverUrl);
   });
 
+  it('shows the scopes returned by the connection after Google authorization', fakeAsync(() => {
+    fillServer('Google Calendar');
+    component.authType = 'google';
+    mcpOAuth.connect.and.returnValue(Promise.resolve({
+      ok: true,
+      connection: {
+        _id: 'C1',
+        mode: 'google',
+        server_url: serverUrl,
+        status: 'active',
+        scopes: ['https://www.googleapis.com/auth/calendar.events.readonly'],
+        updatedAt: 'T1'
+      }
+    }));
+
+    component.connectToServer();
+    tick();
+
+    expect(component.scopesText).toBe('https://www.googleapis.com/auth/calendar.events.readonly');
+  }));
+
   it('opens the popup and loads tools with the new connection when OAuth succeeds', fakeAsync(() => {
     fillServer();
     component.authType = 'mcp';
@@ -233,6 +254,61 @@ describe('McpIntegrationComponent OAuth status', () => {
     );
     expect(component.integration.value.servers[0].oauth).toEqual({ connection_id: 'C1', mode: 'mcp' });
   }));
+
+  it('fills the scopes field from the connection when a Google server is selected', () => {
+    const server = {
+      name: 'Google Calendar',
+      url: serverUrl,
+      transport: 'streamable_http',
+      oauth: { connection_id: 'C1', mode: 'google' as const }
+    };
+    component.integration.value.servers = [server];
+    component.oauthConnections = {
+      C1: {
+        _id: 'C1',
+        mode: 'google',
+        server_url: serverUrl,
+        status: 'active',
+        scopes: [
+          'https://www.googleapis.com/auth/calendar.calendarlist.readonly',
+          'https://www.googleapis.com/auth/calendar.events.readonly'
+        ],
+        updatedAt: 'T1'
+      }
+    };
+
+    component.onSelectServer(server);
+
+    expect(component.authType).toBe('google');
+    expect(component.scopesText).toBe(
+      'https://www.googleapis.com/auth/calendar.calendarlist.readonly https://www.googleapis.com/auth/calendar.events.readonly'
+    );
+  });
+
+  it('fills the scopes field when the connection list arrives after the server is selected', () => {
+    const server = {
+      name: 'Google Calendar',
+      url: serverUrl,
+      transport: 'streamable_http',
+      oauth: { connection_id: 'C1', mode: 'google' as const }
+    };
+    component.integration.value.servers = [server];
+
+    component.onSelectServer(server);
+    expect(component.scopesText).toBe('');
+
+    mcpOAuth.listConnections.and.returnValue(of([{
+      _id: 'C1',
+      mode: 'google',
+      server_url: serverUrl,
+      status: 'active',
+      scopes: ['openid', 'email'],
+      updatedAt: 'T1'
+    }]));
+    component.loadOAuthConnections();
+
+    expect(component.scopesText).toBe('openid email');
+  });
 
   it('passes the granted scopes when reconnecting a Google server', fakeAsync(() => {
     const server = { name: 'Gmail', url: serverUrl, transport: 'streamable_http', oauth: { connection_id: 'C1', mode: 'google' as const } };
