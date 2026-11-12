@@ -917,6 +917,25 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return null;
   }
 
+  /**
+   * Actions are recorded when they complete, so a block whose action hangs shows none of it. For a block still open
+   * (no ended_at) while the execution can still move (running, waiting, stopping), the next action: its index is the
+   * number of recorded ones, its label comes the way currentActionTitle() finds it (or the interrupted action with
+   * that index), and its elapsed time runs from the last recorded action's end, else from the block's start.
+   * A stopped execution has none: its stop banner names the interrupted action.
+   */
+  runningAction(step: Step): { index: number; label: string | null; elapsed: string } | null {
+    if (!this.detail || step.ended_at != null || !POLL_STATUSES.includes(this.detail.execution.status)) return null;
+    const actions = step.actions || [];
+    const index = actions.length;
+    const ia = this.detail.execution.interrupted_action;
+    const label = (this.isRunningStep(step) && this.currentActionTitle())
+      || (ia && ia.index === index ? this.interruptedLabel(ia) : null);
+    const last = actions.length ? actions[actions.length - 1].at : null;
+    const from = last || step.started_at;
+    return { index, label: label || null, elapsed: from ? formatDuration(this.now() - Date.parse(from)) : '' };
+  }
+
   runControl(c: AllowedControl) {
     if (!c.allowed || this.controlBusy || this.pending || !this.detail) return;
     this.controlMessage = null;

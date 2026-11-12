@@ -4334,6 +4334,7 @@
             "NoSteps": "No blocks recorded yet.",
             "StepDetails": "Show or hide the details of block {{name}}",
             "Running": "running…",
+            "NextAction": "action #{{n}}",
             "VarsChanged": "{{n}} attributes changed",
             "VarsChangedOne": "1 attribute changed",
             "OutsideMessageIn": "{{n}} attributes changed by the incoming message ({{keys}})",

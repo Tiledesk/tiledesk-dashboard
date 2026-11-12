@@ -193,6 +193,70 @@ describe('ExecutionDetailComponent', () => {
       expect(executions.state).toHaveBeenCalledTimes(1);
     });
 
+    describe('running action and interrupted block', () => {
+      const runningRow = () => el().querySelector('.tl-running-action') as HTMLElement;
+      function hung(status: string, extra: any = {}) {
+        const d = detail(status, extra);
+        d.steps[1].ended_at = null;
+        d.steps[1].outcome = null;
+        d.steps[1].duration_ms = null;
+        d.steps[1].started_at = '2026-11-09T03:00:00.000Z';
+        d.steps[1].actions = [action('act2', { title: 'Say hi', at: '2026-11-09T03:00:01.000Z' })];
+        return d;
+      }
+
+      it('an open block of a running execution shows its next action as running, with elapsed time', () => {
+        setup({ detail: hung('running') });
+        spyOn(component, 'now').and.returnValue(Date.parse('2026-11-09T03:08:01.000Z'));
+        fixture.detectChanges();
+        const rows = el().querySelectorAll('.tl-running-action');
+        expect(rows.length).toBe(1);
+        const t = runningRow().textContent.replace(/\s+/g, ' ');
+        // index = number of recorded actions (1); no label known before a stop
+        expect(t).toContain('action #1');
+        expect(t).toContain('running…');
+        expect(t).toContain('8 min');
+        expect(component.runningAction(component.detail.steps[1])).toEqual({ index: 1, label: null, elapsed: '8 min' });
+        fixture.destroy();
+      });
+
+      it('takes the label of the interrupted action with that index, and the block start without actions', () => {
+        const d = hung('stopping');
+        d.execution.interrupted_action = { index: 1, action_id: 'dep1', type: 'department', title: 'Change department' };
+        setup({ detail: d });
+        spyOn(component, 'now').and.returnValue(Date.parse('2026-11-09T03:00:31.000Z'));
+        fixture.detectChanges();
+        expect(runningRow().textContent).toContain('Change department');
+        d.steps[1].actions = [];
+        expect(component.runningAction(d.steps[1])).toEqual({ index: 0, label: null, elapsed: '31.0 s' });
+        fixture.destroy();
+      });
+
+      it('no running row when the execution is terminal or stopped, or the block ended', () => {
+        setup({ detail: hung('completed') });
+        expect(runningRow()).toBeNull();
+        expect(component.runningAction(component.detail.steps[0])).toBeNull();
+        fixture.destroy();
+        TestBed.resetTestingModule();
+        setup({ detail: hung('stopped') });
+        expect(runningRow()).toBeNull();
+        fixture.destroy();
+      });
+
+      it('a block closed as interrupted shows the interrupted icon, style and label', () => {
+        const d = detail('completed');
+        d.steps[1].outcome = 'interrupted';
+        setup({ detail: d });
+        const b = stepButtons()[1];
+        expect(b.classList).toContain('tl-interrupted');
+        expect(b.querySelector('.tl-icon').classList).toContain('o-interrupted');
+        expect(b.querySelector('.tl-icon').textContent.trim()).toBe('stop_circle');
+        expect(b.querySelector('.tl-outcome').textContent.trim()).toBe('interrupted');
+        expect(stepButtons()[0].classList).not.toContain('tl-interrupted');
+        expect(runningRow()).toBeNull();
+      });
+    });
+
     it('a failed state load shows a retry inside the panel', () => {
       setup();
       executions.state.and.returnValue(throwError(() => new Error('500')));

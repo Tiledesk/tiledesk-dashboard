@@ -3927,6 +3927,7 @@
             "NoSteps": "Nessun blocco registrato finora.",
             "StepDetails": "Mostra o nascondi i dettagli del blocco {{name}}",
             "Running": "in esecuzione…",
+            "NextAction": "azione n. {{n}}",
             "VarsChanged": "{{n}} attributi modificati",
             "VarsChangedOne": "1 attributo modificato",
             "OutsideMessageIn": "{{n}} attributi modificati dal messaggio in arrivo ({{keys}})",
