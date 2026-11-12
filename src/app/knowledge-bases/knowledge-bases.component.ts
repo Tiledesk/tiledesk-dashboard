@@ -21,10 +21,10 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, goToCDSVersion, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam, openChatbotEditor } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam, openChatbotEditor, v3AgentOrStub } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
@@ -219,6 +219,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   lastKbSearchParams: any;
   getKbCompleted: boolean = false;
   chatbotsUsingNamespace: any;
+  /** Full project faqKb list (includes ds_version) used to enrich namespace chatbot stubs. */
+  projectFaqKbList: any[] = [];
   botid: string;
   nameSpaceId: string;
   totalCount: Number;
@@ -330,9 +332,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     return Math.round((1000 * a) / d) / 10;
   }
 
+  /** When true (query ?embed / ?Embed), hide chrome for CDS iframe embed. */
+  isEmbedMode = false;
+
   /** KB stats charts require embedded analytics (same gate as new analytics vs legacy). */
   get isKbStatsChartsEnabled(): boolean {
-    return isNewAnalyticsConfigured(this.appConfigService.getConfig());
+    return !this.isEmbedMode && isNewAnalyticsConfigured(this.appConfigService.getConfig());
   }
 
   
@@ -515,6 +520,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbsList = [];
     // this.getBrowserVersion();
     this.isChromeVerGreaterThan100 = this.checkChromeVersion();
+
+    this.initEmbedModeFromQuery();
    
     this.getLoggedUser();
     this.getCurrentProject();
@@ -555,8 +562,52 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.questionsSearchDebounceTimer = null;
       this.showUQTableSpinner = false;
     }
-    this.unsubscribe$.next();   
+    this.setEmbedChrome(false);
+    this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  /**
+   * CDS can open KB in an iframe with ?embed / ?Embed (optionally =true/1).
+   * Hides dashboard navbar, black sidebar, and kb-stats-charts.
+   */
+  private initEmbedModeFromQuery(): void {
+    this.isEmbedMode = this.queryHasEmbedFlag(this.route.snapshot.queryParamMap);
+    this.setEmbedChrome(this.isEmbedMode);
+    this.route.queryParamMap
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((qpm) => {
+        const next = this.queryHasEmbedFlag(qpm);
+        if (next === this.isEmbedMode) {
+          return;
+        }
+        this.isEmbedMode = next;
+        this.setEmbedChrome(this.isEmbedMode);
+      });
+  }
+
+  private queryHasEmbedFlag(qpm: { keys: string[]; get(name: string): string | null }): boolean {
+    const embedKey = (qpm.keys || []).find((k) => k && k.toLowerCase() === 'embed');
+    if (!embedKey) {
+      return false;
+    }
+    const raw = (qpm.get(embedKey) || '').trim().toLowerCase();
+    // Bare ?embed / ?Embed → ''; also accept true/1
+    if (raw === '' || raw === 'true' || raw === '1') {
+      return true;
+    }
+    if (raw === 'false' || raw === '0') {
+      return false;
+    }
+    return true;
+  }
+
+  private setEmbedChrome(enabled: boolean): void {
+    try {
+      document.body.classList.toggle('td-embed-mode', enabled);
+    } catch (e) {
+      this.logger.warn('[KNOWLEDGE-BASES-COMP] setEmbedChrome body class failed', e);
+    }
   }
 
   listenToProjectUser() {
@@ -1096,7 +1147,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     return true;
   };
 
-  /** Preserva tab Domande / sotto-tab nel navigate verso knowledge-bases (es. ritorno da conversazione). */
+  /** Preserva tab Domande / sotto-tab (e embed) nel navigate verso knowledge-bases. */
   private buildKbDeepLinkNavExtras(): { queryParams: Record<string, string> } | undefined {
     const qpm = this.route.snapshot.queryParamMap;
     const tab = qpm.get('tab');
@@ -1107,6 +1158,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
     if (questionsSub === 'answered' || questionsSub === 'unanswered') {
       qp.questionsSub = questionsSub;
+    }
+    if (this.queryHasEmbedFlag(qpm)) {
+      qp.embed = 'true';
     }
     return Object.keys(qp).length ? { queryParams: qp } : undefined;
   }
@@ -1250,7 +1304,6 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
         this.selectedNamespaceName = namespace['name']
         // this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
-       // this.router.navigate(['project/' + this.project._id + '/knowledge-bases/' + this.selectedNamespace.id]);
 
         if (this.selectedTab === 'unanswered') {
           this.switchTab('contents');
@@ -1500,33 +1553,21 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
 
     this.chatbotsUsingNamespace = []
-    this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
-
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
-      // let isArray = this.isArray(chatbots)
-      // if (isArray) {
-      if (chatbots.length > 0) {
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots ', chatbots)
-
+    this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).pipe(
+      switchMap((chatbots: any) => {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots (API stubs)', chatbots);
+        if (!Array.isArray(chatbots) || !chatbots.length) {
+          this.chatbotsUsingNamespace = undefined;
+          return of(null);
+        }
 
         chatbots.forEach(bot => {
           this.logger.log('[KNOWLEDGE-BASES-COMP] - GET FAQKB forEach bot: ', bot)
 
-
           let imgUrl = ''
           if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
-
-            // this.logger.log('[HOME] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE FIREBASE ');
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Firebase 
-            // ------------------------------------------------------------------------------
             imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
-
           } else {
-
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Native 
-            // ------------------------------------------------------------------------------
             imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
           }
           this.checkImageExists(imgUrl, (existsImage) => {
@@ -1541,18 +1582,110 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           });
         });
 
-        this.chatbotsUsingNamespace = chatbots;
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbotsUsingNamespace', this.chatbotsUsingNamespace);
-
-      } else {
-        this.chatbotsUsingNamespace = undefined
+        // Wait for project faqKb list so enrich always runs with ds_version available
+        return this.ensureProjectFaqKbList().pipe(
+          map(() => {
+            this.applyChatbotsUsingNamespace(chatbots);
+            this.logger.log(
+              '[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE enriched',
+              this.chatbotsUsingNamespace
+            );
+            return this.chatbotsUsingNamespace;
+          })
+        );
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe({
+      error: (error) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE ', error);
+      },
+      complete: () => {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
       }
+    });
+  }
 
-    }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE ', error);
+  /** Load/cache full project bots (with ds_version) used to enrich namespace stubs. */
+  private ensureProjectFaqKbList(): Observable<any[]> {
+    if (Array.isArray(this.projectFaqKbList) && this.projectFaqKbList.length > 0) {
+      return of(this.projectFaqKbList);
+    }
+    return this.faqKbService.getFaqKbByProjectId().pipe(
+      map((faqKb: any) => {
+        this.projectFaqKbList = Array.isArray(faqKb) ? faqKb : [];
+        this.myChatbotOtherCount = this.projectFaqKbList.length;
+        return this.projectFaqKbList;
+      }),
+      catchError((err) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] ensureProjectFaqKbList error', err);
+        this.projectFaqKbList = this.projectFaqKbList || [];
+        return of(this.projectFaqKbList);
+      })
+    );
+  }
 
+  /**
+   * Namespace chatbot endpoint returns stubs (_id, name). Merge ds_version / createdAt
+   * from the project faqKb list so CDS open can pick v2 vs v3 without an extra fetch.
+   */
+  private enrichNamespaceChatbotsWithProjectFaqKb(chatbots: any[]): any[] {
+    if (!Array.isArray(chatbots) || !chatbots.length) {
+      return chatbots || [];
+    }
+    const byId = new Map(
+      (this.projectFaqKbList || [])
+        .filter((b) => b && b._id)
+        .map((b) => [String(b._id), b])
+    );
+    if (!byId.size) {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] enrich skipped: projectFaqKbList empty');
+      return chatbots;
+    }
+    return chatbots.map((bot) => {
+      const full = byId.get(String(bot?._id));
+      if (!full) {
+        return bot;
+      }
+      const enriched = {
+        ...bot,
+        createdAt: full.createdAt ?? bot.createdAt,
+      };
+      // Only attach when present (v2 bots have no key — still correctly open CDS v2)
+      if (full.ds_version != null && full.ds_version !== '') {
+        enriched.ds_version = full.ds_version;
+      }
+      return enriched;
+    });
+  }
+
+  private applyChatbotsUsingNamespace(chatbots: any[]): void {
+    this.chatbotsUsingNamespace = this.enrichNamespaceChatbotsWithProjectFaqKb(chatbots);
+  }
+
+  private reenrichChatbotsUsingNamespaceFromProjectList(): void {
+    if (!Array.isArray(this.chatbotsUsingNamespace) || !this.chatbotsUsingNamespace.length) {
+      return;
+    }
+    this.chatbotsUsingNamespace = this.enrichNamespaceChatbotsWithProjectFaqKb(
+      this.chatbotsUsingNamespace
+    );
+  }
+
+  /** Prefer project-list / enriched bot for CDS routing; fall back to getFaqKbById. */
+  private resolveChatbotForCds(chatbot: any, onReady: (bot: any) => void): void {
+    if (!chatbot?._id) {
+      return;
+    }
+    const fromProject = (this.projectFaqKbList || []).find((b) => b?._id === chatbot._id);
+    if (fromProject) {
+      onReady({ ...chatbot, ...fromProject });
+      return;
+    }
+    const stub = { createdAt: new Date(), _id: chatbot._id } as any;
+    this.faqKbService.getFaqKbById(chatbot._id).subscribe((bot: any) => {
+      onReady(v3AgentOrStub(bot, stub._id));
     }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
+      onReady(stub);
     });
   }
 
@@ -2306,11 +2439,11 @@ _presentDialogImportContents() {
 
   goToBotDetails() {
     // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
-    // The agent was just installed and only its id is here: the server's copy carries the
-    // version label, and the editor follows it. If the lookup fails, the editor of always.
+    // Only the agent id is at hand here: the server's copy carries the version label
+    // (ds_version), and the editor follows it. If the lookup fails, open with the stub.
     const stub = { createdAt: new Date(), _id: this.botid } as any;
     this.faqKbService.getFaqKbById(this.botid).subscribe((bot: any) => {
-      openChatbotEditor(this.router, bot || stub, this.project._id, this.appConfigService.getConfig());
+      openChatbotEditor(this.router, v3AgentOrStub(bot, stub._id), this.project._id, this.appConfigService.getConfig());
     }, () => {
       openChatbotEditor(this.router, stub, this.project._id, this.appConfigService.getConfig());
     });
@@ -2367,14 +2500,14 @@ _presentDialogImportContents() {
       //   }
 
       if (result && result.chatbot && result.redirectTo === "block") {
-
-        openChatbotEditor(this.router, chatbot, this.project._id, this.appConfigService.getConfig())
+        this.resolveChatbotForCds(chatbot, (bot) => {
+          openChatbotEditor(this.router, bot, this.project._id, this.appConfigService.getConfig());
+        });
       } else if (result && result.chatbot && result.redirectTo === "settings") {
-        let faqkb = {
-          createdAt: new Date(),
-          _id: chatbot._id
-        }
-        goToCDSSettings(this.router, faqkb, this.project._id, this.appConfigService.getConfig().cdsBaseUrl)
+        const config = this.appConfigService.getConfig();
+        this.resolveChatbotForCds(chatbot, (bot) => {
+          goToCDSSettings(this.router, bot, this.project._id, config.cdsBaseUrl, config.cdsV3BaseUrl);
+        });
       }
 
 
@@ -3008,7 +3141,10 @@ _presentDialogImportContents() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
+        this.projectFaqKbList = Array.isArray(faqKb) ? faqKb : [];
         this.myChatbotOtherCount = faqKb.length
+        // If served-by row already loaded, attach ds_version now
+        this.reenrichChatbotsUsingNamespaceFromProjectList();
 
         // ---------------------------------------------------------------------
         // Bot forked from Customer Satisfaction templates
@@ -3034,6 +3170,8 @@ _presentDialogImportContents() {
           this.increaseSalesBotsCount = increaseSalesBots.length;
           this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
         }
+      } else {
+        this.projectFaqKbList = [];
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] GET BOTS ERROR ', error);

@@ -91,21 +91,31 @@
 
   <div class="vibe-coder__examples" *ngIf="!busy">
     <div class="vibe-coder__examples-label-row">
-      <span class="vibe-coder__examples-label">{{ 'VibeCoderTryExamplePrompt' | translate }}</span>
+      <button
+        type="button"
+        class="vibe-coder__examples-label"
+        *ngIf="hasMoreExamplePages; else examplesLabelOnly"
+        (click)="refreshExamplePrompts()"
+        [attr.aria-label]="'VibeCoderTryExamplePrompt' | translate">
+        <span>{{ 'VibeCoderTryExamplePrompt' | translate }}</span>
+        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 -960 960 960" width="18px" aria-hidden="true">
+          <path d="M480-160q-134 0-227-93t-93-227q0-134 93-227t227-93q69 0 132 28.5T720-690v-110h80v280H520v-80h168q-32-56-87.5-88T480-720q-100 0-170 70t-70 170q0 100 70 170t170 70q77 0 139-44t87-116h84q-28 106-114 173t-196 67Z"/>
+        </svg>
+      </button>
+      <ng-template #examplesLabelOnly>
+        <span class="vibe-coder__examples-label vibe-coder__examples-label--static">
+          {{ 'VibeCoderTryExamplePrompt' | translate }}
+        </span>
+      </ng-template>
     </div>
 
     <div class="vibe-coder__examples-cards">
       <button
         type="button"
         class="vibe-coder__example-card"
-        *ngFor="let example of examplePrompts"
+        *ngFor="let example of visibleExamplePrompts"
         (click)="applyExamplePrompt(example)">
         <span class="vibe-coder__example-card-text">{{ example.label }}</span>
-        <span class="vibe-coder__example-card-arrow" aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
-            <path d="M7 17L17 7M17 7H9M17 7V15" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </span>
       </button>
     </div>
   </div>

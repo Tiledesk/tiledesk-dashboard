@@ -1,0 +1,125 @@
+<ng-container *ngIf="PERMISSION_TO_VIEW_FLOWS !== false">
+  <!-- Skeleton: real labels, placeholder values -->
+  <section *ngIf="showFlowSkeleton" class="home-flow home-flow--skeleton" aria-hidden="true">
+    <header class="home-flow__header">
+      <div class="home-flow__header-meta">
+        <span class="home-flow__eyebrow">
+          <span class="home-flow__eyebrow-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" xml:space="preserve">
+              <path d="M12,21.9c-1,0-1.8-0.3-2.5-1c-0.7-0.7-1-1.5-1-2.5c0-0.8,0.3-1.6,0.8-2.2c0.5-0.6,1.2-1,1.9-1.2v-2.3H5.5V9H3
+                V2.5h6.4V9H7v2.3h10V8.9c-0.8-0.2-1.4-0.6-1.9-1.2c-0.5-0.6-0.8-1.3-0.8-2.2c0-1,0.3-1.8,1-2.5c0.7-0.7,1.5-1,2.5-1
+                c1,0,1.8,0.3,2.5,1c0.7,0.7,1,1.5,1,2.5c0,0.8-0.3,1.6-0.8,2.2c-0.5,0.6-1.2,1-1.9,1.2v3.9h-5.7v2.3c0.8,0.2,1.4,0.6,1.9,1.2
+                c0.5,0.6,0.8,1.3,0.8,2.2c0,1-0.3,1.8-1,2.5C13.8,21.6,13,21.9,12,21.9z M17.8,7.5c0.5,0,1-0.2,1.4-0.6c0.4-0.4,0.6-0.8,0.6-1.4
+                c0-0.5-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6c-0.5,0-1,0.2-1.4,0.6C16,4.5,15.8,5,15.8,5.5c0,0.5,0.2,1,0.6,1.4S17.2,7.5,17.8,7.5
+                z M4.5,7.5H8V4H4.5C4.5,4,4.5,7.5,4.5,7.5z M12,20.4c0.5,0,1-0.2,1.4-0.6S14,19,14,18.5s-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6
+                c-0.5,0-1,0.2-1.4,0.6S10,17.9,10,18.5s0.2,1,0.6,1.4C11,20.2,11.5,20.4,12,20.4z"></path>
+            </svg>
+          </span>
+        </span>
+        <span class="hf-skel hf-skel--live"></span>
+      </div>
+    </header>
+
+    <div class="home-flow__body">
+      <div class="home-flow__identity">
+        <div class="hf-skel hf-skel--name"></div>
+        <div class="hf-skel hf-skel--updated"></div>
+      </div>
+
+      <div class="home-flow__metrics">
+        <article class="home-flow__card home-flow__card--last home-flow__card--chart home-flow__card--conversations-chart">
+          <div class="home-flow__card-label">
+            {{ 'HomeFlow.Last10Days' | translate }}
+          </div>
+          <div class="home-flow__metric-row">
+            <div class="hf-skel hf-skel--metric"></div>
+          </div>
+          <div class="home-flow__chart hf-skel-chart">
+            <svg class="hf-skel-sparkline" viewBox="0 0 280 72" preserveAspectRatio="none" aria-hidden="true">
+              <path class="hf-skel-sparkline-area"
+                d="M0 52 L28 48 L56 54 L84 42 L112 46 L140 30 L168 36 L196 22 L224 28 L252 18 L280 24 V72 H0 Z" />
+              <path class="hf-skel-sparkline-line" fill="none"
+                d="M0 52 L28 48 L56 54 L84 42 L112 46 L140 30 L168 36 L196 22 L224 28 L252 18 L280 24" />
+            </svg>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section *ngIf="hasChatbot && !showFlowSkeleton" class="home-flow">
+    <header class="home-flow__header">
+      <div class="home-flow__header-meta">
+        <span class="home-flow__eyebrow">
+          <span
+            class="home-flow__eyebrow-icon"
+            [matTooltip]="'HomeFlow.LastEditedAiAgent' | translate"
+            matTooltipClass="custom-mat-tooltip"
+            matTooltipPosition="below">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" xml:space="preserve" aria-hidden="true">
+              <path d="M12,21.9c-1,0-1.8-0.3-2.5-1c-0.7-0.7-1-1.5-1-2.5c0-0.8,0.3-1.6,0.8-2.2c0.5-0.6,1.2-1,1.9-1.2v-2.3H5.5V9H3
+                V2.5h6.4V9H7v2.3h10V8.9c-0.8-0.2-1.4-0.6-1.9-1.2c-0.5-0.6-0.8-1.3-0.8-2.2c0-1,0.3-1.8,1-2.5c0.7-0.7,1.5-1,2.5-1
+                c1,0,1.8,0.3,2.5,1c0.7,0.7,1,1.5,1,2.5c0,0.8-0.3,1.6-0.8,2.2c-0.5,0.6-1.2,1-1.9,1.2v3.9h-5.7v2.3c0.8,0.2,1.4,0.6,1.9,1.2
+                c0.5,0.6,0.8,1.3,0.8,2.2c0,1-0.3,1.8-1,2.5C13.8,21.6,13,21.9,12,21.9z M17.8,7.5c0.5,0,1-0.2,1.4-0.6c0.4-0.4,0.6-0.8,0.6-1.4
+                c0-0.5-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6c-0.5,0-1,0.2-1.4,0.6C16,4.5,15.8,5,15.8,5.5c0,0.5,0.2,1,0.6,1.4S17.2,7.5,17.8,7.5
+                z M4.5,7.5H8V4H4.5C4.5,4,4.5,7.5,4.5,7.5z M12,20.4c0.5,0,1-0.2,1.4-0.6S14,19,14,18.5s-0.2-1-0.6-1.4c-0.4-0.4-0.8-0.6-1.4-0.6
+                c-0.5,0-1,0.2-1.4,0.6S10,17.9,10,18.5s0.2,1,0.6,1.4C11,20.2,11.5,20.4,12,20.4z"></path>
+            </svg>
+          </span>
+        </span>
+        <span class="home-flow__live" [class.home-flow__live--draft]="!chatbotPublished">
+          <span class="home-flow__live-dot"></span>
+          {{ chatbotPublished ? ('Published' | translate) : ('Draft' | translate) }}
+        </span>
+      </div>
+      <button
+        type="button"
+        class="home-flow__edit-btn"
+        (click)="goToEditChatbot($event)"
+        [matTooltip]="'Edit' | translate"
+        matTooltipClass="custom-mat-tooltip"
+        matTooltipPosition="below"
+        [attr.aria-label]="'Edit' | translate">
+        <mat-icon aria-hidden="true">edit</mat-icon>
+      </button>
+    </header>
+
+    <div class="home-flow__body">
+      <div class="home-flow__identity">
+        <h2 class="home-flow__name">{{ lastUpdatedChatbot?.name }}</h2>
+        <p class="home-flow__updated" *ngIf="lastUpdatedChatbot?.updatedAt">
+          {{ 'Updated' | translate }} {{ lastUpdatedChatbot.updatedAt | amTimeAgo }}
+        </p>
+      </div>
+
+      <div class="home-flow__metrics">
+        <article class="home-flow__card home-flow__card--last home-flow__card--chart home-flow__card--conversations-chart">
+          <div class="home-flow__card-label">
+            {{ 'HomeFlow.Last10Days' | translate }}
+          </div>
+          <ng-container *ngIf="analyticsLoading; else conversationsReady">
+            <div class="home-flow__metric-row">
+              <div class="hf-skel hf-skel--metric"></div>
+            </div>
+            <div class="home-flow__chart hf-skel-chart">
+              <svg class="hf-skel-sparkline" viewBox="0 0 280 72" preserveAspectRatio="none" aria-hidden="true">
+                <path class="hf-skel-sparkline-area"
+                  d="M0 52 L28 48 L56 54 L84 42 L112 46 L140 30 L168 36 L196 22 L224 28 L252 18 L280 24 V72 H0 Z" />
+                <path class="hf-skel-sparkline-line" fill="none"
+                  d="M0 52 L28 48 L56 54 L84 42 L112 46 L140 30 L168 36 L196 22 L224 28 L252 18 L280 24" />
+              </svg>
+            </div>
+          </ng-container>
+          <ng-template #conversationsReady>
+            <div class="home-flow__metric-row">
+              <div class="home-flow__metric-value-wrap">
+                <div class="home-flow__metric-value">{{ conversationsTotal | number:'1.0-0' }}</div>
+              </div>
+            </div>
+            <div #conversationsChart class="home-flow__chart"></div>
+          </ng-template>
+        </article>
+      </div>
+    </div>
+  </section>
+</ng-container>

@@ -3630,7 +3630,8 @@
         "EngagedConversations": "Conversas engajadas",
         "EngagedConversationsTooltip": "Número de conversas em que este Flow foi engajado durante o período selecionado. Uma conversa pode ser contada mais de uma vez se o Flow foi engajado em dias diferentes.",
         "MostEngagedFlow": "Flow mais engajado",
-        "KbUsed": "KBs utilizadas"
+"KbUsed": "KBs utilizadas",
+        "PickUpWhereYouLeftOff": "Continuar de onde parou"
     },
     "HomeAnalytics": {
         "Overview": "Visão geral de analytics"
@@ -3718,7 +3719,7 @@
     "HomeVibeCoderSubtitle": "Transforme as suas ideias em fluxos conversacionais em minutos — sem necessidade de programar.",
     "NoPermissionToCreateAIAgents": "Não tem permissão para criar agentes de IA.",
     "VibeCoderPlaceholder": "Peça ao {{BRAND_NAME}} para criar um agente de IA que..",
-    "VibeCoderTryExamplePrompt": "Experimente um prompt de exemplo",
+    "VibeCoderTryExamplePrompt": "Não sabe por onde começar? Experimente estes",
     "VibeCoderExample1Label": "Responder a envios e devoluções",
     "VibeCoderExample2Label": "Marcar consultas via WhatsApp",
     "VibeCoderExample3Label": "Triagem de e-mails de suporte",

@@ -174,6 +174,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   orderByChatbotName: boolean = false;
   pageName: string;
   isVisiblePAY: boolean;
+  /** Env key VBC: New Flow → CreateAgent (T) vs CreateFlows modal (F / missing). */
+  isVisibleVBC = false;
   chatbotNumExceedChatbotLimit: boolean = false;
 
   isAllFlowRoute: boolean
@@ -1521,6 +1523,15 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.isVisiblePAY = true;
         }
       }
+
+      if (key.includes("VBC")) {
+        let vbc = key.split(":");
+        if (vbc[1] === "F") {
+          this.isVisibleVBC = false;
+        } else {
+          this.isVisibleVBC = true;
+        }
+      }
     })
 
     if (!this.public_Key.includes("PAY")) {
@@ -1529,6 +1540,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
     if (!this.public_Key.includes("ANA")) {
       this.isVisibleAnalytics = false;
+    }
+
+    if (!this.public_Key.includes("VBC")) {
+      this.isVisibleVBC = false;
     }
   }
 
@@ -2137,13 +2152,20 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
 
-  /** Header "New Flow" (route all): open create-agent modal directly (no AI Agents / Automations dropdown). */
+  /**
+   * Header "New Flow" (route all) + empty-state AI Agents card.
+   * VBC:T → CreateAgent modal; VBC:F / missing → previous CreateFlows modal.
+   */
   presentNewFlowCreateAgent() {
     if (!this.PERMISSION_TO_ADD_FLOWS) {
       this.notify.presentDialogNoPermissionToPermomfAction();
       return;
     }
-    this.presentModalCreateAgent('chatbot');
+    if (this.isVisibleVBC) {
+      this.presentModalCreateAgent('chatbot');
+      return;
+    }
+    this.presentDialogCreateFlows(true);
   }
 
   presentDialogCreateFlows(isChatbotRoute) {
@@ -2213,8 +2235,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     // The AI Agent is the first creation path moved onto the new modal, and only where agents are
     // born V3: the description is built by the AI chat, which exists in that editor alone. The
     // other paths -- voice, webhook, copilot, templates -- still open the old modal, and each is
-    // moved over on its own.
-    if (subtype === 'chatbot' && this.createsV3Agents()) {
+    // moved over on its own. When VBC is off, keep the previous CreateChatbot name-only flow.
+    if (subtype === 'chatbot' && this.createsV3Agents() && this.isVisibleVBC) {
       this.presentModalCreateAgent(subtype);
       return;
     }

@@ -72,15 +72,31 @@ export class VibeCoderComponent implements OnDestroy {
   /** i18n params for white-label company name in `VibeCoderPlaceholder`. */
   brandParams: { BRAND_NAME: string } = { BRAND_NAME: 'Tiledesk' };
 
+  /** How many example chips to show per page. */
+  private readonly examplesPageSize = 3;
+  examplesPageIndex = 0;
+
   /** Example chips — labels and prompts stay in English. */
   readonly examplePrompts: VibeCoderExamplePrompt[] = [
     {
-      label: 'Customer care AI Assistant with human backup',
+      label: 'Customer care with human backup',
       prompt: 'Create an agent that answers common customer questions using my website. If it can\'t find an answer, transfer the conversation to a human operator.',
     },
     {
-      label: 'AI Agent for Document Validation',
+      label: 'Document Validation',
       prompt: 'Create an agent that reviews uploaded PDF documents and checks whether their information is correct and consistent. Give me a report with the document type, key information, and any missing details or errors.',
+    },
+    {
+      label: 'Invoice Processing',
+      prompt: 'Create an agent that reads uploaded invoices and extracts the supplier name, invoice number, dates, amounts, taxes, and payment details. Create a table called "Invoices" and automatically save the extracted information in it. If any information is missing or inconsistent, let me know.',
+    },
+    {
+      label: 'Contract Analysis',
+      prompt: 'Create an agent that reviews uploaded contracts and gives me a clear summary of the key terms and deadlines. Highlight potential risks, missing information, incorrect calculations, and contradictions between different sections of the contract.',
+    },
+    {
+      label: 'Lead Collection',
+      prompt: 'Create a friendly AI sales assistant that welcomes website visitors and naturally collects their name, email, and business needs. It should handle unexpected replies, remember information already shared, and ask follow-up questions without repeating itself. Once the visitor confirms their details, create a table called "Leads" and save the collected information in it.',
     },
   ];
 
@@ -99,6 +115,15 @@ export class VibeCoderComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.attachments.forEach((a) => this.revokePreview(a));
+  }
+
+  get visibleExamplePrompts(): VibeCoderExamplePrompt[] {
+    const start = this.examplesPageIndex * this.examplesPageSize;
+    return this.examplePrompts.slice(start, start + this.examplesPageSize);
+  }
+
+  get hasMoreExamplePages(): boolean {
+    return this.examplePrompts.length > this.examplesPageSize;
   }
 
   get hasTypedContent(): boolean {
@@ -156,6 +181,12 @@ export class VibeCoderComponent implements OnDestroy {
     setTimeout(() => {
       this.vibeCoderTextarea?.nativeElement?.focus();
     }, 0);
+  }
+
+  /** Cycle example chip pages (3, then remaining 2, then back). */
+  refreshExamplePrompts(): void {
+    const pageCount = Math.max(1, Math.ceil(this.examplePrompts.length / this.examplesPageSize));
+    this.examplesPageIndex = (this.examplesPageIndex + 1) % pageCount;
   }
 
   openFilePicker(): void {
