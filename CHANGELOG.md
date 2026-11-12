@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.272-stage
+- Adds ready-made dashboard settings for stage, production, and Aruba, so each environment can be used as-is
+- Those settings stay on the machine that prepares the app and are included when the dashboard is built
+
 ### 2.7.271-stage
 - Updates the New Flow → AI Agent modal: embeds the Home vibe coder (prompt, examples, file attachments), replaces Create with Start, widens the dialog, and passes attachment URLs to Design Studio the same way as Home
 - Adds OAuth authentication for MCP servers in Integrations → MCP Servers: automatic (MCP discovery), Google and manual; connection status with reconnect.
