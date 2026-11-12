@@ -68,11 +68,12 @@ describe('ExecutionsListComponent', () => {
 
   const text = () => fixture.nativeElement.textContent as string;
 
-  it('default filter requests trigger=unattended and from = now-7d', () => {
+  it('default filter: every trigger, test runs included, from = now-7d', () => {
     setup({ botid: 'a1' });
     const params = executions.list.calls.mostRecent().args[1];
     expect(executions.list.calls.mostRecent().args[0]).toBe('p1');
-    expect(params.trigger).toBe('unattended');
+    expect(params.trigger).toBeUndefined();
+    expect(params.test).toBe('all');
     expect(params.agent_id).toBe('a1');
     expect(params.from).toBe(new Date(NOW - 7 * 24 * 3600 * 1000).toISOString());
     expect(params.status).toBeUndefined();
@@ -93,8 +94,14 @@ describe('ExecutionsListComponent', () => {
     setup();
     component.setFilter('status', 'failed');
     expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'failed' });
-    component.setFilter('trigger', 'unattended');
+    component.setFilter('trigger', 'all');
     expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: null });
+    component.setFilter('trigger', 'unattended');
+    expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: 'unattended' });
+    component.setFilter('tests', false);
+    expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ tests: 'false' });
+    component.setFilter('tests', true);
+    expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ tests: null });
     component.setFilter('has_failures', true);
     expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_failures: 'true' });
   });
@@ -179,7 +186,7 @@ describe('ExecutionsListComponent', () => {
       expect(component.hasActiveFilters).toBe(true);
       expect(text()).toContain('Executions.EmptyFiltered');
       component.clearFilters();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: null, status: null, has_failures: null, period: null, q: null });
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: null, status: null, has_failures: null, period: null, q: null, tests: null });
     });
   });
 
@@ -213,20 +220,28 @@ describe('ExecutionsListComponent', () => {
   describe('counters and agent column', () => {
     it('one-agent view: one summary call, clicking a counter sets the status filter', () => {
       setup({ botid: 'a1' });
-      expect(executions.summary).toHaveBeenCalledWith('p1', ['a1']);
+      expect(executions.summary).toHaveBeenCalledWith('p1', ['a1'], '24h', true);
       expect(component.counters.failed).toBe(2);
       const buttons = fixture.nativeElement.querySelectorAll('.exec-counter');
       expect(buttons.length).toBe(4);
       buttons[2].click();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'failed', trigger: 'all' });
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'failed', trigger: null });
+    });
+
+    it('test runs off: list and counters leave them out, and the toggle counts as a filter', () => {
+      setup({ botid: 'a1', query: { tests: 'false' } });
+      expect(component.filters.tests).toBe(false);
+      expect(executions.list.calls.mostRecent().args[1].test).toBeUndefined();
+      expect(executions.summary.calls.mostRecent().args[3]).toBe(false);
+      expect(component.hasActiveFilters).toBe(true);
     });
 
     it('a counter counts every trigger: turning it on shows all triggers, turning it off keeps them', () => {
-      setup({ botid: 'a1' });
+      setup({ botid: 'a1', query: { trigger: 'unattended' } });
       expect(component.filters.trigger).toBe('unattended');
       expect(fixture.nativeElement.querySelector('.exec-counters-hint').textContent.trim()).toBe('Executions.Last24hAllTriggers');
       fixture.nativeElement.querySelectorAll('.exec-counter')[1].click();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'waiting', trigger: 'all' });
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'waiting', trigger: null });
       query$.next(convertToParamMap({ status: 'waiting', trigger: 'all' }));
       fixture.detectChanges();
       expect(executions.list.calls.mostRecent().args[1].trigger).toBeUndefined();
@@ -327,7 +342,7 @@ describe('ExecutionsListComponent', () => {
 
     it('invalid URL values fall back to defaults', () => {
       setup({ query: { period: 'constructor', trigger: 'bogus', status: 'toString', has_failures: 'yes' } });
-      expect(component.filters).toEqual({ trigger: 'unattended', status: '', has_failures: false, period: '7d', q: '' });
+      expect(component.filters).toEqual({ trigger: 'all', status: '', has_failures: false, period: '7d', q: '', tests: true });
       expect(executions.list.calls.mostRecent().args[1].from).toBe(new Date(NOW - 7 * 24 * 3600 * 1000).toISOString());
     });
 
@@ -395,5 +410,12 @@ describe('ExecutionsListComponent', () => {
       expect(component.permitted).toBe(true);
       expect(executions.list).toHaveBeenCalled();
     });
+  });
+
+  it('a test run is listed with a test badge', () => {
+    setup({ page: { items: [Object.assign(row('t1'), { test: true }), row('r1')], next_cursor: null } });
+    const badges = fixture.nativeElement.querySelectorAll('.exec-test-badge');
+    expect(badges.length).toBe(1);
+    expect(badges[0].textContent.trim()).toBe('Executions.TestBadge');
   });
 });

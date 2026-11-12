@@ -72,8 +72,10 @@ export class ExecutionsService {
     return this.httpClient.get<ExecutionPage>(this.url(projectId), { headers: this.headers(), params: httpParams });
   }
 
-  summary(projectId: string, agentIds: string[], since = '24h'): Observable<Summary> {
-    const params = new HttpParams().set('agent_ids', agentIds.join(',')).set('since', since);
+  /** includeTests: test runs counted too (test=all), as the list shows them. */
+  summary(projectId: string, agentIds: string[], since = '24h', includeTests = false): Observable<Summary> {
+    let params = new HttpParams().set('agent_ids', agentIds.join(',')).set('since', since);
+    if (includeTests) params = params.set('test', 'all');
     return this.httpClient.get<Summary>(this.url(projectId, '/summary'), { headers: this.headers(), params });
   }
 
