@@ -176,7 +176,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       this.authorizedUrl = this.originalOAuth ? server.url : '';
       this.urlChanged = false;
       this.stashedOAuth = null;
-      this.scopesText = '';
+      this.scopesText = this.scopesTextForServer(server);
       this.manualAuthorizationUrl = '';
       this.manualTokenUrl = '';
       this.manualClientId = '';
@@ -483,6 +483,13 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       this.stashedOAuth = null;
       if (result.connection && result.connection._id) {
         this.reconnectRequired[result.connection._id] = false;
+        this.oauthConnections = {
+          ...this.oauthConnections,
+          [result.connection._id]: result.connection
+        };
+        if (result.connection.scopes && result.connection.scopes.length) {
+          this.scopesText = result.connection.scopes.join(' ');
+        }
       }
       this.loadOAuthConnections();
       this.loadToolsForCurrentServer();
@@ -798,6 +805,20 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     return value.split(/[\s,]+/).map((scope) => scope.trim()).filter((scope) => !!scope);
   }
 
+  /** Scopes stored on the OAuth connection, shown in the Google/manual field. */
+  private scopesTextForServer(server: McpServer): string {
+    const connectionId = server && server.oauth && server.oauth.connection_id;
+    if (!connectionId) {
+      return '';
+    }
+    const connection = this.oauthConnections[connectionId];
+    const scopes = connection && connection.scopes;
+    if (!scopes || !scopes.length) {
+      return '';
+    }
+    return scopes.join(' ');
+  }
+
   private notifyAuthorizationFailure(result: McpOAuthResult): void {
     if (result.ok !== false) {
       return;
@@ -894,6 +915,10 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       });
       this.oauthConnections = map;
       this.oauthStatusUnavailable = false;
+      // The list can arrive after the row click or the popup. Fill scopes only while the field is still empty.
+      if (!this.scopesText) {
+        this.scopesText = this.scopesTextForServer(this.currentServer);
+      }
     }, (error) => {
       if (error && error.status === 503) {
         this.oauthStatusUnavailable = true;
