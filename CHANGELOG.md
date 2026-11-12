@@ -1,5 +1,16 @@
 # tiledesk-dashboard
 
+### 2.7.274-stage
+- Improves Home vibe coder spacing and layout- Adds on the Home page a compact last-edited AI Agent pickup card with publish/draft status, updated date, and last-10-days conversations char
+- Opens Design Studio V3 when the agent has `ds_version = v3` (Home edit, bots list, Knowledge Bases “served by”)
+- Fixes the bug: Knowledge Base namespace AI agents were missing `ds_version`, so V2/V3 editor routing could be wrong
+- Hides navbar, sidebar and KB stats charts when Knowledge Bases is opened with `?embed` (CDS iframe)
+- Shows the new Create Agent modal (with description) on the bots list page only when the new Home creation experience is enabled; otherwise keeps the previous Create Flows modal
+- Fixes the bug: Knowledge Base preview settings model select could be empty when the saved model was inactive or missing from the catalog
+- Adds LLM models: GPT-6 Astra, GPT-6.1 Sol/Terra, GPT-6 Luna/Sol, Gemini 4 Carbon/Argon, Gemini 3.8 Flash, Claude Opus/Sonnet/Haiku 5.5, Claude Fable 5.2/5.1, Cohere Command A Translate, Groq MiniMax M2.7 and Muse Spark Open
+- Deprecates LLM models: GPT-5, GPT-5-mini, GPT-5-nano, GPT-5.3, GPT-4 (Legacy), GPT-3.5 Turbo, Claude Opus 4.1, Claude Sonnet 4.5, Gemini 2.5 Flash, Groq Llama 3.1 8B Instant, Llama 3.3 70B Versatile, Compound, Compound Mini, Qwen3.6-27B
+- Reactivates Gemini 2.5 Flash Lite and Groq GPT OSS 120B / 20B
+
 ### 2.7.273-stage
 - Fills the Scopes field of a Google or manual MCP server with the scopes returned by the OAuth connection, when the server is opened and right after authorization
 
