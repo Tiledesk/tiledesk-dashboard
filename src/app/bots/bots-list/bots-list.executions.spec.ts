@@ -59,8 +59,10 @@ describe('BotListComponent executions entry', () => {
         { provide: Router, useValue: router },
         { provide: BrandService, useValue: { getBrand: () => ({}) } },
         { provide: LoggerService, useValue: { log() {}, debug() {}, warn() {}, error() {} } },
+        // the card template reads the config (Clone to V3 on master-STAGE-NEW)
+        { provide: AppConfigService, useValue: { getConfig: () => ({}) } },
         // collaborators the executions entry does not touch
-        ...[FaqKbService, FaqService, AuthService, Location, NotifyService, AppConfigService, DepartmentService,
+        ...[FaqKbService, FaqService, AuthService, Location, NotifyService, DepartmentService,
           ProjectService, BotLocalDbService, MatDialog, ProjectPlanService, UsersService, Clipboard, WebhookService,
           ActivatedRoute, RoleService, RolesService, AgentPromptsService].map(t => ({ provide: t, useValue: {} })),
       ],
