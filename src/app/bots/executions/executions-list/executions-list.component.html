@@ -52,6 +52,11 @@
           (change)="setFilter('has_failures', $any($event.target).checked)">
         {{ "Executions.WithFailureConditions" | translate }}
       </label>
+      <label class="exec-check">
+        <input type="checkbox" class="exec-filter-tests" [checked]="filters.tests"
+          (change)="setFilter('tests', $any($event.target).checked)">
+        {{ "Executions.TestRuns" | translate }}
+      </label>
       <select class="exec-select exec-filter-period" [attr.aria-label]="'Executions.Period' | translate"
         (change)="setFilter('period', $any($event.target).value)">
         <option *ngFor="let p of periodOptions" [value]="p" [selected]="filters.period === p">{{ "Executions.Periods." + p | translate }}</option>
@@ -83,6 +88,7 @@
             (click)="openExecution(row)" (keyup.enter)="openExecution(row)">
             <td>
               <execution-status-chip [status]="row.status"></execution-status-chip>
+              <span *ngIf="row.test" class="exec-test-badge">{{ "Executions.TestBadge" | translate }}</span>
               <mat-icon *ngIf="row.trace_complete === false" class="exec-warn-icon" [matTooltip]="'Executions.TraceIncomplete' | translate">warning</mat-icon>
             </td>
             <td *ngIf="!agentId" class="exec-agent">{{ row.agent_name || row.agent_id }}</td>
@@ -104,7 +110,7 @@
         </ng-container>
         <ng-container *ngIf="!hasActiveFilters">
           {{ "Executions.EmptyNone" | translate }}
-          <button type="button" class="exec-link" (click)="showAllTriggers()">{{ "Executions.ShowAllTriggers" | translate }}</button>
+          <button *ngIf="filters.trigger !== 'all'" type="button" class="exec-link" (click)="showAllTriggers()">{{ "Executions.ShowAllTriggers" | translate }}</button>
         </ng-container>
       </div>
 

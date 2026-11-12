@@ -3848,6 +3848,8 @@
         "AllAgents": "Tutti gli agenti",
         "Last24h": "ultime 24 ore",
         "Last24hAllTriggers": "ultime 24 ore · tutti i trigger",
+        "TestRuns": "Esecuzioni di test",
+        "TestBadge": "test",
         "SearchId": "Cerca id esecuzione…",
         "Trigger": "Trigger",
         "StatusLabel": "Stato",

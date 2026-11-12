@@ -10,7 +10,8 @@ import { AgentSummary, canViewExecutions, ExecutionListParams, ExecutionRow } fr
 import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration, PERIOD_MS } from '../shared/execution-format';
 
-export const DEFAULT_TRIGGER = 'unattended';
+/** Every run by default: the widget runs (most of them, and every waiting one) and the unattended ones. */
+export const DEFAULT_TRIGGER = 'all';
 export const DEFAULT_PERIOD = '7d';
 export const PAGE_SIZE = 25;
 export const POLL_MS = 10000;
@@ -21,6 +22,8 @@ export interface ExecutionFilters {
   has_failures: boolean;
   period: string;
   q: string;
+  /** test runs (Design Studio, draft agents) listed and counted, marked as tests; off: real runs only */
+  tests: boolean;
 }
 
 @Component({
@@ -30,7 +33,7 @@ export interface ExecutionFilters {
 })
 export class ExecutionsListComponent implements OnInit, OnDestroy {
 
-  readonly triggerOptions = ['unattended', 'all', 'scheduled', 'webhook', 'trigger', 'automation', 'widget', 'channel'];
+  readonly triggerOptions = ['all', 'unattended', 'scheduled', 'webhook', 'trigger', 'automation', 'widget', 'channel'];
   readonly statusOptions = ['running', 'waiting', 'stopping', 'stopped', 'failed', 'completed', 'destroyed'];
   readonly periodOptions = ['24h', '7d', '30d'];
   readonly counterStatuses = ['running', 'waiting', 'failed', 'stopped'];
@@ -99,6 +102,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
         has_failures: params.get('has_failures') === 'true',
         period: pick('period', this.periodOptions, DEFAULT_PERIOD),
         q: params.get('q') || '',
+        tests: params.get('tests') !== 'false',
       };
       if (this.started) this.loadFirstPage();
     });
@@ -124,7 +128,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   }
 
   private defaultFilters(): ExecutionFilters {
-    return { trigger: DEFAULT_TRIGGER, status: '', has_failures: false, period: DEFAULT_PERIOD, q: '' };
+    return { trigger: DEFAULT_TRIGGER, status: '', has_failures: false, period: DEFAULT_PERIOD, q: '', tests: true };
   }
 
   private start() {
@@ -160,6 +164,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     if (f.trigger !== 'all') params.trigger = f.trigger;
     if (f.status) params.status = f.status === 'stopped' ? 'stopped,stopping' : f.status;
     if (f.has_failures) params.has_failures = true;
+    if (f.tests) params.test = 'all';
     if (f.q.trim()) params.q = f.q.trim();
     params.from = new Date(this.now() - (PERIOD_MS[f.period] || PERIOD_MS[DEFAULT_PERIOD])).toISOString();
     if (cursor) params.cursor = cursor;
@@ -200,7 +205,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   private loadCounters() {
     // the old value stays until the new one arrives (no flicker on every poll)
     if (!this.agentId) return;
-    this.executionsService.summary(this.projectId, [this.agentId])
+    this.executionsService.summary(this.projectId, [this.agentId], '24h', this.filters.tests)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: s => this.counters = s.agents[this.agentId] || null,
@@ -280,22 +285,23 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       case 'trigger': qp = value === DEFAULT_TRIGGER ? null : value; break;
       case 'period': qp = value === DEFAULT_PERIOD ? null : value; break;
       case 'has_failures': qp = value ? 'true' : null; break;
+      case 'tests': qp = value ? null : 'false'; break;
       default: qp = value || null;
     }
     this.navigateWith({ [name]: qp });
   }
 
   /**
-   * A counter chip counts every trigger type (the summary API), so turning one on also shows all triggers:
-   * otherwise the default "unattended" filter hides the widget runs it counts. Turning it off keeps the trigger.
+   * A counter chip counts every trigger type (the summary API), so turning one on also shows all triggers
+   * (the default): a narrower trigger filter would hide rows it counts. Turning it off keeps the trigger.
    */
   toggleStatus(status: string) {
     if (this.filters.status === status) this.setFilter('status', '');
-    else this.navigateWith({ status, trigger: 'all' });
+    else this.navigateWith({ status, trigger: null });
   }
 
   clearFilters() {
-    this.navigateWith({ trigger: null, status: null, has_failures: null, period: null, q: null });
+    this.navigateWith({ trigger: null, status: null, has_failures: null, period: null, q: null, tests: null });
   }
 
   showAllTriggers() {
@@ -304,7 +310,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
   get hasActiveFilters(): boolean {
     const f = this.filters;
-    return !!(f.status || f.has_failures || f.q || f.trigger !== DEFAULT_TRIGGER || f.period !== DEFAULT_PERIOD);
+    return !!(f.status || f.has_failures || f.q || !f.tests || f.trigger !== DEFAULT_TRIGGER || f.period !== DEFAULT_PERIOD);
   }
 
   private navigateWith(queryParams: any) {

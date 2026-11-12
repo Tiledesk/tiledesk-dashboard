@@ -50,3 +50,9 @@
 .exec-btn { border: 1px solid var(--exec-line-strong); background: #fff; border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }
 
 .unauthorized-message-container-in-page { text-align: center; padding: 80px 16px; }
+
+// a test run (Design Studio, draft agent): listed with the real ones, marked
+.exec-test-badge {
+  display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 8px;
+  font-size: 11px; line-height: 18px; color: #6b5b00; background: #fff4c2; vertical-align: middle;
+}

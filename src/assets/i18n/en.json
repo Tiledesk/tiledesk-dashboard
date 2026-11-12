@@ -4255,6 +4255,8 @@
         "AllAgents": "All agents",
         "Last24h": "last 24 hours",
         "Last24hAllTriggers": "last 24 hours · all triggers",
+        "TestRuns": "Test runs",
+        "TestBadge": "test",
         "SearchId": "Search execution id…",
         "Trigger": "Trigger",
         "StatusLabel": "Status",

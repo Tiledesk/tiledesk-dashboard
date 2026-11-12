@@ -30,7 +30,8 @@ export interface ExecutionListParams {
   trigger?: string;
   status?: string;
   has_failures?: boolean;
-  test?: boolean;
+  /** true: test runs only; 'all': real and test runs; unset: real runs only */
+  test?: boolean | 'all';
   from?: string;
   to?: string;
   q?: string;
