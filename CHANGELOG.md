@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.273-stage
+- Fills the Scopes field of a Google or manual MCP server with the scopes returned by the OAuth connection, when the server is opened and right after authorization
+
 ### 2.7.272-stage
 - Adds ready-made dashboard settings for stage, production, and Aruba, so each environment can be used as-is
 - Those settings stay on the machine that prepares the app and are included when the dashboard is built
