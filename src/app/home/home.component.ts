@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, isDevMode, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, isDevMode, ViewEncapsulation, HostListener } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { AuthService } from '../core/auth.service';
 
@@ -141,6 +141,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   private pendingHomeBuildPrompt: string | null = null;
 
   @ViewChild('homeVibeCoder') homeVibeCoder?: VibeCoderComponent;
+  @ViewChild('homePickupSection') homePickupSection?: ElementRef<HTMLElement>;
+
+  /** VBC hero: down-arrow hint; hidden after user scrolls toward pickup. */
+  showVibeScrollHint = true;
+  private homeScrollListener?: () => void;
+  private homeScrollTargets: HTMLElement[] = [];
   /** Set from onboarding Get started router state — focus (+ optional prefill) once permissions ready. */
   private focusHomeVibeCoderPending = false;
   private homeVibeCoderInitialPrompt: string | null = null;
@@ -156,6 +162,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   isVisibleHomeBanner: boolean;
   isVisiblePay: boolean;
   isVisibleKNB: boolean;
+  /** Home vibe coder (env key VBC). Missing or F → hidden. */
+  isVisibleVBC = false;
+
+  get hasHomePickupSection(): boolean {
+    return this.isVisibleVBC
+      && this.USER_ROLE !== 'agent'
+      && !!(this.PERMISSION_TO_VIEW_FLOWS || this.PERMISSION_TO_ADD_FLOWS)
+      && !!(this.showskeleton || this.chatbots?.length);
+  }
 
   hidechangelogrocket: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -515,12 +530,65 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     }
+    this.bindHomeScrollListeners();
+    this.updateVibeScrollHint();
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    this.updateVibeScrollHint();
+  }
+
+  scrollToHomePickup(): void {
+    const el = this.homePickupSection?.nativeElement;
+    if (!el) {
+      return;
+    }
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  private bindHomeScrollListeners(): void {
+    this.unbindHomeScrollListeners();
+    this.homeScrollListener = () => this.updateVibeScrollHint();
+    const selectors = ['.main-panel', '.home-main-content', '.main-content'];
+    selectors.forEach((selector) => {
+      const el = document.querySelector(selector) as HTMLElement | null;
+      if (el && !this.homeScrollTargets.includes(el)) {
+        this.homeScrollTargets.push(el);
+        el.addEventListener('scroll', this.homeScrollListener, { passive: true });
+      }
+    });
+  }
+
+  private unbindHomeScrollListeners(): void {
+    if (this.homeScrollListener) {
+      this.homeScrollTargets.forEach((el) => {
+        el.removeEventListener('scroll', this.homeScrollListener);
+      });
+    }
+    this.homeScrollTargets = [];
+    this.homeScrollListener = undefined;
+  }
+
+  private updateVibeScrollHint(): void {
+    if (!this.isVisibleVBC || !this.hasHomePickupSection) {
+      this.showVibeScrollHint = false;
+      return;
+    }
+    const scrollTop = Math.max(
+      window.pageYOffset || 0,
+      document.documentElement.scrollTop || 0,
+      document.body.scrollTop || 0,
+      ...this.homeScrollTargets.map((el) => el.scrollTop || 0),
+    );
+    this.showVibeScrollHint = scrollTop < 48;
   }
 
   ngOnDestroy() {
     this.logger.log('[QUOTA-DEBUG][HOME COMP] - CALLING ON DESTROY')
     this.cancelCloseQuotaHelp();
     this.quotaHelpOpen = null;
+    this.unbindHomeScrollListeners();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
@@ -855,7 +923,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.focusHomeVibeCoderPending) {
       return;
     }
-    if (this.USER_ROLE === 'agent' || !this.PERMISSION_TO_ADD_FLOWS) {
+    if (!this.isVisibleVBC || this.USER_ROLE === 'agent' || !this.PERMISSION_TO_ADD_FLOWS) {
       // Leave tiledesk-pending-build in place: a later Home open can still prefill.
       this.focusHomeVibeCoderPending = false;
       this.homeVibeCoderInitialPrompt = null;
@@ -1587,7 +1655,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
       this.showskeleton = false;
       this.delayNewsFeedSkeleton();
-
+      this.updateVibeScrollHint();
     });
   }
 
@@ -2662,6 +2730,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
+      if (key.includes("VBC")) {
+        let vbc = key.split(":");
+        if (vbc[1] === "F") {
+          this.isVisibleVBC = false;
+        } else {
+          this.isVisibleVBC = true;
+        }
+      }
+
 
     });
 
@@ -2702,6 +2779,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.public_Key.includes("QIN")) {
       this.isVisibleQuoteSection = false;
       // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteSection', this.isVisibleQuoteSection);
+    }
+
+    if (!this.public_Key.includes("VBC")) {
+      this.isVisibleVBC = false;
     }
   }
 
