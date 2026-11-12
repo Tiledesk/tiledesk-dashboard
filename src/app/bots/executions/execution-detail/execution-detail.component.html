@@ -141,7 +141,7 @@
               {{ g.textKey | translate: { n: g.keys.length, keys: g.keys.join(', ') } }}
             </div>
 
-            <button type="button" class="tl-step" [class.tl-open]="expanded.has(item.step.seq)"
+            <button type="button" class="tl-step" [class.tl-open]="expanded.has(item.step.seq)" [class.tl-interrupted]="item.step.outcome === 'interrupted'"
               [attr.aria-expanded]="expanded.has(item.step.seq)"
               [attr.aria-label]="'Executions.Detail.StepDetails' | translate: { name: item.step.block_name || item.step.seq }"
               (click)="toggleStep(item.step)">
@@ -156,6 +156,13 @@
               <span class="tl-dur ex-mono ex-muted">{{ stepDuration(item.step) }}</span>
               <mat-icon class="tl-chevron" aria-hidden="true">{{ expanded.has(item.step.seq) ? 'expand_more' : 'chevron_right' }}</mat-icon>
             </button>
+
+            <div *ngIf="runningAction(item.step) as ra" class="tl-running-action">
+              <mat-icon class="tl-icon o-running tl-spin" aria-hidden="true">autorenew</mat-icon>
+              <b class="tl-action-type">{{ ra.label || ("Executions.Detail.NextAction" | translate: { n: ra.index }) }}</b>
+              <span class="ex-muted">{{ "Executions.Detail.Running" | translate }}</span>
+              <span *ngIf="ra.elapsed" class="tl-dur ex-mono ex-muted">{{ ra.elapsed }}</span>
+            </div>
 
             <div *ngIf="expanded.has(item.step.seq)" class="tl-body">
               <div *ngFor="let a of item.step.actions" class="tl-action">
