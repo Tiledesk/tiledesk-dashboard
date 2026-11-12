@@ -4061,6 +4061,7 @@
             "Hard": "Arresto immediato — interrompe subito l'azione corrente",
             "HardNow": "Arresto immediato — interrompe subito l'azione corrente, senza attendere che finisca.",
             "HardAction": "\"{{action}}\" viene interrotta.",
+            "HardActionUnknown": "L'azione corrente viene interrotta.",
             "Stop": "Arresta",
             "StopNow": "Arresta subito",
             "Cancel": "Annulla",

@@ -21,8 +21,8 @@ export interface StopDialogData {
         <mat-radio-button class="sd-hard" value="hard">{{ "Executions.Dialogs.Hard" | translate }}</mat-radio-button>
       </mat-radio-group>
       <p *ngIf="data.hardOnly" class="sd-p">{{ "Executions.Dialogs.HardNow" | translate }}</p>
-      <p *ngIf="data.action" class="sd-hard-text" [class.sd-indent]="!data.hardOnly">
-        {{ "Executions.Dialogs.HardAction" | translate: { action: data.action } }}</p>
+      <p class="sd-hard-text" [class.sd-indent]="!data.hardOnly">
+        {{ (data.action ? "Executions.Dialogs.HardAction" : "Executions.Dialogs.HardActionUnknown") | translate: { action: data.action } }}</p>
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-button type="button" class="mat-dialog-close-btn sd-cancel" (click)="cancel()">{{ "Executions.Dialogs.Cancel" | translate }}</button>

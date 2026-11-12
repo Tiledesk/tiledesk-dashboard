@@ -15,7 +15,7 @@ import {
 import { monitorExecutionsLink } from '../execution-links';
 import { auditResultKind, auditResultLabel, auditSentence } from '../execution-audit';
 import { canViewExecutionsAudit } from 'app/activities-new/utils/activity-verbs.constants';
-import { formatDuration } from '../shared/execution-format';
+import { actionLabel, formatDuration } from '../shared/execution-format';
 import { StopDialogComponent, StopDialogData, StopMode } from '../shared/stop-dialog.component';
 import { DestroyDialogComponent, DestroyDialogData } from '../shared/destroy-dialog.component';
 import { ResumeDialogComponent, ResumeDialogData } from '../shared/resume-dialog.component';
@@ -340,7 +340,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.timeline = steps.map(step => ({ step, outside: groupOutside(step) }));
     this.actionTitles = {};
     steps.forEach(s => (s.actions || []).forEach(a => {
-      if (a.action_id) this.actionTitles[a.action_id] = a.title || a.type || a.action_id;
+      if (a.action_id) this.actionTitles[a.action_id] = actionLabel(a);
     }));
     if (this.fsSeq === null && steps.length) this.fsSeq = steps[steps.length - 1].seq;
     this.refreshLiveStates();
@@ -899,14 +899,22 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return 'Executions.Controls.MessagesWhileStopped' + (n === 1 ? 'One' : '');
   }
 
-  /** The action running now: the last action of the running block. */
+  /**
+   * The action running now: in the last step still open, the last action with no outcome yet.
+   * The API has no current-action field before a stop (interrupted_action is set by the stop).
+   * Null when none is open: the dialog then says "the current action", never a finished one.
+   */
   currentActionTitle(): string | null {
     const steps = (this.detail && this.detail.steps) || [];
-    const last = steps[steps.length - 1];
-    if (!last || !this.isRunningStep(last)) return null;
-    const actions = last.actions || [];
-    const a = actions[actions.length - 1];
-    return a ? a.title || a.type || null : null;
+    for (let i = steps.length - 1; i >= 0; i--) {
+      if (!this.isRunningStep(steps[i])) continue;
+      const actions = steps[i].actions || [];
+      for (let k = actions.length - 1; k >= 0; k--) {
+        const a = actions[k];
+        if (a.outcome == null && a.duration_ms == null) return actionLabel(a);
+      }
+    }
+    return null;
   }
 
   runControl(c: AllowedControl) {

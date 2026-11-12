@@ -4468,6 +4468,7 @@
             "Hard": "Hard stop — interrupt the current action now",
             "HardNow": "Hard stop — interrupt the current action now, without waiting for it to finish.",
             "HardAction": "\"{{action}}\" is interrupted.",
+            "HardActionUnknown": "The current action is interrupted.",
             "Stop": "Stop",
             "StopNow": "Stop now",
             "Cancel": "Cancel",
