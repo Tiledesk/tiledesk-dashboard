@@ -25,13 +25,13 @@
     </div>
 
     <!-- counters: one agent only -->
-    <div *ngIf="counters" class="exec-counters" role="group">
+    <div *ngIf="counters" class="exec-counters" role="group" [attr.aria-label]="'Executions.Last24hAllTriggers' | translate">
       <button *ngFor="let s of counterStatuses" type="button" class="exec-counter"
         [class.active]="filters.status === s" [attr.aria-pressed]="filters.status === s"
         (click)="toggleStatus(s)">
         {{ "Executions.Status." + s | translate }} <b>{{ counters[s] }}</b>
       </button>
-      <span class="exec-counters-hint">{{ "Executions.Last24h" | translate }}</span>
+      <span class="exec-counters-hint">{{ "Executions.Last24hAllTriggers" | translate }}</span>
     </div>
 
     <div class="exec-filters">

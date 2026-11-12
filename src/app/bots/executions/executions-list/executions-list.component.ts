@@ -285,8 +285,13 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     this.navigateWith({ [name]: qp });
   }
 
+  /**
+   * A counter chip counts every trigger type (the summary API), so turning one on also shows all triggers:
+   * otherwise the default "unattended" filter hides the widget runs it counts. Turning it off keeps the trigger.
+   */
   toggleStatus(status: string) {
-    this.setFilter('status', this.filters.status === status ? '' : status);
+    if (this.filters.status === status) this.setFilter('status', '');
+    else this.navigateWith({ status, trigger: 'all' });
   }
 
   clearFilters() {

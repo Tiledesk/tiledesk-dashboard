@@ -218,7 +218,25 @@ describe('ExecutionsListComponent', () => {
       const buttons = fixture.nativeElement.querySelectorAll('.exec-counter');
       expect(buttons.length).toBe(4);
       buttons[2].click();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'failed' });
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'failed', trigger: 'all' });
+    });
+
+    it('a counter counts every trigger: turning it on shows all triggers, turning it off keeps them', () => {
+      setup({ botid: 'a1' });
+      expect(component.filters.trigger).toBe('unattended');
+      expect(fixture.nativeElement.querySelector('.exec-counters-hint').textContent.trim()).toBe('Executions.Last24hAllTriggers');
+      fixture.nativeElement.querySelectorAll('.exec-counter')[1].click();
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'waiting', trigger: 'all' });
+      query$.next(convertToParamMap({ status: 'waiting', trigger: 'all' }));
+      fixture.detectChanges();
+      expect(executions.list.calls.mostRecent().args[1].trigger).toBeUndefined();
+      expect(executions.list.calls.mostRecent().args[1].status).toBe('waiting');
+      fixture.nativeElement.querySelectorAll('.exec-counter')[1].click();
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: null });
+      // stopped asks for stopped,stopping: the summary counts both as stopped
+      component.toggleStatus('stopped');
+      query$.next(convertToParamMap({ status: 'stopped', trigger: 'all' }));
+      expect(executions.list.calls.mostRecent().args[1].status).toBe('stopped,stopping');
     });
 
     it('all-agents view: no summary call, no counters, Agent column from agent_name', () => {

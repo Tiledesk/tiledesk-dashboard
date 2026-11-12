@@ -4254,6 +4254,7 @@
         "NotConfigured": "Executions are not configured for this environment.",
         "AllAgents": "All agents",
         "Last24h": "last 24 hours",
+        "Last24hAllTriggers": "last 24 hours · all triggers",
         "SearchId": "Search execution id…",
         "Trigger": "Trigger",
         "StatusLabel": "Status",
