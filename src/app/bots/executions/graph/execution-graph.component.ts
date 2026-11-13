@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, EventEmitter, Inject, inject, InjectionToken, Input, NgZone, OnChanges, OnDestroy, OnInit,
+  Component, ElementRef, EventEmitter, HostListener, Inject, inject, InjectionToken, Input, NgZone, OnChanges, OnDestroy, OnInit,
   Output, SimpleChanges, ViewChild
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -37,6 +37,12 @@ export const CYTOSCAPE_LOADER = new InjectionToken<CytoscapeLoader>('CYTOSCAPE_L
 export const PULSE_MS = 1200;
 export const DASH_MS = 100;
 export const MAX_ZOOM = 1.75;
+/** Furthest the graph zooms out (a big project still fits; further out, nothing is readable). */
+export const MIN_ZOOM = 0.2;
+/** One zoom step of the + / - buttons and keys. */
+export const ZOOM_STEP = 1.25;
+const NAV_ANIMATION_MS = 180;
+const FIT_PADDING = 40;
 
 interface TooltipState { lines: string[]; x: number; y: number; }
 
@@ -173,6 +179,8 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Output() loadingChange = new EventEmitter<boolean>();
 
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLElement>;
+  /** The canvas and its overlays: what fullscreen shows, and what takes the navigation keys. */
+  @ViewChild('stage', { static: true }) stage: ElementRef<HTMLElement>;
 
   /** The colour key uses the graph's own palette. */
   readonly keyColors = AGENT_COLORS.map(c => ({ color: c, bg: AGENT_STYLE[c].bg, border: AGENT_STYLE[c].border }));
@@ -256,8 +264,79 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
+  // ---- navigation: zoom, fit, centre, fullscreen (buttons over the canvas, and keys while it has focus) ----
+
+  /** Zooms by `factor` around the centre of the view, within MIN_ZOOM..MAX_ZOOM. */
+  private zoomAround(factor: number, animate: boolean): void {
+    const cy = this.cy;
+    if (!cy) { return; }
+    const level = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, cy.zoom() * factor));
+    const at = { x: cy.width() / 2, y: cy.height() / 2 };
+    if (animate) { cy.stop(); cy.animate({ zoom: { level, renderedPosition: at }, duration: NAV_ANIMATION_MS }); }
+    else { cy.zoom({ level, renderedPosition: at }); }
+  }
+
+  zoomIn(animate = true): void { this.zoomAround(ZOOM_STEP, animate); }
+
+  zoomOut(animate = true): void { this.zoomAround(1 / ZOOM_STEP, animate); }
+
+  /** Zooms and pans so every node is in view (what the first draw does). */
+  fit(animate = true): void {
+    const cy = this.cy;
+    if (!cy || cy.nodes().empty()) { return; }
+    if (animate) { cy.stop(); cy.animate({ fit: { eles: cy.elements(), padding: FIT_PADDING }, duration: NAV_ANIMATION_MS }); }
+    else { cy.fit(undefined, FIT_PADDING); }
+  }
+
+  /** Brings the project node to the middle of the view, at the current zoom. */
+  centerProject(animate = true): void {
+    const cy = this.cy;
+    const project = cy && cy.getElementById('project');
+    if (!project || project.empty()) { return; }
+    if (animate) { cy.stop(); cy.animate({ center: { eles: project }, duration: NAV_ANIMATION_MS }); }
+    else { cy.center(project); }
+  }
+
+  get fullscreen(): boolean {
+    return !!this.stage && document.fullscreenElement === this.stage.nativeElement;
+  }
+
+  /** The graph area fills the screen (Esc, or the button again, leaves it). */
+  toggleFullscreen(): void {
+    const el = this.stage && this.stage.nativeElement;
+    if (!el) { return; }
+    if (document.fullscreenElement === el) {
+      if (document.exitFullscreen) { document.exitFullscreen().catch(() => undefined); }
+    } else if (el.requestFullscreen) {
+      el.requestFullscreen().catch(() => undefined);
+    }
+  }
+
+  /** The canvas changed size (fullscreen in or out): Cytoscape re-measures, then everything is fitted again. */
+  @HostListener('document:fullscreenchange')
+  onFullscreenChange(): void {
+    if (!this.cy) { return; }
+    this.zone.runOutsideAngular(() => {
+      setTimeout(() => {
+        if (this.destroyed || !this.cy) { return; }
+        this.cy.resize();
+        this.fit(false);
+      }, 0);
+    });
+  }
+
+  /** Keys while the graph area has focus: + (or =) zooms in, - zooms out, 0 fits. */
+  onKey(event: KeyboardEvent): void {
+    if (event.ctrlKey || event.metaKey || event.altKey) { return; }
+    const k = event.key;
+    if (k === '+' || k === '=') { this.zoomIn(); event.preventDefault(); }
+    else if (k === '-' || k === '_') { this.zoomOut(); event.preventDefault(); }
+    else if (k === '0') { this.fit(); event.preventDefault(); }
+  }
+
   ngOnDestroy(): void {
     this.destroyed = true;
+    if (this.fullscreen && document.exitFullscreen) { document.exitFullscreen().catch(() => undefined); }
     if (this.sub) { this.sub.unsubscribe(); this.sub = null; }
     if (this.pulseTimer !== null) { clearInterval(this.pulseTimer); this.pulseTimer = null; }
     if (this.dashTimer !== null) { clearInterval(this.dashTimer); this.dashTimer = null; }
@@ -277,6 +356,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
           layout: { name: 'preset' },
           userZoomingEnabled: true,
           maxZoom: MAX_ZOOM,
+          minZoom: MIN_ZOOM,
           boxSelectionEnabled: false,
           autoungrabify: true,
         });
@@ -384,7 +464,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     // fit once there is more than the project node (agents may still be loading on the first snapshot)
     if (!this.fitted && model.nodes.length > 1) {
       this.fitted = true;
-      cy.fit(undefined, 40);
+      cy.fit(undefined, FIT_PADDING);
     }
     return model;
   }

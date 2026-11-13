@@ -10,8 +10,28 @@
       <span class="graph-note graph-stale" *ngIf="stale">{{ 'Executions.Graph.Stale' | translate }}</span>
     </div>
   </ng-container>
-  <div class="graph-stage" [hidden]="failed">
+  <div #stage class="graph-stage" [class.is-fullscreen]="fullscreen" [hidden]="failed" tabindex="0"
+    [attr.aria-label]="'Executions.Graph.Controls.Area' | translate" (keydown)="onKey($event)">
     <div #canvas class="graph-canvas"></div>
+    <div class="graph-controls" role="toolbar" [attr.aria-label]="'Executions.Graph.Controls.Title' | translate">
+      <button type="button" data-control="zoom-in" (click)="zoomIn()"
+        [attr.aria-label]="'Executions.Graph.Controls.ZoomIn' | translate" [title]="'Executions.Graph.Controls.ZoomIn' | translate">
+        <span class="material-icons" aria-hidden="true">add</span></button>
+      <button type="button" data-control="zoom-out" (click)="zoomOut()"
+        [attr.aria-label]="'Executions.Graph.Controls.ZoomOut' | translate" [title]="'Executions.Graph.Controls.ZoomOut' | translate">
+        <span class="material-icons" aria-hidden="true">remove</span></button>
+      <span class="graph-controls-sep" aria-hidden="true"></span>
+      <button type="button" data-control="fit" (click)="fit()"
+        [attr.aria-label]="'Executions.Graph.Controls.Fit' | translate" [title]="'Executions.Graph.Controls.Fit' | translate">
+        <span class="material-icons" aria-hidden="true">fit_screen</span></button>
+      <button type="button" data-control="center" (click)="centerProject()"
+        [attr.aria-label]="'Executions.Graph.Controls.Center' | translate" [title]="'Executions.Graph.Controls.Center' | translate">
+        <span class="material-icons" aria-hidden="true">center_focus_strong</span></button>
+      <button type="button" data-control="fullscreen" (click)="toggleFullscreen()"
+        [attr.aria-label]="(fullscreen ? 'Executions.Graph.Controls.ExitFullscreen' : 'Executions.Graph.Controls.Fullscreen') | translate"
+        [title]="(fullscreen ? 'Executions.Graph.Controls.ExitFullscreen' : 'Executions.Graph.Controls.Fullscreen') | translate">
+        <span class="material-icons" aria-hidden="true">{{ fullscreen ? 'fullscreen_exit' : 'fullscreen' }}</span></button>
+    </div>
     <div class="graph-empty" *ngIf="empty">{{ 'Executions.Graph.Empty' | translate }}</div>
     <div class="graph-tooltip" *ngIf="tooltip" [style.left.px]="tooltip.x" [style.top.px]="tooltip.y">
       <div class="tip-line" *ngFor="let line of tooltip.lines">{{ line }}</div>

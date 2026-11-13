@@ -3820,6 +3820,16 @@
     },
     "Executions": {
         "Graph": {
+            "Controls": {
+                "Title": "Navigazione del grafo",
+                "Area": "Grafo delle esecuzioni. Tasti: + ingrandisci, - riduci, 0 adatta",
+                "ZoomIn": "Ingrandisci",
+                "ZoomOut": "Riduci",
+                "Fit": "Adatta allo schermo",
+                "Center": "Centra sul progetto",
+                "Fullscreen": "Schermo intero",
+                "ExitFullscreen": "Esci da schermo intero"
+            },
             "Deleted": "eliminato",
             "Stale": "I dati potrebbero non essere aggiornati",
             "Unavailable": "Non è stato possibile caricare il grafo",

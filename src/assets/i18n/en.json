@@ -4227,6 +4227,16 @@
     },
     "Executions": {
         "Graph": {
+            "Controls": {
+                "Title": "Graph navigation",
+                "Area": "Execution graph. Keys: + zoom in, - zoom out, 0 fit",
+                "ZoomIn": "Zoom in",
+                "ZoomOut": "Zoom out",
+                "Fit": "Fit to screen",
+                "Center": "Centre on the project",
+                "Fullscreen": "Full screen",
+                "ExitFullscreen": "Exit full screen"
+            },
             "Deleted": "deleted",
             "Stale": "Data may be out of date",
             "Unavailable": "The graph could not be loaded",

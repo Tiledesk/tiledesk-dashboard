@@ -7,7 +7,7 @@ import { ExecutionRow, ExecutionStats, StatsRange } from '../executions.models';
 import { executionLink } from '../execution-links';
 import { GraphFeedControls, GraphSnapshot } from './execution-graph.feed';
 import { graphOf } from './execution-graph.testing';
-import { CYTOSCAPE_LOADER, EXECUTION_GRAPH_FEED, ExecutionGraphComponent } from './execution-graph.component';
+import { CYTOSCAPE_LOADER, EXECUTION_GRAPH_FEED, ExecutionGraphComponent, MAX_ZOOM, MIN_ZOOM } from './execution-graph.component';
 
 const E1 = '11111111-1111-1111-1111-111111111111';
 const E2 = '22222222-2222-2222-2222-222222222222';
@@ -124,6 +124,87 @@ describe('ExecutionGraphComponent', () => {
     const gone = cy.getElementById('agent:a2');
     expect(gone.empty()).toBe(false);
     expect(gone.data('label').endsWith(' · Executions.Graph.Deleted')).toBe(true);
+  });
+
+  describe('navigation controls', () => {
+    async function drawn() {
+      setup();
+      await ready();
+      feed$.next(FIRST());
+      fixture.detectChanges();
+      return component.cy;
+    }
+    const button = (name: string) => (fixture.nativeElement as HTMLElement).querySelector(`.graph-controls [data-control="${name}"]`) as HTMLButtonElement;
+
+    it('shows zoom in, zoom out, fit, centre and fullscreen buttons with labels', async () => {
+      await drawn();
+      for (const name of ['zoom-in', 'zoom-out', 'fit', 'center', 'fullscreen']) {
+        expect(button(name)).not.toBeNull();
+        expect(button(name).getAttribute('aria-label')).toContain('Executions.Graph.Controls.');
+      }
+    });
+
+    it('zoom in and out step around the centre, within the zoom limits', async () => {
+      const cy = await drawn();
+      cy.zoom(1);
+      component.zoomIn(false);
+      expect(cy.zoom()).toBeGreaterThan(1);
+      cy.zoom(1);
+      component.zoomOut(false);
+      expect(cy.zoom()).toBeLessThan(1);
+      for (let i = 0; i < 40; i++) { component.zoomIn(false); }
+      expect(cy.zoom()).toBeCloseTo(MAX_ZOOM, 5);
+      for (let i = 0; i < 80; i++) { component.zoomOut(false); }
+      expect(cy.zoom()).toBeCloseTo(MIN_ZOOM, 5);
+    });
+
+    it('fit shows every node; centre puts the project in the middle without zooming', async () => {
+      const cy = await drawn();
+      cy.zoom(MAX_ZOOM);
+      cy.pan({ x: 5000, y: 5000 });
+      component.fit(false);
+      const ext = cy.extent();
+      cy.nodes().forEach((n: any) => {
+        const p = n.position();
+        expect(p.x >= ext.x1 && p.x <= ext.x2 && p.y >= ext.y1 && p.y <= ext.y2).toBe(true, n.id());
+      });
+      cy.zoom(1.2);
+      cy.pan({ x: 900, y: -300 });
+      component.centerProject(false);
+      expect(cy.zoom()).toBeCloseTo(1.2, 5);
+      const r = cy.getElementById('project').renderedPosition();
+      expect(Math.abs(r.x - cy.width() / 2)).toBeLessThan(1);
+      expect(Math.abs(r.y - cy.height() / 2)).toBeLessThan(1);
+    });
+
+    it('keyboard on the graph: + and - zoom, 0 fits', async () => {
+      const cy = await drawn();
+      const stage = (fixture.nativeElement as HTMLElement).querySelector('.graph-stage') as HTMLElement;
+      expect(stage.getAttribute('tabindex')).toBe('0');
+      spyOn(component, 'zoomIn');
+      spyOn(component, 'zoomOut');
+      spyOn(component, 'fit');
+      stage.dispatchEvent(new KeyboardEvent('keydown', { key: '+' }));
+      stage.dispatchEvent(new KeyboardEvent('keydown', { key: '=' }));
+      stage.dispatchEvent(new KeyboardEvent('keydown', { key: '-' }));
+      stage.dispatchEvent(new KeyboardEvent('keydown', { key: '0' }));
+      expect(component.zoomIn).toHaveBeenCalledTimes(2);
+      expect(component.zoomOut).toHaveBeenCalledTimes(1);
+      expect(component.fit).toHaveBeenCalledTimes(1);
+      expect(cy).toBeTruthy();
+    });
+
+    it('fullscreen asks the browser for the graph area, and leaves it when already full screen', async () => {
+      await drawn();
+      const stage = (fixture.nativeElement as HTMLElement).querySelector('.graph-stage') as any;
+      stage.requestFullscreen = jasmine.createSpy('requestFullscreen').and.returnValue(Promise.resolve());
+      button('fullscreen').click();
+      expect(stage.requestFullscreen).toHaveBeenCalled();
+      const exit = spyOn(document, 'exitFullscreen').and.returnValue(Promise.resolve());
+      spyOnProperty(document, 'fullscreenElement', 'get').and.returnValue(stage);
+      button('fullscreen').click();
+      expect(exit).toHaveBeenCalled();
+    });
   });
 
   it('a second snapshot keeps existing node positions and removes gone executions', async () => {
@@ -540,11 +621,12 @@ describe('ExecutionGraphComponent', () => {
   });
 
   describe('refresh and loading (the host has the button and the note)', () => {
-    it('no Refresh button, no updated note, no toolbar of its own', async () => {
+    it('no Refresh button, no updated note, no toolbar of its own (only the navigation controls)', async () => {
       setup();
       await ready();
       const el = fixture.nativeElement as HTMLElement;
-      expect(el.querySelector('button')).toBeNull();
+      const buttons = Array.from(el.querySelectorAll('button'));
+      expect(buttons.every(b => !!b.closest('.graph-controls'))).toBe(true);
       expect(el.querySelector('.graph-updated')).toBeNull();
       expect(el.querySelector('.graph-toolbar')).toBeNull();
     });
