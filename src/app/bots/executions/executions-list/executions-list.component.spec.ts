@@ -821,4 +821,128 @@ describe('ExecutionsListComponent', () => {
       expect(text()).not.toContain('Executions.EmptyNow');
     });
   });
+  describe('column sort (feedback 2026-11-13 item 5)', () => {
+    const headers = () => Array.from(fixture.nativeElement.querySelectorAll('.exec-table thead th')) as HTMLElement[];
+    const sortButton = (field: string) => fixture.nativeElement.querySelector(`.exec-sort[data-sort="${field}"]`) as HTMLButtonElement;
+    const th = (field: string) => sortButton(field).closest('th') as HTMLElement;
+    const page = { items: [row('e1'), row('e2')], next_cursor: 'c1' };
+
+    it('every column but the chevron has a sort button; Started is sorted newest first by default (aria-sort)', () => {
+      setup({ page });
+      for (const f of ['status', 'agent_name', 'trigger', 'started_at', 'steps_count', 'failure_conditions', 'vars_changed', 'duration_ms']) {
+        expect(sortButton(f)).not.toBeNull(f);
+        expect(sortButton(f).getAttribute('type')).toBe('button');
+      }
+      expect(th('started_at').getAttribute('aria-sort')).toBe('descending');
+      expect(th('status').getAttribute('aria-sort')).toBe('none');
+      expect(sortButton('started_at').querySelector('.exec-sort-arrow').textContent.trim()).toBe('arrow_downward');
+      expect(sortButton('status').querySelector('.exec-sort-arrow')).toBeNull();
+      expect(headers()[headers().length - 1].querySelector('.exec-sort')).toBeNull();
+    });
+
+    it('the default sort sends no sort/dir (the request is as before)', () => {
+      setup({ page });
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.sort).toBeUndefined();
+      expect(p.dir).toBeUndefined();
+    });
+
+    it('a header click writes sort and dir to the URL: text columns start ascending, numbers and time descending; a second click flips', () => {
+      setup({ page });
+      sortButton('agent_name').click();
+      expect(router.navigate.calls.mostRecent().args[1]).toEqual(jasmine.objectContaining({ queryParams: { sort: 'agent_name', dir: 'asc' }, queryParamsHandling: 'merge' }));
+      sortButton('duration_ms').click();
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ sort: 'duration_ms', dir: 'desc' });
+      // flipping the current sort
+      query$.next(convertToParamMap({ sort: 'duration_ms', dir: 'desc' }));
+      fixture.detectChanges();
+      sortButton('duration_ms').click();
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ sort: 'duration_ms', dir: 'asc' });
+      // back to the default: no params
+      query$.next(convertToParamMap({ sort: 'started_at', dir: 'asc' }));
+      fixture.detectChanges();
+      sortButton('started_at').click();
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ sort: null, dir: null });
+    });
+
+    it('sort and dir from the URL go to the list call, the header shows them; invalid values fall back to Started newest first', () => {
+      setup({ page, query: { sort: 'steps_count', dir: 'asc' } });
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.sort).toBe('steps_count');
+      expect(p.dir).toBe('asc');
+      expect(th('steps_count').getAttribute('aria-sort')).toBe('ascending');
+      expect(th('started_at').getAttribute('aria-sort')).toBe('none');
+      expect(sortButton('steps_count').querySelector('.exec-sort-arrow').textContent.trim()).toBe('arrow_upward');
+      query$.next(convertToParamMap({ sort: 'bogus', dir: 'sideways' }));
+      fixture.detectChanges();
+      expect(component.sort).toEqual({ field: 'started_at', dir: 'desc' });
+      expect(executions.list.calls.mostRecent().args[1].sort).toBeUndefined();
+      // a valid field without dir: that field's first direction
+      query$.next(convertToParamMap({ sort: 'status' }));
+      expect(component.sort).toEqual({ field: 'status', dir: 'asc' });
+    });
+
+    it('a sort change reloads the first page (no cursor)', () => {
+      setup({ page });
+      const n = executions.list.calls.count();
+      query$.next(convertToParamMap({ sort: 'trigger', dir: 'desc' }));
+      expect(executions.list.calls.count()).toBe(n + 1);
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.cursor).toBeUndefined();
+      expect(p.sort).toBe('trigger');
+    });
+
+    it('Load more keeps the sort', () => {
+      setup({ page, query: { sort: 'vars_changed', dir: 'asc' } });
+      executions.list.and.returnValue(of({ items: [row('e3')], next_cursor: null }));
+      component.loadMore();
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.cursor).toBe('c1');
+      expect(p.sort).toBe('vars_changed');
+      expect(p.dir).toBe('asc');
+    });
+
+    it('the poll keeps the sort, and its page replaces the rows in the server order', fakeAsync(() => {
+      setup({ page: { items: [row('e1', 'running', { duration_ms: 50 }), row('e2', 'running', { duration_ms: 10 })], next_cursor: null },
+        query: { sort: 'duration_ms', dir: 'desc' } });
+      executions.list.and.returnValue(of({ items: [row('e2', 'running', { duration_ms: 90 }), row('e3', 'running', { duration_ms: 70 }), row('e1', 'running', { duration_ms: 60 })], next_cursor: null }));
+      tick(10000);
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.sort).toBe('duration_ms');
+      expect(p.dir).toBe('desc');
+      expect(p.with_stats).toBe(true);
+      expect(component.rows.map(r => r._id)).toEqual(['e2', 'e3', 'e1']);
+      discardPeriodicTasks();
+    }));
+
+    it('a poll under a custom sort with more pages loaded keeps the loaded rows past the first page', fakeAsync(() => {
+      setup({ page: { items: [row('e1', 'running'), row('e2', 'running')], next_cursor: 'c1' }, query: { sort: 'status', dir: 'asc' } });
+      executions.list.and.returnValue(of({ items: [row('e3', 'running'), row('e4', 'running')], next_cursor: 'c2' }));
+      component.loadMore();
+      expect(component.rows.map(r => r._id)).toEqual(['e1', 'e2', 'e3', 'e4']);
+      executions.list.and.returnValue(of({ items: [row('e2', 'running'), row('e5', 'running')], next_cursor: 'cx' }));
+      tick(10000);
+      expect(component.rows.map(r => r._id)).toEqual(['e2', 'e5', 'e1', 'e3', 'e4']);
+      expect(component.nextCursor).toBe('c2');
+      discardPeriodicTasks();
+    }));
+
+    it('the graph ignores the sort: its filters do not change and no list call is made in the graph view', () => {
+      setup({ query: { view: 'graph' } });
+      const before = graph().filters;
+      query$.next(convertToParamMap({ view: 'graph', sort: 'status', dir: 'asc' }));
+      fixture.detectChanges();
+      expect(graph().filters).toBe(before);
+      expect(executions.list).not.toHaveBeenCalled();
+      expect(fixture.nativeElement.querySelector('.exec-sort')).toBeNull();
+    });
+
+    it('Clear filters keeps the sort (it is no filter)', () => {
+      setup({ query: { status: 'failed', sort: 'status', dir: 'asc' } });
+      component.clearFilters();
+      const qp = router.navigate.calls.mostRecent().args[1].queryParams;
+      expect('sort' in qp).toBe(false);
+      expect('dir' in qp).toBe(false);
+    });
+  });
 });

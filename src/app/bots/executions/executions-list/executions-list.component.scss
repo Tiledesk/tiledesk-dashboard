@@ -65,6 +65,15 @@
   th { text-align: left; font-weight: 500; color: var(--exec-muted); padding: 10px 12px; border-bottom: 1px solid var(--exec-line); white-space: nowrap; }
   td { padding: 10px 12px; border-bottom: 1px solid var(--exec-line); vertical-align: middle; }
 }
+/* sortable headers: the whole label is the button; the arrow shows the active column and its direction */
+.exec-sort {
+  display: inline-flex; align-items: center; gap: 2px; border: 0; background: none; padding: 2px 4px; margin: -2px -4px;
+  font: inherit; font-weight: 500; color: inherit; cursor: pointer; border-radius: 4px; white-space: nowrap;
+  &:hover { color: var(--exec-fg); }
+  &:focus-visible { outline: 2px solid var(--exec-accent); outline-offset: 1px; }
+}
+.exec-sort-active { color: var(--exec-fg); }
+.exec-sort-arrow { font-size: 15px; width: 15px; height: 15px; }
 .exec-row { cursor: pointer; &:hover, &:focus { background: #f8f9fc; outline: none; } }
 .exec-muted { color: var(--exec-muted); }
 .exec-fail { color: var(--exec-bad); font-weight: 500; }

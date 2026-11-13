@@ -9,7 +9,8 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import {
-  canViewExecutions, ExecutionGraph, ExecutionListParams, ExecutionPage, ExecutionRow, STATS_RANGES, StatsRange, StatusCounts, ViewFilters
+  canViewExecutions, EXECUTION_SORT_FIELDS, ExecutionGraph, ExecutionListParams, ExecutionPage, ExecutionRow, ExecutionSortField, SortDir,
+  STATS_RANGES, StatsRange, StatusCounts, ViewFilters
 } from '../executions.models';
 import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration } from '../shared/execution-format';
@@ -27,6 +28,15 @@ export const POLL_MS = 10000;
 export const NOTE_MS = 10000;
 
 export type ExecutionsView = 'list' | 'graph';
+
+export interface ExecutionSort { field: ExecutionSortField; dir: SortDir }
+/** Started, newest first: the list's order before columns sorted; no sort/dir in the URL or the call. */
+export const DEFAULT_SORT: ExecutionSort = { field: 'started_at', dir: 'desc' };
+/** A column's first click: text columns A→Z, numbers and time biggest/newest first. */
+export const FIRST_DIR: Record<ExecutionSortField, SortDir> = {
+  started_at: 'desc', status: 'asc', agent_name: 'asc', trigger: 'asc',
+  steps_count: 'desc', failure_conditions: 'desc', vars_changed: 'desc', duration_ms: 'desc',
+};
 
 export interface ExecutionFilters {
   trigger: string;
@@ -53,6 +63,17 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   readonly rangeOptions: StatsRange[] = STATS_RANGES;
   readonly viewOptions: Array<{ id: ExecutionsView; icon: string }> = [{ id: 'list', icon: 'view_list' }, { id: 'graph', icon: 'hub' }];
   readonly formatDuration = formatDuration;
+  /** The table's headers, in column order; each one sorts the list. */
+  readonly sortColumns: Array<{ field: ExecutionSortField; label: string }> = [
+    { field: 'status', label: 'Executions.Columns.Status' },
+    { field: 'agent_name', label: 'Executions.Columns.Agent' },
+    { field: 'trigger', label: 'Executions.Columns.Trigger' },
+    { field: 'started_at', label: 'Executions.Columns.Started' },
+    { field: 'steps_count', label: 'Executions.Columns.Blocks' },
+    { field: 'failure_conditions', label: 'Executions.Columns.FailureConditions' },
+    { field: 'vars_changed', label: 'Executions.Columns.VarsChanged' },
+    { field: 'duration_ms', label: 'Executions.Columns.Duration' },
+  ];
 
   @ViewChild('graph') graph: { refresh(): void } | undefined;
 
@@ -66,7 +87,11 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   permitted: boolean | null = null;
 
   filters: ExecutionFilters = this.defaultFilters();
+  /** The list's column sort (URL sort, dir); server-side, the graph ignores it. */
+  sort: ExecutionSort = DEFAULT_SORT;
   rows: ExecutionRow[] = [];
+  /** Load more added rows past the first page (a poll then keeps them). */
+  private pagedPastFirst = false;
   nextCursor: string | null = null;
   loading = false;
   loadingMore = false;
@@ -157,6 +182,13 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
         q: params.get('q') || '',
         tests: params.get('tests') !== 'false',
       };
+      const sortField = params.get('sort') as ExecutionSortField;
+      if ((EXECUTION_SORT_FIELDS as readonly string[]).includes(sortField)) {
+        const dir = params.get('dir');
+        this.sort = { field: sortField, dir: dir === 'asc' || dir === 'desc' ? dir : FIRST_DIR[sortField] };
+      } else {
+        this.sort = DEFAULT_SORT;
+      }
       this.view = params.get('view') === 'graph' ? 'graph' : 'list';
       const filters = this.viewFilters();
       if (JSON.stringify(filters) !== JSON.stringify(this.graphFilters)) this.graphFilters = filters;
@@ -251,6 +283,10 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   /** The list call: the range (the graph's view rule) and the shared filters. */
   buildParams(cursor?: string): ExecutionListParams {
     const params: ExecutionListParams = { limit: PAGE_SIZE, range: this.filters.range, ...this.viewFilters() };
+    if (!this.isDefaultSort(this.sort)) {
+      params.sort = this.sort.field;
+      params.dir = this.sort.dir;
+    }
     if (cursor) params.cursor = cursor;
     return params;
   }
@@ -287,6 +323,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     this.takeCounters(page);
     this.rows = page.items;
     this.nextCursor = page.next_cursor;
+    this.pagedPastFirst = false;
     this.updatePolling();
   }
 
@@ -307,6 +344,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
           this.loadingMore = false;
           this.rows = this.rows.concat(page.items);
           this.nextCursor = page.next_cursor;
+          this.pagedPastFirst = true;
           this.updatePolling();
         },
         error: err => this.onListError(err)
@@ -377,10 +415,20 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
         this.refreshing = false;
         this.markUpdated();
         this.takeCounters(page);
-        const fresh = new Map(page.items.map(r => [r._id, r] as [string, ExecutionRow]));
-        const known = new Set(this.rows.map(r => r._id));
-        this.rows = page.items.filter(r => !known.has(r._id)).concat(this.rows.map(r => fresh.get(r._id) || r));
-        if (this.rows.length === page.items.length) this.nextCursor = page.next_cursor;
+        if (this.isDefaultSort(this.sort)) {
+          const fresh = new Map(page.items.map(r => [r._id, r] as [string, ExecutionRow]));
+          const known = new Set(this.rows.map(r => r._id));
+          this.rows = page.items.filter(r => !known.has(r._id)).concat(this.rows.map(r => fresh.get(r._id) || r));
+          if (this.rows.length === page.items.length) this.nextCursor = page.next_cursor;
+        } else if (!this.pagedPastFirst) {
+          // a column sort: the values move rows, so the first page is taken in the server's order
+          this.rows = page.items;
+          this.nextCursor = page.next_cursor;
+        } else {
+          // more pages loaded: the fresh first page on top, the loaded rows not in it kept below (and the cursor)
+          const fresh = new Set(page.items.map(r => r._id));
+          this.rows = page.items.concat(this.rows.filter(r => !fresh.has(r._id)));
+        }
         this.updatePolling();
       },
       error: err => {
@@ -438,6 +486,23 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       default: qp = value || null;
     }
     this.navigateWith({ [name]: qp });
+  }
+
+  /** A header click: the same column flips its direction, another starts at its first direction; the default leaves the URL. */
+  sortBy(field: ExecutionSortField) {
+    const next: ExecutionSort = this.sort.field === field
+      ? { field, dir: this.sort.dir === 'asc' ? 'desc' : 'asc' }
+      : { field, dir: FIRST_DIR[field] };
+    this.navigateWith(this.isDefaultSort(next) ? { sort: null, dir: null } : { sort: next.field, dir: next.dir });
+  }
+
+  /** aria-sort of a column header. */
+  ariaSort(field: ExecutionSortField): 'ascending' | 'descending' | 'none' {
+    return this.sort.field !== field ? 'none' : this.sort.dir === 'asc' ? 'ascending' : 'descending';
+  }
+
+  private isDefaultSort(s: ExecutionSort): boolean {
+    return s.field === DEFAULT_SORT.field && s.dir === DEFAULT_SORT.dir;
   }
 
   /** A card: a status toggles the status filter; With errors toggles has_errors ("With failure conditions" stays apart). */
