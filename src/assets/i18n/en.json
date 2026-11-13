@@ -463,7 +463,8 @@
             "EXECUTION_START_NEW": "New run started",
             "EXECUTION_DATA_ACCESS": "Execution data viewed",
             "EXECUTION_DATA_ACCESS_DENIED": "Execution data access denied",
-            "EXECUTION_RETENTION_UPDATE": "Executions retention changed"
+            "EXECUTION_RETENTION_UPDATE": "Executions retention changed",
+            "EXECUTION_STOP_NOTICE_UPDATE": "Executions pause notice changed"
         }
     },
     "NewRequest": "New conversation",

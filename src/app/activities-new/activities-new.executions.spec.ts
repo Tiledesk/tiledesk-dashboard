@@ -144,6 +144,39 @@ describe('Activities - Executions audit rows', () => {
     });
   });
 
+  describe('pause notice changes (project-level, like retention)', () => {
+    function parts(a: any) {
+      const c: any = Object.create(ActivitiesNewComponent.prototype);
+      c.projectId = 'pid';
+      c.activityMessage = (x: any) => renderActivity(x);
+      return { c, parts: c.getActivityParts(a) };
+    }
+
+    function pauseNotice(after: any): any {
+      return {
+        verb: 'EXECUTION_STOP_NOTICE_UPDATE',
+        actor: { type: 'user', id: 'u1', name: 'Anna Rossi' },
+        target: { type: 'project', id: '65f0000000000000000000aa', object: {} },
+        actionObj: { stop_notice: { before: { enabled: true, text: null }, after } },
+      };
+    }
+
+    it('renders the server sentence with the setting after the change', () => {
+      expect(renderActivity(pauseNotice({ enabled: false, text: null }))).toBe('Anna Rossi changed the executions pause notice: off');
+      expect(renderActivity(pauseNotice({ enabled: true, text: 'Back soon' }))).toBe('Anna Rossi changed the executions pause notice: on, custom text');
+      expect(renderActivity(pauseNotice({ enabled: true, text: null }))).toBe('Anna Rossi changed the executions pause notice: on, default text');
+    });
+
+    it('has no execution link', () => {
+      const a = pauseNotice({ enabled: false, text: null });
+      const { c, parts: p } = parts(a);
+      expect(p.executionLinkLabel).toBeNull();
+      expect(c.executionRouterLink(a)).toBeNull();
+      expect(p.before).toBe(' changed the executions pause notice');
+      expect(p.after).toBe(': off');
+    });
+  });
+
   describe('Executions group', () => {
     function build(role: string, matched: string[]) {
       const c: any = Object.create(ActivitiesNewComponent.prototype);
@@ -156,7 +189,7 @@ describe('Activities - Executions audit rows', () => {
     it('Executions group hidden for admin, shown for owner', () => {
       expect(build('admin', [])).not.toContain('EXECUTION_STOP_SOFT');
       expect(build('admin', [])).not.toContain('EXECUTION_RESUME');
-      expect(build('owner', [])).toEqual(jasmine.arrayContaining(['EXECUTION_STOP_SOFT', 'EXECUTION_STOP_HARD', 'EXECUTION_DESTROY', 'EXECUTION_RESUME', 'EXECUTION_START_NEW', 'EXECUTION_DATA_ACCESS', 'EXECUTION_DATA_ACCESS_DENIED', 'EXECUTION_RETENTION_UPDATE']));
+      expect(build('owner', [])).toEqual(jasmine.arrayContaining(['EXECUTION_STOP_SOFT', 'EXECUTION_STOP_HARD', 'EXECUTION_DESTROY', 'EXECUTION_RESUME', 'EXECUTION_START_NEW', 'EXECUTION_DATA_ACCESS', 'EXECUTION_DATA_ACCESS_DENIED', 'EXECUTION_RETENTION_UPDATE', 'EXECUTION_STOP_NOTICE_UPDATE']));
     });
 
     it('is shown to a custom role only with executions_audit_read', () => {

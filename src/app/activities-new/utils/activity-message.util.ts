@@ -953,6 +953,7 @@ const EXECUTION_VERB_PHRASES: Record<string, string> = {
   EXECUTION_DATA_ACCESS: 'viewed the data of execution',
   EXECUTION_DATA_ACCESS_DENIED: 'was denied access to the data of execution',
   EXECUTION_RETENTION_UPDATE: 'changed executions retention',
+  EXECUTION_STOP_NOTICE_UPDATE: 'changed the executions pause notice',
 };
 
 /** A control refused with a 409 is audited too (actionObj.result `rejected:<status>`): it reads as an attempt. */
@@ -989,9 +990,21 @@ export function executionUnconfirmed(activity: ActivityRecord): boolean {
   return effectiveVerb(activity) === 'EXECUTION_START_NEW' && executionRejection(activity)?.reason === 'refire_unconfirmed';
 }
 
-/** The retention row targets the project, not an execution: it has no execution id, agent or link. */
+/**
+ * Project-level settings (retention, pause notice) target the project, not an execution: no execution id, agent or link.
+ * The name is kept for its callers.
+ */
 export function isExecutionRetentionVerb(verb: string): boolean {
-  return verb === 'EXECUTION_RETENTION_UPDATE';
+  return verb === 'EXECUTION_RETENTION_UPDATE' || verb === 'EXECUTION_STOP_NOTICE_UPDATE';
+}
+
+/** "on, custom text" / "on, default text" / "off": the pause notice after the change (activityMessageUtil, en). */
+export function executionPauseNoticeState(activity: ActivityRecord): string {
+  const s = (activity.actionObj?.['stop_notice'] || {}) as { after?: { enabled?: unknown; text?: unknown } };
+  const after = s.after || (s as any);
+  if (!after || typeof after.enabled !== 'boolean') return '';
+  if (!after.enabled) return 'off';
+  return typeof after.text === 'string' && after.text.trim() !== '' ? 'on, custom text' : 'on, default text';
 }
 
 /** "trace 90 → 30 days, data 30 → 7 days": only the parts that changed (activityMessageUtil.retentionChanges, en). */
@@ -1030,6 +1043,10 @@ export function executionAgentId(activity: ActivityRecord): string {
 /** Text after the agent name: ` (rejected: <status>)` for a refused control, then ` · "<reason>"` when a reason exists. */
 export function executionReasonSuffix(activity: ActivityRecord): string {
   const denied = effectiveVerb(activity) === 'EXECUTION_DATA_ACCESS_DENIED';
+  if (effectiveVerb(activity) === 'EXECUTION_STOP_NOTICE_UPDATE') {
+    const state = executionPauseNoticeState(activity);
+    return state ? `: ${state}` : '';
+  }
   if (isExecutionRetentionVerb(effectiveVerb(activity))) {
     const changes = executionRetentionChanges(activity);
     return changes ? `: ${changes}` : '';
@@ -1089,6 +1106,7 @@ export function renderActivity(activity: ActivityRecord): string {
     case 'EXECUTION_DATA_ACCESS':
     case 'EXECUTION_DATA_ACCESS_DENIED':
     case 'EXECUTION_RETENTION_UPDATE':
+    case 'EXECUTION_STOP_NOTICE_UPDATE':
       return renderExecutionMessage(activity);
 
     case 'REQUEST_ASSIGNED_SELF':
