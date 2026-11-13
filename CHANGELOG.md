@@ -1,5 +1,12 @@
 # tiledesk-dashboard
 
+### 2.7.276-stage
+- Improves Home vibe coder spacing 
+- Shows “Updated …” next to the icon on the Home last-edited agent card (replaces Draft/Published)
+- Replaces the paperclip attach control with a borderless plus
+- Fixes the bug: on Home the “Pick up where you left off” section and its edit button ignored flow permissions. The section now shows only with view-flows permission, the edit button only with edit-flows permission, and agent teammates never see it
+- Fixes the bug: creating an AI agent from the Home vibe coder (with or without a prompt, and from the Create Agent modal) ignored the chatbot limit of the plan
+
 ### 2.7.275-stage
 - Edits the scopes of a Google or manual MCP server as tags: type a scope and press Enter to add it, click the tag to remove it
 - Changing scopes, the manual OAuth client, or the authentication type of an existing MCP server asks for a new authorization before saving
