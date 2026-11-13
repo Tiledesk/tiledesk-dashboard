@@ -40,6 +40,7 @@ function classesFor(n: GraphNode): string {
   const out = [n.kind === 'execution' ? 'exec' : n.kind];
   if (n.color) { out.push('c-' + n.color); }
   if (n.status) { out.push('s-' + n.status); }
+  if (n.withErrors) { out.push('with-errors'); }
   return out.join(' ');
 }
 
@@ -130,6 +131,10 @@ const GRAPH_STYLE: any[] = [
   } },
   { selector: 'node.s-completed', style: { 'background-color': C.ok, 'background-image': I.completed } },
   { selector: 'node.s-destroyed', style: { 'background-color': C.dead, 'background-image': I.destroyed } },
+  // a run with errors (an unhandled action): a red ring around its chip, whatever the status colour
+  { selector: 'node.exec.with-errors', style: {
+    'outline-width': 2, 'outline-color': C.bad, 'outline-offset': 2, 'outline-opacity': 1,
+  } },
   // "+N": an auto-width dashed pill
   { selector: 'node.more', style: {
     'width': moreWidth, 'height': 22, 'corner-radius': 11, 'background-color': C.white,
@@ -394,7 +399,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
       t('Started', { time: isNaN(started) ? (tip.startedAt || '-') : new Date(started).toLocaleString() }),
       t('Trigger', { trigger: tip.trigger || '-' }),
       t('Steps', { steps: tip.steps }),
-    ];
+    ].concat(tip.withErrors ? [t('RunWithErrors')] : []);
   }
 
   private startTimers(): void {

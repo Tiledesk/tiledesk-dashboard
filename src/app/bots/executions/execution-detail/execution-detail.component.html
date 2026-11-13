@@ -169,6 +169,7 @@
                 <b class="tl-action-type">{{ a.type }}</b>
                 <span *ngIf="a.title" class="ex-muted">"{{ a.title }}"</span>
                 <span *ngIf="a.outcome"><span class="tl-k">{{ "Executions.Detail.Outcome" | translate }}</span> {{ ("Executions.Outcomes." + a.outcome) | translate }}</span>
+                <span *ngIf="a.unhandled" class="tl-unhandled">{{ "Executions.Detail.NotHandled" | translate }}</span>
                 <span *ngIf="a.exit_taken"><span class="tl-k">{{ "Executions.Detail.Exit" | translate }}</span> {{ a.exit_taken }}</span>
                 <span *ngIf="a.duration_ms != null"><span class="tl-k">{{ "Executions.Detail.Time" | translate }}</span> {{ formatDuration(a.duration_ms) }}</span>
                 <span *ngIf="a.error_code"><span class="tl-k">{{ "Executions.Detail.ErrorCode" | translate }}</span> <span class="ex-mono">{{ a.error_code }}</span></span>

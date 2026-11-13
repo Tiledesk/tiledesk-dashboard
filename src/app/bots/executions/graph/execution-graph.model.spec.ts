@@ -6,14 +6,14 @@ const NOW = Date.parse('2026-11-10T12:00:00.000Z');
 function row(p: Partial<ExecutionRow> & { _id: string }): ExecutionRow {
   return {
     agent_id: 'a1', agent_name: 'Agent 1', status: 'running', end_reason: null, trigger: { type: 'message' },
-    started_at: new Date(NOW - 60000).toISOString(), duration_ms: null, steps_count: 2, failure_conditions: 0,
+    started_at: new Date(NOW - 60000).toISOString(), duration_ms: null, steps_count: 2, failure_conditions: 0, errors: 0,
     vars_changed: 0, trace_complete: null, test: false, ...p
   } as ExecutionRow;
 }
 const agents = (n: number) => Array.from({ length: n }, (_, i) => ({ id: 'a' + (i + 1), name: 'Agent ' + (i + 1) }));
 const dist = (p: { x: number; y: number }, q = { x: 0, y: 0 }) => Math.hypot(p.x - q.x, p.y - q.y);
 const ZERO = { running: 0, waiting: 0, stopping: 0, stopped: 0, failed: 0, completed: 0, destroyed: 0 };
-const counts = (c: any) => ({ ...ZERO, failure_conditions: 0, ...c });
+const counts = (c: any) => ({ ...ZERO, failure_conditions: 0, errors: 0, ...c });
 function stats(agentsCounts: { [id: string]: any }): ExecutionStats {
   const agentsOut: any = {};
   const statuses: any = { ...ZERO };
@@ -28,8 +28,8 @@ const oneEach = (ids: string[]) => ids.map(id => row({ _id: 'one-' + id, agent_i
 
 describe('agentColor', () => {
   it('red: at least one failed', () => expect(agentColor(counts({ failed: 1 }))).toBe('red'));
-  it('red: with errors (failure_conditions > 0), whatever the statuses', () => {
-    expect(agentColor(counts({ completed: 3, failure_conditions: 1 }))).toBe('red');
+  it('red: with errors (errors > 0), whatever the statuses', () => {
+    expect(agentColor(counts({ completed: 3, errors: 1 }))).toBe('red');
   });
   it('blue: at least one running, no errors', () => expect(agentColor(counts({ running: 1 }))).toBe('blue'));
   it('amber: waiting, stopping or stopped, no errors', () => {
@@ -46,9 +46,15 @@ describe('agentColor', () => {
 
   describe('precedence', () => {
     it('failed beats running', () => expect(agentColor(counts({ failed: 1, running: 5 }))).toBe('red'));
-    it('errors beat running', () => expect(agentColor(counts({ running: 2, failure_conditions: 1 }))).toBe('red'));
-    it('errors beat waiting / stopped', () => expect(agentColor(counts({ waiting: 1, stopped: 1, failure_conditions: 1 }))).toBe('red'));
-    it('errors beat destroyed', () => expect(agentColor(counts({ destroyed: 1, failure_conditions: 1 }))).toBe('red'));
+    it('errors beat running', () => expect(agentColor(counts({ running: 2, errors: 1 }))).toBe('red'));
+    it('errors beat waiting / stopped', () => expect(agentColor(counts({ waiting: 1, stopped: 1, errors: 1 }))).toBe('red'));
+    it('errors beat destroyed', () => expect(agentColor(counts({ destroyed: 1, errors: 1 }))).toBe('red'));
+    it('managed failures (failure_conditions only) never make red', () => {
+      expect(agentColor(counts({ running: 1, failure_conditions: 3 }))).toBe('blue');
+      expect(agentColor(counts({ waiting: 1, failure_conditions: 3 }))).toBe('amber');
+      expect(agentColor(counts({ completed: 2, failure_conditions: 3 }))).toBe('green');
+      expect(agentColor(counts({ completed: 2, destroyed: 1, failure_conditions: 3 }))).toBe('gray');
+    });
     it('running beats waiting and stopped', () => expect(agentColor(counts({ running: 1, waiting: 3, stopped: 2, stopping: 1 }))).toBe('blue'));
     it('running beats completed and destroyed', () => expect(agentColor(counts({ running: 1, completed: 3, destroyed: 2 }))).toBe('blue'));
     it('waiting beats completed', () => expect(agentColor(counts({ waiting: 1, completed: 9 }))).toBe('amber'));
@@ -86,16 +92,33 @@ describe('buildExecutionGraph', () => {
   });
 
   it('a row with errors turns its agent red, even completed', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', failure_conditions: 2 })] });
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', errors: 2 })] });
     const a = g.nodes.find(n => n.id === 'agent:a1');
     expect(a.color).toBe('red');
     expect(a.tooltip).toEqual({ kind: 'text', text: 'Agent 1', withErrors: 1 });
   });
 
+  it('a row with only managed failures (failure_conditions) leaves its agent green, no errors line, no mark', () => {
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', failure_conditions: 2 })] });
+    const a = g.nodes.find(n => n.id === 'agent:a1');
+    expect(a.color).toBe('green');
+    expect(a.tooltip).toEqual({ kind: 'text', text: 'Agent 1' });
+    const e = g.nodes.find(n => n.id === 'exec:c');
+    expect(e.withErrors).toBeUndefined();
+    expect((e.tooltip as any).withErrors).toBeUndefined();
+  });
+
+  it('a row with errors gets the mark on its chip and "with errors" in its tooltip', () => {
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', errors: 1 })] });
+    const e = g.nodes.find(n => n.id === 'exec:c');
+    expect(e.withErrors).toBe(true);
+    expect(e.tooltip).toEqual({ kind: 'execution', status: 'completed', startedAt: new Date(NOW - 60000).toISOString(), trigger: 'message', steps: 2, withErrors: true });
+  });
+
   it('the stats, when given, decide the colour, the errors line and the +N count (exact, not capped)', () => {
     const g = buildExecutionGraph({
       projectName: 'P', agents: agents(2), rows: [row({ _id: 'c', status: 'completed' })],
-      stats: stats({ a1: { completed: 1, failed: 2, failure_conditions: 2 }, a2: { waiting: 4 } }),
+      stats: stats({ a1: { completed: 1, failed: 2, failure_conditions: 5, errors: 2 }, a2: { waiting: 4, failure_conditions: 3 } }),
     });
     const a1 = g.nodes.find(n => n.id === 'agent:a1');
     expect(a1.color).toBe('red');
@@ -205,6 +228,40 @@ describe('buildExecutionGraph', () => {
     const by = (st: string) => drawn.filter(n => n.status === st).length;
     expect([by('failed'), by('stopping'), by('running'), by('waiting'), by('stopped'), by('completed'), by('destroyed')]).toEqual([2, 2, 3, 3, 2, 0, 0]);
     expect(g.nodes.find(n => n.id === 'more:a1').tooltip).toEqual({ kind: 'more', hidden: { ...ZERO, stopped: 1, completed: 3, destroyed: 3 } });
+  });
+
+  it('priority is failed > with errors > stopping > running > waiting > stopped > completed > destroyed', () => {
+    const at = (ms: number) => new Date(NOW - ms).toISOString();
+    const mk = (prefix: string, status: string, n: number, extra: any = {}) =>
+      Array.from({ length: n }, (_, i) => row({ _id: prefix + i, status: status as any, started_at: at(1000 * (i + 1)), ...extra }));
+    const g = buildExecutionGraph({
+      projectName: 'P', agents: agents(1),
+      rows: [...mk('c', 'completed', 4), ...mk('x', 'stopped', 2), ...mk('w', 'waiting', 3), ...mk('r', 'running', 3),
+        ...mk('s', 'stopping', 2), ...mk('f', 'failed', 1, { errors: 1 }), ...mk('f2', 'failed', 1),
+        // with errors: the oldest of all, a completed and a waiting one
+        row({ _id: 'ec', status: 'completed', errors: 1, started_at: at(9_000_000) }),
+        row({ _id: 'ew', status: 'waiting', errors: 3, started_at: at(8_000_000) })]
+    });
+    const drawn = g.nodes.filter(n => n.kind === 'execution').map(n => n.executionId);
+    expect(drawn.length).toBe(12);
+    // failed 2, with errors 2, stopping 2, running 3, waiting: 3 of the 3 plain ones fit (12 - 9 = 3)
+    ['f0', 'f20', 'ec', 'ew', 's0', 's1', 'r0', 'r1', 'r2', 'w0', 'w1', 'w2'].forEach(id => expect(drawn).toContain(id));
+    expect(g.nodes.find(n => n.id === 'more:a1').tooltip).toEqual({ kind: 'more', hidden: { ...ZERO, stopped: 2, completed: 4 } });
+    expect(g.nodes.find(n => n.id === 'exec:ec').withErrors).toBe(true);
+    expect(g.nodes.find(n => n.id === 'exec:f0').withErrors).toBe(true);
+    expect(g.nodes.find(n => n.id === 'exec:f20').withErrors).toBeUndefined();
+  });
+
+  it('a completed run with errors beats newer completed runs into the drawn 12; newest first within a group', () => {
+    const at = (ms: number) => new Date(NOW - ms).toISOString();
+    const done = Array.from({ length: 15 }, (_, i) => row({ _id: 'c' + String(i).padStart(2, '0'), status: 'completed', started_at: at(1000 * (i + 1)) }));
+    const old = [row({ _id: 'e-old', status: 'completed', errors: 1, started_at: at(5_000_000) }),
+      row({ _id: 'e-older', status: 'completed', errors: 1, started_at: at(6_000_000) })];
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [...done, ...old] });
+    const drawn = g.nodes.filter(n => n.kind === 'execution').map(n => n.executionId).sort();
+    expect(drawn).toEqual(['c00', 'c01', 'c02', 'c03', 'c04', 'c05', 'c06', 'c07', 'c08', 'c09', 'e-old', 'e-older']);
+    expect(g.nodes.find(n => n.id === 'more:a1').label).toBe('+5');
+    expect(g.nodes.find(n => n.id === 'agent:a1').color).toBe('red');
   });
 
   it('no overflow node at or under the cap', () => {
