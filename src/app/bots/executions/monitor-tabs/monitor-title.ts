@@ -12,7 +12,8 @@ export function monitorNavbarTitle(url: string, tabsShown: boolean): string | nu
   const path = (url || '').split('?')[0];
   if (path.indexOf('/monitor/') !== -1) {
     if (tabsShown) return null;
-    return path.indexOf('/monitor/graph') !== -1 ? 'Monitor.Tabs.Graph' : 'Executions.Executions';
+    // /monitor/graph redirects to the executions page (its Graph view)
+    return 'Executions.Executions';
   }
   if (tabsShown && CONVERSATIONS_TAB_PAGE.test(path)) return null;
   return undefined;

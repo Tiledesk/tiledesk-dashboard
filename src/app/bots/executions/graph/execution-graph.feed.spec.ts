@@ -23,7 +23,7 @@ const quiet = (extra: any = {}) => ({ now: () => NOW, hidden$: new Subject<boole
 describe('executionGraphFeed', () => {
   it('one graph call per cycle (the range, test runs too), at once; the snapshot carries the response', fakeAsync(() => {
     const t = setup();
-    const sub = executionGraphFeed(t.service, 'p1', '24h', quiet()).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: '24h' }, quiet()).subscribe(s => t.snaps.push(s));
     expect(t.calls).toEqual([{ pid: 'p1', params: { range: '24h', test: 'all' } }]);
     expect(t.snaps).toEqual([{ graph: GRAPH('24h'), range: '24h', fetchedAt: NOW, stale: false }]);
     sub.unsubscribe();
@@ -37,10 +37,23 @@ describe('executionGraphFeed', () => {
     sub.unsubscribe();
   }));
 
+  it('the filters go with every call, on top of the range; an explicit test wins over the default all', fakeAsync(() => {
+    const t = setup();
+    const sub = executionGraphFeed(t.service, 'p1', { range: '7d', agent_id: 'a1', status: 'failed', q: 'r1', has_errors: true, test: false },
+      quiet({ refreshMs: 1000 })).subscribe(s => t.snaps.push(s));
+    tick(1000);
+    expect(t.calls.length).toBe(2);
+    for (const c of t.calls) {
+      expect(c.params).toEqual({ range: '7d', agent_id: 'a1', status: 'failed', q: 'r1', has_errors: true, test: false });
+    }
+    expect(t.snaps[0].range).toBe('7d');
+    sub.unsubscribe();
+  }));
+
   it('refreshes every 60 s, counted after the previous answer, never overlapping', fakeAsync(() => {
     expect(GRAPH_REFRESH_MS).toBe(60000);
     const t = setup(p => of(GRAPH()).pipe(delay(2000)));
-    const sub = executionGraphFeed(t.service, 'p1', 'now', quiet()).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, quiet()).subscribe(s => t.snaps.push(s));
     expect(t.calls.length).toBe(1);
     tick(1999);
     expect(t.snaps.length).toBe(0);
@@ -61,7 +74,7 @@ describe('executionGraphFeed', () => {
   it('a manual refresh runs a cycle now and restarts the 60 s from its answer', fakeAsync(() => {
     const refresh$ = new Subject<void>();
     const t = setup();
-    const sub = executionGraphFeed(t.service, 'p1', 'now', quiet({ refresh$ })).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, quiet({ refresh$ })).subscribe(s => t.snaps.push(s));
     expect(t.calls.length).toBe(1);
     tick(20000);
     refresh$.next();
@@ -78,7 +91,7 @@ describe('executionGraphFeed', () => {
   it('a manual refresh while a call is in flight starts no second call', fakeAsync(() => {
     const refresh$ = new Subject<void>();
     const t = setup(p => of(GRAPH()).pipe(delay(2000)));
-    const sub = executionGraphFeed(t.service, 'p1', 'now', quiet({ refresh$ })).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, quiet({ refresh$ })).subscribe(s => t.snaps.push(s));
     tick(500);
     refresh$.next();
     refresh$.next();
@@ -96,7 +109,7 @@ describe('executionGraphFeed', () => {
   it('reports when a call is in flight', fakeAsync(() => {
     const refresh$ = new Subject<void>();
     const t = setup(p => of(GRAPH()).pipe(delay(2000)));
-    const sub = executionGraphFeed(t.service, 'p1', 'now', quiet({ refresh$, loading: (b: boolean) => t.loading.push(b) }))
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, quiet({ refresh$, loading: (b: boolean) => t.loading.push(b) }))
       .subscribe(s => t.snaps.push(s));
     expect(t.loading).toEqual([true]);
     tick(2000);
@@ -112,7 +125,7 @@ describe('executionGraphFeed', () => {
   it('an error keeps the last snapshot and marks it stale; the next good answer clears it', fakeAsync(() => {
     let fail = false;
     const t = setup(p => fail ? throwError(new Error('503')) : of(GRAPH()));
-    const sub = executionGraphFeed(t.service, 'p1', 'now', quiet()).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, quiet()).subscribe(s => t.snaps.push(s));
     expect(t.snaps[0].stale).toBe(false);
     fail = true;
     tick(GRAPH_REFRESH_MS);
@@ -127,7 +140,7 @@ describe('executionGraphFeed', () => {
 
   it('an error before any data emits an empty stale snapshot and keeps retrying', fakeAsync(() => {
     const t = setup(p => throwError(new Error('down')));
-    const sub = executionGraphFeed(t.service, 'p1', 'now', quiet()).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, quiet()).subscribe(s => t.snaps.push(s));
     expect(t.snaps[0]).toEqual({ graph: null, range: 'now', fetchedAt: NOW, stale: true });
     tick(GRAPH_REFRESH_MS);
     expect(t.calls.length).toBe(2);
@@ -136,7 +149,7 @@ describe('executionGraphFeed', () => {
 
   it('a never-answering service times out at 10 s: stale snapshot, next call 60 s later', fakeAsync(() => {
     const t = setup(p => NEVER);
-    const sub = executionGraphFeed(t.service, 'p1', 'now', quiet()).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, quiet()).subscribe(s => t.snaps.push(s));
     expect(GRAPH_REQUEST_TIMEOUT_MS).toBe(10000);
     tick(9999);
     expect(t.snaps.length).toBe(0);
@@ -154,7 +167,7 @@ describe('executionGraphFeed', () => {
   it('hidden tab pauses, visible resumes at once', fakeAsync(() => {
     const hidden$ = new Subject<boolean>();
     const t = setup();
-    const sub = executionGraphFeed(t.service, 'p1', 'now', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
     expect(t.calls.length).toBe(1);
     hidden$.next(true);
     tick(5 * GRAPH_REFRESH_MS);
@@ -169,7 +182,7 @@ describe('executionGraphFeed', () => {
   it('hidden while a timer is pending: no call fires', fakeAsync(() => {
     const hidden$ = new Subject<boolean>();
     const t = setup();
-    const sub = executionGraphFeed(t.service, 'p1', 'now', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
     tick(GRAPH_REFRESH_MS - 1);
     hidden$.next(true);
     tick(5 * GRAPH_REFRESH_MS);
@@ -180,7 +193,7 @@ describe('executionGraphFeed', () => {
   it('hidden while a request is in flight: its result emits, nothing is scheduled after', fakeAsync(() => {
     const hidden$ = new Subject<boolean>();
     const t = setup(p => of(GRAPH()).pipe(delay(2000)));
-    const sub = executionGraphFeed(t.service, 'p1', 'now', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
     tick(1000);
     hidden$.next(true);
     tick(1000);
@@ -194,7 +207,7 @@ describe('executionGraphFeed', () => {
   it('visible again while in flight: no second call', fakeAsync(() => {
     const hidden$ = new Subject<boolean>();
     const t = setup(p => of(GRAPH()).pipe(delay(2000)));
-    const sub = executionGraphFeed(t.service, 'p1', 'now', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
     tick(500);
     hidden$.next(true);
     hidden$.next(false);
@@ -210,7 +223,7 @@ describe('executionGraphFeed', () => {
   it('repeated visible events start no extra calls', fakeAsync(() => {
     const hidden$ = new Subject<boolean>();
     const t = setup();
-    const sub = executionGraphFeed(t.service, 'p1', 'now', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
     hidden$.next(false);
     hidden$.next(false);
     expect(t.calls.length).toBe(1);
@@ -220,7 +233,7 @@ describe('executionGraphFeed', () => {
   it('unsubscribe stops timers, the refresh trigger and an in-flight request', fakeAsync(() => {
     const refresh$ = new Subject<void>();
     const t = setup(p => of(GRAPH()).pipe(delay(2000)));
-    const sub = executionGraphFeed(t.service, 'p1', 'now', quiet({ refresh$ })).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, quiet({ refresh$ })).subscribe(s => t.snaps.push(s));
     sub.unsubscribe();
     refresh$.next();
     tick(5 * GRAPH_REFRESH_MS);
@@ -235,7 +248,7 @@ describe('executionGraphFeed', () => {
     const removed: any[] = [];
     spyOn(document, 'addEventListener').and.callFake((type: string, fn: any) => { if (type === 'visibilitychange') { added.push(fn); } });
     spyOn(document, 'removeEventListener').and.callFake((type: string, fn: any) => { if (type === 'visibilitychange') { removed.push(fn); } });
-    const sub = executionGraphFeed(t.service, 'p1', 'now', { now: () => NOW }).subscribe(s => t.snaps.push(s));
+    const sub = executionGraphFeed(t.service, 'p1', { range: 'now' }, { now: () => NOW }).subscribe(s => t.snaps.push(s));
     expect(added.length).toBe(1);
     sub.unsubscribe();
     expect(removed).toEqual(added);

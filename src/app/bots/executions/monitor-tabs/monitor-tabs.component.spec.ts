@@ -43,17 +43,16 @@ describe('MonitorTabsComponent', () => {
     expect(links().length).toBe(0);
   });
 
-  it('three tabs with the active one marked', () => {
+  it('two tabs, Conversations | Executions (the graph is a view of Executions), with the active one marked', () => {
     setup({ active: 'executions' });
     const a = links();
-    expect(a.length).toBe(3);
-    expect(a.map(x => x.getAttribute('href'))).toEqual([
-      '/project/p1/wsrequests', '/project/p1/monitor/executions', '/project/p1/monitor/graph']);
-    expect(a.map(x => x.getAttribute('aria-current'))).toEqual([null, 'page', null]);
+    expect(a.length).toBe(2);
+    expect(a.map(x => x.getAttribute('href'))).toEqual(['/project/p1/wsrequests', '/project/p1/monitor/executions']);
+    expect(a.map(x => x.getAttribute('aria-current'))).toEqual([null, 'page']);
   });
 
   it('nav label is translated', () => {
-    setup({ active: 'graph' });
+    setup({ active: 'conversations' });
     expect(fixture.nativeElement.querySelector('nav').getAttribute('aria-label')).toBe('Monitor.Tabs.Label');
   });
 });

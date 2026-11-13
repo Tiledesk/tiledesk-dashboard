@@ -45,6 +45,23 @@ describe('executions routes (real appRoutes)', () => {
     expect(s.paramMap.get('executionid')).toBe('e1');
   });
 
+  it('monitor/graph redirects to the executions page in graph view, keeping range (and any other param)', async () => {
+    await router.navigateByUrl('/project/p1/monitor/graph');
+    expect(router.url).toBe('/project/p1/monitor/executions?view=graph');
+    let s = router.routerState.snapshot.root;
+    while (s.firstChild) s = s.firstChild;
+    expect(s.component).toBe(ExecutionsListComponent);
+    await router.navigateByUrl('/project/p1/monitor/graph?range=24h');
+    expect(router.url).toBe('/project/p1/monitor/executions?range=24h&view=graph');
+    await router.navigateByUrl('/project/p1/monitor/graph?range=7d&status=failed');
+    expect(router.url).toBe('/project/p1/monitor/executions?range=7d&status=failed&view=graph');
+  });
+
+  it('the list\'s old period param still lands on the list (read there as range)', async () => {
+    await router.navigateByUrl('/project/p1/monitor/executions?period=30d');
+    expect(router.url).toBe('/project/p1/monitor/executions?period=30d');
+  });
+
   it('old executions addresses redirect to monitor', async () => {
     const redirects = (appRoutes as any[]).filter(r => r.redirectTo && /^project\/:projectid\/bots\/.*executions/.test(r.path));
     const map: any = {};

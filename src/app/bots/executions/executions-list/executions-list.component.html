@@ -18,16 +18,26 @@
       <div>
         <h1 class="exec-title">{{ (agentId ? "Executions.Executions" : "Executions.AllExecutions") | translate }}</h1>
       </div>
-      <ng-select class="custom exec-select-ng exec-agent-switcher" [attr.aria-label]="'Executions.Columns.Agent' | translate"
-        [items]="agents" bindLabel="name" bindValue="id" [clearable]="true" [searchable]="true"
-        [placeholder]="'Executions.AllAgents' | translate" [ngModel]="agentId" (ngModelChange)="switchAgent($event)">
-      </ng-select>
+      <div class="exec-head-tools">
+        <!-- List | Graph: the same header, cards and filters over both views -->
+        <div class="exec-view-switch" role="group" [attr.aria-label]="'Executions.View.Label' | translate">
+          <button type="button" *ngFor="let v of viewOptions" [class.active]="view === v.id" [attr.aria-pressed]="view === v.id"
+            (click)="setView(v.id)">
+            <mat-icon aria-hidden="true">{{ v.icon }}</mat-icon>
+            <span>{{ "Executions.View." + v.id | translate }}</span>
+          </button>
+        </div>
+        <ng-select class="custom exec-select-ng exec-agent-switcher" [attr.aria-label]="'Executions.Columns.Agent' | translate"
+          [items]="agents" bindLabel="name" bindValue="id" [clearable]="true" [searchable]="true"
+          [placeholder]="'Executions.AllAgents' | translate" [ngModel]="agentId" (ngModelChange)="switchAgent($event)">
+        </ng-select>
+      </div>
     </div>
 
-    <!-- the big numbers: every status, over the period and the agent / test-runs filters, all triggers -->
+    <!-- the big numbers: every status over the time range and all the filters (the same set as the list and the graph) -->
     <div class="exec-cards">
       <execution-stat-cards [counts]="counters" [withErrors]="withErrors" [selectable]="true" [active]="filters.has_errors ? 'with_errors' : filters.status" (pick)="pickCard($event)"></execution-stat-cards>
-      <span class="exec-cards-hint">{{ "Executions.Periods." + filters.period | translate }} · {{ "Executions.Triggers.all" | translate }}</span>
+      <span class="exec-cards-hint">{{ "Executions.Range." + filters.range | translate }}</span>
     </div>
 
     <div class="exec-filters">
@@ -53,12 +63,26 @@
           (change)="setFilter('tests', $any($event.target).checked)">
         {{ "Executions.TestRuns" | translate }}
       </label>
-      <ng-select class="custom exec-select-ng exec-filter-period" [attr.aria-label]="'Executions.Period' | translate"
-        [clearable]="false" [searchable]="false" [ngModel]="filters.period" (ngModelChange)="setFilter('period', $event)">
-        <ng-option *ngFor="let p of periodOptions" [value]="p">{{ "Executions.Periods." + p | translate }}</ng-option>
+      <ng-select class="custom exec-select-ng exec-filter-range" [attr.aria-label]="'Executions.RangeLabel' | translate"
+        [clearable]="false" [searchable]="false" [ngModel]="filters.range" (ngModelChange)="setFilter('range', $event)">
+        <ng-option *ngFor="let r of rangeOptions" [value]="r">{{ "Executions.Range." + r | translate }}</ng-option>
       </ng-select>
+      <span class="exec-filters-end">
+        <span class="exec-updated" *ngIf="updatedLabel">{{ updatedLabel }}</span>
+        <button type="button" class="exec-btn exec-refresh" [disabled]="refreshBusy" (click)="refreshNow()">
+          <mat-icon aria-hidden="true" [class.spin]="refreshBusy">refresh</mat-icon>
+          <span>{{ "Executions.Refresh" | translate }}</span>
+        </button>
+      </span>
     </div>
 
+    <!-- Graph view: the canvas only; the header above is the page's -->
+    <execution-graph *ngIf="view === 'graph'" #graph [projectId]="projectId" [projectName]="projectName" [agents]="graphAgents"
+      [range]="filters.range" [filters]="graphFilters"
+      (updated)="onGraphUpdated($event)" (loadingChange)="graphLoading = $event">
+    </execution-graph>
+
+    <ng-container *ngIf="view === 'list'">
     <div *ngIf="error" class="exec-empty exec-error">
       {{ "Executions.LoadError" | translate }}
       <button type="button" class="exec-link" (click)="loadFirstPage()">{{ "Executions.Retry" | translate }}</button>
@@ -106,7 +130,10 @@
           {{ "Executions.EmptyFiltered" | translate }}
           <button type="button" class="exec-link" (click)="clearFilters()">{{ "Executions.ClearFilters" | translate }}</button>
         </ng-container>
-        <ng-container *ngIf="!hasActiveFilters">
+        <ng-container *ngIf="!hasActiveFilters && filters.range === 'now'">
+          {{ "Executions.EmptyNow" | translate }}
+        </ng-container>
+        <ng-container *ngIf="!hasActiveFilters && filters.range !== 'now'">
           {{ "Executions.EmptyNone" | translate }}
           <button *ngIf="filters.trigger !== 'all'" type="button" class="exec-link" (click)="showAllTriggers()">{{ "Executions.ShowAllTriggers" | translate }}</button>
         </ng-container>
@@ -120,6 +147,7 @@
         </button>
       </div>
     </div>
+    </ng-container>
 
   </div>
 </div>

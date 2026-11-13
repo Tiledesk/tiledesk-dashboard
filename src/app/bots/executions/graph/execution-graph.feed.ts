@@ -1,7 +1,7 @@
 import { fromEvent, Observable, Subscription } from 'rxjs';
 import { map, startWith, timeout } from 'rxjs/operators';
 import { ExecutionsService } from 'app/services/executions.service';
-import { ExecutionGraph, StatsRange } from '../executions.models';
+import { ExecutionGraph, GraphParams, StatsRange } from '../executions.models';
 
 /** One cycle of the graph's view: the graph response (null until a first answer), when it was asked, and whether it failed. */
 export interface GraphSnapshot {
@@ -27,14 +27,15 @@ function documentHidden$(): Observable<boolean> {
 }
 
 /**
- * The graph's view of `range` (test runs included): one GET /executions/graph per cycle, the next one GRAPH_REFRESH_MS after
+ * The graph's view of `params` (the range and the list's filters; test runs included unless `test` says otherwise): one
+ * GET /executions/graph per cycle, the next one GRAPH_REFRESH_MS after
  * the previous answer, paused while the tab is hidden. `refresh$` runs a cycle now (dropping the pending timer), unless one
  * is in flight: never two calls at once. An error or a timeout re-emits the last snapshot marked stale.
  */
 export function executionGraphFeed(
   service: Pick<ExecutionsService, 'graph'>,
   projectId: string,
-  range: StatsRange = 'now',
+  params: GraphParams = { range: 'now' },
   opts: {
     now?: () => number; hidden$?: Observable<boolean>; refreshMs?: number;
     refresh$?: Observable<void>; loading?: (inFlight: boolean) => void;
@@ -43,6 +44,10 @@ export function executionGraphFeed(
   const now = opts.now || (() => Date.now());
   const refreshMs = opts.refreshMs === undefined ? GRAPH_REFRESH_MS : opts.refreshMs;
   const loading = opts.loading || (() => { });
+  const range = params.range || 'now';
+  // test runs by default, as the API; unset filters are not sent
+  const query: GraphParams = { range, test: 'all' };
+  Object.keys(params).forEach(k => { if ((params as any)[k] !== undefined) { (query as any)[k] = (params as any)[k]; } });
 
   return new Observable<GraphSnapshot>(subscriber => {
     let hidden = false;
@@ -76,7 +81,7 @@ export function executionGraphFeed(
       running = true;
       loading(true);
       const t = now();
-      inflight = service.graph(projectId, { range, test: 'all' }).pipe(timeout(GRAPH_REQUEST_TIMEOUT_MS)).subscribe(
+      inflight = service.graph(projectId, query).pipe(timeout(GRAPH_REQUEST_TIMEOUT_MS)).subscribe(
         graph => done({ graph, range, fetchedAt: t, stale: false }),
         () => done(last ? { ...last, stale: true } : { graph: null, range, fetchedAt: t, stale: true })
       );

@@ -76,7 +76,7 @@ describe('NavbarComponent monitor title', () => {
       go('/project/p1/monitor/b1/executions/e1');
       expect(nav.currentTitle).toBe('Executions.Executions');
       go('/project/p1/monitor/graph');
-      expect(nav.currentTitle).toBe('Monitor.Tabs.Graph');
+      expect(nav.currentTitle).toBe('Executions.Executions'); // it redirects to the executions page
     });
 
     it('not configured: same as no permission', () => {
@@ -86,7 +86,7 @@ describe('NavbarComponent monitor title', () => {
       go('/project/p1/wsrequests');
       expect(nav.currentTitle).toBe('Requests');
       go('/project/p1/monitor/graph');
-      expect(nav.currentTitle).toBe('Monitor.Tabs.Graph');
+      expect(nav.currentTitle).toBe('Executions.Executions'); // it redirects to the executions page
     });
 
     it('role not known yet: titles as without the tab bar', () => {

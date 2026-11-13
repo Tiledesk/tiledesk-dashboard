@@ -87,10 +87,16 @@ export class ExecutionsService {
     return this.httpClient.get<ExecutionStats>(this.url(projectId, '/stats'), { headers: this.headers(), params: httpParams });
   }
 
-  /** The graph page's one call per refresh: the stats of the view plus, per agent, the drawn rows (chip priority, at most 12) and the hidden counts. */
+  /**
+   * The graph view's one call per refresh: the stats of the view plus, per agent, the drawn rows (chip priority, at most 12)
+   * and the hidden counts; the list's filters narrow it. Unset and empty values are left out; false is sent.
+   */
   graph(projectId: string, params: GraphParams): Observable<ExecutionGraph> {
     let httpParams = new HttpParams().set('range', params.range);
-    if (params.test !== undefined) httpParams = httpParams.set('test', String(params.test));
+    Object.keys(params).forEach((k) => {
+      const v = (params as any)[k];
+      if (k !== 'range' && v !== undefined && v !== null && v !== '') httpParams = httpParams.set(k, String(v));
+    });
     return this.httpClient.get<ExecutionGraph>(this.url(projectId, '/graph'), { headers: this.headers(), params: httpParams });
   }
 

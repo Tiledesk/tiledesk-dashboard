@@ -141,6 +141,33 @@ describe('ExecutionsService', () => {
     b.flush(body);
   });
 
+  it('graph sends the list filters on top of the range; false values are sent, empty ones are not', () => {
+    setup('/executions/api/v1/');
+    service.graph('p1', {
+      range: '7d', agent_id: 'a1', trigger: 'unattended', status: 'stopped,stopping', has_failures: true, has_errors: false, q: 'x1', test: false,
+    }).subscribe();
+    const a = http.expectOne((r) => r.url === '/executions/api/v1/projects/p1/executions/graph');
+    const p = a.request.params;
+    expect(p.keys().sort()).toEqual(['agent_id', 'has_errors', 'has_failures', 'q', 'range', 'status', 'test', 'trigger']);
+    expect([p.get('range'), p.get('agent_id'), p.get('trigger'), p.get('status'), p.get('has_failures'), p.get('has_errors'), p.get('q'), p.get('test')])
+      .toEqual(['7d', 'a1', 'unattended', 'stopped,stopping', 'true', 'false', 'x1', 'false']);
+    a.flush({});
+    service.graph('p1', { range: 'now', q: '', agent_id: undefined }).subscribe();
+    const b = http.expectOne((r) => r.url === '/executions/api/v1/projects/p1/executions/graph');
+    expect(b.request.params.keys()).toEqual(['range']);
+    b.flush({});
+  });
+
+  it('list passes range and with_stats through', () => {
+    setup('/executions/api/v1/');
+    service.list('p1', { range: 'now', with_stats: true, test: 'all' }).subscribe();
+    const req = http.expectOne((r) => r.url === '/executions/api/v1/projects/p1/executions');
+    expect(req.request.params.get('range')).toBe('now');
+    expect(req.request.params.get('with_stats')).toBe('true');
+    expect(req.request.params.has('from')).toBe(false);
+    req.flush({ items: [], next_cursor: null });
+  });
+
   it('list passes with_stats and stats_range through', () => {
     setup('/executions/api/v1/');
     service.list('p1', { test: 'all', with_stats: true, stats_range: '7d', from: '2026-11-01T00:00:00.000Z' }).subscribe();
