@@ -235,7 +235,7 @@ describe('RetentionConfirmDialogComponent', () => {
     const a = render({ dataDays: 0, dataZero: true });
     expect(p(a)).toEqual([
       'All stored attribute values, inputs and checkpoints will be deleted within a few minutes.',
-      'Attribute values and inputs will no longer be captured; stopped runs can no longer be resumed from stored data.',
+      'Attribute values and inputs will no longer be captured; paused runs can no longer be resumed from stored data.',
       'This cannot be undone.',
     ]);
     expect(a.textContent).not.toContain('0 days');
