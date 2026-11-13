@@ -19,6 +19,8 @@ export class VibeCoderComponent {
   @Input() busy = false;
   @Input() error: string | null = null;
   @Input() maxLength = MAX_PROMPT_LENGTH;
+  /** Home requires a prompt. The Create Agent modal can start with a name only. */
+  @Input() requirePromptToStart = true;
 
   @Output() start = new EventEmitter<string>();
 
@@ -46,9 +48,12 @@ export class VibeCoderComponent {
     return !!(this.buildPrompt || '').trim();
   }
 
-  /** Create needs a non-empty prompt (Home opens conversational agent only). */
+  /** Home: needs a non-empty prompt. Modal: always, except while busy. */
   get canStart(): boolean {
-    return !this.busy && this.hasPrompt;
+    if (this.busy) {
+      return false;
+    }
+    return this.requirePromptToStart ? this.hasPrompt : true;
   }
 
   onTextareaInput(textarea: HTMLTextAreaElement): void {

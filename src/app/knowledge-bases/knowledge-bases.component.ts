@@ -21,10 +21,10 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
 import { TranslateService } from '@ngx-translate/core';
-import { forkJoin, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { catchError, map, takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
-import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam, openChatbotEditor, v3AgentOrStub } from 'app/utils/util';
+import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam, openChatbotEditor, isV3Chatbot, v3AgentOrStub } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
@@ -219,6 +219,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   lastKbSearchParams: any;
   getKbCompleted: boolean = false;
   chatbotsUsingNamespace: any;
+  /** Full project faqKb list (includes ds_version) used to enrich namespace chatbot stubs. */
+  projectFaqKbList: any[] = [];
   botid: string;
   nameSpaceId: string;
   totalCount: Number;
@@ -1540,8 +1542,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           });
         });
 
-        this.chatbotsUsingNamespace = chatbots;
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbotsUsingNamespace', this.chatbotsUsingNamespace);
+        this.ensureProjectFaqKbList().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
+          this.applyChatbotsUsingNamespace(chatbots);
+          this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE enriched', this.chatbotsUsingNamespace);
+        });
 
       } else {
         this.chatbotsUsingNamespace = undefined
@@ -1552,6 +1556,89 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
     }, () => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
+    });
+  }
+
+  /** Load/cache full project bots (with ds_version) used to enrich namespace stubs. */
+  private ensureProjectFaqKbList(): Observable<any[]> {
+    if (Array.isArray(this.projectFaqKbList) && this.projectFaqKbList.length > 0) {
+      return of(this.projectFaqKbList);
+    }
+    return this.faqKbService.getFaqKbByProjectId().pipe(
+      map((faqKb: any) => {
+        this.projectFaqKbList = Array.isArray(faqKb) ? faqKb : [];
+        this.myChatbotOtherCount = this.projectFaqKbList.length;
+        return this.projectFaqKbList;
+      }),
+      catchError((err) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] ensureProjectFaqKbList error', err);
+        this.projectFaqKbList = this.projectFaqKbList || [];
+        return of(this.projectFaqKbList);
+      })
+    );
+  }
+
+  /**
+   * Namespace chatbot endpoint returns stubs (_id, name). Merge ds_version / createdAt
+   * from the project faqKb list so CDS open can pick v2 vs v3.
+   */
+  private enrichNamespaceChatbotsWithProjectFaqKb(chatbots: any[]): any[] {
+    if (!Array.isArray(chatbots) || !chatbots.length) {
+      return chatbots || [];
+    }
+    const byId = new Map(
+      (this.projectFaqKbList || [])
+        .filter((b) => b && b._id)
+        .map((b) => [String(b._id), b])
+    );
+    if (!byId.size) {
+      this.logger.log('[KNOWLEDGE-BASES-COMP] enrich skipped: projectFaqKbList empty');
+      return chatbots;
+    }
+    return chatbots.map((bot) => {
+      const full = byId.get(String(bot?._id));
+      if (!full) {
+        return bot;
+      }
+      const enriched = {
+        ...bot,
+        createdAt: full.createdAt ?? bot.createdAt,
+      };
+      if (full.ds_version != null && full.ds_version !== '') {
+        enriched.ds_version = full.ds_version;
+      }
+      return enriched;
+    });
+  }
+
+  private applyChatbotsUsingNamespace(chatbots: any[]): void {
+    this.chatbotsUsingNamespace = this.enrichNamespaceChatbotsWithProjectFaqKb(chatbots);
+  }
+
+  private reenrichChatbotsUsingNamespaceFromProjectList(): void {
+    if (!Array.isArray(this.chatbotsUsingNamespace) || !this.chatbotsUsingNamespace.length) {
+      return;
+    }
+    this.chatbotsUsingNamespace = this.enrichNamespaceChatbotsWithProjectFaqKb(
+      this.chatbotsUsingNamespace
+    );
+  }
+
+  /** Prefer the project list (has ds_version); fall back to getFaqKbById. */
+  private resolveChatbotForCds(chatbot: any, onReady: (bot: any) => void): void {
+    if (!chatbot?._id) {
+      return;
+    }
+    const fromProject = (this.projectFaqKbList || []).find((b) => String(b?._id) === String(chatbot._id));
+    if (fromProject) {
+      onReady(v3AgentOrStub({ ...chatbot, ...fromProject }, chatbot._id));
+      return;
+    }
+    const stub = { createdAt: new Date(), _id: chatbot._id } as any;
+    this.faqKbService.getFaqKbById(chatbot._id).subscribe((bot: any) => {
+      onReady(v3AgentOrStub(bot, stub._id));
+    }, () => {
+      onReady(stub);
     });
   }
 
@@ -2303,8 +2390,11 @@ _presentDialogImportContents() {
   }
 
 
+  isV3Chatbot(chatbot: any): boolean {
+    return isV3Chatbot(chatbot);
+  }
+
   goToBotDetails() {
-    // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
     // Only the agent id is at hand here: the server's copy carries the version label
     // (ds_version), and the editor follows it. If the lookup fails, open with the stub.
     const stub = { createdAt: new Date(), _id: this.botid } as any;
@@ -2366,21 +2456,14 @@ _presentDialogImportContents() {
       //   }
 
       if (result && result.chatbot && result.redirectTo === "block") {
-
-        // The namespace's chatbot list carries only _id and name (no version label).
-        const stub = { createdAt: new Date(), _id: chatbot._id } as any;
-        this.faqKbService.getFaqKbById(chatbot._id).subscribe((bot: any) => {
-          openChatbotEditor(this.router, v3AgentOrStub(bot, stub._id), this.project._id, this.appConfigService.getConfig());
-        }, () => {
-          openChatbotEditor(this.router, stub, this.project._id, this.appConfigService.getConfig());
+        const config = this.appConfigService.getConfig();
+        this.resolveChatbotForCds(result.chatbot, (bot) => {
+          openChatbotEditor(this.router, bot, this.project._id, config);
         });
       } else if (result && result.chatbot && result.redirectTo === "settings") {
-        const stub = { createdAt: new Date(), _id: chatbot._id } as any;
         const config = this.appConfigService.getConfig();
-        this.faqKbService.getFaqKbById(chatbot._id).subscribe((bot: any) => {
-          goToCDSSettings(this.router, v3AgentOrStub(bot, stub._id), this.project._id, config.cdsBaseUrl, config.cdsV3BaseUrl);
-        }, () => {
-          goToCDSSettings(this.router, stub, this.project._id, config.cdsBaseUrl, config.cdsV3BaseUrl);
+        this.resolveChatbotForCds(result.chatbot, (bot) => {
+          goToCDSSettings(this.router, bot, this.project._id, config.cdsBaseUrl, config.cdsV3BaseUrl);
         });
       }
 
@@ -3015,7 +3098,9 @@ _presentDialogImportContents() {
     this.faqKbService.getFaqKbByProjectId().subscribe((faqKb: any) => {
       this.logger.log('[KNOWLEDGE-BASES-COMP] - GET BOTS BY PROJECT ID', faqKb);
       if (faqKb) {
+        this.projectFaqKbList = Array.isArray(faqKb) ? faqKb : [];
         this.myChatbotOtherCount = faqKb.length
+        this.reenrichChatbotsUsingNamespaceFromProjectList();
 
         // ---------------------------------------------------------------------
         // Bot forked from Customer Satisfaction templates

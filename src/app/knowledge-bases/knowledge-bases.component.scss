@@ -969,7 +969,8 @@ table {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 6px 8px;
+    gap: 10px 8px;
+    padding-top: 4px;
 }
 
 // Chip-like agents (scoped overrides of global demo.scss .served-by-cb-*)
@@ -992,6 +993,7 @@ table {
     }
 
     .served-by-cb-name {
+        position: relative;
         max-width: none;
         margin-right: 0;
         margin-left: 0;
@@ -999,6 +1001,24 @@ table {
         white-space: nowrap;
         overflow: visible;
         text-overflow: clip;
+    }
+
+    .served-by-cb-v3 {
+        position: absolute;
+        top: -7px;
+        right: -2px;
+        z-index: 1;
+        padding: 0 3px;
+        font-size: 8px;
+        line-height: 11px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        text-transform: lowercase;
+        border-radius: var(--badge-border-radius);
+        color: #0d8cff;
+        background: rgba(13, 140, 255, 0.12);
+        border: 1px solid #fff;
+        pointer-events: none;
     }
 
     .served-by-cb-e {

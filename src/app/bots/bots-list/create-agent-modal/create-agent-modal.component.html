@@ -31,29 +31,22 @@
         <mat-label>{{'ChatbotName' | translate}}</mat-label>
         <input matInput
             [(ngModel)]="agentName"
-            (keydown.enter)="onCreate()"
+            (keydown.enter)="onNameEnter()"
             cdkFocusInitial>
         <mat-hint *ngIf="showPromptField && subtype === 'chatbot'">{{'AIAgentNameOptionalHint' | translate}}</mat-hint>
     </mat-form-field>
 
-    <ng-container *ngIf="showPromptField">
-        <mat-form-field appearance="outline" class="cc-mat-form-field">
-            <mat-label>{{'AIAgentPromptLabel' | translate}}</mat-label>
-            <textarea matInput
-                rows="5"
-                [(ngModel)]="agentPrompt"
-                [maxlength]="maxPromptLength"
-                placeholder="{{'AIAgentPromptPlaceholder' | translate}}"></textarea>
-        </mat-form-field>
-
-        <div class="agent-prompt-hint">
-            {{'AIAgentPromptHint' | translate}}
-        </div>
-    </ng-container>
+    <div class="create-agent-modal__vibe" *ngIf="showPromptField">
+        <appdashboard-vibe-coder
+            #modalVibeCoder
+            [requirePromptToStart]="false"
+            (start)="onVibeStart($event)">
+        </appdashboard-vibe-coder>
+    </div>
 
 </div>
 
-<div mat-dialog-actions style="justify-content: center;">
+<div mat-dialog-actions *ngIf="!showPromptField" style="justify-content: center;">
     <button class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
         {{ "Cancel" | translate }}
     </button>

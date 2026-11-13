@@ -57,3 +57,20 @@
 textarea[matInput] {
     resize: none;
 }
+
+.create-agent-modal__vibe {
+    margin-top: 8px;
+    width: 100%;
+
+    ::ng-deep .vibe-coder-wpr,
+    ::ng-deep .vibe-coder,
+    ::ng-deep .vibe-coder__examples {
+        width: 100%;
+        max-width: 100%;
+        align-items: stretch;
+    }
+
+    ::ng-deep .vibe-coder {
+        width: 100%;
+    }
+}

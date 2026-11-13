@@ -1,7 +1,8 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { MAX_PROMPT_LENGTH, provisionalAgentName } from 'app/utils/agent-from-prompt.util';
+import { VibeCoderComponent } from 'app/shared/vibe-coder/vibe-coder.component';
 
 /** What the caller hands to the modal. */
 export interface CreateAgentModalData {
@@ -67,6 +68,8 @@ export class CreateAgentModalComponent {
 
   public readonly maxPromptLength = MAX_PROMPT_LENGTH;
 
+  @ViewChild('modalVibeCoder') modalVibeCoder?: VibeCoderComponent;
+
   public agentName: string = '';
   public agentPrompt: string = '';
   public subtype: string = 'chatbot';
@@ -98,12 +101,17 @@ export class CreateAgentModalComponent {
     }
   }
 
-  /** Prompt already collected on Home (or typed in this modal when `showPromptField`). */
+  /** Prompt already collected on Home, or typed in the shared vibe coder. */
   get hasBuildPrompt(): boolean {
     if (this.homeBuildPrompt) {
       return true;
     }
-    return !!(this.agentPrompt || '').trim();
+    return !!this.typedPrompt;
+  }
+
+  /** Text currently in the shared vibe coder (flows path). */
+  private get typedPrompt(): string {
+    return (this.modalVibeCoder?.buildPrompt || this.agentPrompt || '').trim();
   }
 
   /** Inline hint when Conversational Create is blocked for a missing Home prompt. */
@@ -152,10 +160,10 @@ export class CreateAgentModalComponent {
   /** A Conversational agent with a description needs no name: it gets one from the description
    *  until the Design Studio names it after its conversation's title (29/10/2026). */
   get nameIsOptional(): boolean {
-    return this.showPromptField && this.subtype === 'chatbot' && !!(this.agentPrompt || '').trim();
+    return this.showPromptField && this.subtype === 'chatbot' && this.hasBuildPrompt;
   }
 
-  /** Name threshold as before; Home Conversational also needs a vibe-box prompt. */
+  /** Name-only path (no vibe coder): same gate as before. */
   get canCreate(): boolean {
     const nameOk = (this.agentName || '').trim().length >= 2 || this.nameIsOptional;
     if (!nameOk) {
@@ -167,6 +175,37 @@ export class CreateAgentModalComponent {
     return true;
   }
 
+  onNameEnter(): void {
+    if (this.showPromptField) {
+      return;
+    }
+    this.onCreate();
+  }
+
+  /** Flows path: vibe coder Start replaces Create. */
+  onVibeStart(prompt: string): void {
+    if (this.shouldOpenCreateChatbotModal(this.subtype)) {
+      this.dialogRef.close({
+        openCreateChatbotModal: true,
+        subType: this.subtype,
+      } as CreateAgentModalResult);
+      return;
+    }
+
+    const text = (prompt || '').trim() || this.homeBuildPrompt;
+    const typed = (this.agentName || '').trim();
+    const provisional = typed.length < 2;
+    if (provisional && text.length < 2) {
+      return;
+    }
+    this.dialogRef.close({
+      chatbotName: provisional ? provisionalAgentName(text) : typed,
+      subType: this.subtype,
+      prompt: text,
+      ...(provisional ? { provisionalName: true } : {}),
+    } as CreateAgentModalResult);
+  }
+
   onCreate(): void {
     if (!this.canCreate) { return; }
     if (this.shouldOpenCreateChatbotModal(this.subtype)) {
@@ -176,7 +215,7 @@ export class CreateAgentModalComponent {
       } as CreateAgentModalResult);
       return;
     }
-    const prompt = (this.agentPrompt || '').trim() || this.homeBuildPrompt;
+    const prompt = this.typedPrompt || this.homeBuildPrompt;
     const typed = (this.agentName || '').trim();
     const provisional = typed.length < 2 && this.nameIsOptional;
     this.dialogRef.close({

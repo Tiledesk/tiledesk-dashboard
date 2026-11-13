@@ -14,7 +14,7 @@
       <button
         type="button"
         class="vibe-coder__start"
-        [class.vibe-coder__start--ready]="hasTypedContent"
+        [class.vibe-coder__start--ready]="!requirePromptToStart || hasTypedContent"
         [disabled]="!canStart"
         (click)="onStart()"
         [attr.aria-label]="'VibeCoderCreateAriaReady' | translate">
