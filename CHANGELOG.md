@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.8.42
+- Hides the navbar, the sidebar and the KB stats charts when Knowledge Bases is opened with `?embed` (CDS iframe)
+
 ### 2.8.41
 - Fixes the bug: creating an AI agent from the Home vibe coder (with or without a prompt) and from the Create Agent modal ignored the chatbot limit of the plan
 - Fixes the bug: Knowledge Base namespace AI agents were missing `ds_version`, so the V2/V3 editor routing could be wrong
