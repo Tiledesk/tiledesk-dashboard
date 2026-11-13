@@ -42,8 +42,8 @@ export const PENDING_WAIT_MS = 30000;
 export const LIVE_REFETCH_MAX_MS = 30000;
 /** How long a copy button shows "Copied". */
 export const COPIED_MS = 2000;
-/** The narrowest duration bar, in % of the execution's time span: a 1 ms block is still visible. */
-export const MIN_BAR_PCT = 1.5;
+/** A segment of the "where the time went" strip at least this wide (% of the run) carries its label. */
+export const SEG_LABEL_MIN_PCT = 12;
 
 /**
  * The header's primary control, by status: the first of these the API offers. Any other status (completed,
@@ -79,7 +79,6 @@ export interface TimeSplit {
   waitAfter: Map<number, number>;
 }
 
-/** A timeline row's bar: its block's share of the run from the left, then the wait after it. */
 export interface RowBar {
   width: number;
   waitLeft: number;
@@ -132,17 +131,6 @@ export function timeSplit(execStart: number, total: number, steps: Array<{ seq: 
   }
   push('wait', prev, cursor, runEnd);
   return { segments, total, blockMs, waitMs, waitAfter };
-}
-
-/**
- * A row's bar from the split: the block's share of the run from the left (at least MIN_BAR_PCT, so a 1 ms block
- * shows), then the wait after it, cut so both fit the track.
- */
-export function rowBar(split: TimeSplit, seq: number, blockMs: number): RowBar {
-  const width = Math.min(Math.max(pct2(Math.max(blockMs, 0), split.total), MIN_BAR_PCT), 100);
-  const waitMs = split.waitAfter.get(seq) || 0;
-  const waitWidth = waitMs > 0 ? Math.round(Math.min(pct2(waitMs, split.total), 100 - width) * 100) / 100 : 0;
-  return { width, waitLeft: width, waitWidth, waitMs };
 }
 
 /** A share of the run as text: "<1%" for a sliver, else whole percent. */
@@ -720,9 +708,26 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   }
 
   /** A row's bar in the split. */
-  rowBar(split: TimeSplit, step: Step): RowBar {
-    return rowBar(split, step.seq, this.stepMs(step));
+  /** The block the strip and the rows highlight together (hovered in either). */
+  hlSeq: number | null = null;
+
+  setHl(seq: number | null | undefined) {
+    this.hlSeq = seq == null ? null : seq;
   }
+
+  /** A block's segment was clicked: open its row (never closes it) and bring it into view. */
+  openFromSplit(seq: number | undefined) {
+    if (seq == null) return;
+    const step = this.stepOf(seq);
+    if (!step) return;
+    if (!this.expanded.has(seq)) this.toggleStep(step);
+    setTimeout(() => {
+      const row = document.getElementById('tl-step-' + seq);
+      if (row && row.scrollIntoView) row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    });
+  }
+
+  readonly SEG_LABEL_MIN_PCT = SEG_LABEL_MIN_PCT;
 
   /** A block's time in ms (0 when its start is unknown). */
   stepMs(step: Step): number {

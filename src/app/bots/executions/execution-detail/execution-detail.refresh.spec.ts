@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
-import { COPIED_MS, ExecutionDetailComponent, MIN_BAR_PCT, rowBar, timeSplit } from './execution-detail.component';
+import { COPIED_MS, ExecutionDetailComponent, timeSplit } from './execution-detail.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { ExecutionsService } from '../../../services/executions.service';
 import { RolesService } from '../../../services/roles.service';
@@ -324,33 +324,63 @@ describe('ExecutionDetailComponent refreshed layout', () => {
       expect(timeSplit(0, 0, [])).toBeNull();
     });
 
-    it('a row: the block share from the left, then the wait after it', () => {
-      const sp = timeSplit(0, 1000, steps([1, 0, 100], [2, 400, 500]));
-      expect(rowBar(sp, 1, 100)).toEqual({ width: 10, waitLeft: 10, waitWidth: 30, waitMs: 300 });
-      // a 0 ms block keeps a visible sliver; the wait is cut so both fit the track
-      const sp2 = timeSplit(0, 1000, steps([1, 0, 0]));
-      expect(rowBar(sp2, 1, 0)).toEqual({ width: MIN_BAR_PCT, waitLeft: MIN_BAR_PCT, waitWidth: 100 - MIN_BAR_PCT, waitMs: 1000 });
-    });
-
-    it('the strip shows where a waiting run spends its time', fakeAsync(() => {
+    it('the strip shows where a waiting run spends its time; rows show durations, no bar', fakeAsync(() => {
       // 20 s in blocks, then waiting: 10 % in blocks, 90 % waiting
       setup(detail('completed', [], { execution: { duration_ms: 200000 }, steps: [step(1, 0, 10000), step(2, 10000, 10000)] }));
       const segs = Array.from(el().querySelectorAll('.tl-split-bar .tl-seg')) as HTMLElement[];
       expect(segs.length).toBe(3);
+      expect(segs[0].style.width).toBe('5%');
       expect(segs[2].classList).toContain('tl-seg-wait');
       expect(segs[2].style.left).toBe('10%');
       expect(segs[2].style.width).toBe('90%');
       expect(el().querySelector('.tl-split-blocks').textContent).toContain('20.0 s');
       expect(el().querySelector('.tl-split-blocks').textContent).toContain('10%');
       expect(el().querySelector('.tl-split-wait').textContent).toContain('90%');
-      // each row: its block from the left, the last one followed by the wait
-      const bars = Array.from(el().querySelectorAll('.tl-step .tl-bar')) as HTMLElement[];
-      expect(bars.map(b => [b.style.left, b.style.width])).toEqual([['0%', '5%'], ['0%', '5%']]);
-      const waits = Array.from(el().querySelectorAll('.tl-step .tl-bar-wait')) as HTMLElement[];
-      expect(waits.length).toBe(1);
-      expect(waits[0].style.left).toBe('5%');
-      expect(waits[0].style.width).toBe('90%');
+      expect(el().querySelectorAll('.tl-step .tl-track, .tl-step .tl-bar').length).toBe(0);
       expect(el().querySelectorAll('.tl-step .tl-wait-dur')[1].textContent).toContain('3 m');
+      end();
+    }));
+
+    it('a segment wide enough is labelled with its block (or Waiting) and duration', fakeAsync(() => {
+      // block 1: 2 % (no label); block 2: 18 %; wait 80 %
+      setup(detail('completed', [], { execution: { duration_ms: 100000 }, steps: [step(1, 0, 2000), step(2, 2000, 18000)] }));
+      const segs = Array.from(el().querySelectorAll('.tl-split-bar .tl-seg')) as HTMLElement[];
+      expect(segs[0].querySelector('.tl-seg-label')).toBeNull();
+      expect(segs[1].querySelector('.tl-seg-label').textContent).toContain('Block 2');
+      expect(segs[1].querySelector('.tl-seg-label').textContent).toContain('18.0 s');
+      expect(segs[2].querySelector('.tl-seg-label').textContent).toContain('Waiting');
+      expect(segs[0].getAttribute('title')).toContain('Block 1');
+      end();
+    }));
+
+    it('hovering a segment highlights its row, hovering a row its segments', fakeAsync(() => {
+      setup(detail('completed', [], { execution: { duration_ms: 100000 }, steps: [step(1, 0, 2000), step(2, 2000, 18000)] }));
+      const segs = () => Array.from(el().querySelectorAll('.tl-split-bar .tl-seg')) as HTMLElement[];
+      const rows = () => Array.from(el().querySelectorAll('.tl-step')) as HTMLElement[];
+      segs()[1].dispatchEvent(new Event('mouseenter'));
+      fixture.detectChanges();
+      expect(rows()[1].classList).toContain('tl-hl');
+      expect(rows()[0].classList).not.toContain('tl-hl');
+      expect(el().querySelector('.tl-split-bar').classList).toContain('tl-split-hl');
+      // the wait after block 2 belongs to it
+      expect(segs()[2].classList).toContain('tl-seg-hl');
+      segs()[1].dispatchEvent(new Event('mouseleave'));
+      rows()[0].dispatchEvent(new Event('mouseenter'));
+      fixture.detectChanges();
+      expect(segs()[0].classList).toContain('tl-seg-hl');
+      expect(segs()[1].classList).not.toContain('tl-seg-hl');
+      end();
+    }));
+
+    it('clicking a block segment opens its row', fakeAsync(() => {
+      setup(detail('completed', [], { execution: { duration_ms: 100000 }, steps: [step(1, 0, 2000), step(2, 2000, 18000)] }));
+      (el().querySelectorAll('.tl-split-bar .tl-seg')[1] as HTMLElement).click();
+      fixture.detectChanges();
+      expect(component.expanded.has(2)).toBe(true);
+      // a second click keeps it open
+      (el().querySelectorAll('.tl-split-bar .tl-seg')[1] as HTMLElement).click();
+      expect(component.expanded.has(2)).toBe(true);
+      tick(0);
       end();
     }));
 
@@ -358,17 +388,15 @@ describe('ExecutionDetailComponent refreshed layout', () => {
       setup(detail('running', [], { execution: { duration_ms: 500 }, steps: [step(1, 0, 1000), step(2, 2000, null)] }));
       spyOn(component, 'now').and.returnValue(Date.parse(START) + 4000);
       fixture.detectChanges();
-      const bars = Array.from(el().querySelectorAll('.tl-step .tl-bar')) as HTMLElement[];
-      expect(bars[0].style.width).toBe('25%');
-      expect(bars[1].style.width).toBe('50%');
-      expect(bars[1].classList).toContain('o-running');
+      const segs = Array.from(el().querySelectorAll('.tl-split-bar .tl-seg')) as HTMLElement[];
+      expect(segs.map(x => x.style.width)).toEqual(['25%', '25%', '50%']);
+      expect(segs[2].classList).toContain('o-running');
       end();
     }));
 
-    it('no strip and no bar when the execution has no start', fakeAsync(() => {
+    it('no strip when the execution has no start', fakeAsync(() => {
       setup(detail('completed', [], { execution: { started_at: null } }));
       expect(el().querySelector('.tl-split')).toBeNull();
-      expect(el().querySelectorAll('.tl-step .tl-bar').length).toBe(0);
       expect(el().querySelectorAll('.tl-step .tl-dur').length).toBe(2);
       end();
     }));
