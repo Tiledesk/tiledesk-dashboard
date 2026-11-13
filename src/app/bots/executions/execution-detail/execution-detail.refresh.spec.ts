@@ -386,11 +386,11 @@ describe('ExecutionDetailComponent refreshed layout', () => {
         },
         lineage: { previous: '0193a2f4-0000-7000-8000-0000000000aa', parent: '0193a2f4-0000-7000-8000-0000000000bb' },
       }));
-      const stop = fact('Stop');
-      expect(stop).toContain('soft stop');
+      const stop = fact('Pause');
+      expect(stop).toContain('pause after the current action');
       expect(stop).toContain('09 Nov');
       expect(stop).toContain('interrupted "GET status"');
-      expect(fact('Messages')).toBe('2 messages received while stopped');
+      expect(fact('Messages')).toBe('2 messages received while paused');
       expect(fact('previous')).toContain('000000aa');
       expect(fact('parent')).toContain('000000bb');
       expect(el().querySelectorAll('.ex-head .ex-fact.ex-lineage').length).toBe(2);

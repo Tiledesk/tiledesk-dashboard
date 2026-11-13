@@ -5,8 +5,9 @@ import { ExecutionsService } from 'app/services/executions.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 
 /**
- * "Stop notice" card of the project settings retention page: the notice the chatbot sends once in the conversation
- * when a user writes while the agent's execution is stopped (the message itself stays dropped).
+ * "Pause notice" card of the project settings retention page (stop notice in the code and the API): the notice the
+ * chatbot sends in the conversation when a user writes while the agent's execution is stopped, shown as paused
+ * (the message itself stays dropped).
  */
 @Component({
   selector: 'executions-stop-notice',

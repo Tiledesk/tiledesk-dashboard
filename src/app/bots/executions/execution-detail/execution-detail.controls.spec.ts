@@ -128,7 +128,7 @@ describe('ExecutionDetailComponent controls', () => {
     // stop is the primary button, destroy the overflow menu's last item
     expect(el().querySelectorAll('.ex-controls button').length).toBe(1);
     expect(el().querySelector('.ex-controls .ex-ctl-stop')).not.toBeNull();
-    expect(label('stop')).toBe('Stop');
+    expect(label('stop')).toBe('Pause');
     expect(label('destroy')).toBe('Destroy');
     expect(document.querySelectorAll('.ex-menu button[class*="ex-ctl-"]').length).toBe(1);
     expect(btn('stop').disabled).toBe(true);
@@ -136,7 +136,7 @@ describe('ExecutionDetailComponent controls', () => {
     // the primary's reason is its tooltip (as before); a menu item's is written under its name
     const tips = fixture.debugElement.queryAll(By.directive(MatTooltip)).map(d => d.injector.get(MatTooltip))
       .filter(t => t.message && t.message.indexOf('executions') >= 0).map(t => t.message);
-    expect(tips).toEqual(["You don't have permission to stop executions"]);
+    expect(tips).toEqual(["You don't have permission to pause executions"]);
     expect(btn('destroy').querySelector('.ex-ctl-reason').textContent.trim()).toBe('Only the project owner can destroy executions');
     fixture.destroy();
 
@@ -212,7 +212,7 @@ describe('ExecutionDetailComponent controls', () => {
 
   it('stop_hard_now calls stop(hard)', fakeAsync(() => {
     setup(detail('stopping', [{ name: 'stop_hard_now', allowed: true }, { name: 'destroy', allowed: true }]));
-    expect(label('stop_hard_now')).toBe('Stop now');
+    expect(label('stop_hard_now')).toBe('Pause now');
     dialogResult = 'hard';
     btn('stop_hard_now').click();
     expect(dialog.open).toHaveBeenCalledWith(StopDialogComponent, jasmine.objectContaining({
@@ -244,7 +244,7 @@ describe('ExecutionDetailComponent controls', () => {
     dialogResult = 'hard';
     btn('stop').click();
     fixture.detectChanges();
-    expect(chip()).toBe('stopping…');
+    expect(chip()).toBe('pausing…');
 
     // the execution moved meanwhile (stopped is not polled): the 409 reloads the detail once
     const calls = executions.get.calls.count();
@@ -252,7 +252,7 @@ describe('ExecutionDetailComponent controls', () => {
     answer$.error(new HttpErrorResponse({ status: 409, error: { error: 'not_allowed', allowed: [{ name: 'destroy', allowed: true }] } }));
     fixture.detectChanges();
     expect(executions.get.calls.count()).toBe(calls + 1);
-    expect(chip()).toBe('stopped');
+    expect(chip()).toBe('paused');
     const msg = el().querySelector('.ex-control-msg').textContent;
     expect(msg).toContain('This control is no longer allowed');
     expect(msg).toContain('Destroy');
@@ -278,7 +278,7 @@ describe('ExecutionDetailComponent controls', () => {
     expect(btn('destroy')).not.toBeNull();
     reload$.next(detail('stopped', [{ name: 'destroy', allowed: true }]));
     fixture.detectChanges();
-    expect(chip()).toBe('stopped');
+    expect(chip()).toBe('paused');
     end();
   }));
 
@@ -288,11 +288,11 @@ describe('ExecutionDetailComponent controls', () => {
     // the immediate reload still sees running: chip stays
     btn('stop').click();
     fixture.detectChanges();
-    expect(chip()).toBe('stopping…');
+    expect(chip()).toBe('pausing…');
     executions.get.and.returnValue(of(detail('stopping', [{ name: 'stop_hard_now', allowed: true }])));
     tick(POLL_MS);
     fixture.detectChanges();
-    expect(chip()).toBe('stopping');
+    expect(chip()).toBe('pausing');
     expect(btn('stop_hard_now')).not.toBeNull();
     end();
   }));
@@ -347,13 +347,13 @@ describe('ExecutionDetailComponent controls', () => {
     } }));
     let head = el().querySelector('.ex-head').textContent;
     expect(head).toContain('interrupted "#3"');
-    expect(head).toContain('1 message received while stopped');
+    expect(head).toContain('1 message received while paused');
     expect(head).not.toContain('1 messages');
     fixture.destroy();
     TestBed.resetTestingModule();
     setup(detail('stopped', [{ name: 'destroy', allowed: true }], { execution: { messages_while_stopped: 4 } }));
     head = el().querySelector('.ex-head').textContent;
-    expect(head).toContain('4 messages received while stopped');
+    expect(head).toContain('4 messages received while paused');
     end();
   }));
 
@@ -363,7 +363,7 @@ describe('ExecutionDetailComponent controls', () => {
       interrupted_action: { index: 1, action_id: 'x3', type: 'webrequestv2', title: 'GET status' },
     } }));
     const head = el().querySelector('.ex-head').textContent;
-    expect(head).toContain('hard stop');
+    expect(head).toContain('pause now');
     expect(head).toContain('interrupted "GET status"');
     end();
   }));

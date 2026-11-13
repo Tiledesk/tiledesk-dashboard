@@ -25,35 +25,37 @@ function activity(verb: string, extra: any = {}): any {
 }
 
 describe('Activities - Executions audit rows', () => {
-  it('EXECUTION_STOP_HARD renders "<actor> hard-stopped execution <id> of <agent>"', () => {
-    expect(renderActivity(activity('EXECUTION_STOP_HARD'))).toBe('Anna Rossi hard-stopped execution 556666 of Support Bot');
+  it('EXECUTION_STOP_HARD renders "<actor> paused execution <id> of <agent> now" (stop is shown as pause)', () => {
+    expect(renderActivity(activity('EXECUTION_STOP_HARD'))).toBe('Anna Rossi paused execution 556666 of Support Bot now');
   });
 
   it('EXECUTION_STOP_SOFT and EXECUTION_DESTROY render like the server, with the reason appended', () => {
-    expect(renderActivity(activity('EXECUTION_STOP_SOFT'))).toBe('Anna Rossi soft-stopped execution 556666 of Support Bot');
+    expect(renderActivity(activity('EXECUTION_STOP_SOFT'))).toBe('Anna Rossi paused execution 556666 of Support Bot after the current action');
     expect(renderActivity(activity('EXECUTION_DESTROY', { reason: 'stuck' })))
       .toBe('Anna Rossi destroyed execution 556666 of Support Bot · "stuck"');
   });
 
   it('a rejected control reads as an attempt with the refusal, like the server sentence', () => {
     expect(renderActivity(activity('EXECUTION_STOP_HARD', { result: 'rejected:stopped' })))
-      .toBe('Anna Rossi tried to hard-stop execution 556666 of Support Bot (rejected: stopped)');
+      .toBe('Anna Rossi tried to pause execution 556666 of Support Bot now (rejected: paused)');
     expect(renderActivity(activity('EXECUTION_STOP_SOFT', { result: 'rejected:completed' })))
-      .toBe('Anna Rossi tried to soft-stop execution 556666 of Support Bot (rejected: completed)');
+      .toBe('Anna Rossi tried to pause execution 556666 of Support Bot after the current action (rejected: completed)');
     expect(renderActivity(activity('EXECUTION_DESTROY', { result: 'rejected:destroyed', reason: 'again' })))
       .toBe('Anna Rossi tried to destroy execution 556666 of Support Bot (rejected: destroyed) · "again"');
+    expect(renderActivity(activity('EXECUTION_DESTROY', { result: 'rejected:stopping' })))
+      .toBe('Anna Rossi tried to destroy execution 556666 of Support Bot (rejected: pausing)');
     expect(renderActivity(activity('EXECUTION_DESTROY', { result: 'rejected' })))
       .toBe('Anna Rossi tried to destroy execution 556666 of Support Bot (rejected)');
     expect(renderActivity(activity('EXECUTION_STOP_HARD', { result: 'accepted' })))
-      .toBe('Anna Rossi hard-stopped execution 556666 of Support Bot');
+      .toBe('Anna Rossi paused execution 556666 of Support Bot now');
 
     const c: any = Object.create(ActivitiesNewComponent.prototype);
     c.projectId = 'pid';
     c.activityMessage = (a: any) => renderActivity(a);
     const parts = c.getActivityParts(activity('EXECUTION_STOP_HARD', { result: 'rejected:stopped', reason: 'x' }));
-    expect(parts.before).toBe(' tried to hard-stop execution ');
+    expect(parts.before).toBe(' tried to pause execution ');
     expect(parts.executionLinkLabel).toBe('556666');
-    expect(parts.after).toBe(' of Support Bot (rejected: stopped) · "x"');
+    expect(parts.after).toBe(' of Support Bot now (rejected: paused) · "x"');
   });
 
   it('a start new refire failure renders as an attempt with the code', () => {
@@ -94,8 +96,8 @@ describe('Activities - Executions audit rows', () => {
     const parts = c.getActivityParts(activity('EXECUTION_STOP_HARD', { reason: 'x' }));
     expect(parts.executionLinkLabel).toBe('556666');
     expect(parts.actorLink).toBe('Anna Rossi');
-    expect(parts.before).toBe(' hard-stopped execution ');
-    expect(parts.after).toBe(' of Support Bot · "x"');
+    expect(parts.before).toBe(' paused execution ');
+    expect(parts.after).toBe(' of Support Bot now · "x"');
     expect(c.executionRouterLink(activity('EXECUTION_STOP_HARD')))
       .toEqual(['/project', 'pid', 'monitor', AGENT, 'executions', EXEC]);
     expect(executionLink('pid', AGENT, EXEC)!.commands).toEqual(['/project', 'pid', 'monitor', AGENT, 'executions', EXEC]);

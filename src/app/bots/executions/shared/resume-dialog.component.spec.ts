@@ -60,7 +60,7 @@ describe('ResumeDialogComponent', () => {
 
   it('without a known action it says where it stopped; automation runs warn about the original caller', fakeAsync(() => {
     setup({ action: null, calling: false, automation: true });
-    expect(text()).toContain('Continues from where it stopped');
+    expect(text()).toContain('Continues from where it paused');
     expect(text()).not.toContain('Continues from "');
     expect(el().querySelector('.rd-automation').textContent).toContain("The original caller won't get the answer");
   }));
