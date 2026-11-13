@@ -4,6 +4,8 @@ import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ExecutionDetailComponent, POLL_MS } from './execution-detail.component';
@@ -86,7 +88,7 @@ describe('ExecutionDetailComponent', () => {
     perms$ = new Subject();
     TestBed.configureTestingModule({
       declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent, FlowStatePanelComponent, MaskedValueComponent, ValueCellComponent, VarHistoryDrawerComponent],
-      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, MatDialogModule],
+      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, MatMenuModule, NoopAnimationsModule, MatDialogModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
         { provide: Router, useValue: router },
@@ -158,11 +160,39 @@ describe('ExecutionDetailComponent', () => {
 
     it('outside row text for message_in and external', () => {
       setup();
-      const outside = Array.from(el().querySelectorAll('.tl-outside')).map(e => e.textContent.replace(/\s+/g, ' ').trim());
-      expect(outside).toEqual([
-        '2 attributes changed by the incoming message (lastUserText, transcript)',
+      const rowText = (e: Element) => e.querySelector('.tl-outside-text').textContent.replace(/\s+/g, ' ').trim();
+      const rows = () => Array.from(el().querySelectorAll('.tl-outside'));
+      // the incoming message's changes: one quiet row, collapsed, with Show
+      expect(rows().map(rowText)).toEqual([
+        'Incoming message set 2 attributes',
         '1 attribute changed outside the flow',
       ]);
+      expect(rows()[0].classList).toContain('tl-incoming');
+      expect(rows()[1].classList).not.toContain('tl-incoming');
+      expect(rows()[1].querySelector('.tl-outside-toggle')).toBeNull();
+      const toggle = rows()[0].querySelector('.tl-outside-toggle') as HTMLButtonElement;
+      expect(toggle.textContent.trim()).toBe('Show');
+      expect(toggle.getAttribute('aria-expanded')).toBe('false');
+
+      // shown: the keys, as the row said before
+      toggle.click();
+      fixture.detectChanges();
+      expect(rowText(rows()[0])).toBe('2 attributes changed by the incoming message (lastUserText, transcript)');
+      expect(toggle.textContent.trim()).toBe('Hide');
+      expect(toggle.getAttribute('aria-expanded')).toBe('true');
+      // the step itself is not expanded by it
+      expect(stepButtons()[1].getAttribute('aria-expanded')).toBe('false');
+
+      toggle.click();
+      fixture.detectChanges();
+      expect(rowText(rows()[0])).toBe('Incoming message set 2 attributes');
+    });
+
+    it('one incoming attribute is singular', () => {
+      const d = detail();
+      d.steps[1].outside = [{ key: 'lastUserText', by: 'message_in' }];
+      setup({ detail: d });
+      expect(el().querySelector('.tl-outside-text').textContent.trim()).toBe('Incoming message set 1 attribute');
     });
 
     it('[Not successful] hides successful steps', () => {

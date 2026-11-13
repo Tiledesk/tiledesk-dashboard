@@ -4358,7 +4358,41 @@
             "Exit": "exit",
             "Time": "time",
             "ErrorCode": "error",
-            "NotHandled": "not handled"
+            "NotHandled": "not handled",
+            "Agent": "Agent",
+            "TriggerLabel": "Trigger",
+            "ExecutionId": "Execution ID",
+            "StartedLabel": "Started",
+            "ConversationLabel": "Conversation",
+            "Ended": "ended",
+            "StopLabel": "Stop",
+            "MessagesLabel": "Messages",
+            "CopyVersion": "Copy version",
+            "CopyId": "Copy execution ID",
+            "Copied": "Copied",
+            "CopyLink": "Copy execution link",
+            "LinkCopied": "Execution link copied",
+            "More": "More actions",
+            "Kpi": {
+                "Duration": "Duration",
+                "Blocks": "Blocks",
+                "Actions": "Actions",
+                "FailureConditions": "Failure conditions",
+                "Errors": "Errors",
+                "ErrorsHint": "Unhandled actions: an error, or a failure condition with no jump",
+                "VarsChanged": "Attributes changed"
+            },
+            "Cols": {
+                "Time": "Time",
+                "Block": "Block",
+                "Outcome": "Outcome",
+                "Attributes": "Attributes",
+                "Duration": "Duration"
+            },
+            "IncomingSet": "Incoming message set {{n}} attributes",
+            "IncomingSetOne": "Incoming message set 1 attribute",
+            "Show": "Show",
+            "Hide": "Hide"
         },
         "Audit": {
             "Title": "Audit",

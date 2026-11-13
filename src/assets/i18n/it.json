@@ -3951,7 +3951,41 @@
             "Exit": "uscita",
             "Time": "tempo",
             "ErrorCode": "errore",
-            "NotHandled": "non gestito"
+            "NotHandled": "non gestito",
+            "Agent": "Agente",
+            "TriggerLabel": "Trigger",
+            "ExecutionId": "ID esecuzione",
+            "StartedLabel": "Avviata",
+            "ConversationLabel": "Conversazione",
+            "Ended": "terminata",
+            "StopLabel": "Arresto",
+            "MessagesLabel": "Messaggi",
+            "CopyVersion": "Copia versione",
+            "CopyId": "Copia ID esecuzione",
+            "Copied": "Copiato",
+            "CopyLink": "Copia link dell'esecuzione",
+            "LinkCopied": "Link dell'esecuzione copiato",
+            "More": "Altre azioni",
+            "Kpi": {
+                "Duration": "Durata",
+                "Blocks": "Blocchi",
+                "Actions": "Azioni",
+                "FailureConditions": "Condizioni di errore",
+                "Errors": "Errori",
+                "ErrorsHint": "Azioni non gestite: un errore, o una condizione di errore senza salto",
+                "VarsChanged": "Attributi modificati"
+            },
+            "Cols": {
+                "Time": "Ora",
+                "Block": "Blocco",
+                "Outcome": "Esito",
+                "Attributes": "Attributi",
+                "Duration": "Durata"
+            },
+            "IncomingSet": "Il messaggio in arrivo ha impostato {{n}} attributi",
+            "IncomingSetOne": "Il messaggio in arrivo ha impostato 1 attributo",
+            "Show": "Mostra",
+            "Hide": "Nascondi"
         },
         "Audit": {
             "Title": "Audit",

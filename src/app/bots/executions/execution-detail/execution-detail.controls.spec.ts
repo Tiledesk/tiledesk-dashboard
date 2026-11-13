@@ -7,6 +7,8 @@ import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { ExecutionDetailComponent, POLL_MS, POLL_WAITING_MS } from './execution-detail.component';
@@ -72,7 +74,7 @@ describe('ExecutionDetailComponent controls', () => {
     const perms$ = new Subject<any>();
     TestBed.configureTestingModule({
       declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent],
-      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule],
+      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, MatMenuModule, NoopAnimationsModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
         { provide: MatDialog, useValue: dialog },
@@ -93,7 +95,24 @@ describe('ExecutionDetailComponent controls', () => {
   }
 
   const el = () => fixture.nativeElement as HTMLElement;
-  const btn = (name: string) => el().querySelector('.ex-ctl-' + name) as HTMLButtonElement;
+  /** A control: the header's primary button, or the overflow menu's item (the menu is opened to find it). */
+  const btn = (name: string) => (el().querySelector('.ex-controls .ex-ctl-' + name) || menuItem('.ex-ctl-' + name)) as HTMLButtonElement;
+  /** An item of the overflow menu (in the overlay, outside the component): opens the menu when it is closed. */
+  function menuItem(sel: string): HTMLElement | null {
+    const more = el().querySelector('.ex-more') as HTMLButtonElement;
+    if (!more) return null;
+    if (!document.querySelector('.ex-menu')) {
+      more.click();
+      fixture.detectChanges();
+    }
+    return document.querySelector('.ex-menu ' + sel) as HTMLElement;
+  }
+  /** The visible name of a control (a menu item also holds its icon and reason). */
+  const label = (name: string) => {
+    const b = btn(name);
+    const l = b && b.querySelector('.ex-ctl-label');
+    return ((l || b) as HTMLElement).textContent.trim();
+  };
   const chip = () => el().querySelector('execution-status-chip').textContent.trim();
 
   /** Destroys the page inside the fake zone: ends the poll timer. */
@@ -106,17 +125,19 @@ describe('ExecutionDetailComponent controls', () => {
 
   it('controls rendered from allowed_controls; disabled with tooltip when allowed is false', fakeAsync(() => {
     setup(detail('running', [{ name: 'stop', allowed: false, reason: 'role' }, { name: 'destroy', allowed: false, reason: 'role' }]));
-    expect(el().querySelectorAll('.ex-controls button').length).toBe(2);
-    expect(btn('stop').textContent.trim()).toBe('Stop');
-    expect(btn('destroy').textContent.trim()).toBe('Destroy');
+    // stop is the primary button, destroy the overflow menu's last item
+    expect(el().querySelectorAll('.ex-controls button').length).toBe(1);
+    expect(el().querySelector('.ex-controls .ex-ctl-stop')).not.toBeNull();
+    expect(label('stop')).toBe('Stop');
+    expect(label('destroy')).toBe('Destroy');
+    expect(document.querySelectorAll('.ex-menu button[class*="ex-ctl-"]').length).toBe(1);
     expect(btn('stop').disabled).toBe(true);
     expect(btn('destroy').disabled).toBe(true);
+    // the primary's reason is its tooltip (as before); a menu item's is written under its name
     const tips = fixture.debugElement.queryAll(By.directive(MatTooltip)).map(d => d.injector.get(MatTooltip))
       .filter(t => t.message && t.message.indexOf('executions') >= 0).map(t => t.message);
-    expect(tips).toEqual([
-      "You don't have permission to stop executions",
-      'Only the project owner can destroy executions',
-    ]);
+    expect(tips).toEqual(["You don't have permission to stop executions"]);
+    expect(btn('destroy').querySelector('.ex-ctl-reason').textContent.trim()).toBe('Only the project owner can destroy executions');
     fixture.destroy();
 
     TestBed.resetTestingModule();
@@ -191,7 +212,7 @@ describe('ExecutionDetailComponent controls', () => {
 
   it('stop_hard_now calls stop(hard)', fakeAsync(() => {
     setup(detail('stopping', [{ name: 'stop_hard_now', allowed: true }, { name: 'destroy', allowed: true }]));
-    expect(btn('stop_hard_now').textContent.trim()).toBe('Stop now');
+    expect(label('stop_hard_now')).toBe('Stop now');
     dialogResult = 'hard';
     btn('stop_hard_now').click();
     expect(dialog.open).toHaveBeenCalledWith(StopDialogComponent, jasmine.objectContaining({

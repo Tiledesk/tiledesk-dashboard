@@ -40,6 +40,54 @@ export const START_NEW_WAIT_MS = 30000;
 export const PENDING_WAIT_MS = 30000;
 /** A live block read with a grant is read again on poll only when its step moved, or after this long anyway. */
 export const LIVE_REFETCH_MAX_MS = 30000;
+/** How long a copy button shows "Copied". */
+export const COPIED_MS = 2000;
+/** The narrowest duration bar, in % of the execution's time span: a 1 ms block is still visible. */
+export const MIN_BAR_PCT = 1.5;
+
+/**
+ * The header's primary control, by status: the first of these the API offers. Any other status (completed,
+ * failed, destroyed) uses PRIMARY_ENDED. Destroy is never primary: it is the last item of the overflow menu.
+ */
+const PRIMARY_BY_STATUS: { [status: string]: ControlName[] } = {
+  running: ['stop', 'stop_hard_now'],
+  waiting: ['stop', 'stop_hard_now'],
+  stopping: ['stop_hard_now', 'stop'],
+  stopped: ['resume', 'start_new'],
+};
+const PRIMARY_ENDED: ControlName[] = ['start_new', 'resume'];
+
+export interface StepBar {
+  /** % of the execution's time span from its start to the block's start */
+  offset: number;
+  /** % of the span the block took (at least MIN_BAR_PCT) */
+  width: number;
+}
+
+/**
+ * Where a block's duration bar sits on the execution's time axis. `offset` = block start − execution start,
+ * `width` = block duration, both over `total` (the execution's duration, or now − start while it runs). Clamped so
+ * the bar stays inside the track and visible: at least MIN_BAR_PCT wide, never past the end.
+ */
+export function stepBar(execStart: number, total: number, stepStart: number, stepDuration: number): StepBar | null {
+  if (![execStart, total, stepStart].every(n => typeof n === 'number' && isFinite(n)) || total <= 0) return null;
+  const pct = (ms: number) => (ms / total) * 100;
+  const offset = Math.min(Math.max(pct(stepStart - execStart), 0), 100 - MIN_BAR_PCT);
+  const dur = typeof stepDuration === 'number' && isFinite(stepDuration) && stepDuration > 0 ? stepDuration : 0;
+  const width = Math.min(Math.max(pct(dur), MIN_BAR_PCT), 100 - offset);
+  const round = (n: number) => Math.round(n * 100) / 100;
+  return { offset: round(offset), width: round(width) };
+}
+
+export interface Kpi {
+  key: 'duration' | 'blocks' | 'actions' | 'failure_conditions' | 'errors' | 'vars_changed';
+  /** i18n key of the label (Executions.Detail.Kpi.*) */
+  labelKey: string;
+  value: string;
+  /** the tile's accent: bad (errors), warn (failure conditions), else neutral */
+  tone: 'neutral' | 'warn' | 'bad';
+  hintKey?: string;
+}
 
 export type PendingControl = 'stopping' | 'destroying' | 'resuming' | 'starting';
 
@@ -161,6 +209,12 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   readonly auditResultKind = auditResultKind;
   failedOnly = false;
   expanded = new Set<number>();
+  /** Incoming-message rows shown open (their keys), by `${seq}:${by}`. */
+  outsideOpen = new Set<string>();
+
+  /** What a copy button just copied ("Copied" for COPIED_MS). */
+  copied: 'version' | 'id' | 'link' | null = null;
+  private copiedSub: Subscription | null = null;
   states: { [seq: number]: StateSlot } = {};
 
   // Flow state tab
@@ -305,6 +359,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.error = false;
     this.loading = false;
     this.expanded = new Set();
+    this.outsideOpen = new Set();
     this.states = {};
     this.fsSeq = null;
     this.fsShowAll = false;
@@ -524,6 +579,75 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       return formatDuration(this.now() - Date.parse(step.started_at));
     }
     return formatDuration(step.duration_ms);
+  }
+
+  /** The execution's time span (ms): its duration, or now − start while it can still move (or has no duration). */
+  private timeSpan(): { start: number; total: number } | null {
+    const e = this.detail && this.detail.execution;
+    const start = e && e.started_at ? Date.parse(e.started_at) : NaN;
+    if (isNaN(start)) return null;
+    const running = POLL_STATUSES.includes(e.status) || e.duration_ms == null;
+    return { start, total: running ? this.now() - start : e.duration_ms };
+  }
+
+  /** The execution's duration for the Duration tile (elapsed so far while it runs). */
+  get executionDurationMs(): number | null {
+    const span = this.timeSpan();
+    if (span) return span.total;
+    const e = this.detail && this.detail.execution;
+    return e ? e.duration_ms : null;
+  }
+
+  /** A block's duration bar on the execution's time axis (null when the times are unknown). */
+  stepBar(step: Step): StepBar | null {
+    const span = this.timeSpan();
+    const s = step.started_at ? Date.parse(step.started_at) : NaN;
+    if (!span || isNaN(s)) return null;
+    let dur = step.duration_ms;
+    if (dur == null) {
+      const end = step.ended_at ? Date.parse(step.ended_at) : NaN;
+      dur = !isNaN(end) ? end - s : this.isRunningStep(step) ? this.now() - s : 0;
+    }
+    return stepBar(span.start, span.total, s, dur);
+  }
+
+  /** The six summary tiles, from the detail's own counters. */
+  get kpis(): Kpi[] {
+    if (!this.detail) return [];
+    const e = this.detail.execution;
+    const t = (k: string) => 'Executions.Detail.Kpi.' + k;
+    const n = (v: number | null | undefined) => String(typeof v === 'number' && isFinite(v) ? v : 0);
+    const blocks = typeof e.steps_count === 'number' ? e.steps_count : (this.detail.steps || []).length;
+    const errors = e.errors || 0;
+    const fc = e.failure_conditions || 0;
+    return [
+      { key: 'duration', labelKey: t('Duration'), value: formatDuration(this.executionDurationMs), tone: 'neutral' },
+      { key: 'blocks', labelKey: t('Blocks'), value: n(blocks), tone: 'neutral' },
+      { key: 'actions', labelKey: t('Actions'), value: n(e.actions_count), tone: 'neutral' },
+      { key: 'failure_conditions', labelKey: t('FailureConditions'), value: n(fc), tone: fc > 0 ? 'warn' : 'neutral' },
+      { key: 'errors', labelKey: t('Errors'), value: n(errors), tone: errors > 0 ? 'bad' : 'neutral', hintKey: t('ErrorsHint') },
+      { key: 'vars_changed', labelKey: t('VarsChanged'), value: n(e.vars_changed), tone: 'neutral' },
+    ];
+  }
+
+  trackByKpi(_: number, k: Kpi) {
+    return k.key;
+  }
+
+  // ---- outside changes: the incoming message's is one quiet row, its keys behind Show ----
+
+  outsideKey(step: Step, g: OutsideGroup): string {
+    return step.seq + ':' + g.by;
+  }
+
+  toggleOutside(step: Step, g: OutsideGroup) {
+    const k = this.outsideKey(step, g);
+    if (this.outsideOpen.has(k)) this.outsideOpen.delete(k);
+    else this.outsideOpen.add(k);
+  }
+
+  incomingKey(n: number): string {
+    return 'Executions.Detail.IncomingSet' + (n === 1 ? 'One' : '');
   }
 
   // ---- Flow state tab ----
@@ -874,6 +998,28 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       .sort((a, b) => CONTROL_NAMES.indexOf(a.name) - CONTROL_NAMES.indexOf(b.name));
   }
 
+  /** The header's main button: the control for the status (PRIMARY_BY_STATUS), never destroy. */
+  get primaryControl(): AllowedControl | null {
+    const cs = this.controls.filter(c => c.name !== 'destroy');
+    if (!cs.length) return null;
+    const pref = PRIMARY_BY_STATUS[this.detail.execution.status] || PRIMARY_ENDED;
+    for (const name of pref) {
+      const c = cs.find(x => x.name === name);
+      if (c) return c;
+    }
+    return cs[0];
+  }
+
+  /** The overflow menu's controls: the others but destroy (that one is last, apart: destroyControl). */
+  get menuControls(): AllowedControl[] {
+    const p = this.primaryControl;
+    return this.controls.filter(c => c.name !== 'destroy' && (!p || c.name !== p.name));
+  }
+
+  get destroyControl(): AllowedControl | null {
+    return this.controls.find(c => c.name === 'destroy') || null;
+  }
+
   /** The status chip: start new leaves this execution's status as it is, so it shows no pending chip. */
   get chipPending(): PendingControl | null {
     return this.pending === 'starting' ? null : this.pending;
@@ -1124,6 +1270,36 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   shortId(id: string | null): string {
     // uuid v7 starts with a timestamp: the random tail tells runs apart
     return id ? id.replace(/-/g, '').slice(-8) : '';
+  }
+
+  /** Version id as the header shows it: short ids as they are, long ones by their tail (full one in the tooltip). */
+  shortVersion(v: string | null): string {
+    if (!v) return '';
+    return v.length > 12 ? '…' + v.slice(-8) : v;
+  }
+
+  // ---- copy (version, execution id, the page link) ----
+
+  copy(text: string | null, what: 'version' | 'id' | 'link') {
+    const clip = typeof navigator !== 'undefined' ? navigator.clipboard : null;
+    if (!text || !clip || typeof clip.writeText !== 'function') return;
+    clip.writeText(text).then(
+      () => {
+        if (this.destroyed) return;
+        this.copied = what;
+        if (this.copiedSub) this.copiedSub.unsubscribe();
+        this.copiedSub = timer(COPIED_MS).pipe(takeUntil(this.destroy$)).subscribe(() => {
+          this.copied = null;
+          this.copiedSub = null;
+        });
+      },
+      err => this.logger.warn('[EXECUTION-DETAIL] copy error ', err && err.name)
+    );
+  }
+
+  /** "Copy execution link": the URL of this page. */
+  copyExecutionLink() {
+    this.copy(window.location.href, 'link');
   }
 
   private agentForLinks(): string {

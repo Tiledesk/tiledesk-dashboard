@@ -4,6 +4,8 @@ import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { ExecutionDetailComponent, LIVE_REFETCH_MAX_MS, POLL_MS } from './execution-detail.component';
@@ -108,7 +110,7 @@ describe('ExecutionDetailComponent values under a grant', () => {
     TestBed.configureTestingModule({
       declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent, FlowStatePanelComponent, MaskedValueComponent,
         VarHistoryDrawerComponent, ValueCellComponent],
-      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule],
+      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, MatMenuModule, NoopAnimationsModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
         { provide: MatDialog, useValue: dialog },
