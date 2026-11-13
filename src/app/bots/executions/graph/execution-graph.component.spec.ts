@@ -103,6 +103,18 @@ describe('ExecutionGraphComponent', () => {
     expect(cy.getElementById('agent:a2->exec:' + E2).hasClass('edge-animated')).toBe(false);
   });
 
+  it('an agent no longer in the list is drawn with its name marked deleted', async () => {
+    setup({ agents: [{ id: 'a1', name: 'Nightly' }] });
+    await ready();
+    feed$.next(FIRST());
+    fixture.detectChanges();
+    const cy = component.cy;
+    expect(cy.getElementById('agent:a1').data('label')).toBe('Nightly');
+    const gone = cy.getElementById('agent:a2');
+    expect(gone.empty()).toBe(false);
+    expect(gone.data('label').endsWith(' · Executions.Graph.Deleted')).toBe(true);
+  });
+
   it('a second snapshot keeps existing node positions and removes gone executions', async () => {
     setup();
     await ready();

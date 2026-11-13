@@ -4231,6 +4231,7 @@
     },
     "Executions": {
         "Graph": {
+            "Deleted": "deleted",
             "Truncated": "Too many executions to draw them all: some are not on the graph (the numbers are exact)",
             "Stale": "Data may be out of date",
             "Unavailable": "The graph could not be loaded",

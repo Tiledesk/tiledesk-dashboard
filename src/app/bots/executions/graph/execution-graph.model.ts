@@ -19,6 +19,7 @@ export interface GraphNode {
   label: string;
   status?: ShownStatus;        // executions
   color?: AgentColor;          // agents
+  deleted?: true;              // an agent no longer in the project's list (its runs are still in view)
   agentId?: string;
   executionId?: string;
   /** executions: the run has errors (an unhandled action); drawn as a red ring on the chip */
@@ -164,21 +165,22 @@ function tooltipFor(r: ExecutionRow, status: ShownStatus): GraphTooltip {
 /**
  * The graph of the view: the project, the agents with at least one execution in view, their executions.
  * `stats` (same view, exact) decides an agent's colour, error count and "+N" when given; otherwise the rows do.
- * With a non-empty agents list, other agents (deleted ones) are left out; the list also gives the names.
+ * Agents missing from a non-empty agents list (deleted ones) are drawn too, by the name on their runs, and marked
+ * `deleted`: the cards count their runs, so the graph shows them. The list gives the names of the others.
  */
 export function buildExecutionGraph(input: {
   projectName: string; agents: GraphAgent[]; rows: ExecutionRow[]; stats?: ExecutionStats | null;
 }): GraphModel {
   const { projectName, agents } = input;
   const listed = new Set(agents.map(a => a.id));
-  const keep = (id: string) => listed.size === 0 || listed.has(id);
+  const isDeleted = (id: string) => listed.size > 0 && !listed.has(id);
 
   type Shown = { row: ExecutionRow; status: ShownStatus };
   const byAgent = new Map<string, Shown[]>();
   const fromRows = new Map<string, AgentStatusCounts>();
   const names = new Map<string, string>();
   for (const r of input.rows) {
-    if (!keep(r.agent_id) || !isShown(r.status)) continue;
+    if (!isShown(r.status)) continue;
     const list = byAgent.get(r.agent_id) || [];
     list.push({ row: r, status: r.status });
     byAgent.set(r.agent_id, list);
@@ -194,7 +196,7 @@ export function buildExecutionGraph(input: {
     Object.prototype.hasOwnProperty.call(statsAgents, id) ? { ...zeroCounts(), ...statsAgents[id] } : (fromRows.get(id) || zeroCounts());
 
   const inView = new Set<string>(byAgent.keys());
-  Object.keys(statsAgents).forEach(id => { if (keep(id) && agentColor(countsOf(id))) inView.add(id); });
+  Object.keys(statsAgents).forEach(id => { if (agentColor(countsOf(id))) inView.add(id); });
   const agentMap = new Map<string, GraphAgent>();
   for (const a of agents) if (inView.has(a.id)) agentMap.set(a.id, a);
   inView.forEach(id => { if (!agentMap.has(id)) agentMap.set(id, { id, name: names.get(id) || String(id || '').substring(0, 8) }); });
@@ -238,6 +240,7 @@ export function buildExecutionGraph(input: {
     const agentNodeId = 'agent:' + a.id;
     nodes.push({
       id: agentNodeId, kind: 'agent', label: a.name, agentId: a.id, color: agentColor(counts) || 'gray', position: pos,
+      ...(isDeleted(a.id) ? { deleted: true as const } : {}),
       tooltip: counts.errors > 0 ? { kind: 'text', text: a.name, withErrors: counts.errors } : { kind: 'text', text: a.name }
     });
     edges.push({ id: 'project->' + agentNodeId, source: 'project', target: agentNodeId, animated: false });
