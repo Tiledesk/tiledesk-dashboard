@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.8.41
+- Fixes the bug: creating an AI agent from the Home vibe coder (with or without a prompt) and from the Create Agent modal ignored the chatbot limit of the plan
+- Fixes the bug: Knowledge Base namespace AI agents were missing `ds_version`, so the V2/V3 editor routing could be wrong
+- Replaces the description textarea in the Create Agent modal with the shared Home vibe coder, keeping the existing header, name and type fields
+- Shows a small v3 badge on agents in the Knowledge Base "used by" list
+
 ### 2.8.40
 - Adds the ability to create TTL columns in Data Tables
 - Fixes the bug: Data Tables grid could go empty after filter reset due to a stale listRows race
