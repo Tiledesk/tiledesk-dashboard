@@ -35,9 +35,7 @@
 
         <div class="input-field" *ngIf="authType === 'google'">
             <label>{{ 'Integration.Scopes' | translate }}</label>
-            <input id="mcp-scopes" class="custom-input" type="text" name="mcp-scopes"
-                placeholder="openid email"
-                [(ngModel)]="scopesText" autocomplete="off" style="font-size: 14px;">
+            <ng-container *ngTemplateOutlet="scopeEditor"></ng-container>
         </div>
 
         <ng-container *ngIf="authType === 'manual'">
@@ -69,9 +67,7 @@
             </div>
             <div class="input-field">
                 <label>{{ 'Integration.Scopes' | translate }}</label>
-                <input id="mcp-manual-scopes" class="custom-input" type="text" name="mcp-manual-scopes"
-                    placeholder="openid email"
-                    [(ngModel)]="scopesText" autocomplete="off" style="font-size: 14px;">
+                <ng-container *ngTemplateOutlet="scopeEditor"></ng-container>
             </div>
         </ng-container>
 
@@ -167,10 +163,30 @@
             </button> -->
         </div>
 
+        <ng-template #scopeEditor>
+            <div class="scope-editor" (click)="focusScopeInput(scopeInput)">
+                <span class="scope-tag" *ngFor="let scope of scopeList()">
+                    <span class="scope-tag-label" [attr.title]="scope">{{ scope }}</span>
+                    <button type="button" class="scope-tag-remove" (click)="removeScope(scope, $event)"
+                        [attr.aria-label]="('Integration.RemoveScope' | translate) + ': ' + scope">
+                        <span class="material-icons">close</span>
+                    </button>
+                </span>
+                <input #scopeInput id="mcp-scope-draft" class="scope-draft" type="text" name="mcp-scope-draft"
+                    [placeholder]="scopeList().length ? '' : ('Integration.ScopePlaceholder' | translate)"
+                    [(ngModel)]="scopeDraft"
+                    (keydown.enter)="$event.preventDefault(); addScopeFromDraft()"
+                    (keydown.backspace)="onScopeDraftBackspace()"
+                    autocomplete="off">
+            </div>
+            <p class="field-hint">{{ 'Integration.ScopeAddHint' | translate }}</p>
+            <p class="field-hint warn" *ngIf="isEditing && scopesChanged()">{{ 'Integration.ScopesChangedAuthorizeAgain' | translate }}</p>
+        </ng-template>
+
         <div class="form-actions">
             <!-- Connect button - shown when NOT editing OR when editing a server WITHOUT tools -->
             <button 
-                *ngIf="!isEditing || (isEditing && !currentServerHasTools())"
+                *ngIf="!isEditing || (isEditing && !currentServerHasTools()) || urlChanged"
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="connectToServer()"
                 [disabled]="isLoadingTools || waitingForAuthorization || !currentServer.url || hasIncompleteHeaders()">
@@ -193,7 +209,7 @@
 
             <!-- Refresh Tools button - shown when editing a server WITH tools -->
             <button 
-                *ngIf="isEditing && currentServerHasTools()"
+                *ngIf="isEditing && currentServerHasTools() && !urlChanged"
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="refreshCurrentServerTools()"
                 [disabled]="isLoadingTools || !currentServer.url || hasIncompleteHeaders()">
@@ -221,10 +237,14 @@
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="addOrUpdateServer()"
                 [disabled]="isUpdateDisabled()">
-                {{ 'Update' | translate }}
+                <span *ngIf="!waitingForAuthorization">{{ 'Update' | translate }}</span>
+                <span *ngIf="waitingForAuthorization" class="loading-state">
+                    <span class="spinner"></span>
+                    {{ 'Integration.WaitingForAuthorization' | translate }}
+                </span>
             </button>
 
-            <button *ngIf="isEditing" class="btn btn-outlined" (click)="resetForm()">
+            <button *ngIf="isEditing && !waitingForAuthorization" class="btn btn-outlined" (click)="resetForm()">
                 {{ 'Cancel' | translate }}
             </button>
         </div>

@@ -75,6 +75,21 @@ describe('McpIntegrationComponent OAuth', () => {
     expect(integrationService.getMcpTools).toHaveBeenCalledWith(serverUrl);
   });
 
+  it('adds each scope as a separate tag and sends them together', () => {
+    component.scopeDraft = 'openid';
+    component.addScopeFromDraft();
+    component.scopeDraft = 'https://www.googleapis.com/auth/calendar.events.readonly';
+    component.addScopeFromDraft();
+    component.scopeDraft = 'openid';
+    component.addScopeFromDraft();
+
+    expect(component.scopeList()).toEqual(['openid', 'https://www.googleapis.com/auth/calendar.events.readonly']);
+    expect(component.scopesText).toBe('openid https://www.googleapis.com/auth/calendar.events.readonly');
+
+    component.removeScope('openid');
+    expect(component.scopeList()).toEqual(['https://www.googleapis.com/auth/calendar.events.readonly']);
+  });
+
   it('shows the scopes returned by the connection after Google authorization', fakeAsync(() => {
     fillServer('Google Calendar');
     component.authType = 'google';
@@ -255,6 +270,84 @@ describe('McpIntegrationComponent OAuth status', () => {
     expect(component.integration.value.servers[0].oauth).toEqual({ connection_id: 'C1', mode: 'mcp' });
   }));
 
+  it('saves a renamed Google server without authorizing again when the scopes stay the same', () => {
+    const server = {
+      name: 'Gmail',
+      url: serverUrl,
+      transport: 'streamable_http',
+      tools: [{ name: 'echo' }],
+      oauth: { connection_id: 'C1', mode: 'google' as const }
+    };
+    component.integration.value.servers = [server];
+    component.oauthConnections = {
+      C1: { _id: 'C1', mode: 'google', server_url: serverUrl, status: 'active', scopes: ['openid'], updatedAt: 'T1' }
+    };
+
+    component.onSelectServer(server);
+    component.currentServer.name = 'Gmail renamed';
+    component.addOrUpdateServer();
+
+    expect(mcpOAuth.connect).not.toHaveBeenCalled();
+    expect(component.integration.value.servers[0].name).toBe('Gmail renamed');
+    expect(component.integration.value.servers[0].oauth).toEqual({ connection_id: 'C1', mode: 'google' });
+  });
+
+  it('authorizes again and saves when the scopes of a Google server change', fakeAsync(() => {
+    const server = {
+      name: 'Gmail',
+      url: serverUrl,
+      transport: 'streamable_http',
+      tools: [{ name: 'echo' }],
+      oauth: { connection_id: 'C1', mode: 'google' as const }
+    };
+    component.integration.value.servers = [server];
+    component.oauthConnections = {
+      C1: { _id: 'C1', mode: 'google', server_url: serverUrl, status: 'active', scopes: ['openid'], updatedAt: 'T1' }
+    };
+    mcpOAuth.connect.and.returnValue(Promise.resolve({
+      ok: true,
+      connection: { _id: 'C1', mode: 'google', server_url: serverUrl, status: 'active', scopes: ['openid', 'email'], updatedAt: 'T2' }
+    }));
+
+    component.onSelectServer(server);
+    component.scopesText = 'openid email';
+    component.addOrUpdateServer();
+
+    expect(mcpOAuth.openPopup).toHaveBeenCalledBefore(mcpOAuth.connect);
+    expect(mcpOAuth.connect).toHaveBeenCalledWith(
+      { mode: 'google', server_url: serverUrl, name: 'Gmail', scopes: ['openid', 'email'] },
+      jasmine.anything()
+    );
+
+    tick();
+
+    expect(component.integration.value.servers[0].oauth).toEqual({ connection_id: 'C1', mode: 'google' });
+    expect(component.isEditing).toBe(false);
+  }));
+
+  it('does not save when the new authorization is cancelled', fakeAsync(() => {
+    const server = {
+      name: 'Gmail',
+      url: serverUrl,
+      transport: 'streamable_http',
+      oauth: { connection_id: 'C1', mode: 'google' as const }
+    };
+    component.integration.value.servers = [server];
+    component.oauthConnections = {
+      C1: { _id: 'C1', mode: 'google', server_url: serverUrl, status: 'active', scopes: ['openid'], updatedAt: 'T1' }
+    };
+    mcpOAuth.connect.and.returnValue(Promise.resolve({ ok: false, reason: 'closed' }));
+
+    component.onSelectServer(server);
+    component.currentServer.name = 'Gmail renamed';
+    component.scopesText = 'openid email';
+    component.addOrUpdateServer();
+    tick();
+
+    expect(component.integration.value.servers[0].name).toBe('Gmail');
+    expect(component.isEditing).toBe(true);
+  }));
+
   it('fills the scopes field from the connection when a Google server is selected', () => {
     const server = {
       name: 'Google Calendar',
@@ -337,9 +430,12 @@ describe('McpIntegrationComponent OAuth status', () => {
     expect(component.authType).toBe('manual');
   });
 
-  it('revokes the connection on delete only when no other server uses it', fakeAsync(() => {
+  it('deletes the OAuth connection before removing the server', fakeAsync(() => {
+    const { Subject } = require('rxjs');
     const Swal = require('sweetalert2');
     spyOn(Swal, 'fire').and.returnValue(Promise.resolve({ isDenied: true }));
+    const pending = new Subject();
+    mcpOAuth.deleteConnection.and.returnValue(pending);
     const server = { name: 'Demo', url: serverUrl, transport: 'streamable_http', oauth: { connection_id: 'C1', mode: 'mcp' as const } };
     component.integration.value.servers = [server];
 
@@ -347,17 +443,45 @@ describe('McpIntegrationComponent OAuth status', () => {
     tick();
 
     expect(mcpOAuth.deleteConnection).toHaveBeenCalledWith('C1');
+    expect(component.integration.value.servers.length).toBe(1);
 
-    mcpOAuth.deleteConnection.calls.reset();
+    pending.next({ success: true, revoked: true });
+    pending.complete();
+
+    expect(component.integration.value.servers.length).toBe(0);
+  }));
+
+  it('keeps the server when deleting its authorization fails', fakeAsync(() => {
+    const { throwError } = require('rxjs');
+    const Swal = require('sweetalert2');
+    spyOn(Swal, 'fire').and.returnValue(Promise.resolve({ isDenied: true }));
+    mcpOAuth.deleteConnection.and.returnValue(throwError({ status: 500 }));
+    const server = { name: 'Demo', url: serverUrl, transport: 'streamable_http', oauth: { connection_id: 'C1', mode: 'mcp' as const } };
+    component.integration.value.servers = [server];
+
+    component.onDeleteServer(server);
+    tick();
+
+    expect(component.integration.value.servers.length).toBe(1);
+    const args = notify.showWidgetStyleUpdateNotification.calls.mostRecent().args;
+    expect(args[0]).toContain('MCPServerDeleteFailed');
+    expect(args[2]).toBe('error');
+  }));
+
+  it('removes the server without calling delete when another server still uses the connection', fakeAsync(() => {
+    const Swal = require('sweetalert2');
+    spyOn(Swal, 'fire').and.returnValue(Promise.resolve({ isDenied: true }));
     const shared = { connection_id: 'C1', mode: 'mcp' as const };
     component.integration.value.servers = [
       { name: 'A', url: serverUrl, transport: 'streamable_http', oauth: { ...shared } },
       { name: 'B', url: 'https://mcp.example/other', transport: 'streamable_http', oauth: { ...shared } }
     ];
+
     component.onDeleteServer(component.integration.value.servers[0]);
     tick();
 
     expect(mcpOAuth.deleteConnection).not.toHaveBeenCalled();
+    expect(component.integration.value.servers.map((item) => item.name)).toEqual(['B']);
   }));
 
   it('marks the server for reconnect when listing tools returns 409', () => {

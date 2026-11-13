@@ -45,6 +45,8 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
 
   authType: McpAuthType = 'none';
   scopesText: string = '';
+  /** Text of the scope being typed. Enter adds it to the tag list. */
+  scopeDraft: string = '';
   manualAuthorizationUrl: string = '';
   manualTokenUrl: string = '';
   manualClientId: string = '';
@@ -53,6 +55,8 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
   /** URL the current OAuth connection was granted for. A different URL invalidates it. */
   authorizedUrl: string = '';
   urlChanged: boolean = false;
+  /** Scopes shown when the server was opened. A different value needs a new authorization. */
+  private originalScopesText: string = '';
   waitingForAuthorization: boolean = false;
   oauthConnections: { [id: string]: McpOAuthConnection } = {};
   reconnectRequired: { [id: string]: boolean } = {};
@@ -105,6 +109,63 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Scopes and the manual client live on the OAuth connection, not on the saved server.
+    // Authorize again so the same connection is updated, then save the server.
+    if (this.shouldReauthorize()) {
+      if (!this.oauthFieldsReady()) {
+        return;
+      }
+      this.beginOAuthConnect(true);
+      return;
+    }
+
+    this.commitServer();
+  }
+
+  /**
+   * True when the grant itself changed: scopes, the manual client, or the authentication type.
+   * A new name or the tool list does not need another authorization.
+   */
+  private shouldReauthorize(): boolean {
+    if (!this.isEditing || this.authType === 'none' || this.urlChanged) {
+      return false;
+    }
+    if (!this.originalOAuth || this.authType !== (this.originalOAuth.mode || 'mcp')) {
+      return true;
+    }
+    if ((this.authType === 'google' || this.authType === 'manual') && this.scopesChanged()) {
+      return true;
+    }
+    return this.authType === 'manual' && this.manualFieldsProvided();
+  }
+
+  scopesChanged(): boolean {
+    return this.parseScopes(this.scopesText).join(' ') !== this.parseScopes(this.originalScopesText).join(' ');
+  }
+
+  private manualFieldsProvided(): boolean {
+    return !!(this.manualAuthorizationUrl || this.manualTokenUrl || this.manualClientId || this.manualClientSecret || this.manualRevocationUrl);
+  }
+
+  /** Google needs scopes. A new manual client needs its three endpoints; an existing one can keep them. */
+  private oauthFieldsReady(): boolean {
+    if (this.authType === 'google' && this.parseScopes(this.scopesText).length === 0) {
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('Integration.ScopesRequired'), 4, 'error');
+      return false;
+    }
+    if (this.authType !== 'manual') {
+      return true;
+    }
+    const filled = [this.manualAuthorizationUrl, this.manualTokenUrl, this.manualClientId].filter((value) => !!value).length;
+    const keepsStoredClient = filled === 0 && this.originalOAuth && this.originalOAuth.mode === 'manual';
+    if (filled === 3 || keepsStoredClient) {
+      return true;
+    }
+    this.notify.showWidgetStyleUpdateNotification(this.translate.instant('Integration.ManualClientRequired'), 4, 'error');
+    return false;
+  }
+
+  private commitServer(): void {
     const previousConnectionId = this.isEditing && this.authType === 'none'
       ? this.originalOAuth && this.originalOAuth.connection_id
       : null;
@@ -177,6 +238,8 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       this.urlChanged = false;
       this.stashedOAuth = null;
       this.scopesText = this.scopesTextForServer(server);
+      this.originalScopesText = this.scopesText;
+      this.scopeDraft = '';
       this.manualAuthorizationUrl = '';
       this.manualTokenUrl = '';
       this.manualClientId = '';
@@ -250,25 +313,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         );
         
         if (index >= 0) {
-          this.integration.value.servers.splice(index, 1);
-          
-          // If we were editing this server, reset the form
-          if (this.isEditing && this.editingIndex === index) {
-            this.resetForm();
-          }
-          
-          this.saveIntegration();
-          this.revokeConnectionIfUnused(server.oauth && server.oauth.connection_id);
-          
-          // Show success notification
-          Swal.fire({
-            title: this.translate.instant('Done') + "!",
-            text: this.translate.instant('Integration.MCPServerHasBeenDeleted'),
-            icon: "success",
-            showCloseButton: false,
-            showCancelButton: false,
-            confirmButtonText: this.translate.instant('Ok'),
-          });
+          this.deleteServerAt(index, server);
         }
       } else {
         this.logger.log('[INT-MCP] Delete cancelled');
@@ -289,6 +334,8 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     this.currentTools = [];
     this.authType = 'none';
     this.scopesText = '';
+    this.originalScopesText = '';
+    this.scopeDraft = '';
     this.manualAuthorizationUrl = '';
     this.manualTokenUrl = '';
     this.manualClientId = '';
@@ -463,7 +510,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     this.mcpOAuthService.cancel();
   }
 
-  private beginOAuthConnect(): void {
+  private beginOAuthConnect(saveAfter = false): void {
     const popup = this.mcpOAuthService.openPopup();
     this.oauthPopup = popup;
     this.waitingForAuthorization = true;
@@ -489,14 +536,16 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         };
         if (result.connection.scopes && result.connection.scopes.length) {
           this.scopesText = result.connection.scopes.join(' ');
+          this.originalScopesText = this.scopesText;
+          this.scopeDraft = '';
         }
       }
       this.loadOAuthConnections();
-      this.loadToolsForCurrentServer();
+      this.loadToolsForCurrentServer(saveAfter);
     });
   }
 
-  private loadToolsForCurrentServer(): void {
+  private loadToolsForCurrentServer(saveAfter = false): void {
     this.isLoadingTools = true;
     this.loadingServerUrl = this.currentServer.url;
     this.toolsRetrieved = false;
@@ -545,6 +594,9 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         
         this.isLoadingTools = false;
         this.loadingServerUrl = '';
+        if (saveAfter) {
+          this.commitServer();
+        }
       },
       (error) => {
         this.logger.error('[INT-MCP] Error retrieving tools:', error);
@@ -555,6 +607,9 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         const errorMessage = this.mcpToolsErrorMessage(error, this.currentServer, 'Failed to retrieve tools from server');
         if (errorMessage) {
           this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
+        }
+        if (saveAfter) {
+          this.commitServer();
         }
       }
     );
@@ -782,7 +837,8 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         body.scopes = scopes;
       }
     }
-    if (this.authType === 'manual') {
+    if (this.authType === 'manual' && this.manualFieldsProvided()) {
+      // Only the fields the user typed. Anything left empty stays on the stored connection.
       body.manual = {
         authorization_endpoint: this.manualAuthorizationUrl,
         token_endpoint: this.manualTokenUrl,
@@ -796,6 +852,51 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       }
     }
     return body;
+  }
+
+  /** Scopes already added, shown one tag each. The request still sends them as one list. */
+  scopeList(): string[] {
+    return this.parseScopes(this.scopesText);
+  }
+
+  addScopeFromDraft(): void {
+    const incoming = this.parseScopes(this.scopeDraft);
+    this.scopeDraft = '';
+    if (!incoming.length) {
+      return;
+    }
+    const scopes = this.scopeList();
+    incoming.forEach((scope) => {
+      if (scopes.indexOf(scope) === -1) {
+        scopes.push(scope);
+      }
+    });
+    this.scopesText = scopes.join(' ');
+  }
+
+  removeScope(scope: string, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.scopesText = this.scopeList().filter((item) => item !== scope).join(' ');
+  }
+
+  onScopeDraftBackspace(): void {
+    if (this.scopeDraft) {
+      return;
+    }
+    const scopes = this.scopeList();
+    if (!scopes.length) {
+      return;
+    }
+    this.removeScope(scopes[scopes.length - 1]);
+  }
+
+  focusScopeInput(input: HTMLInputElement): void {
+    if (input) {
+      input.focus();
+    }
   }
 
   private parseScopes(value: string): string[] {
@@ -837,6 +938,55 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       message = failure.message || this.translate.instant('Integration.OAuthNotAvailable');
     }
     this.notify.showWidgetStyleUpdateNotification(message, 4, 'error');
+  }
+
+  /**
+   * With OAuth, delete the connection first. The server leaves the list only after that succeeds.
+   * A connection still used by another server is kept, and only this row is removed.
+   */
+  private deleteServerAt(index: number, server: McpServer): void {
+    const connectionId = server.oauth && server.oauth.connection_id;
+    const stillUsed = !!connectionId && (this.integration.value.servers || []).some((other: McpServer, otherIndex: number) =>
+      otherIndex !== index && other.oauth && other.oauth.connection_id === connectionId
+    );
+
+    if (connectionId && !stillUsed) {
+      this.mcpOAuthService.deleteConnection(connectionId).subscribe(() => {
+        this.logger.log('[INT-MCP] OAuth connection revoked', connectionId);
+        this.removeServerAt(index);
+        this.loadOAuthConnections();
+      }, (error) => {
+        if (error && error.status === 404) {
+          this.removeServerAt(index);
+          return;
+        }
+        this.logger.error('[INT-MCP] delete connection error', error);
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('Integration.MCPServerDeleteFailed'), 4, 'error');
+      });
+      return;
+    }
+
+    this.removeServerAt(index);
+  }
+
+  private removeServerAt(index: number): void {
+    this.integration.value.servers.splice(index, 1);
+
+    if (this.isEditing && this.editingIndex === index) {
+      this.resetForm();
+    } else if (this.isEditing && this.editingIndex > index) {
+      this.editingIndex = this.editingIndex - 1;
+    }
+
+    this.saveIntegration();
+    Swal.fire({
+      title: this.translate.instant('Done') + "!",
+      text: this.translate.instant('Integration.MCPServerHasBeenDeleted'),
+      icon: "success",
+      showCloseButton: false,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('Ok'),
+    });
   }
 
   private revokeConnectionIfUnused(connectionId: string | null | undefined): void {
@@ -918,6 +1068,9 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       // The list can arrive after the row click or the popup. Fill scopes only while the field is still empty.
       if (!this.scopesText) {
         this.scopesText = this.scopesTextForServer(this.currentServer);
+        if (!this.originalScopesText) {
+          this.originalScopesText = this.scopesText;
+        }
       }
     }, (error) => {
       if (error && error.status === 503) {
