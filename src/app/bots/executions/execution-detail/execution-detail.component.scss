@@ -134,8 +134,8 @@
 .ex-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 12.5px; font-weight: 400; }
 .ex-partial { color: var(--exec-warn); background: var(--exec-warn-bg); border-radius: 6px; padding: 4px 8px; margin-bottom: 6px; display: inline-block; font-size: 12.5px; }
 
-/* timeline: a table of blocks; Time · Block · Outcome · Attributes · Duration (bar) · chevron */
-$tl-cols: 104px minmax(0, 1fr) 128px 150px minmax(120px, 200px) 20px;
+/* timeline: a table of blocks; Time · Block · Outcome · Attributes · Duration · chevron */
+$tl-cols: 104px minmax(0, 1fr) 128px 150px 120px 20px;
 .tl-cols {
   display: grid; grid-template-columns: $tl-cols; gap: 12px; align-items: center; padding: 8px 16px;
   border-bottom: 1px solid var(--exec-line); background: var(--exec-surface-2);
@@ -178,27 +178,35 @@ $tl-cols: 104px minmax(0, 1fr) 128px 150px minmax(120px, 200px) 20px;
 .tl-split-legend b { color: var(--exec-fg); font-weight: 600; }
 .tl-key { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
 .tl-key-block { background: #5bb27a; }
-.tl-split-bar { position: relative; height: 14px; border-radius: 4px; background: var(--exec-surface-2); overflow: hidden; }
+.tl-split-bar { position: relative; height: 20px; border-radius: 4px; background: var(--exec-surface-2); overflow: hidden; }
 .tl-seg {
-  position: absolute; top: 0; bottom: 0; min-width: 2px; background: var(--exec-faint);
+  position: absolute; top: 0; bottom: 0; min-width: 2px; overflow: hidden; background: var(--exec-faint);
   & + .tl-seg { box-shadow: inset 1px 0 0 rgba(255, 255, 255, .7); }
 }
-/* a row: its block's share of the run from the left, then the wait after it, then its duration */
-.tl-durcell { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.tl-track { position: relative; flex: 1 1 auto; height: 10px; border-radius: 3px; background: var(--exec-surface-2); overflow: hidden; }
-.tl-bar, .tl-seg {
+/* a row's duration, and the wait after it */
+.tl-durcell { display: flex; justify-content: flex-end; min-width: 0; }
+.tl-seg {
   &.o-success { background: #5bb27a; }
   &.o-error { background: var(--exec-bad); }
   &.o-failure_condition, &.o-interrupted { background: #e0a040; }
   &.o-running { background: var(--exec-accent); }
 }
-.tl-bar { position: absolute; top: 0; bottom: 0; min-width: 2px; border-radius: 3px; background: var(--exec-faint); }
-.tl-bar-wait { position: absolute; top: 0; bottom: 0; }
 /* a wait: hatched, after the block rules so their background does not cover it */
-.tl-key-wait, .tl-seg.tl-seg-wait, .tl-bar-wait {
+.tl-key-wait, .tl-seg.tl-seg-wait {
   background-color: var(--exec-surface-2);
   background-image: repeating-linear-gradient(135deg, rgba(120, 130, 150, .55) 0 2px, transparent 2px 6px);
 }
+/* a segment's label, inside it when wide enough */
+.tl-seg-label {
+  display: block; padding: 0 6px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  font-size: 11px; line-height: 20px; font-weight: 500; color: #fff; pointer-events: none;
+}
+.tl-seg-wait .tl-seg-label { color: var(--exec-fg); text-shadow: 0 0 3px #fff, 0 0 3px #fff; }
+.tl-seg-click { cursor: pointer; }
+/* hovering a segment or a row: its block (and the wait after it) stands out, the rest fades */
+.tl-split-hl .tl-seg:not(.tl-seg-hl) { opacity: .35; }
+.tl-seg { transition: opacity .12s; }
+.tl-step.tl-hl { background: var(--exec-accent-weak); }
 .tl-dur { flex: none; min-width: 60px; text-align: right; display: flex; flex-direction: column; line-height: 1.25; }
 .tl-wait-dur { font-size: 11px; white-space: nowrap; &:empty { display: none; } }
 .tl-chevron { color: var(--exec-muted); font-size: 18px; width: 18px; height: 18px; }
@@ -221,13 +229,13 @@ $tl-cols: 104px minmax(0, 1fr) 128px 150px minmax(120px, 200px) 20px;
 }
 
 @media (max-width: 900px) {
-  .tl-cols, .tl-step { grid-template-columns: 92px minmax(0, 1fr) 112px minmax(90px, 140px) 20px; }
+  .tl-cols, .tl-step { grid-template-columns: 92px minmax(0, 1fr) 112px 110px 20px; }
   .tl-col-vc, .tl-vc { display: none; }
 }
 @media (max-width: 640px) {
   .tl-cols { display: none; }
   .tl-step { grid-template-columns: minmax(0, 1fr) auto 20px; }
-  .tl-time, .tl-outcome-cell, .tl-track { display: none; }
+  .tl-time, .tl-outcome-cell { display: none; }
   .tl-outside, .tl-running-action, .tl-body { padding-left: 16px; }
 }
 

@@ -269,11 +269,14 @@
                   <b class="ex-mono">{{ formatDuration(ts.sp.waitMs) }}</b> · {{ pctLabel(ts.sp.waitMs, ts.sp.total) }}</span>
               </span>
             </div>
-            <div class="tl-split-bar" role="img"
+            <div class="tl-split-bar" role="img" [class.tl-split-hl]="hlSeq !== null"
               [attr.aria-label]="('Executions.Detail.Split.InBlocks' | translate) + ' ' + pctLabel(ts.sp.blockMs, ts.sp.total) + ', ' + ('Executions.Detail.Split.Waiting' | translate) + ' ' + pctLabel(ts.sp.waitMs, ts.sp.total)">
               <span *ngFor="let g of ts.sp.segments" class="tl-seg" [ngClass]="g.kind === 'wait' ? 'tl-seg-wait' : 'o-' + segOutcome(g.seq)"
+                [class.tl-seg-hl]="hlSeq !== null && g.seq === hlSeq" [class.tl-seg-click]="g.kind === 'block'"
                 [style.left.%]="g.left" [style.width.%]="g.width"
-                [attr.title]="(g.kind === 'wait' ? ('Executions.Detail.Split.Waiting' | translate) : segName(g.seq)) + ' · ' + formatDuration(g.ms) + ' · ' + pctLabel(g.ms, ts.sp.total)"></span>
+                [attr.title]="(g.kind === 'wait' ? ('Executions.Detail.Split.Waiting' | translate) : segName(g.seq)) + ' · ' + formatDuration(g.ms) + ' · ' + pctLabel(g.ms, ts.sp.total)"
+                (mouseenter)="setHl(g.seq)" (mouseleave)="setHl(null)" (click)="g.kind === 'block' && openFromSplit(g.seq)"><span
+                  *ngIf="g.width >= SEG_LABEL_MIN_PCT" class="tl-seg-label">{{ g.kind === 'wait' ? ('Executions.Detail.Split.Waiting' | translate) : segName(g.seq) }} · {{ formatDuration(g.ms) }}</span></span>
             </div>
           </div>
           <div *ngIf="d.steps.length" class="tl-cols" aria-hidden="true">
@@ -292,7 +295,8 @@
           </div>
 
           <ng-container *ngFor="let item of visibleTimeline; trackBy: trackBySeq">
-            <button type="button" class="tl-step" [class.tl-open]="expanded.has(item.step.seq)" [class.tl-interrupted]="item.step.outcome === 'interrupted'"
+            <button type="button" class="tl-step" [id]="'tl-step-' + item.step.seq" [class.tl-hl]="hlSeq === item.step.seq"
+              (mouseenter)="setHl(item.step.seq)" (mouseleave)="setHl(null)" [class.tl-open]="expanded.has(item.step.seq)" [class.tl-interrupted]="item.step.outcome === 'interrupted'"
               [attr.aria-expanded]="expanded.has(item.step.seq)"
               [attr.aria-label]="'Executions.Detail.StepDetails' | translate: { name: item.step.block_name || item.step.seq }"
               (click)="toggleStep(item.step)">
@@ -309,19 +313,10 @@
               <span class="tl-vc">
                 <ng-container *ngIf="item.step.changed_keys">{{ (item.step.changed_keys === 1 ? "Executions.Detail.VarsChangedOne" : "Executions.Detail.VarsChanged") | translate: { n: item.step.changed_keys } }}</ng-container>
               </span>
-              <ng-container *ngIf="{ bar: ts.sp ? rowBar(ts.sp, item.step) : null } as r">
               <span class="tl-durcell" [attr.title]="ts.sp ? stepDuration(item.step) + ' · ' + pctLabel(stepMs(item.step), ts.sp.total)
-                + (r.bar.waitMs ? ' — ' + ('Executions.Detail.Split.WaitAfter' | translate: { d: formatDuration(r.bar.waitMs) }) + ' · ' + pctLabel(r.bar.waitMs, ts.sp.total) : '') : null">
-                <span class="tl-track" aria-hidden="true">
-                  <ng-container *ngIf="r.bar">
-                    <span class="tl-bar" [ngClass]="'o-' + (item.step.outcome || (isRunningStep(item.step) ? 'running' : 'none'))"
-                      [style.left.%]="0" [style.width.%]="r.bar.width"></span>
-                    <span *ngIf="r.bar.waitWidth > 0" class="tl-bar-wait" [style.left.%]="r.bar.waitLeft" [style.width.%]="r.bar.waitWidth"></span>
-                  </ng-container>
-                </span>
-                <span class="tl-dur ex-mono ex-muted">{{ stepDuration(item.step) }}<span class="tl-wait-dur"><ng-container *ngIf="r.bar && r.bar.waitMs >= 1000">{{ "Executions.Detail.Split.WaitAfter" | translate: { d: formatDuration(r.bar.waitMs) } }}</ng-container></span></span>
+                + (ts.sp.waitAfter.get(item.step.seq) ? ' — ' + ('Executions.Detail.Split.WaitAfter' | translate: { d: formatDuration(ts.sp.waitAfter.get(item.step.seq)) }) + ' · ' + pctLabel(ts.sp.waitAfter.get(item.step.seq), ts.sp.total) : '') : null">
+                <span class="tl-dur ex-mono ex-muted">{{ stepDuration(item.step) }}<span class="tl-wait-dur"><ng-container *ngIf="ts.sp && ts.sp.waitAfter.get(item.step.seq) >= 1000">{{ "Executions.Detail.Split.WaitAfter" | translate: { d: formatDuration(ts.sp.waitAfter.get(item.step.seq)) } }}</ng-container></span></span>
               </span>
-              </ng-container>
               <mat-icon class="tl-chevron" aria-hidden="true">{{ expanded.has(item.step.seq) ? 'expand_more' : 'chevron_right' }}</mat-icon>
             </button>
 
