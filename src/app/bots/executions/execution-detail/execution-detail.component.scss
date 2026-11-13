@@ -178,10 +178,13 @@ $tl-cols: 104px minmax(0, 1fr) 128px 150px 120px 20px;
 .tl-split-legend b { color: var(--exec-fg); font-weight: 600; }
 .tl-key { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
 .tl-key-block { background: #5bb27a; }
-.tl-split-bar { position: relative; height: 20px; border-radius: 4px; background: var(--exec-surface-2); overflow: hidden; }
+.tl-split-bar { position: relative; height: 20px; border-radius: 4px; background: #fff; overflow: hidden; }
 .tl-seg {
-  position: absolute; top: 0; bottom: 0; min-width: 2px; overflow: hidden; background: var(--exec-faint);
-  & + .tl-seg { box-shadow: inset 1px 0 0 rgba(255, 255, 255, .7); }
+  position: absolute; top: 0; bottom: 0; min-width: 2px; overflow: hidden; border-radius: 3px; background: var(--exec-faint);
+  /* a clean 2px gap of the card's white between segments; a block keeps at least 2px of colour after it */
+  & + .tl-seg { border-left: 2px solid #fff; }
+  &:not(.tl-seg-wait) { min-width: 4px; }
+  &.tl-seg-wait { min-width: 0; }
 }
 /* a row's duration, and the wait after it */
 .tl-durcell { display: flex; justify-content: flex-end; min-width: 0; }
@@ -193,7 +196,7 @@ $tl-cols: 104px minmax(0, 1fr) 128px 150px 120px 20px;
 }
 /* a wait: hatched, after the block rules so their background does not cover it */
 .tl-key-wait, .tl-seg.tl-seg-wait {
-  background-color: var(--exec-surface-2);
+  background-color: #e6eaf1;
   background-image: repeating-linear-gradient(135deg, rgba(120, 130, 150, .55) 0 2px, transparent 2px 6px);
 }
 /* a segment's label, inside it when wide enough */
