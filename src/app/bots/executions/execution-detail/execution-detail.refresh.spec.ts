@@ -337,9 +337,10 @@ describe('ExecutionDetailComponent refreshed layout', () => {
       return cell ? cell.querySelector('dd').textContent.replace(/\s+/g, ' ').trim() : null;
     };
 
-    it('the labelled grid: agent, trigger, version, execution id, started, conversation', fakeAsync(() => {
+    it('the labelled grid: trigger, version, execution id, started, conversation (the agent is the title)', fakeAsync(() => {
       setup(detail('completed', [], { execution: { conversation_link: 'support-group-p1-r1', ended_at: at(2000) } }));
-      expect(fact('Agent')).toBe('Nightly checks');
+      expect(fact('Agent')).toBeNull();
+      expect(el().querySelector('.ex-title').textContent).toContain('Nightly checks');
       expect(fact('Trigger')).toBe(EN.Executions.Triggers.scheduled);
       expect(fact('version')).toContain('…e7f60123');
       expect(fact('Execution ID')).toContain('00000001');

@@ -158,41 +158,11 @@ describe('ExecutionDetailComponent', () => {
       expect(stepButtons()[0].textContent).toContain('1 attribute changed');
     });
 
-    it('outside row text for message_in and external', () => {
+    it('no rows for changes made outside the blocks (incoming message, parameters, outside the flow): the Flow state tab has them', () => {
       setup();
-      const rowText = (e: Element) => e.querySelector('.tl-outside-text').textContent.replace(/\s+/g, ' ').trim();
-      const rows = () => Array.from(el().querySelectorAll('.tl-outside'));
-      // the incoming message's changes: one quiet row, collapsed, with Show
-      expect(rows().map(rowText)).toEqual([
-        'Incoming message set 2 attributes',
-        '1 attribute changed outside the flow',
-      ]);
-      expect(rows()[0].classList).toContain('tl-incoming');
-      expect(rows()[1].classList).not.toContain('tl-incoming');
-      expect(rows()[1].querySelector('.tl-outside-toggle')).toBeNull();
-      const toggle = rows()[0].querySelector('.tl-outside-toggle') as HTMLButtonElement;
-      expect(toggle.textContent.trim()).toBe('Show');
-      expect(toggle.getAttribute('aria-expanded')).toBe('false');
-
-      // shown: the keys, as the row said before
-      toggle.click();
-      fixture.detectChanges();
-      expect(rowText(rows()[0])).toBe('2 attributes changed by the incoming message (lastUserText, transcript)');
-      expect(toggle.textContent.trim()).toBe('Hide');
-      expect(toggle.getAttribute('aria-expanded')).toBe('true');
-      // the step itself is not expanded by it
-      expect(stepButtons()[1].getAttribute('aria-expanded')).toBe('false');
-
-      toggle.click();
-      fixture.detectChanges();
-      expect(rowText(rows()[0])).toBe('Incoming message set 2 attributes');
-    });
-
-    it('one incoming attribute is singular', () => {
-      const d = detail();
-      d.steps[1].outside = [{ key: 'lastUserText', by: 'message_in' }];
-      setup({ detail: d });
-      expect(el().querySelector('.tl-outside-text').textContent.trim()).toBe('Incoming message set 1 attribute');
+      expect(el().querySelectorAll('.tl-outside').length).toBe(0);
+      expect(el().textContent).not.toContain('Incoming message set');
+      expect(stepButtons().length).toBe(2);
     });
 
     it('[Not successful] hides successful steps', () => {
