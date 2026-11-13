@@ -64,6 +64,14 @@ export interface StepBar {
   width: number;
 }
 
+/** An option of the timeline's Block name / Block type filters. */
+export interface TimelineFilterOption { value: string; label: string; count: number }
+
+/** The name a timeline row shows for a block: its name, else its id. */
+export function stepName(step: Step): string {
+  return step.block_name || step.block_id || '';
+}
+
 /**
  * Where a block's duration bar sits on the execution's time axis. `offset` = block start − execution start,
  * `width` = block duration, both over `total` (the execution's duration, or now − start while it runs). Clamped so
@@ -185,6 +193,12 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   readonly auditResultLabel = auditResultLabel;
   readonly auditResultKind = auditResultKind;
   failedOnly = false;
+  /** Timeline filters (feedback 2026-11-13): block names, and action types a block must contain one of; empty = any. */
+  blockNames: string[] = [];
+  blockTypes: string[] = [];
+  /** Their options, from the loaded steps (rebuilt with each detail), each with its number of blocks. */
+  blockNameOptions: TimelineFilterOption[] = [];
+  blockTypeOptions: TimelineFilterOption[] = [];
   expanded = new Set<number>();
   /** Incoming-message rows shown open (their keys), by `${seq}:${by}`. */
 
@@ -368,6 +382,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.detail = d;
     const steps = d.steps || [];
     this.timeline = steps.map(step => ({ step }));
+    this.buildFilterOptions(steps);
     this.actionTitles = {};
     steps.forEach(s => (s.actions || []).forEach(a => {
       if (a.action_id) this.actionTitles[a.action_id] = actionLabel(a);
@@ -519,14 +534,64 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
 
   // ---- timeline ----
 
+  /** Not successful, block names and block types, combined (AND). */
   get visibleTimeline(): TimelineItem[] {
-    return this.failedOnly ? this.timeline.filter(i => i.step.outcome !== 'success') : this.timeline;
+    if (!this.hasTimelineFilters) return this.timeline;
+    const names = this.blockNames.length ? new Set(this.blockNames) : null;
+    const types = this.blockTypes.length ? new Set(this.blockTypes) : null;
+    return this.timeline.filter(({ step }) =>
+      (!this.failedOnly || step.outcome !== 'success')
+      && (!names || names.has(stepName(step)))
+      && (!types || (step.actions || []).some(a => !!a.type && types.has(a.type))));
+  }
+
+  get hasTimelineFilters(): boolean {
+    return this.failedOnly || this.blockNames.length > 0 || this.blockTypes.length > 0;
   }
 
   /** The Not successful filter: expanded blocks it shows again are loaded (with the grant when it covers them). */
   setFailedOnly(v: boolean) {
     this.failedOnly = v;
+    this.onTimelineFilter();
+  }
+
+  setBlockNames(names: string[] | null) {
+    this.blockNames = names || [];
+    this.onTimelineFilter();
+  }
+
+  setBlockTypes(types: string[] | null) {
+    this.blockTypes = types || [];
+    this.onTimelineFilter();
+  }
+
+  clearTimelineFilters() {
+    this.failedOnly = false;
+    this.blockNames = [];
+    this.blockTypes = [];
+    this.onTimelineFilter();
+  }
+
+  /** Expanded blocks a filter change shows again are loaded. */
+  private onTimelineFilter() {
     this.visibleSeqs().forEach(seq => this.loadState(seq));
+  }
+
+  /** Block names and action types of the run, A→Z, each with the number of blocks that have it. */
+  private buildFilterOptions(steps: Step[]) {
+    const names = new Map<string, number>();
+    const types = new Map<string, number>();
+    steps.forEach(step => {
+      const name = stepName(step);
+      names.set(name, (names.get(name) || 0) + 1);
+      new Set((step.actions || []).map(a => a.type).filter(t => !!t)).forEach(t => types.set(t, (types.get(t) || 0) + 1));
+    });
+    const options = (m: Map<string, number>): TimelineFilterOption[] => Array.from(m.entries())
+      .map(([value, count]) => ({ value, label: value, count }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+    this.blockNameOptions = options(names);
+    // no friendlier name per type exists in the dashboard (see actionLabel): the raw type
+    this.blockTypeOptions = options(types);
   }
 
   toggleStep(step: Step) {
