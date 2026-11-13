@@ -40,6 +40,7 @@ export const ACTIVITY_FILTER_OPTION_DEFINITIONS: ActivityFilterOptionDefinition[
   { id: 'EXECUTION_DATA_ACCESS', groupKey: 'Executions' },
   { id: 'EXECUTION_DATA_ACCESS_DENIED', groupKey: 'Executions' },
   { id: 'EXECUTION_RETENTION_UPDATE', groupKey: 'Executions' },
+  { id: 'EXECUTION_STOP_NOTICE_UPDATE', groupKey: 'Executions' },
 ];
 
 export const ACTIVITY_ICON_BY_VERB: Record<string, string> = {
@@ -71,6 +72,7 @@ export const ACTIVITY_ICON_BY_VERB: Record<string, string> = {
   EXECUTION_DATA_ACCESS: 'assets/img/activities/flow-published.svg',
   EXECUTION_DATA_ACCESS_DENIED: 'assets/img/activities/flow-removed.svg',
   EXECUTION_RETENTION_UPDATE: 'assets/img/activities/flow-add.svg',
+  EXECUTION_STOP_NOTICE_UPDATE: 'assets/img/activities/flow-add.svg',
 };
 
 /** Executions audit rows are visible to the owner and to custom roles with executions_audit_read. */

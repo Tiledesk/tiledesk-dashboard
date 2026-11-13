@@ -461,7 +461,8 @@
             "EXECUTION_START_NEW": "Nuova esecuzione avviata",
             "EXECUTION_DATA_ACCESS": "Dati esecuzione visualizzati",
             "EXECUTION_DATA_ACCESS_DENIED": "Accesso ai dati esecuzione negato",
-            "EXECUTION_RETENTION_UPDATE": "Conservazione esecuzioni modificata"
+            "EXECUTION_RETENTION_UPDATE": "Conservazione esecuzioni modificata",
+            "EXECUTION_STOP_NOTICE_UPDATE": "Avviso di pausa delle esecuzioni modificato"
         }
     },
     "NewRequest": "Nuova conversazione",
