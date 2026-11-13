@@ -323,6 +323,26 @@ export interface AuditPage {
   next_cursor: string | null;
 }
 
+/**
+ * GET/PUT /projects/:pid/settings/stop-notice: the notice the chatbot sends once in the conversation when a user writes
+ * while the agent's execution is stopped. `text` null: the chatbot's default (`default_text`, by the conversation's
+ * language). `can_edit` is false without executions_control.
+ */
+export interface StopNoticeSettings {
+  enabled: boolean;
+  text: string | null;
+  default_text: { en: string; it: string };
+  can_edit: boolean;
+}
+
+/** PUT body; `text` is trimmed by the service, empty → null, at most STOP_NOTICE_MAX characters. */
+export interface StopNoticeBody {
+  enabled: boolean;
+  text: string | null;
+}
+
+export const STOP_NOTICE_MAX = 500;
+
 /** GET/PUT /projects/:pid/settings/retention. `can_edit` is false without executions_audit_read. */
 export interface RetentionSettings {
   trace_days: number;

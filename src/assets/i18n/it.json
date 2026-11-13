@@ -4118,6 +4118,17 @@
             "ConfirmCapture": "I valori degli attributi e gli input non verranno più acquisiti; le esecuzioni arrestate non potranno più essere riprese dai dati memorizzati.",
             "ConfirmAction": "Riduci ed elimina"
         },
+        "StopNotice": {
+            "Title": "Avviso di stop",
+            "Hint": "Inviato una sola volta nella conversazione quando un utente scrive mentre l'esecuzione dell'agente è ferma. Se vuoto si usa il testo predefinito.",
+            "Enabled": "Invia l'avviso",
+            "Text": "Testo dell'avviso",
+            "TooLong": "Il testo può contenere al massimo {{max}} caratteri.",
+            "ReadOnly": "Solo un ruolo autorizzato a controllare le esecuzioni può modificare questa impostazione.",
+            "Save": "Salva",
+            "Saved": "Salvato",
+            "SaveFailed": "Non è stato possibile salvare l'impostazione. Riprova."
+        },
         "DataAccess": {
             "ViewData": "Visualizza dati",
             "Title": "Visualizza i dati dell'esecuzione",

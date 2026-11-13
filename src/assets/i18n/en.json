@@ -4525,6 +4525,17 @@
             "ConfirmCapture": "Attribute values and inputs will no longer be captured; stopped runs can no longer be resumed from stored data.",
             "ConfirmAction": "Shorten and delete"
         },
+        "StopNotice": {
+            "Title": "Stop notice",
+            "Hint": "Sent once in the conversation when a user writes while the agent's execution is stopped. Empty uses the default text.",
+            "Enabled": "Send the notice",
+            "Text": "Notice text",
+            "TooLong": "The text can be at most {{max}} characters.",
+            "ReadOnly": "Only a role allowed to control executions can change this setting.",
+            "Save": "Save",
+            "Saved": "Saved",
+            "SaveFailed": "The setting could not be saved. Try again."
+        },
         "DataAccess": {
             "ViewData": "View data",
             "Title": "View execution data",

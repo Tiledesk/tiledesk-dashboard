@@ -89,6 +89,8 @@ export function auditSentence(e: AuditView, executionId: string, agent: string, 
     }
     case 'retention_update':
       return `${actor} changed executions retention`;
+    case 'stop_notice_update':
+      return `${actor} changed the executions stop notice`;
     default:
       return `${actor} ${String(e.action || '').replace(/_/g, ' ')}`;
   }

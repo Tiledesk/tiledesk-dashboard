@@ -75,6 +75,24 @@ describe('ExecutionsService', () => {
     put.flush({});
   });
 
+  it('getStopNotice and putStopNotice call the stop-notice settings route', () => {
+    setup('/executions/api/v1/');
+    let got: any;
+    service.getStopNotice('p1').subscribe((v) => (got = v));
+    const get = http.expectOne('/executions/api/v1/projects/p1/settings/stop-notice');
+    expect(get.request.method).toBe('GET');
+    expect(get.request.headers.get('Authorization')).toBe('JWT abc');
+    const view = { enabled: true, text: null, default_text: { en: 'E', it: 'I' }, can_edit: true };
+    get.flush(view);
+    expect(got).toEqual(view);
+    service.putStopNotice('p1', { enabled: false, text: 'Paused' }).subscribe();
+    const put = http.expectOne('/executions/api/v1/projects/p1/settings/stop-notice');
+    expect(put.request.method).toBe('PUT');
+    expect(put.request.headers.get('Authorization')).toBe('JWT abc');
+    expect(put.request.body).toEqual({ enabled: false, text: 'Paused' });
+    put.flush({});
+  });
+
   it('summary joins agent_ids with commas', () => {
     setup('/executions/api/v1/');
     service.summary('p1', ['a', 'b']).subscribe();
