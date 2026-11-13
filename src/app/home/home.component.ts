@@ -49,6 +49,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { CreateAgentModalComponent, CreateAgentModalResult } from 'app/bots/bots-list/create-agent-modal/create-agent-modal.component';
 import { CreateChatbotModalComponent } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.component';
+import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { AgentPromptAttachment, MAX_PROMPT_LENGTH, provisionalAgentName, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
 import { VibeCoderComponent, VibeCoderStartPayload } from 'app/shared/vibe-coder/vibe-coder.component';
@@ -139,6 +141,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   vibeCoderBusy = false;
   vibeCoderError: string | null = null;
   private pendingHomeBuildPrompt: string | null = null;
+  /**
+   * Plan chatbot limit (same source as bots-list / templates).
+   * Home does not extend PricingBase (property clashes); bridge only for chatBotLimit.
+   */
+  private planLimitsBridge: PricingBaseComponent;
 
   @ViewChild('homeVibeCoder') homeVibeCoder?: VibeCoderComponent;
   /** Set from onboarding Get started router state — focus (+ optional prefill) once permissions ready. */
@@ -162,7 +169,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   get hasHomePickupSection(): boolean {
     return this.isVisibleVBC
       && this.USER_ROLE !== 'agent'
-      && !!(this.PERMISSION_TO_VIEW_FLOWS || this.PERMISSION_TO_ADD_FLOWS)
+      && !!this.PERMISSION_TO_VIEW_FLOWS
       && !!(this.showskeleton || this.chatbots?.length);
   }
 
@@ -455,6 +462,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private botLocalDbService: BotLocalDbService,
     private agentPromptsService: AgentPromptsService,
   ) {
+    this.planLimitsBridge = new PricingBaseComponent(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
     this.custom_company_home_logo = brand['CUSTOM_COMPANY_HOME_LOGO'];
@@ -489,6 +497,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getAvailableProjectUsersByProjectId();
 
     this.getUserRole();
+    // Same plan → chatBotLimit resolution as bots-list (create / import)
+    this.planLimitsBridge.getProjectPlan();
     // this.getProjectPlan(); 
     // this.getVisitorCounter();
     this.getOSCODE();
@@ -3567,6 +3577,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.vibeCoderError = this.translate.instant('NoPermissionToCreateAIAgents');
       return;
     }
+    // Same gate as bots-list createBlankTilebot / import from JSON
+    if (!this.assertCanCreateChatbot()) {
+      return;
+    }
 
     // Prompt optional (same as Flussi CreateAgentModal). Empty → blank Conversational, no CDS vibe handoff.
     this.pendingHomeBuildPrompt = normalized || null;
@@ -3705,6 +3719,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (subtype === 'copilot' && !namespaceId) {
       return;
     }
+    if (!this.assertCanCreateChatbot()) {
+      return;
+    }
     const language = this.translate.currentLang || 'en';
     this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', subtype, language, namespaceId)
       .pipe(takeUntil(this.unsubscribe$))
@@ -3729,12 +3746,53 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  /**
+   * Same checks as bots-list `createBlankTilebot` / `fileChangeUploadChatbotFromJSON`:
+   * if the plan has a chatbot cap and the project already reached it, open ChatbotModal.
+   */
+  private assertCanCreateChatbot(): boolean {
+    const chatBotCount = Array.isArray(this.chatbots) ? this.chatbots.length : 0;
+    const chatBotLimit = this.planLimitsBridge?.chatBotLimit;
+    this.logger.log('[HOME] assertCanCreateChatbot chatBotCount', chatBotCount, 'chatBotLimit', chatBotLimit);
+
+    if (chatBotLimit || chatBotLimit === 0) {
+      if (chatBotCount < chatBotLimit) {
+        return true;
+      }
+      this.presentDialogReachedChatbotLimit();
+      return false;
+    }
+
+    // null = no cap (e.g. Scale trial); undefined = plan not resolved yet → allow
+    return true;
+  }
+
+  /** Same dialog as bots-list when create / import exceeds the plan chatbot cap. */
+  private presentDialogReachedChatbotLimit(): void {
+    this.logger.log('[HOME] presentDialogReachedChatbotLimit prjct_profile_name', this.prjct_profile_name,
+      'chatBotLimit', this.planLimitsBridge?.chatBotLimit);
+    this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+        subscriptionIsActive: this.subscription_is_active,
+        prjctProfileType: this.prjct_profile_type,
+        trialExpired: this.prjct_trial_expired,
+        chatBotLimit: this.planLimitsBridge?.chatBotLimit,
+      },
+    });
+  }
+
   /** `provisionalName`: the name was not asked for, so the Design Studio may replace it with the
    *  conversation's title. */
   private createHomeAgentFromPrompt(chatbotName: string, prompt: string, subtype: string = 'chatbot',
     provisionalName: boolean = false, attachments: AgentPromptAttachment[] = []): void {
     if (!chatbotName || !this.projectId) {
       this.vibeCoderError = this.translate.instant('CouldNotCreateAIAgent');
+      return;
+    }
+    if (!this.assertCanCreateChatbot()) {
       return;
     }
 

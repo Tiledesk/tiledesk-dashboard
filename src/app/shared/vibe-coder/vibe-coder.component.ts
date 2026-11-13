@@ -397,7 +397,8 @@ export class VibeCoderComponent implements OnDestroy {
   }
 
   private resizeTextarea(textarea: HTMLTextAreaElement): void {
-    const minHeight = 54; // 3 lines @ 18px line-height
+    // Min fits the 107px shell; grows up to 6 lines, then scrolls.
+    const minHeight = 43;
     const maxHeight = 108; // 6 lines @ 18px line-height
 
     textarea.style.height = minHeight + 'px';
