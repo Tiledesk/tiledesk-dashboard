@@ -61,11 +61,12 @@ export class HomePickupFlowComponent implements OnInit, OnChanges, AfterViewInit
   @Input() chatbotsLoading = false;
   @Input() project: any;
   @Input() PERMISSION_TO_VIEW_FLOWS: boolean;
+  /** Hide edit when false; card still visible with view permission. */
+  @Input() PERMISSION_TO_EDIT_FLOWS: boolean;
   @Output() featuredChatbotIdChange = new EventEmitter<string | null>();
 
   projectId: string;
   lastUpdatedChatbot: Chatbot;
-  chatbotPublished = false;
   /** Why this flow is featured in the home card. */
   featuredFlowSource: 'most_engaged' | 'last_edited' | null = null;
 
@@ -115,7 +116,7 @@ export class HomePickupFlowComponent implements OnInit, OnChanges, AfterViewInit
 
   goToEditChatbot(event?: Event): void {
     event?.stopPropagation();
-    if (!this.lastUpdatedChatbot?._id || !this.projectId) {
+    if (!this.PERMISSION_TO_EDIT_FLOWS || !this.lastUpdatedChatbot?._id || !this.projectId) {
       return;
     }
     openChatbotEditor(
@@ -242,7 +243,6 @@ export class HomePickupFlowComponent implements OnInit, OnChanges, AfterViewInit
   private resolveFeaturedChatbot(): void {
     if (!this.chatbots?.length) {
       this.lastUpdatedChatbot = null;
-      this.chatbotPublished = false;
       this.featuredFlowSource = null;
       this.chatbotUsedNamespaces = [];
       this.analyticsAgentId = null;
@@ -257,18 +257,10 @@ export class HomePickupFlowComponent implements OnInit, OnChanges, AfterViewInit
     const lastEdited = getLastUpdatedChatbot(this.chatbots);
     this.lastUpdatedChatbot = lastEdited;
     this.featuredFlowSource = lastEdited ? 'last_edited' : null;
-    this.chatbotPublished = this.isChatbotPublished(this.lastUpdatedChatbot);
     this.applyChatbotNamespacesFilter();
     this.featuredResolving = false;
     this.featuredChatbotIdChange.emit(lastEdited?._id ?? null);
     this.loadFlowAnalytics();
-  }
-
-  private isChatbotPublished(bot: Chatbot): boolean {
-    if (!bot?.url) { return false; }
-    const parts = bot.url.split('/');
-    const deployId = parts[parts.length - 1];
-    return deployId !== bot._id;
   }
 
   private loadNamespacesWithChatbots(): void {

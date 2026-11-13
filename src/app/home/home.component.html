@@ -12,7 +12,7 @@
     <div class="home-project">
 
       <div class="flex flex-col flex-auto min-w-0">
-        <div class="bg-card">
+        <div class="bg-card" [class.bg-card--vbc]="isVisibleVBC">
           <div class="flex flex-col w-full max-w-screen-xl mx-auto padding-l-r">
 
             <!-- Plan + project name left; OPH + dashlet icons right (hidden when VBC: empty toolbar) -->
@@ -165,7 +165,7 @@
           </div>
         </div> <!-- ./ bg-card (toolbar only — fixed height) -->
 
-        <div class="home-dashboard-inset">
+        <div class="home-dashboard-inset" [class.home-dashboard-inset--vbc]="isVisibleVBC">
 
         <!-- Minimal wait until role/permissions are known -->
         <div *ngIf="!homePermissionsReady" class="home-page-shell" aria-busy="true" aria-live="polite">
@@ -174,7 +174,7 @@
 
         <ng-container *ngIf="homePermissionsReady">
 
-          <!-- VBC hero: centered vibe coder; scroll down to last-edited pickup -->
+          <!-- VBC hero: .vibe-coder input shell at 340px from top; pickup 340px below it -->
           <div
             class="home-vibe-hero"
             *ngIf="isVisibleVBC && USER_ROLE !== 'agent' && PERMISSION_TO_ADD_FLOWS">
@@ -189,11 +189,11 @@
                   #homeVibeCoder
                   [busy]="vibeCoderBusy"
                   [error]="vibeCoderError"
+                  [enableAttachments]="true"
                   (start)="onHomeVibeCoderStart($event)">
                 </appdashboard-vibe-coder>
               </div>
             </div>
-
           </div>
 
           <section
@@ -207,7 +207,8 @@
               [chatbots]="chatbots"
               [chatbotsLoading]="showskeleton"
               [project]="project"
-              [PERMISSION_TO_VIEW_FLOWS]="PERMISSION_TO_VIEW_FLOWS !== false">
+              [PERMISSION_TO_VIEW_FLOWS]="PERMISSION_TO_VIEW_FLOWS"
+              [PERMISSION_TO_EDIT_FLOWS]="PERMISSION_TO_EDIT_FLOWS">
             </home-pickup-flow>
           </section>
 

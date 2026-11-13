@@ -1,4 +1,4 @@
-<ng-container *ngIf="PERMISSION_TO_VIEW_FLOWS !== false">
+<ng-container *ngIf="PERMISSION_TO_VIEW_FLOWS">
   <!-- Skeleton: real labels, placeholder values -->
   <section *ngIf="showFlowSkeleton" class="home-flow home-flow--skeleton" aria-hidden="true">
     <header class="home-flow__header">
@@ -16,14 +16,13 @@
             </svg>
           </span>
         </span>
-        <span class="hf-skel hf-skel--live"></span>
+        <span class="hf-skel hf-skel--updated"></span>
       </div>
     </header>
 
     <div class="home-flow__body">
       <div class="home-flow__identity">
         <div class="hf-skel hf-skel--name"></div>
-        <div class="hf-skel hf-skel--updated"></div>
       </div>
 
       <div class="home-flow__metrics">
@@ -67,12 +66,12 @@
             </svg>
           </span>
         </span>
-        <span class="home-flow__live" [class.home-flow__live--draft]="!chatbotPublished">
-          <span class="home-flow__live-dot"></span>
-          {{ chatbotPublished ? ('Published' | translate) : ('Draft' | translate) }}
+        <span class="home-flow__updated" *ngIf="lastUpdatedChatbot?.updatedAt">
+          {{ 'Updated' | translate }} {{ lastUpdatedChatbot.updatedAt | amTimeAgo }}
         </span>
       </div>
       <button
+        *ngIf="PERMISSION_TO_EDIT_FLOWS"
         type="button"
         class="home-flow__edit-btn"
         (click)="goToEditChatbot($event)"
@@ -87,9 +86,6 @@
     <div class="home-flow__body">
       <div class="home-flow__identity">
         <h2 class="home-flow__name">{{ lastUpdatedChatbot?.name }}</h2>
-        <p class="home-flow__updated" *ngIf="lastUpdatedChatbot?.updatedAt">
-          {{ 'Updated' | translate }} {{ lastUpdatedChatbot.updatedAt | amTimeAgo }}
-        </p>
       </div>
 
       <div class="home-flow__metrics">

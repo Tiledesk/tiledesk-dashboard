@@ -2,8 +2,8 @@ import { AfterViewInit, Component, Inject, OnDestroy, ViewChild } from '@angular
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { MAX_PROMPT_LENGTH, provisionalAgentName } from 'app/utils/agent-from-prompt.util';
-import { VibeCoderComponent } from 'app/shared/vibe-coder/vibe-coder.component';
+import { AgentPromptAttachment, MAX_PROMPT_LENGTH, provisionalAgentName } from 'app/utils/agent-from-prompt.util';
+import { VibeCoderComponent, VibeCoderStartPayload } from 'app/shared/vibe-coder/vibe-coder.component';
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
@@ -45,6 +45,8 @@ export interface CreateAgentModalResult {
   provisionalName?: boolean;
   /** Parent should open `CreateChatbotModal` for voice / copilot subtypes. */
   openCreateChatbotModal?: boolean;
+  /** Uploaded vibe-coder files (retention URLs) for CDS handoff. */
+  attachments?: AgentPromptAttachment[];
 }
 
 export interface AgentTypeOption {
@@ -208,7 +210,7 @@ export class CreateAgentModalComponent implements AfterViewInit, OnDestroy {
   }
 
   /** Flows path: vibe coder Start replaces Create. */
-  onVibeStart(promptFromVibe: string): void {
+  onVibeStart(payload: VibeCoderStartPayload): void {
     if (this.busy) {
       return;
     }
@@ -220,7 +222,8 @@ export class CreateAgentModalComponent implements AfterViewInit, OnDestroy {
       return;
     }
 
-    const prompt = (promptFromVibe || '').trim() || this.homeBuildPrompt;
+    const prompt = (payload?.prompt || '').trim() || this.homeBuildPrompt;
+    const attachments = Array.isArray(payload?.attachments) ? payload.attachments : [];
     const typed = (this.agentName || '').trim();
     const provisional = typed.length < 2;
     const chatbotName = provisional
@@ -232,6 +235,7 @@ export class CreateAgentModalComponent implements AfterViewInit, OnDestroy {
       subType: this.subtype,
       prompt,
       ...(provisional ? { provisionalName: true } : {}),
+      ...(attachments.length ? { attachments } : {}),
     } as CreateAgentModalResult);
   }
 
