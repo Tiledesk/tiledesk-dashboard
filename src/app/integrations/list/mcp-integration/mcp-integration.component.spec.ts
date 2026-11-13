@@ -75,6 +75,21 @@ describe('McpIntegrationComponent OAuth', () => {
     expect(integrationService.getMcpTools).toHaveBeenCalledWith(serverUrl);
   });
 
+  it('adds each scope as a separate tag and sends them together', () => {
+    component.scopeDraft = 'openid';
+    component.addScopeFromDraft();
+    component.scopeDraft = 'https://www.googleapis.com/auth/calendar.events.readonly';
+    component.addScopeFromDraft();
+    component.scopeDraft = 'openid';
+    component.addScopeFromDraft();
+
+    expect(component.scopeList()).toEqual(['openid', 'https://www.googleapis.com/auth/calendar.events.readonly']);
+    expect(component.scopesText).toBe('openid https://www.googleapis.com/auth/calendar.events.readonly');
+
+    component.removeScope('openid');
+    expect(component.scopeList()).toEqual(['https://www.googleapis.com/auth/calendar.events.readonly']);
+  });
+
   it('shows the scopes returned by the connection after Google authorization', fakeAsync(() => {
     fillServer('Google Calendar');
     component.authType = 'google';
