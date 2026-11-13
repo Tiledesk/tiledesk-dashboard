@@ -6,6 +6,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ExecutionStatCardsModule } from './shared/execution-stat-cards.module';
@@ -47,6 +49,9 @@ import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
     MatDialogModule,
     MatRadioModule,
     MatButtonModule,
+    // the detail's overflow menu
+    MatMenuModule,
+    MatDividerModule,
     FormsModule,
     NgSelectModule,
     ExecutionStatCardsModule,

@@ -5,6 +5,8 @@ import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { ExecutionDetailComponent } from './execution-detail.component';
@@ -53,7 +55,7 @@ describe('ExecutionDetailComponent audit tab', () => {
     perms$ = new Subject<any>();
     TestBed.configureTestingModule({
       declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent],
-      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule],
+      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, MatMenuModule, NoopAnimationsModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
         { provide: MatDialog, useValue: { open: jasmine.createSpy('open') } },

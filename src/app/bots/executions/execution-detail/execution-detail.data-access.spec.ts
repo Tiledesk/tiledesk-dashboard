@@ -5,6 +5,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { ExecutionDetailComponent } from './execution-detail.component';
@@ -83,7 +85,7 @@ describe('ExecutionDetailComponent data access', () => {
     logger = { log: jasmine.createSpy('log'), debug: jasmine.createSpy('debug'), warn: jasmine.createSpy('warn'), error: jasmine.createSpy('error') };
     TestBed.configureTestingModule({
       declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent],
-      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule],
+      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, MatMenuModule, NoopAnimationsModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
         { provide: MatDialog, useValue: dialog },
@@ -129,7 +131,7 @@ describe('ExecutionDetailComponent data access', () => {
       if (i) { fixture.destroy(); TestBed.resetTestingModule(); }
       setup(role, perms);
       expect(!!viewData()).toBe(shown, role + ' ' + perms.join(','));
-      if (shown) expect(viewData().textContent.trim()).toBe('View data');
+      if (shown) expect(viewData().textContent).toContain('View data');
     });
   }));
 

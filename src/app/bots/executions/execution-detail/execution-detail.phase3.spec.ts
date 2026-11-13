@@ -6,6 +6,8 @@ import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { ExecutionDetailComponent, POLL_MS, START_NEW_WAIT_MS } from './execution-detail.component';
@@ -73,7 +75,7 @@ describe('ExecutionDetailComponent resume and start new', () => {
     const perms$ = new Subject<any>();
     TestBed.configureTestingModule({
       declarations: [ExecutionDetailComponent, ExecutionStatusChipComponent],
-      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule],
+      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, MatMenuModule, NoopAnimationsModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
         { provide: MatDialog, useValue: dialog },
@@ -94,7 +96,24 @@ describe('ExecutionDetailComponent resume and start new', () => {
   }
 
   const el = () => fixture.nativeElement as HTMLElement;
-  const btn = (name: string) => el().querySelector('.ex-ctl-' + name) as HTMLButtonElement;
+  /** A control: the header's primary button, or the overflow menu's item (the menu is opened to find it). */
+  const btn = (name: string) => (el().querySelector('.ex-controls .ex-ctl-' + name) || menuItem('.ex-ctl-' + name)) as HTMLButtonElement;
+  /** An item of the overflow menu (in the overlay, outside the component): opens the menu when it is closed. */
+  function menuItem(sel: string): HTMLElement | null {
+    const more = el().querySelector('.ex-more') as HTMLButtonElement;
+    if (!more) return null;
+    if (!document.querySelector('.ex-menu')) {
+      more.click();
+      fixture.detectChanges();
+    }
+    return document.querySelector('.ex-menu ' + sel) as HTMLElement;
+  }
+  /** The visible name of a control (a menu item also holds its icon and reason). */
+  const label = (name: string) => {
+    const b = btn(name);
+    const l = b && b.querySelector('.ex-ctl-label');
+    return ((l || b) as HTMLElement).textContent.trim();
+  };
   const chip = () => el().querySelector('execution-status-chip').textContent.trim();
   const msg = () => { const m = el().querySelector('.ex-control-msg'); return m ? m.textContent.replace(/\s+/g, ' ') : ''; };
   const err409 = (error: any) => new HttpErrorResponse({ status: 409, error });
@@ -112,14 +131,16 @@ describe('ExecutionDetailComponent resume and start new', () => {
       { name: 'resume', allowed: false, reason: 'no_checkpoint' },
       { name: 'start_new', allowed: false, reason: 'role' },
     ]));
-    expect(btn('resume').textContent.trim()).toBe('Resume');
-    expect(btn('start_new').textContent.trim()).toBe('Start new');
+    expect(label('resume')).toBe('Resume');
+    expect(label('start_new')).toBe('Start new');
     expect(btn('resume').disabled).toBe(true);
     expect(btn('start_new').disabled).toBe(true);
+    // resume is the primary for stopped (its reason a tooltip); start new is in the menu (its reason under its name)
+    expect(el().querySelector('.ex-controls .ex-ctl-resume')).not.toBeNull();
     const tips = fixture.debugElement.queryAll(By.directive(MatTooltip)).map(d => d.injector.get(MatTooltip))
       .map(t => t.message).filter(m => !!m);
     expect(tips).toContain('There is no saved point to continue from');
-    expect(tips).toContain("You don't have permission to control executions");
+    expect(btn('start_new').querySelector('.ex-ctl-reason').textContent.trim()).toBe("You don't have permission to control executions");
     end();
   }));
 
