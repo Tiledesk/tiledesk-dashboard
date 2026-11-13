@@ -45,6 +45,8 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
 
   authType: McpAuthType = 'none';
   scopesText: string = '';
+  /** Text of the scope being typed. Enter adds it to the tag list. */
+  scopeDraft: string = '';
   manualAuthorizationUrl: string = '';
   manualTokenUrl: string = '';
   manualClientId: string = '';
@@ -237,6 +239,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       this.stashedOAuth = null;
       this.scopesText = this.scopesTextForServer(server);
       this.originalScopesText = this.scopesText;
+      this.scopeDraft = '';
       this.manualAuthorizationUrl = '';
       this.manualTokenUrl = '';
       this.manualClientId = '';
@@ -332,6 +335,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     this.authType = 'none';
     this.scopesText = '';
     this.originalScopesText = '';
+    this.scopeDraft = '';
     this.manualAuthorizationUrl = '';
     this.manualTokenUrl = '';
     this.manualClientId = '';
@@ -533,6 +537,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         if (result.connection.scopes && result.connection.scopes.length) {
           this.scopesText = result.connection.scopes.join(' ');
           this.originalScopesText = this.scopesText;
+          this.scopeDraft = '';
         }
       }
       this.loadOAuthConnections();
@@ -847,6 +852,51 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       }
     }
     return body;
+  }
+
+  /** Scopes already added, shown one tag each. The request still sends them as one list. */
+  scopeList(): string[] {
+    return this.parseScopes(this.scopesText);
+  }
+
+  addScopeFromDraft(): void {
+    const incoming = this.parseScopes(this.scopeDraft);
+    this.scopeDraft = '';
+    if (!incoming.length) {
+      return;
+    }
+    const scopes = this.scopeList();
+    incoming.forEach((scope) => {
+      if (scopes.indexOf(scope) === -1) {
+        scopes.push(scope);
+      }
+    });
+    this.scopesText = scopes.join(' ');
+  }
+
+  removeScope(scope: string, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    this.scopesText = this.scopeList().filter((item) => item !== scope).join(' ');
+  }
+
+  onScopeDraftBackspace(): void {
+    if (this.scopeDraft) {
+      return;
+    }
+    const scopes = this.scopeList();
+    if (!scopes.length) {
+      return;
+    }
+    this.removeScope(scopes[scopes.length - 1]);
+  }
+
+  focusScopeInput(input: HTMLInputElement): void {
+    if (input) {
+      input.focus();
+    }
   }
 
   private parseScopes(value: string): string[] {
