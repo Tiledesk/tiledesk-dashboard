@@ -14,7 +14,7 @@ import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.co
 import { ExecutionsService } from '../../../services/executions.service';
 import { RolesService } from '../../../services/roles.service';
 import { LoggerService } from '../../../services/logger/logger.service';
-import { auditSentence } from '../execution-audit';
+import { auditResultLabel, auditSentence } from '../execution-audit';
 import * as enJson from '../../../../assets/i18n/en.json';
 
 const EN = (enJson as any).default || enJson;
@@ -154,7 +154,9 @@ describe('ExecutionDetailComponent audit tab', () => {
 describe('auditSentence', () => {
   const s = (a: string, d: any) => auditSentence(entry(1, a, d), EXEC_ID, 'Bot');
   it('uses the Activities wording', () => {
-    expect(s('stop_soft', { result: 'accepted' })).toBe('Anna Rossi soft-stopped execution 000001 of Bot');
+    expect(s('stop_soft', { result: 'accepted' })).toBe('Anna Rossi paused execution 000001 of Bot after the current action');
+    expect(s('stop_hard', { result: 'accepted' })).toBe('Anna Rossi paused execution 000001 of Bot now');
+    expect(s('stop_hard', { result: 'rejected:stopped' })).toBe('Anna Rossi tried to pause execution 000001 of Bot now');
     expect(s('resume', { result: 'requested' })).toBe('Anna Rossi resumed execution 000001 of Bot');
     expect(s('start_new', { result: 'rejected:already_started' })).toBe('Anna Rossi tried to start a new run of execution 000001 of Bot');
     expect(s('data_viewed', { result: 'accepted', key: 'cart' })).toBe('Anna Rossi viewed data (attribute cart)');
@@ -165,9 +167,15 @@ describe('auditSentence', () => {
       .toBe('Anna Rossi was denied access to the data of execution 000001 of Bot (role admin)');
   });
 
+  it('the result chip names stopped/stopping as paused/pausing (the stored code is unchanged)', () => {
+    expect(auditResultLabel(entry(1, 'stop_hard', { result: 'rejected:stopped' }))).toBe('rejected: paused');
+    expect(auditResultLabel(entry(1, 'destroy', { result: 'rejected:stopping' }))).toBe('rejected: pausing');
+    expect(auditResultLabel(entry(1, 'destroy', { result: 'rejected:destroyed' }))).toBe('rejected: destroyed');
+  });
+
   it('words the project-level actions', () => {
     expect(s('retention_update', { result: 'accepted' })).toBe('Anna Rossi changed executions retention');
-    expect(s('stop_notice_update', { result: 'accepted' })).toBe('Anna Rossi changed the executions stop notice');
+    expect(s('stop_notice_update', { result: 'accepted' })).toBe('Anna Rossi changed the executions pause notice');
   });
 
   it('names the block when the execution on screen has it, else its number', () => {

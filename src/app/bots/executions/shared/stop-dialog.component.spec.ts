@@ -37,8 +37,8 @@ describe('StopDialogComponent', () => {
 
   it('stop dialog returns soft/hard; hard text names the current action', fakeAsync(() => {
     setup({ action: 'GET status', hardOnly: false });
-    expect(text()).toContain('Soft stop — finish the current action, then stop');
-    expect(text()).toContain('Hard stop — interrupt the current action now');
+    expect(text()).toContain('Pause after the current action — finish it, then pause');
+    expect(text()).toContain('Pause now — interrupt the current action');
     expect(el().querySelector('.sd-hard-text').textContent).toContain('"GET status"');
     // soft is the default
     click('.sd-confirm');

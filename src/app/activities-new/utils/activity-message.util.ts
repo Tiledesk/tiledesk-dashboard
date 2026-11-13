@@ -943,9 +943,10 @@ export function isProjectUserInviteTargetLinkable(activity: ActivityRecord): boo
   return !!(resolveProjectUserTargetDisplay(activity)?.profileId || getTargetUserId(activity));
 }
 
+// A stop is shown as a pause (feedback 2026-11-13); the verbs keep their names.
 const EXECUTION_VERB_PHRASES: Record<string, string> = {
-  EXECUTION_STOP_SOFT: 'soft-stopped execution',
-  EXECUTION_STOP_HARD: 'hard-stopped execution',
+  EXECUTION_STOP_SOFT: 'paused execution',
+  EXECUTION_STOP_HARD: 'paused execution',
   EXECUTION_DESTROY: 'destroyed execution',
   EXECUTION_RESUME: 'resumed execution',
   EXECUTION_START_NEW: 'started a new run of execution',
@@ -956,12 +957,24 @@ const EXECUTION_VERB_PHRASES: Record<string, string> = {
 
 /** A control refused with a 409 is audited too (actionObj.result `rejected:<status>`): it reads as an attempt. */
 const EXECUTION_TRIED_PHRASES: Record<string, string> = {
-  EXECUTION_STOP_SOFT: 'tried to soft-stop execution',
-  EXECUTION_STOP_HARD: 'tried to hard-stop execution',
+  EXECUTION_STOP_SOFT: 'tried to pause execution',
+  EXECUTION_STOP_HARD: 'tried to pause execution',
   EXECUTION_DESTROY: 'tried to destroy execution',
   EXECUTION_RESUME: 'tried to resume execution',
   EXECUTION_START_NEW: 'tried to start a new run of execution',
 };
+
+/** After "<id> of <agent>": the soft pause waits for the current action, the hard one does not. */
+const EXECUTION_PAUSE_MODE: Record<string, string> = {
+  EXECUTION_STOP_SOFT: 'after the current action',
+  EXECUTION_STOP_HARD: 'now',
+};
+
+/** A refusal's status as shown: stopped/stopping read paused/pausing (activityMessageUtil.shownStatus). */
+const EXECUTION_SHOWN_STATUS: Record<string, string> = { stopped: 'paused', stopping: 'pausing' };
+function executionShownStatus(status: string): string {
+  return Object.prototype.hasOwnProperty.call(EXECUTION_SHOWN_STATUS, status) ? EXECUTION_SHOWN_STATUS[status] : status;
+}
 
 /** null when the control was accepted (or the row has no result); otherwise the refusal, e.g. `stopped`. */
 export function executionRejection(activity: ActivityRecord): { reason: string } | null {
@@ -1022,9 +1035,10 @@ export function executionReasonSuffix(activity: ActivityRecord): string {
     return changes ? `: ${changes}` : '';
   }
   const rejected = denied || executionUnconfirmed(activity) ? null : executionRejection(activity);
-  const refusal = executionUnconfirmed(activity) ? ' (unconfirmed)' : rejected ? ` (rejected${rejected.reason ? ': ' + rejected.reason : ''})` : '';
+  const refusal = executionUnconfirmed(activity) ? ' (unconfirmed)' : rejected ? ` (rejected${rejected.reason ? ': ' + executionShownStatus(rejected.reason) : ''})` : '';
   const reason = denied ? '' : str(activity.actionObj?.['reason']);
-  let suffix = refusal + (reason ? ` · "${reason}"` : '');
+  const mode = EXECUTION_PAUSE_MODE[effectiveVerb(activity)];
+  let suffix = (mode ? ' ' + mode : '') + refusal + (reason ? ` · "${reason}"` : '');
   if (effectiveVerb(activity) === 'EXECUTION_DATA_ACCESS') {
     const scope = (activity.actionObj?.['scope'] || {}) as { type?: string };
     suffix += scope.type === 'step' ? ' · 1 block' : ' · whole execution';

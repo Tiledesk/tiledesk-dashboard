@@ -95,15 +95,15 @@ describe('ExecutionsStopNoticeComponent', () => {
     expect(textarea().placeholder).toBe(DEFAULT_TEXT.en);
     expect(textarea().getAttribute('maxlength')).toBe('500');
     expect(el().querySelector('.sn-intro').textContent).toContain(
-      "Sent in the conversation each time a user writes while the agent's execution is stopped. Empty uses the default text.");
-    expect(el().textContent).toContain('Stop notice');
+      "Sent in the conversation each time a user writes while the agent's execution is paused. Empty uses the default text.");
+    expect(el().textContent).toContain('Pause notice');
     expect(save().disabled).toBe(true);
   }));
 
   it('uses the Italian default as placeholder when the UI is in Italian', fakeAsync(() => {
     setup(view(), { lang: 'it' });
     expect(textarea().placeholder).toBe(DEFAULT_TEXT.it);
-    expect(el().textContent).toContain('Avviso di stop');
+    expect(el().textContent).toContain('Avviso di pausa');
   }));
 
   it('shows the stored values', fakeAsync(() => {

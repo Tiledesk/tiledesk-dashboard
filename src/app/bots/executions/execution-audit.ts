@@ -1,19 +1,27 @@
 import { AuditView } from './executions.models';
 
+// A stop is shown as a pause (feedback 2026-11-13); the action codes keep their names.
 const PHRASES: { [action: string]: string } = {
-  stop_soft: 'soft-stopped execution',
-  stop_hard: 'hard-stopped execution',
+  stop_soft: 'paused execution',
+  stop_hard: 'paused execution',
   destroy: 'destroyed execution',
   resume: 'resumed execution',
   start_new: 'started a new run of execution',
 };
 const TRIED: { [action: string]: string } = {
-  stop_soft: 'tried to soft-stop execution',
-  stop_hard: 'tried to hard-stop execution',
+  stop_soft: 'tried to pause execution',
+  stop_hard: 'tried to pause execution',
   destroy: 'tried to destroy execution',
   resume: 'tried to resume execution',
   start_new: 'tried to start a new run of execution',
 };
+/** After "<id> of <agent>": the soft pause waits for the current action, the hard one does not. */
+export const PAUSE_MODE: { [action: string]: string } = { stop_soft: 'after the current action', stop_hard: 'now' };
+/** A refusal's status as the page names it: stopped/stopping read paused/pausing. */
+const SHOWN_STATUS: { [status: string]: string } = { stopped: 'paused', stopping: 'pausing' };
+export function shownStatus(status: string): string {
+  return Object.prototype.hasOwnProperty.call(SHOWN_STATUS, status) ? SHOWN_STATUS[status] : status;
+}
 
 /** The same last 6 hex characters of the id, without dashes, that the server and Activities use. */
 export function auditShortId(executionId: string): string {
@@ -49,7 +57,7 @@ export function auditResultLabel(e: AuditView): string {
   const r = auditResult(e);
   if (/^rejected(:|$)/.test(r)) {
     const i = r.indexOf(':');
-    return i >= 0 ? `rejected: ${r.substring(i + 1)}` : 'rejected';
+    return i >= 0 ? `rejected: ${shownStatus(r.substring(i + 1))}` : 'rejected';
   }
   return r;
 }
@@ -76,7 +84,7 @@ export function auditSentence(e: AuditView, executionId: string, agent: string, 
     case 'destroy':
     case 'resume':
     case 'start_new':
-      return `${actor} ${rejected ? TRIED[e.action] : PHRASES[e.action]} ${where}`;
+      return `${actor} ${rejected ? TRIED[e.action] : PHRASES[e.action]} ${where}${PAUSE_MODE[e.action] ? ' ' + PAUSE_MODE[e.action] : ''}`;
     case 'data_viewed':
       return `${actor} viewed data (${auditViewedTarget(e, blockName)})`;
     case 'data_access_requested': {
@@ -90,7 +98,7 @@ export function auditSentence(e: AuditView, executionId: string, agent: string, 
     case 'retention_update':
       return `${actor} changed executions retention`;
     case 'stop_notice_update':
-      return `${actor} changed the executions stop notice`;
+      return `${actor} changed the executions pause notice`;
     default:
       return `${actor} ${String(e.action || '').replace(/_/g, ' ')}`;
   }

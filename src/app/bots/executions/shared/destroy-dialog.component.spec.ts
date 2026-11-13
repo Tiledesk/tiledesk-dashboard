@@ -44,7 +44,7 @@ describe('DestroyDialogComponent', () => {
   it('destroy button disabled until the 6 chars match', fakeAsync(() => {
     setup();
     const t = el().textContent.replace(/\s+/g, ' ');
-    expect(t).toContain('This stops it, closes its conversation and removes its live state. It cannot be resumed. The trace and audit are kept.');
+    expect(t).toContain('This ends it, closes its conversation and removes its live state. It cannot be resumed. The trace and audit are kept.');
     expect(t).toContain('Type 000001 to confirm');
     expect(confirmBtn().disabled).toBe(true);
     type('00000');

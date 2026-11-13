@@ -203,7 +203,7 @@ describe('ExecutionDetailComponent resume and start new', () => {
     expect(dialog.open.calls.argsFor(1)[1].data).toEqual({ action: 'POST order', calling: true, automation: false });
     expect(executions.resume).toHaveBeenCalledTimes(1);
     fixture.detectChanges();
-    expect(chip()).toBe('stopped');
+    expect(chip()).toBe('paused');
     expect(btn('resume').disabled).toBe(false);
     end();
   }));
@@ -457,7 +457,7 @@ describe('ExecutionDetailComponent resume and start new', () => {
     btn('resume').click();
     tick(START_NEW_WAIT_MS + POLL_MS * 2);
     fixture.detectChanges();
-    expect(chip()).toBe('stopped');
+    expect(chip()).toBe('paused');
     const calls = executions.get.calls.count();
     tick(POLL_MS * 5);
     expect(executions.get.calls.count()).toBe(calls);
@@ -471,7 +471,7 @@ describe('ExecutionDetailComponent resume and start new', () => {
     executions.get.and.returnValue(of(detail('stopped', STOPPED, { execution: { resumed_at: '2026-11-11T10:00:00.000Z' } })));
     btn('resume').click();
     fixture.detectChanges();
-    expect(chip()).toBe('stopped');
+    expect(chip()).toBe('paused');
     expect(btn('resume').disabled).toBe(false);
     end();
   }));
