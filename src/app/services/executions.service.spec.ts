@@ -43,12 +43,13 @@ describe('ExecutionsService', () => {
 
   it('list builds the query string and joins the base URL', () => {
     setup('/executions/api/v1/');
-    service.list('p1', { agent_id: 'a1', status: 'failed,running', has_failures: true, limit: 10, q: undefined }).subscribe();
+    service.list('p1', { agent_id: 'a1', status: 'failed,running', has_failures: true, has_errors: true, limit: 10, q: undefined }).subscribe();
     const req = http.expectOne((r) => r.url === '/executions/api/v1/projects/p1/executions');
     expect(req.request.method).toBe('GET');
     expect(req.request.params.get('agent_id')).toBe('a1');
     expect(req.request.params.get('status')).toBe('failed,running');
     expect(req.request.params.get('has_failures')).toBe('true');
+    expect(req.request.params.get('has_errors')).toBe('true');
     expect(req.request.params.get('limit')).toBe('10');
     expect(req.request.params.has('q')).toBe(false);
     expect(req.request.headers.get('Authorization')).toBe('JWT abc');

@@ -17,7 +17,7 @@ function row(id: string, status: string, agentId: string, extra: any = {}): Exec
   return {
     _id: id, agent_id: agentId, agent_name: null, status: status as any, end_reason: null, trigger: { type: 'chat' },
     started_at: new Date(Date.now() - 60 * 1000).toISOString(), duration_ms: 1000, steps_count: 3,
-    failure_conditions: 0, vars_changed: 0, trace_complete: true, test: false, ...extra,
+    failure_conditions: 0, errors: 0, vars_changed: 0, trace_complete: true, test: false, ...extra,
   };
 }
 
@@ -62,7 +62,7 @@ describe('ExecutionGraphComponent', () => {
         Unavailable: 'The graph could not be loaded',
         Tip: {
           Status: 'State: {{status}}', Started: 'Began: {{time}}', Trigger: 'Source: {{trigger}}', Steps: 'Blocks: {{steps}}',
-          More: '{{n}} more not drawn', MoreStatus: '{{status}}: {{n}}', WithErrors: '{{n}} with errors',
+          More: '{{n}} more not drawn', MoreStatus: '{{status}}: {{n}}', WithErrors: '{{n}} with errors', RunWithErrors: 'With errors',
         },
       },
       Status: { running: 'RUN', waiting: 'WAIT', stopping: 'STOP', failed: 'FAIL' } }
@@ -446,7 +446,7 @@ describe('ExecutionGraphComponent', () => {
   it('an agent with errors is red and its tooltip says how many executions have them', async () => {
     setup();
     await ready();
-    feed$.next(snap([row(E1, 'running', 'a1', { failure_conditions: 2 }), row(E3, 'failed', 'a2')]));
+    feed$.next(snap([row(E1, 'running', 'a1', { errors: 2 }), row(E3, 'failed', 'a2')]));
     const a1 = component.cy.getElementById('agent:a1');
     expect(a1.hasClass('c-red')).toBe(true);
     expect(a1.numericStyle('text-max-width')).toBe(160);
@@ -454,6 +454,52 @@ describe('ExecutionGraphComponent', () => {
     fixture.detectChanges();
     const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
     expect(lines).toEqual(['Nightly', '1 with errors']);
+  });
+
+  it('an agent with managed failures only (failure_conditions) is not red, no errors line', async () => {
+    setup();
+    await ready();
+    feed$.next(snap([row(E1, 'running', 'a1', { failure_conditions: 2 })]));
+    const a1 = component.cy.getElementById('agent:a1');
+    expect(a1.hasClass('c-blue')).toBe(true);
+    a1.emit('mouseover');
+    fixture.detectChanges();
+    const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
+    expect(lines).toEqual(['Nightly']);
+  });
+
+  it('the agent tooltip counts the runs with errors from the stats errors', async () => {
+    setup();
+    await ready();
+    const stats = { ...STATS(), agents: { a1: { running: 1, waiting: 0, stopping: 0, stopped: 0, failed: 0, completed: 4, destroyed: 0, failure_conditions: 5, errors: 3 } } };
+    feed$.next(snap([row(E1, 'running', 'a1')], false, { stats }));
+    const a1 = component.cy.getElementById('agent:a1');
+    expect(a1.hasClass('c-red')).toBe(true);
+    a1.emit('mouseover');
+    fixture.detectChanges();
+    const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
+    expect(lines).toEqual(['Nightly', '3 with errors']);
+  });
+
+  it('a run with errors gets a red ring on its chip and "with errors" in its tooltip', async () => {
+    setup();
+    await ready();
+    feed$.next(snap([row(E1, 'completed', 'a1', { errors: 1 }), row(E2, 'completed', 'a1')]));
+    const marked = component.cy.getElementById('exec:' + E1);
+    const plain = component.cy.getElementById('exec:' + E2);
+    expect(marked.hasClass('with-errors')).toBe(true);
+    expect(plain.hasClass('with-errors')).toBe(false);
+    expect(marked.numericStyle('outline-width')).toBe(2);
+    expect(marked.style('outline-color')).toBe('rgb(217,48,37)'); // #d93025
+    expect(plain.numericStyle('outline-width')).toBe(0);
+    marked.emit('mouseover');
+    fixture.detectChanges();
+    const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
+    expect(lines[lines.length - 1]).toBe('With errors');
+    plain.emit('mouseover');
+    fixture.detectChanges();
+    const plainLines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
+    expect(plainLines).not.toContain('With errors');
   });
 
   it('a new projectId resets the graph and subscribes the new feed', async () => {

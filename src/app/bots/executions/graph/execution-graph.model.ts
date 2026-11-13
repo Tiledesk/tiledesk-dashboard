@@ -11,7 +11,7 @@ export const AGENT_COLORS: AgentColor[] = ['red', 'blue', 'amber', 'green', 'gra
 /** Tooltip data; the component translates and formats it. */
 export type GraphTooltip =
   | { kind: 'text'; text: string; withErrors?: number }
-  | { kind: 'execution'; status: ShownStatus; startedAt: string | null; trigger: string | null; steps: number }
+  | { kind: 'execution'; status: ShownStatus; startedAt: string | null; trigger: string | null; steps: number; withErrors?: true }
   | { kind: 'more'; hidden: GraphStatusCounts };
 export interface GraphNode {
   id: string;                  // 'project' | 'agent:<agentId>' | 'exec:<executionId>' | 'more:<agentId>'
@@ -21,6 +21,8 @@ export interface GraphNode {
   color?: AgentColor;          // agents
   agentId?: string;
   executionId?: string;
+  /** executions: the run has errors (an unhandled action); drawn as a red ring on the chip */
+  withErrors?: true;
   position: { x: number; y: number };
   tooltip: GraphTooltip;
 }
@@ -33,12 +35,12 @@ export const MAX_PER_AGENT = 12;
 export const AGENT_RING_RMAX = execRingRadius(MAX_PER_AGENT + 1);
 
 /**
- * The agent's colour, first match (spec 2026-11-13): red = a failure or an execution with errors
- * (failure_conditions > 0); blue = something running; amber = waiting, stopping or stopped (paused, not finished);
+ * The agent's colour, first match (spec 2026-11-13 and its addendum): red = a failure or an execution with errors
+ * (errors > 0: an unhandled action; managed failures, failure_conditions, do not count); blue = something running; amber = waiting, stopping or stopped (paused, not finished);
  * gray = only completed or destroyed, at least one destroyed; green = all completed. Null: nothing in view.
  */
 export function agentColor(c: AgentStatusCounts): AgentColor | null {
-  if (c.failed > 0 || c.failure_conditions > 0) return 'red';
+  if (c.failed > 0 || (c.errors || 0) > 0) return 'red';
   if (c.running > 0) return 'blue';
   if (c.waiting + c.stopping + c.stopped > 0) return 'amber';
   if (c.destroyed > 0) return 'gray';
@@ -47,12 +49,19 @@ export function agentColor(c: AgentStatusCounts): AgentColor | null {
 }
 
 const zeroCounts = (): AgentStatusCounts =>
-  ({ running: 0, waiting: 0, stopping: 0, stopped: 0, failed: 0, completed: 0, destroyed: 0, failure_conditions: 0 });
+  ({ running: 0, waiting: 0, stopping: 0, stopped: 0, failed: 0, completed: 0, destroyed: 0, failure_conditions: 0, errors: 0 });
 
 const isShown = (s: string): s is ShownStatus => (SHOWN_STATUSES as string[]).indexOf(s) >= 0;
 
-/** Drawing priority: a problem first, then the live runs, the finished ones last. */
-const PRIORITY: { [S in ShownStatus]: number } = { failed: 0, stopping: 1, running: 2, waiting: 3, stopped: 4, completed: 5, destroyed: 6 };
+const hasErrors = (r: ExecutionRow) => (r.errors || 0) > 0;
+
+/**
+ * Drawing priority (user: "Problems, live, then finished"): failed, then with errors (a run with errors > 0 that is
+ * not failed, whatever its status), then stopping, running, waiting, stopped, completed, destroyed.
+ */
+const PRIORITY: { [S in ShownStatus]: number } = { failed: 0, stopping: 2, running: 3, waiting: 4, stopped: 5, completed: 6, destroyed: 7 };
+const WITH_ERRORS_PRIORITY = 1;
+const rank = (r: ExecutionRow, status: ShownStatus) => status !== 'failed' && hasErrors(r) ? WITH_ERRORS_PRIORITY : PRIORITY[status];
 
 /** Angle between neighbouring executions of a fan, and the widest fan (the side facing the project stays clear). */
 const FAN_STEP = 0.42;
@@ -147,7 +156,9 @@ function cmp(a: string, b: string): number {
 
 function tooltipFor(r: ExecutionRow, status: ShownStatus): GraphTooltip {
   const trigger = r.trigger && (r.trigger.type || r.trigger.kind || r.trigger.name);
-  return { kind: 'execution', status, startedAt: r.started_at || null, trigger: trigger || null, steps: r.steps_count ?? 0 };
+  const tip: Extract<GraphTooltip, { kind: 'execution' }> = { kind: 'execution', status, startedAt: r.started_at || null, trigger: trigger || null, steps: r.steps_count ?? 0 };
+  if (hasErrors(r)) { tip.withErrors = true; }
+  return tip;
 }
 
 /**
@@ -174,6 +185,7 @@ export function buildExecutionGraph(input: {
     const c = fromRows.get(r.agent_id) || zeroCounts();
     c[r.status]++;
     if ((r.failure_conditions || 0) > 0) c.failure_conditions++;
+    if (hasErrors(r)) c.errors++;
     fromRows.set(r.agent_id, c);
     if (!names.has(r.agent_id)) names.set(r.agent_id, r.agent_name || String(r.agent_id || '').substring(0, 8));
   }
@@ -199,7 +211,7 @@ export function buildExecutionGraph(input: {
     const all = byAgent.get(a.id) || [];
     const counts = countsOf(a.id);
     const picked = all.slice().sort((x, y) =>
-      PRIORITY[x.status] - PRIORITY[y.status] || cmp(y.row.started_at || '', x.row.started_at || '') || cmp(y.row._id, x.row._id));
+      rank(x.row, x.status) - rank(y.row, y.status) || cmp(y.row.started_at || '', x.row.started_at || '') || cmp(y.row._id, x.row._id));
     const drawn = picked.slice(0, MAX_PER_AGENT).sort((x, y) =>
       cmp(x.row.started_at || '', y.row.started_at || '') || cmp(x.row._id, y.row._id));
     // not drawn = the agent's count per status (exact with stats) minus the drawn ones
@@ -226,7 +238,7 @@ export function buildExecutionGraph(input: {
     const agentNodeId = 'agent:' + a.id;
     nodes.push({
       id: agentNodeId, kind: 'agent', label: a.name, agentId: a.id, color: agentColor(counts) || 'gray', position: pos,
-      tooltip: counts.failure_conditions > 0 ? { kind: 'text', text: a.name, withErrors: counts.failure_conditions } : { kind: 'text', text: a.name }
+      tooltip: counts.errors > 0 ? { kind: 'text', text: a.name, withErrors: counts.errors } : { kind: 'text', text: a.name }
     });
     edges.push({ id: 'project->' + agentNodeId, source: 'project', target: agentNodeId, animated: false });
 
@@ -238,10 +250,12 @@ export function buildExecutionGraph(input: {
     };
     drawn.forEach((s, j) => {
       const execId = 'exec:' + s.row._id;
-      nodes.push({
+      const node: GraphNode = {
         id: execId, kind: 'execution', label: s.row._id.replace(/-/g, '').slice(-8), status: s.status,
         agentId: a.id, executionId: s.row._id, position: at(j), tooltip: tooltipFor(s.row, s.status)
-      });
+      };
+      if (hasErrors(s.row)) { node.withErrors = true; }
+      nodes.push(node);
       edges.push({ id: agentNodeId + '->' + execId, source: agentNodeId, target: execId, animated: s.status === 'running' });
     });
     const hiddenTotal = SHOWN_STATUSES.reduce((acc, st) => acc + hidden[st], 0);

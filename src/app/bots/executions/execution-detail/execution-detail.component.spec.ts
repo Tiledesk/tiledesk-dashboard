@@ -173,6 +173,25 @@ describe('ExecutionDetailComponent', () => {
       expect(stepButtons()[0].textContent).toContain('Call status API');
     });
 
+    it('an unhandled action shows "not handled" next to its outcome; a handled one does not', () => {
+      const d = detail('completed');
+      d.steps[1].actions = [
+        action('act2', { type: 'webrequestv2', outcome: 'error', exit_taken: null, unhandled: true }),
+        action('act3', { index: 1, type: 'webrequestv2', outcome: 'failure_condition', exit_taken: 'false' }),
+      ];
+      setup({ detail: d });
+      stepButtons()[1].click();
+      fixture.detectChanges();
+      const acts = Array.from(el().querySelectorAll('.tl-action')) as HTMLElement[];
+      const mark = acts[0].querySelector('.tl-unhandled');
+      expect(mark).not.toBeNull();
+      expect(mark.textContent.trim()).toBe(EN.Executions.Detail.NotHandled);
+      expect(EN.Executions.Detail.NotHandled).toBe('not handled');
+      // right after the outcome
+      expect(mark.previousElementSibling.textContent).toContain(EN.Executions.Outcomes.error);
+      expect(acts[1].querySelector('.tl-unhandled')).toBeNull();
+    });
+
     it('expanding a step shows its actions and loads its flow state once', () => {
       setup();
       expect(executions.state).not.toHaveBeenCalled();

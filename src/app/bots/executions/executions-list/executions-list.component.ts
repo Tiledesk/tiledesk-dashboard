@@ -20,6 +20,8 @@ export interface ExecutionFilters {
   trigger: string;
   status: string;
   has_failures: boolean;
+  /** errors > 0 only: the With errors card */
+  has_errors: boolean;
   period: string;
   q: string;
   /** test runs (Design Studio, draft agents) listed and counted, marked as tests; off: real runs only */
@@ -54,7 +56,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   agents: { id: string; name: string }[] = [];
   /** The big numbers: every status over the list's period, agent and test-runs filters (the stats API); null until known. */
   counters: StatusCounts | null = null;
-  /** The stats' with_errors: runs that took a failure condition (the With errors card). */
+  /** The stats' with_errors: runs with errors > 0, an unhandled action (the With errors card). */
   withErrors: number | null = null;
 
   private destroy$ = new Subject<void>();
@@ -102,6 +104,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
         trigger: pick('trigger', this.triggerOptions, DEFAULT_TRIGGER),
         status: pick('status', this.statusOptions, ''),
         has_failures: params.get('has_failures') === 'true',
+        has_errors: params.get('has_errors') === 'true',
         period: pick('period', this.periodOptions, DEFAULT_PERIOD),
         q: params.get('q') || '',
         tests: params.get('tests') !== 'false',
@@ -130,7 +133,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   }
 
   private defaultFilters(): ExecutionFilters {
-    return { trigger: DEFAULT_TRIGGER, status: '', has_failures: false, period: DEFAULT_PERIOD, q: '', tests: true };
+    return { trigger: DEFAULT_TRIGGER, status: '', has_failures: false, has_errors: false, period: DEFAULT_PERIOD, q: '', tests: true };
   }
 
   private start() {
@@ -166,6 +169,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     if (f.trigger !== 'all') params.trigger = f.trigger;
     if (f.status) params.status = f.status === 'stopped' ? 'stopped,stopping' : f.status;
     if (f.has_failures) params.has_failures = true;
+    if (f.has_errors) params.has_errors = true;
     if (f.tests) params.test = 'all';
     if (f.q.trim()) params.q = f.q.trim();
     params.from = new Date(this.now() - (PERIOD_MS[f.period] || PERIOD_MS[DEFAULT_PERIOD])).toISOString();
@@ -293,7 +297,8 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     switch (name) {
       case 'trigger': qp = value === DEFAULT_TRIGGER ? null : value; break;
       case 'period': qp = value === DEFAULT_PERIOD ? null : value; break;
-      case 'has_failures': qp = value ? 'true' : null; break;
+      case 'has_failures':
+      case 'has_errors': qp = value ? 'true' : null; break;
       case 'tests': qp = value ? null : 'false'; break;
       default: qp = value || null;
     }
@@ -304,9 +309,9 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
    * A card counts every trigger type (the stats API), so turning one on also shows all triggers
    * (the default): a narrower trigger filter would hide rows it counts. Turning it off keeps the trigger.
    */
-  /** A card: a status toggles the status filter; With errors toggles "With failure conditions". */
+  /** A card: a status toggles the status filter; With errors toggles has_errors ("With failure conditions" stays apart). */
   pickCard(card: string) {
-    if (card === 'with_errors') this.setFilter('has_failures', !this.filters.has_failures);
+    if (card === 'with_errors') this.setFilter('has_errors', !this.filters.has_errors);
     else this.toggleStatus(card);
   }
 
@@ -316,7 +321,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   }
 
   clearFilters() {
-    this.navigateWith({ trigger: null, status: null, has_failures: null, period: null, q: null, tests: null });
+    this.navigateWith({ trigger: null, status: null, has_failures: null, has_errors: null, period: null, q: null, tests: null });
   }
 
   showAllTriggers() {
@@ -325,7 +330,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
   get hasActiveFilters(): boolean {
     const f = this.filters;
-    return !!(f.status || f.has_failures || f.q || !f.tests || f.trigger !== DEFAULT_TRIGGER || f.period !== DEFAULT_PERIOD);
+    return !!(f.status || f.has_failures || f.has_errors || f.q || !f.tests || f.trigger !== DEFAULT_TRIGGER || f.period !== DEFAULT_PERIOD);
   }
 
   private navigateWith(queryParams: any) {

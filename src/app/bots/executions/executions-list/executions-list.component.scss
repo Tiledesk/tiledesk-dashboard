@@ -56,3 +56,9 @@
   display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 8px;
   font-size: 11px; line-height: 18px; color: #6b5b00; background: #fff4c2; vertical-align: middle;
 }
+.exec-fc-cell { white-space: nowrap; }
+/* the run had an unhandled action (errors > 0): a small red mark beside its failure conditions */
+.exec-errors-mark {
+  display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 8px;
+  font-size: 11px; line-height: 18px; color: #fff; background: var(--exec-bad); vertical-align: middle;
+}

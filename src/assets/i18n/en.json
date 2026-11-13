@@ -4241,7 +4241,8 @@
                 "Steps": "Steps: {{steps}}",
                 "More": "{{n}} more executions not drawn",
                 "MoreStatus": "{{status}}: {{n}}",
-                "WithErrors": "{{n}} with error branches"
+                "WithErrors": "{{n}} with errors",
+                "RunWithErrors": "With errors"
             },
             "Empty": "No executions in view for this time range",
             "RangeLabel": "Time range",
@@ -4276,6 +4277,8 @@
         "StatusLabel": "Status",
         "AnyStatus": "Any status",
         "WithFailureConditions": "With failure conditions",
+        "ErrorsMark": "errors",
+        "ErrorsMarkTooltip": "{{n}} actions not handled: the flow was compromised",
         "Period": "Period",
         "LoadError": "Could not load the executions.",
         "Retry": "Retry",
@@ -4362,7 +4365,8 @@
             "Outcome": "outcome",
             "Exit": "exit",
             "Time": "time",
-            "ErrorCode": "error"
+            "ErrorCode": "error",
+            "NotHandled": "not handled"
         },
         "Audit": {
             "Title": "Audit",

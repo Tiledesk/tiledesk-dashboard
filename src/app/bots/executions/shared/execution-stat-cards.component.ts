@@ -63,7 +63,7 @@ const ACCENT: { [S in StatCard]: string } = {
 export class ExecutionStatCardsComponent {
   /** null: not known yet (a dash, not zero). */
   @Input() counts: StatusCounts | null = null;
-  /** The with_errors of the stats (runs that took a failure condition); null: not known yet. */
+  /** The with_errors of the stats (runs with errors > 0, an unhandled action); null: not known yet. */
   @Input() withErrors: number | null = null;
   @Input() selectable = false;
   /** The status filter in use (selectable cards only). */

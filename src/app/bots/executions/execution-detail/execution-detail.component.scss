@@ -105,6 +105,11 @@
 .tl-action { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 12.5px; }
 .tl-action-type { font-weight: 500; }
 .tl-k { color: var(--exec-faint); }
+/* the action compromised the flow (an error, or a failure condition with no jump) */
+.tl-unhandled {
+  display: inline-block; padding: 0 6px; border-radius: 8px; font-size: 11px; line-height: 18px;
+  color: #fff; background: var(--exec-bad);
+}
 
 @media (max-width: 640px) {
   .tl-outside { padding-left: 16px; }

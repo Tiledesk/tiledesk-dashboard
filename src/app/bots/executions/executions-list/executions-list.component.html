@@ -26,7 +26,7 @@
 
     <!-- the big numbers: every status, over the period and the agent / test-runs filters, all triggers -->
     <div class="exec-cards">
-      <execution-stat-cards [counts]="counters" [withErrors]="withErrors" [selectable]="true" [active]="filters.has_failures ? 'with_errors' : filters.status" (pick)="pickCard($event)"></execution-stat-cards>
+      <execution-stat-cards [counts]="counters" [withErrors]="withErrors" [selectable]="true" [active]="filters.has_errors ? 'with_errors' : filters.status" (pick)="pickCard($event)"></execution-stat-cards>
       <span class="exec-cards-hint">{{ "Executions.Periods." + filters.period | translate }} · {{ "Executions.Triggers.all" | translate }}</span>
     </div>
 
@@ -91,7 +91,9 @@
             <td class="exec-muted">{{ row.trigger?.type ? (("Executions.Triggers." + row.trigger.type) | translate) : '—' }}</td>
             <td>{{ row.started_at | date: 'dd MMM HH:mm' }}</td>
             <td>{{ row.steps_count }}</td>
-            <td [class.exec-fail]="row.failure_conditions > 0" [class.exec-muted]="!row.failure_conditions">{{ row.failure_conditions }}</td>
+            <td class="exec-fc-cell"><span [class.exec-fail]="row.failure_conditions > 0" [class.exec-muted]="!row.failure_conditions">{{ row.failure_conditions }}</span>
+              <span *ngIf="row.errors > 0" class="exec-errors-mark" [matTooltip]="'Executions.ErrorsMarkTooltip' | translate: { n: row.errors }">{{ "Executions.ErrorsMark" | translate }}</span>
+            </td>
             <td class="exec-muted">{{ row.vars_changed }}</td>
             <td class="exec-muted">{{ formatDuration(row.duration_ms) }}</td>
             <td class="exec-chevron"><mat-icon>chevron_right</mat-icon></td>

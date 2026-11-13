@@ -15,6 +15,8 @@ export interface ExecutionRow {
   duration_ms: number | null;
   steps_count: number;
   failure_conditions: number;
+  /** Unhandled actions (an error, or a failure condition with no jump): the run is "with errors" when > 0. */
+  errors: number;
   vars_changed: number;
   trace_complete: boolean | null;
   test: boolean;
@@ -30,6 +32,8 @@ export interface ExecutionListParams {
   trigger?: string;
   status?: string;
   has_failures?: boolean;
+  /** errors > 0 (true) or not (false) */
+  has_errors?: boolean;
   /** true: test runs only; 'all': real and test runs; unset: real runs only */
   test?: boolean | 'all';
   from?: string;
@@ -59,6 +63,8 @@ export interface Execution {
   error: any | null;
   handed_to_bot_id: string | null;
   failure_conditions: number;
+  /** Unhandled actions of the run (missing on an older API: none). */
+  errors?: number;
   steps_count: number;
   actions_count: number;
   vars_changed: number;
@@ -144,6 +150,8 @@ export interface StepAction {
   error_code: string | null;
   has_data: boolean;
   hard_degraded: boolean;
+  /** The action compromised the flow (outcome error, or failure_condition with no jump); missing on an older API: false. */
+  unhandled?: boolean;
   at: string | null;
 }
 
@@ -209,16 +217,18 @@ export interface StatusCounts {
   destroyed: number;
 }
 
-/** Per agent: the status counts plus the executions in view with failure_conditions > 0. */
+/** Per agent: the status counts plus the executions in view with failure_conditions > 0 and with errors > 0. */
 export interface AgentStatusCounts extends StatusCounts {
   failure_conditions: number;
+  /** Executions in view with errors > 0 (an unhandled action): what makes the agent red besides failed. */
+  errors: number;
 }
 
 export interface ExecutionStats {
   range: StatsRange;
   from: string | null;
   statuses: StatusCounts;
-  /** Executions in view that took a failure condition, whatever their status. */
+  /** Executions in view with errors > 0 (an unhandled action), whatever their status. */
   with_errors?: number;
   agents: { [agentId: string]: AgentStatusCounts };
 }

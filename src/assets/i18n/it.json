@@ -3834,7 +3834,8 @@
                 "Steps": "Passi: {{steps}}",
                 "More": "Altre {{n}} esecuzioni non mostrate",
                 "MoreStatus": "{{status}}: {{n}}",
-                "WithErrors": "{{n}} con rami di errore"
+                "WithErrors": "{{n}} con errori",
+                "RunWithErrors": "Con errori"
             },
             "Empty": "Nessuna esecuzione in questo intervallo di tempo",
             "RangeLabel": "Intervallo di tempo",
@@ -3869,6 +3870,8 @@
         "StatusLabel": "Stato",
         "AnyStatus": "Qualsiasi stato",
         "WithFailureConditions": "Con condizioni di errore",
+        "ErrorsMark": "errori",
+        "ErrorsMarkTooltip": "{{n}} azioni non gestite: il flusso è stato compromesso",
         "Period": "Periodo",
         "LoadError": "Impossibile caricare le esecuzioni.",
         "Retry": "Riprova",
@@ -3955,7 +3958,8 @@
             "Outcome": "esito",
             "Exit": "uscita",
             "Time": "tempo",
-            "ErrorCode": "errore"
+            "ErrorCode": "errore",
+            "NotHandled": "non gestito"
         },
         "Audit": {
             "Title": "Audit",

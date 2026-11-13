@@ -23,7 +23,7 @@ const STATS = (statuses: any = STATUSES) => ({ range: '7d', from: null, statuses
 function row(id: string, status = 'completed', extra: any = {}) {
   return {
     _id: id, agent_id: 'a1', agent_name: 'Nightly', status, end_reason: null, trigger: { type: 'scheduled' },
-    started_at: '2026-11-09T03:00:00Z', duration_ms: 2100, steps_count: 4, failure_conditions: 1, vars_changed: 7,
+    started_at: '2026-11-09T03:00:00Z', duration_ms: 2100, steps_count: 4, failure_conditions: 1, errors: 0, vars_changed: 7,
     trace_complete: true, test: false, ...extra,
   };
 }
@@ -87,11 +87,12 @@ describe('ExecutionsListComponent', () => {
   });
 
   it('filters come from the URL and map to API params', () => {
-    setup({ query: { trigger: 'all', status: 'failed', has_failures: 'true', period: '24h', q: ' abc ' } });
+    setup({ query: { trigger: 'all', status: 'failed', has_failures: 'true', has_errors: 'true', period: '24h', q: ' abc ' } });
     const p = executions.list.calls.mostRecent().args[1];
     expect(p.trigger).toBeUndefined();
     expect(p.status).toBe('failed');
     expect(p.has_failures).toBe(true);
+    expect(p.has_errors).toBe(true);
     expect(p.q).toBe('abc');
     expect(p.agent_id).toBeUndefined();
     expect(p.from).toBe(new Date(NOW - 24 * 3600 * 1000).toISOString());
@@ -111,6 +112,17 @@ describe('ExecutionsListComponent', () => {
     expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ tests: null });
     component.setFilter('has_failures', true);
     expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_failures: 'true' });
+    component.setFilter('has_errors', true);
+    expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_errors: 'true' });
+    component.setFilter('has_errors', false);
+    expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_errors: null });
+  });
+
+  it('without has_errors in the URL, the list sends no has_errors', () => {
+    setup({ query: { has_failures: 'true' } });
+    const p = executions.list.calls.mostRecent().args[1];
+    expect(p.has_errors).toBeUndefined();
+    expect(p.has_failures).toBe(true);
   });
 
   it('reloads when the query params change', () => {
@@ -193,7 +205,7 @@ describe('ExecutionsListComponent', () => {
       expect(component.hasActiveFilters).toBe(true);
       expect(text()).toContain('Executions.EmptyFiltered');
       component.clearFilters();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: null, status: null, has_failures: null, period: null, q: null, tests: null });
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: null, status: null, has_failures: null, has_errors: null, period: null, q: null, tests: null });
     });
   });
 
@@ -235,16 +247,26 @@ describe('ExecutionsListComponent', () => {
       expect(values()).toEqual(['1', '0', '4', '2', '6', '9', '4']);
     });
 
-    it('With errors toggles "With failure conditions" (it is no status) and shows pressed while on', () => {
+    it('With errors toggles has_errors (it is no status) and shows pressed while on; failure conditions untouched', () => {
       setup({ botid: 'a1' });
       cards()[4].click();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_failures: 'true' });
-      query$.next(convertToParamMap({ has_failures: 'true' }));
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_errors: 'true' });
+      query$.next(convertToParamMap({ has_errors: 'true' }));
       fixture.detectChanges();
       expect(cards()[4].getAttribute('aria-pressed')).toBe('true');
-      expect(executions.list.calls.mostRecent().args[1].has_failures).toBe(true);
+      expect(component.hasActiveFilters).toBe(true);
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.has_errors).toBe(true);
+      expect(p.has_failures).toBeUndefined();
+      expect((fixture.nativeElement.querySelector('.exec-filter-failures') as HTMLInputElement).checked).toBe(false);
       cards()[4].click();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_failures: null });
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_errors: null });
+    });
+
+    it('"With failure conditions" alone does not press the With errors card', () => {
+      setup({ botid: 'a1', query: { has_failures: 'true' } });
+      expect(cards()[4].getAttribute('aria-pressed')).not.toBe('true');
+      expect((fixture.nativeElement.querySelector('.exec-filter-failures') as HTMLInputElement).checked).toBe(true);
     });
 
     it('the period maps to the stats range', () => {
@@ -329,6 +351,19 @@ describe('ExecutionsListComponent', () => {
     });
   });
 
+  describe('errors mark', () => {
+    it('a row with errors > 0 gets a red errors mark beside its failure conditions; others none', () => {
+      setup({ page: { items: [row('e1', 'completed', { errors: 2, failure_conditions: 0 }), row('e2', 'completed', { failure_conditions: 3 }), row('e3', 'completed', { errors: undefined })], next_cursor: null } });
+      const rows = Array.from(fixture.nativeElement.querySelectorAll('.exec-row')) as HTMLElement[];
+      const mark = (r: HTMLElement) => r.querySelector('.exec-errors-mark');
+      expect(mark(rows[0])).not.toBeNull();
+      expect(mark(rows[0]).textContent).toContain('Executions.ErrorsMark');
+      expect(mark(rows[0]).closest('td').classList.contains('exec-fc-cell')).toBe(true);
+      expect(mark(rows[1])).toBeNull();
+      expect(mark(rows[2])).toBeNull();
+    });
+  });
+
   describe('fix round 1', () => {
     it('survives a list error: Retry and filter changes still reload', () => {
       setup();
@@ -384,7 +419,7 @@ describe('ExecutionsListComponent', () => {
 
     it('invalid URL values fall back to defaults', () => {
       setup({ query: { period: 'constructor', trigger: 'bogus', status: 'toString', has_failures: 'yes' } });
-      expect(component.filters).toEqual({ trigger: 'all', status: '', has_failures: false, period: '7d', q: '', tests: true });
+      expect(component.filters).toEqual({ trigger: 'all', status: '', has_failures: false, has_errors: false, period: '7d', q: '', tests: true });
       expect(executions.list.calls.mostRecent().args[1].from).toBe(new Date(NOW - 7 * 24 * 3600 * 1000).toISOString());
     });
 
