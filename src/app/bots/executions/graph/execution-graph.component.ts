@@ -313,7 +313,9 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
       const add: any[] = [];
       for (const n of model.nodes) {
         const data = {
-          id: n.id, kind: n.kind, label: n.label, status: n.status || null, agentId: n.agentId || null,
+          // a deleted agent: its name, marked (its runs are still in view)
+          id: n.id, kind: n.kind, status: n.status || null, agentId: n.agentId || null,
+          label: n.deleted ? n.label + ' · ' + this.translate.instant('Executions.Graph.Deleted') : n.label,
           executionId: n.executionId || null, tooltip: n.tooltip
         };
         const classes = classesFor(n);

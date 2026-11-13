@@ -160,14 +160,19 @@ describe('buildExecutionGraph', () => {
     expect(g.edges.some(e => e.source === 'project' && e.target === 'agent:abcdefghijkl')).toBe(true);
   });
 
-  it('with a non-empty agents list, rows and stats of other agents are not drawn', () => {
+  it('agents missing from the list (deleted) are still drawn, by the name on their runs, and marked deleted', () => {
+    // the cards count their runs: the graph must show them too (a deleted agent's run can be stuck waiting)
     const g = buildExecutionGraph({
       projectName: 'P', agents: agents(2),
       rows: [row({ _id: 'mine' }), row({ _id: 'other', agent_id: 'zz', agent_name: 'Automation' })],
-      stats: stats({ a1: { running: 1 }, zz: { running: 1 }, yy: { failed: 3 } }),
+      stats: stats({ a1: { running: 1 }, zz: { running: 1 } }),
     });
-    expect(g.nodes.filter(n => n.kind === 'agent').map(n => n.id)).toEqual(['agent:a1']);
-    expect(g.nodes.some(n => n.id === 'exec:other')).toBe(false);
+    const agentNodes = g.nodes.filter(n => n.kind === 'agent');
+    expect(agentNodes.map(n => n.id).sort()).toEqual(['agent:a1', 'agent:zz']);
+    expect(agentNodes.find(n => n.id === 'agent:zz').label).toBe('Automation');
+    expect(agentNodes.find(n => n.id === 'agent:zz').deleted).toBe(true);
+    expect(agentNodes.find(n => n.id === 'agent:a1').deleted).toBeUndefined();
+    expect(g.nodes.some(n => n.id === 'exec:other')).toBe(true);
   });
 
   it('positions are stable across refreshes while no agent changes bucket', () => {
