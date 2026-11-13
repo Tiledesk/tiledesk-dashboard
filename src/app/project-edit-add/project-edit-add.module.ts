@@ -11,6 +11,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 import { UrlsWhitelistComponent } from './urls-whitelist/urls-whitelist.component';
 import { ExecutionsRetentionComponent, RetentionConfirmDialogComponent } from './executions-retention/executions-retention.component';
+import { ExecutionsStopNoticeComponent } from './executions-stop-notice/executions-stop-notice.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -28,7 +29,8 @@ const routes: Routes = [
     ProjectEditAddComponent,
     UrlsWhitelistComponent,
     ExecutionsRetentionComponent,
-    RetentionConfirmDialogComponent
+    RetentionConfirmDialogComponent,
+    ExecutionsStopNoticeComponent
   ],
   imports: [
     RouterModule.forChild(routes),

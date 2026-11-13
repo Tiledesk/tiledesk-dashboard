@@ -163,6 +163,11 @@ describe('auditSentence', () => {
       .toBe('Anna Rossi was denied access to the data of execution 000001 of Bot (role admin)');
   });
 
+  it('words the project-level actions', () => {
+    expect(s('retention_update', { result: 'accepted' })).toBe('Anna Rossi changed executions retention');
+    expect(s('stop_notice_update', { result: 'accepted' })).toBe('Anna Rossi changed the executions stop notice');
+  });
+
   it('names the block when the execution on screen has it, else its number', () => {
     const names = (seq: number) => (seq === 2 ? 'Call status API' : null);
     const n = (d: any) => auditSentence(entry(1, 'data_viewed', d), EXEC_ID, 'Bot', names);

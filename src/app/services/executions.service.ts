@@ -5,7 +5,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import {
-  AuditPage, ExecutionDetail, RetentionSettings, ExecutionListParams, ExecutionPage, GrantInfo, GrantScope, StartNewInput, StateView, Summary, ValueOrState,
+  AuditPage, ExecutionDetail, RetentionSettings, StopNoticeBody, StopNoticeSettings, ExecutionListParams, ExecutionPage, GrantInfo, GrantScope, StartNewInput, StateView, Summary, ValueOrState,
   VarHistoryEntry
 } from 'app/bots/executions/executions.models';
 
@@ -179,8 +179,18 @@ export class ExecutionsService {
     return this.httpClient.put<RetentionSettings>(this.settingsUrl(projectId), body, { headers: this.headers() });
   }
 
-  private settingsUrl(projectId: string): string {
+  /** The stop notice the chatbot sends when a user writes while the agent's execution is stopped. */
+  getStopNotice(projectId: string): Observable<StopNoticeSettings> {
+    return this.httpClient.get<StopNoticeSettings>(this.settingsUrl(projectId, 'stop-notice'), { headers: this.headers() });
+  }
+
+  /** 200 with the GET shape; 400 out_of_range {field: 'text'}; 403 without executions_control. */
+  putStopNotice(projectId: string, body: StopNoticeBody): Observable<StopNoticeSettings> {
+    return this.httpClient.put<StopNoticeSettings>(this.settingsUrl(projectId, 'stop-notice'), body, { headers: this.headers() });
+  }
+
+  private settingsUrl(projectId: string, setting: 'retention' | 'stop-notice' = 'retention'): string {
     const base = this.baseUrl().replace(/\/+$/, '');
-    return `${base}/projects/${projectId}/settings/retention`;
+    return `${base}/projects/${projectId}/settings/${setting}`;
   }
 }
