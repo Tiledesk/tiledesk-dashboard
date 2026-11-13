@@ -21,8 +21,8 @@ function row(id: string, status: string, agentId: string, extra: any = {}): Exec
   };
 }
 
-const STATS = (over: any = {}): ExecutionStats => ({
-  range: 'now', from: null, agents: {},
+const STATS = (over: any = {}, withErrors = 2): ExecutionStats => ({
+  range: 'now', from: null, agents: {}, with_errors: withErrors,
   statuses: { running: 1, waiting: 1, stopping: 0, stopped: 0, failed: 1, completed: 0, destroyed: 0, ...over },
 });
 
@@ -172,7 +172,8 @@ describe('ExecutionGraphComponent', () => {
     feed$.next(snap(FIRST().rows, false, { stats: STATS({ running: 7, stopping: 2, stopped: 1, completed: 4 }) }));
     fixture.detectChanges();
     const text = () => (fixture.nativeElement as HTMLElement).textContent;
-    expect(cardValues()).toEqual(['7', '1', '3', '1', '4', '0']);
+    // With errors (2) explains a red agent next to Failed: the runs that took a failure condition
+    expect(cardValues()).toEqual(['7', '1', '3', '1', '2', '4', '0']);
     expect(text()).not.toContain('Data may be out of date');
     expect(text()).not.toContain('Some executions are not drawn');
     feed$.next({ ...FIRST(), stale: true });
@@ -243,7 +244,7 @@ describe('ExecutionGraphComponent', () => {
     setup();
     await ready();
     const el = fixture.nativeElement as HTMLElement;
-    expect(cardValues()).toEqual(['–', '–', '–', '–', '–', '–']);
+    expect(cardValues()).toEqual(['–', '–', '–', '–', '–', '–', '–']);
     feed$.next(snap([], true, { stats: null }));
     fixture.detectChanges();
     expect(cardValues()[0]).toBe('–');
@@ -252,6 +253,7 @@ describe('ExecutionGraphComponent', () => {
     feed$.next(FIRST());
     fixture.detectChanges();
     expect(cardValues()[0]).toBe('1');
+    expect(cardValues()[4]).toBe('2'); // With errors arrives with the other numbers
     feed$.next({ ...FIRST(), stale: true });
     fixture.detectChanges();
     expect(cardValues()[0]).toBe('1');

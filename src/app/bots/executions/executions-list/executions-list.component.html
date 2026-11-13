@@ -26,7 +26,7 @@
 
     <!-- the big numbers: every status, over the period and the agent / test-runs filters, all triggers -->
     <div class="exec-cards">
-      <execution-stat-cards [counts]="counters" [selectable]="true" [active]="filters.status" (pick)="toggleStatus($event)"></execution-stat-cards>
+      <execution-stat-cards [counts]="counters" [withErrors]="withErrors" [selectable]="true" [active]="filters.has_failures ? 'with_errors' : filters.status" (pick)="pickCard($event)"></execution-stat-cards>
       <span class="exec-cards-hint">{{ "Executions.Periods." + filters.period | translate }} · {{ "Executions.Triggers.all" | translate }}</span>
     </div>
 

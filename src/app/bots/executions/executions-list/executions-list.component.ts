@@ -54,6 +54,8 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   agents: { id: string; name: string }[] = [];
   /** The big numbers: every status over the list's period, agent and test-runs filters (the stats API); null until known. */
   counters: StatusCounts | null = null;
+  /** The stats' with_errors: runs that took a failure condition (the With errors card). */
+  withErrors: number | null = null;
 
   private destroy$ = new Subject<void>();
   private reload$ = new Subject<void>();
@@ -83,6 +85,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       this.agentId = agentId;
       if (changed && this.started) {
         this.counters = null;
+        this.withErrors = null;
         this.rows = [];
         this.nextCursor = null;
         this.loadFirstPage();
@@ -211,7 +214,10 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     this.executionsService.stats(this.projectId, params)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: s => this.counters = (s && s.statuses) || null,
+        next: s => {
+          this.counters = (s && s.statuses) || null;
+          this.withErrors = s && typeof s.with_errors === 'number' ? s.with_errors : null;
+        },
         error: err => this.logger.error('[EXECUTIONS-LIST] stats error ', err)
       });
   }
@@ -298,6 +304,12 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
    * A card counts every trigger type (the stats API), so turning one on also shows all triggers
    * (the default): a narrower trigger filter would hide rows it counts. Turning it off keeps the trigger.
    */
+  /** A card: a status toggles the status filter; With errors toggles "With failure conditions". */
+  pickCard(card: string) {
+    if (card === 'with_errors') this.setFilter('has_failures', !this.filters.has_failures);
+    else this.toggleStatus(card);
+  }
+
   toggleStatus(status: string) {
     if (this.filters.status === status) this.setFilter('status', '');
     else this.navigateWith({ status, trigger: null });

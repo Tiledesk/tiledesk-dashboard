@@ -4137,6 +4137,7 @@
             "waiting": "In attesa",
             "stopped": "Arrestate",
             "failed": "Fallite",
+            "with_errors": "Con errori",
             "completed": "Completate",
             "destroyed": "Distrutte"
         }

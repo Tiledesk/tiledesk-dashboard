@@ -18,7 +18,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 
 const NOW = Date.parse('2026-11-09T12:00:00Z');
 const STATUSES = { running: 1, waiting: 0, stopping: 1, stopped: 3, failed: 2, completed: 9, destroyed: 4 };
-const STATS = (statuses: any = STATUSES) => ({ range: '7d', from: null, statuses, agents: {} });
+const STATS = (statuses: any = STATUSES) => ({ range: '7d', from: null, statuses, with_errors: 6, agents: {} });
 
 function row(id: string, status = 'completed', extra: any = {}) {
   return {
@@ -232,7 +232,19 @@ describe('ExecutionsListComponent', () => {
       setup({ botid: 'a1' });
       expect(executions.stats).toHaveBeenCalledWith('p1', { range: '7d', agent_id: 'a1', test: 'all' });
       expect(executions.summary).not.toHaveBeenCalled();
-      expect(values()).toEqual(['1', '0', '4', '2', '9', '4']);
+      expect(values()).toEqual(['1', '0', '4', '2', '6', '9', '4']);
+    });
+
+    it('With errors toggles "With failure conditions" (it is no status) and shows pressed while on', () => {
+      setup({ botid: 'a1' });
+      cards()[4].click();
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_failures: 'true' });
+      query$.next(convertToParamMap({ has_failures: 'true' }));
+      fixture.detectChanges();
+      expect(cards()[4].getAttribute('aria-pressed')).toBe('true');
+      expect(executions.list.calls.mostRecent().args[1].has_failures).toBe(true);
+      cards()[4].click();
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_failures: null });
     });
 
     it('the period maps to the stats range', () => {
@@ -279,7 +291,7 @@ describe('ExecutionsListComponent', () => {
     it('all-agents view: cards for every agent (no agent_id), Agent column from agent_name', () => {
       setup({ page: { items: [row('e1', 'failed', { agent_name: 'Nightly' })], next_cursor: null } });
       expect(executions.stats).toHaveBeenCalledWith('p1', { range: '7d', test: 'all' });
-      expect(cards().length).toBe(6);
+      expect(cards().length).toBe(7);
       expect(fixture.nativeElement.querySelector('.exec-agent').textContent).toContain('Nightly');
     });
 

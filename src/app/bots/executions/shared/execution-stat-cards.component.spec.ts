@@ -21,16 +21,26 @@ describe('ExecutionStatCardsComponent', () => {
   const label = (el: HTMLElement) => el.querySelector('.exec-stat-label').textContent.trim();
 
   it('one card per status, in order; Stopped counts stopped + stopping', () => {
-    setup({ counts: COUNTS });
-    expect(STAT_CARDS).toEqual(['running', 'waiting', 'stopped', 'failed', 'completed', 'destroyed']);
+    setup({ counts: COUNTS, withErrors: 8 });
+    expect(STAT_CARDS).toEqual(['running', 'waiting', 'stopped', 'failed', 'with_errors', 'completed', 'destroyed']);
     expect(cards().map(label)).toEqual(STAT_CARDS.map(s => 'Executions.Cards.' + s));
-    expect(cards().map(value)).toEqual(['3', '2', '5', '5', '6', '7']);
+    expect(cards().map(value)).toEqual(['3', '2', '5', '5', '8', '6', '7']);
     expect(cards().map(c => c.getAttribute('data-status'))).toEqual(STAT_CARDS);
   });
 
   it('unknown counts show a dash, not zero', () => {
     setup({ counts: null });
-    expect(cards().map(value)).toEqual(['–', '–', '–', '–', '–', '–']);
+    expect(cards().map(value)).toEqual(['–', '–', '–', '–', '–', '–', '–']);
+  });
+
+  it('With errors has its own input: a dash until it is known, even with the status counts in', () => {
+    setup({ counts: COUNTS, withErrors: null });
+    expect(value(cards()[4])).toBe('–');
+  });
+
+  it('With errors 0 shows 0 (known, none)', () => {
+    setup({ counts: COUNTS, withErrors: 0 });
+    expect(value(cards()[4])).toBe('0');
   });
 
   it('read-only by default: plain cards, nothing emitted on click', () => {
@@ -47,7 +57,7 @@ describe('ExecutionStatCardsComponent', () => {
     const picked = jasmine.createSpy('pick');
     component.pick.subscribe(picked);
     expect(cards().every(c => c.tagName === 'BUTTON')).toBe(true);
-    expect(cards().map(c => c.getAttribute('aria-pressed'))).toEqual(['false', 'false', 'false', 'true', 'false', 'false']);
+    expect(cards().map(c => c.getAttribute('aria-pressed'))).toEqual(['false', 'false', 'false', 'true', 'false', 'false', 'false']);
     expect(cards()[3].classList).toContain('active');
     cards()[2].click();
     expect(picked).toHaveBeenCalledWith('stopped');
