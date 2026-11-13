@@ -3,7 +3,8 @@ import { SimpleChange } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ExecutionRow } from '../executions.models';
+import { ExecutionRow, ExecutionStats } from '../executions.models';
+import { ExecutionStatCardsModule } from '../shared/execution-stat-cards.module';
 import { executionLink } from '../execution-links';
 import { GraphSnapshot } from './execution-graph.feed';
 import { CYTOSCAPE_LOADER, EXECUTION_GRAPH_FEED, ExecutionGraphComponent } from './execution-graph.component';
@@ -20,11 +21,16 @@ function row(id: string, status: string, agentId: string, extra: any = {}): Exec
   };
 }
 
-function snap(live: ExecutionRow[], failed: ExecutionRow[] = [], stale = false): GraphSnapshot {
-  return { live, failed, fetchedAt: Date.now(), stale };
+const STATS = (over: any = {}): ExecutionStats => ({
+  range: 'now', from: null, agents: {},
+  statuses: { running: 1, waiting: 1, stopping: 0, stopped: 0, failed: 1, completed: 0, destroyed: 0, ...over },
+});
+
+function snap(rows: ExecutionRow[], stale = false, extra: Partial<GraphSnapshot> = {}): GraphSnapshot {
+  return { rows, stats: STATS(), truncated: false, range: 'now', fetchedAt: Date.now(), stale, ...extra };
 }
 
-const FIRST = () => snap([row(E1, 'running', 'a1'), row(E2, 'waiting', 'a2')], [row(E3, 'failed', 'a2')]);
+const FIRST = () => snap([row(E1, 'running', 'a1'), row(E2, 'waiting', 'a2'), row(E3, 'failed', 'a2')]);
 
 describe('ExecutionGraphComponent', () => {
   let fixture: ComponentFixture<ExecutionGraphComponent>;
@@ -44,19 +50,19 @@ describe('ExecutionGraphComponent', () => {
     if (opts.loader) { providers.push({ provide: CYTOSCAPE_LOADER, useValue: opts.loader }); }
     TestBed.configureTestingModule({
       declarations: [ExecutionGraphComponent],
-      imports: [TranslateModule.forRoot()],
+      imports: [TranslateModule.forRoot(), ExecutionStatCardsModule],
       providers,
     });
     const translate = TestBed.inject(TranslateService);
     translate.setTranslation('en', {
       Executions: { Graph: {
-        Counts: '{{running}} running · {{waiting}} waiting · {{failed}} failed in the last 15 min',
-        Truncated: 'Showing the first 300 live executions',
+        Truncated: 'Some executions are not drawn',
+        Empty: 'Nothing in view',
         Stale: 'Data may be out of date',
         Unavailable: 'The graph could not be loaded',
         Tip: {
           Status: 'State: {{status}}', Started: 'Began: {{time}}', Trigger: 'Source: {{trigger}}', Steps: 'Blocks: {{steps}}',
-          More: '{{n}} more not drawn', MoreStatus: '{{status}}: {{n}}', ErrorBranches: '{{n}} error branches',
+          More: '{{n}} more not drawn', MoreStatus: '{{status}}: {{n}}', WithErrors: '{{n}} with errors',
         },
       },
       Status: { running: 'RUN', waiting: 'WAIT', stopping: 'STOP', failed: 'FAIL' } }
@@ -82,7 +88,7 @@ describe('ExecutionGraphComponent', () => {
   it('renders project, agents and executions from a snapshot', async () => {
     setup();
     await ready();
-    expect(feedFactory).toHaveBeenCalledWith('p1');
+    expect(feedFactory).toHaveBeenCalledWith('p1', 'now');
     feed$.next(FIRST());
     fixture.detectChanges();
     const cy = component.cy;
@@ -112,21 +118,29 @@ describe('ExecutionGraphComponent', () => {
     expect(cy.nodes().length).toBe(5);
     const after = ['project', 'agent:a1', 'agent:a2', 'exec:' + E1].map(id => ({ ...cy.getElementById(id).position() }));
     expect(after).toEqual(before);
+    // a2 has nothing left in view: it is no longer drawn
     feed$.next(snap([row(E1, 'running', 'a1')]));
-    expect(cy.nodes().length).toBe(4);
-    expect(cy.getElementById('agent:a2').hasClass('idle')).toBe(true);
+    expect(cy.nodes().length).toBe(3);
+    expect(cy.getElementById('agent:a2').empty()).toBe(true);
   });
 
-  it('failed execution and its agent get the aura class', async () => {
-    setup();
+  it('agents get their colour class, executions their status class', async () => {
+    setup({ agents: [{ id: 'a1', name: 'Nightly' }, { id: 'a2', name: 'Alpha' }, { id: 'a3', name: 'Done' }, { id: 'a4', name: 'Gone' },
+      { id: 'a5', name: 'Paused' }] });
     await ready();
-    feed$.next(FIRST());
+    const E4 = '44444444-4444-4444-4444-444444444444', E5 = '55555555-5555-5555-5555-555555555555', E6 = '66666666-6666-6666-6666-666666666666';
+    feed$.next(snap([...FIRST().rows, row(E4, 'completed', 'a3'), row(E5, 'destroyed', 'a4'), row(E6, 'stopped', 'a5')]));
     const cy = component.cy;
+    const cls = (id: string) => ['c-red', 'c-blue', 'c-amber', 'c-green', 'c-gray'].filter(c => cy.getElementById(id).hasClass(c));
+    expect(cls('agent:a1')).toEqual(['c-blue']);
+    expect(cls('agent:a2')).toEqual(['c-red']);
+    expect(cls('agent:a3')).toEqual(['c-green']);
+    expect(cls('agent:a4')).toEqual(['c-gray']);
+    expect(cls('agent:a5')).toEqual(['c-amber']);
     expect(cy.getElementById('exec:' + E3).hasClass('s-failed')).toBe(true);
-    expect(cy.getElementById('exec:' + E3).hasClass('aura')).toBe(true);
-    expect(cy.getElementById('agent:a2').hasClass('aura')).toBe(true);
-    expect(cy.getElementById('agent:a1').hasClass('aura')).toBe(false);
-    expect(cy.getElementById('exec:' + E1).hasClass('aura')).toBe(false);
+    expect(cy.getElementById('exec:' + E4).hasClass('s-completed')).toBe(true);
+    expect(cy.getElementById('exec:' + E5).hasClass('s-destroyed')).toBe(true);
+    expect(cy.getElementById('exec:' + E6).hasClass('s-stopped')).toBe(true);
   });
 
   it('tap on an execution navigates to its detail', async () => {
@@ -149,18 +163,51 @@ describe('ExecutionGraphComponent', () => {
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
-  it('counts line and stale note', async () => {
+  const cardValues = () => Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.exec-stat-card .exec-stat-value'))
+    .map(el => el.textContent.trim());
+
+  it('big numbers come from the snapshot stats; stale and truncated notes', async () => {
+    setup();
+    await ready();
+    feed$.next(snap(FIRST().rows, false, { stats: STATS({ running: 7, stopping: 2, stopped: 1, completed: 4 }) }));
+    fixture.detectChanges();
+    const text = () => (fixture.nativeElement as HTMLElement).textContent;
+    expect(cardValues()).toEqual(['7', '1', '3', '1', '4', '0']);
+    expect(text()).not.toContain('Data may be out of date');
+    expect(text()).not.toContain('Some executions are not drawn');
+    feed$.next({ ...FIRST(), stale: true });
+    fixture.detectChanges();
+    expect(text()).toContain('Data may be out of date');
+    feed$.next({ ...FIRST(), truncated: true });
+    fixture.detectChanges();
+    expect(text()).toContain('Some executions are not drawn');
+  });
+
+  it('nothing in view: an empty note over the graph', async () => {
+    setup();
+    await ready();
+    feed$.next(snap([], false, { stats: STATS({ running: 0, waiting: 0, failed: 0 }) }));
+    fixture.detectChanges();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.graph-empty').textContent.trim()).toBe('Nothing in view');
+    feed$.next(FIRST());
+    fixture.detectChanges();
+    expect((fixture.nativeElement as HTMLElement).querySelector('.graph-empty')).toBeNull();
+  });
+
+  it('a new range resubscribes the feed with it and blanks the numbers until its first snapshot', async () => {
     setup();
     await ready();
     feed$.next(FIRST());
     fixture.detectChanges();
-    const text = () => (fixture.nativeElement as HTMLElement).textContent;
-    expect(text()).toContain('1 running · 1 waiting · 1 failed in the last 15 min');
-    expect(text()).not.toContain('Data may be out of date');
-    expect(text()).not.toContain('Showing the first 300 live executions');
-    feed$.next({ ...FIRST(), stale: true });
+    expect(cardValues()[0]).toBe('1');
+    component.range = '24h';
+    component.ngOnChanges({ range: new SimpleChange('now', '24h', false) });
     fixture.detectChanges();
-    expect(text()).toContain('Data may be out of date');
+    expect(feedFactory).toHaveBeenCalledWith('p1', '24h');
+    expect(cardValues()[0]).toBe('–');
+    feed$.next(snap(FIRST().rows, false, { range: '24h', stats: STATS({ running: 9 }) }));
+    fixture.detectChanges();
+    expect(cardValues()[0]).toBe('9');
   });
 
   it('hover on an execution shows a translated tooltip with a formatted start time', async () => {
@@ -192,29 +239,22 @@ describe('ExecutionGraphComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a1', 'executions']);
   });
 
-  it('agents get the active class only when something runs or stops', async () => {
-    setup();
-    await ready();
-    feed$.next(FIRST());
-    expect(component.cy.getElementById('agent:a1').hasClass('active')).toBe(true);
-    expect(component.cy.getElementById('agent:a2').hasClass('active')).toBe(false);
-    expect(component.cy.getElementById('agent:a2').hasClass('idle')).toBe(false);
-  });
-
-  it('no counts line until the first successful snapshot', async () => {
+  it('no numbers until the first successful snapshot; a stale one keeps the last numbers', async () => {
     setup();
     await ready();
     const el = fixture.nativeElement as HTMLElement;
-    feed$.next(snap([], [], true));
+    expect(cardValues()).toEqual(['–', '–', '–', '–', '–', '–']);
+    feed$.next(snap([], true, { stats: null }));
     fixture.detectChanges();
-    expect(el.querySelector('.graph-counts')).toBeNull();
+    expect(cardValues()[0]).toBe('–');
     expect(el.textContent).toContain('Data may be out of date');
+    expect(el.querySelector('.graph-empty')).toBeNull();
     feed$.next(FIRST());
     fixture.detectChanges();
-    expect(el.querySelector('.graph-counts')).not.toBeNull();
+    expect(cardValues()[0]).toBe('1');
     feed$.next({ ...FIRST(), stale: true });
     fixture.detectChanges();
-    expect(el.querySelector('.graph-counts').textContent).toContain('1 running');
+    expect(cardValues()[0]).toBe('1');
     expect(el.textContent).toContain('Data may be out of date');
   });
 
@@ -234,7 +274,7 @@ describe('ExecutionGraphComponent', () => {
     expect(feed$.observers.length).toBe(1);
     feed$.next(snap([row(E1, 'running', 'a1')]));
     fixture.detectChanges();
-    expect(cy.nodes().length).toBe(4);
+    expect(cy.nodes().length).toBe(3);
     expect((fixture.nativeElement as HTMLElement).textContent).not.toContain('Data may be out of date');
   });
 
@@ -336,11 +376,11 @@ describe('ExecutionGraphComponent', () => {
   });
 
   it('agent and execution nodes use style C (shape, size, background image per status, label below the agent)', async () => {
-    setup({ agents: [{ id: 'a1', name: 'Nightly' }, { id: 'a2', name: 'Alpha' }, { id: 'a3', name: 'Quiet' }] });
+    setup({ agents: [{ id: 'a1', name: 'Nightly' }, { id: 'a2', name: 'Alpha' }, { id: 'a3', name: 'Quiet' }, { id: 'a4', name: 'Done' }] });
     await ready();
     const E4 = '44444444-4444-4444-4444-444444444444';
     const many = Array.from({ length: 14 }, (_, i) => row('w' + String(i).padStart(2, '0') + '-0000-0000', 'waiting', 'a3'));
-    feed$.next(snap([row(E1, 'running', 'a1'), row(E2, 'waiting', 'a2'), row(E4, 'stopping', 'a1')], [row(E3, 'failed', 'a2')]));
+    feed$.next(snap([row(E1, 'running', 'a1'), row(E2, 'waiting', 'a2'), row(E4, 'stopping', 'a1'), row(E3, 'failed', 'a2')]));
     const cy = component.cy;
     const img = (id: string) => decodeURIComponent(String(cy.getElementById(id).style('background-image')));
 
@@ -351,8 +391,8 @@ describe('ExecutionGraphComponent', () => {
     expect(agent.style('text-valign')).toBe('bottom');
     expect(agent.numericStyle('font-size')).toBe(12);
     expect(img('agent:a1')).toContain('i-bot');
-    expect(img('agent:a1')).toContain('#0f4c99');            // active
-    expect(img('agent:a2')).toContain('#a1170d');            // aura wins over default
+    expect(img('agent:a1')).toContain('#0f4c99');            // blue: running
+    expect(img('agent:a2')).toContain('#a1170d');            // red: a failure
     expect(cy.getElementById('agent:a2').numericStyle('underlay-padding')).toBe(7);
 
     const exec = cy.getElementById('exec:' + E1);
@@ -376,10 +416,14 @@ describe('ExecutionGraphComponent', () => {
     expect(spoke.style('line-color')).toBe('rgb(223,227,232)');   // #dfe3e8: structure, lighter than the fan edges
     expect(spoke.numericStyle('width')).toBe(1);
 
-    // default (executions, none active) and idle agents
-    feed$.next(snap([...many, row(E2, 'waiting', 'a2')]));
-    expect(img('agent:a2')).toContain('#4b2fb3');
-    expect(img('agent:a1')).toContain('#8b95a5');
+    // amber (waiting), green (completed), gray (destroyed); completed and destroyed chips
+    const E5 = '55555555-5555-5555-5555-555555555555';
+    feed$.next(snap([...many, row(E2, 'waiting', 'a2'), row(E4, 'completed', 'a1'), row(E5, 'destroyed', 'a1'), row(E1, 'completed', 'a4')]));
+    expect(img('agent:a2')).toContain('#8a5a00');
+    expect(img('agent:a1')).toContain('#5d6b82');
+    expect(img('agent:a4')).toContain('#1e7a3c');
+    expect(img('exec:' + E4)).toContain('i-check');
+    expect(img('exec:' + E5)).toContain('i-x');
     const more = cy.getElementById('more:a3');
     expect(more.style('border-style')).toBe('dashed');
     expect(more.numericStyle('height')).toBe(22);
@@ -387,40 +431,27 @@ describe('ExecutionGraphComponent', () => {
     expect(more.numericStyle('width')).toBeGreaterThan(22);   // auto width from '+N'
   });
 
-  it('legend shows a chip swatch per status and two agent swatches, coloured from the palette', async () => {
+  it('colour key: one swatch per agent colour, from the palette', async () => {
     setup();
     await ready();
-    const swatches = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-legend .chip')) as HTMLElement[];
-    expect(swatches.map(s => s.className)).toEqual([
-      'chip chip-running', 'chip chip-waiting', 'chip chip-stopping', 'chip chip-failed', 'chip chip-agent chip-aura', 'chip chip-agent chip-warn',
-    ]);
-    const bg = (el: HTMLElement) => getComputedStyle(el).backgroundColor;
+    const swatches = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-key .key-swatch')) as HTMLElement[];
+    expect(swatches.map(s => s.getAttribute('data-color'))).toEqual(['red', 'blue', 'amber', 'green', 'gray']);
     const border = (el: HTMLElement) => getComputedStyle(el).borderTopColor;
-    expect(bg(swatches[0])).toBe('rgb(31, 111, 214)');     // run #1f6fd6
-    expect(border(swatches[1])).toBe('rgb(215, 220, 227)'); // waitBorder #d7dce3
-    expect(bg(swatches[3])).toBe('rgb(217, 48, 37)');      // bad #d93025
-    expect(border(swatches[4])).toBe('rgb(243, 184, 178)'); // auraBorder #f3b8b2
-    expect(border(swatches[5])).toBe('rgb(217, 138, 0)');   // warn #d98a00
+    expect(border(swatches[0])).toBe('rgb(243, 184, 178)'); // red border #f3b8b2
+    expect(border(swatches[1])).toBe('rgb(185, 211, 245)'); // blue border #b9d3f5
   });
 
-  it('an agent that only took an error branch gets the amber warn outline and an error-branch tooltip line', async () => {
+  it('an agent with errors is red and its tooltip says how many executions have them', async () => {
     setup();
     await ready();
-    feed$.next(snap([row(E1, 'running', 'a1', { failure_conditions: 2 })], [row(E3, 'failed', 'a2')]));
-    const cy = component.cy;
-    const a1 = cy.getElementById('agent:a1');
-    expect(a1.hasClass('warn')).toBe(true);
-    expect(a1.hasClass('aura')).toBe(false);
-    expect(a1.style('border-color')).toBe('rgb(217,138,0)');
-    expect(a1.style('underlay-color')).toBe('rgb(217,138,0)');
-    expect(a1.numericStyle('underlay-opacity')).toBeCloseTo(0.16, 2);
+    feed$.next(snap([row(E1, 'running', 'a1', { failure_conditions: 2 }), row(E3, 'failed', 'a2')]));
+    const a1 = component.cy.getElementById('agent:a1');
+    expect(a1.hasClass('c-red')).toBe(true);
     expect(a1.numericStyle('text-max-width')).toBe(160);
-    expect(cy.getElementById('agent:a2').hasClass('aura')).toBe(true);
-    expect(cy.getElementById('agent:a2').hasClass('warn')).toBe(false);
     a1.emit('mouseover');
     fixture.detectChanges();
     const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
-    expect(lines).toEqual(['Nightly', '2 error branches']);
+    expect(lines).toEqual(['Nightly', '1 with errors']);
   });
 
   it('a new projectId resets the graph and subscribes the new feed', async () => {
@@ -430,8 +461,8 @@ describe('ExecutionGraphComponent', () => {
     expect(component.cy.nodes().length).toBe(6);
     component.projectId = 'p2';
     component.ngOnChanges({ projectId: new SimpleChange('p1', 'p2', false) });
-    expect(feedFactory).toHaveBeenCalledWith('p2');
+    expect(feedFactory).toHaveBeenCalledWith('p2', 'now');
     expect(component.cy.elements().length).toBe(0);
-    expect(component.counts).toBeNull();
+    expect(component.stats).toBeNull();
   });
 });

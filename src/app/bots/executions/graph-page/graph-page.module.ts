@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { TranslateModule } from '@ngx-translate/core';
 import { ExecutionGraphModule } from '../graph/execution-graph.module';
 import { MonitorTabsModule } from '../monitor-tabs/monitor-tabs.module';
@@ -12,6 +14,8 @@ import { GraphPageComponent } from './graph-page.component';
   imports: [
     CommonModule,
     TranslateModule,
+    FormsModule,
+    NgSelectModule,
     ExecutionGraphModule,
     MonitorTabsModule,
     RouterModule.forChild([{ path: '', component: GraphPageComponent }]),

@@ -6,7 +6,7 @@ import { ExecutionsService } from 'app/services/executions.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { AgentSummary, canViewExecutions, ExecutionListParams, ExecutionRow } from '../executions.models';
+import { canViewExecutions, ExecutionListParams, ExecutionRow, StatsParams, StatsRange, StatusCounts } from '../executions.models';
 import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration, PERIOD_MS } from '../shared/execution-format';
 
@@ -36,7 +36,6 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   readonly triggerOptions = ['all', 'unattended', 'scheduled', 'webhook', 'trigger', 'automation', 'widget', 'channel'];
   readonly statusOptions = ['running', 'waiting', 'stopping', 'stopped', 'failed', 'completed', 'destroyed'];
   readonly periodOptions = ['24h', '7d', '30d'];
-  readonly counterStatuses = ['running', 'waiting', 'failed', 'stopped'];
   readonly formatDuration = formatDuration;
 
   projectId: string;
@@ -53,8 +52,8 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   error = false;
 
   agents: { id: string; name: string }[] = [];
-  /** only in the one-agent view (the summary API needs agent ids) */
-  counters: AgentSummary | null = null;
+  /** The big numbers: every status over the list's period, agent and test-runs filters (the stats API); null until known. */
+  counters: StatusCounts | null = null;
 
   private destroy$ = new Subject<void>();
   private reload$ = new Subject<void>();
@@ -201,15 +200,19 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       });
   }
 
-  /** Counters come from one summary call for the agent; the all-agents view has none (the API needs agent ids). */
+  /**
+   * The cards come from one stats call: the list's period as the range (live runs of any age included, as the
+   * graph counts them), the agent of the view if any, test runs as the toggle says. Every trigger is counted.
+   */
   private loadCounters() {
     // the old value stays until the new one arrives (no flicker on every poll)
-    if (!this.agentId) return;
-    this.executionsService.summary(this.projectId, [this.agentId], '24h', this.filters.tests)
+    const params: StatsParams = { range: this.filters.period as StatsRange, test: this.filters.tests ? 'all' : false };
+    if (this.agentId) params.agent_id = this.agentId;
+    this.executionsService.stats(this.projectId, params)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: s => this.counters = s.agents[this.agentId] || null,
-        error: err => this.logger.error('[EXECUTIONS-LIST] summary error ', err)
+        next: s => this.counters = (s && s.statuses) || null,
+        error: err => this.logger.error('[EXECUTIONS-LIST] stats error ', err)
       });
   }
 
@@ -292,7 +295,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * A counter chip counts every trigger type (the summary API), so turning one on also shows all triggers
+   * A card counts every trigger type (the stats API), so turning one on also shows all triggers
    * (the default): a narrower trigger filter would hide rows it counts. Turning it off keeps the trigger.
    */
   toggleStatus(status: string) {
@@ -319,8 +322,9 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
   // ---- navigation ----
 
-  switchAgent(agentId: string) {
-    this.router.navigate(monitorExecutionsLink(this.projectId, agentId), { queryParamsHandling: 'preserve' });
+  /** '' or null (the switcher cleared): all agents. */
+  switchAgent(agentId: string | null) {
+    this.router.navigate(monitorExecutionsLink(this.projectId, agentId || ''), { queryParamsHandling: 'preserve' });
   }
 
   openExecution(row: ExecutionRow) {

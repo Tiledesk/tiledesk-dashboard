@@ -3,6 +3,7 @@ import { Component, Input, NO_ERRORS_SCHEMA } from '@angular/core';
 import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { By } from '@angular/platform-browser';
+import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { GraphPageComponent } from './graph-page.component';
 import { MonitorTabsComponent } from '../monitor-tabs/monitor-tabs.component';
 import { ExecutionsService } from 'app/services/executions.service';
@@ -17,6 +18,7 @@ class GraphStubComponent {
   @Input() projectName: string;
   @Input() agents: any[];
   @Input() fill: boolean;
+  @Input() range: string;
 }
 
 describe('GraphPageComponent', () => {
@@ -24,8 +26,14 @@ describe('GraphPageComponent', () => {
   let perms$: Subject<any>;
 
   let getAgents: jasmine.Spy;
+  let query$: BehaviorSubject<any>;
+  let router: { navigate: jasmine.Spy };
+  let route: any;
 
-  function setup(bots$: any, perm: any = { role: 'owner', matchedPermissions: [] }, configured = true) {
+  function setup(bots$: any, perm: any = { role: 'owner', matchedPermissions: [] }, configured = true, query: any = {}) {
+    query$ = new BehaviorSubject(convertToParamMap(query));
+    router = { navigate: jasmine.createSpy('navigate') };
+    route = { queryParamMap: query$ };
     getAgents = jasmine.createSpy('getFaqKbByProjectId').and.returnValue(bots$);
     perms$ = new Subject();
     TestBed.configureTestingModule({
@@ -37,6 +45,8 @@ describe('GraphPageComponent', () => {
         { provide: AuthService, useValue: { project_bs: new BehaviorSubject({ _id: 'p1', name: 'Proj' }) } },
         { provide: RolesService, useValue: { listenToProjectUserPermissions() {}, getUpdateRequestPermission: () => perms$ } },
         { provide: LoggerService, useValue: { log() {}, error() {}, debug() {}, warn() {} } },
+        { provide: ActivatedRoute, useValue: route },
+        { provide: Router, useValue: router },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
@@ -92,5 +102,35 @@ describe('GraphPageComponent', () => {
     expect(getAgents).not.toHaveBeenCalled();
     expect(fixture.nativeElement.querySelector('.unauthorized-message-container-in-page')).not.toBeNull();
     expect(fixture.nativeElement.querySelector('.exec-not-configured')).toBeNull();
+  });
+
+  describe('time range', () => {
+    it('defaults to Now and hands it to the graph', () => {
+      setup(of([{ _id: 'b1', name: 'One' }]));
+      expect(fixture.componentInstance.range).toBe('now');
+      expect((graph().componentInstance as GraphStubComponent).range).toBe('now');
+    });
+
+    it('comes from the range query param; an unknown value falls back to Now', () => {
+      setup(of([]), undefined, true, { range: '7d' });
+      expect((graph().componentInstance as GraphStubComponent).range).toBe('7d');
+      query$.next(convertToParamMap({ range: 'constructor' }));
+      fixture.detectChanges();
+      expect((graph().componentInstance as GraphStubComponent).range).toBe('now');
+      query$.next(convertToParamMap({ range: '1h' }));
+      fixture.detectChanges();
+      expect((graph().componentInstance as GraphStubComponent).range).toBe('1h');
+    });
+
+    it('the selector offers every range and writes the choice to the URL (Now is the default, so no param)', () => {
+      setup(of([]));
+      expect(fixture.componentInstance.ranges).toEqual(['now', '1h', '24h', '7d', '30d']);
+      const select = fixture.debugElement.query(By.css('ng-select.graph-range'));
+      expect(select).not.toBeNull();
+      select.triggerEventHandler('ngModelChange', '24h');
+      expect(router.navigate).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { range: '24h' }, queryParamsHandling: 'merge' });
+      select.triggerEventHandler('ngModelChange', 'now');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ range: null });
+    });
   });
 });

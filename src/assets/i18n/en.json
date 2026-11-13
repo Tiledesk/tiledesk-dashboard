@@ -4224,8 +4224,7 @@
     },
     "Executions": {
         "Graph": {
-            "Counts": "{{running}} running · {{waiting}} waiting · {{failed}} failed in the last 15 min",
-            "Truncated": "Showing the first 300 live executions",
+            "Truncated": "Too many executions to draw them all: some are not on the graph (the numbers are exact)",
             "Stale": "Data may be out of date",
             "Unavailable": "The graph could not be loaded",
             "Tip": {
@@ -4235,15 +4234,24 @@
                 "Steps": "Steps: {{steps}}",
                 "More": "{{n}} more executions not drawn",
                 "MoreStatus": "{{status}}: {{n}}",
-                "ErrorBranches": "{{n}} error branches"
+                "WithErrors": "{{n}} with error branches"
             },
-            "Legend": {
-                "Running": "Running",
-                "Waiting": "Waiting",
-                "Stopping": "Stopping",
-                "Failed": "Failed (last 15 min)",
-                "AgentFailed": "Agent with a failure",
-                "ErrorBranch": "Took an error branch"
+            "Empty": "No executions in view for this time range",
+            "RangeLabel": "Time range",
+            "Range": {
+                "now": "Now",
+                "1h": "Last hour",
+                "24h": "Last 24 hours",
+                "7d": "Last 7 days",
+                "30d": "Last 30 days"
+            },
+            "Key": {
+                "Title": "Agents:",
+                "red": "Failed or with errors",
+                "blue": "Running",
+                "amber": "Waiting or stopped",
+                "green": "All completed",
+                "gray": "Destroyed"
             }
         },
         "OpenExecution": "Execution ↗",
@@ -4254,7 +4262,6 @@
         "NotConfigured": "Executions are not configured for this environment.",
         "AllAgents": "All agents",
         "Last24h": "last 24 hours",
-        "Last24hAllTriggers": "last 24 hours · all triggers",
         "TestRuns": "Test runs",
         "TestBadge": "test",
         "SearchId": "Search execution id…",
@@ -4572,6 +4579,14 @@
             "ViewValues": "View values",
             "TriggerInput": "Trigger input",
             "TriggerError": "Could not load the trigger input."
+        },
+        "Cards": {
+            "running": "Running",
+            "waiting": "Waiting",
+            "stopped": "Stopped",
+            "failed": "Failed",
+            "completed": "Completed",
+            "destroyed": "Destroyed"
         }
     }
 }

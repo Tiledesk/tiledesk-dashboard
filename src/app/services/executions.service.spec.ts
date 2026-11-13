@@ -102,6 +102,24 @@ describe('ExecutionsService', () => {
     req.flush({ agents: {} });
   });
 
+  it('stats sends range, test and the optional agent_id', () => {
+    setup('/executions/api/v1/');
+    service.stats('p1', { range: 'now', test: 'all' }).subscribe();
+    const a = http.expectOne((r) => r.url === '/executions/api/v1/projects/p1/executions/stats');
+    expect(a.request.method).toBe('GET');
+    expect(a.request.headers.get('Authorization')).toBe('JWT abc');
+    expect(a.request.params.get('range')).toBe('now');
+    expect(a.request.params.get('test')).toBe('all');
+    expect(a.request.params.has('agent_id')).toBe(false);
+    a.flush({ range: 'now', from: null, statuses: {}, agents: {} });
+    service.stats('p1', { range: '7d', agent_id: 'a1', test: false }).subscribe();
+    const b = http.expectOne((r) => r.url === '/executions/api/v1/projects/p1/executions/stats');
+    expect(b.request.params.get('range')).toBe('7d');
+    expect(b.request.params.get('agent_id')).toBe('a1');
+    expect(b.request.params.get('test')).toBe('false');
+    b.flush({ range: '7d', from: null, statuses: {}, agents: {} });
+  });
+
   it('state and history call the right routes', () => {
     setup('/executions/api/v1/');
     service.state('p1', 'e1', 3).subscribe();

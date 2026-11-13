@@ -5,7 +5,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import {
-  AuditPage, ExecutionDetail, RetentionSettings, StopNoticeBody, StopNoticeSettings, ExecutionListParams, ExecutionPage, GrantInfo, GrantScope, StartNewInput, StateView, Summary, ValueOrState,
+  AuditPage, ExecutionDetail, RetentionSettings, StopNoticeBody, StopNoticeSettings, ExecutionListParams, ExecutionPage, ExecutionStats, GrantInfo, GrantScope, StartNewInput, StateView, StatsParams, Summary, ValueOrState,
   VarHistoryEntry
 } from 'app/bots/executions/executions.models';
 
@@ -77,6 +77,14 @@ export class ExecutionsService {
     let params = new HttpParams().set('agent_ids', agentIds.join(',')).set('since', since);
     if (includeTests) params = params.set('test', 'all');
     return this.httpClient.get<Summary>(this.url(projectId, '/summary'), { headers: this.headers(), params });
+  }
+
+  /** Exact counts of the view (live runs of any age, plus the range's runs), per status and per agent. */
+  stats(projectId: string, params: StatsParams): Observable<ExecutionStats> {
+    let httpParams = new HttpParams().set('range', params.range);
+    if (params.agent_id) httpParams = httpParams.set('agent_id', params.agent_id);
+    if (params.test !== undefined) httpParams = httpParams.set('test', String(params.test));
+    return this.httpClient.get<ExecutionStats>(this.url(projectId, '/stats'), { headers: this.headers(), params: httpParams });
   }
 
   get(projectId: string, id: string): Observable<ExecutionDetail> {

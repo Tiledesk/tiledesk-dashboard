@@ -5,6 +5,10 @@ import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { FormsModule, NgModel } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ExecutionStatCardsModule } from '../shared/execution-stat-cards.module';
 import { ExecutionsListComponent } from './executions-list.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { ExecutionsService } from '../../../services/executions.service';
@@ -13,6 +17,8 @@ import { RolesService } from '../../../services/roles.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 
 const NOW = Date.parse('2026-11-09T12:00:00Z');
+const STATUSES = { running: 1, waiting: 0, stopping: 1, stopped: 3, failed: 2, completed: 9, destroyed: 4 };
+const STATS = (statuses: any = STATUSES) => ({ range: '7d', from: null, statuses, agents: {} });
 
 function row(id: string, status = 'completed', extra: any = {}) {
   return {
@@ -25,7 +31,7 @@ function row(id: string, status = 'completed', extra: any = {}) {
 describe('ExecutionsListComponent', () => {
   let fixture: ComponentFixture<ExecutionsListComponent>;
   let component: ExecutionsListComponent;
-  let executions: { isConfigured: jasmine.Spy; list: jasmine.Spy; summary: jasmine.Spy };
+  let executions: { isConfigured: jasmine.Spy; list: jasmine.Spy; summary: jasmine.Spy; stats: jasmine.Spy };
   let router: { navigate: jasmine.Spy };
   let query$: BehaviorSubject<any>;
   let perms$: Subject<any>;
@@ -36,7 +42,8 @@ describe('ExecutionsListComponent', () => {
     executions = {
       isConfigured: jasmine.createSpy('isConfigured').and.returnValue(opts.configured !== false),
       list: jasmine.createSpy('list').and.returnValue(of(opts.page || { items: [], next_cursor: null })),
-      summary: jasmine.createSpy('summary').and.returnValue(of({ agents: { a1: { running: 1, waiting: 0, failed: 2, stopped: 3, last_started_at: null } } })),
+      summary: jasmine.createSpy('summary'),
+      stats: jasmine.createSpy('stats').and.returnValue(of(STATS())),
     };
     router = { navigate: jasmine.createSpy('navigate') };
     query$ = new BehaviorSubject(convertToParamMap(opts.query || {}));
@@ -47,7 +54,7 @@ describe('ExecutionsListComponent', () => {
       { _id: 'v2', root_id: 'a1', name: 'Nightly' }, { _id: 'v1', root_id: 'a1', name: 'Nightly' }, { _id: 'b2', name: 'Alpha' }, { _id: 'z', name: 'Gone', trashed: true }])) };
     TestBed.configureTestingModule({
       declarations: [ExecutionsListComponent, ExecutionStatusChipComponent],
-      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule],
+      imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, FormsModule, NgSelectModule, ExecutionStatCardsModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
         { provide: Router, useValue: router },
@@ -217,48 +224,71 @@ describe('ExecutionsListComponent', () => {
     });
   });
 
-  describe('counters and agent column', () => {
-    it('one-agent view: one summary call, clicking a counter sets the status filter', () => {
+  describe('cards and agent column', () => {
+    const cards = () => Array.from(fixture.nativeElement.querySelectorAll('.exec-stat-card')) as HTMLElement[];
+    const values = () => cards().map(c => c.querySelector('.exec-stat-value').textContent.trim());
+
+    it('one-agent view: one stats call over the list period, agent and test runs; never the summary', () => {
       setup({ botid: 'a1' });
-      expect(executions.summary).toHaveBeenCalledWith('p1', ['a1'], '24h', true);
-      expect(component.counters.failed).toBe(2);
-      const buttons = fixture.nativeElement.querySelectorAll('.exec-counter');
-      expect(buttons.length).toBe(4);
-      buttons[2].click();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'failed', trigger: null });
+      expect(executions.stats).toHaveBeenCalledWith('p1', { range: '7d', agent_id: 'a1', test: 'all' });
+      expect(executions.summary).not.toHaveBeenCalled();
+      expect(values()).toEqual(['1', '0', '4', '2', '9', '4']);
     });
 
-    it('test runs off: list and counters leave them out, and the toggle counts as a filter', () => {
-      setup({ botid: 'a1', query: { tests: 'false' } });
-      expect(component.filters.tests).toBe(false);
-      expect(executions.list.calls.mostRecent().args[1].test).toBeUndefined();
-      expect(executions.summary.calls.mostRecent().args[3]).toBe(false);
-      expect(component.hasActiveFilters).toBe(true);
+    it('the period maps to the stats range', () => {
+      setup({ query: { period: '24h' } });
+      expect(executions.stats.calls.mostRecent().args[1].range).toBe('24h');
+      query$.next(convertToParamMap({ period: '30d' }));
+      expect(executions.stats.calls.mostRecent().args[1].range).toBe('30d');
     });
 
-    it('a counter counts every trigger: turning it on shows all triggers, turning it off keeps them', () => {
+    it('clicking a card sets the status filter and shows every trigger; Stopped lists stopped and stopping', () => {
       setup({ botid: 'a1', query: { trigger: 'unattended' } });
-      expect(component.filters.trigger).toBe('unattended');
-      expect(fixture.nativeElement.querySelector('.exec-counters-hint').textContent.trim()).toBe('Executions.Last24hAllTriggers');
-      fixture.nativeElement.querySelectorAll('.exec-counter')[1].click();
+      cards()[3].click();
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'failed', trigger: null });
+      cards()[1].click();
       expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'waiting', trigger: null });
       query$.next(convertToParamMap({ status: 'waiting', trigger: 'all' }));
       fixture.detectChanges();
+      expect(cards()[1].getAttribute('aria-pressed')).toBe('true');
       expect(executions.list.calls.mostRecent().args[1].trigger).toBeUndefined();
       expect(executions.list.calls.mostRecent().args[1].status).toBe('waiting');
-      fixture.nativeElement.querySelectorAll('.exec-counter')[1].click();
+      cards()[1].click();
       expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: null });
-      // stopped asks for stopped,stopping: the summary counts both as stopped
-      component.toggleStatus('stopped');
+      cards()[2].click();
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'stopped', trigger: null });
       query$.next(convertToParamMap({ status: 'stopped', trigger: 'all' }));
       expect(executions.list.calls.mostRecent().args[1].status).toBe('stopped,stopping');
     });
 
-    it('all-agents view: no summary call, no counters, Agent column from agent_name', () => {
+    it('the hint names the period and says the cards count every trigger', () => {
+      setup({ query: { period: '30d' } });
+      const hint = fixture.nativeElement.querySelector('.exec-cards-hint').textContent;
+      expect(hint).toContain('Executions.Periods.30d');
+      expect(hint).toContain('Executions.Triggers.all');
+    });
+
+    it('test runs off: list and cards leave them out, and the toggle counts as a filter', () => {
+      setup({ botid: 'a1', query: { tests: 'false' } });
+      expect(component.filters.tests).toBe(false);
+      expect(executions.list.calls.mostRecent().args[1].test).toBeUndefined();
+      expect(executions.stats.calls.mostRecent().args[1].test).toBe(false);
+      expect(component.hasActiveFilters).toBe(true);
+    });
+
+    it('all-agents view: cards for every agent (no agent_id), Agent column from agent_name', () => {
       setup({ page: { items: [row('e1', 'failed', { agent_name: 'Nightly' })], next_cursor: null } });
-      expect(executions.summary).not.toHaveBeenCalled();
-      expect(fixture.nativeElement.querySelector('.exec-counters')).toBeNull();
+      expect(executions.stats).toHaveBeenCalledWith('p1', { range: '7d', test: 'all' });
+      expect(cards().length).toBe(6);
       expect(fixture.nativeElement.querySelector('.exec-agent').textContent).toContain('Nightly');
+    });
+
+    it('a stats error keeps the previous numbers', () => {
+      setup();
+      executions.stats.and.returnValue(throwError(() => new Error('503')));
+      component.loadFirstPage();
+      fixture.detectChanges();
+      expect(values()[0]).toBe('1');
     });
 
     it('agent column is absent in the one-agent view', () => {
@@ -310,7 +340,7 @@ describe('ExecutionsListComponent', () => {
     it('counters are not cleared while polling', fakeAsync(() => {
       setup({ botid: 'a1', page: { items: [row('e1', 'running')], next_cursor: null } });
       const pending = new Subject<any>();
-      executions.summary.and.returnValue(pending);
+      executions.stats.and.returnValue(pending);
       tick(10000);
       expect(component.counters).not.toBeNull();
       discardPeriodicTasks();
@@ -355,18 +385,21 @@ describe('ExecutionsListComponent', () => {
   describe('final review fixes', () => {
     it('switching agent A -> B on the reused component reloads the list and the counters for B (D1)', () => {
       setup({ botid: 'a1' });
-      component.counters = { running: 1, waiting: 0, failed: 2, stopped: 3, last_started_at: null } as any;
-      executions.summary.and.returnValue(of({ agents: { b2: { running: 0, waiting: 4, failed: 0, stopped: 0, last_started_at: null } } }));
+      executions.stats.and.returnValue(of(STATS({ ...STATUSES, waiting: 4 })));
       const lists = executions.list.calls.count();
       params$.next(convertToParamMap({ projectid: 'p1', botid: 'b2' }));
       expect(component.agentId).toBe('b2');
       expect(executions.list.calls.count()).toBe(lists + 1);
       expect(executions.list.calls.mostRecent().args[1].agent_id).toBe('b2');
-      expect(executions.summary.calls.mostRecent().args[1]).toEqual(['b2']);
+      expect(executions.stats.calls.mostRecent().args[1].agent_id).toBe('b2');
       expect(component.counters.waiting).toBe(4);
+      const pending = new Subject<any>();
+      executions.stats.and.returnValue(pending);
       params$.next(convertToParamMap({ projectid: 'p1' }));
       expect(component.agentId).toBeNull();
+      // B's numbers are not shown for all agents while theirs load
       expect(component.counters).toBeNull();
+      expect(executions.stats.calls.mostRecent().args[1].agent_id).toBeUndefined();
       expect(executions.list.calls.mostRecent().args[1].agent_id).toBeUndefined();
     });
 
@@ -417,5 +450,42 @@ describe('ExecutionsListComponent', () => {
     const badges = fixture.nativeElement.querySelectorAll('.exec-test-badge');
     expect(badges.length).toBe(1);
     expect(badges[0].textContent.trim()).toBe('Executions.TestBadge');
+  });
+
+  describe('dropdowns (ng-select)', () => {
+    const select = (cls: string) => fixture.debugElement.query(By.css('ng-select.' + cls));
+
+    it('agent switcher, trigger, status and period are ng-selects bound to the current values', async () => {
+      setup({ botid: 'a1', query: { trigger: 'webhook', status: 'failed', period: '30d' } });
+      await fixture.whenStable();
+      expect(select('exec-agent-switcher').injector.get(NgModel).model).toBe('a1');
+      expect(select('exec-filter-trigger').injector.get(NgModel).model).toBe('webhook');
+      expect(select('exec-filter-status').injector.get(NgModel).model).toBe('failed');
+      expect(select('exec-filter-period').injector.get(NgModel).model).toBe('30d');
+      expect(fixture.nativeElement.querySelector('select')).toBeNull();
+    });
+
+    it('a choice writes the filter to the URL, like the native selects did', () => {
+      setup();
+      select('exec-filter-trigger').triggerEventHandler('ngModelChange', 'webhook');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: 'webhook' });
+      select('exec-filter-period').triggerEventHandler('ngModelChange', '24h');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ period: '24h' });
+      select('exec-filter-period').triggerEventHandler('ngModelChange', '7d');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ period: null });
+      select('exec-filter-status').triggerEventHandler('ngModelChange', 'waiting');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'waiting' });
+      // cleared: any status
+      select('exec-filter-status').triggerEventHandler('ngModelChange', null);
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: null });
+    });
+
+    it('the agent switcher navigates to the agent, and cleared to all agents, keeping the filters', () => {
+      setup({ botid: 'a1' });
+      select('exec-agent-switcher').triggerEventHandler('ngModelChange', 'b2');
+      expect(router.navigate.calls.mostRecent().args).toEqual([['/project', 'p1', 'monitor', 'b2', 'executions'], { queryParamsHandling: 'preserve' }]);
+      select('exec-agent-switcher').triggerEventHandler('ngModelChange', null);
+      expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/project', 'p1', 'monitor', 'executions']);
+    });
   });
 });

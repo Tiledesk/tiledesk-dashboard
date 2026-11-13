@@ -7,6 +7,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { ExecutionStatCardsModule } from './shared/execution-stat-cards.module';
 import { ExecutionsRoutingModule } from './executions-routing.module';
 import { ExecutionsListComponent } from './executions-list/executions-list.component';
 import { ExecutionDetailComponent } from './execution-detail/execution-detail.component';
@@ -45,6 +47,8 @@ import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
     MatRadioModule,
     MatButtonModule,
     FormsModule,
+    NgSelectModule,
+    ExecutionStatCardsModule,
     ExecutionsRoutingModule,
     MonitorTabsModule,
   ]

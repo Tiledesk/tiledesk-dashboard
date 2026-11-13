@@ -3817,8 +3817,7 @@
     },
     "Executions": {
         "Graph": {
-            "Counts": "{{running}} in esecuzione · {{waiting}} in attesa · {{failed}} fallite negli ultimi 15 min",
-            "Truncated": "Sono mostrate le prime 300 esecuzioni attive",
+            "Truncated": "Troppe esecuzioni per disegnarle tutte: alcune non sono nel grafo (i numeri sono esatti)",
             "Stale": "I dati potrebbero non essere aggiornati",
             "Unavailable": "Non è stato possibile caricare il grafo",
             "Tip": {
@@ -3828,15 +3827,24 @@
                 "Steps": "Passi: {{steps}}",
                 "More": "Altre {{n}} esecuzioni non mostrate",
                 "MoreStatus": "{{status}}: {{n}}",
-                "ErrorBranches": "{{n}} rami di errore"
+                "WithErrors": "{{n}} con rami di errore"
             },
-            "Legend": {
-                "Running": "In esecuzione",
-                "Waiting": "In attesa",
-                "Stopping": "In arresto",
-                "Failed": "Fallite (ultimi 15 min)",
-                "AgentFailed": "Agente con un errore",
-                "ErrorBranch": "Ha seguito un ramo di errore"
+            "Empty": "Nessuna esecuzione in questo intervallo di tempo",
+            "RangeLabel": "Intervallo di tempo",
+            "Range": {
+                "now": "Adesso",
+                "1h": "Ultima ora",
+                "24h": "Ultime 24 ore",
+                "7d": "Ultimi 7 giorni",
+                "30d": "Ultimi 30 giorni"
+            },
+            "Key": {
+                "Title": "Agenti:",
+                "red": "Fallite o con errori",
+                "blue": "In esecuzione",
+                "amber": "In attesa o arrestate",
+                "green": "Tutte completate",
+                "gray": "Distrutte"
             }
         },
         "OpenExecution": "Esecuzione ↗",
@@ -3847,7 +3855,6 @@
         "NotConfigured": "Le esecuzioni non sono configurate per questo ambiente.",
         "AllAgents": "Tutti gli agenti",
         "Last24h": "ultime 24 ore",
-        "Last24hAllTriggers": "ultime 24 ore · tutti i trigger",
         "TestRuns": "Esecuzioni di test",
         "TestBadge": "test",
         "SearchId": "Cerca id esecuzione…",
@@ -4165,6 +4172,14 @@
             "ViewValues": "Visualizza valori",
             "TriggerInput": "Input del trigger",
             "TriggerError": "Impossibile caricare l'input del trigger."
+        },
+        "Cards": {
+            "running": "In esecuzione",
+            "waiting": "In attesa",
+            "stopped": "Arrestate",
+            "failed": "Fallite",
+            "completed": "Completate",
+            "destroyed": "Distrutte"
         }
     }
 }

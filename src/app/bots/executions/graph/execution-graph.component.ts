@@ -7,11 +7,12 @@ import { Observable, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ExecutionsService } from 'app/services/executions.service';
 import { executionLink, monitorExecutionsLink } from '../execution-links';
-import { buildExecutionGraph, GraphAgent, GraphCounts, GraphModel, GraphNode, GraphTooltip, ShownStatus } from './execution-graph.model';
+import { ExecutionStats, StatsRange } from '../executions.models';
+import { AGENT_COLORS, AgentColor, buildExecutionGraph, GraphAgent, GraphModel, GraphNode, GraphTooltip, ShownStatus } from './execution-graph.model';
 import { executionGraphFeed, GraphSnapshot } from './execution-graph.feed';
 import { EXEC_GRAPH_COLORS as C, EXEC_GRAPH_ICONS as I } from './execution-graph.colors';
 
-export type ExecutionGraphFeedFactory = (projectId: string) => Observable<GraphSnapshot>;
+export type ExecutionGraphFeedFactory = (projectId: string, range: StatsRange) => Observable<GraphSnapshot>;
 export type CytoscapeLoader = () => Promise<any>;
 
 /** Snapshot source of the graph; replaced in tests by a Subject. */
@@ -19,7 +20,7 @@ export const EXECUTION_GRAPH_FEED = new InjectionToken<ExecutionGraphFeedFactory
   providedIn: 'root',
   factory: () => {
     const service = inject(ExecutionsService);
-    return (projectId: string) => executionGraphFeed(service, projectId);
+    return (projectId: string, range: StatsRange) => executionGraphFeed(service, projectId, range);
   }
 });
 
@@ -37,13 +38,19 @@ interface TooltipState { lines: string[]; x: number; y: number; }
 
 function classesFor(n: GraphNode): string {
   const out = [n.kind === 'execution' ? 'exec' : n.kind];
-  if (n.active) { out.push('active'); }
+  if (n.color) { out.push('c-' + n.color); }
   if (n.status) { out.push('s-' + n.status); }
-  if (n.aura) { out.push('aura'); }
-  if (n.warn) { out.push('warn'); }
-  if (n.idle) { out.push('idle'); }
   return out.join(' ');
 }
+
+/** Badge colours of an agent colour. */
+const AGENT_STYLE: { [K in AgentColor]: { bg: string; border: string; icon: string } } = {
+  red: { bg: C.redBg, border: C.redBorder, icon: I.agentRed },
+  blue: { bg: C.blueBg, border: C.blueBorder, icon: I.agentBlue },
+  amber: { bg: C.amberBg, border: C.amberBorder, icon: I.agentAmber },
+  green: { bg: C.greenBg, border: C.greenBorder, icon: I.agentGreen },
+  gray: { bg: C.grayBg, border: C.grayBorder, icon: I.agentGray },
+};
 
 const FONT = 'Inter, system-ui, sans-serif';
 let measureCtx: CanvasRenderingContext2D | null | undefined;
@@ -79,21 +86,18 @@ const GRAPH_STYLE: any[] = [
   // agents: a 56px badge with a bot icon, the name below it
   { selector: 'node.agent', style: {
     'width': 56, 'height': 56, 'corner-radius': 16, 'border-width': 1,
-    'background-color': C.agentBg, 'border-color': C.agentBorder, 'background-image': I.agent,
+    'background-color': C.grayBg, 'border-color': C.grayBorder, 'background-image': I.agentGray,
     'background-width': 26, 'background-height': 26,
     'font-size': 12, 'font-weight': 600, 'text-valign': 'bottom', 'text-halign': 'center', 'text-margin-y': 6,
     'text-wrap': 'ellipsis', 'text-max-width': 160,
     'text-background-color': C.labelBg, 'text-background-opacity': 0.9, 'text-background-padding': 2,
     'text-background-shape': 'round-rectangle',
   } },
-  { selector: 'node.agent.active', style: { 'background-color': C.activeBg, 'border-color': C.activeBorder, 'background-image': I.agentActive } },
-  { selector: 'node.agent.idle', style: { 'background-color': C.idleBg, 'border-color': C.idleBorder, 'background-image': I.agentIdle } },
-  { selector: 'node.agent.warn', style: {
-    'border-color': C.warn, 'underlay-color': C.warn, 'underlay-padding': 7, 'underlay-opacity': 0.16,
-    'underlay-shape': 'round-rectangle', 'underlay-corner-radius': 23,
-  } },
-  { selector: 'node.agent.aura', style: {
-    'background-color': C.auraBg, 'border-color': C.auraBorder, 'background-image': I.agentAura,
+  ...AGENT_COLORS.map(c => ({ selector: 'node.agent.c-' + c, style: {
+    'background-color': AGENT_STYLE[c].bg, 'border-color': AGENT_STYLE[c].border, 'background-image': AGENT_STYLE[c].icon,
+  } })),
+  // red: a halo too, the one colour that asks for attention
+  { selector: 'node.agent.c-red', style: {
     'underlay-color': C.bad, 'underlay-padding': 7, 'underlay-opacity': 0.16, 'underlay-shape': 'round-rectangle',
     'underlay-corner-radius': 23,
   } },
@@ -114,11 +118,18 @@ const GRAPH_STYLE: any[] = [
     'background-color': C.stopBg, 'border-width': 1, 'border-color': C.stopBorder, 'background-image': I.stopping,
     'background-width': 12, 'background-height': 12,
   } },
-  { selector: 'node.s-failed', style: { 'background-color': C.bad, 'background-image': I.failed } },
-  { selector: 'node.exec.aura', style: {
+  // stopped: the stopping chip, without the pulse
+  { selector: 'node.s-stopped', style: {
+    'background-color': C.stopBg, 'border-width': 1, 'border-color': C.stopBorder, 'background-image': I.stopping,
+    'background-width': 12, 'background-height': 12,
+  } },
+  { selector: 'node.s-failed', style: {
+    'background-color': C.bad, 'background-image': I.failed,
     'underlay-color': C.bad, 'underlay-padding': 5, 'underlay-opacity': 0.2, 'underlay-shape': 'round-rectangle',
     'underlay-corner-radius': 12,
   } },
+  { selector: 'node.s-completed', style: { 'background-color': C.ok, 'background-image': I.completed } },
+  { selector: 'node.s-destroyed', style: { 'background-color': C.dead, 'background-image': I.destroyed } },
   // "+N": an auto-width dashed pill
   { selector: 'node.more', style: {
     'width': moreWidth, 'height': 22, 'corner-radius': 11, 'background-color': C.white,
@@ -141,6 +152,8 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() projectId: string;
   @Input() projectName = '';
   @Input() agents: GraphAgent[] = [];
+  /** The view: Now (the not-terminated runs) or a range on top of it. */
+  @Input() range: StatsRange = 'now';
   /** Fill the height of the host (a full-page host) instead of the default 70vh canvas. */
   @Input() @HostBinding('class.fill') fill = false;
   /** Emitted when Cytoscape cannot be loaded or created; the graph shows its own Unavailable message. */
@@ -148,11 +161,15 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
 
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLElement>;
 
-  /** The legend swatches use the graph's own palette. */
-  readonly colors = C;
+  /** The colour key uses the graph's own palette. */
+  readonly keyColors = AGENT_COLORS.map(c => ({ color: c, bg: AGENT_STYLE[c].bg, border: AGENT_STYLE[c].border }));
 
   cy: any = null;
-  counts: GraphCounts | null = null;
+  /** Exact counts of the view, for the big numbers; null until a successful snapshot of the current range. */
+  stats: ExecutionStats | null = null;
+  truncated = false;
+  /** Nothing in view (after a successful snapshot). */
+  empty = false;
   stale = false;
   failed = false;
   tooltip: TooltipState | null = null;
@@ -163,8 +180,6 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
 
   private sub: Subscription | null = null;
   private last: GraphSnapshot | null = null;
-  /** A successful snapshot was seen: until then the counts line stays hidden (unknown, not zero). */
-  private loaded = false;
   private fitted = false;
   private destroyed = false;
   private pulseOn = false;
@@ -190,6 +205,13 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     if (!this.cy) { return; }
     if (changes.projectId && !changes.projectId.firstChange) {
       this.resetGraph();
+      this.subscribeFeed();
+    } else if (changes.range && !changes.range.firstChange) {
+      // same graph, new view: the numbers of the old range are not shown for the new one
+      this.last = null;
+      this.stats = null;
+      this.truncated = false;
+      this.empty = false;
       this.subscribeFeed();
     } else if ((changes.agents || changes.projectName) && this.last) {
       this.zone.runOutsideAngular(() => this.apply(this.last));
@@ -236,12 +258,13 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   private resetGraph(): void {
     if (this.sub) { this.sub.unsubscribe(); this.sub = null; }
     this.last = null;
-    this.loaded = false;
     this.fitted = false;
     this.cy.elements().remove();
     this.animatedEdges = this.cy.collection();
     this.pulsed = this.cy.collection();
-    this.counts = null;
+    this.stats = null;
+    this.truncated = false;
+    this.empty = false;
     this.stale = false;
     this.tooltip = null;
   }
@@ -249,7 +272,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   private subscribeFeed(): void {
     if (this.sub) { this.sub.unsubscribe(); }
     this.zone.runOutsideAngular(() => {
-      this.sub = this.feed(this.projectId).subscribe(snap => {
+      this.sub = this.feed(this.projectId, this.range || 'now').subscribe(snap => {
         let model: GraphModel;
         try {
           model = this.apply(snap);
@@ -260,17 +283,22 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
           return;
         }
         this.last = snap;
-        if (!snap.stale) { this.loaded = true; }
-        this.zone.run(() => { this.counts = this.loaded ? model.counts : null; this.stale = snap.stale; });
+        this.zone.run(() => {
+          // a stale snapshot is the last good one again (or an empty first one): only a fresh one changes the numbers
+          if (!snap.stale) {
+            this.stats = snap.stats;
+            this.truncated = snap.truncated;
+            this.empty = model.nodes.length <= 1;
+          }
+          this.stale = snap.stale;
+        });
       });
     });
   }
 
   /** Rebuilds the model and diffs it into Cytoscape. Positions always come from the model. */
   private apply(snap: GraphSnapshot): GraphModel {
-    const model = buildExecutionGraph({
-      projectName: this.projectName || '', agents: this.agents || [], live: snap.live, failed: snap.failed, now: Date.now()
-    });
+    const model = buildExecutionGraph({ projectName: this.projectName || '', agents: this.agents || [], rows: snap.rows, stats: snap.stats });
     const cy = this.cy;
     const wanted = new Set<string>();
     model.nodes.forEach(n => wanted.add(n.id));
@@ -352,10 +380,10 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     const t = (key: string, params?: any) => this.translate.instant('Executions.Graph.Tip.' + key, params);
     const status = (st: ShownStatus) => this.translate.instant('Executions.Status.' + st);
     if (tip.kind === 'text') {
-      return tip.errorBranches > 0 ? [tip.text, t('ErrorBranches', { n: tip.errorBranches })] : [tip.text];
+      return tip.withErrors > 0 ? [tip.text, t('WithErrors', { n: tip.withErrors })] : [tip.text];
     }
     if (tip.kind === 'more') {
-      const order: ShownStatus[] = ['failed', 'stopping', 'running', 'waiting'];
+      const order: ShownStatus[] = ['failed', 'stopping', 'running', 'waiting', 'stopped', 'completed', 'destroyed'];
       const total = order.reduce((acc, st) => acc + tip.hidden[st], 0);
       return [t('More', { n: total })].concat(
         order.filter(st => tip.hidden[st] > 0).map(st => t('MoreStatus', { status: status(st), n: tip.hidden[st] })));
@@ -388,7 +416,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
    * running/stopping falls back to its class style.
    */
   private paintPulse(): void {
-    const running = this.cy.nodes('.s-running').not('.aura');
+    const running = this.cy.nodes('.s-running');
     const stopping = this.cy.nodes('.s-stopping');
     if (this.pulsed) { this.pulsed.filter((n: any) => !n.removed()).removeStyle('underlay-opacity opacity'); }
     running.style('underlay-opacity', this.pulseOn ? 0.45 : 0.1);

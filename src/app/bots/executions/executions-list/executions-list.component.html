@@ -18,35 +18,31 @@
       <div>
         <h1 class="exec-title">{{ (agentId ? "Executions.Executions" : "Executions.AllExecutions") | translate }}</h1>
       </div>
-      <select class="exec-select exec-agent-switcher" aria-label="Agent" (change)="switchAgent($any($event.target).value)">
-        <option value="" [selected]="!agentId">{{ "Executions.AllAgents" | translate }}</option>
-        <option *ngFor="let a of agents" [value]="a.id" [selected]="a.id === agentId">{{ a.name }}</option>
-      </select>
+      <ng-select class="custom exec-select-ng exec-agent-switcher" [attr.aria-label]="'Executions.Columns.Agent' | translate"
+        [items]="agents" bindLabel="name" bindValue="id" [clearable]="true" [searchable]="true"
+        [placeholder]="'Executions.AllAgents' | translate" [ngModel]="agentId" (ngModelChange)="switchAgent($event)">
+      </ng-select>
     </div>
 
-    <!-- counters: one agent only -->
-    <div *ngIf="counters" class="exec-counters" role="group" [attr.aria-label]="'Executions.Last24hAllTriggers' | translate">
-      <button *ngFor="let s of counterStatuses" type="button" class="exec-counter"
-        [class.active]="filters.status === s" [attr.aria-pressed]="filters.status === s"
-        (click)="toggleStatus(s)">
-        {{ "Executions.Status." + s | translate }} <b>{{ counters[s] }}</b>
-      </button>
-      <span class="exec-counters-hint">{{ "Executions.Last24hAllTriggers" | translate }}</span>
+    <!-- the big numbers: every status, over the period and the agent / test-runs filters, all triggers -->
+    <div class="exec-cards">
+      <execution-stat-cards [counts]="counters" [selectable]="true" [active]="filters.status" (pick)="toggleStatus($event)"></execution-stat-cards>
+      <span class="exec-cards-hint">{{ "Executions.Periods." + filters.period | translate }} · {{ "Executions.Triggers.all" | translate }}</span>
     </div>
 
     <div class="exec-filters">
       <input type="search" class="exec-input exec-filter-q" [value]="filters.q"
         [attr.aria-label]="'Executions.SearchId' | translate" [placeholder]="'Executions.SearchId' | translate"
         (keyup.enter)="setFilter('q', $any($event.target).value)" (search)="setFilter('q', $any($event.target).value)">
-      <select class="exec-select exec-filter-trigger" [attr.aria-label]="'Executions.Trigger' | translate"
-        (change)="setFilter('trigger', $any($event.target).value)">
-        <option *ngFor="let t of triggerOptions" [value]="t" [selected]="filters.trigger === t">{{ "Executions.Triggers." + t | translate }}</option>
-      </select>
-      <select class="exec-select exec-filter-status" [attr.aria-label]="'Executions.StatusLabel' | translate"
-        (change)="setFilter('status', $any($event.target).value)">
-        <option value="" [selected]="!filters.status">{{ "Executions.AnyStatus" | translate }}</option>
-        <option *ngFor="let s of statusOptions" [value]="s" [selected]="filters.status === s">{{ "Executions.Status." + s | translate }}</option>
-      </select>
+      <ng-select class="custom exec-select-ng exec-filter-trigger" [attr.aria-label]="'Executions.Trigger' | translate"
+        [clearable]="false" [searchable]="false" [ngModel]="filters.trigger" (ngModelChange)="setFilter('trigger', $event)">
+        <ng-option *ngFor="let t of triggerOptions" [value]="t">{{ "Executions.Triggers." + t | translate }}</ng-option>
+      </ng-select>
+      <ng-select class="custom exec-select-ng exec-filter-status" [attr.aria-label]="'Executions.StatusLabel' | translate"
+        [clearable]="true" [searchable]="false" [placeholder]="'Executions.AnyStatus' | translate"
+        [ngModel]="filters.status || null" (ngModelChange)="setFilter('status', $event)">
+        <ng-option *ngFor="let s of statusOptions" [value]="s">{{ "Executions.Status." + s | translate }}</ng-option>
+      </ng-select>
       <label class="exec-check">
         <input type="checkbox" class="exec-filter-failures" [checked]="filters.has_failures"
           (change)="setFilter('has_failures', $any($event.target).checked)">
@@ -57,10 +53,10 @@
           (change)="setFilter('tests', $any($event.target).checked)">
         {{ "Executions.TestRuns" | translate }}
       </label>
-      <select class="exec-select exec-filter-period" [attr.aria-label]="'Executions.Period' | translate"
-        (change)="setFilter('period', $any($event.target).value)">
-        <option *ngFor="let p of periodOptions" [value]="p" [selected]="filters.period === p">{{ "Executions.Periods." + p | translate }}</option>
-      </select>
+      <ng-select class="custom exec-select-ng exec-filter-period" [attr.aria-label]="'Executions.Period' | translate"
+        [clearable]="false" [searchable]="false" [ngModel]="filters.period" (ngModelChange)="setFilter('period', $event)">
+        <ng-option *ngFor="let p of periodOptions" [value]="p">{{ "Executions.Periods." + p | translate }}</ng-option>
+      </ng-select>
     </div>
 
     <div *ngIf="error" class="exec-empty exec-error">

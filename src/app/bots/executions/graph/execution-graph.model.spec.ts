@@ -1,5 +1,5 @@
-import { ExecutionRow } from '../executions.models';
-import { AGENT_RING_RMAX, agentFootprint, buildExecutionGraph, fanOffsets, FAILED_WINDOW_MS, MAX_LIVE, MAX_PER_AGENT } from './execution-graph.model';
+import { ExecutionRow, ExecutionStats } from '../executions.models';
+import { AGENT_RING_RMAX, agentColor, agentFootprint, buildExecutionGraph, fanOffsets, MAX_PER_AGENT } from './execution-graph.model';
 
 const NOW = Date.parse('2026-11-10T12:00:00.000Z');
 
@@ -12,93 +12,146 @@ function row(p: Partial<ExecutionRow> & { _id: string }): ExecutionRow {
 }
 const agents = (n: number) => Array.from({ length: n }, (_, i) => ({ id: 'a' + (i + 1), name: 'Agent ' + (i + 1) }));
 const dist = (p: { x: number; y: number }, q = { x: 0, y: 0 }) => Math.hypot(p.x - q.x, p.y - q.y);
+const ZERO = { running: 0, waiting: 0, stopping: 0, stopped: 0, failed: 0, completed: 0, destroyed: 0 };
+const counts = (c: any) => ({ ...ZERO, failure_conditions: 0, ...c });
+function stats(agentsCounts: { [id: string]: any }): ExecutionStats {
+  const agentsOut: any = {};
+  const statuses: any = { ...ZERO };
+  Object.keys(agentsCounts).forEach(id => {
+    agentsOut[id] = counts(agentsCounts[id]);
+    Object.keys(ZERO).forEach(s => statuses[s] += agentsOut[id][s]);
+  });
+  return { range: '24h', from: null, statuses, agents: agentsOut };
+}
+/** One completed row per agent: puts the agent in view with one chip. */
+const oneEach = (ids: string[]) => ids.map(id => row({ _id: 'one-' + id, agent_id: id, status: 'completed' }));
+
+describe('agentColor', () => {
+  it('red: at least one failed', () => expect(agentColor(counts({ failed: 1 }))).toBe('red'));
+  it('red: with errors (failure_conditions > 0), whatever the statuses', () => {
+    expect(agentColor(counts({ completed: 3, failure_conditions: 1 }))).toBe('red');
+  });
+  it('blue: at least one running, no errors', () => expect(agentColor(counts({ running: 1 }))).toBe('blue'));
+  it('amber: waiting, stopping or stopped, no errors', () => {
+    expect(agentColor(counts({ waiting: 1 }))).toBe('amber');
+    expect(agentColor(counts({ stopping: 1 }))).toBe('amber');
+    expect(agentColor(counts({ stopped: 1 }))).toBe('amber');
+  });
+  it('green: all completed', () => expect(agentColor(counts({ completed: 4 }))).toBe('green'));
+  it('gray: all completed or destroyed, at least one destroyed', () => {
+    expect(agentColor(counts({ destroyed: 1 }))).toBe('gray');
+    expect(agentColor(counts({ completed: 5, destroyed: 1 }))).toBe('gray');
+  });
+  it('nothing in view: no colour', () => expect(agentColor(counts({}))).toBeNull());
+
+  describe('precedence', () => {
+    it('failed beats running', () => expect(agentColor(counts({ failed: 1, running: 5 }))).toBe('red'));
+    it('errors beat running', () => expect(agentColor(counts({ running: 2, failure_conditions: 1 }))).toBe('red'));
+    it('errors beat waiting / stopped', () => expect(agentColor(counts({ waiting: 1, stopped: 1, failure_conditions: 1 }))).toBe('red'));
+    it('errors beat destroyed', () => expect(agentColor(counts({ destroyed: 1, failure_conditions: 1 }))).toBe('red'));
+    it('running beats waiting and stopped', () => expect(agentColor(counts({ running: 1, waiting: 3, stopped: 2, stopping: 1 }))).toBe('blue'));
+    it('running beats completed and destroyed', () => expect(agentColor(counts({ running: 1, completed: 3, destroyed: 2 }))).toBe('blue'));
+    it('waiting beats completed', () => expect(agentColor(counts({ waiting: 1, completed: 9 }))).toBe('amber'));
+    it('stopped beats destroyed', () => expect(agentColor(counts({ stopped: 1, destroyed: 9 }))).toBe('amber'));
+    it('destroyed beats completed (gray, not green)', () => expect(agentColor(counts({ completed: 9, destroyed: 1 }))).toBe('gray'));
+  });
+});
 
 describe('buildExecutionGraph', () => {
-  it('project node at the centre and one node per agent on the ring', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(3), live: [], failed: [], now: NOW });
-    expect(g.nodes.length).toBe(4);
-    const project = g.nodes.find(n => n.kind === 'project');
-    expect(project.position).toEqual({ x: 0, y: 0 });
+  it('only agents with an execution in view are drawn (no idle agents)', () => {
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(3), rows: [row({ _id: 'e1', agent_id: 'a2' })] });
+    expect(g.nodes.map(n => n.id)).toEqual(['project', 'agent:a2', 'exec:e1']);
+    expect(g.edges.filter(e => e.source === 'project').map(e => e.target)).toEqual(['agent:a2']);
+    expect(buildExecutionGraph({ projectName: 'P', agents: agents(3), rows: [] }).nodes.map(n => n.id)).toEqual(['project']);
+  });
+
+  it('project node at the centre, agents on the ring', () => {
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(3), rows: oneEach(['a1', 'a2', 'a3']) });
+    expect(g.nodes.find(n => n.kind === 'project').position).toEqual({ x: 0, y: 0 });
     g.nodes.filter(n => n.kind === 'agent').forEach(n => expect(Math.abs(dist(n.position) - 170)).toBeLessThan(0.5));
-    expect(g.edges.filter(e => e.source === 'project').length).toBe(3);
+  });
+
+  it('the agent node carries its colour, from its rows', () => {
+    const g = buildExecutionGraph({
+      projectName: 'P', agents: agents(5), rows: [
+        row({ _id: 'f', agent_id: 'a1', status: 'failed' }), row({ _id: 'r', agent_id: 'a1', status: 'running' }),
+        row({ _id: 'r2', agent_id: 'a2', status: 'running' }), row({ _id: 's', agent_id: 'a2', status: 'stopped' }),
+        row({ _id: 'w', agent_id: 'a3', status: 'waiting' }), row({ _id: 'c', agent_id: 'a3', status: 'completed' }),
+        row({ _id: 'c2', agent_id: 'a4', status: 'completed' }),
+        row({ _id: 'c3', agent_id: 'a5', status: 'completed' }), row({ _id: 'd', agent_id: 'a5', status: 'destroyed' }),
+      ]
+    });
+    const color = (id: string) => g.nodes.find(n => n.id === 'agent:' + id).color;
+    expect(['a1', 'a2', 'a3', 'a4', 'a5'].map(color)).toEqual(['red', 'blue', 'amber', 'green', 'gray']);
+  });
+
+  it('a row with errors turns its agent red, even completed', () => {
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', failure_conditions: 2 })] });
+    const a = g.nodes.find(n => n.id === 'agent:a1');
+    expect(a.color).toBe('red');
+    expect(a.tooltip).toEqual({ kind: 'text', text: 'Agent 1', withErrors: 1 });
+  });
+
+  it('the stats, when given, decide the colour, the errors line and the +N count (exact, not capped)', () => {
+    const g = buildExecutionGraph({
+      projectName: 'P', agents: agents(2), rows: [row({ _id: 'c', status: 'completed' })],
+      stats: stats({ a1: { completed: 1, failed: 2, failure_conditions: 2 }, a2: { waiting: 4 } }),
+    });
+    const a1 = g.nodes.find(n => n.id === 'agent:a1');
+    expect(a1.color).toBe('red');
+    expect(a1.tooltip).toEqual({ kind: 'text', text: 'Agent 1', withErrors: 2 });
+    expect(g.nodes.find(n => n.id === 'more:a1').label).toBe('+2');
+    expect(g.nodes.find(n => n.id === 'more:a1').tooltip).toEqual({ kind: 'more', hidden: { ...ZERO, failed: 2 } });
+    // a2 has no row fetched (the pages were capped): it is drawn, amber, with its executions in one +N node
+    expect(g.nodes.find(n => n.id === 'agent:a2').color).toBe('amber');
+    expect(g.nodes.find(n => n.id === 'more:a2').label).toBe('+4');
+    expect(g.nodes.some(n => n.kind === 'execution' && n.agentId === 'a2')).toBe(false);
   });
 
   it('the execution label is the last 8 hex chars of the id without dashes', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(2), live: [row({ _id: '019e1a2b-3c4d-7e5f-8a6b-0123456789ab' })], failed: [], now: NOW });
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(2), rows: [row({ _id: '019e1a2b-3c4d-7e5f-8a6b-0123456789ab' })] });
     expect(g.nodes.find(n => n.kind === 'execution').label).toBe('456789ab');
   });
 
-  it('live executions attach to their agent with their status', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(2), live: [row({ _id: 'e1', status: 'waiting' })], failed: [], now: NOW });
-    const e = g.nodes.find(n => n.id === 'exec:e1');
-    expect(e.kind).toBe('execution');
-    expect(e.status).toBe('waiting');
-    expect(e.agentId).toBe('a1');
-    expect(g.edges.some(x => x.source === 'agent:a1' && x.target === 'exec:e1')).toBe(true);
-    expect(e.label).toBe('e1');
-    expect(e.tooltip).toEqual({ kind: 'execution', status: 'waiting', startedAt: new Date(NOW - 60000).toISOString(), trigger: 'message', steps: 2 });
-  });
-
-  it('failed older than 15 minutes is dropped, within 15 minutes is kept', () => {
-    const mk = (id: string, endedAgo: number) => row({
-      _id: id, status: 'failed', duration_ms: 10000, started_at: new Date(NOW - endedAgo - 10000).toISOString()
+  it('executions attach to their agent with their status, every status included', () => {
+    const all = ['running', 'waiting', 'stopping', 'stopped', 'failed', 'completed', 'destroyed'];
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: all.map(st => row({ _id: st, status: st })) });
+    all.forEach(st => {
+      const e = g.nodes.find(n => n.id === 'exec:' + st);
+      expect(e.kind).toBe('execution');
+      expect(e.status).toBe(st as any);
+      expect(e.agentId).toBe('a1');
+      expect(g.edges.some(x => x.source === 'agent:a1' && x.target === 'exec:' + st)).toBe(true);
     });
-    const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(1), live: [], now: NOW,
-      failed: [mk('in', FAILED_WINDOW_MS - 60000), mk('out', FAILED_WINDOW_MS + 60000)]
-    });
-    expect(g.nodes.some(n => n.id === 'exec:in')).toBe(true);
-    expect(g.nodes.some(n => n.id === 'exec:out')).toBe(false);
-    expect(g.counts.failed).toBe(1);
-  });
-
-  it('agent aura (red) when a shown execution failed; warn (amber) for failure_conditions > 0 without a failure', () => {
-    const failed = (id: string, agent: string) =>
-      row({ _id: id, agent_id: agent, status: 'failed', duration_ms: 1000, started_at: new Date(NOW - 5000).toISOString() });
-    const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(4), now: NOW,
-      live: [row({ _id: 'e1', agent_id: 'a2', failure_conditions: 1 }), row({ _id: 'e3', agent_id: 'a2', status: 'waiting', failure_conditions: 2 }),
-        row({ _id: 'e4', agent_id: 'a4', failure_conditions: 1 })],
-      failed: [failed('e2', 'a1'), failed('e5', 'a4')]
-    });
-    const node = (id: string) => g.nodes.find(n => n.id === id);
-    expect(node('agent:a1').aura).toBe(true);
-    expect(node('agent:a1').warn).toBe(false);
-    expect(node('agent:a2').aura).toBe(false);
-    expect(node('agent:a2').warn).toBe(true);
-    expect(node('agent:a3').aura).toBe(false);
-    expect(node('agent:a3').warn).toBe(false);
-    expect(node('agent:a4').aura).toBe(true);     // a failure wins over the error branch
-    expect(node('agent:a4').warn).toBe(false);
-    expect(node('exec:e2').aura).toBe(true);
-    expect(node('exec:e1').aura).toBe(false);
-    // the agent tooltip carries the error-branch count only when there is one
-    expect(node('agent:a2').tooltip).toEqual({ kind: 'text', text: 'Agent 2', errorBranches: 3 });
-    expect(node('agent:a4').tooltip).toEqual({ kind: 'text', text: 'Agent 4', errorBranches: 1 });
-    expect(node('agent:a3').tooltip).toEqual({ kind: 'text', text: 'Agent 3' });
-    expect(g.counts).toEqual({ running: 2, waiting: 1, stopping: 0, failed: 2, truncated: false });
-  });
-
-  it('idle agent when nothing is shown', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(2), live: [row({ _id: 'e1' })], failed: [], now: NOW });
-    expect(g.nodes.find(n => n.id === 'agent:a1').idle).toBe(false);
-    expect(g.nodes.find(n => n.id === 'agent:a2').idle).toBe(true);
+    expect(g.nodes.find(n => n.id === 'exec:waiting').tooltip)
+      .toEqual({ kind: 'execution', status: 'waiting', startedAt: new Date(NOW - 60000).toISOString(), trigger: 'message', steps: 2 });
   });
 
   it('unknown agent gets a node from agent_name while the agents list is empty', () => {
     const g = buildExecutionGraph({
-      projectName: 'P', agents: [], failed: [], now: NOW,
-      live: [row({ _id: 'e1', agent_id: 'zzzzzzzzzzzz', agent_name: 'Gone' }), row({ _id: 'e2', agent_id: 'abcdefghijkl', agent_name: null })]
+      projectName: 'P', agents: [],
+      rows: [row({ _id: 'e1', agent_id: 'zzzzzzzzzzzz', agent_name: 'Gone' }), row({ _id: 'e2', agent_id: 'abcdefghijkl', agent_name: null })]
     });
     expect(g.nodes.find(n => n.id === 'agent:zzzzzzzzzzzz').label).toBe('Gone');
     expect(g.nodes.find(n => n.id === 'agent:abcdefghijkl').label).toBe('abcdefgh');
     expect(g.edges.some(e => e.source === 'project' && e.target === 'agent:abcdefghijkl')).toBe(true);
   });
 
+  it('with a non-empty agents list, rows and stats of other agents are not drawn', () => {
+    const g = buildExecutionGraph({
+      projectName: 'P', agents: agents(2),
+      rows: [row({ _id: 'mine' }), row({ _id: 'other', agent_id: 'zz', agent_name: 'Automation' })],
+      stats: stats({ a1: { running: 1 }, zz: { running: 1 }, yy: { failed: 3 } }),
+    });
+    expect(g.nodes.filter(n => n.kind === 'agent').map(n => n.id)).toEqual(['agent:a1']);
+    expect(g.nodes.some(n => n.id === 'exec:other')).toBe(false);
+  });
+
   it('positions are stable across refreshes while no agent changes bucket', () => {
-    const live = [row({ _id: 'e1' }), row({ _id: 'e2', started_at: new Date(NOW - 30000).toISOString() }), row({ _id: 'e4', agent_id: 'a3' })];
-    const g1 = buildExecutionGraph({ projectName: 'P', agents: agents(4), live, failed: [], now: NOW });
-    const g2 = buildExecutionGraph({ projectName: 'P', agents: agents(4), live: [...live, row({ _id: 'e3', agent_id: 'a3' })], failed: [], now: NOW + 5000 });
+    const rows = [row({ _id: 'e1' }), row({ _id: 'e2', started_at: new Date(NOW - 30000).toISOString() }), row({ _id: 'e4', agent_id: 'a3' }),
+      ...oneEach(['a2', 'a4'])];
+    const g1 = buildExecutionGraph({ projectName: 'P', agents: agents(4), rows });
+    const g2 = buildExecutionGraph({ projectName: 'P', agents: agents(4), rows: [...rows, row({ _id: 'e3', agent_id: 'a3' })] });
     // a3 goes from 1 to 2 shown (same bucket): only a3's own fan is redrawn
     g1.nodes.filter(n => !(n.kind === 'execution' && n.agentId === 'a3'))
       .forEach(n => expect(g2.nodes.find(m => m.id === n.id).position).toEqual(n.position, n.id));
@@ -106,33 +159,22 @@ describe('buildExecutionGraph', () => {
 
   it('running edges are animated, others are not', () => {
     const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(1), failed: [], now: NOW,
-      live: [row({ _id: 'r' }), row({ _id: 'w', status: 'waiting' }), row({ _id: 's', status: 'stopping' })]
+      projectName: 'P', agents: agents(1),
+      rows: [row({ _id: 'r' }), row({ _id: 'w', status: 'waiting' }), row({ _id: 's', status: 'stopping' }), row({ _id: 'c', status: 'completed' })]
     });
     const anim = (id: string) => g.edges.find(e => e.target === id).animated;
     expect(anim('exec:r')).toBe(true);
-    expect(anim('exec:w')).toBe(false);
-    expect(anim('exec:s')).toBe(false);
+    expect(['exec:w', 'exec:s', 'exec:c'].map(anim)).toEqual([false, false, false]);
     expect(g.edges.find(e => e.target === 'agent:a1').animated).toBe(false);
   });
 
-  it('more than 300 live on one agent: draws the cap plus one overflow node, counts.truncated true', () => {
-    const live = Array.from({ length: MAX_LIVE + 20 }, (_, i) =>
-      row({ _id: 'e' + String(i).padStart(4, '0'), status: i % 2 ? 'waiting' : 'running' }));
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), live, failed: [], now: NOW });
-    expect(g.nodes.filter(n => n.kind === 'execution').length).toBe(MAX_PER_AGENT);
-    expect(g.nodes.find(n => n.id === 'more:a1').label).toBe('+' + (MAX_LIVE + 20 - MAX_PER_AGENT));
-    expect(g.counts.truncated).toBe(true);
-    expect(g.counts.running + g.counts.waiting).toBe(MAX_LIVE + 20);
-  });
-
-  it('caps an agent at 12 by priority, with one +N overflow node and the aura from all rows', () => {
+  it('caps an agent at 12 by priority, with one +N overflow node and the colour from all rows', () => {
     const waiting = Array.from({ length: 30 }, (_, i) =>
       row({ _id: 'w' + String(i).padStart(2, '0'), status: 'waiting', started_at: new Date(NOW - 600000 + i * 1000).toISOString() }));
     const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(3), now: NOW,
-      live: [...waiting, row({ _id: 'run', status: 'running', started_at: new Date(NOW - 900000).toISOString() })],
-      failed: [row({ _id: 'bad', status: 'failed', duration_ms: 1000, started_at: new Date(NOW - 850000).toISOString() })]
+      projectName: 'P', agents: agents(3),
+      rows: [...waiting, row({ _id: 'run', status: 'running', started_at: new Date(NOW - 900000).toISOString() }),
+        row({ _id: 'bad', status: 'failed', duration_ms: 1000, started_at: new Date(NOW - 850000).toISOString() })]
     });
     const execs = g.nodes.filter(n => n.kind === 'execution' && n.agentId === 'a1');
     expect(MAX_PER_AGENT).toBe(12);
@@ -147,88 +189,77 @@ describe('buildExecutionGraph', () => {
     expect(more[0].id).toBe('more:a1');
     expect(more[0].agentId).toBe('a1');
     expect(more[0].label).toBe('+20');
-    expect(more[0].tooltip).toEqual({ kind: 'more', hidden: { running: 0, waiting: 20, stopping: 0, failed: 0 } });
+    expect(more[0].tooltip).toEqual({ kind: 'more', hidden: { ...ZERO, waiting: 20 } });
     expect(g.edges.some(e => e.source === 'agent:a1' && e.target === 'more:a1')).toBe(true);
-    expect(g.nodes.find(n => n.id === 'agent:a1').aura).toBe(true);
-    expect(g.counts.waiting).toBe(30);
-    expect(g.counts.running).toBe(1);
-    expect(g.counts.failed).toBe(1);
+    expect(g.nodes.find(n => n.id === 'agent:a1').color).toBe('red');
   });
 
-  it('priority is failed > stopping > running > waiting', () => {
+  it('priority is failed > stopping > running > waiting > stopped > completed > destroyed', () => {
     const mk = (prefix: string, status: string, n: number) => Array.from({ length: n }, (_, i) => row({ _id: prefix + i, status: status as any }));
     const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(1), now: NOW,
-      live: [...mk('w', 'waiting', 5), ...mk('r', 'running', 5), ...mk('s', 'stopping', 5)],
-      failed: mk('f', 'failed', 0)
+      projectName: 'P', agents: agents(1),
+      rows: [...mk('d', 'destroyed', 3), ...mk('c', 'completed', 3), ...mk('x', 'stopped', 3), ...mk('w', 'waiting', 3),
+        ...mk('r', 'running', 3), ...mk('s', 'stopping', 2), ...mk('f', 'failed', 2)]
     });
     const drawn = g.nodes.filter(n => n.kind === 'execution');
-    expect(drawn.filter(n => n.status === 'stopping').length).toBe(5);
-    expect(drawn.filter(n => n.status === 'running').length).toBe(5);
-    expect(drawn.filter(n => n.status === 'waiting').length).toBe(2);
-    expect(g.nodes.find(n => n.id === 'more:a1').tooltip).toEqual({ kind: 'more', hidden: { running: 0, waiting: 3, stopping: 0, failed: 0 } });
-  });
-
-  it('a capped-out live row with failure_conditions still gives the agent its warn outline', () => {
-    const live = Array.from({ length: 13 }, (_, i) =>
-      row({ _id: 'w' + String(i).padStart(2, '0'), status: 'waiting', started_at: new Date(NOW - 600000 + i * 1000).toISOString(),
-        failure_conditions: i === 0 ? 2 : 0 }));
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), live, failed: [], now: NOW });
-    expect(g.nodes.some(n => n.id === 'exec:w00')).toBe(false);
-    expect(g.nodes.find(n => n.id === 'agent:a1').aura).toBe(false);
-    expect(g.nodes.find(n => n.id === 'agent:a1').warn).toBe(true);
+    const by = (st: string) => drawn.filter(n => n.status === st).length;
+    expect([by('failed'), by('stopping'), by('running'), by('waiting'), by('stopped'), by('completed'), by('destroyed')]).toEqual([2, 2, 3, 3, 2, 0, 0]);
+    expect(g.nodes.find(n => n.id === 'more:a1').tooltip).toEqual({ kind: 'more', hidden: { ...ZERO, stopped: 1, completed: 3, destroyed: 3 } });
   });
 
   it('no overflow node at or under the cap', () => {
-    const live = Array.from({ length: MAX_PER_AGENT }, (_, i) => row({ _id: 'e' + i, status: 'waiting' }));
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), live, failed: [], now: NOW });
+    const rows = Array.from({ length: MAX_PER_AGENT }, (_, i) => row({ _id: 'e' + i, status: 'waiting' }));
+    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows });
     expect(g.nodes.filter(n => n.kind === 'execution').length).toBe(MAX_PER_AGENT);
     expect(g.nodes.some(n => n.kind === 'more')).toBe(false);
   });
 
   it('agent footprints are bucketed by shown nodes', () => {
     expect(AGENT_RING_RMAX).toBe(74 + 6 * (MAX_PER_AGENT - 8 + 1));
-    expect([0, 1, 4, 5, 8, 9, 13].map(agentFootprint)).toEqual([60, 90, 90, 98, 98, AGENT_RING_RMAX + 20, AGENT_RING_RMAX + 20]);
+    expect([1, 4, 5, 8, 9, 13].map(agentFootprint)).toEqual([90, 90, 98, 98, AGENT_RING_RMAX + 20, AGENT_RING_RMAX + 20]);
   });
 
   it('agent ring is sized by the footprints: max(170, sum(2 f + 24) / 2pi), angular width proportional to the footprint', () => {
     [1, 3, 8, 13, 30].forEach(n => {
-      const g = buildExecutionGraph({ projectName: 'P', agents: agents(n), live: [], failed: [], now: NOW });
-      const want = Math.max(170, n * (2 * 60 + 24) / (2 * Math.PI));
+      const list = agents(n);
+      const g = buildExecutionGraph({ projectName: 'P', agents: list, rows: oneEach(list.map(a => a.id)) });
+      const want = Math.max(170, n * (2 * 90 + 24) / (2 * Math.PI));
       g.nodes.filter(x => x.kind === 'agent').forEach(x => expect(Math.abs(dist(x.position) - want)).toBeLessThan(0.5, 'n=' + n));
     });
-    // 13 agents, one at the cap and one with 3 shown: the ring follows the sum, the busy agent gets a wider slice
-    const live = [
+    // 13 agents, one at the cap and one with 3 shown, the others one each: the busy agent gets a wider slice
+    const list = Array.from({ length: 13 }, (_, i) => ({ id: 'a' + (i + 1), name: 'Agent ' + String(i + 1).padStart(2, '0') }));
+    const rows = [
       ...Array.from({ length: MAX_PER_AGENT + 5 }, (_, i) => row({ _id: 'c' + String(i).padStart(2, '0'), agent_id: 'a1', status: 'waiting' })),
       ...[0, 1, 2].map(i => row({ _id: 't' + i, agent_id: 'a2', status: 'waiting' })),
+      ...oneEach(list.slice(2).map(a => a.id)),
     ];
-    const list = Array.from({ length: 13 }, (_, i) => ({ id: 'a' + (i + 1), name: 'Agent ' + String(i + 1).padStart(2, '0') }));
-    const g = buildExecutionGraph({ projectName: 'P', agents: list, live, failed: [], now: NOW });
-    const sum = 2 * (AGENT_RING_RMAX + 20) + 24 + 2 * 90 + 24 + 11 * (2 * 60 + 24);
+    const g = buildExecutionGraph({ projectName: 'P', agents: list, rows });
+    const sum = 2 * (AGENT_RING_RMAX + 20) + 24 + 12 * (2 * 90 + 24);
     const R = sum / (2 * Math.PI);
     const pos = (id: string) => g.nodes.find(x => x.id === 'agent:' + id).position;
     ['a1', 'a2', 'a3', 'a13'].forEach(id => expect(Math.abs(dist(pos(id)) - R)).toBeLessThan(0.5, id));
     const arc = (p: any, q: any) => { let d = Math.abs(Math.atan2(p.y, p.x) - Math.atan2(q.y, q.x)); if (d > Math.PI) { d = 2 * Math.PI - d; } return d * R; };
     expect(arc(pos('a1'), pos('a2'))).toBeCloseTo((AGENT_RING_RMAX + 20) + 90 + 24, 3);
-    expect(arc(pos('a3'), pos('a4'))).toBeCloseTo(60 + 60 + 24, 3);
+    expect(arc(pos('a3'), pos('a4'))).toBeCloseTo(90 + 90 + 24, 3);
   });
 
   it('agents move only when a bucket changes: 3 -> 4 shown moves no agent, 4 -> 5 does', () => {
+    const others = oneEach(['a1', 'a3', 'a4', 'a5', 'a6']);
     const mk = (k: number) => buildExecutionGraph({
-      projectName: 'P', agents: agents(6), failed: [], now: NOW,
-      live: Array.from({ length: k }, (_, i) => row({ _id: 'e' + i, agent_id: 'a2', status: 'waiting' })),
+      projectName: 'P', agents: agents(6),
+      rows: [...others, ...Array.from({ length: k }, (_, i) => row({ _id: 'e' + i, agent_id: 'a2', status: 'waiting' }))],
     });
-    const agentPos = (g: any) => g.nodes.filter((x: any) => x.kind !== 'execution' && x.kind !== 'more').map((x: any) => ({ id: x.id, p: x.position }));
+    const agentPos = (g: any) => g.nodes.filter((x: any) => x.kind === 'agent').map((x: any) => ({ id: x.id, p: x.position }));
     expect(agentPos(mk(4))).toEqual(agentPos(mk(3)));
     expect(agentPos(mk(5))).not.toEqual(agentPos(mk(4)));
   });
 
   it('neighbouring agents at any buckets keep their fans a chip (26 px) plus 10 px apart', () => {
-    const ks = [0, 1, 4, 5, 8, 9, 13];
+    const ks = [1, 4, 5, 8, 9, 13];   // an agent in view always shows something
     for (let n = 2; n <= 20; n++) {
       for (const k1 of ks) {
         for (const k2 of ks) {
-          for (const rest of [0, 13]) {
+          for (const rest of [1, 13]) {
             // zero-padded names keep a1 and a2 next to each other on the ring; a3 follows a2
             const list = Array.from({ length: n }, (_, i) => ({ id: 'a' + (i + 1), name: 'Agent ' + String(i + 1).padStart(2, '0') }));
             const want: { [id: string]: number } = {};
@@ -240,7 +271,7 @@ describe('buildExecutionGraph', () => {
               const rows = k > MAX_PER_AGENT ? MAX_PER_AGENT + 3 : k;
               for (let i = 0; i < rows; i++) { live.push(row({ _id: a.id + '-' + String(i).padStart(2, '0'), agent_id: a.id, status: 'waiting' })); }
             });
-            const g = buildExecutionGraph({ projectName: 'P', agents: list, live, failed: [], now: NOW });
+            const g = buildExecutionGraph({ projectName: 'P', agents: list, rows: live });
             const fan = (id: string) => g.nodes.filter(x => (x.kind === 'execution' || x.kind === 'more') && x.agentId === id);
             const pairs = n > 2 ? [['a1', 'a2'], ['a2', 'a3']] : [['a1', 'a2']];
             pairs.forEach(([x, y]) => {
@@ -257,7 +288,7 @@ describe('buildExecutionGraph', () => {
   it('executions sit 74 px from their agent, fanned out on the side away from the project', () => {
     [1, 3, 8, 13].forEach(k => {
       const live = Array.from({ length: k }, (_, i) => row({ _id: 'e' + String(i).padStart(2, '0'), status: 'waiting' }));
-      const g = buildExecutionGraph({ projectName: 'P', agents: agents(4), live, failed: [], now: NOW });
+      const g = buildExecutionGraph({ projectName: 'P', agents: agents(4), rows: live });
       const owner = g.nodes.find(n => n.id === 'agent:a1');
       const out = Math.atan2(owner.position.y, owner.position.x);
       const shown = g.nodes.filter(n => n.kind === 'execution' || n.kind === 'more');
@@ -301,30 +332,4 @@ describe('buildExecutionGraph', () => {
     expect(offsets.map(o => +o.toFixed(6))).toEqual([-0.42, 0, 0.42]);
   });
 
-  it('agent is active only when something is running or stopping', () => {
-    const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(4), failed: [], now: NOW,
-      live: [row({ _id: 'w', agent_id: 'a1', status: 'waiting' }), row({ _id: 'r', agent_id: 'a2' }), row({ _id: 's', agent_id: 'a3', status: 'stopping' })]
-    });
-    const agent = (id: string) => g.nodes.find(n => n.id === 'agent:' + id);
-    expect(agent('a1').active).toBe(false);
-    expect(agent('a1').idle).toBe(false);
-    expect(agent('a2').active).toBe(true);
-    expect(agent('a3').active).toBe(true);
-    expect(agent('a4').active).toBe(false);
-    expect(agent('a4').idle).toBe(true);
-  });
-
-  it('with a non-empty agents list, rows of other agents are neither drawn nor counted', () => {
-    const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(2), now: NOW,
-      live: [row({ _id: 'mine' }), row({ _id: 'other', agent_id: 'zz', agent_name: 'Automation' }),
-        row({ _id: 'otherw', agent_id: 'zz', status: 'waiting' })],
-      failed: [row({ _id: 'otherf', agent_id: 'zz', status: 'failed', duration_ms: 1000, started_at: new Date(NOW - 5000).toISOString() })]
-    });
-    expect(g.nodes.some(n => n.id === 'agent:zz')).toBe(false);
-    expect(g.nodes.some(n => n.id === 'exec:other' || n.id === 'exec:otherw' || n.id === 'exec:otherf')).toBe(false);
-    expect(g.nodes.filter(n => n.kind === 'agent').length).toBe(2);
-    expect(g.counts).toEqual({ running: 1, waiting: 0, stopping: 0, failed: 0, truncated: false });
-  });
 });

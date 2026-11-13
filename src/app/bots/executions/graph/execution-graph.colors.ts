@@ -5,17 +5,19 @@
 export const EXEC_GRAPH_COLORS = {
   ink: '#1d2433',
   labelBg: '#fafbfc',
-  // agent badges
-  agentBg: '#efeafd', agentBorder: '#d6ccf7', agentIcon: '#4b2fb3',
-  activeBg: '#e6f0fc', activeBorder: '#b9d3f5', activeIcon: '#0f4c99',
-  idleBg: '#f1f3f6', idleBorder: '#e0e4ea', idleIcon: '#8b95a5',
-  auraBg: '#fde8e6', auraBorder: '#f3b8b2', auraIcon: '#a1170d',
-  warn: '#d98a00',                                    // amber outline: an error branch taken, no failure
+  // agent badges, one per agent colour (execution-graph.model agentColor)
+  redBg: '#fde8e6', redBorder: '#f3b8b2', redIcon: '#a1170d',
+  blueBg: '#e6f0fc', blueBorder: '#b9d3f5', blueIcon: '#0f4c99',
+  amberBg: '#fff4e0', amberBorder: '#f0c36d', amberIcon: '#8a5a00',
+  greenBg: '#e6f4ea', greenBorder: '#a8d5b5', greenIcon: '#1e7a3c',
+  grayBg: '#f1f3f6', grayBorder: '#d3d8e0', grayIcon: '#5d6b82',
   // execution chips
   run: '#1f6fd6',
   waitBg: '#eef0f3', waitBorder: '#d7dce3', waitIcon: '#4a5361',
   stopBg: '#fff3dc', stopBorder: '#f2d39a', stopIcon: '#7a4b00',
   bad: '#d93025',
+  ok: '#1e8e3e',
+  dead: '#8b95a5',
   white: '#ffffff',
   // "+N" node and edges
   moreBorder: '#9aa4b2', moreText: '#4a5361',
@@ -38,10 +40,11 @@ const bot = (color: string) => svgUri('i-bot', 26, `${STROKE} stroke="${color}" 
 
 /** Background images, built once. */
 export const EXEC_GRAPH_ICONS = {
-  agent: bot(C.agentIcon),
-  agentActive: bot(C.activeIcon),
-  agentIdle: bot(C.idleIcon),
-  agentAura: bot(C.auraIcon),
+  agentRed: bot(C.redIcon),
+  agentBlue: bot(C.blueIcon),
+  agentAmber: bot(C.amberIcon),
+  agentGreen: bot(C.greenIcon),
+  agentGray: bot(C.grayIcon),
   running: svgUri('i-play', 14, `fill="${C.white}" stroke="${C.white}" stroke-width="2" stroke-linejoin="round"`,
     '<polygon points="7 4 20 12 7 20 7 4"/>'),
   waiting: svgUri('i-clock', 14, `${STROKE} stroke="${C.waitIcon}" stroke-width="2.2"`,
@@ -49,4 +52,6 @@ export const EXEC_GRAPH_ICONS = {
   stopping: svgUri('i-stop', 12, `fill="${C.stopIcon}"`, '<rect x="5" y="5" width="14" height="14" rx="2"/>'),
   failed: svgUri('i-alert', 14, `${STROKE} stroke="${C.white}" stroke-width="2.4"`,
     '<path d="M12 7v6"/><path d="M12 17h.01"/>'),
+  completed: svgUri('i-check', 14, `${STROKE} stroke="${C.white}" stroke-width="2.6"`, '<polyline points="20 6 9 17 4 12"/>'),
+  destroyed: svgUri('i-x', 14, `${STROKE} stroke="${C.white}" stroke-width="2.6"`, '<path d="M18 6 6 18"/><path d="m6 6 12 12"/>'),
 } as const;
