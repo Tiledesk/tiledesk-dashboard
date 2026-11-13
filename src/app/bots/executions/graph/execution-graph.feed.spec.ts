@@ -32,6 +32,8 @@ describe('executionGraphFeed', () => {
     const sub = executionGraphFeed(t.service, 'p1', 'now', quiet()).subscribe(s => t.snaps.push(s));
     expect(t.calls).toEqual([
       { pid: 'p1', params: { status: LIVE, test: 'all', limit: 100 } },
+      // the live runs with errors on their own: never lost past the cap of the general query
+      { pid: 'p1', params: { status: LIVE, has_errors: true, test: 'all', limit: 100 } },
       { pid: 'p1', params: { range: 'now', test: 'all' }, kind: 'stats' },
     ]);
     expect(t.snaps.length).toBe(1);
@@ -47,8 +49,8 @@ describe('executionGraphFeed', () => {
   it('defaults to Now', fakeAsync(() => {
     const t = setup(p => of(page([])));
     const sub = executionGraphFeed(t.service, 'p1', undefined, quiet()).subscribe(s => t.snaps.push(s));
-    expect(t.list().length).toBe(1);
-    expect(t.calls[1].params.range).toBe('now');
+    expect(t.list().length).toBe(2);
+    expect(t.calls.find(c => c.kind === 'stats').params.range).toBe('now');
     sub.unsubscribe();
   }));
 
@@ -56,9 +58,14 @@ describe('executionGraphFeed', () => {
     for (const range of ['1h', '24h', '7d', '30d'] as const) {
       const t = setup(p => of(page([])));
       const sub = executionGraphFeed(t.service, 'p1', range, quiet()).subscribe(s => t.snaps.push(s));
+      const from = new Date(NOW - RANGE_MS[range]).toISOString();
       expect(t.list().map(c => c.params)).toEqual([
         { status: LIVE, test: 'all', limit: 100 },
-        { from: new Date(NOW - RANGE_MS[range]).toISOString(), test: 'all', limit: 100 },
+        { from, test: 'all', limit: 100 },
+        // the problems on their own: live with errors (any age), failed and with errors in the range
+        { status: LIVE, has_errors: true, test: 'all', limit: 100 },
+        { status: 'failed', from, test: 'all', limit: 100 },
+        { has_errors: true, from, test: 'all', limit: 100 },
       ]);
       expect(t.calls.find(c => c.kind === 'stats').params).toEqual({ range, test: 'all' });
       expect(t.snaps[0].range).toBe(range);
@@ -67,13 +74,33 @@ describe('executionGraphFeed', () => {
     expect(RANGE_MS).toEqual({ '1h': 3600000, '24h': 86400000, '7d': 7 * 86400000, '30d': 30 * 86400000 });
   }));
 
+  it('a problem past the cap of the general queries still reaches the graph', fakeAsync(() => {
+    // the general queries are full of newer runs; the old completed run with errors only comes from its own query
+    const t = setup(p => {
+      if (p.has_errors && !p.status) { return of({ items: [{ _id: 'old-err', agent_id: 'a1', status: 'completed', errors: 1 } as any], next_cursor: null }); }
+      if (p.status === 'failed') { return of({ items: [{ _id: 'old-fail', agent_id: 'a1', status: 'failed' } as any], next_cursor: null }); }
+      if (p.has_errors) { return of(page([])); }
+      const n = p.cursor ? Number(p.cursor) : 0;
+      return of(page([(p.status ? 'l' : 'r') + n], String(n + 1)));
+    });
+    const sub = executionGraphFeed(t.service, 'p1', '7d', quiet()).subscribe(s => t.snaps.push(s));
+    const ids = t.snaps[0].rows.map(x => x._id);
+    expect(ids).toContain('old-err');
+    expect(ids).toContain('old-fail');
+    expect(t.snaps[0].truncated).toBe(true);
+    sub.unsubscribe();
+  }));
+
   it('follows next_cursor up to 3 pages and stops; a query cut short marks the snapshot truncated', fakeAsync(() => {
     const t = setup(p => {
       const n = p.cursor ? Number(p.cursor) : 0;
       return of(page(['l' + n], String(n + 1)));
     });
     const sub = executionGraphFeed(t.service, 'p1', 'now', quiet()).subscribe(s => t.snaps.push(s));
-    expect(t.list().map(c => c.params.cursor)).toEqual([undefined, '1', '2']);
+    // the live query and the live-with-errors query, each followed up to 3 pages
+    const cursors = (errors: boolean) => t.list().filter(c => !!c.params.has_errors === errors).map(c => c.params.cursor);
+    expect(cursors(false)).toEqual([undefined, '1', '2']);
+    expect(cursors(true)).toEqual([undefined, '1', '2']);
     expect(t.snaps[0].rows.map(x => x._id)).toEqual(['l0', 'l1', 'l2']);
     expect(t.snaps[0].truncated).toBe(true);
     sub.unsubscribe();
@@ -82,7 +109,8 @@ describe('executionGraphFeed', () => {
   it('the range query cut short also marks it truncated', fakeAsync(() => {
     const t = setup(p => p.status ? of(page(['l'])) : of(page(['f' + (p.cursor || '')], 'x' + (p.cursor || ''))));
     const sub = executionGraphFeed(t.service, 'p1', '7d', quiet()).subscribe(s => t.snaps.push(s));
-    expect(t.list().length).toBe(4);
+    // live 1 + range 3 pages + live with errors 1 + failed 1 + with errors in range 3 pages
+    expect(t.list().length).toBe(9);
     expect(t.snaps[0].truncated).toBe(true);
     sub.unsubscribe();
   }));
@@ -114,17 +142,17 @@ describe('executionGraphFeed', () => {
   it('next cycle 5000 ms after the response, never overlapping', fakeAsync(() => {
     const t = setup(p => of(page([])).pipe(delay(2000)));
     const sub = executionGraphFeed(t.service, 'p1', 'now', quiet()).subscribe(s => t.snaps.push(s));
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     tick(1999);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     tick(1);
     expect(t.snaps.length).toBe(1);
     tick(GRAPH_REFRESH_MS - 1);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     tick(1);
-    expect(t.calls.length).toBe(4);
+    expect(t.calls.length).toBe(6); // 2 cycle(s) of 3 calls
     tick(1999);
-    expect(t.calls.length).toBe(4);
+    expect(t.calls.length).toBe(6); // 2 cycle(s) of 3 calls
     sub.unsubscribe();
     tick(10000);
   }));
@@ -160,16 +188,16 @@ describe('executionGraphFeed', () => {
     const t = setup(p => NEVER);
     const sub = executionGraphFeed(t.service, 'p1', 'now', quiet()).subscribe(s => t.snaps.push(s));
     expect(GRAPH_REQUEST_TIMEOUT_MS).toBe(10000);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     tick(9999);
     expect(t.snaps.length).toBe(0);
     tick(1);
     expect(t.snaps.length).toBe(1);
     expect(t.snaps[0].stale).toBe(true);
     tick(GRAPH_REFRESH_MS - 1);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     tick(1);
-    expect(t.calls.length).toBe(4);
+    expect(t.calls.length).toBe(6); // 2 cycle(s) of 3 calls
     sub.unsubscribe();
     tick(60000);
   }));
@@ -178,14 +206,14 @@ describe('executionGraphFeed', () => {
     const hidden$ = new Subject<boolean>();
     const t = setup(p => of(page([])));
     const sub = executionGraphFeed(t.service, 'p1', 'now', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     hidden$.next(true);
     tick(60000);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     hidden$.next(false);
-    expect(t.calls.length).toBe(4);
+    expect(t.calls.length).toBe(6); // 2 cycle(s) of 3 calls
     tick(GRAPH_REFRESH_MS);
-    expect(t.calls.length).toBe(6);
+    expect(t.calls.length).toBe(9); // 3 cycle(s) of 3 calls
     sub.unsubscribe();
   }));
 
@@ -194,7 +222,7 @@ describe('executionGraphFeed', () => {
     const sub = executionGraphFeed(t.service, 'p1', 'now', quiet()).subscribe(s => t.snaps.push(s));
     sub.unsubscribe();
     tick(60000);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
   }));
 
   it('unsubscribe cancels an in-flight request', fakeAsync(() => {
@@ -203,7 +231,7 @@ describe('executionGraphFeed', () => {
     sub.unsubscribe();
     tick(60000);
     expect(t.snaps.length).toBe(0);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
   }));
 
   it('hidden while a timer is pending: no call fires', fakeAsync(() => {
@@ -213,7 +241,7 @@ describe('executionGraphFeed', () => {
     tick(GRAPH_REFRESH_MS - 1);
     hidden$.next(true);
     tick(60000);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     sub.unsubscribe();
   }));
 
@@ -227,7 +255,7 @@ describe('executionGraphFeed', () => {
     expect(t.snaps.length).toBe(1);
     expect(t.snaps[0].stale).toBe(false);
     tick(60000);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     sub.unsubscribe();
   }));
 
@@ -238,11 +266,11 @@ describe('executionGraphFeed', () => {
     tick(500);
     hidden$.next(true);
     hidden$.next(false);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     tick(1500);
     expect(t.snaps.length).toBe(1);
     tick(GRAPH_REFRESH_MS);
-    expect(t.calls.length).toBe(4);
+    expect(t.calls.length).toBe(6); // 2 cycle(s) of 3 calls
     sub.unsubscribe();
     tick(10000);
   }));
@@ -253,7 +281,7 @@ describe('executionGraphFeed', () => {
     const sub = executionGraphFeed(t.service, 'p1', 'now', { now: () => NOW, hidden$ }).subscribe(s => t.snaps.push(s));
     hidden$.next(false);
     hidden$.next(false);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     sub.unsubscribe();
   }));
 
@@ -266,9 +294,9 @@ describe('executionGraphFeed', () => {
     hidden$.next(false);
     tick(1900);
     expect(t.snaps.length).toBe(1);
-    expect(t.calls.length).toBe(2);
+    expect(t.calls.length).toBe(3); // 1 cycle(s) of 3 calls
     tick(GRAPH_REFRESH_MS);
-    expect(t.calls.length).toBe(4);
+    expect(t.calls.length).toBe(6); // 2 cycle(s) of 3 calls
     sub.unsubscribe();
     tick(10000);
   }));

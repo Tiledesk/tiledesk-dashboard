@@ -107,9 +107,17 @@ export function executionGraphFeed(
       clear();
       running = true;
       const t = now();
+      const from = range !== 'now' ? new Date(t - RANGE_MS[range]).toISOString() : null;
       const queries = [fetchPages(service, projectId, { status: LIVE_STATUSES, test: 'all', limit: PAGE_LIMIT })];
-      if (range !== 'now') {
-        queries.push(fetchPages(service, projectId, { from: new Date(t - RANGE_MS[range]).toISOString(), test: 'all', limit: PAGE_LIMIT }));
+      if (from) {
+        queries.push(fetchPages(service, projectId, { from, test: 'all', limit: PAGE_LIMIT }));
+      }
+      // The problems on their own (usually few): the general queries are capped and newest first, so a failed run
+      // or one with errors could otherwise fall outside them and never reach the chip priority (spec addendum).
+      queries.push(fetchPages(service, projectId, { status: LIVE_STATUSES, has_errors: true, test: 'all', limit: PAGE_LIMIT }));
+      if (from) {
+        queries.push(fetchPages(service, projectId, { status: 'failed', from, test: 'all', limit: PAGE_LIMIT }));
+        queries.push(fetchPages(service, projectId, { has_errors: true, from, test: 'all', limit: PAGE_LIMIT }));
       }
       const stats$ = service.stats(projectId, { range, test: 'all' });
       inflight = forkJoin([forkJoin(queries), stats$]).pipe(timeout(GRAPH_REQUEST_TIMEOUT_MS)).subscribe(
