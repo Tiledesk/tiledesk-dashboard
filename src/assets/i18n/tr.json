@@ -3661,7 +3661,8 @@
         "EngagedConversations": "Etkileşimli konuşmalar",
         "EngagedConversationsTooltip": "Seçilen dönemde bu Flow’un etkileşime girdiği konuşma sayısı. Flow farklı günlerde etkileşime girdiyse bir konuşma birden fazla sayılabilir.",
         "MostEngagedFlow": "En etkileşimli Flow",
-        "KbUsed": "Kullanılan KB"
+"KbUsed": "Kullanılan KB",
+        "PickUpWhereYouLeftOff": "Kaldığınız yerden devam edin"
     },
     "HomeAnalytics": {
         "Overview": "Analytics özeti"
@@ -3749,7 +3750,7 @@
     "HomeVibeCoderSubtitle": "Fikirlerinizi dakikalar içinde konuşma akışlarına dönüştürün — kod yazmaya gerek yok.",
     "NoPermissionToCreateAIAgents": "Yapay zeka ajanları oluşturma izniniz yok.",
     "VibeCoderPlaceholder": "{{BRAND_NAME}}’ten bir yapay zeka ajanı oluşturmasını isteyin..",
-    "VibeCoderTryExamplePrompt": "Örnek bir prompt dene",
+    "VibeCoderTryExamplePrompt": "Nereden başlayacağınızı bilmiyor musunuz? Bunları deneyin",
     "VibeCoderExample1Label": "Kargo ve iade sorularını yanıtla",
     "VibeCoderExample2Label": "WhatsApp ile randevu al",
     "VibeCoderExample3Label": "Destek e-postalarını triyaj et",

@@ -92,5 +92,5 @@ jobs:
           fi
           git config user.name "Tiledesk Developer[bot]"
           git config user.email "tiledeskdeveloper@gmail.com"
-          git commit -m "dashboard $IMAGE_TAG on stage" -- helm/values.yaml
+          git commit -m "🔔 Dashboard $IMAGE_TAG on stage ✅" -- helm/values.yaml
           git push origin HEAD:stage

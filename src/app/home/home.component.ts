@@ -156,6 +156,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   isVisibleHomeBanner: boolean;
   isVisiblePay: boolean;
   isVisibleKNB: boolean;
+  /** Home vibe coder (env key VBC). Missing or F → hidden. */
+  isVisibleVBC = false;
+
+  get hasHomePickupSection(): boolean {
+    return this.isVisibleVBC
+      && this.USER_ROLE !== 'agent'
+      && !!(this.PERMISSION_TO_VIEW_FLOWS || this.PERMISSION_TO_ADD_FLOWS)
+      && !!(this.showskeleton || this.chatbots?.length);
+  }
 
   hidechangelogrocket: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -843,7 +852,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.focusHomeVibeCoderPending) {
       return;
     }
-    if (this.USER_ROLE === 'agent' || !this.PERMISSION_TO_ADD_FLOWS) {
+    if (!this.isVisibleVBC || this.USER_ROLE === 'agent' || !this.PERMISSION_TO_ADD_FLOWS) {
       this.focusHomeVibeCoderPending = false;
       this.homeVibeCoderInitialPrompt = null;
       return;
@@ -2629,6 +2638,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
+      if (key.includes("VBC")) {
+        let vbc = key.split(":");
+        if (vbc[1] === "F") {
+          this.isVisibleVBC = false;
+        } else {
+          this.isVisibleVBC = true;
+        }
+      }
+
 
     });
 
@@ -2669,6 +2687,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.public_Key.includes("QIN")) {
       this.isVisibleQuoteSection = false;
       // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteSection', this.isVisibleQuoteSection);
+    }
+
+    if (!this.public_Key.includes("VBC")) {
+      this.isVisibleVBC = false;
     }
   }
 

@@ -15,8 +15,8 @@
         <div class="bg-card">
           <div class="flex flex-col w-full max-w-screen-xl mx-auto padding-l-r">
 
-            <!-- Plan + project name left; OPH + dashlet icons right -->
-            <div class="home-header-toolbar">
+            <!-- Plan + project name left; OPH + dashlet icons right (hidden when VBC: empty toolbar) -->
+            <div class="home-header-toolbar" *ngIf="!isVisibleVBC">
               <!-- Plan badge + project name (commented on Home)
               <div class="home-header-toolbar__identity">
                 <div class="flex items-center" *ngIf="project_plan_badge" style="cursor: pointer"
@@ -51,7 +51,7 @@
                 <!-- ------------------------------------ -->
                 <!-- {{'AdjustOperatingHours' | translate}} -->
 
-                <ng-container *ngIf="isVisibleOPH && USER_ROLE !== 'agent'">
+                <ng-container *ngIf="!isVisibleVBC && isVisibleOPH && USER_ROLE !== 'agent'">
                   <button *ngIf="PERMISSION_TO_VIEW_OP" id="adjust-operating-hours-btn" #editOperatingHoursBtn mat-mini-fab
                     aria-label="date_range icon" [satPopoverAnchor]="editOperatingHours"
                     (click)="editOperatingHours.toggle();" matTooltipClass="custom-mat-tooltip"
@@ -112,7 +112,7 @@
                 <!-- ------------------------------------ -->
                 <!-- Settings  mat-primary ng-reflect-color="primary"  -->
                 <!-- ------------------------------------ -->
-                <button id="dashlet-filter-btn" *ngIf="hasAnyDashletToggle" mat-mini-fab aria-label="filter icon"
+                <button id="dashlet-filter-btn" *ngIf="!isVisibleVBC && hasAnyDashletToggle" mat-mini-fab aria-label="filter icon"
                   [matMenuTriggerFor]="dashletMenu" 
                   matTooltipClass="custom-mat-tooltip" 
                   matTooltip="Dashlets filter"
@@ -174,27 +174,45 @@
 
         <ng-container *ngIf="homePermissionsReady">
 
-          <!-- Title + vibe coder + examples — under toolbar, above quick cards -->
-          <div class="home-vibe-coder-box"
-            *ngIf="USER_ROLE !== 'agent' && PERMISSION_TO_ADD_FLOWS">
-            <div class="home-vibe-coder-box__heading">
-              <!-- home-vibe-coder__badge (HomeVibeCoderBadge) removed -->
-              <div class="home-vibe-coder__title">
-                {{ 'HomeVibeCoderTitle' | translate }}
+          <!-- VBC hero: centered vibe coder; air before last-edited pickup -->
+          <div
+            class="home-vibe-hero"
+            *ngIf="isVisibleVBC && USER_ROLE !== 'agent' && PERMISSION_TO_ADD_FLOWS">
+            <div class="home-vibe-coder-box">
+              <div class="home-vibe-coder-box__heading">
+                <!-- home-vibe-coder__badge (HomeVibeCoderBadge) removed -->
+                <div class="home-vibe-coder__title">
+                  {{ 'HomeVibeCoderTitle' | translate }}
+                </div>
               </div>
-            </div>
-            <div class="home-vibe-coder">
-              <appdashboard-vibe-coder
-                #homeVibeCoder
-                [busy]="vibeCoderBusy"
-                [error]="vibeCoderError"
-                (start)="onHomeVibeCoderStart($event)">
-              </appdashboard-vibe-coder>
+              <div class="home-vibe-coder">
+                <appdashboard-vibe-coder
+                  #homeVibeCoder
+                  [busy]="vibeCoderBusy"
+                  [error]="vibeCoderError"
+                  (start)="onHomeVibeCoderStart($event)">
+                </appdashboard-vibe-coder>
+              </div>
             </div>
           </div>
 
+          <section
+            class="home-pickup-section"
+            *ngIf="hasHomePickupSection">
+            <h2 class="home-pickup-section__title">
+              {{ 'HomeFlow.PickUpWhereYouLeftOff' | translate }}
+            </h2>
+            <home-pickup-flow
+              [chatbots]="chatbots"
+              [chatbotsLoading]="showskeleton"
+              [project]="project"
+              [PERMISSION_TO_VIEW_FLOWS]="PERMISSION_TO_VIEW_FLOWS !== false"
+              (featuredChatbotIdChange)="featuredHomeFlowChatbotId = $event">
+            </home-pickup-flow>
+          </section>
+
           <home-quick-cards
-            *ngIf="USER_ROLE !== 'agent'"
+            *ngIf="!isVisibleVBC && USER_ROLE !== 'agent'"
             [projectId]="projectId"
             [userRole]="USER_ROLE"
             [permissionToViewFlows]="PERMISSION_TO_VIEW_FLOWS"
@@ -206,7 +224,7 @@
           </home-quick-cards>
 
         <!-- QUOTA Banner (toggle via dashlet filter → Current usage) -->
-        <ng-container *ngIf="displayQuotaBanner && isVisibleQuoteSection && PERMISSION_TO_VIEW_QUOTA_USAGE">
+        <ng-container *ngIf="!isVisibleVBC && displayQuotaBanner && isVisibleQuoteSection && PERMISSION_TO_VIEW_QUOTA_USAGE">
           <!-- [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
           <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner">
 
@@ -648,7 +666,7 @@
 
         <!-- .\ QUOTA Banner  -->
 
-        <div class="home-blocks-wpr">
+        <div class="home-blocks-wpr" *ngIf="!isVisibleVBC">
 
           <ng-container *ngIf="USER_ROLE !== 'agent'">
             <home-flow

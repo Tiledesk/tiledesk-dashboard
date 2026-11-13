@@ -119,6 +119,20 @@
                 {{ 'NewFlow' | translate }}
               </button>
 
+              <button *ngIf="executionsEnabled" type="button"
+                class="btn btn-blu-gray-outline pull-right bots-list-all-executions-btn"
+                [attr.aria-label]="'Executions.AllExecutions' | translate"
+                matTooltipClass="custom-mat-tooltip"
+                matTooltip="{{ 'Executions.AllExecutions' | translate }}"
+                matTooltipPosition="below"
+                matTooltipHideDelay="100"
+                (click)="goToAllExecutions()">
+                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" aria-hidden="true">
+                  <path
+                    d="M480-120q-138 0-240.5-91.5T122-440h82q14 104 92.5 172T480-200q117 0 198.5-81.5T760-480q0-117-81.5-198.5T480-760q-69 0-129 32t-101 88h110v80H120v-240h80v94q51-64 124.5-99T480-840q75 0 140.5 28.5t114 77q48.5 48.5 77 114T840-480q0 75-28.5 140.5t-77 114q-48.5 48.5-114 77T480-120Zm112-192L440-464v-216h80v184l128 128-56 56Z" />
+                </svg>
+              </button>
+
               <!-- New Flow dropdown (AI Agents / Automations) — kept commented; button above only
               <div class="dropdown pull-right">
                 <a class="btn dropdown-toggle select-flow-btn"
@@ -808,6 +822,26 @@
                               </div>
                             </ng-container>
 
+                            <div *ngIf="executionsEnabled" class="cl-card-action-btn-wpr executions-btn-wpr" (click)="$event.stopPropagation()">
+                              <button id="executions-btn-{{faqkb._id}}"
+                                class="executions-btn"
+                                mat-icon-button
+                                (click)="goToExecutions(faqkb)"
+                                [attr.aria-label]="'Executions.Executions' | translate"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{ 'Executions.Executions' | translate }}"
+                                matTooltipPosition='below'
+                                matTooltipHideDelay="100">
+                                <mat-icon>manage_history</mat-icon>
+                              </button>
+                              <span *ngIf="executionsBadge[executionsAgentId(faqkb)]?.attention > 0"
+                                class="executions-badge"
+                                matTooltipClass="custom-mat-tooltip"
+                                matTooltip="{{ 'Executions.NeedAttention' | translate: { n: executionsBadge[executionsAgentId(faqkb)].attention } }}"
+                                matTooltipPosition='below'>{{ executionsBadgeText(executionsAgentId(faqkb)) }}</span>
+                              <span *ngIf="executionsBadge[executionsAgentId(faqkb)]?.running" class="executions-running-dot"></span>
+                            </div>
+
                             <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
                               <button id="share-btn-{{faqkb._id}}" 
                                 mat-icon-button 
@@ -861,6 +895,12 @@
                                   <mat-icon>edit</mat-icon>
                                   <span>Rename</span>
                                 </button> -->
+
+                                <button *ngIf="executionsEnabled" class="mat-menu-btn" mat-menu-item
+                                  (click)="goToExecutions(faqkb)">
+                                  <mat-icon>manage_history</mat-icon>
+                                  <span>{{ 'Executions.Executions' | translate }}</span>
+                                </button>
 
                                 <button class="mat-menu-btn" mat-menu-item
                                   (click)="PERMISSION_TO_TEST_FLOW && openTestSiteInPopupWindow(faqkb?._id)" 

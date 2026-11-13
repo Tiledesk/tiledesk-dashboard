@@ -1,0 +1,27 @@
+:host { display: block; }
+.graph-cards { margin-bottom: 10px; }
+/* the agent colour key, compact, under the big numbers; swatch colours come from EXEC_GRAPH_COLORS */
+.graph-key { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; font-size: 12px; color: #5d6b82; margin-bottom: 8px; }
+.key-title { font-weight: 500; color: #3b4250; }
+.key-item { display: inline-flex; align-items: center; gap: 6px; }
+.key-swatch { display: inline-block; width: 14px; height: 14px; border-radius: 4px; box-sizing: border-box; border: 1.5px solid transparent; }
+.graph-note { color: #5d6b82; }
+.graph-stale { color: #a15c00; }
+.graph-empty {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, 40px); pointer-events: none;
+  font-size: 13px; color: #5d6b82;
+}
+.graph-stage { position: relative; }
+.graph-canvas { width: 100%; height: 70vh; min-height: 480px; border: 1px solid #e3e6eb; border-radius: 6px; background: #fff; }
+.graph-tooltip {
+  position: absolute; transform: translateX(-50%); pointer-events: none; z-index: 2;
+  background: #3b4250; color: #fff; font-size: 12px; line-height: 1.4; padding: 6px 8px; border-radius: 4px;
+  white-space: nowrap; box-shadow: 0 2px 6px rgba(0, 0, 0, .2);
+}
+.graph-unavailable { padding: 24px; text-align: center; color: #c62f2f; font-size: 14px; }
+
+/* full-page host: the canvas takes the height left by the legend */
+:host(.fill) { height: 100%; }
+:host(.fill) .graph-wrap { display: flex; flex-direction: column; height: 100%; }
+:host(.fill) .graph-stage { flex: 1 1 auto; min-height: 480px; }
+:host(.fill) .graph-canvas { height: 100%; }

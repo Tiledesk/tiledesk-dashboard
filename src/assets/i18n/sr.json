@@ -3661,7 +3661,8 @@
         "EngagedConversations": "Ангажовани разговори",
         "EngagedConversationsTooltip": "Број разговора у којима је овај Flow био ангажован током изабраног периода. Разговор може бити пребројан више пута ако је Flow био ангажован у различитим данима.",
         "MostEngagedFlow": "Најангажованији Flow",
-        "KbUsed": "Коришћене KB"
+"KbUsed": "Коришћене KB",
+        "PickUpWhereYouLeftOff": "Наставите тамо где сте стали"
     },
     "HomeAnalytics": {
         "Overview": "Преглед аналитике"
@@ -3749,7 +3750,7 @@
     "HomeVibeCoderSubtitle": "Претворите своје идеје у разговорне токове за неколико минута — без програмирања.",
     "NoPermissionToCreateAIAgents": "Немате дозволу да креирате AI агенте.",
     "VibeCoderPlaceholder": "Затражите од {{BRAND_NAME}} да направи AI агента који..",
-    "VibeCoderTryExamplePrompt": "Пробајте пример упита",
+    "VibeCoderTryExamplePrompt": "Не знате одакле да почнете? Пробајте ове",
     "VibeCoderExample1Label": "Одговори на питања о достави и повратима",
     "VibeCoderExample2Label": "Заказуј термине преко WhatsApp-а",
     "VibeCoderExample3Label": "Тријажа мејлова подршке",

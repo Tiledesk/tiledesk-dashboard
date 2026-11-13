@@ -1,0 +1,44 @@
+<div class="row sn-row" *ngIf="configured && settings">
+  <div class="col-md-6">
+    <h3 class="card_title__underlined">
+      <span class="card_title__underline">{{ 'Executions.StopNotice.Title' | translate }}</span>
+    </h3>
+    <p class="sn-intro">{{ 'Executions.StopNotice.Hint' | translate }}</p>
+
+    <div class="sn">
+      <div class="sn-field sn-toggle">
+        <span class="sn-label">{{ 'Executions.StopNotice.Enabled' | translate }}</span>
+        <div class="sn-switch">
+          <input id="sn-enabled-input" type="checkbox" class="sn-switch-checkbox sn-enabled" [disabled]="!settings.can_edit"
+            [(ngModel)]="enabled" (ngModelChange)="edited()">
+          <label class="sn-switch-label" for="sn-enabled-input">
+            <span class="sn-switch-inner"></span>
+            <span class="sn-switch-knob"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="sn-field sn-text">
+        <label for="sn-text-input" class="sn-label">{{ 'Executions.StopNotice.Text' | translate }}</label>
+        <textarea id="sn-text-input" class="sn-textarea" rows="3" [attr.maxlength]="maxLength"
+          [placeholder]="placeholder" [disabled]="!settings.can_edit"
+          [class.sn-invalid]="textError || tooLong"
+          [(ngModel)]="text" (ngModelChange)="edited()"></textarea>
+        <div class="sn-count">{{ (text || '').length }} / {{ maxLength }}</div>
+        <div class="sn-error sn-too-long" *ngIf="textError || tooLong" role="alert">
+          {{ 'Executions.StopNotice.TooLong' | translate: { max: maxLength } }}
+        </div>
+      </div>
+
+      <p class="sn-readonly" *ngIf="!settings.can_edit">{{ 'Executions.StopNotice.ReadOnly' | translate }}</p>
+
+      <div class="sn-actions" *ngIf="settings.can_edit">
+        <button type="button" class="btn btn-primary sn-save" [disabled]="!canSave" (click)="save()">
+          {{ 'Executions.StopNotice.Save' | translate }}
+        </button>
+        <span class="sn-saved" *ngIf="saved" role="status">{{ 'Executions.StopNotice.Saved' | translate }}</span>
+        <span class="sn-error sn-failed" *ngIf="saveFailed" role="alert">{{ 'Executions.StopNotice.SaveFailed' | translate }}</span>
+      </div>
+    </div>
+  </div>
+</div>

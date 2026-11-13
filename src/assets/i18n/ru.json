@@ -3660,7 +3660,8 @@
         "EngagedConversations": "Вовлечённые разговоры",
         "EngagedConversationsTooltip": "Количество разговоров, в которых этот Flow был задействован за выбранный период. Разговор может быть посчитан несколько раз, если Flow был задействован в разные дни.",
         "MostEngagedFlow": "Самый вовлечённый Flow",
-        "KbUsed": "Используемые KB"
+"KbUsed": "Используемые KB",
+        "PickUpWhereYouLeftOff": "Продолжить с того места, где остановились"
     },
     "HomeAnalytics": {
         "Overview": "Обзор аналитики"
@@ -3748,7 +3749,7 @@
     "HomeVibeCoderSubtitle": "Превратите идеи в разговорные сценарии за минуты — без программирования.",
     "NoPermissionToCreateAIAgents": "У вас нет разрешения на создание ИИ-агентов.",
     "VibeCoderPlaceholder": "Попросите {{BRAND_NAME}} создать ИИ-агента, который..",
-    "VibeCoderTryExamplePrompt": "Попробуйте пример промпта",
+    "VibeCoderTryExamplePrompt": "Не знаете, с чего начать? Попробуйте эти",
     "VibeCoderExample1Label": "Ответы по доставке и возвратам",
     "VibeCoderExample2Label": "Запись на встречи через WhatsApp",
     "VibeCoderExample3Label": "Сортировка писем поддержки",

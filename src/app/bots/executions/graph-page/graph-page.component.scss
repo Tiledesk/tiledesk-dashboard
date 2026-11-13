@@ -1,0 +1,32 @@
+// The dashboard header is absolute and 61px high: the page starts under it and fills the rest of the viewport.
+:host {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100vh;
+  min-height: 480px;
+  padding-top: 61px;
+}
+
+.graph-page-top ::ng-deep .monitor-tabs { top: 0; }
+
+.graph-page-body {
+  flex: 1 1 auto;
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px 24px 16px;
+
+  execution-graph { flex: 1 1 auto; min-height: 0; }
+}
+
+.graph-page-head {
+  display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-bottom: 12px;
+  .graph-range-label { margin: 0; font-size: 13px; color: #5d6b82; font-weight: 400; }
+  .graph-range { width: 200px; font-size: 14px; }
+}
+
+.graph-page-error { padding: 24px; text-align: center; color: #c62f2f; font-size: 14px; }
+
+// Same look as the executions list empty line (executions-list.component.scss .exec-empty).
+.exec-not-configured { padding: 40px 16px; text-align: center; color: #5d6b82; }

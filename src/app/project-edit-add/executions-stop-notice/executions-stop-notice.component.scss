@@ -1,0 +1,32 @@
+.sn-row { margin-top: 32px; }
+.sn-intro { font-size: 14px; color: #5d6b82; margin: 8px 0 16px; }
+.sn-field { margin-bottom: 16px; }
+/* same ON/OFF switch as the project settings page (.onoffswitch), scoped here */
+.sn-switch { position: relative; width: 90px; user-select: none; }
+.sn-switch-checkbox { position: absolute; opacity: 0; width: 0; height: 0; }
+.sn-switch-label { display: block; overflow: hidden; cursor: pointer; border: 1px solid #d9d9d9; border-radius: 22px; margin: 0; }
+.sn-switch-inner { display: block; width: 200%; margin-left: -100%; transition: margin 0.3s ease-in 0s; }
+.sn-switch-inner:before, .sn-switch-inner:after {
+  display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 30px;
+  font-size: 14px; font-family: Trebuchet, Arial, sans-serif; font-weight: bold; box-sizing: border-box;
+}
+.sn-switch-inner:before { content: "ON"; padding-left: 10px; color: #4caf50; }
+.sn-switch-inner:after { content: "OFF"; padding-right: 10px; color: #f44336; text-align: right; }
+.sn-switch-knob {
+  display: block; width: 22px; height: 22px; margin: 5px; background: #f44336; position: absolute;
+  top: 0; bottom: 0; right: 56px; border: 1px solid #d9d9d9; border-radius: 22px; transition: all 0.3s ease-in 0s;
+}
+.sn-switch-checkbox:checked + .sn-switch-label .sn-switch-inner { margin-left: 0; }
+.sn-switch-checkbox:checked + .sn-switch-label .sn-switch-knob { right: 0; background: #4caf50; }
+.sn-switch-checkbox:focus-visible + .sn-switch-label { outline: 2px solid #1a73e8; outline-offset: 2px; }
+.sn-switch-checkbox:disabled + .sn-switch-label { cursor: default; opacity: 0.6; }
+.sn-label { display: block; font-weight: 400; font-size: 14px; margin-bottom: 4px; }
+.sn-textarea { width: 100%; border: 1px solid #c9d0de; border-radius: 8px; padding: 8px 10px; font-size: 14px; resize: vertical; }
+.sn-textarea.sn-invalid { border-color: #d93025; }
+.sn-textarea:disabled { background: #f3f5f9; color: #5d6b82; }
+.sn-count { font-size: 12px; color: #5d6b82; text-align: right; }
+.sn-error { margin-top: 4px; font-size: 13px; color: #d93025; }
+.sn-readonly { font-size: 13px; color: #5d6b82; }
+.sn-actions { display: flex; align-items: center; gap: 12px; }
+.sn-actions .sn-error { margin-top: 0; }
+.sn-saved { font-size: 14px; color: #1e8e3e; }

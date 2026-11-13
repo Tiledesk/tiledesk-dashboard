@@ -3661,7 +3661,8 @@
         "EngagedConversations": "Белсенді әңгімелер",
         "EngagedConversationsTooltip": "Таңдалған кезеңде осы Flow қатысқан әңгімелер саны. Flow әр түрлі күндері қатысса, әңгіме бірнеше рет есептелуі мүмкін.",
         "MostEngagedFlow": "Ең белсенді Flow",
-        "KbUsed": "Қолданылған KB"
+"KbUsed": "Қолданылған KB",
+        "PickUpWhereYouLeftOff": "Тоқтаған жерден жалғастырыңыз"
     },
     "HomeAnalytics": {
         "Overview": "Аналитика шолуы"
@@ -3749,7 +3750,7 @@
     "HomeVibeCoderSubtitle": "Идеяларыңызды бірнеше минутта сөйлесу ағындарына айналдырыңыз — код жазу қажет емес.",
     "NoPermissionToCreateAIAgents": "Жасанды интеллект агенттерін жасауға рұқсатыңыз жоқ.",
     "VibeCoderPlaceholder": "{{BRAND_NAME}}-тен ЖИ агентін жасауын сұраңыз..",
-    "VibeCoderTryExamplePrompt": "Мысал промптты көріңіз",
+    "VibeCoderTryExamplePrompt": "Қайдан бастауды білмейсіз бе? Осыларды қолданып көріңіз",
     "VibeCoderExample1Label": "Жеткізу және қайтару сұрақтарына жауап",
     "VibeCoderExample2Label": "WhatsApp арқылы кездесу жазылу",
     "VibeCoderExample3Label": "Қолдау email-дерін сұрыптау",

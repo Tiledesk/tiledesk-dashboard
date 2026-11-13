@@ -1,0 +1,58 @@
+:host {
+  --exec-fg: #1f2a3d;
+  --exec-muted: #5d6b82;
+  --exec-line: #dfe3ed;
+  --exec-line-strong: #c9d0de;
+  --exec-accent: #1b6ef3;
+  --exec-accent-weak: #e8f0fe;
+  --exec-bad: #c62f2f;
+  --exec-warn: #a15c00;
+  display: block;
+  color: var(--exec-fg);
+}
+
+.exec-head { display: flex; align-items: center; justify-content: space-between; margin: 16px 0; }
+.exec-title { font-size: 22px; font-weight: 500; margin: 0; }
+
+.exec-input {
+  height: 36px; border: 1px solid var(--exec-line-strong); border-radius: 8px; background: #fff;
+  padding: 0 10px; font-size: 13px; color: var(--exec-fg);
+}
+.exec-filter-q { min-width: 220px; }
+
+.exec-select-ng { font-size: 13px; }
+.exec-agent-switcher { width: 240px; }
+.exec-filter-trigger, .exec-filter-period { width: 180px; }
+.exec-filter-status { width: 170px; }
+
+.exec-cards { margin-bottom: 14px; }
+.exec-cards-hint { display: block; margin-top: 6px; color: var(--exec-muted); font-size: 12px; }
+
+.exec-filters { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.exec-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; }
+
+.exec-card { background: #fff; border: 1px solid var(--exec-line); border-radius: 10px; overflow-x: auto; }
+.exec-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  th { text-align: left; font-weight: 500; color: var(--exec-muted); padding: 10px 12px; border-bottom: 1px solid var(--exec-line); white-space: nowrap; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--exec-line); vertical-align: middle; }
+}
+.exec-row { cursor: pointer; &:hover, &:focus { background: #f8f9fc; outline: none; } }
+.exec-muted { color: var(--exec-muted); }
+.exec-fail { color: var(--exec-bad); font-weight: 500; }
+.exec-agent { font-weight: 500; }
+.exec-warn-icon { color: var(--exec-warn); font-size: 16px; width: 16px; height: 16px; margin-left: 4px; vertical-align: middle; }
+.exec-chevron { color: var(--exec-muted); text-align: right; }
+
+.exec-empty { padding: 40px 16px; text-align: center; color: var(--exec-muted); }
+.exec-link { border: 0; background: none; color: var(--exec-accent); cursor: pointer; padding: 0 4px; }
+.exec-more { text-align: center; padding: 12px; }
+.exec-btn { border: 1px solid var(--exec-line-strong); background: #fff; border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }
+
+.unauthorized-message-container-in-page { text-align: center; padding: 80px 16px; }
+
+// a test run (Design Studio, draft agent): listed with the real ones, marked
+.exec-test-badge {
+  display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 8px;
+  font-size: 11px; line-height: 18px; color: #6b5b00; background: #fff4c2; vertical-align: middle;
+}

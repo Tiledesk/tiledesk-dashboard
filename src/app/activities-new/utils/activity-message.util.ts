@@ -943,6 +943,112 @@ export function isProjectUserInviteTargetLinkable(activity: ActivityRecord): boo
   return !!(resolveProjectUserTargetDisplay(activity)?.profileId || getTargetUserId(activity));
 }
 
+const EXECUTION_VERB_PHRASES: Record<string, string> = {
+  EXECUTION_STOP_SOFT: 'soft-stopped execution',
+  EXECUTION_STOP_HARD: 'hard-stopped execution',
+  EXECUTION_DESTROY: 'destroyed execution',
+  EXECUTION_RESUME: 'resumed execution',
+  EXECUTION_START_NEW: 'started a new run of execution',
+  EXECUTION_DATA_ACCESS: 'viewed the data of execution',
+  EXECUTION_DATA_ACCESS_DENIED: 'was denied access to the data of execution',
+  EXECUTION_RETENTION_UPDATE: 'changed executions retention',
+};
+
+/** A control refused with a 409 is audited too (actionObj.result `rejected:<status>`): it reads as an attempt. */
+const EXECUTION_TRIED_PHRASES: Record<string, string> = {
+  EXECUTION_STOP_SOFT: 'tried to soft-stop execution',
+  EXECUTION_STOP_HARD: 'tried to hard-stop execution',
+  EXECUTION_DESTROY: 'tried to destroy execution',
+  EXECUTION_RESUME: 'tried to resume execution',
+  EXECUTION_START_NEW: 'tried to start a new run of execution',
+};
+
+/** null when the control was accepted (or the row has no result); otherwise the refusal, e.g. `stopped`. */
+export function executionRejection(activity: ActivityRecord): { reason: string } | null {
+  const result = str(activity.actionObj?.['result']);
+  if (!/^rejected(:|$)/.test(result)) return null;
+  const i = result.indexOf(':');
+  return { reason: i >= 0 ? result.substring(i + 1) : '' };
+}
+
+/** A start new whose refire got no answer: the run may have started, so it reads as started and flagged. */
+export function executionUnconfirmed(activity: ActivityRecord): boolean {
+  return effectiveVerb(activity) === 'EXECUTION_START_NEW' && executionRejection(activity)?.reason === 'refire_unconfirmed';
+}
+
+/** The retention row targets the project, not an execution: it has no execution id, agent or link. */
+export function isExecutionRetentionVerb(verb: string): boolean {
+  return verb === 'EXECUTION_RETENTION_UPDATE';
+}
+
+/** "trace 90 → 30 days, data 30 → 7 days": only the parts that changed (activityMessageUtil.retentionChanges, en). */
+export function executionRetentionChanges(activity: ActivityRecord): string {
+  const r = (activity.actionObj?.['retention'] || {}) as { before?: Record<string, unknown>; after?: Record<string, unknown> };
+  const before = r.before || {};
+  const after = r.after || {};
+  const parts: string[] = [];
+  [['trace_days', 'trace'], ['data_days', 'data']].forEach(([key, label]) => {
+    if (before[key] !== after[key]) {
+      parts.push(`${label} ${before[key]} → ${after[key]} days`);
+    }
+  });
+  return parts.join(', ');
+}
+
+export function isExecutionVerb(verb: string): boolean {
+  return Object.prototype.hasOwnProperty.call(EXECUTION_VERB_PHRASES, verb);
+}
+
+/** Last 6 characters of the execution id (target.id) without dashes, as the server writes it (uuid v7 starts with a timestamp). */
+export function executionShortId(activity: ActivityRecord): string {
+  return str(activity.target?.id).replace(/-/g, '').slice(-6);
+}
+
+export function executionAgentLabel(activity: ActivityRecord): string {
+  const object = activity.target?.object || {};
+  return str(object['agent_name'] || activity.related?.name || object['agent_id']) || 'agent';
+}
+
+export function executionAgentId(activity: ActivityRecord): string {
+  const object = activity.target?.object || {};
+  return str(activity.related?.id || object['agent_id']);
+}
+
+/** Text after the agent name: ` (rejected: <status>)` for a refused control, then ` · "<reason>"` when a reason exists. */
+export function executionReasonSuffix(activity: ActivityRecord): string {
+  const denied = effectiveVerb(activity) === 'EXECUTION_DATA_ACCESS_DENIED';
+  if (isExecutionRetentionVerb(effectiveVerb(activity))) {
+    const changes = executionRetentionChanges(activity);
+    return changes ? `: ${changes}` : '';
+  }
+  const rejected = denied || executionUnconfirmed(activity) ? null : executionRejection(activity);
+  const refusal = executionUnconfirmed(activity) ? ' (unconfirmed)' : rejected ? ` (rejected${rejected.reason ? ': ' + rejected.reason : ''})` : '';
+  const reason = denied ? '' : str(activity.actionObj?.['reason']);
+  let suffix = refusal + (reason ? ` · "${reason}"` : '');
+  if (effectiveVerb(activity) === 'EXECUTION_DATA_ACCESS') {
+    const scope = (activity.actionObj?.['scope'] || {}) as { type?: string };
+    suffix += scope.type === 'step' ? ' · 1 block' : ' · whole execution';
+  }
+  if (denied) {
+    const role = str(activity.actionObj?.['role']);
+    if (role) suffix += ` (role ${role})`;
+  }
+  return suffix;
+}
+
+/** Same sentence as the server's (activityMessageUtil.buildExecutionMessage, en). */
+export function executionPhrase(activity: ActivityRecord): string {
+  const verb = effectiveVerb(activity);
+  return (executionRejection(activity) && !executionUnconfirmed(activity) && EXECUTION_TRIED_PHRASES[verb] ? EXECUTION_TRIED_PHRASES[verb] : EXECUTION_VERB_PHRASES[verb]) || '';
+}
+
+export function renderExecutionMessage(activity: ActivityRecord): string {
+  if (isExecutionRetentionVerb(effectiveVerb(activity))) {
+    return `${actorName(activity)} ${executionPhrase(activity)}${executionReasonSuffix(activity)}`;
+  }
+  return `${actorName(activity)} ${executionPhrase(activity)} ${executionShortId(activity)} of ${executionAgentLabel(activity)}${executionReasonSuffix(activity)}`;
+}
+
 export function renderActivity(activity: ActivityRecord): string {
   if (activity.message && !activity.verb) {
     return activity.message;
@@ -961,6 +1067,16 @@ export function renderActivity(activity: ActivityRecord): string {
   const namespace = namespaceName(activity);
 
   switch (verb) {
+    case 'EXECUTION_STOP_SOFT':
+    case 'EXECUTION_STOP_HARD':
+    case 'EXECUTION_DESTROY':
+    case 'EXECUTION_RESUME':
+    case 'EXECUTION_START_NEW':
+    case 'EXECUTION_DATA_ACCESS':
+    case 'EXECUTION_DATA_ACCESS_DENIED':
+    case 'EXECUTION_RETENTION_UPDATE':
+      return renderExecutionMessage(activity);
+
     case 'REQUEST_ASSIGNED_SELF':
       return `${actor} joined the conversation: ${conversation}`;
 

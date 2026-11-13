@@ -1,6 +1,6 @@
 {
   "name": "@tiledesk/tiledesk-dashboard",
-  "version": "2.7.271-stage",
+  "version": "2.7.274-stage",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -47,6 +47,7 @@
     "apexcharts": "^3.54.1",
     "bootstrap": "^5.3.8",
     "chart.js": "^2.9.4",
+    "cytoscape": "3.30.4",
     "echarts": "^6.1.0",
     "emoji-regex": "^10.4.0",
     "express": "^4.17.3",

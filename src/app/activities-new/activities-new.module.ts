@@ -17,6 +17,7 @@ import { ActivitiesNewComponent } from './activities-new.component';
 import { ActivitiesTeammateAvatarComponent } from './components/activities-teammate-avatar/activities-teammate-avatar.component';
 import { ActivitiesTeammateLinkComponent } from './components/activities-teammate-link/activities-teammate-link.component';
 import { ActivitiesBotLinkComponent } from './components/activities-bot-link/activities-bot-link.component';
+import { ActivitiesExecutionLinkComponent } from './components/activities-execution-link/activities-execution-link.component';
 import { TeammateActivitiesChartModalComponent } from './modals/teammate-activities-chart-modal/teammate-activities-chart-modal.component';
 import { ActivitiesListChartModalComponent } from './modals/activities-list-chart-modal/activities-list-chart-modal.component';
 import { ActivitiesTeammateLookupService } from './services/activities-teammate-lookup.service';
@@ -31,6 +32,7 @@ const routes: Routes = [
     ActivitiesTeammateAvatarComponent,
     ActivitiesTeammateLinkComponent,
     ActivitiesBotLinkComponent,
+    ActivitiesExecutionLinkComponent,
     TeammateActivitiesChartModalComponent,
     ActivitiesListChartModalComponent,
   ],

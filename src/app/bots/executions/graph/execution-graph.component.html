@@ -1,0 +1,21 @@
+<div class="graph-wrap">
+  <div class="graph-unavailable" *ngIf="failed">{{ 'Executions.Graph.Unavailable' | translate }}</div>
+  <ng-container *ngIf="!failed">
+    <execution-stat-cards class="graph-cards" [counts]="stats?.statuses || null" [withErrors]="stats ? (stats.with_errors ?? null) : null"></execution-stat-cards>
+    <div class="graph-key">
+      <span class="key-title">{{ 'Executions.Graph.Key.Title' | translate }}</span>
+      <span class="key-item" *ngFor="let k of keyColors">
+        <i class="key-swatch" [attr.data-color]="k.color" [style.background]="k.bg" [style.border-color]="k.border"></i>{{ 'Executions.Graph.Key.' + k.color | translate }}
+      </span>
+      <span class="graph-note" *ngIf="truncated">{{ 'Executions.Graph.Truncated' | translate }}</span>
+      <span class="graph-note graph-stale" *ngIf="stale">{{ 'Executions.Graph.Stale' | translate }}</span>
+    </div>
+  </ng-container>
+  <div class="graph-stage" [hidden]="failed">
+    <div #canvas class="graph-canvas"></div>
+    <div class="graph-empty" *ngIf="empty">{{ 'Executions.Graph.Empty' | translate }}</div>
+    <div class="graph-tooltip" *ngIf="tooltip" [style.left.px]="tooltip.x" [style.top.px]="tooltip.y">
+      <div class="tip-line" *ngFor="let line of tooltip.lines">{{ line }}</div>
+    </div>
+  </div>
+</div>

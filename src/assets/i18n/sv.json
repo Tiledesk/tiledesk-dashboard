@@ -3661,7 +3661,8 @@
         "EngagedConversations": "Engagerade konversationer",
         "EngagedConversationsTooltip": "Antal konversationer där detta Flow var engagerat under den valda perioden. En konversation kan räknas mer än en gång om Flowet var engagerat på olika dagar.",
         "MostEngagedFlow": "Mest engagerade Flow",
-        "KbUsed": "Använda KB"
+"KbUsed": "Använda KB",
+        "PickUpWhereYouLeftOff": "Fortsätt där du slutade"
     },
     "HomeAnalytics": {
         "Overview": "Analyticsöversikt"
@@ -3749,7 +3750,7 @@
     "HomeVibeCoderSubtitle": "Förvandla dina idéer till konversationsflöden på några minuter — ingen kodning krävs.",
     "NoPermissionToCreateAIAgents": "Du har inte behörighet att skapa AI-agenter.",
     "VibeCoderPlaceholder": "Be {{BRAND_NAME}} skapa en AI-agent som..",
-    "VibeCoderTryExamplePrompt": "Prova en exempelprompt",
+    "VibeCoderTryExamplePrompt": "Osäker på var du ska börja? Prova dessa",
     "VibeCoderExample1Label": "Svara på frakt- och returfrågor",
     "VibeCoderExample2Label": "Boka möten via WhatsApp",
     "VibeCoderExample3Label": "Triagera supportmejl",

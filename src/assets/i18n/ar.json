@@ -3661,7 +3661,8 @@
         "EngagedConversations": "المحادثات التفاعلية",
         "EngagedConversationsTooltip": "عدد المحادثات التي شارك فيها هذا الـ Flow خلال الفترة المحددة. قد تُحسب المحادثة أكثر من مرة إذا شارك الـ Flow في أيام مختلفة.",
         "MostEngagedFlow": "Flow الأكثر تفاعلاً",
-        "KbUsed": "قواعد المعرفة المستخدمة"
+"KbUsed": "قواعد المعرفة المستخدمة",
+        "PickUpWhereYouLeftOff": "تابع من حيث توقفت"
     },
     "HomeAnalytics": {
         "Overview": "نظرة عامة على التحليلات"
@@ -3749,7 +3750,7 @@
     "HomeVibeCoderSubtitle": "حوّل أفكارك إلى تدفقات محادثة في دقائق — دون الحاجة إلى البرمجة.",
     "NoPermissionToCreateAIAgents": "ليس لديك صلاحية لإنشاء وكلاء الذكاء الاصطناعي.",
     "VibeCoderPlaceholder": "اطلب من {{BRAND_NAME}} إنشاء وكيل ذكاء اصطناعي يقوم بـ..",
-    "VibeCoderTryExamplePrompt": "جرّب مثالاً على الموجّه",
+    "VibeCoderTryExamplePrompt": "لا تعرف من أين تبدأ؟ جرّب هذه",
     "VibeCoderExample1Label": "الرد على أسئلة الشحن والإرجاع",
     "VibeCoderExample2Label": "حجز المواعيد عبر واتساب",
     "VibeCoderExample3Label": "فرز رسائل الدعم",

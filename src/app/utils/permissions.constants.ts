@@ -160,5 +160,21 @@ export const PERMISSIONS = {
   PROFILE_PAGES: 'profilePages',
   LEAD_DATA: 'leadData',
   IMPORT_DATA: 'importData',
-  MANAGE_TAGS: 'manageTags'
+  MANAGE_TAGS: 'manageTags',
+  EXECUTIONS_READ: 'executions_read',
+  EXECUTIONS_CONTROL: 'executions_control',
+  EXECUTIONS_DESTROY: 'executions_destroy',
+  EXECUTIONS_DATA_ACCESS: 'executions_data_access',
+  EXECUTIONS_AUDIT_READ: 'executions_audit_read'
+};
+
+// Prerequisites of a permission (custom-role editor: ticking a permission ticks and
+// locks these). executions_* need flows_read; control, destroy and data_access need
+// executions_read; audit_read also needs activities_read.
+export const PERMISSION_DEPENDENCIES: Record<string, string[]> = {
+  [PERMISSIONS.EXECUTIONS_READ]: [PERMISSIONS.FLOWS_READ],
+  [PERMISSIONS.EXECUTIONS_CONTROL]: [PERMISSIONS.EXECUTIONS_READ, PERMISSIONS.FLOWS_READ],
+  [PERMISSIONS.EXECUTIONS_DESTROY]: [PERMISSIONS.EXECUTIONS_READ, PERMISSIONS.FLOWS_READ],
+  [PERMISSIONS.EXECUTIONS_DATA_ACCESS]: [PERMISSIONS.EXECUTIONS_READ, PERMISSIONS.FLOWS_READ],
+  [PERMISSIONS.EXECUTIONS_AUDIT_READ]: [PERMISSIONS.FLOWS_READ, PERMISSIONS.ACTIVITIES_READ],
 };
