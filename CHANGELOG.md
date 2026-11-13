@@ -1,5 +1,16 @@
 # tiledesk-dashboard
 
+### 2.7.275-stage
+- Edits the scopes of a Google or manual MCP server as tags: type a scope and press Enter to add it, click the tag to remove it
+- Changing scopes, the manual OAuth client, or the authentication type of an existing MCP server asks for a new authorization before saving
+- Deleting an MCP server also deletes its OAuth authorization when no other server uses it; if the authorization cannot be deleted, the server stays in the list
+- The executions list shows every trigger and Design Studio test runs by default; test runs have a badge, and a Test runs toggle hides them (the counters follow the toggle)
+- An execution block that is still open shows the action currently running; a block closed as interrupted uses the interrupted style
+- Monitor → Graph: time range Now / 1h / 24h / 7d / 30d, only agents that have executions in the view, and the same big-number cards as the executions list
+- Executions filters for agent, trigger, status and period are selects; clicking a counter card sets the status filter
+- Adds a With errors card next to Failed: runs of any status that took a failure condition. On the list it filters executions with failure conditions
+- Project settings, next to executions retention: a Stop notice, the message the chatbot sends once in the conversation when a user writes while the agent's execution is stopped
+
 ### 2.7.274-stage
 - Improves Home vibe coder spacing and layout- Adds on the Home page a compact last-edited AI Agent pickup card with publish/draft status, updated date, and last-10-days conversations char
 - Opens Design Studio V3 when the agent has `ds_version = v3` (Home edit, bots list, Knowledge Bases “served by”)
