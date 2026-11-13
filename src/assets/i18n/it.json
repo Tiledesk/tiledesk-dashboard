@@ -4138,7 +4138,7 @@
         },
         "StopNotice": {
             "Title": "Avviso di stop",
-            "Hint": "Inviato una sola volta nella conversazione quando un utente scrive mentre l'esecuzione dell'agente è ferma. Se vuoto si usa il testo predefinito.",
+            "Hint": "Inviato nella conversazione ogni volta che un utente scrive mentre l'esecuzione dell'agente è ferma. Se vuoto si usa il testo predefinito.",
             "Enabled": "Invia l'avviso",
             "Text": "Testo dell'avviso",
             "TooLong": "Il testo può contenere al massimo {{max}} caratteri.",

@@ -95,7 +95,7 @@ describe('ExecutionsStopNoticeComponent', () => {
     expect(textarea().placeholder).toBe(DEFAULT_TEXT.en);
     expect(textarea().getAttribute('maxlength')).toBe('500');
     expect(el().querySelector('.sn-intro').textContent).toContain(
-      "Sent once in the conversation when a user writes while the agent's execution is stopped. Empty uses the default text.");
+      "Sent in the conversation each time a user writes while the agent's execution is stopped. Empty uses the default text.");
     expect(el().textContent).toContain('Stop notice');
     expect(save().disabled).toBe(true);
   }));
