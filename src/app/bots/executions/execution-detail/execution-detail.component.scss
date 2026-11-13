@@ -178,10 +178,6 @@ $tl-cols: 104px minmax(0, 1fr) 128px 150px minmax(120px, 200px) 20px;
 .tl-split-legend b { color: var(--exec-fg); font-weight: 600; }
 .tl-key { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
 .tl-key-block { background: #5bb27a; }
-.tl-key-wait, .tl-seg-wait, .tl-bar-wait {
-  background-color: var(--exec-surface-2);
-  background-image: repeating-linear-gradient(135deg, rgba(120, 130, 150, .45) 0 2px, transparent 2px 6px);
-}
 .tl-split-bar { position: relative; height: 14px; border-radius: 4px; background: var(--exec-surface-2); overflow: hidden; }
 .tl-seg {
   position: absolute; top: 0; bottom: 0; min-width: 2px; background: var(--exec-faint);
@@ -198,6 +194,11 @@ $tl-cols: 104px minmax(0, 1fr) 128px 150px minmax(120px, 200px) 20px;
 }
 .tl-bar { position: absolute; top: 0; bottom: 0; min-width: 2px; border-radius: 3px; background: var(--exec-faint); }
 .tl-bar-wait { position: absolute; top: 0; bottom: 0; }
+/* a wait: hatched, after the block rules so their background does not cover it */
+.tl-key-wait, .tl-seg.tl-seg-wait, .tl-bar-wait {
+  background-color: var(--exec-surface-2);
+  background-image: repeating-linear-gradient(135deg, rgba(120, 130, 150, .55) 0 2px, transparent 2px 6px);
+}
 .tl-dur { flex: none; min-width: 60px; text-align: right; display: flex; flex-direction: column; line-height: 1.25; }
 .tl-wait-dur { font-size: 11px; white-space: nowrap; &:empty { display: none; } }
 .tl-chevron { color: var(--exec-muted); font-size: 18px; width: 18px; height: 18px; }
