@@ -4585,6 +4585,7 @@
             "waiting": "Waiting",
             "stopped": "Stopped",
             "failed": "Failed",
+            "with_errors": "With errors",
             "completed": "Completed",
             "destroyed": "Destroyed"
         }

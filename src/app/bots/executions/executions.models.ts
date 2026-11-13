@@ -218,6 +218,8 @@ export interface ExecutionStats {
   range: StatsRange;
   from: string | null;
   statuses: StatusCounts;
+  /** Executions in view that took a failure condition, whatever their status. */
+  with_errors?: number;
   agents: { [agentId: string]: AgentStatusCounts };
 }
 
