@@ -3,10 +3,11 @@ import { SimpleChange } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import { ExecutionRow, ExecutionStats } from '../executions.models';
+import { ExecutionRow, ExecutionStats, StatsRange } from '../executions.models';
 import { ExecutionStatCardsModule } from '../shared/execution-stat-cards.module';
 import { executionLink } from '../execution-links';
-import { GraphSnapshot } from './execution-graph.feed';
+import { GraphFeedControls, GraphSnapshot } from './execution-graph.feed';
+import { graphOf } from './execution-graph.testing';
 import { CYTOSCAPE_LOADER, EXECUTION_GRAPH_FEED, ExecutionGraphComponent } from './execution-graph.component';
 
 const E1 = '11111111-1111-1111-1111-111111111111';
@@ -26,22 +27,34 @@ const STATS = (over: any = {}, withErrors = 2): ExecutionStats => ({
   statuses: { running: 1, waiting: 1, stopping: 0, stopped: 0, failed: 1, completed: 0, destroyed: 0, ...over },
 });
 
-function snap(rows: ExecutionRow[], stale = false, extra: Partial<GraphSnapshot> = {}): GraphSnapshot {
-  return { rows, stats: STATS(), truncated: false, range: 'now', fetchedAt: Date.now(), stale, ...extra };
+/** A snapshot of the graph response the server would give for `rows`; `stats` sets the big numbers and exact per-agent counts. */
+function snap(rows: ExecutionRow[], stale = false, extra: { stats?: ExecutionStats | null; range?: StatsRange; fetchedAt?: number } = {}): GraphSnapshot {
+  const st = extra.stats === undefined ? STATS() : extra.stats;
+  const range = extra.range || 'now';
+  const graph = st === null ? null : graphOf(rows, {
+    range, statuses: st.statuses, with_errors: st.with_errors, counts: Object.keys(st.agents || {}).length ? st.agents : undefined,
+  });
+  return { graph, range, fetchedAt: extra.fetchedAt === undefined ? Date.now() : extra.fetchedAt, stale };
 }
 
-const FIRST = () => snap([row(E1, 'running', 'a1'), row(E2, 'waiting', 'a2'), row(E3, 'failed', 'a2')]);
+const FIRST_ROWS = () => [row(E1, 'running', 'a1'), row(E2, 'waiting', 'a2'), row(E3, 'failed', 'a2')];
+const FIRST = () => snap(FIRST_ROWS());
 
 describe('ExecutionGraphComponent', () => {
   let fixture: ComponentFixture<ExecutionGraphComponent>;
   let component: ExecutionGraphComponent;
   let feed$: Subject<GraphSnapshot>;
   let feedFactory: jasmine.Spy;
+  /** What the component handed the feed: its refresh trigger and in-flight callback. */
+  let controls: GraphFeedControls;
   let router: { navigate: jasmine.Spy };
 
   function setup(opts: { loader?: () => Promise<any>; agents?: any[] } = {}) {
     feed$ = new Subject<GraphSnapshot>();
-    feedFactory = jasmine.createSpy('feed').and.returnValue(feed$.asObservable());
+    feedFactory = jasmine.createSpy('feed').and.callFake((pid: string, range: string, c: GraphFeedControls) => {
+      controls = c;
+      return feed$.asObservable();
+    });
     router = { navigate: jasmine.createSpy('navigate') };
     const providers: any[] = [
       { provide: EXECUTION_GRAPH_FEED, useValue: feedFactory },
@@ -56,7 +69,9 @@ describe('ExecutionGraphComponent', () => {
     const translate = TestBed.inject(TranslateService);
     translate.setTranslation('en', {
       Executions: { Graph: {
-        Truncated: 'Some executions are not drawn',
+        Refresh: 'Refresh now',
+        UpdatedSeconds: 'Updated {{n}} s ago',
+        UpdatedMinutes: 'Updated {{n}} min ago',
         Empty: 'Nothing in view',
         Stale: 'Data may be out of date',
         Unavailable: 'The graph could not be loaded',
@@ -88,7 +103,7 @@ describe('ExecutionGraphComponent', () => {
   it('renders project, agents and executions from a snapshot', async () => {
     setup();
     await ready();
-    expect(feedFactory).toHaveBeenCalledWith('p1', 'now');
+    expect(feedFactory).toHaveBeenCalledWith('p1', 'now', jasmine.any(Object));
     feed$.next(FIRST());
     fixture.detectChanges();
     const cy = component.cy;
@@ -141,7 +156,7 @@ describe('ExecutionGraphComponent', () => {
       { id: 'a5', name: 'Paused' }] });
     await ready();
     const E4 = '44444444-4444-4444-4444-444444444444', E5 = '55555555-5555-5555-5555-555555555555', E6 = '66666666-6666-6666-6666-666666666666';
-    feed$.next(snap([...FIRST().rows, row(E4, 'completed', 'a3'), row(E5, 'destroyed', 'a4'), row(E6, 'stopped', 'a5')]));
+    feed$.next(snap([...FIRST_ROWS(), row(E4, 'completed', 'a3'), row(E5, 'destroyed', 'a4'), row(E6, 'stopped', 'a5')]));
     const cy = component.cy;
     const cls = (id: string) => ['c-red', 'c-blue', 'c-amber', 'c-green', 'c-gray'].filter(c => cy.getElementById(id).hasClass(c));
     expect(cls('agent:a1')).toEqual(['c-blue']);
@@ -178,10 +193,10 @@ describe('ExecutionGraphComponent', () => {
   const cardValues = () => Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.exec-stat-card .exec-stat-value'))
     .map(el => el.textContent.trim());
 
-  it('big numbers come from the snapshot stats; stale and truncated notes', async () => {
+  it('big numbers come from the graph response; the stale note; no "not drawn" note any more', async () => {
     setup();
     await ready();
-    feed$.next(snap(FIRST().rows, false, { stats: STATS({ running: 7, stopping: 2, stopped: 1, completed: 4 }) }));
+    feed$.next(snap(FIRST_ROWS(), false, { stats: STATS({ running: 7, stopping: 2, stopped: 1, completed: 4 }) }));
     fixture.detectChanges();
     const text = () => (fixture.nativeElement as HTMLElement).textContent;
     // With errors (2) explains a red agent next to Failed: the runs that took a failure condition
@@ -191,9 +206,8 @@ describe('ExecutionGraphComponent', () => {
     feed$.next({ ...FIRST(), stale: true });
     fixture.detectChanges();
     expect(text()).toContain('Data may be out of date');
-    feed$.next({ ...FIRST(), truncated: true });
-    fixture.detectChanges();
-    expect(text()).toContain('Some executions are not drawn');
+    expect(text()).not.toContain('Some executions are not drawn');
+    expect((fixture.nativeElement as HTMLElement).querySelector('.graph-note:not(.graph-stale)')).toBeNull();
   });
 
   it('nothing in view: an empty note over the graph', async () => {
@@ -216,9 +230,9 @@ describe('ExecutionGraphComponent', () => {
     component.range = '24h';
     component.ngOnChanges({ range: new SimpleChange('now', '24h', false) });
     fixture.detectChanges();
-    expect(feedFactory).toHaveBeenCalledWith('p1', '24h');
+    expect(feedFactory).toHaveBeenCalledWith('p1', '24h', jasmine.any(Object));
     expect(cardValues()[0]).toBe('–');
-    feed$.next(snap(FIRST().rows, false, { range: '24h', stats: STATS({ running: 9 }) }));
+    feed$.next(snap(FIRST_ROWS(), false, { range: '24h', stats: STATS({ running: 9 }) }));
     fixture.detectChanges();
     expect(cardValues()[0]).toBe('9');
   });
@@ -238,7 +252,8 @@ describe('ExecutionGraphComponent', () => {
     setup();
     await ready();
     const many = Array.from({ length: 14 }, (_, i) => row('w' + String(i).padStart(2, '0') + '-0000-0000', 'waiting', 'a1'));
-    feed$.next(snap([...many, row(E1, 'running', 'a1')]));
+    // server order: the running one first, then the waiting ones; 12 drawn, 3 waiting hidden
+    feed$.next(snap([row(E1, 'running', 'a1'), ...many]));
     const more = component.cy.getElementById('more:a1');
     expect(more.empty()).toBe(false);
     expect(more.hasClass('more')).toBe(true);
@@ -521,8 +536,101 @@ describe('ExecutionGraphComponent', () => {
     expect(component.cy.nodes().length).toBe(6);
     component.projectId = 'p2';
     component.ngOnChanges({ projectId: new SimpleChange('p1', 'p2', false) });
-    expect(feedFactory).toHaveBeenCalledWith('p2', 'now');
+    expect(feedFactory).toHaveBeenCalledWith('p2', 'now', jasmine.any(Object));
     expect(component.cy.elements().length).toBe(0);
     expect(component.stats).toBeNull();
+  });
+
+  describe('refresh button and updated note', () => {
+    const el = () => fixture.nativeElement as HTMLElement;
+    const button = () => el().querySelector('button.graph-refresh') as HTMLButtonElement;
+    const note = () => { const n = el().querySelector('.graph-updated'); return n ? n.textContent.trim() : null; };
+
+    it('a Refresh button with an icon and a label; a click asks the feed for a cycle now', async () => {
+      setup();
+      await ready();
+      expect(button()).not.toBeNull();
+      expect(button().querySelector('svg')).not.toBeNull();
+      expect(button().textContent.trim()).toBe('Refresh now');
+      const asked = jasmine.createSpy('refresh');
+      controls.refresh$.subscribe(asked);
+      controls.loading(false);
+      fixture.detectChanges();
+      button().click();
+      expect(asked).toHaveBeenCalledTimes(1);
+    });
+
+    it('disabled while a call is in flight (from the first one on), enabled once it answers', async () => {
+      setup();
+      await ready();
+      // subscribing starts a cycle: in flight until the feed says otherwise
+      expect(button().disabled).toBe(true);
+      controls.loading(false);
+      fixture.detectChanges();
+      expect(button().disabled).toBe(false);
+      controls.loading(true);
+      fixture.detectChanges();
+      expect(button().disabled).toBe(true);
+      const asked = jasmine.createSpy('refresh');
+      controls.refresh$.subscribe(asked);
+      button().click();
+      expect(asked).not.toHaveBeenCalled();
+    });
+
+    it('a new range hands the feed new controls and is in flight again', async () => {
+      setup();
+      await ready();
+      controls.loading(false);
+      const first = controls;
+      component.range = '24h';
+      component.ngOnChanges({ range: new SimpleChange('now', '24h', false) });
+      fixture.detectChanges();
+      expect(controls).not.toBe(first);
+      expect(button().disabled).toBe(true);
+    });
+
+    it('"updated N s ago" after a fresh answer, "N min ago" past a minute, refreshed every 10 s; a stale one keeps the time', async () => {
+      const intervals: Array<{ fn: () => void; ms: number }> = [];
+      const realSetInterval = window.setInterval;
+      spyOn(window, 'setInterval').and.callFake(((fn: any, ms: number) => {
+        intervals.push({ fn, ms });
+        return realSetInterval(() => {}, 1e9);
+      }) as any);
+      setup();
+      let now = Date.parse('2026-11-13T10:00:00Z');
+      spyOn(component, 'now').and.callFake(() => now);
+      await ready();
+      expect(note()).toBeNull();
+      feed$.next(snap([row(E1, 'running', 'a1')], false, { fetchedAt: now - 5000 }));
+      fixture.detectChanges();
+      expect(note()).toBe('Updated 5 s ago');
+      const ticker = intervals.find(i => i.ms === 10000);
+      expect(ticker).toBeDefined();
+      now += 10000;
+      ticker.fn();
+      fixture.detectChanges();
+      expect(note()).toBe('Updated 15 s ago');
+      // a failed cycle: the data is as old as the last good answer
+      feed$.next(snap([row(E1, 'running', 'a1')], true, { fetchedAt: now }));
+      now += 60000;
+      ticker.fn();
+      fixture.detectChanges();
+      expect(note()).toBe('Updated 1 min ago');
+      now += 125000;
+      ticker.fn();
+      fixture.detectChanges();
+      expect(note()).toBe('Updated 3 min ago');
+    });
+
+    it('the note timer stops on destroy', async () => {
+      setup();
+      await ready();
+      const t = component.noteTimer;
+      expect(t).not.toBeNull();
+      spyOn(window, 'clearInterval').and.callThrough();
+      fixture.destroy();
+      fixture = null;
+      expect(window.clearInterval).toHaveBeenCalledWith(t);
+    });
   });
 });

@@ -5,7 +5,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 import {
-  AuditPage, ExecutionDetail, RetentionSettings, StopNoticeBody, StopNoticeSettings, ExecutionListParams, ExecutionPage, ExecutionStats, GrantInfo, GrantScope, StartNewInput, StateView, StatsParams, Summary, ValueOrState,
+  AuditPage, ExecutionDetail, ExecutionGraph, GraphParams, RetentionSettings, StopNoticeBody, StopNoticeSettings, ExecutionListParams, ExecutionPage, ExecutionStats, GrantInfo, GrantScope, StartNewInput, StateView, StatsParams, Summary, ValueOrState,
   VarHistoryEntry
 } from 'app/bots/executions/executions.models';
 
@@ -85,6 +85,13 @@ export class ExecutionsService {
     if (params.agent_id) httpParams = httpParams.set('agent_id', params.agent_id);
     if (params.test !== undefined) httpParams = httpParams.set('test', String(params.test));
     return this.httpClient.get<ExecutionStats>(this.url(projectId, '/stats'), { headers: this.headers(), params: httpParams });
+  }
+
+  /** The graph page's one call per refresh: the stats of the view plus, per agent, the drawn rows (chip priority, at most 12) and the hidden counts. */
+  graph(projectId: string, params: GraphParams): Observable<ExecutionGraph> {
+    let httpParams = new HttpParams().set('range', params.range);
+    if (params.test !== undefined) httpParams = httpParams.set('test', String(params.test));
+    return this.httpClient.get<ExecutionGraph>(this.url(projectId, '/graph'), { headers: this.headers(), params: httpParams });
   }
 
   get(projectId: string, id: string): Observable<ExecutionDetail> {

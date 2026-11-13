@@ -1,5 +1,6 @@
-import { ExecutionRow, ExecutionStats } from '../executions.models';
-import { AGENT_RING_RMAX, agentColor, agentFootprint, buildExecutionGraph, fanOffsets, MAX_PER_AGENT } from './execution-graph.model';
+import { ExecutionGraph, ExecutionRow } from '../executions.models';
+import { AGENT_RING_RMAX, agentColor, agentFootprint, buildExecutionGraph, fanOffsets, GraphAgent, MAX_PER_AGENT } from './execution-graph.model';
+import { graphOf } from './execution-graph.testing';
 
 const NOW = Date.parse('2026-11-10T12:00:00.000Z');
 
@@ -14,15 +15,11 @@ const agents = (n: number) => Array.from({ length: n }, (_, i) => ({ id: 'a' + (
 const dist = (p: { x: number; y: number }, q = { x: 0, y: 0 }) => Math.hypot(p.x - q.x, p.y - q.y);
 const ZERO = { running: 0, waiting: 0, stopping: 0, stopped: 0, failed: 0, completed: 0, destroyed: 0 };
 const counts = (c: any) => ({ ...ZERO, failure_conditions: 0, errors: 0, ...c });
-function stats(agentsCounts: { [id: string]: any }): ExecutionStats {
-  const agentsOut: any = {};
-  const statuses: any = { ...ZERO };
-  Object.keys(agentsCounts).forEach(id => {
-    agentsOut[id] = counts(agentsCounts[id]);
-    Object.keys(ZERO).forEach(s => statuses[s] += agentsOut[id][s]);
-  });
-  return { range: '24h', from: null, statuses, agents: agentsOut };
-}
+/** Exact per-agent counts the server answers (they decide colour, errors line and +N), by agent id. */
+const stats = (agentsCounts: { [id: string]: any }) => agentsCounts;
+/** The graph from rows as the server would draw them (rows in server order; see graphOf), with optional exact counts. */
+const build = (i: { projectName: string; agents: GraphAgent[]; rows: ExecutionRow[]; stats?: { [id: string]: any } }) =>
+  buildExecutionGraph({ projectName: i.projectName, agents: i.agents, graph: graphOf(i.rows, { counts: i.stats }) });
 /** One completed row per agent: puts the agent in view with one chip. */
 const oneEach = (ids: string[]) => ids.map(id => row({ _id: 'one-' + id, agent_id: id, status: 'completed' }));
 
@@ -65,20 +62,20 @@ describe('agentColor', () => {
 
 describe('buildExecutionGraph', () => {
   it('only agents with an execution in view are drawn (no idle agents)', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(3), rows: [row({ _id: 'e1', agent_id: 'a2' })] });
+    const g = build({ projectName: 'P', agents: agents(3), rows: [row({ _id: 'e1', agent_id: 'a2' })] });
     expect(g.nodes.map(n => n.id)).toEqual(['project', 'agent:a2', 'exec:e1']);
     expect(g.edges.filter(e => e.source === 'project').map(e => e.target)).toEqual(['agent:a2']);
-    expect(buildExecutionGraph({ projectName: 'P', agents: agents(3), rows: [] }).nodes.map(n => n.id)).toEqual(['project']);
+    expect(build({ projectName: 'P', agents: agents(3), rows: [] }).nodes.map(n => n.id)).toEqual(['project']);
   });
 
   it('project node at the centre, agents on the ring', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(3), rows: oneEach(['a1', 'a2', 'a3']) });
+    const g = build({ projectName: 'P', agents: agents(3), rows: oneEach(['a1', 'a2', 'a3']) });
     expect(g.nodes.find(n => n.kind === 'project').position).toEqual({ x: 0, y: 0 });
     g.nodes.filter(n => n.kind === 'agent').forEach(n => expect(Math.abs(dist(n.position) - 170)).toBeLessThan(0.5));
   });
 
-  it('the agent node carries its colour, from its rows', () => {
-    const g = buildExecutionGraph({
+  it('the agent node carries its colour, from its counts', () => {
+    const g = build({
       projectName: 'P', agents: agents(5), rows: [
         row({ _id: 'f', agent_id: 'a1', status: 'failed' }), row({ _id: 'r', agent_id: 'a1', status: 'running' }),
         row({ _id: 'r2', agent_id: 'a2', status: 'running' }), row({ _id: 's', agent_id: 'a2', status: 'stopped' }),
@@ -92,14 +89,14 @@ describe('buildExecutionGraph', () => {
   });
 
   it('a row with errors turns its agent red, even completed', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', errors: 2 })] });
+    const g = build({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', errors: 2 })] });
     const a = g.nodes.find(n => n.id === 'agent:a1');
     expect(a.color).toBe('red');
     expect(a.tooltip).toEqual({ kind: 'text', text: 'Agent 1', withErrors: 1 });
   });
 
   it('a row with only managed failures (failure_conditions) leaves its agent green, no errors line, no mark', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', failure_conditions: 2 })] });
+    const g = build({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', failure_conditions: 2 })] });
     const a = g.nodes.find(n => n.id === 'agent:a1');
     expect(a.color).toBe('green');
     expect(a.tooltip).toEqual({ kind: 'text', text: 'Agent 1' });
@@ -109,14 +106,14 @@ describe('buildExecutionGraph', () => {
   });
 
   it('a row with errors gets the mark on its chip and "with errors" in its tooltip', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', errors: 1 })] });
+    const g = build({ projectName: 'P', agents: agents(1), rows: [row({ _id: 'c', status: 'completed', errors: 1 })] });
     const e = g.nodes.find(n => n.id === 'exec:c');
     expect(e.withErrors).toBe(true);
     expect(e.tooltip).toEqual({ kind: 'execution', status: 'completed', startedAt: new Date(NOW - 60000).toISOString(), trigger: 'message', steps: 2, withErrors: true });
   });
 
   it('the stats, when given, decide the colour, the errors line and the +N count (exact, not capped)', () => {
-    const g = buildExecutionGraph({
+    const g = build({
       projectName: 'P', agents: agents(2), rows: [row({ _id: 'c', status: 'completed' })],
       stats: stats({ a1: { completed: 1, failed: 2, failure_conditions: 5, errors: 2 }, a2: { waiting: 4, failure_conditions: 3 } }),
     });
@@ -125,20 +122,20 @@ describe('buildExecutionGraph', () => {
     expect(a1.tooltip).toEqual({ kind: 'text', text: 'Agent 1', withErrors: 2 });
     expect(g.nodes.find(n => n.id === 'more:a1').label).toBe('+2');
     expect(g.nodes.find(n => n.id === 'more:a1').tooltip).toEqual({ kind: 'more', hidden: { ...ZERO, failed: 2 } });
-    // a2 has no row fetched (the pages were capped): it is drawn, amber, with its executions in one +N node
+    // a2 has nothing drawn: it is still drawn, amber, with its executions in one +N node
     expect(g.nodes.find(n => n.id === 'agent:a2').color).toBe('amber');
     expect(g.nodes.find(n => n.id === 'more:a2').label).toBe('+4');
     expect(g.nodes.some(n => n.kind === 'execution' && n.agentId === 'a2')).toBe(false);
   });
 
   it('the execution label is the last 8 hex chars of the id without dashes', () => {
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(2), rows: [row({ _id: '019e1a2b-3c4d-7e5f-8a6b-0123456789ab' })] });
+    const g = build({ projectName: 'P', agents: agents(2), rows: [row({ _id: '019e1a2b-3c4d-7e5f-8a6b-0123456789ab' })] });
     expect(g.nodes.find(n => n.kind === 'execution').label).toBe('456789ab');
   });
 
   it('executions attach to their agent with their status, every status included', () => {
     const all = ['running', 'waiting', 'stopping', 'stopped', 'failed', 'completed', 'destroyed'];
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: all.map(st => row({ _id: st, status: st })) });
+    const g = build({ projectName: 'P', agents: agents(1), rows: all.map(st => row({ _id: st, status: st })) });
     all.forEach(st => {
       const e = g.nodes.find(n => n.id === 'exec:' + st);
       expect(e.kind).toBe('execution');
@@ -151,7 +148,7 @@ describe('buildExecutionGraph', () => {
   });
 
   it('unknown agent gets a node from agent_name while the agents list is empty', () => {
-    const g = buildExecutionGraph({
+    const g = build({
       projectName: 'P', agents: [],
       rows: [row({ _id: 'e1', agent_id: 'zzzzzzzzzzzz', agent_name: 'Gone' }), row({ _id: 'e2', agent_id: 'abcdefghijkl', agent_name: null })]
     });
@@ -162,7 +159,7 @@ describe('buildExecutionGraph', () => {
 
   it('agents missing from the list (deleted) are still drawn, by the name on their runs, and marked deleted', () => {
     // the cards count their runs: the graph must show them too (a deleted agent's run can be stuck waiting)
-    const g = buildExecutionGraph({
+    const g = build({
       projectName: 'P', agents: agents(2),
       rows: [row({ _id: 'mine' }), row({ _id: 'other', agent_id: 'zz', agent_name: 'Automation' })],
       stats: stats({ a1: { running: 1 }, zz: { running: 1 } }),
@@ -178,15 +175,15 @@ describe('buildExecutionGraph', () => {
   it('positions are stable across refreshes while no agent changes bucket', () => {
     const rows = [row({ _id: 'e1' }), row({ _id: 'e2', started_at: new Date(NOW - 30000).toISOString() }), row({ _id: 'e4', agent_id: 'a3' }),
       ...oneEach(['a2', 'a4'])];
-    const g1 = buildExecutionGraph({ projectName: 'P', agents: agents(4), rows });
-    const g2 = buildExecutionGraph({ projectName: 'P', agents: agents(4), rows: [...rows, row({ _id: 'e3', agent_id: 'a3' })] });
+    const g1 = build({ projectName: 'P', agents: agents(4), rows });
+    const g2 = build({ projectName: 'P', agents: agents(4), rows: [...rows, row({ _id: 'e3', agent_id: 'a3' })] });
     // a3 goes from 1 to 2 shown (same bucket): only a3's own fan is redrawn
     g1.nodes.filter(n => !(n.kind === 'execution' && n.agentId === 'a3'))
       .forEach(n => expect(g2.nodes.find(m => m.id === n.id).position).toEqual(n.position, n.id));
   });
 
   it('running edges are animated, others are not', () => {
-    const g = buildExecutionGraph({
+    const g = build({
       projectName: 'P', agents: agents(1),
       rows: [row({ _id: 'r' }), row({ _id: 'w', status: 'waiting' }), row({ _id: 's', status: 'stopping' }), row({ _id: 'c', status: 'completed' })]
     });
@@ -196,22 +193,34 @@ describe('buildExecutionGraph', () => {
     expect(g.edges.find(e => e.target === 'agent:a1').animated).toBe(false);
   });
 
-  it('caps an agent at 12 by priority, with one +N overflow node and the colour from all rows', () => {
-    const waiting = Array.from({ length: 30 }, (_, i) =>
-      row({ _id: 'w' + String(i).padStart(2, '0'), status: 'waiting', started_at: new Date(NOW - 600000 + i * 1000).toISOString() }));
-    const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(3),
-      rows: [...waiting, row({ _id: 'run', status: 'running', started_at: new Date(NOW - 900000).toISOString() }),
-        row({ _id: 'bad', status: 'failed', duration_ms: 1000, started_at: new Date(NOW - 850000).toISOString() })]
-    });
+  it('draws the drawn rows of the server as given (no re-ranking); +N and its tooltip come from hidden', () => {
+    const g: ExecutionGraph = {
+      range: '24h', from: null, with_errors: 0, statuses: { ...ZERO, completed: 1, waiting: 1, failed: 2, running: 1 },
+      agents: { a1: {
+        name: 'Agent 1', counts: counts({ completed: 1, waiting: 1, failed: 2, running: 1 }),
+        drawn: [row({ _id: 'c1', status: 'completed' }), row({ _id: 'w1', status: 'waiting' })],
+        hidden: { failed: 2, running: 1 },
+      } },
+    };
+    const m = buildExecutionGraph({ projectName: 'P', agents: agents(1), graph: g });
+    expect(m.nodes.filter(n => n.kind === 'execution').map(n => n.executionId).sort()).toEqual(['c1', 'w1']);
+    const more = m.nodes.find(n => n.id === 'more:a1');
+    expect(more.label).toBe('+3');
+    expect(more.tooltip).toEqual({ kind: 'more', hidden: { ...ZERO, failed: 2, running: 1 } });
+    expect(m.nodes.find(n => n.id === 'agent:a1').color).toBe('red');
+  });
+
+  it('at most 12 drawn per agent, one +N overflow node, colour from the counts', () => {
+    const at = (ms: number) => new Date(NOW - ms).toISOString();
+    // server order: failed, running, then the 30 waiting newest first
+    const waiting = Array.from({ length: 30 }, (_, i) => row({ _id: 'w' + String(29 - i).padStart(2, '0'), status: 'waiting', started_at: at(1000 * (i + 1)) }));
+    const g = build({ projectName: 'P', agents: agents(3), rows: [row({ _id: 'bad', status: 'failed' }), row({ _id: 'run' }), ...waiting] });
     const execs = g.nodes.filter(n => n.kind === 'execution' && n.agentId === 'a1');
     expect(MAX_PER_AGENT).toBe(12);
     expect(execs.length).toBe(12);
     expect(execs.some(n => n.id === 'exec:run')).toBe(true);
     expect(execs.some(n => n.id === 'exec:bad')).toBe(true);
-    // newest first within a status: the 10 newest waiting are drawn
-    const drawnWaiting = execs.filter(n => n.status === 'waiting').map(n => n.executionId).sort();
-    expect(drawnWaiting).toEqual(Array.from({ length: 10 }, (_, i) => 'w' + (20 + i)));
+    expect(execs.filter(n => n.status === 'waiting').map(n => n.executionId).sort()).toEqual(Array.from({ length: 10 }, (_, i) => 'w' + (20 + i)));
     const more = g.nodes.filter(n => n.kind === 'more');
     expect(more.length).toBe(1);
     expect(more[0].id).toBe('more:a1');
@@ -222,56 +231,48 @@ describe('buildExecutionGraph', () => {
     expect(g.nodes.find(n => n.id === 'agent:a1').color).toBe('red');
   });
 
-  it('priority is failed > stopping > running > waiting > stopped > completed > destroyed', () => {
-    const mk = (prefix: string, status: string, n: number) => Array.from({ length: n }, (_, i) => row({ _id: prefix + i, status: status as any }));
-    const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(1),
-      rows: [...mk('d', 'destroyed', 3), ...mk('c', 'completed', 3), ...mk('x', 'stopped', 3), ...mk('w', 'waiting', 3),
-        ...mk('r', 'running', 3), ...mk('s', 'stopping', 2), ...mk('f', 'failed', 2)]
-    });
-    const drawn = g.nodes.filter(n => n.kind === 'execution');
-    const by = (st: string) => drawn.filter(n => n.status === st).length;
-    expect([by('failed'), by('stopping'), by('running'), by('waiting'), by('stopped'), by('completed'), by('destroyed')]).toEqual([2, 2, 3, 3, 2, 0, 0]);
-    expect(g.nodes.find(n => n.id === 'more:a1').tooltip).toEqual({ kind: 'more', hidden: { ...ZERO, stopped: 1, completed: 3, destroyed: 3 } });
+  it('the fan is laid out by start time, whatever the server order, so a refresh that reorders moves no chip', () => {
+    const at = (ms: number) => new Date(NOW - ms).toISOString();
+    const a = row({ _id: 'old', status: 'completed', started_at: at(30000) });
+    const b = row({ _id: 'mid', status: 'failed', started_at: at(20000) });
+    const c = row({ _id: 'new', status: 'running', started_at: at(10000) });
+    const pos = (rows: ExecutionRow[]) => {
+      const g = build({ projectName: 'P', agents: agents(1), rows });
+      return ['old', 'mid', 'new'].map(id => g.nodes.find(n => n.id === 'exec:' + id).position);
+    };
+    expect(pos([b, c, a])).toEqual(pos([a, b, c]));
+    expect(pos([c, a, b])).toEqual(pos([a, b, c]));
   });
 
-  it('priority is failed > with errors > stopping > running > waiting > stopped > completed > destroyed', () => {
-    const at = (ms: number) => new Date(NOW - ms).toISOString();
-    const mk = (prefix: string, status: string, n: number, extra: any = {}) =>
-      Array.from({ length: n }, (_, i) => row({ _id: prefix + i, status: status as any, started_at: at(1000 * (i + 1)), ...extra }));
-    const g = buildExecutionGraph({
-      projectName: 'P', agents: agents(1),
-      rows: [...mk('c', 'completed', 4), ...mk('x', 'stopped', 2), ...mk('w', 'waiting', 3), ...mk('r', 'running', 3),
-        ...mk('s', 'stopping', 2), ...mk('f', 'failed', 1, { errors: 1 }), ...mk('f2', 'failed', 1),
-        // with errors: the oldest of all, a completed and a waiting one
-        row({ _id: 'ec', status: 'completed', errors: 1, started_at: at(9_000_000) }),
-        row({ _id: 'ew', status: 'waiting', errors: 3, started_at: at(8_000_000) })]
-    });
-    const drawn = g.nodes.filter(n => n.kind === 'execution').map(n => n.executionId);
-    expect(drawn.length).toBe(12);
-    // failed 2, with errors 2, stopping 2, running 3, waiting: 3 of the 3 plain ones fit (12 - 9 = 3)
-    ['f0', 'f20', 'ec', 'ew', 's0', 's1', 'r0', 'r1', 'r2', 'w0', 'w1', 'w2'].forEach(id => expect(drawn).toContain(id));
-    expect(g.nodes.find(n => n.id === 'more:a1').tooltip).toEqual({ kind: 'more', hidden: { ...ZERO, stopped: 2, completed: 4 } });
-    expect(g.nodes.find(n => n.id === 'exec:ec').withErrors).toBe(true);
-    expect(g.nodes.find(n => n.id === 'exec:f0').withErrors).toBe(true);
-    expect(g.nodes.find(n => n.id === 'exec:f20').withErrors).toBeUndefined();
+  it('more than 12 drawn (an older server): the first 12 are drawn, the rest go to +N', () => {
+    const drawn = Array.from({ length: 14 }, (_, i) => row({ _id: 'w' + String(i).padStart(2, '0'), status: 'waiting' }));
+    const g: ExecutionGraph = {
+      range: 'now', from: null, with_errors: 0, statuses: { ...ZERO, waiting: 15 },
+      agents: { a1: { name: 'Agent 1', counts: counts({ waiting: 15 }), drawn, hidden: { waiting: 1 } } },
+    };
+    const m = buildExecutionGraph({ projectName: 'P', agents: agents(1), graph: g });
+    expect(m.nodes.filter(n => n.kind === 'execution').length).toBe(12);
+    expect(m.nodes.some(n => n.id === 'exec:w12')).toBe(false);
+    expect(m.nodes.find(n => n.id === 'more:a1').label).toBe('+3');
   });
 
-  it('a completed run with errors beats newer completed runs into the drawn 12; newest first within a group', () => {
-    const at = (ms: number) => new Date(NOW - ms).toISOString();
-    const done = Array.from({ length: 15 }, (_, i) => row({ _id: 'c' + String(i).padStart(2, '0'), status: 'completed', started_at: at(1000 * (i + 1)) }));
-    const old = [row({ _id: 'e-old', status: 'completed', errors: 1, started_at: at(5_000_000) }),
-      row({ _id: 'e-older', status: 'completed', errors: 1, started_at: at(6_000_000) })];
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows: [...done, ...old] });
-    const drawn = g.nodes.filter(n => n.kind === 'execution').map(n => n.executionId).sort();
-    expect(drawn).toEqual(['c00', 'c01', 'c02', 'c03', 'c04', 'c05', 'c06', 'c07', 'c08', 'c09', 'e-old', 'e-older']);
-    expect(g.nodes.find(n => n.id === 'more:a1').label).toBe('+5');
-    expect(g.nodes.find(n => n.id === 'agent:a1').color).toBe('red');
+  it('no graph yet: only the project node', () => {
+    expect(buildExecutionGraph({ projectName: 'P', agents: agents(2), graph: null }).nodes.map(n => n.id)).toEqual(['project']);
+  });
+
+  it('the name: the agents list first, else the name the server gives (deleted agents), else the id', () => {
+    const g = graphOf([row({ _id: 'e1', agent_id: 'a1', agent_name: 'Old run name' }), row({ _id: 'e2', agent_id: 'gone', agent_name: 'x' }),
+      row({ _id: 'e3', agent_id: 'abcdefghijkl', agent_name: null })], { names: { gone: 'Newest name' } });
+    const m = buildExecutionGraph({ projectName: 'P', agents: agents(1), graph: g });
+    expect(m.nodes.find(n => n.id === 'agent:a1').label).toBe('Agent 1');
+    expect(m.nodes.find(n => n.id === 'agent:gone').label).toBe('Newest name');
+    expect(m.nodes.find(n => n.id === 'agent:gone').deleted).toBe(true);
+    expect(m.nodes.find(n => n.id === 'agent:abcdefghijkl').label).toBe('abcdefgh');
   });
 
   it('no overflow node at or under the cap', () => {
     const rows = Array.from({ length: MAX_PER_AGENT }, (_, i) => row({ _id: 'e' + i, status: 'waiting' }));
-    const g = buildExecutionGraph({ projectName: 'P', agents: agents(1), rows });
+    const g = build({ projectName: 'P', agents: agents(1), rows });
     expect(g.nodes.filter(n => n.kind === 'execution').length).toBe(MAX_PER_AGENT);
     expect(g.nodes.some(n => n.kind === 'more')).toBe(false);
   });
@@ -284,7 +285,7 @@ describe('buildExecutionGraph', () => {
   it('agent ring is sized by the footprints: max(170, sum(2 f + 24) / 2pi), angular width proportional to the footprint', () => {
     [1, 3, 8, 13, 30].forEach(n => {
       const list = agents(n);
-      const g = buildExecutionGraph({ projectName: 'P', agents: list, rows: oneEach(list.map(a => a.id)) });
+      const g = build({ projectName: 'P', agents: list, rows: oneEach(list.map(a => a.id)) });
       const want = Math.max(170, n * (2 * 90 + 24) / (2 * Math.PI));
       g.nodes.filter(x => x.kind === 'agent').forEach(x => expect(Math.abs(dist(x.position) - want)).toBeLessThan(0.5, 'n=' + n));
     });
@@ -295,7 +296,7 @@ describe('buildExecutionGraph', () => {
       ...[0, 1, 2].map(i => row({ _id: 't' + i, agent_id: 'a2', status: 'waiting' })),
       ...oneEach(list.slice(2).map(a => a.id)),
     ];
-    const g = buildExecutionGraph({ projectName: 'P', agents: list, rows });
+    const g = build({ projectName: 'P', agents: list, rows });
     const sum = 2 * (AGENT_RING_RMAX + 20) + 24 + 12 * (2 * 90 + 24);
     const R = sum / (2 * Math.PI);
     const pos = (id: string) => g.nodes.find(x => x.id === 'agent:' + id).position;
@@ -307,7 +308,7 @@ describe('buildExecutionGraph', () => {
 
   it('agents move only when a bucket changes: 3 -> 4 shown moves no agent, 4 -> 5 does', () => {
     const others = oneEach(['a1', 'a3', 'a4', 'a5', 'a6']);
-    const mk = (k: number) => buildExecutionGraph({
+    const mk = (k: number) => build({
       projectName: 'P', agents: agents(6),
       rows: [...others, ...Array.from({ length: k }, (_, i) => row({ _id: 'e' + i, agent_id: 'a2', status: 'waiting' }))],
     });
@@ -333,7 +334,7 @@ describe('buildExecutionGraph', () => {
               const rows = k > MAX_PER_AGENT ? MAX_PER_AGENT + 3 : k;
               for (let i = 0; i < rows; i++) { live.push(row({ _id: a.id + '-' + String(i).padStart(2, '0'), agent_id: a.id, status: 'waiting' })); }
             });
-            const g = buildExecutionGraph({ projectName: 'P', agents: list, rows: live });
+            const g = build({ projectName: 'P', agents: list, rows: live });
             const fan = (id: string) => g.nodes.filter(x => (x.kind === 'execution' || x.kind === 'more') && x.agentId === id);
             const pairs = n > 2 ? [['a1', 'a2'], ['a2', 'a3']] : [['a1', 'a2']];
             pairs.forEach(([x, y]) => {
@@ -350,7 +351,7 @@ describe('buildExecutionGraph', () => {
   it('executions sit 74 px from their agent, fanned out on the side away from the project', () => {
     [1, 3, 8, 13].forEach(k => {
       const live = Array.from({ length: k }, (_, i) => row({ _id: 'e' + String(i).padStart(2, '0'), status: 'waiting' }));
-      const g = buildExecutionGraph({ projectName: 'P', agents: agents(4), rows: live });
+      const g = build({ projectName: 'P', agents: agents(4), rows: live });
       const owner = g.nodes.find(n => n.id === 'agent:a1');
       const out = Math.atan2(owner.position.y, owner.position.x);
       const shown = g.nodes.filter(n => n.kind === 'execution' || n.kind === 'more');

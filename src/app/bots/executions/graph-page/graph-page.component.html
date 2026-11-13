@@ -12,14 +12,16 @@
 </div>
 
 <div *ngIf="permitted === true && configured" class="graph-page-body">
-  <div class="graph-page-head">
-    <label class="graph-range-label" for="graph-range">{{ "Executions.Graph.RangeLabel" | translate }}</label>
-    <ng-select class="custom graph-range" labelForId="graph-range" [clearable]="false" [searchable]="false"
-      [attr.aria-label]="'Executions.Graph.RangeLabel' | translate"
-      [ngModel]="range" (ngModelChange)="setRange($event)">
-      <ng-option *ngFor="let r of ranges" [value]="r">{{ "Executions.Graph.Range." + r | translate }}</ng-option>
-    </ng-select>
-  </div>
   <div *ngIf="error" class="graph-page-error">{{ "Monitor.Graph.LoadError" | translate }}</div>
-  <execution-graph *ngIf="agents" [fill]="true" [projectId]="projectId" [projectName]="projectName" [agents]="agents" [range]="range"></execution-graph>
+  <execution-graph *ngIf="agents" [fill]="true" [projectId]="projectId" [projectName]="projectName" [agents]="agents" [range]="range">
+    <!-- projected into the graph's toolbar, next to its Refresh button -->
+    <div graph-toolbar class="graph-page-head">
+      <label class="graph-range-label" for="graph-range">{{ "Executions.Graph.RangeLabel" | translate }}</label>
+      <ng-select class="custom graph-range" labelForId="graph-range" [clearable]="false" [searchable]="false"
+        [attr.aria-label]="'Executions.Graph.RangeLabel' | translate"
+        [ngModel]="range" (ngModelChange)="setRange($event)">
+        <ng-option *ngFor="let r of ranges" [value]="r">{{ "Executions.Graph.Range." + r | translate }}</ng-option>
+      </ng-select>
+    </div>
+  </execution-graph>
 </div>

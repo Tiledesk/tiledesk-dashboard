@@ -3825,7 +3825,9 @@
     "Executions": {
         "Graph": {
             "Deleted": "eliminato",
-            "Truncated": "Troppe esecuzioni per disegnarle tutte: alcune non sono nel grafo (i numeri sono esatti)",
+            "Refresh": "Aggiorna",
+            "UpdatedSeconds": "Aggiornato {{n}} s fa",
+            "UpdatedMinutes": "Aggiornato {{n}} min fa",
             "Stale": "I dati potrebbero non essere aggiornati",
             "Unavailable": "Non è stato possibile caricare il grafo",
             "Tip": {
