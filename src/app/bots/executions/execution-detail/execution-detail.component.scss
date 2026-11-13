@@ -115,7 +115,14 @@
 .ex-control-note { font-size: 13px; color: var(--exec-muted); }
 
 .ex-tabs-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; border-bottom: 1px solid var(--exec-line); padding: 0 12px 0 8px; }
-.ex-tabs-bar .ex-seg { margin: 6px 0 6px auto; }
+.tl-filters { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 6px 0 6px auto; }
+.tl-filter-multi { width: 190px; font-size: 13px; }
+.tl-filter-opt { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.tl-filter-opt input { margin: 0; flex: none; pointer-events: none; }
+.tl-filter-opt-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tl-filter-count { flex: none; font-size: 11.5px; color: var(--exec-muted); font-variant-numeric: tabular-nums; }
+.tl-filter-summary { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 130px; display: inline-block; }
+.tl-filter-clear { font-size: 13px; }
 .ex-tabs { display: flex; gap: 4px; overflow-x: auto; }
 .ex-tabs button { border: 0; background: transparent; padding: 10px 12px; cursor: pointer; color: var(--exec-muted); border-bottom: 2px solid transparent; font-weight: 500; white-space: nowrap; }
 .ex-tabs button[aria-selected="true"] { color: var(--exec-accent); border-bottom-color: var(--exec-accent); }

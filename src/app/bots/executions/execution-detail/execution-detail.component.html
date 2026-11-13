@@ -224,10 +224,36 @@
             <button *ngIf="canViewAudit" type="button" role="tab" class="ex-tab-audit" [attr.aria-selected]="tab === 'audit'" (click)="setTab('audit')">
               {{ "Executions.Audit.Title" | translate }}</button>
           </div>
-          <div *ngIf="tab === 'timeline'" class="ex-seg" role="group" [attr.aria-label]="'Executions.Detail.TimelineFilter' | translate">
-            <button type="button" class="tl-filter-all" [attr.aria-pressed]="!failedOnly" (click)="setFailedOnly(false)">{{ "Executions.Detail.All" | translate }}</button>
-            <button type="button" class="tl-filter-failed" [attr.aria-pressed]="failedOnly" (click)="setFailedOnly(true)">{{ "Executions.Detail.NotSuccessful" | translate }}</button>
+          <div *ngIf="tab === 'timeline'" class="tl-filters">
+            <ng-container *ngIf="d.steps.length">
+              <ng-container *ngTemplateOutlet="multiFilter; context: { cls: 'tl-filter-name', label: 'Executions.Detail.BlockNameFilter', items: blockNameOptions, value: blockNames, kind: 'names' }"></ng-container>
+              <ng-container *ngTemplateOutlet="multiFilter; context: { cls: 'tl-filter-type', label: 'Executions.Detail.BlockTypeFilter', items: blockTypeOptions, value: blockTypes, kind: 'types' }"></ng-container>
+            </ng-container>
+            <div class="ex-seg" role="group" [attr.aria-label]="'Executions.Detail.TimelineFilter' | translate">
+              <button type="button" class="tl-filter-all" [attr.aria-pressed]="!failedOnly" (click)="setFailedOnly(false)">{{ "Executions.Detail.All" | translate }}</button>
+              <button type="button" class="tl-filter-failed" [attr.aria-pressed]="failedOnly" (click)="setFailedOnly(true)">{{ "Executions.Detail.NotSuccessful" | translate }}</button>
+            </div>
+            <button *ngIf="hasTimelineFilters" type="button" class="ex-link tl-filter-clear" (click)="clearTimelineFilters()">{{ "Executions.Detail.ClearTimelineFilters" | translate }}</button>
           </div>
+          <!-- a multi-select with a checkbox per option and its number of blocks -->
+          <ng-template #multiFilter let-cls="cls" let-label="label" let-items="items" let-value="value" let-kind="kind">
+            <ng-select class="custom ex-select-ng tl-filter-multi" [ngClass]="cls" [attr.aria-label]="label | translate"
+              [items]="items" bindLabel="label" bindValue="value" [multiple]="true" [closeOnSelect]="false" [searchable]="true"
+              [clearable]="true" [placeholder]="label | translate" [ngModel]="value" (ngModelChange)="kind === 'names' ? setBlockNames($event) : setBlockTypes($event)">
+              <ng-template ng-option-tmp let-item="item" let-item$="item$">
+                <span class="tl-filter-opt">
+                  <input type="checkbox" tabindex="-1" aria-hidden="true" [checked]="item$.selected">
+                  <span class="tl-filter-opt-label">{{ item.label }}</span>
+                  <span class="tl-filter-count">{{ item.count }}</span>
+                </span>
+              </ng-template>
+              <ng-template ng-multi-label-tmp let-items="items">
+                <span class="ng-value tl-filter-summary">{{ items.length > 1
+                  ? ("Executions.Detail.FiltersSelected" | translate: { label: items[0].label, n: items.length - 1 })
+                  : items[0]?.label }}</span>
+              </ng-template>
+            </ng-select>
+          </ng-template>
         </div>
 
         <!-- timeline: a table of blocks, each with its bar on the execution's time axis -->
@@ -242,6 +268,10 @@
           </div>
 
           <div *ngIf="!d.steps.length" class="ex-empty">{{ "Executions.Detail.NoSteps" | translate }}</div>
+          <div *ngIf="d.steps.length && !visibleTimeline.length" class="ex-empty tl-filter-empty">
+            {{ "Executions.Detail.NoBlocksMatch" | translate }}
+            <button type="button" class="ex-link" (click)="clearTimelineFilters()">{{ "Executions.Detail.ClearTimelineFilters" | translate }}</button>
+          </div>
 
           <ng-container *ngFor="let item of visibleTimeline; trackBy: trackBySeq">
             <button type="button" class="tl-step" [class.tl-open]="expanded.has(item.step.seq)" [class.tl-interrupted]="item.step.outcome === 'interrupted'"
