@@ -29,6 +29,11 @@ export interface ExecutionPage {
   stats?: ExecutionStats;
 }
 
+/** The list's sortable columns (the API's sort=); the default is started_at desc. */
+export const EXECUTION_SORT_FIELDS = ['started_at', 'status', 'agent_name', 'trigger', 'steps_count', 'failure_conditions', 'vars_changed', 'duration_ms'] as const;
+export type ExecutionSortField = typeof EXECUTION_SORT_FIELDS[number];
+export type SortDir = 'asc' | 'desc';
+
 export interface ExecutionListParams {
   agent_id?: string;
   trigger?: string;
@@ -43,6 +48,9 @@ export interface ExecutionListParams {
   q?: string;
   limit?: number;
   cursor?: string;
+  /** The column sort; left out for the default (started_at desc). The cursor is bound to it. */
+  sort?: ExecutionSortField;
+  dir?: SortDir;
   /** The graph's view instead of from/to: now = the unfinished runs of any age; a range adds every run started in it. */
   range?: StatsRange;
   /** Adds `stats` to the page (one call instead of list + stats), over range and the list's filters. */

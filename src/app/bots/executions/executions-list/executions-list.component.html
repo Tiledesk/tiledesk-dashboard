@@ -92,14 +92,15 @@
       <table class="exec-table" *ngIf="rows.length">
         <thead>
           <tr>
-            <th>{{ "Executions.Columns.Status" | translate }}</th>
-            <th *ngIf="!agentId">{{ "Executions.Columns.Agent" | translate }}</th>
-            <th>{{ "Executions.Columns.Trigger" | translate }}</th>
-            <th>{{ "Executions.Columns.Started" | translate }}</th>
-            <th>{{ "Executions.Columns.Blocks" | translate }}</th>
-            <th>{{ "Executions.Columns.FailureConditions" | translate }}</th>
-            <th>{{ "Executions.Columns.VarsChanged" | translate }}</th>
-            <th>{{ "Executions.Columns.Duration" | translate }}</th>
+            <ng-container *ngFor="let col of sortColumns">
+              <th *ngIf="col.field !== 'agent_name' || !agentId" scope="col" [attr.aria-sort]="ariaSort(col.field)">
+                <button type="button" class="exec-sort" [attr.data-sort]="col.field" [class.exec-sort-active]="sort.field === col.field"
+                  (click)="sortBy(col.field)">
+                  <span>{{ col.label | translate }}</span>
+                  <mat-icon *ngIf="sort.field === col.field" class="exec-sort-arrow" aria-hidden="true">{{ sort.dir === 'asc' ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+                </button>
+              </th>
+            </ng-container>
             <th></th>
           </tr>
         </thead>
