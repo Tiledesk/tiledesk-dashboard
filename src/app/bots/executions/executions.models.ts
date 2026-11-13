@@ -195,6 +195,39 @@ export interface Summary {
   agents: { [agentId: string]: AgentSummary };
 }
 
+/** The graph's view (tiledesk-executions GET /executions/stats): `now` = the not-terminated runs, any age; a range adds every run started in it. */
+export type StatsRange = 'now' | '1h' | '24h' | '7d' | '30d';
+export const STATS_RANGES: StatsRange[] = ['now', '1h', '24h', '7d', '30d'];
+
+export interface StatusCounts {
+  running: number;
+  waiting: number;
+  stopping: number;
+  stopped: number;
+  failed: number;
+  completed: number;
+  destroyed: number;
+}
+
+/** Per agent: the status counts plus the executions in view with failure_conditions > 0. */
+export interface AgentStatusCounts extends StatusCounts {
+  failure_conditions: number;
+}
+
+export interface ExecutionStats {
+  range: StatsRange;
+  from: string | null;
+  statuses: StatusCounts;
+  agents: { [agentId: string]: AgentStatusCounts };
+}
+
+export interface StatsParams {
+  range: StatsRange;
+  agent_id?: string;
+  /** 'all' (the API default): real and test runs; true: test runs only; false: real runs only */
+  test?: boolean | 'all';
+}
+
 /** Why a value is not returned under a grant (tiledesk-executions stateValues.ts). */
 export type ValueState = 'secret' | 'too_large' | 'not_stored' | 'expired' | 'unreadable';
 

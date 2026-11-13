@@ -14,19 +14,19 @@
 .exec-head { display: flex; align-items: center; justify-content: space-between; margin: 16px 0; }
 .exec-title { font-size: 22px; font-weight: 500; margin: 0; }
 
-.exec-select, .exec-input {
+.exec-input {
   height: 36px; border: 1px solid var(--exec-line-strong); border-radius: 8px; background: #fff;
   padding: 0 10px; font-size: 13px; color: var(--exec-fg);
 }
 .exec-filter-q { min-width: 220px; }
 
-.exec-counters { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
-.exec-counter {
-  border: 1px solid var(--exec-line-strong); background: #fff; border-radius: 20px; padding: 4px 14px;
-  font-size: 13px; cursor: pointer;
-  &.active { background: var(--exec-accent-weak); border-color: var(--exec-accent); color: var(--exec-accent); }
-}
-.exec-counters-hint { color: var(--exec-muted); font-size: 12px; }
+.exec-select-ng { font-size: 13px; }
+.exec-agent-switcher { width: 240px; }
+.exec-filter-trigger, .exec-filter-period { width: 180px; }
+.exec-filter-status { width: 170px; }
+
+.exec-cards { margin-bottom: 14px; }
+.exec-cards-hint { display: block; margin-top: 6px; color: var(--exec-muted); font-size: 12px; }
 
 .exec-filters { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
 .exec-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; }
