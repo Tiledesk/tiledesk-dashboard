@@ -332,9 +332,12 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     return Math.round((1000 * a) / d) / 10;
   }
 
+  /** When true (query ?embed / ?Embed), hide chrome for CDS iframe embed. */
+  isEmbedMode = false;
+
   /** KB stats charts require embedded analytics (same gate as new analytics vs legacy). */
   get isKbStatsChartsEnabled(): boolean {
-    return isNewAnalyticsConfigured(this.appConfigService.getConfig());
+    return !this.isEmbedMode && isNewAnalyticsConfigured(this.appConfigService.getConfig());
   }
 
   
@@ -517,6 +520,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.kbsList = [];
     // this.getBrowserVersion();
     this.isChromeVerGreaterThan100 = this.checkChromeVersion();
+
+    this.initEmbedModeFromQuery();
    
     this.getLoggedUser();
     this.getCurrentProject();
@@ -557,8 +562,52 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       this.questionsSearchDebounceTimer = null;
       this.showUQTableSpinner = false;
     }
+    this.setEmbedChrome(false);
     this.unsubscribe$.next();   
     this.unsubscribe$.complete();
+  }
+
+  /**
+   * CDS can open KB in an iframe with ?embed / ?Embed (optionally =true/1).
+   * Hides dashboard navbar, black sidebar, and kb-stats-charts.
+   */
+  private initEmbedModeFromQuery(): void {
+    this.isEmbedMode = this.queryHasEmbedFlag(this.route.snapshot.queryParamMap);
+    this.setEmbedChrome(this.isEmbedMode);
+    this.route.queryParamMap
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((qpm) => {
+        const next = this.queryHasEmbedFlag(qpm);
+        if (next === this.isEmbedMode) {
+          return;
+        }
+        this.isEmbedMode = next;
+        this.setEmbedChrome(this.isEmbedMode);
+      });
+  }
+
+  private queryHasEmbedFlag(qpm: { keys: string[]; get(name: string): string | null }): boolean {
+    const embedKey = (qpm.keys || []).find((k) => k && k.toLowerCase() === 'embed');
+    if (!embedKey) {
+      return false;
+    }
+    const raw = (qpm.get(embedKey) || '').trim().toLowerCase();
+    // Bare ?embed / ?Embed → ''; also accept true/1
+    if (raw === '' || raw === 'true' || raw === '1') {
+      return true;
+    }
+    if (raw === 'false' || raw === '0') {
+      return false;
+    }
+    return true;
+  }
+
+  private setEmbedChrome(enabled: boolean): void {
+    try {
+      document.body.classList.toggle('td-embed-mode', enabled);
+    } catch (e) {
+      this.logger.warn('[KNOWLEDGE-BASES-COMP] setEmbedChrome body class failed', e);
+    }
   }
 
   listenToProjectUser() {
@@ -1098,7 +1147,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     return true;
   };
 
-  /** Preserva tab Domande / sotto-tab nel navigate verso knowledge-bases (es. ritorno da conversazione). */
+  /** Preserva tab Domande / sotto-tab (e embed) nel navigate verso knowledge-bases. */
   private buildKbDeepLinkNavExtras(): { queryParams: Record<string, string> } | undefined {
     const qpm = this.route.snapshot.queryParamMap;
     const tab = qpm.get('tab');
@@ -1109,6 +1158,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
     if (questionsSub === 'answered' || questionsSub === 'unanswered') {
       qp.questionsSub = questionsSub;
+    }
+    if (this.queryHasEmbedFlag(qpm)) {
+      qp.embed = 'true';
     }
     return Object.keys(qp).length ? { queryParams: qp } : undefined;
   }
