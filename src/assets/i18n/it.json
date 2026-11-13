@@ -3982,7 +3982,13 @@
                 "Duration": "Durata"
             },
             "Show": "Mostra",
-            "Hide": "Nascondi"
+            "Hide": "Nascondi",
+            "Split": {
+                "Title": "Dove è andato il tempo",
+                "InBlocks": "Nei blocchi",
+                "Waiting": "In attesa",
+                "WaitAfter": "+{{d}} in attesa"
+            }
         },
         "Audit": {
             "Title": "Audit",

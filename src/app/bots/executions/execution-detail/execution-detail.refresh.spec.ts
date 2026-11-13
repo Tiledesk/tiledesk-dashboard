@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
-import { COPIED_MS, ExecutionDetailComponent, MIN_BAR_PCT, stepBar } from './execution-detail.component';
+import { COPIED_MS, ExecutionDetailComponent, MIN_BAR_PCT, rowBar, timeSplit } from './execution-detail.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { ExecutionsService } from '../../../services/executions.service';
 import { RolesService } from '../../../services/roles.service';
@@ -290,55 +290,84 @@ describe('ExecutionDetailComponent refreshed layout', () => {
     }));
   });
 
-  describe('duration bar', () => {
-    it('offset = step start − execution start, width = step duration, over the execution duration', () => {
-      expect(stepBar(0, 1000, 250, 500)).toEqual({ offset: 25, width: 50 });
-      expect(stepBar(1000, 4000, 1000, 4000)).toEqual({ offset: 0, width: 100 });
-      expect(stepBar(0, 3000, 1000, 1000)).toEqual({ offset: 33.33, width: 33.33 });
+  describe('time split', () => {
+    const steps = (...xs: Array<[number, number, number]>) => xs.map(([seq, start, end]) => ({ seq, start, end }));
+
+    it('splits the run into blocks and the waits between them, in time order', () => {
+      // run 0..1000: block 1 0..100, wait 100..400, block 2 400..500, wait 500..1000
+      const sp = timeSplit(0, 1000, steps([1, 0, 100], [2, 400, 500]));
+      expect(sp.segments.map(x => [x.kind, x.seq, x.left, x.width, x.ms])).toEqual([
+        ['block', 1, 0, 10, 100], ['wait', 1, 10, 30, 300], ['block', 2, 40, 10, 100], ['wait', 2, 50, 50, 500],
+      ]);
+      expect(sp.blockMs).toBe(200);
+      expect(sp.waitMs).toBe(800);
+      expect(sp.waitAfter.get(1)).toBe(300);
+      expect(sp.waitAfter.get(2)).toBe(500);
     });
 
-    it('clamps so the bar stays visible and inside the track', () => {
-      // a block of 0 ms: the minimum width
-      expect(stepBar(0, 1000, 500, 0)).toEqual({ offset: 50, width: MIN_BAR_PCT });
-      // started before the execution (clock skew): from 0
-      expect(stepBar(1000, 1000, 900, 200)).toEqual({ offset: 0, width: 20 });
-      // starts at the very end: moved back so the minimum width fits
-      expect(stepBar(0, 1000, 1000, 0)).toEqual({ offset: 100 - MIN_BAR_PCT, width: MIN_BAR_PCT });
-      // runs past the end: cut at the end
-      expect(stepBar(0, 1000, 800, 900)).toEqual({ offset: 80, width: 20 });
-      // unknown times or no span: no bar
-      expect(stepBar(0, 0, 0, 10)).toBeNull();
-      expect(stepBar(NaN, 1000, 0, 10)).toBeNull();
+    it('time before the first block is waiting with no block to own it', () => {
+      const sp = timeSplit(0, 1000, steps([1, 200, 1000]));
+      expect(sp.segments.map(x => [x.kind, x.seq])).toEqual([['wait', undefined], ['block', 1]]);
+      expect(sp.waitMs).toBe(200);
+      expect(sp.waitAfter.size).toBe(0);
     });
 
-    it('a finished execution: bars over its duration_ms', fakeAsync(() => {
-      setup(detail('completed', [], { steps: [step(1, 0, 400), step(2, 500, 500)] }));
+    it('clamps blocks into the run and never counts overlaps twice', () => {
+      // starts before the run (clock skew), overlaps the next block, last one runs past the end
+      const sp = timeSplit(1000, 1000, steps([1, 900, 1300], [2, 1200, 1500], [3, 1800, 2500]));
+      expect(sp.segments.map(x => [x.kind, x.ms])).toEqual([['block', 300], ['block', 200], ['wait', 300], ['block', 200]]);
+      expect(sp.blockMs + sp.waitMs).toBe(1000);
+    });
+
+    it('no split without a start or a span', () => {
+      expect(timeSplit(NaN, 1000, [])).toBeNull();
+      expect(timeSplit(0, 0, [])).toBeNull();
+    });
+
+    it('a row: the block share from the left, then the wait after it', () => {
+      const sp = timeSplit(0, 1000, steps([1, 0, 100], [2, 400, 500]));
+      expect(rowBar(sp, 1, 100)).toEqual({ width: 10, waitLeft: 10, waitWidth: 30, waitMs: 300 });
+      // a 0 ms block keeps a visible sliver; the wait is cut so both fit the track
+      const sp2 = timeSplit(0, 1000, steps([1, 0, 0]));
+      expect(rowBar(sp2, 1, 0)).toEqual({ width: MIN_BAR_PCT, waitLeft: MIN_BAR_PCT, waitWidth: 100 - MIN_BAR_PCT, waitMs: 1000 });
+    });
+
+    it('the strip shows where a waiting run spends its time', fakeAsync(() => {
+      // 20 s in blocks, then waiting: 10 % in blocks, 90 % waiting
+      setup(detail('completed', [], { execution: { duration_ms: 200000 }, steps: [step(1, 0, 10000), step(2, 10000, 10000)] }));
+      const segs = Array.from(el().querySelectorAll('.tl-split-bar .tl-seg')) as HTMLElement[];
+      expect(segs.length).toBe(3);
+      expect(segs[2].classList).toContain('tl-seg-wait');
+      expect(segs[2].style.left).toBe('10%');
+      expect(segs[2].style.width).toBe('90%');
+      expect(el().querySelector('.tl-split-blocks').textContent).toContain('20.0 s');
+      expect(el().querySelector('.tl-split-blocks').textContent).toContain('10%');
+      expect(el().querySelector('.tl-split-wait').textContent).toContain('90%');
+      // each row: its block from the left, the last one followed by the wait
       const bars = Array.from(el().querySelectorAll('.tl-step .tl-bar')) as HTMLElement[];
-      expect(bars.length).toBe(2);
-      expect(bars[0].style.left).toBe('0%');
-      expect(bars[0].style.width).toBe('20%');
-      expect(bars[1].style.left).toBe('25%');
-      expect(bars[1].style.width).toBe('25%');
-      expect(bars[1].classList).toContain('o-success');
+      expect(bars.map(b => [b.style.left, b.style.width])).toEqual([['0%', '5%'], ['0%', '5%']]);
+      const waits = Array.from(el().querySelectorAll('.tl-step .tl-bar-wait')) as HTMLElement[];
+      expect(waits.length).toBe(1);
+      expect(waits[0].style.left).toBe('5%');
+      expect(waits[0].style.width).toBe('90%');
+      expect(el().querySelectorAll('.tl-step .tl-wait-dur')[1].textContent).toContain('3 m');
       end();
     }));
 
-    it('a running execution: bars over now − start, the open block up to now', fakeAsync(() => {
-      // duration_ms set by an older projection is ignored while it runs
+    it('a running execution: the open block grows up to now', fakeAsync(() => {
       setup(detail('running', [], { execution: { duration_ms: 500 }, steps: [step(1, 0, 1000), step(2, 2000, null)] }));
       spyOn(component, 'now').and.returnValue(Date.parse(START) + 4000);
       fixture.detectChanges();
       const bars = Array.from(el().querySelectorAll('.tl-step .tl-bar')) as HTMLElement[];
-      expect(bars[0].style.left).toBe('0%');
       expect(bars[0].style.width).toBe('25%');
-      expect(bars[1].style.left).toBe('50%');
       expect(bars[1].style.width).toBe('50%');
       expect(bars[1].classList).toContain('o-running');
       end();
     }));
 
-    it('no bar when the execution has no start', fakeAsync(() => {
+    it('no strip and no bar when the execution has no start', fakeAsync(() => {
       setup(detail('completed', [], { execution: { started_at: null } }));
+      expect(el().querySelector('.tl-split')).toBeNull();
       expect(el().querySelectorAll('.tl-step .tl-bar').length).toBe(0);
       expect(el().querySelectorAll('.tl-step .tl-dur').length).toBe(2);
       end();

@@ -170,17 +170,36 @@ $tl-cols: 104px minmax(0, 1fr) 128px 150px minmax(120px, 200px) 20px;
   &.o-running { color: var(--exec-accent); background: var(--exec-accent-weak); }
 }
 .tl-vc { font-size: 12px; color: var(--exec-accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-/* the block's bar on the execution's time axis, then its duration */
+/* where the run's time went: blocks (outcome colour) and waits (hatched), in time order */
+.tl-split { padding: 12px 16px 14px; border-bottom: 1px solid var(--exec-line); display: grid; gap: 8px; }
+.tl-split-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 16px; }
+.tl-split-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--exec-muted); }
+.tl-split-legend { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--exec-muted); }
+.tl-split-legend b { color: var(--exec-fg); font-weight: 600; }
+.tl-key { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+.tl-key-block { background: #5bb27a; }
+.tl-key-wait, .tl-seg-wait, .tl-bar-wait {
+  background-color: var(--exec-surface-2);
+  background-image: repeating-linear-gradient(135deg, rgba(120, 130, 150, .45) 0 2px, transparent 2px 6px);
+}
+.tl-split-bar { position: relative; height: 14px; border-radius: 4px; background: var(--exec-surface-2); overflow: hidden; }
+.tl-seg {
+  position: absolute; top: 0; bottom: 0; min-width: 2px; background: var(--exec-faint);
+  & + .tl-seg { box-shadow: inset 1px 0 0 rgba(255, 255, 255, .7); }
+}
+/* a row: its block's share of the run from the left, then the wait after it, then its duration */
 .tl-durcell { display: flex; align-items: center; gap: 8px; min-width: 0; }
-.tl-track { position: relative; flex: 1 1 auto; height: 8px; border-radius: 4px; background: var(--exec-surface-2); overflow: hidden; }
-.tl-bar {
-  position: absolute; top: 0; bottom: 0; border-radius: 4px; background: var(--exec-faint);
+.tl-track { position: relative; flex: 1 1 auto; height: 10px; border-radius: 3px; background: var(--exec-surface-2); overflow: hidden; }
+.tl-bar, .tl-seg {
   &.o-success { background: #5bb27a; }
   &.o-error { background: var(--exec-bad); }
   &.o-failure_condition, &.o-interrupted { background: #e0a040; }
   &.o-running { background: var(--exec-accent); }
 }
-.tl-dur { flex: none; min-width: 52px; text-align: right; }
+.tl-bar { position: absolute; top: 0; bottom: 0; min-width: 2px; border-radius: 3px; background: var(--exec-faint); }
+.tl-bar-wait { position: absolute; top: 0; bottom: 0; }
+.tl-dur { flex: none; min-width: 60px; text-align: right; display: flex; flex-direction: column; line-height: 1.25; }
+.tl-wait-dur { font-size: 11px; white-space: nowrap; &:empty { display: none; } }
 .tl-chevron { color: var(--exec-muted); font-size: 18px; width: 18px; height: 18px; }
 .tl-body { padding: 12px 16px 16px 132px; border-bottom: 1px solid var(--exec-line); background: var(--exec-surface-2); display: grid; gap: 10px; }
 /* a block closed because its execution ended while it ran (outcome interrupted): its icon and label are the outcome's */
