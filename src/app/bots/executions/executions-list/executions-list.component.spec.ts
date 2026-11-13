@@ -41,7 +41,8 @@ describe('ExecutionsListComponent', () => {
   function setup(opts: { botid?: string; query?: any; configured?: boolean; role?: string; perms?: string[]; page?: any } = {}) {
     executions = {
       isConfigured: jasmine.createSpy('isConfigured').and.returnValue(opts.configured !== false),
-      list: jasmine.createSpy('list').and.returnValue(of(opts.page || { items: [], next_cursor: null })),
+      // the list answers with the cards' stats (with_stats=true) unless a test gives its own page
+      list: jasmine.createSpy('list').and.returnValue(of({ stats: STATS(), ...(opts.page || { items: [], next_cursor: null }) })),
       summary: jasmine.createSpy('summary'),
       stats: jasmine.createSpy('stats').and.returnValue(of(STATS())),
     };
@@ -240,11 +241,37 @@ describe('ExecutionsListComponent', () => {
     const cards = () => Array.from(fixture.nativeElement.querySelectorAll('.exec-stat-card')) as HTMLElement[];
     const values = () => cards().map(c => c.querySelector('.exec-stat-value').textContent.trim());
 
-    it('one-agent view: one stats call over the list period, agent and test runs; never the summary', () => {
+    it('one-agent view: one list call with the stats of the list period, agent and test runs; no stats or summary call', () => {
       setup({ botid: 'a1' });
-      expect(executions.stats).toHaveBeenCalledWith('p1', { range: '7d', agent_id: 'a1', test: 'all' });
+      expect(executions.list).toHaveBeenCalledTimes(1);
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.with_stats).toBe(true);
+      expect(p.stats_range).toBe('7d');
+      expect(p.agent_id).toBe('a1');
+      expect(p.test).toBe('all');
+      expect(executions.stats).not.toHaveBeenCalled();
       expect(executions.summary).not.toHaveBeenCalled();
       expect(values()).toEqual(['1', '0', '4', '2', '6', '9', '4']);
+    });
+
+    it('each load is one call: a filter change asks the list for the stats again, load more does not', () => {
+      setup({ page: { items: [row('e1')], next_cursor: 'c1' } });
+      executions.list.calls.reset();
+      executions.list.and.returnValue(of({ items: [row('e1')], next_cursor: 'c1', stats: STATS({ ...STATUSES, failed: 7 }) }));
+      query$.next(convertToParamMap({ status: 'failed' }));
+      fixture.detectChanges();
+      expect(executions.list).toHaveBeenCalledTimes(1);
+      expect(executions.list.calls.mostRecent().args[1].with_stats).toBe(true);
+      expect(values()[3]).toBe('7');
+      executions.list.and.returnValue(of({ items: [row('e2')], next_cursor: null }));
+      component.loadMore();
+      expect(executions.list).toHaveBeenCalledTimes(2);
+      const more = executions.list.calls.mostRecent().args[1];
+      expect(more.cursor).toBe('c1');
+      expect(more.with_stats).toBeUndefined();
+      expect(more.stats_range).toBeUndefined();
+      expect(values()[3]).toBe('7');
+      expect(executions.stats).not.toHaveBeenCalled();
     });
 
     it('With errors toggles has_errors (it is no status) and shows pressed while on; failure conditions untouched', () => {
@@ -271,9 +298,9 @@ describe('ExecutionsListComponent', () => {
 
     it('the period maps to the stats range', () => {
       setup({ query: { period: '24h' } });
-      expect(executions.stats.calls.mostRecent().args[1].range).toBe('24h');
+      expect(executions.list.calls.mostRecent().args[1].stats_range).toBe('24h');
       query$.next(convertToParamMap({ period: '30d' }));
-      expect(executions.stats.calls.mostRecent().args[1].range).toBe('30d');
+      expect(executions.list.calls.mostRecent().args[1].stats_range).toBe('30d');
     });
 
     it('clicking a card sets the status filter and shows every trigger; Stopped lists stopped and stopping', () => {
@@ -306,20 +333,24 @@ describe('ExecutionsListComponent', () => {
       setup({ botid: 'a1', query: { tests: 'false' } });
       expect(component.filters.tests).toBe(false);
       expect(executions.list.calls.mostRecent().args[1].test).toBeUndefined();
-      expect(executions.stats.calls.mostRecent().args[1].test).toBe(false);
+      // no test param: the list and its stats both take real runs only
+      expect(executions.list.calls.mostRecent().args[1].with_stats).toBe(true);
       expect(component.hasActiveFilters).toBe(true);
     });
 
     it('all-agents view: cards for every agent (no agent_id), Agent column from agent_name', () => {
       setup({ page: { items: [row('e1', 'failed', { agent_name: 'Nightly' })], next_cursor: null } });
-      expect(executions.stats).toHaveBeenCalledWith('p1', { range: '7d', test: 'all' });
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.agent_id).toBeUndefined();
+      expect(p.with_stats).toBe(true);
+      expect(p.stats_range).toBe('7d');
       expect(cards().length).toBe(7);
       expect(fixture.nativeElement.querySelector('.exec-agent').textContent).toContain('Nightly');
     });
 
-    it('a stats error keeps the previous numbers', () => {
+    it('a list error keeps the previous numbers', () => {
       setup();
-      executions.stats.and.returnValue(throwError(() => new Error('503')));
+      executions.list.and.returnValue(throwError(() => new Error('503')));
       component.loadFirstPage();
       fixture.detectChanges();
       expect(values()[0]).toBe('1');
@@ -387,9 +418,23 @@ describe('ExecutionsListComponent', () => {
     it('counters are not cleared while polling', fakeAsync(() => {
       setup({ botid: 'a1', page: { items: [row('e1', 'running')], next_cursor: null } });
       const pending = new Subject<any>();
-      executions.stats.and.returnValue(pending);
+      executions.list.and.returnValue(pending);
       tick(10000);
       expect(component.counters).not.toBeNull();
+      discardPeriodicTasks();
+    }));
+
+    it('a poll is one call too: it asks for the stats and updates the cards', fakeAsync(() => {
+      setup({ botid: 'a1', page: { items: [row('e1', 'running')], next_cursor: null } });
+      executions.list.and.returnValue(of({ items: [row('e1', 'running')], next_cursor: null, stats: STATS({ ...STATUSES, running: 5 }) }));
+      const n = executions.list.calls.count();
+      tick(10000);
+      expect(executions.list.calls.count()).toBe(n + 1);
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.with_stats).toBe(true);
+      expect(p.stats_range).toBe('7d');
+      expect(component.counters.running).toBe(5);
+      expect(executions.stats).not.toHaveBeenCalled();
       discardPeriodicTasks();
     }));
 
@@ -432,21 +477,19 @@ describe('ExecutionsListComponent', () => {
   describe('final review fixes', () => {
     it('switching agent A -> B on the reused component reloads the list and the counters for B (D1)', () => {
       setup({ botid: 'a1' });
-      executions.stats.and.returnValue(of(STATS({ ...STATUSES, waiting: 4 })));
+      executions.list.and.returnValue(of({ items: [], next_cursor: null, stats: STATS({ ...STATUSES, waiting: 4 }) }));
       const lists = executions.list.calls.count();
       params$.next(convertToParamMap({ projectid: 'p1', botid: 'b2' }));
       expect(component.agentId).toBe('b2');
       expect(executions.list.calls.count()).toBe(lists + 1);
       expect(executions.list.calls.mostRecent().args[1].agent_id).toBe('b2');
-      expect(executions.stats.calls.mostRecent().args[1].agent_id).toBe('b2');
       expect(component.counters.waiting).toBe(4);
       const pending = new Subject<any>();
-      executions.stats.and.returnValue(pending);
+      executions.list.and.returnValue(pending);
       params$.next(convertToParamMap({ projectid: 'p1' }));
       expect(component.agentId).toBeNull();
       // B's numbers are not shown for all agents while theirs load
       expect(component.counters).toBeNull();
-      expect(executions.stats.calls.mostRecent().args[1].agent_id).toBeUndefined();
       expect(executions.list.calls.mostRecent().args[1].agent_id).toBeUndefined();
     });
 

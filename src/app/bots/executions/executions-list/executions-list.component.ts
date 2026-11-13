@@ -6,7 +6,7 @@ import { ExecutionsService } from 'app/services/executions.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { canViewExecutions, ExecutionListParams, ExecutionRow, StatsParams, StatsRange, StatusCounts } from '../executions.models';
+import { canViewExecutions, ExecutionListParams, ExecutionPage, ExecutionRow, StatsRange, StatusCounts } from '../executions.models';
 import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration, PERIOD_MS } from '../shared/execution-format';
 
@@ -54,7 +54,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   error = false;
 
   agents: { id: string; name: string }[] = [];
-  /** The big numbers: every status over the list's period, agent and test-runs filters (the stats API); null until known. */
+  /** The big numbers: every status over the list's period, agent and test-runs filters (the list's with_stats); null until known. */
   counters: StatusCounts | null = null;
   /** The stats' with_errors: runs with errors > 0, an unhandled action (the With errors card). */
   withErrors: number | null = null;
@@ -143,7 +143,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       switchMap(() => {
         this.loading = true;
         this.error = false;
-        return this.executionsService.list(this.projectId, this.buildParams()).pipe(
+        return this.executionsService.list(this.projectId, this.withStats(this.buildParams())).pipe(
           // the error is handled inside, so the pipeline survives it (Retry and filter changes keep working)
           catchError(err => { this.onListError(err); return of(null); })
         );
@@ -159,7 +159,6 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     this.loadingMore = false;
     // in-flight refresh / load-more calls end on reload$ and cannot merge old-filter rows
     this.reload$.next();
-    this.loadCounters();
   }
 
   buildParams(cursor?: string): ExecutionListParams {
@@ -177,8 +176,25 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     return params;
   }
 
+  /**
+   * A first page or a poll also brings the cards (one call, not list + stats): the list's period as the stats range (live
+   * runs of any age included, as the graph counts them), with the list's agent and test runs. Every trigger is counted.
+   */
+  private withStats(params: ExecutionListParams): ExecutionListParams {
+    return { ...params, with_stats: true, stats_range: this.filters.period as Exclude<StatsRange, 'now'> };
+  }
+
+  /** The old numbers stay until new ones arrive (no flicker on every poll, none on an error). */
+  private takeCounters(page: ExecutionPage) {
+    const s = page && page.stats;
+    if (!s) return;
+    this.counters = s.statuses || null;
+    this.withErrors = typeof s.with_errors === 'number' ? s.with_errors : null;
+  }
+
   private onFirstPage(page) {
     this.loading = false;
+    this.takeCounters(page);
     this.rows = page.items;
     this.nextCursor = page.next_cursor;
     this.updatePolling();
@@ -204,25 +220,6 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
           this.updatePolling();
         },
         error: err => this.onListError(err)
-      });
-  }
-
-  /**
-   * The cards come from one stats call: the list's period as the range (live runs of any age included, as the
-   * graph counts them), the agent of the view if any, test runs as the toggle says. Every trigger is counted.
-   */
-  private loadCounters() {
-    // the old value stays until the new one arrives (no flicker on every poll)
-    const params: StatsParams = { range: this.filters.period as StatsRange, test: this.filters.tests ? 'all' : false };
-    if (this.agentId) params.agent_id = this.agentId;
-    this.executionsService.stats(this.projectId, params)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: s => {
-          this.counters = (s && s.statuses) || null;
-          this.withErrors = s && typeof s.with_errors === 'number' ? s.with_errors : null;
-        },
-        error: err => this.logger.error('[EXECUTIONS-LIST] stats error ', err)
       });
   }
 
@@ -272,15 +269,15 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   /** Re-reads the first page and merges it: known rows are updated in place, new ones go on top. */
   private refresh() {
     this.refreshing = true;
-    this.executionsService.list(this.projectId, this.buildParams()).pipe(takeUntil(this.reload$), takeUntil(this.destroy$)).subscribe({
+    this.executionsService.list(this.projectId, this.withStats(this.buildParams())).pipe(takeUntil(this.reload$), takeUntil(this.destroy$)).subscribe({
       next: page => {
         this.refreshing = false;
+        this.takeCounters(page);
         const fresh = new Map(page.items.map(r => [r._id, r] as [string, ExecutionRow]));
         const known = new Set(this.rows.map(r => r._id));
         this.rows = page.items.filter(r => !known.has(r._id)).concat(this.rows.map(r => fresh.get(r._id) || r));
         if (this.rows.length === page.items.length) this.nextCursor = page.next_cursor;
         this.updatePolling();
-        this.loadCounters();
       },
       error: err => {
         this.refreshing = false;
