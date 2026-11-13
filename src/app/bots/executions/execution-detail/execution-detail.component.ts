@@ -122,15 +122,8 @@ export function errorSummary(err: any): { status: number | null; error: string |
   return { status: typeof status === 'number' ? status : null, error: errorCode(err) };
 }
 
-export interface OutsideGroup {
-  by: string;
-  keys: string[];
-  textKey: string;
-}
-
 export interface TimelineItem {
   step: Step;
-  outside: OutsideGroup[];
 }
 
 interface StateSlot {
@@ -153,23 +146,7 @@ export function stepFingerprint(step: Step | undefined): string {
   const actions = step.actions || [];
   const last = actions[actions.length - 1];
   return JSON.stringify([step.ended_at, step.outcome, step.changed_keys, actions.length,
-    last ? last.at : null, last ? last.outcome : null, last ? last.duration_ms : null, (step.outside || []).length]);
-}
-
-/** Text of an outside-change row, by origin; plural and singular. */
-export function outsideTextKey(by: string, n: number): string {
-  const base = by === 'message_in' ? 'OutsideMessageIn' : by === 'jump_params' ? 'OutsideJumpParams' : 'OutsideExternal';
-  return 'Executions.Detail.' + base + (n === 1 ? 'One' : '');
-}
-
-function groupOutside(step: Step): OutsideGroup[] {
-  const groups = new Map<string, string[]>();
-  (step.outside || []).forEach(c => {
-    const by = c.by || 'external';
-    if (!groups.has(by)) groups.set(by, []);
-    groups.get(by).push(c.key);
-  });
-  return Array.from(groups.entries()).map(([by, keys]) => ({ by, keys, textKey: outsideTextKey(by, keys.length) }));
+    last ? last.at : null, last ? last.outcome : null, last ? last.duration_ms : null]);
 }
 
 @Component({
@@ -210,7 +187,6 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   failedOnly = false;
   expanded = new Set<number>();
   /** Incoming-message rows shown open (their keys), by `${seq}:${by}`. */
-  outsideOpen = new Set<string>();
 
   /** What a copy button just copied ("Copied" for COPIED_MS). */
   copied: 'version' | 'id' | 'link' | null = null;
@@ -359,7 +335,6 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.error = false;
     this.loading = false;
     this.expanded = new Set();
-    this.outsideOpen = new Set();
     this.states = {};
     this.fsSeq = null;
     this.fsShowAll = false;
@@ -392,7 +367,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.error = false;
     this.detail = d;
     const steps = d.steps || [];
-    this.timeline = steps.map(step => ({ step, outside: groupOutside(step) }));
+    this.timeline = steps.map(step => ({ step }));
     this.actionTitles = {};
     steps.forEach(s => (s.actions || []).forEach(a => {
       if (a.action_id) this.actionTitles[a.action_id] = actionLabel(a);
@@ -632,22 +607,6 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
 
   trackByKpi(_: number, k: Kpi) {
     return k.key;
-  }
-
-  // ---- outside changes: the incoming message's is one quiet row, its keys behind Show ----
-
-  outsideKey(step: Step, g: OutsideGroup): string {
-    return step.seq + ':' + g.by;
-  }
-
-  toggleOutside(step: Step, g: OutsideGroup) {
-    const k = this.outsideKey(step, g);
-    if (this.outsideOpen.has(k)) this.outsideOpen.delete(k);
-    else this.outsideOpen.add(k);
-  }
-
-  incomingKey(n: number): string {
-    return 'Executions.Detail.IncomingSet' + (n === 1 ? 'One' : '');
   }
 
   // ---- Flow state tab ----

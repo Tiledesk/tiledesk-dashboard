@@ -97,10 +97,6 @@
 
         <dl class="ex-facts">
           <div class="ex-fact">
-            <dt>{{ "Executions.Detail.Agent" | translate }}</dt>
-            <dd class="ex-ellipsis" [matTooltip]="d.execution.agent_id">{{ d.execution.agent_name || d.execution.agent_id }}</dd>
-          </div>
-          <div class="ex-fact">
             <dt>{{ "Executions.Detail.TriggerLabel" | translate }}</dt>
             <dd>{{ d.execution.trigger?.type ? (("Executions.Triggers." + d.execution.trigger.type) | translate) : '—' }}</dd>
           </div>
@@ -248,22 +244,6 @@
           <div *ngIf="!d.steps.length" class="ex-empty">{{ "Executions.Detail.NoSteps" | translate }}</div>
 
           <ng-container *ngFor="let item of visibleTimeline; trackBy: trackBySeq">
-            <!-- attributes changed before the block ran: the incoming message's is one quiet row, its keys behind Show -->
-            <div *ngFor="let g of item.outside" class="tl-outside" [class.tl-incoming]="g.by === 'message_in'">
-              <mat-icon class="tl-outside-icon" aria-hidden="true">{{ g.by === 'message_in' ? 'chat_bubble_outline' : 'input' }}</mat-icon>
-              <ng-container *ngIf="g.by === 'message_in'; else plainOutside">
-                <span class="tl-outside-text">{{ outsideOpen.has(outsideKey(item.step, g))
-                  ? (g.textKey | translate: { n: g.keys.length, keys: g.keys.join(', ') })
-                  : (incomingKey(g.keys.length) | translate: { n: g.keys.length }) }}</span>
-                <button type="button" class="ex-link tl-outside-toggle" [attr.aria-expanded]="outsideOpen.has(outsideKey(item.step, g))"
-                  (click)="toggleOutside(item.step, g)">
-                  {{ (outsideOpen.has(outsideKey(item.step, g)) ? "Executions.Detail.Hide" : "Executions.Detail.Show") | translate }}</button>
-              </ng-container>
-              <ng-template #plainOutside>
-                <span class="tl-outside-text">{{ g.textKey | translate: { n: g.keys.length, keys: g.keys.join(', ') } }}</span>
-              </ng-template>
-            </div>
-
             <button type="button" class="tl-step" [class.tl-open]="expanded.has(item.step.seq)" [class.tl-interrupted]="item.step.outcome === 'interrupted'"
               [attr.aria-expanded]="expanded.has(item.step.seq)"
               [attr.aria-label]="'Executions.Detail.StepDetails' | translate: { name: item.step.block_name || item.step.seq }"
