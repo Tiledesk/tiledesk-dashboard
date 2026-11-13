@@ -146,11 +146,12 @@ describe('BotListComponent executions entry', () => {
     expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'root1', 'executions'], { queryParams: { range: '24h' } });
   });
 
-  it('all executions button opens monitor', () => {
+  it('has no "All executions" button (feedback 2026-11-13); the per-agent buttons stay', () => {
     setup(true, 'owner');
     fixture.detectChanges();
-    fixture.nativeElement.querySelector('.bots-list-all-executions-btn').click();
-    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'executions']);
+    expect(fixture.nativeElement.querySelector('.bots-list-all-executions-btn')).toBeNull();
+    expect(fixture.nativeElement.querySelectorAll('.executions-btn').length).toBe(2);
+    expect((component as any).goToAllExecutions).toBeUndefined();
   });
 
   it('agents page has no list/graph switch', () => {

@@ -584,10 +584,6 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.router.navigate(monitorExecutionsLink(this.project._id, this.executionsAgentId(bot)), { queryParams: { range: '24h' } });
   }
 
-  goToAllExecutions() {
-    this.router.navigate(monitorExecutionsLink(this.project._id));
-  }
-
   checkChromeVersion(): boolean {
     const ua = navigator.userAgent;
     const match = ua.match(/Chrome\/(\d+)/);
