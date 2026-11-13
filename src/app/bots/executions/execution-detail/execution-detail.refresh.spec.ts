@@ -263,6 +263,20 @@ describe('ExecutionDetailComponent refreshed layout', () => {
       end();
     }));
 
+    it('the tiles have no border at all, not even the coloured top line; the value keeps the accent (feedback 2026-11-13)', fakeAsync(() => {
+      setup(detail('completed'));
+      for (const k of ['duration', 'blocks', 'actions', 'failure_conditions', 'errors', 'vars_changed']) {
+        const cs = getComputedStyle(tile(k));
+        for (const side of ['Top', 'Right', 'Bottom', 'Left']) {
+          expect((cs as any)['border' + side + 'Width']).toBe('0px', k + ' ' + side);
+        }
+        expect(cs.boxShadow).toBe('none', k + ' shadow');
+      }
+      // the bad/warn values keep their colour
+      expect(getComputedStyle(tile('errors').querySelector('.ex-kpi-value')).color).toBe('rgb(198, 47, 47)');
+      end();
+    }));
+
     it('zeros are neutral; a missing errors (older API) is 0; a running execution shows its elapsed time', fakeAsync(() => {
       const d = detail('running', [], { execution: { errors: undefined, failure_conditions: 0, duration_ms: null } });
       setup(d);
