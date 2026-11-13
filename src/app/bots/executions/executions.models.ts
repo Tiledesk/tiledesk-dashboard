@@ -25,6 +25,8 @@ export interface ExecutionRow {
 export interface ExecutionPage {
   items: ExecutionRow[];
   next_cursor: string | null;
+  /** With with_stats=true: the stats of stats_range, with the list's agent_id and test (the stats route's body). */
+  stats?: ExecutionStats;
 }
 
 export interface ExecutionListParams {
@@ -41,6 +43,9 @@ export interface ExecutionListParams {
   q?: string;
   limit?: number;
   cursor?: string;
+  /** Adds `stats` to the page (one call instead of list + stats); needs stats_range. */
+  with_stats?: boolean;
+  stats_range?: Exclude<StatsRange, 'now'>;
 }
 
 export interface ExecutionRetention {
@@ -231,6 +236,32 @@ export interface ExecutionStats {
   /** Executions in view with errors > 0 (an unhandled action), whatever their status. */
   with_errors?: number;
   agents: { [agentId: string]: AgentStatusCounts };
+}
+
+/** One agent of GET /executions/graph: what the graph draws for it. */
+export interface GraphAgentData {
+  /** agent_name on its newest run in view (deleted agents keep a name); null when the run has none. */
+  name: string | null;
+  counts: AgentStatusCounts;
+  /** At most 12 rows, in chip priority order (failed, with errors, stopping, running, waiting, stopped, completed, destroyed; newest first). */
+  drawn: ExecutionRow[];
+  /** In view but not drawn, by status; only statuses with n > 0. */
+  hidden: Partial<StatusCounts>;
+}
+
+/** GET /executions/graph?range=&test=: the stats of the view plus, per agent, what to draw. One call per refresh. */
+export interface ExecutionGraph {
+  range: StatsRange;
+  from: string | null;
+  statuses: StatusCounts;
+  with_errors: number;
+  agents: { [agentId: string]: GraphAgentData };
+}
+
+export interface GraphParams {
+  range: StatsRange;
+  /** 'all' (the API default): real and test runs; true: test runs only; false: real runs only */
+  test?: boolean | 'all';
 }
 
 export interface StatsParams {

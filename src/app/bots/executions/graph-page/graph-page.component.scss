@@ -21,7 +21,7 @@
 }
 
 .graph-page-head {
-  display: flex; align-items: center; justify-content: flex-end; gap: 10px; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 10px;
   .graph-range-label { margin: 0; font-size: 13px; color: #5d6b82; font-weight: 400; }
   .graph-range { width: 200px; font-size: 14px; }
 }

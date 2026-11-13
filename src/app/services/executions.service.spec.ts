@@ -121,6 +121,36 @@ describe('ExecutionsService', () => {
     b.flush({ range: '7d', from: null, statuses: {}, agents: {} });
   });
 
+  it('graph sends range and test to the graph route', () => {
+    setup('/executions/api/v1/');
+    let got: any;
+    service.graph('p1', { range: '24h', test: 'all' }).subscribe(g => got = g);
+    const a = http.expectOne((r) => r.url === '/executions/api/v1/projects/p1/executions/graph');
+    expect(a.request.method).toBe('GET');
+    expect(a.request.headers.get('Authorization')).toBe('JWT abc');
+    expect(a.request.params.get('range')).toBe('24h');
+    expect(a.request.params.get('test')).toBe('all');
+    expect(a.request.params.keys().sort()).toEqual(['range', 'test']);
+    const body = { range: '24h', from: null, statuses: {}, with_errors: 0, agents: {} };
+    a.flush(body);
+    expect(got).toEqual(body);
+    service.graph('p1', { range: 'now' }).subscribe();
+    const b = http.expectOne((r) => r.url === '/executions/api/v1/projects/p1/executions/graph');
+    expect(b.request.params.get('range')).toBe('now');
+    expect(b.request.params.has('test')).toBe(false);
+    b.flush(body);
+  });
+
+  it('list passes with_stats and stats_range through', () => {
+    setup('/executions/api/v1/');
+    service.list('p1', { test: 'all', with_stats: true, stats_range: '7d', from: '2026-11-01T00:00:00.000Z' }).subscribe();
+    const req = http.expectOne((r) => r.url === '/executions/api/v1/projects/p1/executions');
+    expect(req.request.params.get('with_stats')).toBe('true');
+    expect(req.request.params.get('stats_range')).toBe('7d');
+    expect(req.request.params.get('test')).toBe('all');
+    req.flush({ items: [], next_cursor: null, stats: { range: '7d', from: null, statuses: {}, agents: {} } });
+  });
+
   it('state and history call the right routes', () => {
     setup('/executions/api/v1/');
     service.state('p1', 'e1', 3).subscribe();

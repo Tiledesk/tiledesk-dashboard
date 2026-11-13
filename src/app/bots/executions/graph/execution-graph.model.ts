@@ -1,4 +1,4 @@
-import { AgentStatusCounts, ExecutionRow, ExecutionStats } from '../executions.models';
+import { AgentStatusCounts, ExecutionGraph, ExecutionRow } from '../executions.models';
 
 export interface GraphAgent { id: string; name: string; }
 export type GraphNodeKind = 'project' | 'agent' | 'execution' | 'more';
@@ -30,7 +30,7 @@ export interface GraphNode {
 export interface GraphEdge { id: string; source: string; target: string; animated: boolean; }
 export interface GraphModel { nodes: GraphNode[]; edges: GraphEdge[]; }
 
-/** Executions drawn per agent; the rest are summed up in one "+N" node. */
+/** Executions drawn per agent (the server's GRAPH_MAX_PER_AGENT); the rest are summed up in one "+N" node. */
 export const MAX_PER_AGENT = 12;
 /** Radius of the largest execution ring around an agent (the cap plus the overflow node). */
 export const AGENT_RING_RMAX = execRingRadius(MAX_PER_AGENT + 1);
@@ -55,14 +55,6 @@ const zeroCounts = (): AgentStatusCounts =>
 const isShown = (s: string): s is ShownStatus => (SHOWN_STATUSES as string[]).indexOf(s) >= 0;
 
 const hasErrors = (r: ExecutionRow) => (r.errors || 0) > 0;
-
-/**
- * Drawing priority (user: "Problems, live, then finished"): failed, then with errors (a run with errors > 0 that is
- * not failed, whatever its status), then stopping, running, waiting, stopped, completed, destroyed.
- */
-const PRIORITY: { [S in ShownStatus]: number } = { failed: 0, stopping: 2, running: 3, waiting: 4, stopped: 5, completed: 6, destroyed: 7 };
-const WITH_ERRORS_PRIORITY = 1;
-const rank = (r: ExecutionRow, status: ShownStatus) => status !== 'failed' && hasErrors(r) ? WITH_ERRORS_PRIORITY : PRIORITY[status];
 
 /** Angle between neighbouring executions of a fan, and the widest fan (the side facing the project stays clear). */
 const FAN_STEP = 0.42;
@@ -163,44 +155,27 @@ function tooltipFor(r: ExecutionRow, status: ShownStatus): GraphTooltip {
 }
 
 /**
- * The graph of the view: the project, the agents with at least one execution in view, their executions.
- * `stats` (same view, exact) decides an agent's colour, error count and "+N" when given; otherwise the rows do.
- * Agents missing from a non-empty agents list (deleted ones) are drawn too, by the name on their runs, and marked
- * `deleted`: the cards count their runs, so the graph shows them. The list gives the names of the others.
+ * The graph of the view, from GET /executions/graph: the project, the agents with at least one execution in view, and per
+ * agent the rows the server picked (chip priority, at most MAX_PER_AGENT) plus one "+N" node for its hidden counts. The
+ * counts decide the colour and the errors line. Agents missing from a non-empty agents list (deleted ones) are drawn too,
+ * by the name the server gives (agent_name of their newest run), and marked `deleted`.
  */
-export function buildExecutionGraph(input: {
-  projectName: string; agents: GraphAgent[]; rows: ExecutionRow[]; stats?: ExecutionStats | null;
-}): GraphModel {
+export function buildExecutionGraph(input: { projectName: string; agents: GraphAgent[]; graph: ExecutionGraph | null }): GraphModel {
   const { projectName, agents } = input;
   const listed = new Set(agents.map(a => a.id));
   const isDeleted = (id: string) => listed.size > 0 && !listed.has(id);
+  const short = (id: string) => String(id || '').substring(0, 8);
 
   type Shown = { row: ExecutionRow; status: ShownStatus };
-  const byAgent = new Map<string, Shown[]>();
-  const fromRows = new Map<string, AgentStatusCounts>();
-  const names = new Map<string, string>();
-  for (const r of input.rows) {
-    if (!isShown(r.status)) continue;
-    const list = byAgent.get(r.agent_id) || [];
-    list.push({ row: r, status: r.status });
-    byAgent.set(r.agent_id, list);
-    const c = fromRows.get(r.agent_id) || zeroCounts();
-    c[r.status]++;
-    if ((r.failure_conditions || 0) > 0) c.failure_conditions++;
-    if (hasErrors(r)) c.errors++;
-    fromRows.set(r.agent_id, c);
-    if (!names.has(r.agent_id)) names.set(r.agent_id, r.agent_name || String(r.agent_id || '').substring(0, 8));
-  }
-  const statsAgents = (input.stats && input.stats.agents) || {};
-  const countsOf = (id: string): AgentStatusCounts =>
-    Object.prototype.hasOwnProperty.call(statsAgents, id) ? { ...zeroCounts(), ...statsAgents[id] } : (fromRows.get(id) || zeroCounts());
+  const data = (input.graph && input.graph.agents) || {};
+  const countsOf = (id: string): AgentStatusCounts => ({ ...zeroCounts(), ...(data[id].counts || {}) });
+  const drawnOf = (id: string): Shown[] => (data[id].drawn || []).filter(r => isShown(r.status)).map(r => ({ row: r, status: r.status as ShownStatus }));
 
-  const inView = new Set<string>(byAgent.keys());
-  Object.keys(statsAgents).forEach(id => { if (agentColor(countsOf(id))) inView.add(id); });
-  const agentMap = new Map<string, GraphAgent>();
-  for (const a of agents) if (inView.has(a.id)) agentMap.set(a.id, a);
-  inView.forEach(id => { if (!agentMap.has(id)) agentMap.set(id, { id, name: names.get(id) || String(id || '').substring(0, 8) }); });
-  const sortedAgents = Array.from(agentMap.values()).sort((a, b) => cmp(a.name, b.name) || cmp(a.id, b.id));
+  const inView = Object.keys(data).filter(id => drawnOf(id).length > 0 || agentColor(countsOf(id)) !== null);
+  const names = new Map(agents.map(a => [a.id, a.name] as [string, string]));
+  const sortedAgents: GraphAgent[] = inView
+    .map(id => ({ id, name: names.get(id) || data[id].name || short(id) }))
+    .sort((a, b) => cmp(a.name, b.name) || cmp(a.id, b.id));
 
   const nodes: GraphNode[] = [{
     id: 'project', kind: 'project', label: projectName, position: { x: 0, y: 0 },
@@ -210,17 +185,17 @@ export function buildExecutionGraph(input: {
 
   type Placed = { agent: GraphAgent; counts: AgentStatusCounts; drawn: Shown[]; hidden: GraphStatusCounts; k: number; width: number };
   const placed: Placed[] = sortedAgents.map(a => {
-    const all = byAgent.get(a.id) || [];
     const counts = countsOf(a.id);
-    const picked = all.slice().sort((x, y) =>
-      rank(x.row, x.status) - rank(y.row, y.status) || cmp(y.row.started_at || '', x.row.started_at || '') || cmp(y.row._id, x.row._id));
-    const drawn = picked.slice(0, MAX_PER_AGENT).sort((x, y) =>
-      cmp(x.row.started_at || '', y.row.started_at || '') || cmp(x.row._id, y.row._id));
-    // not drawn = the agent's count per status (exact with stats) minus the drawn ones
+    // the server picked and ordered them; at most MAX_PER_AGENT are drawn (an older server could send more: those join "+N")
+    const picked = drawnOf(a.id);
+    const kept = picked.slice(0, MAX_PER_AGENT);
+    const cut = picked.slice(MAX_PER_AGENT);
+    // the fan follows start time, not the priority: a refresh that only reorders the priority moves no chip
+    const drawn = kept.slice().sort((x, y) => cmp(x.row.started_at || '', y.row.started_at || '') || cmp(x.row._id, y.row._id));
+    const fromServer = data[a.id].hidden || {};
     const hidden = {} as GraphStatusCounts;
     SHOWN_STATUSES.forEach(st => {
-      const drawnOf = drawn.filter(d => d.status === st).length;
-      hidden[st] = Math.max(0, Math.max(counts[st], all.filter(d => d.status === st).length) - drawnOf);
+      hidden[st] = Math.max(0, fromServer[st] || 0) + cut.filter(d => d.status === st).length;
     });
     const hiddenTotal = SHOWN_STATUSES.reduce((acc, st) => acc + hidden[st], 0);
     const k = drawn.length + (hiddenTotal ? 1 : 0);

@@ -12,7 +12,8 @@ import { RolesService } from 'app/services/roles.service';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 
-@Component({ selector: 'execution-graph', template: '' })
+// projects the page's toolbar content (the range selector), as the real graph does next to its Refresh button
+@Component({ selector: 'execution-graph', template: '<ng-content select="[graph-toolbar]"></ng-content>' })
 class GraphStubComponent {
   @Input() projectId: string;
   @Input() projectName: string;
@@ -131,6 +132,12 @@ describe('GraphPageComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith([], { relativeTo: route, queryParams: { range: '24h' }, queryParamsHandling: 'merge' });
       select.triggerEventHandler('ngModelChange', 'now');
       expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ range: null });
+    });
+
+    it('the selector is handed to the graph, for its toolbar next to the Refresh button', () => {
+      setup(of([]));
+      const select = fixture.debugElement.query(By.css('execution-graph [graph-toolbar] ng-select.graph-range'));
+      expect(select).not.toBeNull();
     });
   });
 });
