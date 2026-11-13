@@ -1,4 +1,5 @@
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
+import { monitorGraphRedirect } from './bots/executions/graph-redirect';
 // import { MapRequestComponent } from './map-request/map-request.component'; // now lazy
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
@@ -1327,10 +1328,11 @@ export const appRoutes: Routes = [
     loadChildren: () => import('app/bots/executions/executions.module').then(m => m.ExecutionsModule),
     canActivate: [AuthGuard],
   },
+  // The graph is a view of the executions page (view=graph): the old Graph page redirects there, its range kept.
   {
     path: 'project/:projectid/monitor/graph',
-    loadChildren: () => import('app/bots/executions/graph-page/graph-page.module').then(m => m.GraphPageModule),
-    canActivate: [AuthGuard],
+    canActivate: [monitorGraphRedirect],
+    children: [],
   },
   {
     path: 'project/:projectid/monitor/:botid/executions',

@@ -4222,19 +4222,12 @@
         "Tabs": {
             "Label": "Monitor",
             "Conversations": "Conversations",
-            "Executions": "Executions",
-            "Graph": "Graph"
-        },
-        "Graph": {
-            "LoadError": "The graph could not be loaded."
+            "Executions": "Executions"
         }
     },
     "Executions": {
         "Graph": {
             "Deleted": "deleted",
-            "Refresh": "Refresh",
-            "UpdatedSeconds": "Updated {{n}} s ago",
-            "UpdatedMinutes": "Updated {{n}} min ago",
             "Stale": "Data may be out of date",
             "Unavailable": "The graph could not be loaded",
             "Tip": {
@@ -4247,15 +4240,7 @@
                 "WithErrors": "{{n}} with errors",
                 "RunWithErrors": "With errors"
             },
-            "Empty": "No executions in view for this time range",
-            "RangeLabel": "Time range",
-            "Range": {
-                "now": "Now",
-                "1h": "Last hour",
-                "24h": "Last 24 hours",
-                "7d": "Last 7 days",
-                "30d": "Last 30 days"
-            },
+            "Empty": "No executions in view for this time range and these filters",
             "Key": {
                 "Title": "Agents:",
                 "red": "Failed or with errors",
@@ -4282,7 +4267,6 @@
         "WithFailureConditions": "With failure conditions",
         "ErrorsMark": "errors",
         "ErrorsMarkTooltip": "{{n}} actions not handled: the flow was compromised",
-        "Period": "Period",
         "LoadError": "Could not load the executions.",
         "Retry": "Retry",
         "Loading": "Loading…",
@@ -4310,11 +4294,6 @@
             "automation": "automation",
             "widget": "widget",
             "channel": "channel"
-        },
-        "Periods": {
-            "24h": "Last 24 hours",
-            "7d": "Last 7 days",
-            "30d": "Last 30 days"
         },
         "Columns": {
             "Status": "Status",
@@ -4602,6 +4581,23 @@
             "with_errors": "With errors",
             "completed": "Completed",
             "destroyed": "Destroyed"
-        }
+        },
+        "View": {
+            "Label": "View",
+            "list": "List",
+            "graph": "Graph"
+        },
+        "RangeLabel": "Time",
+        "Range": {
+            "now": "Now",
+            "1h": "Last hour",
+            "24h": "Last 24 hours",
+            "7d": "Last 7 days",
+            "30d": "Last 30 days"
+        },
+        "Refresh": "Refresh",
+        "UpdatedSeconds": "Updated {{n}} s ago",
+        "UpdatedMinutes": "Updated {{n}} min ago",
+        "EmptyNow": "Nothing is running or paused right now. Pick a longer time range to see the finished runs too."
     }
 }

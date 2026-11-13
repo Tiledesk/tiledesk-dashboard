@@ -25,7 +25,7 @@ export interface ExecutionRow {
 export interface ExecutionPage {
   items: ExecutionRow[];
   next_cursor: string | null;
-  /** With with_stats=true: the stats of stats_range, with the list's agent_id and test (the stats route's body). */
+  /** With with_stats=true: the stats of range (or stats_range) with the list's filters (the stats route's body). */
   stats?: ExecutionStats;
 }
 
@@ -43,9 +43,25 @@ export interface ExecutionListParams {
   q?: string;
   limit?: number;
   cursor?: string;
-  /** Adds `stats` to the page (one call instead of list + stats); needs stats_range. */
+  /** The graph's view instead of from/to: now = the unfinished runs of any age; a range adds every run started in it. */
+  range?: StatsRange;
+  /** Adds `stats` to the page (one call instead of list + stats), over range and the list's filters. */
   with_stats?: boolean;
+  /** Older form of the stats' range (without range); range is preferred. */
   stats_range?: Exclude<StatsRange, 'now'>;
+}
+
+/** The filters the list, the stats and the graph share (spec addendum 3: cards, list and graph describe one set). */
+export interface ViewFilters {
+  agent_id?: string;
+  /** a comma list; 'unattended' stands for the unattended triggers */
+  trigger?: string;
+  status?: string;
+  has_failures?: boolean;
+  has_errors?: boolean;
+  q?: string;
+  /** /graph and /stats: 'all' (their default), true test only, false real only */
+  test?: boolean | 'all';
 }
 
 export interface ExecutionRetention {
@@ -258,10 +274,9 @@ export interface ExecutionGraph {
   agents: { [agentId: string]: GraphAgentData };
 }
 
-export interface GraphParams {
+/** GET /executions/graph: the view (range) and the list's filters on top of it. */
+export interface GraphParams extends ViewFilters {
   range: StatsRange;
-  /** 'all' (the API default): real and test runs; true: test runs only; false: real runs only */
-  test?: boolean | 'all';
 }
 
 export interface StatsParams {

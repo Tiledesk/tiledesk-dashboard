@@ -3815,19 +3815,12 @@
         "Tabs": {
             "Label": "Monitor",
             "Conversations": "Conversazioni",
-            "Executions": "Esecuzioni",
-            "Graph": "Grafo"
-        },
-        "Graph": {
-            "LoadError": "Impossibile caricare il grafo."
+            "Executions": "Esecuzioni"
         }
     },
     "Executions": {
         "Graph": {
             "Deleted": "eliminato",
-            "Refresh": "Aggiorna",
-            "UpdatedSeconds": "Aggiornato {{n}} s fa",
-            "UpdatedMinutes": "Aggiornato {{n}} min fa",
             "Stale": "I dati potrebbero non essere aggiornati",
             "Unavailable": "Non è stato possibile caricare il grafo",
             "Tip": {
@@ -3840,15 +3833,7 @@
                 "WithErrors": "{{n}} con errori",
                 "RunWithErrors": "Con errori"
             },
-            "Empty": "Nessuna esecuzione in questo intervallo di tempo",
-            "RangeLabel": "Intervallo di tempo",
-            "Range": {
-                "now": "Adesso",
-                "1h": "Ultima ora",
-                "24h": "Ultime 24 ore",
-                "7d": "Ultimi 7 giorni",
-                "30d": "Ultimi 30 giorni"
-            },
+            "Empty": "Nessuna esecuzione per questo periodo e questi filtri",
             "Key": {
                 "Title": "Agenti:",
                 "red": "Fallite o con errori",
@@ -3875,7 +3860,6 @@
         "WithFailureConditions": "Con condizioni di errore",
         "ErrorsMark": "errori",
         "ErrorsMarkTooltip": "{{n}} azioni non gestite: il flusso è stato compromesso",
-        "Period": "Periodo",
         "LoadError": "Impossibile caricare le esecuzioni.",
         "Retry": "Riprova",
         "Loading": "Caricamento…",
@@ -3903,11 +3887,6 @@
             "automation": "automazione",
             "widget": "widget",
             "channel": "canale"
-        },
-        "Periods": {
-            "24h": "Ultime 24 ore",
-            "7d": "Ultimi 7 giorni",
-            "30d": "Ultimi 30 giorni"
         },
         "Columns": {
             "Status": "Stato",
@@ -4195,6 +4174,23 @@
             "with_errors": "Con errori",
             "completed": "Completate",
             "destroyed": "Distrutte"
-        }
+        },
+        "View": {
+            "Label": "Vista",
+            "list": "Elenco",
+            "graph": "Grafo"
+        },
+        "RangeLabel": "Periodo",
+        "Range": {
+            "now": "Adesso",
+            "1h": "Ultima ora",
+            "24h": "Ultime 24 ore",
+            "7d": "Ultimi 7 giorni",
+            "30d": "Ultimi 30 giorni"
+        },
+        "Refresh": "Aggiorna",
+        "UpdatedSeconds": "Aggiornato {{n}} s fa",
+        "UpdatedMinutes": "Aggiornato {{n}} min fa",
+        "EmptyNow": "Al momento nulla è in esecuzione o in pausa. Scegli un periodo più lungo per vedere anche le esecuzioni concluse."
     }
 }

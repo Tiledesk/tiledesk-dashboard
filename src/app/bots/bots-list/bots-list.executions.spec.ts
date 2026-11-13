@@ -139,11 +139,11 @@ describe('BotListComponent executions entry', () => {
     expect(executions.summary.calls.mostRecent().args).toEqual(['p1', ['b2']]);
   });
 
-  it('agent executions button opens monitor', () => {
+  it('agent executions button opens monitor on the last 24 hours, the badge\'s window (the page defaults to Now)', () => {
     setup(true, 'owner');
     fixture.detectChanges();
     fixture.nativeElement.querySelectorAll('.executions-btn')[0].click();
-    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'root1', 'executions']);
+    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'root1', 'executions'], { queryParams: { range: '24h' } });
   });
 
   it('all executions button opens monitor', () => {

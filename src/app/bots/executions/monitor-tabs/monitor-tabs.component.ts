@@ -7,9 +7,9 @@ import { RolesService } from 'app/services/roles.service';
 import { canViewExecutions } from '../executions.models';
 import { monitorExecutionsLink } from '../execution-links';
 
-export type MonitorTab = 'conversations' | 'executions' | 'graph';
+export type MonitorTab = 'conversations' | 'executions';
 
-/** Tab row of the Monitor area: Conversations / Executions / Graph. Hidden unless executions are available. */
+/** Tab row of the Monitor area: Conversations / Executions (the graph is a view of Executions). Hidden unless executions are available. */
 @Component({
   selector: 'monitor-tabs',
   templateUrl: './monitor-tabs.component.html',
@@ -49,5 +49,4 @@ export class MonitorTabsComponent implements OnInit, OnDestroy {
 
   get conversationsLink(): string[] { return ['/project', this.projectId, 'wsrequests']; }
   get executionsLink(): string[] { return monitorExecutionsLink(this.projectId); }
-  get graphLink(): string[] { return ['/project', this.projectId, 'monitor', 'graph']; }
 }

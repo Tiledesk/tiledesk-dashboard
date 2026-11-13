@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ExecutionRow, ExecutionStats, StatsRange } from '../executions.models';
-import { ExecutionStatCardsModule } from '../shared/execution-stat-cards.module';
 import { executionLink } from '../execution-links';
 import { GraphFeedControls, GraphSnapshot } from './execution-graph.feed';
 import { graphOf } from './execution-graph.testing';
@@ -51,7 +50,7 @@ describe('ExecutionGraphComponent', () => {
 
   function setup(opts: { loader?: () => Promise<any>; agents?: any[] } = {}) {
     feed$ = new Subject<GraphSnapshot>();
-    feedFactory = jasmine.createSpy('feed').and.callFake((pid: string, range: string, c: GraphFeedControls) => {
+    feedFactory = jasmine.createSpy('feed').and.callFake((pid: string, params: any, c: GraphFeedControls) => {
       controls = c;
       return feed$.asObservable();
     });
@@ -63,15 +62,12 @@ describe('ExecutionGraphComponent', () => {
     if (opts.loader) { providers.push({ provide: CYTOSCAPE_LOADER, useValue: opts.loader }); }
     TestBed.configureTestingModule({
       declarations: [ExecutionGraphComponent],
-      imports: [TranslateModule.forRoot(), ExecutionStatCardsModule],
+      imports: [TranslateModule.forRoot()],
       providers,
     });
     const translate = TestBed.inject(TranslateService);
     translate.setTranslation('en', {
       Executions: { Graph: {
-        Refresh: 'Refresh now',
-        UpdatedSeconds: 'Updated {{n}} s ago',
-        UpdatedMinutes: 'Updated {{n}} min ago',
         Empty: 'Nothing in view',
         Stale: 'Data may be out of date',
         Unavailable: 'The graph could not be loaded',
@@ -103,7 +99,7 @@ describe('ExecutionGraphComponent', () => {
   it('renders project, agents and executions from a snapshot', async () => {
     setup();
     await ready();
-    expect(feedFactory).toHaveBeenCalledWith('p1', 'now', jasmine.any(Object));
+    expect(feedFactory).toHaveBeenCalledWith('p1', { range: 'now' }, jasmine.any(Object));
     feed$.next(FIRST());
     fixture.detectChanges();
     const cy = component.cy;
@@ -184,30 +180,30 @@ describe('ExecutionGraphComponent', () => {
     await ready();
     feed$.next(FIRST());
     component.cy.getElementById('agent:a2').emit('tap');
-    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a2', 'executions']);
+    // the same page for that agent: the view and the filters stay
+    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a2', 'executions'], { queryParamsHandling: 'preserve' });
     router.navigate.calls.reset();
     component.cy.getElementById('project').emit('tap');
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
-  const cardValues = () => Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.exec-stat-card .exec-stat-value'))
-    .map(el => el.textContent.trim());
-
-  it('big numbers come from the graph response; the stale note; no "not drawn" note any more', async () => {
+  it('no cards of its own: each fresh snapshot goes to the host (updated); a stale one only shows the stale note', async () => {
     setup();
+    const got: any[] = [];
+    component.updated.subscribe((u: any) => got.push(u));
     await ready();
-    feed$.next(snap(FIRST_ROWS(), false, { stats: STATS({ running: 7, stopping: 2, stopped: 1, completed: 4 }) }));
-    fixture.detectChanges();
     const text = () => (fixture.nativeElement as HTMLElement).textContent;
-    // With errors (2) explains a red agent next to Failed: the runs that took a failure condition
-    expect(cardValues()).toEqual(['7', '1', '3', '1', '2', '4', '0']);
+    expect((fixture.nativeElement as HTMLElement).querySelector('execution-stat-cards')).toBeNull();
+    const first = snap(FIRST_ROWS(), false, { stats: STATS({ running: 7 }), fetchedAt: 1000 });
+    feed$.next(first);
+    fixture.detectChanges();
+    expect(got).toEqual([{ graph: first.graph, fetchedAt: 1000 }]);
     expect(text()).not.toContain('Data may be out of date');
-    expect(text()).not.toContain('Some executions are not drawn');
     feed$.next({ ...FIRST(), stale: true });
     fixture.detectChanges();
+    expect(got.length).toBe(1);
     expect(text()).toContain('Data may be out of date');
     expect(text()).not.toContain('Some executions are not drawn');
-    expect((fixture.nativeElement as HTMLElement).querySelector('.graph-note:not(.graph-stale)')).toBeNull();
   });
 
   it('nothing in view: an empty note over the graph', async () => {
@@ -221,20 +217,28 @@ describe('ExecutionGraphComponent', () => {
     expect((fixture.nativeElement as HTMLElement).querySelector('.graph-empty')).toBeNull();
   });
 
-  it('a new range resubscribes the feed with it and blanks the numbers until its first snapshot', async () => {
+  it('a new range resubscribes the feed with it', async () => {
     setup();
     await ready();
     feed$.next(FIRST());
-    fixture.detectChanges();
-    expect(cardValues()[0]).toBe('1');
     component.range = '24h';
     component.ngOnChanges({ range: new SimpleChange('now', '24h', false) });
-    fixture.detectChanges();
-    expect(feedFactory).toHaveBeenCalledWith('p1', '24h', jasmine.any(Object));
-    expect(cardValues()[0]).toBe('–');
-    feed$.next(snap(FIRST_ROWS(), false, { range: '24h', stats: STATS({ running: 9 }) }));
-    fixture.detectChanges();
-    expect(cardValues()[0]).toBe('9');
+    expect(feedFactory).toHaveBeenCalledWith('p1', { range: '24h' }, jasmine.any(Object));
+    expect(component.stats).toBeNull();
+  });
+
+  it('the filters go to the feed with the range; new filters resubscribe it', async () => {
+    setup();
+    component.filters = { agent_id: 'a1', status: 'failed', q: 'r1', test: false };
+    await ready();
+    expect(feedFactory).toHaveBeenCalledWith('p1', { range: 'now', agent_id: 'a1', status: 'failed', q: 'r1', test: false }, jasmine.any(Object));
+    const calls = feedFactory.calls.count();
+    const next = { trigger: 'unattended', has_errors: true, test: 'all' as const };
+    const prev = component.filters;
+    component.filters = next;
+    component.ngOnChanges({ filters: new SimpleChange(prev, next, false) });
+    expect(feedFactory.calls.count()).toBe(calls + 1);
+    expect(feedFactory.calls.mostRecent().args[1]).toEqual({ range: 'now', trigger: 'unattended', has_errors: true, test: 'all' });
   });
 
   it('hover on an execution shows a translated tooltip with a formatted start time', async () => {
@@ -264,27 +268,21 @@ describe('ExecutionGraphComponent', () => {
     const lines = Array.from((fixture.nativeElement as HTMLElement).querySelectorAll('.graph-tooltip .tip-line')).map(l => l.textContent.trim());
     expect(lines).toEqual(['3 more not drawn', 'WAIT: 3']);
     more.emit('tap');
-    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a1', 'executions']);
+    // the runs not drawn: that agent's list, filters kept
+    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a1', 'executions'],
+      { queryParams: { view: null }, queryParamsHandling: 'merge' });
   });
 
-  it('no numbers until the first successful snapshot; a stale one keeps the last numbers', async () => {
+  it('a stale first snapshot (an error before any data) is not handed to the host', async () => {
     setup();
+    const got: any[] = [];
+    component.updated.subscribe((u: any) => got.push(u));
     await ready();
-    const el = fixture.nativeElement as HTMLElement;
-    expect(cardValues()).toEqual(['–', '–', '–', '–', '–', '–', '–']);
     feed$.next(snap([], true, { stats: null }));
     fixture.detectChanges();
-    expect(cardValues()[0]).toBe('–');
-    expect(el.textContent).toContain('Data may be out of date');
-    expect(el.querySelector('.graph-empty')).toBeNull();
-    feed$.next(FIRST());
-    fixture.detectChanges();
-    expect(cardValues()[0]).toBe('1');
-    expect(cardValues()[4]).toBe('2'); // With errors arrives with the other numbers
-    feed$.next({ ...FIRST(), stale: true });
-    fixture.detectChanges();
-    expect(cardValues()[0]).toBe('1');
-    expect(el.textContent).toContain('Data may be out of date');
+    expect(got).toEqual([]);
+    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Data may be out of date');
+    expect((fixture.nativeElement as HTMLElement).querySelector('.graph-empty')).toBeNull();
   });
 
   it('a snapshot that breaks apply is logged, keeps the previous render and the feed', async () => {
@@ -536,101 +534,55 @@ describe('ExecutionGraphComponent', () => {
     expect(component.cy.nodes().length).toBe(6);
     component.projectId = 'p2';
     component.ngOnChanges({ projectId: new SimpleChange('p1', 'p2', false) });
-    expect(feedFactory).toHaveBeenCalledWith('p2', 'now', jasmine.any(Object));
+    expect(feedFactory).toHaveBeenCalledWith('p2', { range: 'now' }, jasmine.any(Object));
     expect(component.cy.elements().length).toBe(0);
     expect(component.stats).toBeNull();
   });
 
-  describe('refresh button and updated note', () => {
-    const el = () => fixture.nativeElement as HTMLElement;
-    const button = () => el().querySelector('button.graph-refresh') as HTMLButtonElement;
-    const note = () => { const n = el().querySelector('.graph-updated'); return n ? n.textContent.trim() : null; };
-
-    it('a Refresh button with an icon and a label; a click asks the feed for a cycle now', async () => {
+  describe('refresh and loading (the host has the button and the note)', () => {
+    it('no Refresh button, no updated note, no toolbar of its own', async () => {
       setup();
       await ready();
-      expect(button()).not.toBeNull();
-      expect(button().querySelector('svg')).not.toBeNull();
-      expect(button().textContent.trim()).toBe('Refresh now');
+      const el = fixture.nativeElement as HTMLElement;
+      expect(el.querySelector('button')).toBeNull();
+      expect(el.querySelector('.graph-updated')).toBeNull();
+      expect(el.querySelector('.graph-toolbar')).toBeNull();
+    });
+
+    it('refresh() asks the feed for a cycle now, unless a call is in flight', async () => {
+      setup();
+      await ready();
       const asked = jasmine.createSpy('refresh');
       controls.refresh$.subscribe(asked);
+      component.refresh();
+      expect(asked).not.toHaveBeenCalled(); // the first cycle is in flight
       controls.loading(false);
-      fixture.detectChanges();
-      button().click();
+      component.refresh();
       expect(asked).toHaveBeenCalledTimes(1);
     });
 
-    it('disabled while a call is in flight (from the first one on), enabled once it answers', async () => {
+    it('loadingChange tells the host when a call is in flight, from the first one on', async () => {
       setup();
+      const seen: boolean[] = [];
+      component.loadingChange.subscribe((b: boolean) => seen.push(b));
       await ready();
-      // subscribing starts a cycle: in flight until the feed says otherwise
-      expect(button().disabled).toBe(true);
+      expect(seen).toEqual([true]);
       controls.loading(false);
-      fixture.detectChanges();
-      expect(button().disabled).toBe(false);
       controls.loading(true);
-      fixture.detectChanges();
-      expect(button().disabled).toBe(true);
-      const asked = jasmine.createSpy('refresh');
-      controls.refresh$.subscribe(asked);
-      button().click();
-      expect(asked).not.toHaveBeenCalled();
+      expect(seen).toEqual([true, false, true]);
     });
 
-    it('a new range hands the feed new controls and is in flight again', async () => {
+    it('a new range hands the feed new controls and is in flight again; the old feed\'s late word is ignored', async () => {
       setup();
       await ready();
       controls.loading(false);
       const first = controls;
       component.range = '24h';
       component.ngOnChanges({ range: new SimpleChange('now', '24h', false) });
-      fixture.detectChanges();
       expect(controls).not.toBe(first);
-      expect(button().disabled).toBe(true);
-    });
-
-    it('"updated N s ago" after a fresh answer, "N min ago" past a minute, refreshed every 10 s; a stale one keeps the time', async () => {
-      const intervals: Array<{ fn: () => void; ms: number }> = [];
-      const realSetInterval = window.setInterval;
-      spyOn(window, 'setInterval').and.callFake(((fn: any, ms: number) => {
-        intervals.push({ fn, ms });
-        return realSetInterval(() => {}, 1e9);
-      }) as any);
-      setup();
-      let now = Date.parse('2026-11-13T10:00:00Z');
-      spyOn(component, 'now').and.callFake(() => now);
-      await ready();
-      expect(note()).toBeNull();
-      feed$.next(snap([row(E1, 'running', 'a1')], false, { fetchedAt: now - 5000 }));
-      fixture.detectChanges();
-      expect(note()).toBe('Updated 5 s ago');
-      const ticker = intervals.find(i => i.ms === 10000);
-      expect(ticker).toBeDefined();
-      now += 10000;
-      ticker.fn();
-      fixture.detectChanges();
-      expect(note()).toBe('Updated 15 s ago');
-      // a failed cycle: the data is as old as the last good answer
-      feed$.next(snap([row(E1, 'running', 'a1')], true, { fetchedAt: now }));
-      now += 60000;
-      ticker.fn();
-      fixture.detectChanges();
-      expect(note()).toBe('Updated 1 min ago');
-      now += 125000;
-      ticker.fn();
-      fixture.detectChanges();
-      expect(note()).toBe('Updated 3 min ago');
-    });
-
-    it('the note timer stops on destroy', async () => {
-      setup();
-      await ready();
-      const t = component.noteTimer;
-      expect(t).not.toBeNull();
-      spyOn(window, 'clearInterval').and.callThrough();
-      fixture.destroy();
-      fixture = null;
-      expect(window.clearInterval).toHaveBeenCalledWith(t);
+      expect(component.loading).toBe(true);
+      first.loading(false);
+      expect(component.loading).toBe(true);
     });
   });
 });

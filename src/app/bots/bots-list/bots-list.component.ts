@@ -579,8 +579,9 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     return n > 99 ? '99+' : String(n);
   }
 
+  /** The badge counts the last 24 hours (summary): open the agent's executions on that range, not on Now (the page's default). */
   goToExecutions(bot: any) {
-    this.router.navigate(monitorExecutionsLink(this.project._id, this.executionsAgentId(bot)));
+    this.router.navigate(monitorExecutionsLink(this.project._id, this.executionsAgentId(bot)), { queryParams: { range: '24h' } });
   }
 
   goToAllExecutions() {

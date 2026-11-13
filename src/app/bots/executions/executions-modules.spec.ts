@@ -1,7 +1,6 @@
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { ExecutionsModule } from './executions.module';
-import { GraphPageModule } from './graph-page/graph-page.module';
 import { ExecutionGraphModule } from './graph/execution-graph.module';
 import { ExecutionStatCardsModule } from './shared/execution-stat-cards.module';
 
@@ -15,9 +14,8 @@ describe('executions modules', () => {
     expect(imports(ExecutionsModule)).toContain(ExecutionStatCardsModule);
   });
 
-  it('GraphPageModule imports NgSelectModule and FormsModule; the graph brings the stat cards', () => {
-    expect(imports(GraphPageModule)).toContain(NgSelectModule);
-    expect(imports(GraphPageModule)).toContain(FormsModule);
-    expect(imports(ExecutionGraphModule)).toContain(ExecutionStatCardsModule);
+  it('ExecutionsModule embeds the graph (its Graph view); the graph has no cards of its own', () => {
+    expect(imports(ExecutionsModule)).toContain(ExecutionGraphModule);
+    expect(imports(ExecutionGraphModule)).not.toContain(ExecutionStatCardsModule);
   });
 });

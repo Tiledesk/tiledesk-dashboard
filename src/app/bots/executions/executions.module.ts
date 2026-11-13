@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ExecutionStatCardsModule } from './shared/execution-stat-cards.module';
+import { ExecutionGraphModule } from './graph/execution-graph.module';
 import { ExecutionsRoutingModule } from './executions-routing.module';
 import { ExecutionsListComponent } from './executions-list/executions-list.component';
 import { ExecutionDetailComponent } from './execution-detail/execution-detail.component';
@@ -49,6 +50,8 @@ import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
     FormsModule,
     NgSelectModule,
     ExecutionStatCardsModule,
+    // the executions page's Graph view
+    ExecutionGraphModule,
     ExecutionsRoutingModule,
     MonitorTabsModule,
   ]

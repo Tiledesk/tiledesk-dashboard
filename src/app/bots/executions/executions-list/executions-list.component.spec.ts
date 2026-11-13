@@ -1,5 +1,5 @@
 import { ComponentFixture, fakeAsync, TestBed, tick, discardPeriodicTasks } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Component, EventEmitter, Input, NO_ERRORS_SCHEMA, Output } from '@angular/core';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { BehaviorSubject, of, Subject, throwError } from 'rxjs';
 import { TranslateModule } from '@ngx-translate/core';
@@ -15,6 +15,21 @@ import { ExecutionsService } from '../../../services/executions.service';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { RolesService } from '../../../services/roles.service';
 import { LoggerService } from '../../../services/logger/logger.service';
+import { AuthService } from '../../../core/auth.service';
+
+/** The embedded graph: its inputs, its outputs, and refresh(). */
+@Component({ selector: 'execution-graph', template: '<div class="graph-stub"></div>' })
+class GraphStubComponent {
+  @Input() projectId: string;
+  @Input() projectName: string;
+  @Input() agents: any[];
+  @Input() range: string;
+  @Input() filters: any;
+  @Output() updated = new EventEmitter<any>();
+  @Output() loadingChange = new EventEmitter<boolean>();
+  @Output() unavailable = new EventEmitter<void>();
+  refresh = jasmine.createSpy('graphRefresh');
+}
 
 const NOW = Date.parse('2026-11-09T12:00:00Z');
 const STATUSES = { running: 1, waiting: 0, stopping: 1, stopped: 3, failed: 2, completed: 9, destroyed: 4 };
@@ -54,7 +69,7 @@ describe('ExecutionsListComponent', () => {
     faqKb = { getFaqKbByProjectId: jasmine.createSpy('faq').and.returnValue(of([
       { _id: 'v2', root_id: 'a1', name: 'Nightly' }, { _id: 'v1', root_id: 'a1', name: 'Nightly' }, { _id: 'b2', name: 'Alpha' }, { _id: 'z', name: 'Gone', trashed: true }])) };
     TestBed.configureTestingModule({
-      declarations: [ExecutionsListComponent, ExecutionStatusChipComponent],
+      declarations: [ExecutionsListComponent, ExecutionStatusChipComponent, GraphStubComponent],
       imports: [TranslateModule.forRoot(), MatIconModule, MatTooltipModule, FormsModule, NgSelectModule, ExecutionStatCardsModule],
       providers: [
         { provide: ExecutionsService, useValue: executions },
@@ -63,6 +78,7 @@ describe('ExecutionsListComponent', () => {
         { provide: FaqKbService, useValue: faqKb },
         { provide: RolesService, useValue: { listenToProjectUserPermissions() {}, getUpdateRequestPermission: () => perms$ } },
         { provide: LoggerService, useValue: { log() {}, debug() {}, warn() {}, error() {} } },
+        { provide: AuthService, useValue: { project_bs: new BehaviorSubject({ _id: 'p1', name: 'Acme' }) } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
@@ -75,20 +91,23 @@ describe('ExecutionsListComponent', () => {
   }
 
   const text = () => fixture.nativeElement.textContent as string;
+  const graph = () => { const d = fixture.debugElement.query(By.directive(GraphStubComponent)); return d ? d.componentInstance as GraphStubComponent : null; };
 
-  it('default filter: every trigger, test runs included, from = now-7d', () => {
+  it('default filter: every trigger, test runs included, range Now (no from/to)', () => {
     setup({ botid: 'a1' });
     const params = executions.list.calls.mostRecent().args[1];
     expect(executions.list.calls.mostRecent().args[0]).toBe('p1');
     expect(params.trigger).toBeUndefined();
     expect(params.test).toBe('all');
     expect(params.agent_id).toBe('a1');
-    expect(params.from).toBe(new Date(NOW - 7 * 24 * 3600 * 1000).toISOString());
+    expect(params.range).toBe('now');
+    expect(params.from).toBeUndefined();
+    expect(params.to).toBeUndefined();
     expect(params.status).toBeUndefined();
   });
 
   it('filters come from the URL and map to API params', () => {
-    setup({ query: { trigger: 'all', status: 'failed', has_failures: 'true', has_errors: 'true', period: '24h', q: ' abc ' } });
+    setup({ query: { trigger: 'all', status: 'failed', has_failures: 'true', has_errors: 'true', range: '24h', q: ' abc ' } });
     const p = executions.list.calls.mostRecent().args[1];
     expect(p.trigger).toBeUndefined();
     expect(p.status).toBe('failed');
@@ -96,7 +115,46 @@ describe('ExecutionsListComponent', () => {
     expect(p.has_errors).toBe(true);
     expect(p.q).toBe('abc');
     expect(p.agent_id).toBeUndefined();
-    expect(p.from).toBe(new Date(NOW - 24 * 3600 * 1000).toISOString());
+    expect(p.range).toBe('24h');
+    expect(p.from).toBeUndefined();
+  });
+
+  describe('time (range)', () => {
+    it('the time select offers Now, 1 hour, 24 hours, 7 days, 30 days; Now is the default and has no param', () => {
+      setup();
+      expect(component.rangeOptions).toEqual(['now', '1h', '24h', '7d', '30d']);
+      expect(component.filters.range).toBe('now');
+      component.setFilter('range', '1h');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ range: '1h', period: null });
+      component.setFilter('range', 'now');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ range: null, period: null });
+    });
+
+    it('the old period param (24h, 7d, 30d) is read as range; range wins over it', () => {
+      setup({ query: { period: '30d' } });
+      expect(component.filters.range).toBe('30d');
+      expect(executions.list.calls.mostRecent().args[1].range).toBe('30d');
+      query$.next(convertToParamMap({ period: '24h', range: '7d' }));
+      expect(executions.list.calls.mostRecent().args[1].range).toBe('7d');
+      query$.next(convertToParamMap({ period: 'bogus' }));
+      expect(executions.list.calls.mostRecent().args[1].range).toBe('now');
+    });
+
+    it('one call asks the page and its cards: range + with_stats, no from and no stats_range', () => {
+      setup({ query: { range: '7d' } });
+      expect(executions.list).toHaveBeenCalledTimes(1);
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p.range).toBe('7d');
+      expect(p.with_stats).toBe(true);
+      expect(p.stats_range).toBeUndefined();
+      expect(p.from).toBeUndefined();
+    });
+
+    it('on Now with no filters and nothing listed: the note says nothing is running and to pick a longer time', () => {
+      setup();
+      expect(text()).toContain('Executions.EmptyNow');
+      expect(text()).not.toContain('Executions.EmptyNone');
+    });
   });
 
   it('changing a filter writes it to the URL (defaults are removed)', () => {
@@ -166,6 +224,7 @@ describe('ExecutionsListComponent', () => {
       tick(30000);
       expect(executions.list.calls.count()).toBe(afterDone);
       expect(component.rows[0].status).toBe('completed');
+      discardPeriodicTasks(); // the page's "updated … ago" ticker
     }));
 
     it('polling stops when no row is running (never starts)', fakeAsync(() => {
@@ -173,6 +232,7 @@ describe('ExecutionsListComponent', () => {
       const initial = executions.list.calls.count();
       tick(60000);
       expect(executions.list.calls.count()).toBe(initial);
+      discardPeriodicTasks(); // the page's "updated … ago" ticker
     }));
 
     it('stops on destroy', fakeAsync(() => {
@@ -181,6 +241,7 @@ describe('ExecutionsListComponent', () => {
       const n = executions.list.calls.count();
       tick(60000);
       expect(executions.list.calls.count()).toBe(n);
+      discardPeriodicTasks(); // the page's "updated … ago" ticker
     }));
 
     it('a refresh puts new rows on top and updates known ones', fakeAsync(() => {
@@ -195,7 +256,7 @@ describe('ExecutionsListComponent', () => {
 
   describe('empty states', () => {
     it('without filters', () => {
-      setup();
+      setup({ query: { range: '7d' } });
       expect(component.hasActiveFilters).toBe(false);
       expect(text()).toContain('Executions.EmptyNone');
       expect(text()).not.toContain('Executions.EmptyFiltered');
@@ -206,7 +267,8 @@ describe('ExecutionsListComponent', () => {
       expect(component.hasActiveFilters).toBe(true);
       expect(text()).toContain('Executions.EmptyFiltered');
       component.clearFilters();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: null, status: null, has_failures: null, has_errors: null, period: null, q: null, tests: null });
+      // the time and the view are no filters: they stay
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: null, status: null, has_failures: null, has_errors: null, q: null, tests: null });
     });
   });
 
@@ -241,12 +303,12 @@ describe('ExecutionsListComponent', () => {
     const cards = () => Array.from(fixture.nativeElement.querySelectorAll('.exec-stat-card')) as HTMLElement[];
     const values = () => cards().map(c => c.querySelector('.exec-stat-value').textContent.trim());
 
-    it('one-agent view: one list call with the stats of the list period, agent and test runs; no stats or summary call', () => {
+    it('one-agent view: one list call with the stats of the list range, agent and test runs; no stats or summary call', () => {
       setup({ botid: 'a1' });
       expect(executions.list).toHaveBeenCalledTimes(1);
       const p = executions.list.calls.mostRecent().args[1];
       expect(p.with_stats).toBe(true);
-      expect(p.stats_range).toBe('7d');
+      expect(p.range).toBe('now');
       expect(p.agent_id).toBe('a1');
       expect(p.test).toBe('all');
       expect(executions.stats).not.toHaveBeenCalled();
@@ -269,7 +331,7 @@ describe('ExecutionsListComponent', () => {
       const more = executions.list.calls.mostRecent().args[1];
       expect(more.cursor).toBe('c1');
       expect(more.with_stats).toBeUndefined();
-      expect(more.stats_range).toBeUndefined();
+      expect(more.range).toBe('now');
       expect(values()[3]).toBe('7');
       expect(executions.stats).not.toHaveBeenCalled();
     });
@@ -296,19 +358,23 @@ describe('ExecutionsListComponent', () => {
       expect((fixture.nativeElement.querySelector('.exec-filter-failures') as HTMLInputElement).checked).toBe(true);
     });
 
-    it('the period maps to the stats range', () => {
-      setup({ query: { period: '24h' } });
-      expect(executions.list.calls.mostRecent().args[1].stats_range).toBe('24h');
-      query$.next(convertToParamMap({ period: '30d' }));
-      expect(executions.list.calls.mostRecent().args[1].stats_range).toBe('30d');
+    it('cards follow every filter: the stats come with the list call that carries them', () => {
+      setup({ botid: 'a1', query: { range: '24h', trigger: 'unattended', status: 'failed', has_failures: 'true', q: 'r1', tests: 'false' } });
+      const p = executions.list.calls.mostRecent().args[1];
+      expect(p).toEqual(jasmine.objectContaining({
+        with_stats: true, range: '24h', agent_id: 'a1', trigger: 'unattended', status: 'failed', has_failures: true, q: 'r1', test: false,
+      }));
+      query$.next(convertToParamMap({ range: '30d' }));
+      expect(executions.list.calls.mostRecent().args[1].range).toBe('30d');
     });
 
-    it('clicking a card sets the status filter and shows every trigger; Stopped lists stopped and stopping', () => {
+    it('clicking a card sets the status filter; Stopped lists stopped and stopping', () => {
       setup({ botid: 'a1', query: { trigger: 'unattended' } });
+      // the cards follow the trigger filter now: a card keeps it
       cards()[3].click();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'failed', trigger: null });
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'failed' });
       cards()[1].click();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'waiting', trigger: null });
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'waiting' });
       query$.next(convertToParamMap({ status: 'waiting', trigger: 'all' }));
       fixture.detectChanges();
       expect(cards()[1].getAttribute('aria-pressed')).toBe('true');
@@ -317,23 +383,23 @@ describe('ExecutionsListComponent', () => {
       cards()[1].click();
       expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: null });
       cards()[2].click();
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'stopped', trigger: null });
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'stopped' });
       query$.next(convertToParamMap({ status: 'stopped', trigger: 'all' }));
       expect(executions.list.calls.mostRecent().args[1].status).toBe('stopped,stopping');
     });
 
-    it('the hint names the period and says the cards count every trigger', () => {
-      setup({ query: { period: '30d' } });
+    it('the hint names the time range (the cards follow the filters, no "every trigger" any more)', () => {
+      setup({ query: { range: '30d' } });
       const hint = fixture.nativeElement.querySelector('.exec-cards-hint').textContent;
-      expect(hint).toContain('Executions.Periods.30d');
-      expect(hint).toContain('Executions.Triggers.all');
+      expect(hint).toContain('Executions.Range.30d');
+      expect(hint).not.toContain('Executions.Triggers.all');
     });
 
     it('test runs off: list and cards leave them out, and the toggle counts as a filter', () => {
       setup({ botid: 'a1', query: { tests: 'false' } });
       expect(component.filters.tests).toBe(false);
-      expect(executions.list.calls.mostRecent().args[1].test).toBeUndefined();
-      // no test param: the list and its stats both take real runs only
+      expect(executions.list.calls.mostRecent().args[1].test).toBe(false);
+      // test=false: the list and its stats both take real runs only
       expect(executions.list.calls.mostRecent().args[1].with_stats).toBe(true);
       expect(component.hasActiveFilters).toBe(true);
     });
@@ -343,7 +409,7 @@ describe('ExecutionsListComponent', () => {
       const p = executions.list.calls.mostRecent().args[1];
       expect(p.agent_id).toBeUndefined();
       expect(p.with_stats).toBe(true);
-      expect(p.stats_range).toBe('7d');
+      expect(p.range).toBe('now');
       expect(cards().length).toBe(7);
       expect(fixture.nativeElement.querySelector('.exec-agent').textContent).toContain('Nightly');
     });
@@ -432,7 +498,7 @@ describe('ExecutionsListComponent', () => {
       expect(executions.list.calls.count()).toBe(n + 1);
       const p = executions.list.calls.mostRecent().args[1];
       expect(p.with_stats).toBe(true);
-      expect(p.stats_range).toBe('7d');
+      expect(p.range).toBe('now');
       expect(component.counters.running).toBe(5);
       expect(executions.stats).not.toHaveBeenCalled();
       discardPeriodicTasks();
@@ -460,12 +526,14 @@ describe('ExecutionsListComponent', () => {
       query$.next(convertToParamMap({ status: 'failed' }));
       pending.next({ items: [row('old', 'running')], next_cursor: null });
       expect(component.rows.map(r => r._id)).toEqual(['n1']);
+      discardPeriodicTasks(); // the page's "updated … ago" ticker
     }));
 
     it('invalid URL values fall back to defaults', () => {
-      setup({ query: { period: 'constructor', trigger: 'bogus', status: 'toString', has_failures: 'yes' } });
-      expect(component.filters).toEqual({ trigger: 'all', status: '', has_failures: false, has_errors: false, period: '7d', q: '', tests: true });
-      expect(executions.list.calls.mostRecent().args[1].from).toBe(new Date(NOW - 7 * 24 * 3600 * 1000).toISOString());
+      setup({ query: { range: 'constructor', period: 'toString', trigger: 'bogus', status: 'toString', has_failures: 'yes', view: 'bogus' } });
+      expect(component.filters).toEqual({ trigger: 'all', status: '', has_failures: false, has_errors: false, range: 'now', q: '', tests: true });
+      expect(component.view).toBe('list');
+      expect(executions.list.calls.mostRecent().args[1].range).toBe('now');
     });
 
     it('trigger column uses the Triggers translation', () => {
@@ -512,6 +580,7 @@ describe('ExecutionsListComponent', () => {
       expect(executions.list.calls.count()).toBe(n + 2);
       tick(60000);
       expect(executions.list.calls.count()).toBe(n + 2);
+      discardPeriodicTasks(); // the page's "updated … ago" ticker
     }));
 
     it('a failed refresh still schedules the next one while rows run (D2)', fakeAsync(() => {
@@ -522,6 +591,7 @@ describe('ExecutionsListComponent', () => {
       tick(10000);
       expect(executions.list.calls.count()).toBe(n + 2);
       fixture.destroy();
+      discardPeriodicTasks(); // the page's "updated … ago" ticker
     }));
 
     it('role not known yet (\'\'): neither the no-permission view nor an API call (D4)', () => {
@@ -545,13 +615,13 @@ describe('ExecutionsListComponent', () => {
   describe('dropdowns (ng-select)', () => {
     const select = (cls: string) => fixture.debugElement.query(By.css('ng-select.' + cls));
 
-    it('agent switcher, trigger, status and period are ng-selects bound to the current values', async () => {
-      setup({ botid: 'a1', query: { trigger: 'webhook', status: 'failed', period: '30d' } });
+    it('agent switcher, trigger, status and time are ng-selects bound to the current values', async () => {
+      setup({ botid: 'a1', query: { trigger: 'webhook', status: 'failed', range: '30d' } });
       await fixture.whenStable();
       expect(select('exec-agent-switcher').injector.get(NgModel).model).toBe('a1');
       expect(select('exec-filter-trigger').injector.get(NgModel).model).toBe('webhook');
       expect(select('exec-filter-status').injector.get(NgModel).model).toBe('failed');
-      expect(select('exec-filter-period').injector.get(NgModel).model).toBe('30d');
+      expect(select('exec-filter-range').injector.get(NgModel).model).toBe('30d');
       expect(fixture.nativeElement.querySelector('select')).toBeNull();
     });
 
@@ -559,10 +629,10 @@ describe('ExecutionsListComponent', () => {
       setup();
       select('exec-filter-trigger').triggerEventHandler('ngModelChange', 'webhook');
       expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ trigger: 'webhook' });
-      select('exec-filter-period').triggerEventHandler('ngModelChange', '24h');
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ period: '24h' });
-      select('exec-filter-period').triggerEventHandler('ngModelChange', '7d');
-      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ period: null });
+      select('exec-filter-range').triggerEventHandler('ngModelChange', '24h');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ range: '24h', period: null });
+      select('exec-filter-range').triggerEventHandler('ngModelChange', 'now');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ range: null, period: null });
       select('exec-filter-status').triggerEventHandler('ngModelChange', 'waiting');
       expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'waiting' });
       // cleared: any status
@@ -576,6 +646,179 @@ describe('ExecutionsListComponent', () => {
       expect(router.navigate.calls.mostRecent().args).toEqual([['/project', 'p1', 'monitor', 'b2', 'executions'], { queryParamsHandling: 'preserve' }]);
       select('exec-agent-switcher').triggerEventHandler('ngModelChange', null);
       expect(router.navigate.calls.mostRecent().args[0]).toEqual(['/project', 'p1', 'monitor', 'executions']);
+    });
+  });
+  describe('List | Graph switch', () => {
+    const switchButtons = () => Array.from(fixture.nativeElement.querySelectorAll('.exec-view-switch button')) as HTMLButtonElement[];
+
+    it('a segmented control with icons; List is pressed by default and the list is shown', () => {
+      setup();
+      const b = switchButtons();
+      expect(b.length).toBe(2);
+      expect(b[0].textContent).toContain('Executions.View.list');
+      expect(b[1].textContent).toContain('Executions.View.graph');
+      expect(b.every(x => !!x.querySelector('mat-icon'))).toBe(true);
+      expect(b.map(x => x.getAttribute('aria-pressed'))).toEqual(['true', 'false']);
+      expect(component.view).toBe('list');
+      expect(graph()).toBeNull();
+    });
+
+    it('the view lives in the URL as view=graph (absent: list), merged so every filter stays', () => {
+      setup({ query: { status: 'failed', range: '24h' } });
+      switchButtons()[1].click();
+      expect(router.navigate.calls.mostRecent().args[1]).toEqual(jasmine.objectContaining({ queryParams: { view: 'graph' }, queryParamsHandling: 'merge' }));
+      component.setView('list');
+      expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ view: null });
+    });
+
+    it('graph view: the graph is shown instead of the table, and the list is not asked', () => {
+      setup({ query: { view: 'graph' } });
+      expect(component.view).toBe('graph');
+      expect(graph()).not.toBeNull();
+      expect(fixture.nativeElement.querySelector('.exec-table')).toBeNull();
+      expect(fixture.nativeElement.querySelector('.exec-load-more')).toBeNull();
+      expect(executions.list).not.toHaveBeenCalled();
+      expect(switchButtons().map(x => x.getAttribute('aria-pressed'))).toEqual(['false', 'true']);
+    });
+
+    it('the graph gets the range and every filter (agent, trigger, status, failure conditions, errors, test runs, search)', () => {
+      setup({ botid: 'a1', query: { view: 'graph', range: '24h', trigger: 'unattended', status: 'stopped', has_failures: 'true', has_errors: 'true', q: ' r1 ', tests: 'false' } });
+      const g = graph();
+      expect(g.projectId).toBe('p1');
+      expect(g.projectName).toBe('Acme');
+      expect(g.range).toBe('24h');
+      expect(g.filters).toEqual({ agent_id: 'a1', trigger: 'unattended', status: 'stopped,stopping', has_failures: true, has_errors: true, q: 'r1', test: false });
+      // the agents for the graph's names: every bot of the project (one per root id), trashed ones too (not marked deleted)
+      expect(g.agents.map((a: any) => a.id)).toEqual(['a1', 'b2', 'z']);
+    });
+
+    it('default filters go to the graph as all triggers and test runs included; a filter change hands it a new object once', () => {
+      setup({ query: { view: 'graph' } });
+      const first = graph().filters;
+      expect(first).toEqual({ test: 'all' });
+      fixture.detectChanges();
+      expect(graph().filters).toBe(first); // no new object per change detection
+      query$.next(convertToParamMap({ view: 'graph', q: 'x' }));
+      fixture.detectChanges();
+      expect(graph().filters).toEqual({ q: 'x', test: 'all' });
+      expect(graph().range).toBe('now');
+    });
+
+    it('graph view: the cards and the updated note come from the graph answer', () => {
+      setup({ query: { view: 'graph' } });
+      graph().updated.emit({ graph: { statuses: { ...STATUSES, running: 8 }, with_errors: 3 }, fetchedAt: NOW - 5000 });
+      fixture.detectChanges();
+      expect(component.counters.running).toBe(8);
+      expect(component.withErrors).toBe(3);
+      expect(component.updatedAt).toBe(NOW - 5000);
+      expect(fixture.nativeElement.querySelector('.exec-updated').textContent).toContain('Executions.UpdatedSeconds');
+    });
+
+    it('switching back to the list loads its page (with the stats) at once', () => {
+      setup({ query: { view: 'graph' } });
+      expect(executions.list).not.toHaveBeenCalled();
+      query$.next(convertToParamMap({ view: null }));
+      fixture.detectChanges();
+      expect(executions.list).toHaveBeenCalledTimes(1);
+      expect(executions.list.calls.mostRecent().args[1].with_stats).toBe(true);
+      expect(graph()).toBeNull();
+    });
+  });
+
+  describe('Refresh and the updated note (both views)', () => {
+    const refreshButton = () => fixture.nativeElement.querySelector('button.exec-refresh') as HTMLButtonElement;
+
+    it('list view: Refresh re-reads the first page with its stats (one call), disabled while it is in flight', () => {
+      setup({ page: { items: [row('e1')], next_cursor: null } });
+      expect(refreshButton()).not.toBeNull();
+      expect(refreshButton().querySelector('mat-icon, svg')).not.toBeNull();
+      const pending = new Subject<any>();
+      executions.list.and.returnValue(pending);
+      const n = executions.list.calls.count();
+      refreshButton().click();
+      fixture.detectChanges();
+      expect(executions.list.calls.count()).toBe(n + 1);
+      expect(executions.list.calls.mostRecent().args[1].with_stats).toBe(true);
+      expect(refreshButton().disabled).toBe(true);
+      refreshButton().click();
+      expect(executions.list.calls.count()).toBe(n + 1);
+      pending.next({ items: [row('e2'), row('e1')], next_cursor: null, stats: STATS({ ...STATUSES, failed: 9 }) });
+      fixture.detectChanges();
+      expect(refreshButton().disabled).toBe(false);
+      expect(component.rows.map(r => r._id)).toEqual(['e2', 'e1']);
+      expect(component.counters.failed).toBe(9);
+    });
+
+    it('list view: "updated N s ago" after each answer', () => {
+      setup();
+      expect(component.updatedAt).toBe(NOW);
+      expect(fixture.nativeElement.querySelector('.exec-updated').textContent).toContain('Executions.UpdatedSeconds');
+    });
+
+    it('graph view: Refresh asks the graph, disabled while the graph has a call in flight', () => {
+      setup({ query: { view: 'graph' } });
+      graph().loadingChange.emit(true);
+      fixture.detectChanges();
+      expect(refreshButton().disabled).toBe(true);
+      graph().loadingChange.emit(false);
+      fixture.detectChanges();
+      refreshButton().click();
+      expect(graph().refresh).toHaveBeenCalledTimes(1);
+      expect(executions.list).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('polling per view', () => {
+    let hidden = false;
+    const visibility = (h: boolean) => { hidden = h; document.dispatchEvent(new Event('visibilitychange')); };
+
+    it('list view: no 10 s poll fires while the tab is hidden; visible again, it refreshes at once', fakeAsync(() => {
+      setup({ page: { items: [row('e1', 'running')], next_cursor: null } });
+      hidden = false;
+      spyOn(component, 'isHidden').and.callFake(() => hidden);
+      const n = executions.list.calls.count();
+      visibility(true);
+      tick(30000);
+      expect(executions.list.calls.count()).toBe(n);
+      visibility(false);
+      expect(executions.list.calls.count()).toBe(n + 1);
+      tick(10000);
+      expect(executions.list.calls.count()).toBe(n + 2);
+      fixture.destroy();
+      discardPeriodicTasks(); // the page's "updated … ago" ticker
+    }));
+
+    it('list view: visible again with nothing running asks nothing', fakeAsync(() => {
+      setup({ page: { items: [row('e1', 'completed')], next_cursor: null } });
+      spyOn(component, 'isHidden').and.callFake(() => hidden);
+      const n = executions.list.calls.count();
+      visibility(true);
+      visibility(false);
+      tick(30000);
+      expect(executions.list.calls.count()).toBe(n);
+      discardPeriodicTasks(); // the page's "updated … ago" ticker
+    }));
+
+    it('graph view: the list does not poll (the graph refreshes itself every 60 s)', fakeAsync(() => {
+      setup({ page: { items: [row('e1', 'running')], next_cursor: null } });
+      const n = executions.list.calls.count();
+      query$.next(convertToParamMap({ view: 'graph' }));
+      fixture.detectChanges();
+      tick(60000);
+      expect(executions.list.calls.count()).toBe(n);
+      fixture.destroy();
+      discardPeriodicTasks(); // the page's "updated … ago" ticker
+    }));
+  });
+
+  describe('empty notes per view', () => {
+    it('list: the filtered note with Clear filters; graph: none of the list notes (the graph has its own)', () => {
+      setup({ query: { status: 'failed' } });
+      expect(text()).toContain('Executions.EmptyFiltered');
+      query$.next(convertToParamMap({ status: 'failed', view: 'graph' }));
+      fixture.detectChanges();
+      expect(text()).not.toContain('Executions.EmptyFiltered');
+      expect(text()).not.toContain('Executions.EmptyNow');
     });
   });
 });

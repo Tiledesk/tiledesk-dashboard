@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, EventEmitter, HostBinding, Inject, inject, InjectionToken, Input, NgZone, OnChanges, OnDestroy, OnInit,
+  Component, ElementRef, EventEmitter, Inject, inject, InjectionToken, Input, NgZone, OnChanges, OnDestroy, OnInit,
   Output, SimpleChanges, ViewChild
 } from '@angular/core';
 import { Router } from '@angular/router';
@@ -7,12 +7,15 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ExecutionsService } from 'app/services/executions.service';
 import { executionLink, monitorExecutionsLink } from '../execution-links';
-import { ExecutionGraph, StatsRange } from '../executions.models';
+import { ExecutionGraph, GraphParams, StatsRange, ViewFilters } from '../executions.models';
 import { AGENT_COLORS, AgentColor, buildExecutionGraph, GraphAgent, GraphModel, GraphNode, GraphTooltip, ShownStatus } from './execution-graph.model';
 import { executionGraphFeed, GraphFeedControls, GraphSnapshot } from './execution-graph.feed';
 import { EXEC_GRAPH_COLORS as C, EXEC_GRAPH_ICONS as I } from './execution-graph.colors';
 
-export type ExecutionGraphFeedFactory = (projectId: string, range: StatsRange, controls: GraphFeedControls) => Observable<GraphSnapshot>;
+export type ExecutionGraphFeedFactory = (projectId: string, params: GraphParams, controls: GraphFeedControls) => Observable<GraphSnapshot>;
+
+/** A fresh answer, for the host's cards and its "updated … ago" note. */
+export interface GraphUpdate { graph: ExecutionGraph | null; fetchedAt: number; }
 export type CytoscapeLoader = () => Promise<any>;
 
 /** Snapshot source of the graph; replaced in tests by a Subject. */
@@ -20,8 +23,8 @@ export const EXECUTION_GRAPH_FEED = new InjectionToken<ExecutionGraphFeedFactory
   providedIn: 'root',
   factory: () => {
     const service = inject(ExecutionsService);
-    return (projectId: string, range: StatsRange, controls: GraphFeedControls) =>
-      executionGraphFeed(service, projectId, range, { refresh$: controls.refresh$, loading: controls.loading });
+    return (projectId: string, params: GraphParams, controls: GraphFeedControls) =>
+      executionGraphFeed(service, projectId, params, { refresh$: controls.refresh$, loading: controls.loading });
   }
 });
 
@@ -34,8 +37,6 @@ export const CYTOSCAPE_LOADER = new InjectionToken<CytoscapeLoader>('CYTOSCAPE_L
 export const PULSE_MS = 1200;
 export const DASH_MS = 100;
 export const MAX_ZOOM = 1.75;
-/** The "updated N s/min ago" note is recomputed this often. */
-export const NOTE_MS = 10000;
 
 interface TooltipState { lines: string[]; x: number; y: number; }
 
@@ -162,10 +163,14 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   @Input() agents: GraphAgent[] = [];
   /** The view: Now (the not-terminated runs) or a range on top of it. */
   @Input() range: StatsRange = 'now';
-  /** Fill the height of the host (a full-page host) instead of the default 70vh canvas. */
-  @Input() @HostBinding('class.fill') fill = false;
+  /** The executions page's filters (agent, trigger, status, failure conditions, errors, test runs, search), on top of the view. */
+  @Input() filters: ViewFilters = {};
   /** Emitted when Cytoscape cannot be loaded or created; the graph shows its own Unavailable message. */
   @Output() unavailable = new EventEmitter<void>();
+  /** Each fresh answer (not a stale one): the host shows its numbers and when it was asked. */
+  @Output() updated = new EventEmitter<GraphUpdate>();
+  /** Whether a call is in flight (the host disables its Refresh button). */
+  @Output() loadingChange = new EventEmitter<boolean>();
 
   @ViewChild('canvas', { static: true }) canvas: ElementRef<HTMLElement>;
 
@@ -173,21 +178,16 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   readonly keyColors = AGENT_COLORS.map(c => ({ color: c, bg: AGENT_STYLE[c].bg, border: AGENT_STYLE[c].border }));
 
   cy: any = null;
-  /** The graph response, for the big numbers (statuses, with_errors); null until a successful snapshot of the current range. */
+  /** The last fresh graph response of the current view; null until there is one. */
   stats: ExecutionGraph | null = null;
-  /** A call is in flight: the Refresh button is disabled. */
+  /** A call is in flight: refresh() does nothing. */
   loading = false;
-  /** When the shown data was asked (the last fresh snapshot); null until there is one. */
-  updatedAt: number | null = null;
-  /** "Updated N s ago" / "Updated N min ago", recomputed every NOTE_MS. */
-  updatedLabel = '';
   /** Nothing in view (after a successful snapshot). */
   empty = false;
   stale = false;
   failed = false;
   tooltip: TooltipState | null = null;
   pulseTimer: any = null;
-  noteTimer: any = null;
   dashTimer: any = null;
   /** Resolves when init is over (Cytoscape created and the feed subscribed, or failed). */
   ready: Promise<void> = Promise.resolve();
@@ -214,29 +214,30 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.zone.runOutsideAngular(() => {
-      this.noteTimer = setInterval(() => this.zone.run(() => this.updateNote()), NOTE_MS);
-    });
     this.ready = this.init();
   }
 
-  /** Overridable clock (the updated note). */
-  now(): number {
-    return Date.now();
-  }
-
-  /** The Refresh button: a cycle now, unless one is in flight (the feed checks too). */
+  /** The host's Refresh button: a cycle now, unless one is in flight (the feed checks too). */
   refresh(): void {
     if (this.loading || !this.refresh$) { return; }
     this.refresh$.next();
   }
 
-  private updateNote(): void {
-    if (this.updatedAt === null) { this.updatedLabel = ''; return; }
-    const secs = Math.max(0, Math.floor((this.now() - this.updatedAt) / 1000));
-    this.updatedLabel = secs < 60
-      ? this.translate.instant('Executions.Graph.UpdatedSeconds', { n: secs })
-      : this.translate.instant('Executions.Graph.UpdatedMinutes', { n: Math.floor(secs / 60) });
+  private setLoading(inFlight: boolean): void {
+    if (this.loading === inFlight) { return; }
+    this.loading = inFlight;
+    this.loadingChange.emit(inFlight);
+  }
+
+  /** The feed's query: the range and the filters that are set. */
+  private params(): GraphParams {
+    const p: GraphParams = { range: this.range || 'now' };
+    const f = this.filters || {};
+    Object.keys(f).forEach(k => {
+      const v = (f as any)[k];
+      if (v !== undefined && v !== null && v !== '') { (p as any)[k] = v; }
+    });
+    return p;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -244,12 +245,10 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     if (changes.projectId && !changes.projectId.firstChange) {
       this.resetGraph();
       this.subscribeFeed();
-    } else if (changes.range && !changes.range.firstChange) {
-      // same graph, new view: the numbers of the old range are not shown for the new one
+    } else if ((changes.range && !changes.range.firstChange) || (changes.filters && !changes.filters.firstChange)) {
+      // same graph, new view: the old view's answer is not kept for the new one
       this.last = null;
       this.stats = null;
-      this.updatedAt = null;
-      this.updatedLabel = '';
       this.empty = false;
       this.subscribeFeed();
     } else if ((changes.agents || changes.projectName) && this.last) {
@@ -260,7 +259,6 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed = true;
     if (this.sub) { this.sub.unsubscribe(); this.sub = null; }
-    if (this.noteTimer !== null) { clearInterval(this.noteTimer); this.noteTimer = null; }
     if (this.pulseTimer !== null) { clearInterval(this.pulseTimer); this.pulseTimer = null; }
     if (this.dashTimer !== null) { clearInterval(this.dashTimer); this.dashTimer = null; }
     if (this.cy) { this.cy.destroy(); }
@@ -303,8 +301,6 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
     this.animatedEdges = this.cy.collection();
     this.pulsed = this.cy.collection();
     this.stats = null;
-    this.updatedAt = null;
-    this.updatedLabel = '';
     this.empty = false;
     this.stale = false;
     this.tooltip = null;
@@ -313,14 +309,14 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
   private subscribeFeed(): void {
     if (this.sub) { this.sub.unsubscribe(); }
     // subscribing starts a cycle: in flight until the feed says it answered
-    this.loading = true;
+    this.setLoading(true);
     const refresh$ = this.refresh$ = new Subject<void>();
     const loading = (inFlight: boolean) => {
       if (refresh$ !== this.refresh$) { return; } // a previous feed's late word
-      if (NgZone.isInAngularZone()) { this.loading = inFlight; } else { this.zone.run(() => { this.loading = inFlight; }); }
+      if (NgZone.isInAngularZone()) { this.setLoading(inFlight); } else { this.zone.run(() => this.setLoading(inFlight)); }
     };
     this.zone.runOutsideAngular(() => {
-      this.sub = this.feed(this.projectId, this.range || 'now', { refresh$: refresh$.asObservable(), loading }).subscribe(snap => {
+      this.sub = this.feed(this.projectId, this.params(), { refresh$: refresh$.asObservable(), loading }).subscribe(snap => {
         let model: GraphModel;
         try {
           model = this.apply(snap);
@@ -336,8 +332,7 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
           if (!snap.stale) {
             this.stats = snap.graph;
             this.empty = model.nodes.length <= 1;
-            this.updatedAt = snap.fetchedAt;
-            this.updateNote();
+            this.updated.emit({ graph: snap.graph, fetchedAt: snap.fetchedAt });
           }
           this.stale = snap.stale;
         });
@@ -406,8 +401,14 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
           commands = link.commands;
           extras = link.queryParams ? { queryParams: link.queryParams } : undefined;
         }
-      } else if ((d.kind === 'agent' || d.kind === 'more') && d.agentId) {
+      } else if (d.kind === 'agent' && d.agentId) {
+        // the same page for that agent: the view and the filters stay
         commands = monitorExecutionsLink(this.projectId, d.agentId);
+        extras = { queryParamsHandling: 'preserve' };
+      } else if (d.kind === 'more' && d.agentId) {
+        // the runs not drawn: that agent's list, the filters kept
+        commands = monitorExecutionsLink(this.projectId, d.agentId);
+        extras = { queryParams: { view: null }, queryParamsHandling: 'merge' };
       }
       if (commands) {
         const c = commands;
