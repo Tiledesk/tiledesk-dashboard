@@ -256,8 +256,26 @@
           </ng-template>
         </div>
 
-        <!-- timeline: a table of blocks, each with its bar on the execution's time axis -->
+        <!-- timeline: where the run's time went, then a table of blocks, each with its share of the run and the wait after it -->
         <div *ngIf="tab === 'timeline'" role="tabpanel" class="tl">
+         <ng-container *ngIf="{ sp: timeSplit() } as ts">
+          <div *ngIf="ts.sp && d.steps.length" class="tl-split">
+            <div class="tl-split-head">
+              <span class="tl-split-title">{{ "Executions.Detail.Split.Title" | translate }}</span>
+              <span class="tl-split-legend">
+                <span class="tl-split-blocks"><i class="tl-key tl-key-block" aria-hidden="true"></i>{{ "Executions.Detail.Split.InBlocks" | translate }}
+                  <b class="ex-mono">{{ formatDuration(ts.sp.blockMs) }}</b> · {{ pctLabel(ts.sp.blockMs, ts.sp.total) }}</span>
+                <span class="tl-split-wait"><i class="tl-key tl-key-wait" aria-hidden="true"></i>{{ "Executions.Detail.Split.Waiting" | translate }}
+                  <b class="ex-mono">{{ formatDuration(ts.sp.waitMs) }}</b> · {{ pctLabel(ts.sp.waitMs, ts.sp.total) }}</span>
+              </span>
+            </div>
+            <div class="tl-split-bar" role="img"
+              [attr.aria-label]="('Executions.Detail.Split.InBlocks' | translate) + ' ' + pctLabel(ts.sp.blockMs, ts.sp.total) + ', ' + ('Executions.Detail.Split.Waiting' | translate) + ' ' + pctLabel(ts.sp.waitMs, ts.sp.total)">
+              <span *ngFor="let g of ts.sp.segments" class="tl-seg" [ngClass]="g.kind === 'wait' ? 'tl-seg-wait' : 'o-' + segOutcome(g.seq)"
+                [style.left.%]="g.left" [style.width.%]="g.width"
+                [attr.title]="(g.kind === 'wait' ? ('Executions.Detail.Split.Waiting' | translate) : segName(g.seq)) + ' · ' + formatDuration(g.ms) + ' · ' + pctLabel(g.ms, ts.sp.total)"></span>
+            </div>
+          </div>
           <div *ngIf="d.steps.length" class="tl-cols" aria-hidden="true">
             <span>{{ "Executions.Detail.Cols.Time" | translate }}</span>
             <span class="tl-col-block">{{ "Executions.Detail.Cols.Block" | translate }}</span>
@@ -291,13 +309,19 @@
               <span class="tl-vc">
                 <ng-container *ngIf="item.step.changed_keys">{{ (item.step.changed_keys === 1 ? "Executions.Detail.VarsChangedOne" : "Executions.Detail.VarsChanged") | translate: { n: item.step.changed_keys } }}</ng-container>
               </span>
-              <span class="tl-durcell">
+              <ng-container *ngIf="{ bar: ts.sp ? rowBar(ts.sp, item.step) : null } as r">
+              <span class="tl-durcell" [attr.title]="ts.sp ? stepDuration(item.step) + ' · ' + pctLabel(stepMs(item.step), ts.sp.total)
+                + (r.bar.waitMs ? ' — ' + ('Executions.Detail.Split.WaitAfter' | translate: { d: formatDuration(r.bar.waitMs) }) + ' · ' + pctLabel(r.bar.waitMs, ts.sp.total) : '') : null">
                 <span class="tl-track" aria-hidden="true">
-                  <span *ngIf="stepBar(item.step) as bar" class="tl-bar" [ngClass]="'o-' + (item.step.outcome || (isRunningStep(item.step) ? 'running' : 'none'))"
-                    [style.left.%]="bar.offset" [style.width.%]="bar.width"></span>
+                  <ng-container *ngIf="r.bar">
+                    <span class="tl-bar" [ngClass]="'o-' + (item.step.outcome || (isRunningStep(item.step) ? 'running' : 'none'))"
+                      [style.left.%]="0" [style.width.%]="r.bar.width"></span>
+                    <span *ngIf="r.bar.waitWidth > 0" class="tl-bar-wait" [style.left.%]="r.bar.waitLeft" [style.width.%]="r.bar.waitWidth"></span>
+                  </ng-container>
                 </span>
-                <span class="tl-dur ex-mono ex-muted">{{ stepDuration(item.step) }}</span>
+                <span class="tl-dur ex-mono ex-muted">{{ stepDuration(item.step) }}<span class="tl-wait-dur"><ng-container *ngIf="r.bar && r.bar.waitMs >= 1000">{{ "Executions.Detail.Split.WaitAfter" | translate: { d: formatDuration(r.bar.waitMs) } }}</ng-container></span></span>
               </span>
+              </ng-container>
               <mat-icon class="tl-chevron" aria-hidden="true">{{ expanded.has(item.step.seq) ? 'expand_more' : 'chevron_right' }}</mat-icon>
             </button>
 
@@ -331,6 +355,7 @@
               </ng-container>
             </div>
           </ng-container>
+         </ng-container>
         </div>
 
         <!-- audit tab -->

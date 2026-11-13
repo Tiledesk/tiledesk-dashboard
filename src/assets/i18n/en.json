@@ -4341,7 +4341,13 @@
                 "Duration": "Duration"
             },
             "Show": "Show",
-            "Hide": "Hide"
+            "Hide": "Hide",
+            "Split": {
+                "Title": "Where the time went",
+                "InBlocks": "In blocks",
+                "Waiting": "Waiting",
+                "WaitAfter": "+{{d}} waiting"
+            }
         },
         "Audit": {
             "Title": "Audit",

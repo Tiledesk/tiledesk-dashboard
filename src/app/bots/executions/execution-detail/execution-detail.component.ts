@@ -57,11 +57,34 @@ const PRIMARY_BY_STATUS: { [status: string]: ControlName[] } = {
 };
 const PRIMARY_ENDED: ControlName[] = ['start_new', 'resume'];
 
-export interface StepBar {
-  /** % of the execution's time span from its start to the block's start */
-  offset: number;
-  /** % of the span the block took (at least MIN_BAR_PCT) */
+/** A slice of the run's time: a block running, or a wait (no block running: waiting for input, or idle). */
+export interface TimeSegment {
+  kind: 'block' | 'wait';
+  /** the block, or for a wait the block it follows (none before the first block) */
+  seq?: number;
+  /** % of the run from its start */
+  left: number;
+  /** % of the run it lasted */
   width: number;
+  ms: number;
+}
+
+/** Where the run's time went: blocks and waits in time order, with their totals. */
+export interface TimeSplit {
+  segments: TimeSegment[];
+  total: number;
+  blockMs: number;
+  waitMs: number;
+  /** the wait after each block, until the next block starts (or the run ends / now) */
+  waitAfter: Map<number, number>;
+}
+
+/** A timeline row's bar: its block's share of the run from the left, then the wait after it. */
+export interface RowBar {
+  width: number;
+  waitLeft: number;
+  waitWidth: number;
+  waitMs: number;
 }
 
 /** An option of the timeline's Block name / Block type filters. */
@@ -72,19 +95,61 @@ export function stepName(step: Step): string {
   return step.block_name || step.block_id || '';
 }
 
+const pct2 = (ms: number, total: number) => Math.round((ms / total) * 10000) / 100;
+
 /**
- * Where a block's duration bar sits on the execution's time axis. `offset` = block start − execution start,
- * `width` = block duration, both over `total` (the execution's duration, or now − start while it runs). Clamped so
- * the bar stays inside the track and visible: at least MIN_BAR_PCT wide, never past the end.
+ * Splits the run [execStart, execStart + total] into the blocks (steps, clamped into the run, overlaps counted once)
+ * and the waits between them, in time order. A wait belongs to the block before it; one before the first block has
+ * no owner. Null when the start or the span is unknown.
  */
-export function stepBar(execStart: number, total: number, stepStart: number, stepDuration: number): StepBar | null {
-  if (![execStart, total, stepStart].every(n => typeof n === 'number' && isFinite(n)) || total <= 0) return null;
-  const pct = (ms: number) => (ms / total) * 100;
-  const offset = Math.min(Math.max(pct(stepStart - execStart), 0), 100 - MIN_BAR_PCT);
-  const dur = typeof stepDuration === 'number' && isFinite(stepDuration) && stepDuration > 0 ? stepDuration : 0;
-  const width = Math.min(Math.max(pct(dur), MIN_BAR_PCT), 100 - offset);
-  const round = (n: number) => Math.round(n * 100) / 100;
-  return { offset: round(offset), width: round(width) };
+export function timeSplit(execStart: number, total: number, steps: Array<{ seq: number; start: number; end: number }>): TimeSplit | null {
+  if (!isFinite(execStart) || !isFinite(total) || total <= 0) return null;
+  const runEnd = execStart + total;
+  const segments: TimeSegment[] = [];
+  const waitAfter = new Map<number, number>();
+  let cursor = execStart;
+  let prev: number | undefined;
+  let blockMs = 0;
+  let waitMs = 0;
+  const push = (kind: 'block' | 'wait', seq: number | undefined, from: number, to: number) => {
+    const ms = to - from;
+    if (ms <= 0 && kind === 'wait') return;
+    segments.push({ kind, seq, left: pct2(from - execStart, total), width: pct2(ms, total), ms });
+    if (kind === 'block') blockMs += ms;
+    else {
+      waitMs += ms;
+      if (seq !== undefined) waitAfter.set(seq, (waitAfter.get(seq) || 0) + ms);
+    }
+  };
+  const sorted = steps.filter(x => isFinite(x.start)).sort((a, b) => a.start - b.start || a.seq - b.seq);
+  for (const x of sorted) {
+    const start = Math.min(Math.max(x.start, cursor), runEnd);
+    const end = Math.min(Math.max(isFinite(x.end) ? x.end : start, start), runEnd);
+    push('wait', prev, cursor, start);
+    push('block', x.seq, start, end);
+    cursor = end;
+    prev = x.seq;
+  }
+  push('wait', prev, cursor, runEnd);
+  return { segments, total, blockMs, waitMs, waitAfter };
+}
+
+/**
+ * A row's bar from the split: the block's share of the run from the left (at least MIN_BAR_PCT, so a 1 ms block
+ * shows), then the wait after it, cut so both fit the track.
+ */
+export function rowBar(split: TimeSplit, seq: number, blockMs: number): RowBar {
+  const width = Math.min(Math.max(pct2(Math.max(blockMs, 0), split.total), MIN_BAR_PCT), 100);
+  const waitMs = split.waitAfter.get(seq) || 0;
+  const waitWidth = waitMs > 0 ? Math.round(Math.min(pct2(waitMs, split.total), 100 - width) * 100) / 100 : 0;
+  return { width, waitLeft: width, waitWidth, waitMs };
+}
+
+/** A share of the run as text: "<1%" for a sliver, else whole percent. */
+export function pctLabel(ms: number, total: number): string {
+  if (!total || ms <= 0) return '0%';
+  const p = (ms / total) * 100;
+  return p < 1 ? '<1%' : Math.round(p) + '%';
 }
 
 export interface Kpi {
@@ -638,18 +703,51 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return e ? e.duration_ms : null;
   }
 
-  /** A block's duration bar on the execution's time axis (null when the times are unknown). */
-  stepBar(step: Step): StepBar | null {
-    const span = this.timeSpan();
-    const s = step.started_at ? Date.parse(step.started_at) : NaN;
-    if (!span || isNaN(s)) return null;
-    let dur = step.duration_ms;
-    if (dur == null) {
-      const end = step.ended_at ? Date.parse(step.ended_at) : NaN;
-      dur = !isNaN(end) ? end - s : this.isRunningStep(step) ? this.now() - s : 0;
-    }
-    return stepBar(span.start, span.total, s, dur);
+  /** A block's [start, end] in ms; an open block runs up to now, one with no end and not running lasts 0. */
+  private stepSpan(step: Step): { start: number; end: number } {
+    const start = step.started_at ? Date.parse(step.started_at) : NaN;
+    let end = step.ended_at ? Date.parse(step.ended_at) : NaN;
+    if (isNaN(end)) end = step.duration_ms != null ? start + step.duration_ms : this.isRunningStep(step) ? this.now() : start;
+    return { start, end };
   }
+
+  /** Where the run's time went, over all its blocks (not only the filtered ones). Null when its start is unknown. */
+  timeSplit(): TimeSplit | null {
+    const span = this.timeSpan();
+    if (!span) return null;
+    const steps = (this.detail.steps || []).map(st => ({ seq: st.seq, ...this.stepSpan(st) }));
+    return timeSplit(span.start, span.total, steps);
+  }
+
+  /** A row's bar in the split. */
+  rowBar(split: TimeSplit, step: Step): RowBar {
+    return rowBar(split, step.seq, this.stepMs(step));
+  }
+
+  /** A block's time in ms (0 when its start is unknown). */
+  stepMs(step: Step): number {
+    const x = this.stepSpan(step);
+    return isNaN(x.start) ? 0 : Math.max(x.end - x.start, 0);
+  }
+
+  private stepOf(seq: number): Step | undefined {
+    return (this.detail && this.detail.steps || []).find(st => st.seq === seq);
+  }
+
+  /** A split segment's block name, for its tooltip. */
+  segName(seq: number): string {
+    const st = this.stepOf(seq);
+    return st ? stepName(st) : '';
+  }
+
+  /** A split segment's colour: its block's outcome, running while open. */
+  segOutcome(seq: number): string {
+    const st = this.stepOf(seq);
+    if (!st) return 'none';
+    return st.outcome || (this.isRunningStep(st) ? 'running' : 'none');
+  }
+
+  readonly pctLabel = pctLabel;
 
   /** The six summary tiles, from the detail's own counters. */
   get kpis(): Kpi[] {
