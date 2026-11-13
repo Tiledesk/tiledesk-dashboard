@@ -495,6 +495,12 @@ export class ExecutionGraphComponent implements OnInit, OnChanges, OnDestroy {
         this.zone.run(() => extras ? this.router.navigate(c, extras) : this.router.navigate(c));
       }
     });
+    // Cytoscape draws on a canvas: the pointer cursor over the nodes a tap opens is set on its container.
+    const container = cy.container() as HTMLElement;
+    const clickable = (d: any) => (d.kind === 'execution' && !!executionLink(this.projectId, d.agentId, d.executionId))
+      || ((d.kind === 'agent' || d.kind === 'more') && !!d.agentId);
+    cy.on('mouseover', 'node', (evt: any) => { container.style.cursor = clickable(evt.target.data()) ? 'pointer' : ''; });
+    cy.on('mouseout', 'node', () => { container.style.cursor = ''; });
     cy.on('mouseover', 'node', (evt: any) => {
       const node = evt.target;
       const p = node.renderedPosition();

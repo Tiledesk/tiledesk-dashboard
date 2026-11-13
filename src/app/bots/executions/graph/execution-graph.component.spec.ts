@@ -268,6 +268,25 @@ describe('ExecutionGraphComponent', () => {
     expect(router.navigate).not.toHaveBeenCalled();
   });
 
+  it('a pointer cursor over the clickable nodes (agents, executions, +N), reset on mouseout; none over the project', async () => {
+    setup();
+    await ready();
+    const many = Array.from({ length: 14 }, (_, i) => row('w' + String(i).padStart(2, '0') + '-0000-0000', 'waiting', 'a1'));
+    feed$.next(snap([row(E1, 'running', 'a1'), ...many]));
+    const cy = component.cy;
+    const cursor = () => (cy.container() as HTMLElement).style.cursor;
+    for (const id of ['agent:a1', 'exec:' + E1, 'more:a1']) {
+      const node = cy.getElementById(id);
+      expect(node.empty()).toBe(false, id);
+      node.emit('mouseover');
+      expect(cursor()).toBe('pointer', id);
+      node.emit('mouseout');
+      expect(cursor()).toBe('', id + ' out');
+    }
+    cy.getElementById('project').emit('mouseover');
+    expect(cursor()).toBe('');
+  });
+
   it('no cards of its own: each fresh snapshot goes to the host (updated); a stale one only shows the stale note', async () => {
     setup();
     const got: any[] = [];
