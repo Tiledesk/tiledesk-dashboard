@@ -1,7 +1,7 @@
 # tiledesk-dashboard
 
 ### 2.8.43
-- Adds the Vibe coder Home mode: the Home opens on the vibe coder, with the "Pick up where you left off" section of last editedflow below it.
+- Adds the Vibe coder Home mode: the Home opens on the vibe coder, with the "Pick up where you left off" section of last edited flow below it.
 - Home vibe coder and Create Agent modal: file attachments (up to 5 files of 10 MB, uploaded on Start and handed to the Design Studio).
 - Create Agent modal: the type select moves to the bottom.
 - Fixes the bug: a new user signing in with Google and no projects now goes to the onboarding instead of the projects page.
