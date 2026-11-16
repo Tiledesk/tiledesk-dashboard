@@ -89,3 +89,26 @@ export function ms365DeleteErrorKey(err: any): string | null {
   if (code === 'sync_running') return 'KbPage.Ms365DeleteSyncRunning';
   return null;
 }
+
+/** connection_id -> "display_name — upn" from GET /kb/sources/connections. */
+export function buildMs365AccountMap(connections: any[]): { [connectionId: string]: string } {
+  const map: { [connectionId: string]: string } = {};
+  (connections || []).forEach(c => {
+    if (!c || !c._id) return;
+    const name = c.account?.display_name;
+    const upn = c.account?.upn;
+    const label = name && upn ? name + ' — ' + upn : (name || upn || '');
+    if (label) map[c._id] = label;
+  });
+  return map;
+}
+
+export function ms365AccountLabel(kb: any, map: { [connectionId: string]: string } | null | undefined): string {
+  const id = kb?.external?.connection_id;
+  return (id && map && map[id]) || '';
+}
+
+/** The "Microsoft 365" origin pill is only for Microsoft 365 files that carry a source_origin. */
+export function showsMs365Origin(kb: any): boolean {
+  return kb?.external?.provider === 'microsoft365' && kb?.type !== 'ms365_folder' && !!kb?.source_origin;
+}

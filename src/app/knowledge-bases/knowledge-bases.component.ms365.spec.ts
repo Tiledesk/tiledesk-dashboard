@@ -18,7 +18,7 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
   beforeEach(() => {
     page = Object.create(KnowledgeBasesComponent.prototype);
     notify = jasmine.createSpyObj('notify', ['showWidgetStyleUpdateNotification']);
-    kbSources = jasmine.createSpyObj('kbSources', ['syncFolder']);
+    kbSources = jasmine.createSpyObj('kbSources', ['syncFolder', 'getConnections']);
     kbService = jasmine.createSpyObj('kbService', ['deleteKb']);
     page.notify = notify;
     page.kbSources = kbSources;
@@ -53,6 +53,36 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
     kbSources.syncFolder.and.returnValue(throwError({ status: 500, error: {} }));
     page.onMs365SyncNow(folder);
     expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.Ms365SyncFailed');
+  });
+
+  it('after a reconnect a 409 sync_running is silent and the accounts are reloaded', () => {
+    kbSources.getConnections.and.returnValue(of([]));
+    kbSources.syncFolder.and.returnValue(throwError({ status: 409, error: { error: 'sync_running' } }));
+    page.onMs365Reconnected(folder);
+    expect(kbSources.syncFolder).toHaveBeenCalledWith('f1');
+    expect(kbSources.getConnections).toHaveBeenCalled();
+    expect(notify.showWidgetStyleUpdateNotification).not.toHaveBeenCalled();
+  });
+
+  it('accounts load once for lists with a folder and map connection_id to "name — upn"', () => {
+    page.ms365Accounts = {};
+    kbSources.getConnections.and.returnValue(of([{ _id: 'c1', account: { display_name: 'Ann', upn: 'ann@x.com' } }]));
+    page.loadMs365Accounts();
+    page.loadMs365Accounts();
+    expect(kbSources.getConnections).toHaveBeenCalledTimes(1);
+    expect(page.ms365Accounts).toEqual({ c1: 'Ann — ann@x.com' });
+  });
+
+  it('no folder in the list: connections are not requested; a 403 shows nothing and no toast', () => {
+    page.ms365Accounts = {};
+    page.kbsList = [child];
+    page.loadMs365Accounts();
+    expect(kbSources.getConnections).not.toHaveBeenCalled();
+    page.kbsList = [folder];
+    kbSources.getConnections.and.returnValue(throwError({ status: 403 }));
+    page.loadMs365Accounts();
+    expect(page.ms365Accounts).toEqual({});
+    expect(notify.showWidgetStyleUpdateNotification).not.toHaveBeenCalled();
   });
 
   it('a folder delete uses the cascade Swal with the Microsoft 365 text; a child uses Ms365DeleteChild', () => {

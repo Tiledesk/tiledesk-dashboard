@@ -51,7 +51,7 @@ describe('KnowledgeBaseTableComponent (Microsoft 365 rows)', () => {
         { provide: LiveAnnouncer, useValue: {} },
       ],
     });
-    TestBed.overrideComponent(KnowledgeBaseTableComponent, { set: { changeDetection: 0 as any } });
+    TestBed.overrideComponent(KnowledgeBaseTableComponent, { set: { changeDetection: 1 as any } });
     fixture = TestBed.createComponent(KnowledgeBaseTableComponent);
     component = fixture.componentInstance;
     component.kbsList = list as any;
@@ -124,11 +124,28 @@ describe('KnowledgeBaseTableComponent (Microsoft 365 rows)', () => {
     expect(notify.presentDialogNoPermissionToPermomfAction).toHaveBeenCalled();
   });
 
-  it('Reconnect calls connect(connectionId) from the click and then syncs the folder', fakeAsync(() => {
+  it('the folder row shows the account; a missing mapping renders fine', () => {
+    setup([folder]);
+    component.ms365Accounts = { c1: 'Ann Lee — ann@x.com' };
+    fixture.detectChanges();
+    expect(q('.ms365-account').textContent).toContain('Ann Lee — ann@x.com');
+    component.ms365Accounts = {};
+    fixture.detectChanges();
+    expect(q('.ms365-account')).toBeNull();
+    expect(text()).toContain('Team Site');
+  });
+
+  it('the Microsoft 365 pill needs external.provider: a url row with source_origin gets none', () => {
+    setup([{ _id: 'u1', type: 'url', name: 'u', source: 'http://x', source_origin: 'http://x/sitemap.xml' }]);
+    expect(q('.ms365-origin-pill')).toBeNull();
+    expect(q('.ms365-origin')).toBeNull();
+  });
+
+  it('Reconnect calls connect(connectionId) from the click and then reports it', fakeAsync(() => {
     setup([folder]);
     kbSources.connect.and.returnValue(Promise.resolve({ status: 'connected', connection_id: 'c1' }));
     const spy = jasmine.createSpy('sync');
-    component.ms365SyncNow.subscribe(spy);
+    component.ms365Reconnected.subscribe(spy);
     const ev = jasmine.createSpyObj('ev', ['stopPropagation']);
     component.onMs365Reconnect(folder, ev);
     expect(kbSources.connect).toHaveBeenCalledWith('c1');
@@ -137,11 +154,27 @@ describe('KnowledgeBaseTableComponent (Microsoft 365 rows)', () => {
     expect(spy).toHaveBeenCalledWith(folder);
   }));
 
+  it('Reconnect blocked/closed shows the open-sign-in-again message', fakeAsync(() => {
+    setup([folder]);
+    kbSources.connect.and.returnValue(Promise.resolve({ status: 'blocked' }));
+    component.onMs365Reconnect(folder);
+    flush();
+    expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.Ms365OpenAgain');
+  }));
+
+  it('Reconnect that rejects shows a generic error toast', fakeAsync(() => {
+    setup([folder]);
+    kbSources.connect.and.returnValue(Promise.reject(new Error('x')));
+    component.onMs365Reconnect(folder);
+    flush();
+    expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.Ms365ErrConnect');
+  }));
+
   it('Reconnect failure shows an error toast and does not sync', fakeAsync(() => {
     setup([folder]);
     kbSources.connect.and.returnValue(Promise.resolve({ status: 'error', reason: 'access_denied' }));
     const spy = jasmine.createSpy('sync');
-    component.ms365SyncNow.subscribe(spy);
+    component.ms365Reconnected.subscribe(spy);
     component.onMs365Reconnect(folder);
     flush();
     expect(spy).not.toHaveBeenCalled();

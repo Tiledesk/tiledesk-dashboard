@@ -14,7 +14,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  getMs365Warning, isMs365Folder, isMs365File, isMs365Syncing, ms365FileCount, ms365LastSync, showsRefreshRate
+  getMs365Warning, ms365AccountLabel, showsMs365Origin, isMs365Folder, isMs365File, isMs365Syncing, ms365FileCount, ms365LastSync, showsRefreshRate
 } from './kb-ms365-row.util';
 
 
@@ -45,6 +45,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refreshRateIsEnabled: boolean;
   @Input() payIsVisible: boolean;
   @Input() ms365Available: boolean = false;
+  /** connection_id -> "name — upn" for the folder rows (empty for non-admins). */
+  @Input() ms365Accounts: { [connectionId: string]: string } = {};
   @Input() t_params: string;
   @Input() showKBTableSpinner: boolean = false;
   @Input() currentSortParams: any = null;
@@ -56,6 +58,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() runIndexing = new EventEmitter();
   /** Sync now on a Microsoft 365 folder (the page calls the API and schedules the reloads). */
   @Output() ms365SyncNow = new EventEmitter();
+  /** The user signed in again for a folder's connection (the page refreshes accounts and syncs). */
+  @Output() ms365Reconnected = new EventEmitter();
   @Output() loadPage = new EventEmitter();
   @Output() loadByFilter = new EventEmitter();
   
@@ -590,6 +594,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   isMs365File = isMs365File;
   isMs365Syncing = isMs365Syncing;
   ms365Warning = getMs365Warning;
+  ms365Origin = showsMs365Origin;
+  ms365Account = (kb) => ms365AccountLabel(kb, this.ms365Accounts);
   ms365FileCount = ms365FileCount;
   ms365LastSync = ms365LastSync;
   showRefreshRate = showsRefreshRate;
@@ -605,7 +611,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   /**
    * Reconnect button of a folder whose connection needs to be renewed. connect() opens the
    * popup synchronously, so it is called straight from the click. When it succeeds the folder
-   * is synced right away (the page does it) so the warning clears.
+   * is synced right away (the page does it on ms365Reconnected) so the warning clears.
    */
   onMs365Reconnect(kb, event?: Event) {
     if (event) {
@@ -618,10 +624,14 @@ export class KnowledgeBaseTableComponent implements OnInit {
     const connectionId = kb?.external?.connection_id;
     this.kbSources.connect(connectionId).then(result => {
       if (result.status === 'connected') {
-        this.ms365SyncNow.emit(kb);
-      } else if (result.status === 'error' || result.status === 'blocked') {
+        this.ms365Reconnected.emit(kb);
+      } else if (result.status === 'blocked' || result.status === 'closed') {
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365OpenAgain'), 3, 'open_in_new');
+      } else {
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
       }
+    }).catch(() => {
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
     });
   }
 

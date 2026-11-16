@@ -42,7 +42,7 @@ import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowled
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
-import { isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
+import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
 import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
@@ -134,6 +134,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   isAvailableRefreshRateFeature: boolean;
   t_params: any
   ms365Available = false;
+  ms365Accounts: { [connectionId: string]: string } = {};
+  private ms365AccountsLoaded = false;
   kbMaxFileSize: number;
   private ms365ReloadTimers: any[] = [];
 
@@ -3065,6 +3067,7 @@ _presentDialogImportContents() {
   /** Imported folders fill in asynchronously: reload the list now and at 3 s, 10 s, 30 s. */
   scheduleMs365Reloads() {
     this.clearMs365ReloadTimers();
+    this.ms365AccountsLoaded = false; // next list load refreshes the accounts
     const reload = () => {
       const paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
       this.getListOfKb(paramsDefault, 'after-add');
@@ -3077,7 +3080,34 @@ _presentDialogImportContents() {
    * Sync now on a Microsoft 365 folder: 202 -> toast and the 0/3/10/30 s reloads;
    * 409 sync_running -> "already syncing"; anything else -> error toast.
    */
-  onMs365SyncNow(kb) {
+  /**
+   * Accounts shown in the folder rows: loaded once when the list has a Microsoft 365 folder
+   * (and again on demand). A failure (403 for non-admins) just leaves the account out, no toast.
+   */
+  loadMs365Accounts(force = false) {
+    if (!(this.kbsList || []).some(kb => isMs365Folder(kb))) {
+      return;
+    }
+    if (this.ms365AccountsLoaded && !force) {
+      return;
+    }
+    this.ms365AccountsLoaded = true;
+    this.kbSources.getConnections().subscribe({
+      next: (connections) => {
+        this.ms365Accounts = buildMs365AccountMap(connections);
+        this.refreshKbsList = !this.refreshKbsList;
+      },
+      error: () => { /* not an admin: no account shown */ }
+    });
+  }
+
+  /** The user signed in again: refresh the accounts and sync the folder (a running sync is fine, silently). */
+  onMs365Reconnected(kb) {
+    this.loadMs365Accounts(true);
+    this.onMs365SyncNow(kb, true);
+  }
+
+  onMs365SyncNow(kb, silentIfRunning = false) {
     this.kbSources.syncFolder(kb._id).subscribe({
       next: () => {
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365SyncStarted'), 2, 'done');
@@ -3086,6 +3116,9 @@ _presentDialogImportContents() {
       error: (err) => {
         this.logger.error('[KNOWLEDGE-BASES-COMP] syncFolder error', err);
         if (err?.status === 409 && ms365ErrorCode(err) === 'sync_running') {
+          if (silentIfRunning) {
+            return;
+          }
           this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365AlreadySyncing'), 3, 'sync');
         } else {
           this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365SyncFailed'), 4, 'report_problem');
@@ -3669,6 +3702,7 @@ _presentDialogImportContents() {
       }
 
       this.refreshKbsList = !this.refreshKbsList;
+      this.loadMs365Accounts();
   }
 
   private handleKbListError(error: any): void {
