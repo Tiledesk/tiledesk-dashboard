@@ -59,7 +59,7 @@ export interface KbSourceItems {
 export interface KbImportRequest {
   namespace: string;
   connection_id: string;
-  items: { drive_id: string; item_id: string; kind: 'folder' | 'file' }[];
+  items: { drive_id: string; item_id: string; kind: 'folder' | 'file'; site_name?: string }[];
   refresh_rate: string;
   tags?: string[];
 }

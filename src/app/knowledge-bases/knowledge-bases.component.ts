@@ -42,6 +42,8 @@ import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowled
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
+import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
+import { KbSourcesService } from 'app/services/kb-sources.service';
 import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
@@ -130,6 +132,9 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   isAvailableRefreshRateFeature: boolean;
   t_params: any
+  ms365Available = false;
+  kbMaxFileSize: number;
+  private ms365ReloadTimers: any[] = [];
 
   callingPage: string;
   errorMessage: string;
@@ -486,6 +491,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     private roleService: RoleService,
     private rolesService: RolesService,
     private cdr: ChangeDetectorRef,
+    private kbSources: KbSourcesService,
 
   ) {
     super(prjctPlanService, notify);
@@ -498,6 +504,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   ngOnInit(): void {
     this.roleService.checkRoleForCurrentProject('kb')
     performance.mark('kb-parent-init');
+    this.loadKbSourceProviders();
 
     // Restore the user's preferred KB sort direction from localStorage.
     // Done in ngOnInit (instead of constructor) to keep the constructor
@@ -557,6 +564,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   ngOnDestroy(): void {
     clearInterval(this.interval_id);
+    this.clearMs365ReloadTimers();
     if (this.questionsSearchDebounceTimer != null) {
       clearTimeout(this.questionsSearchDebounceTimer);
       this.questionsSearchDebounceTimer = null;
@@ -2812,6 +2820,7 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '900px',
+      data: { ms365Available: this.ms365Available },
     });
 
     dialogRef.afterClosed().subscribe(type => {
@@ -2873,6 +2882,9 @@ _presentDialogImportContents() {
     }
     if (typeOrKb === 'file-upload') {
       this.presentModalUploadFile()
+    }
+    if (typeOrKb === 'ms365') {
+      this.presentModalImportMs365()
     }
     if (typeOrKb === 'faq') {
       this.presentModalAddFaqs()
@@ -2994,6 +3006,67 @@ _presentDialogImportContents() {
       }
 
     });
+  }
+
+  /** Admin-only call: a failure (e.g. 403) simply hides the Microsoft 365 card. */
+  loadKbSourceProviders() {
+    this.kbSources.getProviders().subscribe({
+      next: (res) => {
+        this.ms365Available = !!(res && res.providers && res.providers.some(p => p.id === 'microsoft365' && p.available));
+        this.kbMaxFileSize = res && res.kb_max_file_size;
+      },
+      error: () => { this.ms365Available = false; }
+    });
+  }
+
+  presentModalImportMs365() {
+    const dialogRef = this.dialog.open(ModalMs365ImportComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
+      data: {
+        namespace: this.selectedNamespace.id,
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        payIsVisible: this.payIsVisible,
+        kbMaxFileSize: this.kbMaxFileSize,
+        t_params: this.t_params,
+        id_project: this.id_project,
+        project_name: this.project_name,
+        onPlanLimit: (planLimit: number) => this.onMs365PlanLimit(planLimit),
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result && result.upgrade_plan) {
+        this.goToPricing();
+      } else if (result && result.contents) {
+        this.scheduleMs365Reloads();
+      }
+    });
+  }
+
+  /** Same plan-limit dialog as onAddKb. */
+  onMs365PlanLimit(planLimit: number) {
+    this.getTranslatedStringKbLimitReached(planLimit);
+    this.presentKbLimitSwal(this.msgErrorAddUpdateKbLimit);
+  }
+
+  /** Imported folders fill in asynchronously: reload the list now and at 3 s, 10 s, 30 s. */
+  scheduleMs365Reloads() {
+    this.clearMs365ReloadTimers();
+    const reload = () => {
+      const paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'after-add');
+    };
+    reload();
+    this.ms365ReloadTimers = [3000, 10000, 30000].map(ms => setTimeout(reload, ms));
+  }
+
+  private clearMs365ReloadTimers() {
+    this.ms365ReloadTimers.forEach(t => clearTimeout(t));
+    this.ms365ReloadTimers = [];
   }
 
   presentModalUploadFile() {
@@ -3689,6 +3762,19 @@ _presentDialogImportContents() {
         error = this.msgErrorAddUpdateKbLimit
       }
 
+      this.presentKbLimitSwal(error);
+      if (doneCb) doneCb(false);
+    }, () => {
+      this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
+      this.getAllNamespaces();
+      this.trackUserActioOnKB('Added Knowledge Base')
+    })
+  }
+
+
+
+  /** Plan-limit / generic add error dialog (upgrade / contact us), shared by onAddKb and the Microsoft 365 import. */
+  presentKbLimitSwal(error: string) {
       if (this.payIsVisible === true) {
         Swal.fire({
           title: this.warningTitle,
@@ -3752,15 +3838,7 @@ _presentDialogImportContents() {
           }
         })
       }
-      if (doneCb) doneCb(false);
-    }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
-      this.getAllNamespaces();
-      this.trackUserActioOnKB('Added Knowledge Base')
-    })
   }
-
-
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)

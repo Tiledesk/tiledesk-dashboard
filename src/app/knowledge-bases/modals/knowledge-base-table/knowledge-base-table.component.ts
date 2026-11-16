@@ -39,6 +39,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() isAvailableRefreshRateFeature: boolean;
   @Input() refreshRateIsEnabled: boolean;
   @Input() payIsVisible: boolean;
+  @Input() ms365Available: boolean = false;
   @Input() t_params: string;
   @Input() showKBTableSpinner: boolean = false;
   @Input() currentSortParams: any = null;

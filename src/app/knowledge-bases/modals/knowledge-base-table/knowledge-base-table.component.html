@@ -136,6 +136,19 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="add-content-card-wpr" *ngIf="ms365Available" (click)="onOpenAddKnowledgeBaseModal('ms365')">
+                                <div class="add-content-card-content">
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span class="material-icons-outlined">cloud_sync</span>
+                                    </div>
+                                    <span class="span-6"> </span>
+                                    <p class="add-content-card-content-title"> {{'KbPage.Ms365Card' | translate }} </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        {{'KbPage.Ms365CardDesc' | translate }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

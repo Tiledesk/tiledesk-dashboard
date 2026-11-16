@@ -1,0 +1,230 @@
+.m-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 12px;
+}
+
+.m-top-right-icon {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ms365-content {
+    min-height: 220px;
+    max-height: 60vh;
+}
+
+.ms365-muted {
+    color: #6b7280;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+.ms365-label {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.ms365-error {
+    color: #c0392b;
+    font-size: 13px;
+    margin: 8px 0;
+}
+
+.ms365-accounts,
+.ms365-items {
+    list-style: none;
+    margin: 0 0 12px 0;
+    padding: 0;
+}
+
+.ms365-account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid #d1d9e0;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+
+    &:hover { background: #f5f7fa; }
+    &--warn { border-color: #e0a800; }
+    &--active { background: #fff8e1; }
+}
+
+.ms365-account-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.ms365-account-name {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.ms365-warning {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    color: #8a6d00;
+
+    .material-icons-outlined { font-size: 16px; }
+}
+
+.ms365-notice {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #eef3fb;
+    font-size: 13px;
+    margin-bottom: 12px;
+
+    .material-icons-outlined { font-size: 18px; }
+
+    &--warn { background: #fff8e1; justify-content: space-between; }
+    &--error { background: #fdecea; justify-content: space-between; }
+}
+
+.ms365-waiting {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+}
+
+.ms365-retry {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.ms365-primary-btn {
+    border: none;
+    background: var(--blue-light, #0f62ff);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.ms365-connect-btn { margin-top: 4px; }
+
+.ms365-link-btn {
+    border: none;
+    background: transparent;
+    color: var(--blue-20, #0f62ff);
+    cursor: pointer;
+    font-size: 13px;
+    padding: 4px 6px;
+
+    &:hover { text-decoration: underline; }
+}
+
+.ms365-crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.ms365-crumb--link {
+    color: var(--blue-20, #0f62ff);
+    cursor: pointer;
+    &:hover { text-decoration: underline; }
+}
+
+.ms365-crumb-sep { color: #9aa4b2; }
+
+.ms365-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 4px;
+    border-bottom: 1px solid #f0f2f5;
+
+    &--disabled { opacity: 0.55; }
+}
+
+.ms365-item-icon { font-size: 20px; color: #6b7280; }
+
+.ms365-item-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 14px;
+
+    &--link { cursor: pointer; &:hover { text-decoration: underline; } }
+}
+
+.ms365-item-reason { white-space: nowrap; }
+
+.ms365-field { margin-top: 14px; }
+
+.ms365-select {
+    min-width: 200px;
+    padding: 6px 8px;
+    border: 1px solid #d1d9e0;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.ms365-actions { justify-content: center; }
+
+.upsell-for-refresh-rate {
+    display: flex;
+    justify-content: center;
+    margin-top: 14px;
+    text-align: center;
+    margin-bottom: 16px;
+
+    .upsell-text { font-size: 14px; font-weight: 400; line-height: 1.3; }
+    .upsell-text-link { font-weight: 400; cursor: pointer; color: var(--blue-20); }
+}
+
+.refresh-rate--upgrade-plan {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    margin-bottom: 16px;
+}
+
+.btn--get-feature-no-boxshadow {
+    margin-top: 0px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    background: transparent;
+    border: 1px solid #d1d9e0;
+    color: var(--btn-get-feature-color);
+    font-weight: 400;
+    box-shadow: unset !important;
+    text-transform: none !important;
+    padding: 6px 15px !important;
+    border-radius: var(--btn-border-radius);
+}
+
+.get--feature-upgrade-plan-icon {
+    vertical-align: middle;
+    color: var(--btn-get-feature-color);
+    font-size: 21px;
+}
