@@ -1,20 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from './logger/logger.service';
+import {
+  KbImportRequest, KbImportResponse, KbSourceConnection, KbSourceItems, KbSourceProviders, Ms365ConnectResult
+} from 'app/models/kb-sources.model';
 
-export interface KbSourceProvider {
-  id: string;
-  available: boolean;
-}
-
-export interface KbSourceProviders {
-  providers: KbSourceProvider[];
-  kb_max_file_size: number;
-  supported_extensions: string[];
-}
+export { KbSourceProvider, KbSourceProviders } from 'app/models/kb-sources.model';
 
 @Injectable({
   providedIn: 'root'
@@ -62,5 +56,90 @@ export class KbSourcesService {
     const url = this.baseUrl + '/providers';
     this.logger.log('[KB-SOURCES.SERVICE] - get providers URL ', url);
     return this.httpClient.get<KbSourceProviders>(url, this.httpOptions);
+  }
+
+  getConnections(): Observable<KbSourceConnection[]> {
+    return this.httpClient.get<KbSourceConnection[]>(this.baseUrl + '/connections', this.httpOptions);
+  }
+
+  deleteConnection(id: string, cascade = false): Observable<any> {
+    const params = cascade ? new HttpParams().set('cascade', 'true') : new HttpParams();
+    return this.httpClient.delete(this.baseUrl + '/connections/' + id, { ...this.httpOptions, params });
+  }
+
+  getRoots(connId: string): Observable<KbSourceItems> {
+    return this.httpClient.get<KbSourceItems>(this.baseUrl + '/connections/' + connId + '/roots', this.httpOptions);
+  }
+
+  getDrives(connId: string, siteId: string): Observable<KbSourceItems> {
+    const params = new HttpParams().set('site', siteId);
+    return this.httpClient.get<KbSourceItems>(this.baseUrl + '/connections/' + connId + '/drives', { ...this.httpOptions, params });
+  }
+
+  getChildren(connId: string, driveId: string, itemId?: string, page?: string): Observable<KbSourceItems> {
+    let params = new HttpParams();
+    if (itemId) { params = params.set('item', itemId); }
+    if (page) { params = params.set('page', page); }
+    return this.httpClient.get<KbSourceItems>(
+      this.baseUrl + '/connections/' + connId + '/drives/' + driveId + '/children', { ...this.httpOptions, params });
+  }
+
+  importItems(req: KbImportRequest): Observable<KbImportResponse> {
+    return this.httpClient.post<KbImportResponse>(this.baseUrl + '/microsoft365/import', req, this.httpOptions);
+  }
+
+  updateFolderRefreshRate(kbId: string, rate: string): Observable<any> {
+    return this.httpClient.patch(this.baseUrl + '/folders/' + kbId, { refresh_rate: rate }, this.httpOptions);
+  }
+
+  syncFolder(kbId: string): Observable<any> {
+    return this.httpClient.post(this.baseUrl + '/folders/' + kbId + '/sync', {}, this.httpOptions);
+  }
+
+  /**
+   * Microsoft 365 sign-in in a popup. MUST be called directly from the click handler:
+   * the popup is opened synchronously (before any await/HTTP) so the browser does not block it,
+   * then navigated to the server `authorize_url`. Resolves once with connected | error (server
+   * message), closed (user closed the popup, polled every 1000 ms) or blocked (popup refused).
+   * An HTTP failure closes the popup and resolves { status: 'error', reason: 'connect_failed' }.
+   */
+  connect(connectionId?: string): Promise<Ms365ConnectResult> {
+    const popup = window.open('', 'ms365-connect', 'width=520,height=680');
+    if (!popup) {
+      return Promise.resolve({ status: 'blocked' });
+    }
+    const serverOrigin = new URL(this.SERVER_BASE_PATH, window.location.href).origin;
+
+    return new Promise<Ms365ConnectResult>((resolve) => {
+      let done = false;
+      const finish = (result: Ms365ConnectResult) => {
+        if (done) { return; }
+        done = true;
+        window.removeEventListener('message', onMessage);
+        clearInterval(timer);
+        resolve(result);
+      };
+      const onMessage = (event: MessageEvent) => {
+        if (event.origin !== serverOrigin || !event.data || event.data.type !== 'ms365-connect') { return; }
+        finish({ status: event.data.status, reason: event.data.reason, connection_id: event.data.connection_id });
+      };
+      const timer = setInterval(() => {
+        if (popup.closed) { finish({ status: 'closed' }); }
+      }, 1000);
+      window.addEventListener('message', onMessage);
+
+      this.httpClient.post<{ authorize_url: string }>(
+        this.baseUrl + '/microsoft365/connect',
+        { connection_id: connectionId, origin: window.location.origin },
+        this.httpOptions
+      ).subscribe({
+        next: (res) => { if (!done) { popup.location.href = res.authorize_url; } },
+        error: (err) => {
+          this.logger.error('[KB-SOURCES.SERVICE] - connect error ', err);
+          popup.close();
+          finish({ status: 'error', reason: 'connect_failed' });
+        }
+      });
+    });
   }
 }
