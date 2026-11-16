@@ -224,6 +224,24 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
   }
 
   /**
+   * OpenRouter models callable with the Tiledesk key by the current project, from the server
+   * (GET /:projectid/llm/models?managed=true): { data: [{ id, name, top_provider, tiledesk: { managed, credits } }] }
+   */
+  getManagedLlmModels() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/llm/models?managed=true&output_modalities=text";
+    this.logger.debug('[INTEGRATION.SERV] - get managed LLM models URL: ', url);
+
+    return this.http.get(url, httpOptions);
+  }
+
+  /**
    * Retrieve MCP tools from server.
    * When the server is connected with OAuth, send only the connection id:
    * the server attaches the bearer token and refreshes it.

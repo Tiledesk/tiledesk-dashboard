@@ -1986,9 +1986,13 @@ export type LlmModelTokenBounds = { min_tokens: number; max_output_tokens: numbe
 
 /** Lookup sui cataloghi in util (OpenAI, Anthropic, Google, …). */
 export function getLlmModelTokenBounds(modelValue: string): LlmModelTokenBounds | null {
-  const lists = [COHERE_MODEL, GOOGLE_MODEL, ANTHROPIC_MODEL, GROQ_MODEL, DEEPSEEK_MODEL, OPENAI_MODEL];
+  // the providers' models first: the managed models loaded from OpenRouter replace the static lists
+  const lists: Array<Array<any>> = [
+    ...LLM_MODEL.map((provider) => provider.models),
+    COHERE_MODEL, GOOGLE_MODEL, ANTHROPIC_MODEL, GROQ_MODEL, DEEPSEEK_MODEL, OPENAI_MODEL
+  ];
   for (const list of lists) {
-    const found = list.find((m) => m.value === modelValue);
+    const found = list.find((m) => m.value === modelValue && m.max_output_tokens);
     if (found) {
       return { min_tokens: found.min_tokens, max_output_tokens: found.max_output_tokens };
     }

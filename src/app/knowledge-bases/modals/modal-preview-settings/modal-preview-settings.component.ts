@@ -4,6 +4,12 @@ import { AppConfigService } from 'app/services/app-config.service';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import {
   LLM_MODEL,
+  OPENAI_MODEL,
+  ANTHROPIC_MODEL,
+  GOOGLE_MODEL,
+  DEEPSEEK_MODEL,
+  COHERE_MODEL,
+  LLM_DEFAULT_MAX_TOKENS_CAP,
   URL_AI_model_doc,
   URL_advanced_context_doc,
   URL_chunk_Limit_doc,
@@ -24,6 +30,16 @@ import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { IntegrationService } from 'app/services/integration.service';
+
+/** Providers served with the Tiledesk key through OpenRouter (OpenRouter vendor = LLM_MODEL value), with their static lists */
+const MANAGED_STATIC_MODELS: { [provider: string]: Array<any> } = {
+  openai: OPENAI_MODEL,
+  anthropic: ANTHROPIC_MODEL,
+  google: GOOGLE_MODEL,
+  deepseek: DEEPSEEK_MODEL,
+  cohere: COHERE_MODEL
+};
+
 @Component({
   selector: 'modal-preview-settings',
   templateUrl: './modal-preview-settings.component.html',
@@ -360,6 +376,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.getAgentPlatformModels()
     this.getOllamaModels()
     this.getOpenRouterModels()
+    this.getManagedModels()
     this.loadModelGroups();
   }
 
@@ -569,6 +586,92 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     });
 
     return options;
+  }
+
+  /**
+   * Credits projects: the models of the providers served with the Tiledesk key come from OpenRouter, through the
+   * server. The value is the provider's own name (gpt-4.1, claude-sonnet-4-5): the server maps it back to the
+   * OpenRouter model, and it also works with the project's own key. The other projects keep the static lists.
+   */
+  getManagedModels() {
+    this.integrationService.getManagedLlmModels().subscribe({
+      next: (res: any) => {
+        this.logger.log('[MODAL PREVIEW SETTINGS] - MANAGED MODELS:', res?.total_count);
+        this.applyManagedModels(this.groupManagedModels(res?.data));
+      },
+      error: (err) => {
+        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getManagedModels:', err);
+        this.applyManagedModels({});
+      }
+    });
+  }
+
+  private groupManagedModels(models: any): { [provider: string]: Array<any> } {
+    const byProvider: { [provider: string]: Array<any> } = {};
+    if (!Array.isArray(models)) {
+      return byProvider;
+    }
+    models.forEach((model: any) => {
+      // tiledesk.credits is returned only to credits projects: the projects on quotas keep the static lists
+      if (!model?.tiledesk?.managed || !model.tiledesk.credits) {
+        return;
+      }
+      const id = String(model.id || '');
+      const slash = id.indexOf('/');
+      const provider = id.slice(0, slash);
+      if (slash < 0 || !MANAGED_STATIC_MODELS[provider]) {
+        return;
+      }
+      let value = id.slice(slash + 1);
+      if (provider === 'anthropic') {
+        // OpenRouter claude-sonnet-4.5, Anthropic claude-sonnet-4-5
+        value = value.replace(/(\d)\.(\d)/g, '$1-$2');
+      }
+      const list = byProvider[provider] = byProvider[provider] || [];
+      if (list.some((m) => m.value === value)) {
+        return;
+      }
+      list.push({
+        // OpenRouter names are "Vendor: Model", the select already groups by provider
+        name: String(model.name || value).replace(/^[^:]+:\s*/, ''),
+        value,
+        description: '',
+        status: 'active',
+        min_tokens: 1,
+        max_output_tokens: model.top_provider?.max_completion_tokens || model.context_length || LLM_DEFAULT_MAX_TOKENS_CAP,
+        reasoning: Array.isArray(model.supported_parameters) && model.supported_parameters.includes('reasoning')
+      });
+    });
+    return byProvider;
+  }
+
+  /** LLM_MODEL is shared by the projects: a provider without managed models gets its static list back */
+  private applyManagedModels(byProvider: { [provider: string]: Array<any> }) {
+    Object.keys(MANAGED_STATIC_MODELS).forEach((providerValue) => {
+      const provider = LLM_MODEL.find(p => p.value === providerValue);
+      if (!provider) {
+        return;
+      }
+      const managed = byProvider[providerValue];
+      provider.models = managed && managed.length
+        ? this.withSavedModel(providerValue, managed)
+        : MANAGED_STATIC_MODELS[providerValue];
+    });
+    this.loadModelGroups();
+  }
+
+  /** Keeps selectable the model saved in the namespace when OpenRouter does not list it (e.g. claude-3-7-sonnet-latest) */
+  private withSavedModel(providerValue: string, models: Array<any>): Array<any> {
+    const settings = this.selectedNamespace?.preview_settings;
+    const savedProvider = settings?.llm || 'openai';
+    if (!settings?.model || savedProvider !== providerValue || models.some((m) => m.value === settings.model)) {
+      return models;
+    }
+    const known = MANAGED_STATIC_MODELS[providerValue].find((m) => m.value === settings.model);
+    const saved = known
+      ? { ...known, status: 'active' }
+      : { name: settings.model, value: settings.model, description: '', status: 'active' };
+    return [...models, saved];
   }
 
   getOllamaModels() {
