@@ -108,6 +108,30 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
     expect(swal).not.toHaveBeenCalled();
   });
 
+  it('409 remove_failed on a folder with removed > 0 toasts both counts and reloads the list', () => {
+    const swal = spyOn(Swal, 'fire');
+    kbService.deleteKb.and.returnValue(throwError({ status: 409, error: { error: 'remove_failed', failed: 2, removed: 5 } }));
+    page.translate = { instant: (k: string, p?: any) => k + JSON.stringify(p || {}) };
+    page.onDeleteKb({ ...folder });
+    expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args)
+      .toEqual(['KbPage.Ms365DeleteRemovePartial{"failed":2,"removed":5}', 4, 'report_problem']);
+    expect(page.scheduleMs365Reloads).toHaveBeenCalled();
+    expect(swal).not.toHaveBeenCalled();
+  });
+
+  it('after the import modal closes (any result) the connections section reloads', () => {
+    page.dialog = { open: () => ({ afterClosed: () => of(undefined) }) };
+    page.selectedNamespace = { id: 'n' };
+    page.ms365Connections = { load: jasmine.createSpy('load') };
+    page.presentModalImportMs365();
+    expect(page.ms365Connections.load).toHaveBeenCalled();
+    expect(page.scheduleMs365Reloads).not.toHaveBeenCalled();
+    page.dialog = { open: () => ({ afterClosed: () => of({ contents: [{}] }) }) };
+    page.presentModalImportMs365();
+    expect(page.ms365Connections.load).toHaveBeenCalledTimes(2);
+    expect(page.scheduleMs365Reloads).toHaveBeenCalled();
+  });
+
   it('connections changed: accounts reload; the KB list only after a cascade', () => {
     page.loadMs365Accounts = jasmine.createSpy('loadMs365Accounts');
     page.onMs365ConnectionsChanged({ cascade: false });

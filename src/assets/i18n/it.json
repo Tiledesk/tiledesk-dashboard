@@ -2448,6 +2448,7 @@
         "Ms365WarnSyncFailed": "The last sync failed",
         "Ms365DeleteFolder": "Deleting this Microsoft 365 folder <b>will automatically delete all the files imported from it.</b>",
         "Ms365DeleteRemoveFailed": "Could not delete: some files could not be removed. Nothing was changed.",
+        "Ms365DeleteRemovePartial": "Could not remove {{failed}} files; {{removed}} were removed. The folder is still there: try again.",
         "Ms365DeleteSyncRunning": "Could not delete while the folder is syncing. Try again in a moment.",
         "Ms365SyncStarted": "Sync started",
         "Ms365AlreadySyncing": "This folder is already syncing",

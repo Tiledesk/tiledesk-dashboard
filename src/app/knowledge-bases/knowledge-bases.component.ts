@@ -42,6 +42,7 @@ import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowled
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
+import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
 import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
 import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
 import { KbSourcesService } from 'app/services/kb-sources.service';
@@ -95,6 +96,7 @@ const Swal = require('sweetalert2')
 
 export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(KnowledgeBaseTableComponent) kbTableComponent: KnowledgeBaseTableComponent;
+  @ViewChild(KbMs365ConnectionsComponent) ms365Connections: KbMs365ConnectionsComponent;
 
   PLAN_NAME = PLAN_NAME;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
@@ -3050,6 +3052,8 @@ _presentDialogImportContents() {
       },
     });
     dialogRef.afterClosed().subscribe(result => {
+      // any close: a new account or folder counts may have appeared
+      if (this.ms365Connections) { this.ms365Connections.load(); }
       if (result && result.upgrade_plan) {
         this.goToPricing();
       } else if (result && result.contents) {
@@ -3076,10 +3080,6 @@ _presentDialogImportContents() {
     this.ms365ReloadTimers = [3000, 10000, 30000].map(ms => setTimeout(reload, ms));
   }
 
-  /**
-   * Sync now on a Microsoft 365 folder: 202 -> toast and the 0/3/10/30 s reloads;
-   * 409 sync_running -> "already syncing"; anything else -> error toast.
-   */
   /**
    * Accounts shown in the folder rows: loaded once when the list has a Microsoft 365 folder
    * (and again on demand). A failure (403 for non-admins) just leaves the account out, no toast.
@@ -3115,6 +3115,10 @@ _presentDialogImportContents() {
     this.onMs365SyncNow(kb, true);
   }
 
+  /**
+   * Sync now on a Microsoft 365 folder: 202 -> toast and the 0/3/10/30 s reloads;
+   * 409 sync_running -> "already syncing"; anything else -> error toast.
+   */
   onMs365SyncNow(kb, silentIfRunning = false) {
     this.kbSources.syncFolder(kb._id).subscribe({
       next: () => {
@@ -4169,7 +4173,15 @@ _presentDialogImportContents() {
       // Microsoft 365: remove_failed / sync_running -> error toast, the list stays as it is
       const ms365Key = ms365DeleteErrorKey(err);
       if (ms365Key) {
-        this.notify.showWidgetStyleUpdateNotification(this.translate.instant(ms365Key), 4, 'report_problem');
+        const removed = Number(err?.error?.removed) || 0;
+        if (ms365ErrorCode(err) === 'remove_failed' && removed > 0) {
+          // a folder delete that removed some files before failing: the list is stale -> say so and reload
+          this.notify.showWidgetStyleUpdateNotification(
+            this.translate.instant('KbPage.Ms365DeleteRemovePartial', { failed: err.error.failed, removed }), 4, 'report_problem');
+          this.scheduleMs365Reloads();
+        } else {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant(ms365Key), 4, 'report_problem');
+        }
         return;
       }
 
