@@ -1957,6 +1957,11 @@
     },
     "HistoryPage": {
         "Rating": "Avaliação",
+        "UserRatingTooltip": "Avaliação do utilizador: {{value}}/5",
+        "NoUserRating": "Sem avaliação",
+        "AiRatingTooltip": "Avaliação da IA: {{value}}/5",
+        "RatingUser": "Utilizador",
+        "RatingAi": "IA",
         "Requester": "Solicitante",
         "Message": "Mensagem",
         "NoRequests": "Sem conversa",

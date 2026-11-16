@@ -1958,6 +1958,11 @@
     },
     "HistoryPage": {
         "Rating": "Оцена",
+        "UserRatingTooltip": "Оцена корисника: {{value}}/5",
+        "NoUserRating": "Нема оцене",
+        "AiRatingTooltip": "Оцена АИ: {{value}}/5",
+        "RatingUser": "Корисник",
+        "RatingAi": "АИ",
         "Requester": "Подносилац захтева",
         "Message": "Порука",
         "NoRequests": "Нема разговора",

@@ -1958,6 +1958,11 @@
     },
     "HistoryPage": {
         "Rating": "Değerlendirme",
+        "UserRatingTooltip": "Kullanıcı değerlendirmesi: {{value}}/5",
+        "NoUserRating": "Değerlendirme yok",
+        "AiRatingTooltip": "AI değerlendirmesi: {{value}}/5",
+        "RatingUser": "Kullanıcı",
+        "RatingAi": "AI",
         "Requester": "istekte bulunan",
         "Message": "İleti",
         "NoRequests": "Konuşma Yok",

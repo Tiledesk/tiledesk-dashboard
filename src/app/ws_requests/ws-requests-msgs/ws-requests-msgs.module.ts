@@ -19,6 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 import { ContactRequestMessagesDialogComponent } from './contact-request-messages-dialog/contact-request-messages-dialog.component';
+import { ConversationRatingModule } from '../conversation-rating/conversation-rating.module';
 
 
 const routes: Routes = [
@@ -51,7 +52,8 @@ const routes: Routes = [
     MatFormFieldModule,
     MatButtonModule,
     MatDialogModule,
-    MatExpansionModule
+    MatExpansionModule,
+    ConversationRatingModule,
   ]
 })
 export class WsRequestsMsgsModule { }

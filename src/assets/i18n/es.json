@@ -1941,6 +1941,11 @@
     },
     "HistoryPage": {
         "Rating": "Calificación",
+        "UserRatingTooltip": "Calificación del usuario: {{value}}/5",
+        "NoUserRating": "Sin calificación",
+        "AiRatingTooltip": "Calificación de la IA: {{value}}/5",
+        "RatingUser": "Usuario",
+        "RatingAi": "IA",
         "Requester": "Solicitante",
         "Message": "Mensaje",
         "NoRequests": "Sin conversación",

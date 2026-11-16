@@ -1957,6 +1957,11 @@
     },
     "HistoryPage": {
         "Rating": "التقييم",
+        "UserRatingTooltip": "تقييم المستخدم: {{value}}/5",
+        "NoUserRating": "لا يوجد تقييم",
+        "AiRatingTooltip": "تقييم الذكاء الاصطناعي: {{value}}/5",
+        "RatingUser": "المستخدم",
+        "RatingAi": "AI",
         "Requester": "مقدم الطلب",
         "Message": "رسالة",
         "NoRequests": "لا محادثة",

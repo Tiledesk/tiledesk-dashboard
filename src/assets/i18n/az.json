@@ -1958,6 +1958,11 @@
     },
     "HistoryPage": {
         "Rating": "Qiymətləndirmə",
+        "UserRatingTooltip": "İstifadəçi qiymətləndirməsi: {{value}}/5",
+        "NoUserRating": "Qiymətləndirmə yoxdur",
+        "AiRatingTooltip": "AI qiymətləndirməsi: {{value}}/5",
+        "RatingUser": "İstifadəçi",
+        "RatingAi": "AI",
         "Requester": "Müraciət edən",
         "Message": "Mesaj",
         "NoRequests": "Söhbət yoxdur",
