@@ -1955,6 +1955,11 @@
     },
     "HistoryPage": {
         "Rating": "Rating",
+        "UserRatingTooltip": "User rating: {{value}}/5",
+        "NoUserRating": "No rating",
+        "AiRatingTooltip": "AI rating: {{value}}/5",
+        "RatingUser": "User",
+        "RatingAi": "AI",
         "Requester": "Requester",
         "Message": "Message",
         "NoRequests": "No Conversation",

@@ -1950,6 +1950,11 @@
     },
     "HistoryPage": {
         "Rating": "Бағалау",
+        "UserRatingTooltip": "Пайдаланушы бағалауы: {{value}}/5",
+        "NoUserRating": "Бағалау жоқ",
+        "AiRatingTooltip": "AI бағалауы: {{value}}/5",
+        "RatingUser": "Пайдаланушы",
+        "RatingAi": "AI",
         "Requester": "Өтініш беруші",
         "Message": "Хабар",
         "NoRequests": "Сөйлесу жоқ",

@@ -1951,6 +1951,11 @@
     },
     "HistoryPage": {
         "Rating": "Bewertung",
+        "UserRatingTooltip": "Nutzerbewertung: {{value}}/5",
+        "NoUserRating": "Keine Bewertung",
+        "AiRatingTooltip": "KI-Bewertung: {{value}}/5",
+        "RatingUser": "Nutzer",
+        "RatingAi": "KI",
         "Requester": "Anfragesteller",
         "Message": "Nachricht",
         "NoRequests": "Keine Anfragen",
