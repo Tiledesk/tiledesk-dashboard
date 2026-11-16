@@ -2232,22 +2232,7 @@
 
                 <!-- ===== RATING (solo history) ===== -->
                 <td *ngIf="IS_HERE_FOR_HISTORY && canFilterRatedConversations" (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
-                  <p *ngIf="request?.rating" class="column-td" >
-                    <span class="material-icons-outlined" style="vertical-align: middle; color: var(--conv-details-rating-active-star-color);" >
-                      star
-                    </span>
-                    <span style="vertical-align: middle;">
-                    {{ request?.rating }} / 5
-                    </span>
-                  </p>
-                  <p *ngIf="!request?.rating" class="column-td">
-                    <span class="material-icons-outlined" style="vertical-align: middle; color: #aaa;">
-                      star_border
-                    </span>
-                    <span style="vertical-align: middle;">
-                    – / 5
-                    </span>
-                  </p>
+                  <app-conversation-rating [request]="request"></app-conversation-rating>
                 </td>
 
                 <!-- ===== LIST OF MEMBERS ===== -->

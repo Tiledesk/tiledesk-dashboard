@@ -1951,6 +1951,11 @@
     },
     "HistoryPage": {
         "Rating": "Оценка",
+        "UserRatingTooltip": "Оценка пользователя: {{value}}/5",
+        "NoUserRating": "Нет оценки",
+        "AiRatingTooltip": "Оценка ИИ: {{value}}/5",
+        "RatingUser": "Пользователь",
+        "RatingAi": "ИИ",
         "Requester": "Заявитель",
         "Message": "Сообщение",
         "NoRequests": "Нет разговора",

@@ -1950,6 +1950,11 @@
     },
     "HistoryPage": {
         "Rating": "Оцінка",
+        "UserRatingTooltip": "Оцінка користувача: {{value}}/5",
+        "NoUserRating": "Немає оцінки",
+        "AiRatingTooltip": "Оцінка ШІ: {{value}}/5",
+        "RatingUser": "Користувач",
+        "RatingAi": "ШІ",
         "Requester": "Запитувач",
         "Message": "повідомлення",
         "NoRequests": "Немає розмови",

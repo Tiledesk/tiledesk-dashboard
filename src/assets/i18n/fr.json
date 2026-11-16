@@ -1950,6 +1950,11 @@
     },
     "HistoryPage": {
         "Rating": "Évaluation",
+        "UserRatingTooltip": "Évaluation de l'utilisateur : {{value}}/5",
+        "NoUserRating": "Aucune évaluation",
+        "AiRatingTooltip": "Évaluation de l'IA : {{value}}/5",
+        "RatingUser": "Utilisateur",
+        "RatingAi": "IA",
         "Requester": "Demandeur",
         "Message": "Message",
         "NoRequests": "Pas de conversation",

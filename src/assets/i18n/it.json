@@ -1965,6 +1965,11 @@
     },
     "HistoryPage": {
         "Rating": "Valutazione",
+        "UserRatingTooltip": "Valutazione utente: {{value}}/5",
+        "NoUserRating": "Nessuna valutazione",
+        "AiRatingTooltip": "Valutazione AI: {{value}}/5",
+        "RatingUser": "Utente",
+        "RatingAi": "AI",
         "Requester": "Richiedente",
         "Message": "Messaggio",
         "NoRequests": "Nessuna conversazione",
