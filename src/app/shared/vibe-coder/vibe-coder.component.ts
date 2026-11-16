@@ -150,7 +150,7 @@ export class VibeCoderComponent implements OnDestroy {
       && this.attachments.length < this.maxAttachments;
   }
 
-  /** Home: needs a non-empty prompt. Modal: always, except while busy / uploading. */
+  /** Needs a non-empty prompt (Home and Create Agent modal), except while busy / uploading. */
   get canStart(): boolean {
     if (this.busy || this.isUploadingAttachments) {
       return false;
