@@ -2499,6 +2499,14 @@ print {
   flex-direction: column !important;
 }
 
+// VBC: input shell top sits 340px from the viewport top. The navbar is 60px,
+// so the gap under the navbar is 280px. Pickup stays 340px under the shell.
+$home-vibe-anchor-gap: 340px;
+$home-vibe-navbar-height: 60px;
+$home-vibe-anchor-offset: $home-vibe-anchor-gap - $home-vibe-navbar-height;
+$home-vibe-title-gap: 16px;
+$home-vibe-shell-height: 107px;
+
 .bg-card {
   opacity: 1;
   background-color: #fff;
@@ -2512,11 +2520,11 @@ print {
   z-index: 2;
   overflow: visible;
 
-  // VBC: no toolbar — collapse the empty 80px strip so the 340px anchor is exact
-  // (keep margin-top: 71px for the fixed navbar clearance)
+  // VBC: no toolbar. 60px is the navbar, and the only offset before the 280px gap.
   &--vbc {
     height: 0;
     min-height: 0;
+    margin-top: $home-vibe-navbar-height;
     overflow: hidden;
   }
 }
@@ -2905,6 +2913,13 @@ img {
   padding-left: 0px;
   padding-right: 0px;
   margin-top: 0px;
+
+  // VBC: navbar clearance is only .bg-card--vbc margin-top (60px).
+  // Drop the global .main-content margin/padding so they are not added on top.
+  &:has(.home-dashboard-inset--vbc) {
+    margin-top: 0;
+    padding-top: 0;
+  }
   // background: rgb(241, 245, 249);
   background: #fff;
   min-height: calc(100% - 70px) !important;
@@ -2969,11 +2984,6 @@ img {
   gap: 0.75rem;
 }
 
-/* VBC: anchor = top of .vibe-coder input shell (rounded box in DevTools) */
-$home-vibe-anchor-gap: 340px;
-$home-vibe-title-gap: 16px;
-$home-vibe-shell-height: 107px;
-
 .home-vibe-hero {
   position: relative;
   display: flex;
@@ -2995,8 +3005,8 @@ $home-vibe-shell-height: 107px;
   width: min(760px, 100%);
   box-sizing: border-box;
   margin: 0;
-  // First in-flow child (.home-vibe-coder → .vibe-coder) starts at 340px
-  padding: $home-vibe-anchor-gap 20px 0;
+  // Shell top = 280px under the navbar = 340px from the viewport top.
+  padding: $home-vibe-anchor-offset 20px 0;
   border: none;
   border-radius: 12px;
   background: transparent;
@@ -3010,7 +3020,7 @@ $home-vibe-shell-height: 107px;
     content: '';
     position: absolute;
     left: 50%;
-    top: calc(#{$home-vibe-anchor-gap} + #{$home-vibe-shell-height} / 2);
+    top: calc(#{$home-vibe-anchor-offset} + #{$home-vibe-shell-height} / 2);
     width: min(880px, 145%);
     height: min(340px, 160%);
     transform: translate(-50%, -50%);
@@ -3032,10 +3042,10 @@ $home-vibe-shell-height: 107px;
 }
 
 .home-vibe-coder-box__heading {
-  // Sit just above the .vibe-coder top edge (the 340px anchor)
+  // Sit just above the .vibe-coder top edge (280px under the navbar)
   position: absolute;
   left: 50%;
-  top: $home-vibe-anchor-gap;
+  top: $home-vibe-anchor-offset;
   transform: translate(-50%, calc(-100% - #{$home-vibe-title-gap}));
   display: flex;
   flex-direction: column;

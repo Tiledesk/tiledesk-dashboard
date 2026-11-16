@@ -11,6 +11,26 @@
 
 <div mat-dialog-content class="create-agent-modal__content">
 
+    <!-- Nome agente AI: campo e hint commentati
+    <mat-form-field appearance="outline" class="cc-mat-form-field">
+        <mat-label>{{'ChatbotName' | translate}}</mat-label>
+        <input matInput
+            [(ngModel)]="agentName"
+            (keydown.enter)="onNameEnter()"
+            cdkFocusInitial>
+        <mat-hint *ngIf="showPromptField && subtype === 'chatbot'">{{'AIAgentNameOptionalHint' | translate}}</mat-hint>
+    </mat-form-field>
+    -->
+
+    <div class="create-agent-modal__vibe" *ngIf="showPromptField">
+        <appdashboard-vibe-coder
+            #modalVibeCoder
+            [requirePromptToStart]="true"
+            [busy]="busy"
+            (start)="onVibeStart($event)">
+        </appdashboard-vibe-coder>
+    </div>
+
     <div class="agent-type-field" *ngIf="showAgentTypeSelect">
         <label class="agent-type-field__label">{{ 'ChooseTheAgentType' | translate }}</label>
         <ng-select
@@ -24,24 +44,6 @@
             [clearable]="false"
             [searchable]="false">
         </ng-select>
-    </div>
-
-    <mat-form-field appearance="outline" class="cc-mat-form-field">
-        <mat-label>{{'ChatbotName' | translate}}</mat-label>
-        <input matInput
-            [(ngModel)]="agentName"
-            (keydown.enter)="onNameEnter()"
-            cdkFocusInitial>
-        <mat-hint *ngIf="showPromptField && subtype === 'chatbot'">{{'AIAgentNameOptionalHint' | translate}}</mat-hint>
-    </mat-form-field>
-
-    <div class="create-agent-modal__vibe" *ngIf="showPromptField">
-        <appdashboard-vibe-coder
-            #modalVibeCoder
-            [requirePromptToStart]="false"
-            [busy]="busy"
-            (start)="onVibeStart($event)">
-        </appdashboard-vibe-coder>
     </div>
 
 </div>
