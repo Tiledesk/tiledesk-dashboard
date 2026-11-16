@@ -52,7 +52,7 @@
                   open_in_new
                 </span>
             </a>
-            <input [(ngModel)]="name" type="text" name="name" class="custom-input" [disabled]="kb.sitemap_origin || isImportedFileDetailReadonly">
+            <input [(ngModel)]="name" type="text" name="name" class="custom-input" [disabled]="kb.sitemap_origin || isImportedFileDetailReadonly || isMs365Folder">
 
             <!-- ------------------------------------ -->
             <!-- Use cese URL -->
@@ -120,6 +120,33 @@
         </div>
 
     </div>
+    <div *ngIf="isMs365Folder" class="ms365-folder-detail" style="margin-bottom: 12px;">
+        <div *ngIf="kb.external?.site_name" class="ms365-site" style="font-size: 13px; color: #566787;">{{ kb.external.site_name }}</div>
+        <div class="ms365-count" style="font-size: 13px; color: #566787;">
+            {{ 'KbPage.Ms365FilesCount' | translate: { count: ms365FileCount } }}
+        </div>
+        <div *ngIf="ms365Warning as warn" class="ms365-warning" style="font-size: 13px; color: #b45309; margin-top: 4px;">
+            <span class="material-icons-outlined" style="font-size: 15px; vertical-align: middle;">warning</span>
+            {{ warn.key | translate }}
+        </div>
+        <div class="refresh-rate-wpr" style="margin-top: 12px;">
+            <span class="input-label" style="white-space: nowrap; font-weight: 400; font-size: 14px;">
+                {{'KbPage.RefreshRate' | translate}}
+            </span>
+            <div class="scrape-types-select-wpr" style="font-size: 14px;margin-top: 3px;">
+                <ng-select class="scrape-types-select ms365-refresh-select" style="min-width: 200px; margin-bottom: 6px; max-width: 250px;"
+                    appendTo="body"
+                    [items]="refresh_rate | selectOptionsTranslate"
+                    bindLabel="name" bindValue="value"
+                    [clearable]="false" [searchable]="false"
+                    [(ngModel)]="selectedRefreshRate"
+                    (change)="onSelectRefreshRate(selectedRefreshRate)"
+                    [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled) && payIsVisible">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+
     <loading-spinner *ngIf="showSpinner"></loading-spinner>
     
     <ng-container *ngIf="!showSpinner">
@@ -203,7 +230,7 @@
 
    <ng-container *ngIf="!showSpinner" >
         <!-- TODO: remove condition sitemap -->
-        <div class="content-tags-wpr" style="margin-bottom: 8px;" *ngIf="kb.type !== 'sitemap'">
+        <div class="content-tags-wpr" style="margin-bottom: 8px;" *ngIf="kb.type !== 'sitemap' && !isMs365Folder">
             
             <div *ngIf="kb.type !== 'url'" class="situated-context-row"
                 style="display: flex; flex-direction: column; align-items: flex-start; gap: 6px; margin: 8px 0 12px; max-width: 640px;">
@@ -275,7 +302,7 @@
         </div>
     </ng-container>
 
-        <ng-container *ngIf="kb.type !== 'sitemap'  && kb.status === 300">
+        <ng-container *ngIf="kb.type !== 'sitemap' && !isMs365Folder && kb.status === 300">
         <!--
             Chunks are wrapped in a `mat-accordion` so the user can pull them up
             on demand without cluttering the modal. The accordion style mirrors
@@ -318,13 +345,13 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="kb.type !== 'sitemap' && kb.status !== 300 && kb.status !== 400"> 
+    <ng-container *ngIf="kb.type !== 'sitemap' && !isMs365Folder && kb.status !== 300 && kb.status !== 400"> 
         <div *ngIf="!showSpinner && kb._id" class="chunk-title" style="color: var(--secondary-text-color); font-size: 14px;">
             {{'KbPage.Indexing' | translate}}...
         </div>
     </ng-container>
 
-    <ng-container *ngIf="kb.type !== 'sitemap' && kb.status === 400"> 
+    <ng-container *ngIf="kb.type !== 'sitemap' && !isMs365Folder && kb.status === 400"> 
         <div *ngIf="!showSpinner && kb._id" class="chunk-title" style="color: var(--error-color); font-size: 14px;">
            {{'AnErrorHasOccurred' | translate}}
         </div>
@@ -379,8 +406,13 @@
         {{ "Update" | translate }}
     </button>
 
+    <button *ngIf="kb._id && isMs365Folder" class="mat-dialog-ok-btn ms365-save-btn"
+        [disabled]="ms365Saving" mat-button (click)="onSaveMs365FolderRefreshRate()">
+        {{ "Update" | translate }}
+    </button>
+
     <!-- || kb.type === 'url' -->
-     <button *ngIf="kb._id && (kb.type === 'sitemap')" class="btn btn-red btn-red-custom"
+     <button *ngIf="kb._id && (kb.type === 'sitemap' || isMs365Folder)" class="btn btn-red btn-red-custom"
         mat-button (click)="onDeleteKnowledgeBase()" style="height: 36px; line-height: 20px;">
         {{ "Delete" | translate }}
     </button>
@@ -395,7 +427,7 @@
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Save" | translate }}
     </button>
-    <button *ngIf="!kb._id && kb.type !== 'faq'" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || (!content && !source)"
+    <button *ngIf="!kb._id && kb.type !== 'faq' && !isMs365Folder" class="mat-dialog-ok-btn" [disabled]="name.length < 3 || (!content && !source)"
         mat-button (click)="onUpdateKnowledgeBase()">
         {{ "Save" | translate }}
     </button>

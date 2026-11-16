@@ -11,6 +11,11 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { NotifyService } from 'app/core/notify.service';
+import { KbSourcesService } from 'app/services/kb-sources.service';
+import { TranslateService } from '@ngx-translate/core';
+import {
+  getMs365Warning, isMs365Folder, isMs365File, isMs365Syncing, ms365FileCount, ms365LastSync, showsRefreshRate
+} from './kb-ms365-row.util';
 
 
 @Component({
@@ -49,6 +54,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Output() openAddKnowledgeBaseModal = new EventEmitter();
   @Output() checkStatus = new EventEmitter();
   @Output() runIndexing = new EventEmitter();
+  /** Sync now on a Microsoft 365 folder (the page calls the API and schedules the reloads). */
+  @Output() ms365SyncNow = new EventEmitter();
   @Output() loadPage = new EventEmitter();
   @Output() loadByFilter = new EventEmitter();
   
@@ -96,6 +103,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
     private rolesService: RolesService,
     public notify: NotifyService,
     private cdr: ChangeDetectorRef,
+    private kbSources: KbSourcesService,
+    private translate: TranslateService,
   ) {
     this.logger.log('[KB TABLE] HELLO SHOW_TABLE !!!!!', this.SHOW_TABLE);
     const brand = brandService.getBrand(); 
@@ -574,6 +583,46 @@ export class KnowledgeBaseTableComponent implements OnInit {
     } 
     // this.logger.log('onRunIndexing:: ', kb);
     this.runIndexing.emit(kb);
+  }
+
+  // ---------- Microsoft 365 ----------
+  isMs365Folder = isMs365Folder;
+  isMs365File = isMs365File;
+  isMs365Syncing = isMs365Syncing;
+  ms365Warning = getMs365Warning;
+  ms365FileCount = ms365FileCount;
+  ms365LastSync = ms365LastSync;
+  showRefreshRate = showsRefreshRate;
+
+  onMs365SyncNow(kb) {
+    if (!this.PERMISSION_TO_REINDEX_CONTENT) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+    this.ms365SyncNow.emit(kb);
+  }
+
+  /**
+   * Reconnect button of a folder whose connection needs to be renewed. connect() opens the
+   * popup synchronously, so it is called straight from the click. When it succeeds the folder
+   * is synced right away (the page does it) so the warning clears.
+   */
+  onMs365Reconnect(kb, event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    if (!this.PERMISSION_TO_REINDEX_CONTENT) {
+      this.notify.presentDialogNoPermissionToPermomfAction()
+      return;
+    }
+    const connectionId = kb?.external?.connection_id;
+    this.kbSources.connect(connectionId).then(result => {
+      if (result.status === 'connected') {
+        this.ms365SyncNow.emit(kb);
+      } else if (result.status === 'error' || result.status === 'blocked') {
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
+      }
+    });
   }
 
   onOpenBaseModalPreview() {

@@ -9,6 +9,10 @@ import { URL_kb_contents_tags } from 'app/utils/util';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { KbScrapeConfig, buildDefaultKbScrapeConfig } from 'app/models/kb-scrape-config-model';
 import { ModalKbScrapeSettingsComponent } from '../modal-kb-scrape-settings/modal-kb-scrape-settings.component';
+import { KbSourcesService } from 'app/services/kb-sources.service';
+import { NotifyService } from 'app/core/notify.service';
+import { TranslateService } from '@ngx-translate/core';
+import { getMs365Warning, isMs365Folder, isMs365File, isMs365Content, ms365ErrorCode, ms365FileCount, ms365LastSync } from '../knowledge-base-table/kb-ms365-row.util';
 
 
 @Component({
@@ -120,6 +124,9 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     private kbService: KnowledgeBaseService,
     public brandService: BrandService,
     private dialog: MatDialog,
+    private kbSources: KbSourcesService,
+    private notify: NotifyService,
+    private translate: TranslateService,
   ) {
      if (data && data.kb)
       this.kb = data.kb
@@ -139,7 +146,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
           this.refresh_rate.splice(0, 1);
       }
 
-     if (this.kb.type === 'url' || this.kb.type === 'sitemap') {
+     if (this.kb.type === 'url' || this.kb.type === 'sitemap' || this.kb.type === 'ms365_folder') {
         // Build the shared `scrapeConfig` from the values already saved on the
         // KB so the side-by-side settings dialog reflects the user's previous
         // choices on first open.
@@ -171,7 +178,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       this.situatedContextEnabled = Boolean(this.kb.situated_context);
 
       // Recupera i chunks solo se esiste _id
-      if (this.kb._id && this.kb.type !== 'sitemap') {
+      if (this.kb._id && this.kb.type !== 'sitemap' && this.kb.type !== 'ms365_folder') {
         this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
       } else {
         this.showSpinner = false;
@@ -225,7 +232,43 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   /** Imported file types are view-only in the detail modal (no Update). */
   get isImportedFileDetailReadonly(): boolean {
     const type = this.kb?.type;
-    return type === 'pdf' || type === 'txt' || type === 'docx' || type === 'regex_custom';
+    return type === 'pdf' || type === 'txt' || type === 'docx' || type === 'regex_custom' || isMs365File(this.kb);
+  }
+
+  // ---------- Microsoft 365 ----------
+  get isMs365Folder(): boolean { return isMs365Folder(this.kb); }
+  get ms365Warning() { return getMs365Warning(this.kb); }
+  get ms365FileCount(): number { return ms365FileCount(this.kb); }
+  get ms365LastSync(): any { return ms365LastSync(this.kb); }
+  ms365Saving = false;
+
+  /**
+   * Folder: only the refresh rate is editable, saved through PATCH /kb/sources/folders/:id
+   * (the generic PUT /kb is refused by the server for Microsoft 365 contents).
+   */
+  onSaveMs365FolderRefreshRate(): void {
+    if (!this.isMs365Folder || !this.kb._id || this.ms365Saving) {
+      return;
+    }
+    this.ms365Saving = true;
+    this.kbSources.updateFolderRefreshRate(this.kb._id, this.selectedRefreshRate).subscribe({
+      next: (res: any) => {
+        this.ms365Saving = false;
+        this.kb.refresh_rate = this.selectedRefreshRate;
+        if (res && res.schedule_pending) {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365SchedulePending'), 3, 'warning');
+        } else {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365RefreshSaved'), 2, 'done');
+        }
+        this.closeScrapeSettingsDialog();
+        this.dialogRef.close({ kb: this.kb, method: 'ms365-refresh-saved' });
+      },
+      error: (err: any) => {
+        this.ms365Saving = false;
+        const key = ms365ErrorCode(err) === 'refresh_not_available' ? 'KbPage.Ms365ErrRefreshNotAvailable' : 'KbPage.Ms365ErrRefreshSave';
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant(key), 4, 'report_problem');
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -317,6 +360,10 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
 
  
   onUpdateKnowledgeBase(){
+    // Microsoft 365 contents are never saved with PUT /kb (the server refuses it).
+    if (isMs365Content(this.kb)) {
+      return;
+    }
     if (this.kb.type === 'faq') {
       this.content = this.name + "\n" + this.content
     }

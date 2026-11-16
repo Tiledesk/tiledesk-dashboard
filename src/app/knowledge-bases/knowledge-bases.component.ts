@@ -42,6 +42,7 @@ import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowled
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
+import { isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
 import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
@@ -2731,6 +2732,9 @@ _presentDialogImportContents() {
         this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
         this.logger.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
         this.updateKbContent(res.kb)
+      } else if (res.method === 'ms365-refresh-saved') {
+        // the folder rate was saved by the modal through PATCH /kb/sources/folders/:id
+        this.scheduleMs365Reloads();
       } else if (res.method === 'delete') {
         
         this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
@@ -2767,7 +2771,11 @@ _presentDialogImportContents() {
     this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
 
-    if (kb.type !== 'sitemap') {
+    if (isMs365Folder(kb)) {
+      this.presentDialogComfimDeleteSitemap(kb, 'KbPage.Ms365DeleteFolder')
+    } else if (isMs365File(kb)) {
+      this.presentDialogComfimDeleteSitemap(kb, 'KbPage.Ms365DeleteChild')
+    } else if (kb.type !== 'sitemap') {
       const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         hasBackdrop: true,
@@ -2787,11 +2795,12 @@ _presentDialogImportContents() {
     }
   }
 
-  presentDialogComfimDeleteSitemap(kb) {
+  /** Cascade confirm for a sitemap; also used (with its own text) for Microsoft 365 folders and files. */
+  presentDialogComfimDeleteSitemap(kb, htmlKey: string = 'KbPage.DeletingTheSitemapDeleteTheContentsStrong') {
      kb.deleting = false;
      Swal.fire({
       title: this.translate.instant('Warning'),
-      html: this.translate.instant('KbPage.DeletingTheSitemapDeleteTheContentsStrong'),
+      html: this.translate.instant(htmlKey),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: true,
@@ -3062,6 +3071,27 @@ _presentDialogImportContents() {
     };
     reload();
     this.ms365ReloadTimers = [3000, 10000, 30000].map(ms => setTimeout(reload, ms));
+  }
+
+  /**
+   * Sync now on a Microsoft 365 folder: 202 -> toast and the 0/3/10/30 s reloads;
+   * 409 sync_running -> "already syncing"; anything else -> error toast.
+   */
+  onMs365SyncNow(kb) {
+    this.kbSources.syncFolder(kb._id).subscribe({
+      next: () => {
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365SyncStarted'), 2, 'done');
+        this.scheduleMs365Reloads();
+      },
+      error: (err) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] syncFolder error', err);
+        if (err?.status === 409 && ms365ErrorCode(err) === 'sync_running') {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365AlreadySyncing'), 3, 'sync');
+        } else {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365SyncFailed'), 4, 'report_problem');
+        }
+      }
+    });
   }
 
   private clearMs365ReloadTimers() {
@@ -4075,7 +4105,8 @@ _presentDialogImportContents() {
         this.kbsContentTotalCount = Math.max(0, (Number(this.kbsContentTotalCount) || 0) - 1);
         this.syncNamespaceContentCount(this.kbsContentTotalCount);
         this.hasRemovedKb = true;
-        if (kb.type === 'sitemap' && this.kbTableComponent) {
+        if ((kb.type === 'sitemap' || isMs365Folder(kb)) && this.kbTableComponent) {
+          // a folder takes its imported files with it: reload the list like a sitemap
           this.kbTableComponent.resetFiltersAfterSitemapDelete();
         } else {
           this.refreshKbsList = !this.refreshKbsList;
@@ -4092,6 +4123,13 @@ _presentDialogImportContents() {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR delete kb: ", err);
       kb.deleting = false;
       //this.kbid_selected.deleting = false;
+
+      // Microsoft 365: remove_failed / sync_running -> error toast, the list stays as it is
+      const ms365Key = ms365DeleteErrorKey(err);
+      if (ms365Key) {
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant(ms365Key), 4, 'report_problem');
+        return;
+      }
 
       // this.onOpenErrorModal(error);
       Swal.fire({
