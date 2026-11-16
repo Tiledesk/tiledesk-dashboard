@@ -23,7 +23,7 @@ describe('ModalMs365ImportComponent', () => {
 
   function setup(conns: any[], dataOverride: any = {}, render = false) {
     svc = jasmine.createSpyObj('KbSourcesService',
-      ['getConnections', 'connect', 'getRoots', 'getDrives', 'getChildren', 'importItems']);
+      ['getConnections', 'connect', 'cancelConnect', 'getRoots', 'getDrives', 'getChildren', 'importItems']);
     svc.getConnections.and.returnValue(of(conns));
     svc.getRoots.and.returnValue(of({ items: [
       { kind: 'onedrive', id: 'me', name: 'My OneDrive', drive_id: 'd-me' },
@@ -87,6 +87,7 @@ describe('ModalMs365ImportComponent', () => {
     svc.connect.and.returnValue(new Promise(r => resolve = r));
     component.startConnect();
     component.cancelConnect();
+    expect(svc.cancelConnect).toHaveBeenCalled();
     expect(component.connectState).toBe('idle');
     resolve({ status: 'connected', connection_id: 'c1' });
     flush();
@@ -240,6 +241,26 @@ describe('ModalMs365ImportComponent', () => {
       refresh_rate: 'weekly', tags: ['hr']
     });
     expect(dialogRef.close).toHaveBeenCalledWith({ contents: [{ _id: 'k1', type: 'ms365_folder', name: 'Folder' }] });
+  });
+
+  it('site_name is capped at 200 characters', () => {
+    setup([activeConn]);
+    svc.getRoots.and.returnValue(of({ items: [
+      { kind: 'onedrive', id: 'me', name: 'My OneDrive', drive_id: 'd-me' },
+      { kind: 'site', id: 's1', name: 'x'.repeat(250) }] }));
+    pickAndGoToOptions(true);
+    svc.importItems.and.returnValue(of({ contents: [] }));
+    component.onImport();
+    const req: any = svc.importItems.calls.mostRecent().args[0];
+    expect(req.items[0].site_name).toBe('x'.repeat(200));
+  });
+
+  it('destroying the modal while connect is pending closes the popup', () => {
+    setup([]);
+    svc.connect.and.returnValue(new Promise(() => {}));
+    component.startConnect();
+    fixture.destroy();
+    expect(svc.cancelConnect).toHaveBeenCalled();
   });
 
   it('OneDrive items carry no site_name', () => {

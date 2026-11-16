@@ -102,6 +102,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     // a pending sign-in result must not touch a closed dialog
     this.connectAttempt++;
     this.browseToken++;
+    this.kbSources.cancelConnect(); // close a still-open sign-in popup
   }
 
   get refreshRateFeatureOn(): boolean {
@@ -145,6 +146,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   cancelConnect() {
     this.connectAttempt++;
     this.connectState = 'idle';
+    this.kbSources.cancelConnect();
   }
 
   private handleConnectResult(result: { status: string; reason?: string; connection_id?: string }, connectionId?: string) {
@@ -329,7 +331,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     }
     if (this.selected.size >= MAX_SELECTED_ITEMS) { return; }
     const sel: Selected = { drive_id: this.currentDriveId, item_id: item.id, kind: item.kind as 'folder' | 'file' };
-    if (this.currentSite) { sel.site_name = this.currentSite.name; }
+    if (this.currentSite) { sel.site_name = (this.currentSite.name || '').slice(0, 200); }
     this.selected.set(key, sel);
   }
 

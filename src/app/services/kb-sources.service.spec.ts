@@ -253,15 +253,59 @@ describe('KbSourcesService', () => {
     }));
   });
 
-  describe('connect with an invalid server base URL', () => {
-    it('resolves connect_failed without opening a popup', fakeAsync(() => {
-      setup('http://');
+  describe('connect origin from authorize_url', () => {
+    beforeEach(() => setup());
+
+    it('ignores every message before /connect answers', fakeAsync(() => {
       let res: any;
       service.connect('c1').then(r => res = r);
+      post('https://api.example.com', { type: 'ms365-connect', status: 'connected' });
+      post(BASE.slice(0, -1), { type: 'ms365-connect', status: 'connected' });
       flushMicrotasks();
-      expect(openSpy).not.toHaveBeenCalled();
+      expect(res).toBeUndefined();
+      http.expectOne(URL_ + '/microsoft365/connect').flush({ authorize_url: 'https://api.example.com/s' });
+      popup.closed = true; tick(1000); flushMicrotasks();
+      expect(res.status).toBe('closed');
+    }));
+
+    it('accepts the origin of authorize_url even when it differs from SERVER_BASE_URL, and ignores SERVER_BASE_URL origin', fakeAsync(() => {
+      let res: any;
+      service.connect('c1').then(r => res = r);
+      http.expectOne(URL_ + '/microsoft365/connect').flush({ authorize_url: 'https://public.example.org/kb/start?t=1' });
+      post('https://api.example.com', { type: 'ms365-connect', status: 'connected' });
+      flushMicrotasks();
+      expect(res).toBeUndefined();
+      post('https://public.example.org', { type: 'ms365-connect', status: 'connected', connection_id: 'c9' });
+      flushMicrotasks();
+      expect(res.connection_id).toBe('c9');
+    }));
+
+    it('resolves connect_failed on an unparsable authorize_url', fakeAsync(() => {
+      let res: any;
+      service.connect('c1').then(r => res = r);
+      http.expectOne(URL_ + '/microsoft365/connect').flush({ authorize_url: 'http://' });
+      flushMicrotasks();
+      expect(popup.close).toHaveBeenCalled();
       expect(res).toEqual({ status: 'error', reason: 'connect_failed' });
     }));
+
+    it('cancelConnect closes the popup, drops listener and timer and resolves closed', fakeAsync(() => {
+      const removeSpy = spyOn(window, 'removeEventListener').and.callThrough();
+      let res: any;
+      service.connect('c1').then(r => res = r);
+      service.cancelConnect();
+      flushMicrotasks();
+      expect(popup.close).toHaveBeenCalled();
+      expect(removeSpy).toHaveBeenCalledWith('message', jasmine.any(Function));
+      expect(res).toEqual({ status: 'closed' });
+      http.expectOne(URL_ + '/microsoft365/connect').flush({ authorize_url: 'https://api.example.com/s' });
+      expect(popup.location.href).toBe('');
+      tick(5000);
+    }));
+
+    it('cancelConnect with nothing pending is a no-op', () => {
+      expect(() => service.cancelConnect()).not.toThrow();
+    });
   });
 
   describe('connect with a relative server base URL', () => {

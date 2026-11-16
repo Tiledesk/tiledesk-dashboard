@@ -16,6 +16,7 @@ export type { KbSourceProvider, KbSourceProviders } from 'app/models/kb-sources.
 export class KbSourcesService {
 
   SERVER_BASE_PATH: string;
+  private activeConnectCancel: (() => void) | null = null;
   TOKEN: string;
   project_id: string;
 
@@ -104,13 +105,7 @@ export class KbSourcesService {
    * An HTTP failure closes the popup and resolves { status: 'error', reason: 'connect_failed' }.
    */
   connect(connectionId?: string): Promise<Ms365ConnectResult> {
-    let serverOrigin: string;
-    try {
-      serverOrigin = new URL(this.SERVER_BASE_PATH, window.location.href).origin;
-    } catch (e) {
-      this.logger.error('[KB-SOURCES.SERVICE] - connect: invalid SERVER_BASE_URL ', e);
-      return Promise.resolve({ status: 'error', reason: 'connect_failed' });
-    }
+    this.cancelConnect(); // one popup at a time
     const popup = window.open('', 'ms365-connect', 'width=520,height=680');
     if (!popup) {
       return Promise.resolve({ status: 'blocked' });
@@ -118,15 +113,25 @@ export class KbSourcesService {
 
     return new Promise<Ms365ConnectResult>((resolve) => {
       let done = false;
+      // the callback lives under the same public base as authorize_url (/start), which may differ
+      // from SERVER_BASE_URL: the expected origin is known only once /connect answers
+      let expectedOrigin: string | null = null;
       const finish = (result: Ms365ConnectResult) => {
         if (done) { return; }
         done = true;
         window.removeEventListener('message', onMessage);
         clearInterval(timer);
+        if (this.activeConnectCancel === cancel) { this.activeConnectCancel = null; }
         resolve(result);
       };
+      const cancel = () => {
+        if (done) { return; }
+        try { popup.close(); } catch (e) { /* already gone */ }
+        finish({ status: 'closed' });
+      };
+      this.activeConnectCancel = cancel;
       const onMessage = (event: MessageEvent) => {
-        if (event.origin !== serverOrigin || event.source !== popup) { return; }
+        if (!expectedOrigin || event.origin !== expectedOrigin || event.source !== popup) { return; }
         const data = event.data;
         if (!data || data.type !== 'ms365-connect' || (data.status !== 'connected' && data.status !== 'error')) { return; }
         finish({ status: data.status, reason: data.reason, connection_id: data.connection_id });
@@ -143,19 +148,34 @@ export class KbSourcesService {
       ).subscribe({
         next: (res) => {
           if (done) { return; }
-          if (!res || typeof res.authorize_url !== 'string' || !res.authorize_url) {
+          let origin: string | null = null;
+          if (res && typeof res.authorize_url === 'string' && res.authorize_url) {
+            try {
+              origin = new URL(res.authorize_url, window.location.href).origin;
+            } catch (e) {
+              this.logger.error('[KB-SOURCES.SERVICE] - connect: invalid authorize_url ', e);
+            }
+          }
+          if (!origin || origin === 'null') {
             popup.close();
             finish({ status: 'error', reason: 'connect_failed' });
             return;
           }
+          expectedOrigin = origin;
           popup.location.href = res.authorize_url;
         },
         error: (err) => {
+          if (done) { return; }
           this.logger.error('[KB-SOURCES.SERVICE] - connect error ', err);
           popup.close();
           finish({ status: 'error', reason: 'connect_failed' });
         }
       });
     });
+  }
+
+  /** Closes the pending sign-in popup (if any), removes its listener/timer and resolves connect() with 'closed'. */
+  cancelConnect(): void {
+    if (this.activeConnectCancel) { this.activeConnectCancel(); }
   }
 }
