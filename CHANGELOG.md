@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.7.277-stage
+- Refactors the Create Agent modal: the description is required to start, as on Home, and Start stays disabled while it is empty. The type select moves to the bottom, after the vibe coder
+- Adds the AI rating and its sentiment to the conversations history list and details, and redesigns the rating display as segmented bars.
+
 ### 2.7.276-stage
 - Improves Home vibe coder spacing 
 - Shows “Updated …” next to the icon on the Home last-edited agent card (replaces Draft/Published)
