@@ -8,7 +8,7 @@ import {
   KbImportRequest, KbImportResponse, KbSourceConnection, KbSourceItems, KbSourceProviders, Ms365ConnectResult
 } from 'app/models/kb-sources.model';
 
-export { KbSourceProvider, KbSourceProviders } from 'app/models/kb-sources.model';
+export type { KbSourceProvider, KbSourceProviders } from 'app/models/kb-sources.model';
 
 @Injectable({
   providedIn: 'root'
@@ -104,11 +104,17 @@ export class KbSourcesService {
    * An HTTP failure closes the popup and resolves { status: 'error', reason: 'connect_failed' }.
    */
   connect(connectionId?: string): Promise<Ms365ConnectResult> {
+    let serverOrigin: string;
+    try {
+      serverOrigin = new URL(this.SERVER_BASE_PATH, window.location.href).origin;
+    } catch (e) {
+      this.logger.error('[KB-SOURCES.SERVICE] - connect: invalid SERVER_BASE_URL ', e);
+      return Promise.resolve({ status: 'error', reason: 'connect_failed' });
+    }
     const popup = window.open('', 'ms365-connect', 'width=520,height=680');
     if (!popup) {
       return Promise.resolve({ status: 'blocked' });
     }
-    const serverOrigin = new URL(this.SERVER_BASE_PATH, window.location.href).origin;
 
     return new Promise<Ms365ConnectResult>((resolve) => {
       let done = false;
@@ -120,8 +126,10 @@ export class KbSourcesService {
         resolve(result);
       };
       const onMessage = (event: MessageEvent) => {
-        if (event.origin !== serverOrigin || !event.data || event.data.type !== 'ms365-connect') { return; }
-        finish({ status: event.data.status, reason: event.data.reason, connection_id: event.data.connection_id });
+        if (event.origin !== serverOrigin || event.source !== popup) { return; }
+        const data = event.data;
+        if (!data || data.type !== 'ms365-connect' || (data.status !== 'connected' && data.status !== 'error')) { return; }
+        finish({ status: data.status, reason: data.reason, connection_id: data.connection_id });
       };
       const timer = setInterval(() => {
         if (popup.closed) { finish({ status: 'closed' }); }
@@ -133,7 +141,15 @@ export class KbSourcesService {
         { connection_id: connectionId, origin: window.location.origin },
         this.httpOptions
       ).subscribe({
-        next: (res) => { if (!done) { popup.location.href = res.authorize_url; } },
+        next: (res) => {
+          if (done) { return; }
+          if (!res || typeof res.authorize_url !== 'string' || !res.authorize_url) {
+            popup.close();
+            finish({ status: 'error', reason: 'connect_failed' });
+            return;
+          }
+          popup.location.href = res.authorize_url;
+        },
         error: (err) => {
           this.logger.error('[KB-SOURCES.SERVICE] - connect error ', err);
           popup.close();

@@ -32,8 +32,11 @@ describe('KbSourcesService', () => {
     openSpy = spyOn(window, 'open').and.returnValue(popup as any);
   }
 
-  function post(origin: string, data: any) {
-    window.dispatchEvent(new MessageEvent('message', { origin, data }));
+  function post(origin: string, data: any, source: any = 'popup') {
+    const ev = new MessageEvent('message', { origin, data });
+    // MessageEvent only accepts real windows as source: override on the instance
+    Object.defineProperty(ev, 'source', { value: source === 'popup' ? popup : source });
+    window.dispatchEvent(ev);
   }
 
   afterEach(() => http.verify());
@@ -151,6 +154,44 @@ describe('KbSourcesService', () => {
       expect(res.status).toBe('connected');
     }));
 
+    it('ignores a message from another window on the server origin', fakeAsync(() => {
+      let res: any;
+      service.connect('c1').then(r => res = r);
+      answerConnect();
+      post('https://api.example.com', { type: 'ms365-connect', status: 'connected' }, window);
+      post('https://api.example.com', { type: 'ms365-connect', status: 'connected' }, null);
+      flushMicrotasks();
+      expect(res).toBeUndefined();
+      post('https://api.example.com', { type: 'ms365-connect', status: 'connected' });
+      flushMicrotasks();
+      expect(res.status).toBe('connected');
+    }));
+
+    it('ignores a status other than connected or error', fakeAsync(() => {
+      let res: any;
+      service.connect('c1').then(r => res = r);
+      answerConnect();
+      post('https://api.example.com', { type: 'ms365-connect', status: 'blocked' });
+      post('https://api.example.com', { type: 'ms365-connect', status: 'closed' });
+      post('https://api.example.com', { type: 'ms365-connect' });
+      flushMicrotasks();
+      expect(res).toBeUndefined();
+      popup.closed = true;
+      tick(1000);
+      flushMicrotasks();
+      expect(res.status).toBe('closed');
+    }));
+
+    it('closes the popup and resolves connect_failed when authorize_url is missing', fakeAsync(() => {
+      let res: any;
+      service.connect('c1').then(r => res = r);
+      http.expectOne(URL_ + '/microsoft365/connect').flush({});
+      flushMicrotasks();
+      expect(popup.close).toHaveBeenCalled();
+      expect(popup.location.href).toBe('');
+      expect(res).toEqual({ status: 'error', reason: 'connect_failed' });
+    }));
+
     it('ignores a message with another type', fakeAsync(() => {
       let res: any;
       service.connect('c1').then(r => res = r);
@@ -209,6 +250,17 @@ describe('KbSourcesService', () => {
       flushMicrotasks();
       expect(count).toBe(1);
       expect(res.status).toBe('connected');
+    }));
+  });
+
+  describe('connect with an invalid server base URL', () => {
+    it('resolves connect_failed without opening a popup', fakeAsync(() => {
+      setup('http://');
+      let res: any;
+      service.connect('c1').then(r => res = r);
+      flushMicrotasks();
+      expect(openSpy).not.toHaveBeenCalled();
+      expect(res).toEqual({ status: 'error', reason: 'connect_failed' });
     }));
   });
 
