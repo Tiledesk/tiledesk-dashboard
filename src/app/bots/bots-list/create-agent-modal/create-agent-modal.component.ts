@@ -1,8 +1,11 @@
-import { Component, Inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnDestroy, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { MAX_PROMPT_LENGTH, provisionalAgentName } from 'app/utils/agent-from-prompt.util';
-import { VibeCoderComponent } from 'app/shared/vibe-coder/vibe-coder.component';
+import { AgentPromptAttachment, MAX_PROMPT_LENGTH, provisionalAgentName } from 'app/utils/agent-from-prompt.util';
+import { VibeCoderComponent, VibeCoderStartPayload } from 'app/shared/vibe-coder/vibe-coder.component';
+import { Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 /** What the caller hands to the modal. */
 export interface CreateAgentModalData {
@@ -42,6 +45,8 @@ export interface CreateAgentModalResult {
   provisionalName?: boolean;
   /** Parent should open `CreateChatbotModal` for voice / copilot subtypes. */
   openCreateChatbotModal?: boolean;
+  /** Uploaded vibe-coder files (retention URLs) for CDS handoff. */
+  attachments?: AgentPromptAttachment[];
 }
 
 export interface AgentTypeOption {
@@ -64,11 +69,9 @@ export interface AgentTypeOption {
   templateUrl: './create-agent-modal.component.html',
   styleUrls: ['./create-agent-modal.component.scss']
 })
-export class CreateAgentModalComponent {
+export class CreateAgentModalComponent implements AfterViewInit, OnDestroy {
 
   public readonly maxPromptLength = MAX_PROMPT_LENGTH;
-
-  @ViewChild('modalVibeCoder') modalVibeCoder?: VibeCoderComponent;
 
   public agentName: string = '';
   public agentPrompt: string = '';
@@ -79,15 +82,21 @@ export class CreateAgentModalComponent {
   /** Home: block Conversational Create until the vibe-box prompt is non-empty. */
   public requirePromptForConversational = false;
   public homeBuildPrompt = '';
+  public busy = false;
 
   /** Always shown: Conversational + Voice (+ Voice VXML when customization.voice). */
   public showAgentTypeSelect = true;
   public agentTypeOptions: AgentTypeOption[] = [];
 
+  @ViewChild('modalVibeCoder') modalVibeCoder?: VibeCoderComponent;
+
+  private readonly destroy$ = new Subject<void>();
+
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: CreateAgentModalData,
     public dialogRef: MatDialogRef<CreateAgentModalComponent>,
     private translate: TranslateService,
+    private router: Router,
   ) {
     if (data) {
       this.subtype = data.subtype || 'chatbot';
@@ -99,19 +108,37 @@ export class CreateAgentModalComponent {
     } else {
       this.buildAgentTypeOptions(false);
     }
+
+    // Same pattern as KB preview modals: leave no dialog open after a route change.
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
+      takeUntil(this.destroy$),
+    ).subscribe(() => {
+      this.dialogRef.close();
+    });
   }
 
-  /** Prompt already collected on Home, or typed in the shared vibe coder. */
+  ngAfterViewInit(): void {
+    if (this.homeBuildPrompt && this.modalVibeCoder) {
+      this.modalVibeCoder.setPrompt(this.homeBuildPrompt, false);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  /** Prompt already collected on Home (or typed in this modal when `showPromptField`). */
   get hasBuildPrompt(): boolean {
     if (this.homeBuildPrompt) {
       return true;
     }
-    return !!this.typedPrompt;
-  }
-
-  /** Text currently in the shared vibe coder (flows path). */
-  private get typedPrompt(): string {
-    return (this.modalVibeCoder?.buildPrompt || this.agentPrompt || '').trim();
+    const fromVibe = (this.modalVibeCoder?.buildPrompt || '').trim();
+    if (fromVibe) {
+      return true;
+    }
+    return !!(this.agentPrompt || '').trim();
   }
 
   /** Inline hint when Conversational Create is blocked for a missing Home prompt. */
@@ -183,7 +210,10 @@ export class CreateAgentModalComponent {
   }
 
   /** Flows path: vibe coder Start replaces Create. */
-  onVibeStart(prompt: string): void {
+  onVibeStart(payload: VibeCoderStartPayload): void {
+    if (this.busy) {
+      return;
+    }
     if (this.shouldOpenCreateChatbotModal(this.subtype)) {
       this.dialogRef.close({
         openCreateChatbotModal: true,
@@ -192,17 +222,20 @@ export class CreateAgentModalComponent {
       return;
     }
 
-    const text = (prompt || '').trim() || this.homeBuildPrompt;
+    const prompt = (payload?.prompt || '').trim() || this.homeBuildPrompt;
+    const attachments = Array.isArray(payload?.attachments) ? payload.attachments : [];
     const typed = (this.agentName || '').trim();
     const provisional = typed.length < 2;
-    if (provisional && text.length < 2) {
-      return;
-    }
+    const chatbotName = provisional
+      ? provisionalAgentName(prompt)
+      : typed;
+
     this.dialogRef.close({
-      chatbotName: provisional ? provisionalAgentName(text) : typed,
+      chatbotName,
       subType: this.subtype,
-      prompt: text,
+      prompt,
       ...(provisional ? { provisionalName: true } : {}),
+      ...(attachments.length ? { attachments } : {}),
     } as CreateAgentModalResult);
   }
 
@@ -215,7 +248,7 @@ export class CreateAgentModalComponent {
       } as CreateAgentModalResult);
       return;
     }
-    const prompt = this.typedPrompt || this.homeBuildPrompt;
+    const prompt = (this.agentPrompt || '').trim() || this.homeBuildPrompt;
     const typed = (this.agentName || '').trim();
     const provisional = typed.length < 2 && this.nameIsOptional;
     this.dialogRef.close({

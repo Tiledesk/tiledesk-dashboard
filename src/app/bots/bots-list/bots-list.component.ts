@@ -31,7 +31,7 @@ import { WebhookService } from 'app/services/webhook.service';
 import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-modal.component';
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
 import { CreateAgentModalComponent, CreateAgentModalResult } from './create-agent-modal/create-agent-modal.component';
-import { saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
+import { AgentPromptAttachment, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
 import { AgentPromptsService } from 'app/services/agent-prompts.service';
 import { aiAgents, automations } from 'app/integrations/utils';
@@ -170,6 +170,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   orderByChatbotName: boolean = false;
   pageName: string;
   isVisiblePAY: boolean;
+  /** Env key VBC: New Flow → CreateAgent (T) vs CreateFlows modal (F / missing). */
+  isVisibleVBC = false;
   chatbotNumExceedChatbotLimit: boolean = false;
 
   isAllFlowRoute: boolean
@@ -180,6 +182,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   chatbotName: string;
   /** The description of the agent to build, left for the Design Studio once the agent exists. */
   chatbotPrompt: string = '';
+  chatbotAttachments: AgentPromptAttachment[] = [];
   /** The name was made from the description, not typed (CreateAgentModalResult.provisionalName). */
   chatbotNameIsProvisional: boolean = false;
   chatbotToImportSubtype: string;
@@ -1445,6 +1448,15 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.isVisiblePAY = true;
         }
       }
+
+      if (key.includes("VBC")) {
+        let vbc = key.split(":");
+        if (vbc[1] === "F") {
+          this.isVisibleVBC = false;
+        } else {
+          this.isVisibleVBC = true;
+        }
+      }
     })
 
     if (!this.public_Key.includes("PAY")) {
@@ -1453,6 +1465,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
     if (!this.public_Key.includes("ANA")) {
       this.isVisibleAnalytics = false;
+    }
+
+    if (!this.public_Key.includes("VBC")) {
+      this.isVisibleVBC = false;
     }
   }
 
@@ -1808,12 +1824,16 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           openEditor()
           return
         }
+        const readyAttachments = Array.isArray(this.chatbotAttachments)
+          ? this.chatbotAttachments.filter((a) => a && a.url && a.name)
+          : [];
         saveAgentPrompt({
           botId: faqKb['_id'],
           prompt: this.chatbotPrompt,
           language: this.botDefaultLangCode,
           createdAt: Date.now(),
-          ...(this.chatbotNameIsProvisional ? { provisionalName: faqKb['name'] || this.chatbotName } : {})
+          ...(this.chatbotNameIsProvisional ? { provisionalName: faqKb['name'] || this.chatbotName } : {}),
+          ...(readyAttachments.length ? { attachments: readyAttachments } : {}),
         });
         // The prompt is saved with its agent before leaving the page (the editor opens in the
         // same tab); the save never fails and has a time limit, so the agent always opens.
@@ -1821,7 +1841,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           id_faq_kb: faqKb['_id'],
           text: this.chatbotPrompt,
           language: this.botDefaultLangCode,
-          source: 'bots_list'
+          source: 'bots_list',
+          attachments: readyAttachments,
         }).subscribe(() => openEditor())
       }
 
@@ -1834,6 +1855,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.logger.log('[BOT-LIST] CREATE FAQKB - POST REQUEST * COMPLETE *');
       this.chatbotName = null;
       this.chatbotPrompt = '';
+      this.chatbotAttachments = [];
       this.chatbotNameIsProvisional = false;
       // this.getFaqKbByProjectId();
       // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
@@ -2055,13 +2077,20 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
 
-  /** Header "New Flow" (route all): open create-agent modal directly (no AI Agents / Automations dropdown). */
+  /**
+   * Header "New Flow" (route all) + empty-state AI Agents card.
+   * VBC:T → CreateAgent modal; VBC:F / missing → previous CreateFlows modal.
+   */
   presentNewFlowCreateAgent() {
     if (!this.PERMISSION_TO_ADD_FLOWS) {
       this.notify.presentDialogNoPermissionToPermomfAction();
       return;
     }
-    this.presentModalCreateAgent('chatbot');
+    if (this.isVisibleVBC) {
+      this.presentModalCreateAgent('chatbot');
+      return;
+    }
+    this.presentDialogCreateFlows(true);
   }
 
   presentDialogCreateFlows(isChatbotRoute) {
@@ -2131,8 +2160,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     // The AI Agent is the first creation path moved onto the new modal, and only where agents are
     // born V3: the description is built by the AI chat, which exists in that editor alone. The
     // other paths -- voice, webhook, copilot, templates -- still open the old modal, and each is
-    // moved over on its own.
-    if (subtype === 'chatbot' && this.createsV3Agents()) {
+    // moved over on its own. When VBC is off, keep the previous CreateChatbot name-only flow.
+    if (subtype === 'chatbot' && this.createsV3Agents() && this.isVisibleVBC) {
       this.presentModalCreateAgent(subtype);
       return;
     }
@@ -2174,7 +2203,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     const dialogRef = this.dialog.open(CreateAgentModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '480px',
+      width: '720px',
+      maxWidth: '92vw',
       data: {
         subtype: subtype,
         // The flag stays in the modal's own interface: it will be opened from places where a
@@ -2196,6 +2226,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (!result.chatbotName) { return; }
       this.chatbotName = result.chatbotName;
       this.chatbotPrompt = result.prompt || '';
+      this.chatbotAttachments = Array.isArray(result.attachments) ? result.attachments : [];
       this.chatbotNameIsProvisional = result.provisionalName === true;
       this.createBlankTilebot(result.subType);
     });

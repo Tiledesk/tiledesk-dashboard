@@ -23,7 +23,7 @@ import { CreateAgentModalComponent } from './create-agent-modal.component';
     MatInputModule,
     MatButtonModule,
     NgSelectModule,
-    VibeCoderModule
+    VibeCoderModule,
   ],
   exports: [
     CreateAgentModalComponent
