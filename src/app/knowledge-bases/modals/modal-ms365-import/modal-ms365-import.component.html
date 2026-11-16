@@ -65,6 +65,9 @@
             <button type="button" class="ms365-primary-btn" (click)="startConnect(lastConnectionId)">
                 {{ 'KbPage.Ms365OpenAgain' | translate }}
             </button>
+            <button *ngIf="popupBlocked" type="button" class="ms365-primary-btn ms365-continue-btn" (click)="continueInWindow(lastConnectionId)">
+                {{ 'KbPage.Ms365ContinueHere' | translate }}
+            </button>
             <button type="button" class="ms365-link-btn" (click)="cancelConnect()">{{ 'Cancel' | translate }}</button>
         </div>
     </ng-container>
@@ -102,6 +105,9 @@
             <p *ngIf="connectError" class="ms365-error">{{ connectError.key | translate: connectError.params }}</p>
             <button type="button" class="ms365-primary-btn" (click)="startConnect(connection._id)">
                 {{ 'KbPage.Ms365OpenAgain' | translate }}
+            </button>
+            <button *ngIf="popupBlocked" type="button" class="ms365-primary-btn ms365-continue-btn" (click)="continueInWindow(connection._id)">
+                {{ 'KbPage.Ms365ContinueHere' | translate }}
             </button>
         </div>
 

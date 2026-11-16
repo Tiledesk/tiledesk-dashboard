@@ -44,6 +44,8 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   reconnectTarget: KbSourceConnection | null = null;
   private connectAttempt = 0;
   lastConnectionId: string | undefined;
+  popupBlocked = false;
+  private initialConnectionId: string | undefined;
 
   // ---- step 2: browse ----
   connection: KbSourceConnection | null = null;
@@ -81,6 +83,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     this.t_params = data.t_params;
     this.id_project = data.id_project;
     this.project_name = data.project_name;
+    this.initialConnectionId = data.initialConnectionId;
     this.maxFileSizeMb = Math.round((data.kbMaxFileSize || 50 * MB) / MB);
     const brand = brandService.getBrand();
     this.salesEmail = brand['CONTACT_SALES_EMAIL'];
@@ -95,7 +98,12 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.loadConnections();
+    this.loadConnections(() => {
+      if (!this.initialConnectionId) { return; }
+      const conn = this.connections.find(c => c._id === this.initialConnectionId);
+      this.initialConnectionId = undefined;
+      if (conn) { this.chooseConnection(conn); }
+    });
   }
 
   ngOnDestroy(): void {
@@ -137,14 +145,25 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     this.lastConnectionId = connectionId;
     this.connectState = 'waiting';
     this.connectError = null;
+    this.popupBlocked = false;
     this.kbSources.connect(connectionId).then((result) => {
       if (attempt !== this.connectAttempt) { return; } // cancelled
       this.handleConnectResult(result, connectionId);
     });
   }
 
+  /** Full-page sign-in when pop-ups are blocked; the page comes back with ?ms365=... */
+  continueInWindow(connectionId?: string) {
+    this.connectError = null;
+    this.kbSources.connectInWindow(connectionId).catch(() => {
+      this.connectState = 'retry';
+      this.connectError = { key: 'KbPage.Ms365ErrConnect' };
+    });
+  }
+
   cancelConnect() {
     this.connectAttempt++;
+    this.popupBlocked = false;
     this.connectState = 'idle';
     this.kbSources.cancelConnect();
   }
@@ -162,6 +181,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     }
     if (result.status === 'blocked' || result.status === 'closed') {
       this.connectState = 'retry';
+      this.popupBlocked = result.status === 'blocked';
       return;
     }
     // status === 'error'
@@ -351,6 +371,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     this.connection = null;
     this.reconnectTarget = null;
     this.connectError = null;
+    this.popupBlocked = false;
     this.connectState = 'idle';
     this.browseToken++;
   }

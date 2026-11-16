@@ -45,7 +45,9 @@ export class KbMs365ConnectionsComponent implements OnInit {
       if (result.status === 'connected') {
         this.load();
         this.changed.emit({ cascade: false });
-      } else if (result.status === 'blocked' || result.status === 'closed') {
+      } else if (result.status === 'blocked') {
+        this.continueInWindow(c);
+      } else if (result.status === 'closed') {
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365OpenAgain'), 3, 'open_in_new');
       } else {
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
@@ -53,6 +55,17 @@ export class KbMs365ConnectionsComponent implements OnInit {
     }).catch(() => {
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
     });
+  }
+
+  /** Pop-ups blocked: offer the full-page sign-in. */
+  private async continueInWindow(c: KbSourceConnection) {
+    const text = this.translate.instant('KbPage.Ms365BlockedContinue');
+    if (!await this.confirm(text, 'KbPage.Ms365ContinueHere')) { return; }
+    try {
+      await this.kbSources.connectInWindow(c._id);
+    } catch (e) {
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
+    }
   }
 
   private confirm(text: string, confirmKey: string): Promise<boolean> {

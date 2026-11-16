@@ -140,4 +140,65 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
     page.onMs365ConnectionsChanged({ cascade: true });
     expect(page.scheduleMs365Reloads).toHaveBeenCalled();
   });
+
+  describe('return from a full-page sign-in', () => {
+    let navigate: jasmine.Spy;
+    function withQuery(q: { [k: string]: string }) {
+      navigate = jasmine.createSpy('navigate');
+      page.route = { snapshot: { queryParamMap: { get: (k: string) => q[k] ?? null } } };
+      page.router = { navigate };
+      page.loadMs365Accounts = jasmine.createSpy('loadMs365Accounts');
+      page.presentModalImportMs365 = jasmine.createSpy('presentModalImportMs365');
+      page.ms365Connections = { load: jasmine.createSpy('load') };
+    }
+
+    it('no ms365 param: nothing happens', () => {
+      withQuery({});
+      page.readMs365Return();
+      page.applyMs365Return();
+      expect(navigate).not.toHaveBeenCalled();
+      expect(page.presentModalImportMs365).not.toHaveBeenCalled();
+    });
+
+    it('connected: params removed from the URL, toast, reload and import modal with the connection', () => {
+      withQuery({ ms365: 'connected', reason: '', connection_id: 'X' });
+      page.readMs365Return();
+      const args = navigate.calls.mostRecent().args;
+      expect(args[1].queryParams).toEqual({ ms365: null, reason: null, connection_id: null });
+      expect(args[1].replaceUrl).toBe(true);
+      page.applyMs365Return();
+      expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args).toEqual(['KbPage.Ms365Connected', 2, 'done']);
+      expect(page.loadMs365Accounts).toHaveBeenCalledWith(true);
+      expect(page.ms365Connections.load).toHaveBeenCalled();
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith('X');
+      page.applyMs365Return(); // applied once
+      expect(page.presentModalImportMs365).toHaveBeenCalledTimes(1);
+    });
+
+    it('error reasons map to their message; the modal is not opened', () => {
+      const cases: [string, string][] = [['access_denied', 'KbPage.Ms365ErrAccessDenied'],
+        ['account_mismatch', 'KbPage.Ms365ErrConnect'], ['state_invalid', 'KbPage.Ms365ErrConnect'], ['', 'KbPage.Ms365ErrConnect']];
+      for (const [reason, key] of cases) {
+        withQuery({ ms365: 'error', reason });
+        page.readMs365Return();
+        page.applyMs365Return();
+        expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe(key);
+      }
+      expect(page.presentModalImportMs365).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('providers', () => {
+    it('are not requested before the project id is known, and only once per project', () => {
+      kbSources.getProviders = jasmine.createSpy('getProviders').and.returnValue(of({ providers: [], kb_max_file_size: 1 }));
+      page.id_project = undefined;
+      page.loadKbSourceProviders();
+      expect(kbSources.getProviders).not.toHaveBeenCalled();
+      page.id_project = 'p1';
+      page.loadKbSourceProviders();
+      page.loadKbSourceProviders();
+      expect(kbSources.getProviders).toHaveBeenCalledTimes(1);
+    });
+  });
+
 });

@@ -138,6 +138,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   ms365Available = false;
   ms365Accounts: { [connectionId: string]: string } = {};
   private ms365AccountsLoaded = false;
+  private providersLoadedFor: string | undefined;
+  private ms365Return: { status: string; reason: string; connectionId: string } | null = null;
   kbMaxFileSize: number;
   private ms365ReloadTimers: any[] = [];
 
@@ -509,7 +511,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   ngOnInit(): void {
     this.roleService.checkRoleForCurrentProject('kb')
     performance.mark('kb-parent-init');
-    this.loadKbSourceProviders();
+    this.readMs365Return();
 
     // Restore the user's preferred KB sort direction from localStorage.
     // Done in ngOnInit (instead of constructor) to keep the constructor
@@ -850,6 +852,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if (this.project) {
         this.project_name = project.name;
         this.id_project = project._id;
+        this.loadKbSourceProviders();
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
@@ -1279,6 +1282,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
     this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
+    this.applyMs365Return();
 
     if (deepTab === 'questions' && this.selectedNamespace) {
       this.selectedTab = 'unanswered';
@@ -3023,6 +3027,9 @@ _presentDialogImportContents() {
 
   /** Admin-only call: a failure (e.g. 403) simply hides the Microsoft 365 card. */
   loadKbSourceProviders() {
+    // the request URL contains the project id: wait until it is known (and ask once per project)
+    if (!this.id_project || this.providersLoadedFor === this.id_project) { return; }
+    this.providersLoadedFor = this.id_project;
     this.kbSources.getProviders().subscribe({
       next: (res) => {
         this.ms365Available = !!(res && res.providers && res.providers.some(p => p.id === 'microsoft365' && p.available));
@@ -3032,7 +3039,41 @@ _presentDialogImportContents() {
     });
   }
 
-  presentModalImportMs365() {
+  /**
+   * Back from a full-page Microsoft 365 sign-in (?ms365=connected|error&reason=&connection_id=):
+   * remember the outcome, strip the params from the URL; it is applied once the namespace is known.
+   */
+  readMs365Return() {
+    const qpm = this.route.snapshot.queryParamMap;
+    const status = qpm.get('ms365');
+    if (!status) { return; }
+    this.ms365Return = { status, reason: qpm.get('reason') || '', connectionId: qpm.get('connection_id') || '' };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { ms365: null, reason: null, connection_id: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
+  applyMs365Return() {
+    const ret = this.ms365Return;
+    if (!ret) { return; }
+    this.ms365Return = null;
+    if (ret.status === 'connected') {
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365Connected'), 2, 'done');
+      this.loadMs365Accounts(true);
+      if (this.ms365Connections) { this.ms365Connections.load(); }
+      this.presentModalImportMs365(ret.connectionId || undefined);
+    } else if (ret.status === 'error') {
+      let key = 'KbPage.Ms365ErrConnect'; // state_invalid, exchange_failed, anything else
+      if (ret.reason === 'access_denied') { key = 'KbPage.Ms365ErrAccessDenied'; }
+      // account_mismatch: the expected upn is unknown here, so the generic message is used
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant(key), 4, 'report_problem');
+    }
+  }
+
+  presentModalImportMs365(initialConnectionId?: string) {
     const dialogRef = this.dialog.open(ModalMs365ImportComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -3048,6 +3089,7 @@ _presentDialogImportContents() {
         t_params: this.t_params,
         id_project: this.id_project,
         project_name: this.project_name,
+        initialConnectionId,
         onPlanLimit: (planLimit: number) => this.onMs365PlanLimit(planLimit),
       },
     });

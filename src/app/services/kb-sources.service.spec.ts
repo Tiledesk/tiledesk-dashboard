@@ -103,6 +103,45 @@ describe('KbSourcesService', () => {
     });
   });
 
+  describe('connectInWindow', () => {
+    beforeEach(() => setup());
+
+    it('POSTs origin and a clean return_url, then navigates to authorize_url', async () => {
+      const nav = spyOn(service, 'navigate');
+      const p = service.connectInWindow('c1');
+      const r = http.expectOne(URL_ + '/microsoft365/connect');
+      expect(r.request.method).toBe('POST');
+      expect(r.request.body.connection_id).toBe('c1');
+      expect(r.request.body.origin).toBe(window.location.origin);
+      expect(r.request.body.return_url).toBe(window.location.href.split('?')[0]);
+      expect(r.request.body.return_url).not.toContain('?');
+      r.flush({ authorize_url: 'https://api.example.com/start?x=1' });
+      await p;
+      expect(nav).toHaveBeenCalledWith('https://api.example.com/start?x=1');
+    });
+
+    it('strips a leftover ms365 query from the hash route', () => {
+      expect((service as any).cleanReturnUrl('http://h/#/project/P/knowledge-bases/N?ms365=error&reason=x'))
+        .toBe('http://h/#/project/P/knowledge-bases/N');
+    });
+
+    it('rejects with connect_failed when authorize_url is missing', async () => {
+      const nav = spyOn(service, 'navigate');
+      const p = service.connectInWindow();
+      http.expectOne(URL_ + '/microsoft365/connect').flush({});
+      let err: any; try { await p; } catch (e) { err = e; }
+      expect(err).toEqual({ reason: 'connect_failed' });
+      expect(nav).not.toHaveBeenCalled();
+    });
+
+    it('rejects with connect_failed on an HTTP error', async () => {
+      const p = service.connectInWindow();
+      http.expectOne(URL_ + '/microsoft365/connect').flush({}, { status: 500, statusText: 'x' });
+      let err: any; try { await p; } catch (e) { err = e; }
+      expect(err).toEqual({ reason: 'connect_failed' });
+    });
+  });
+
   describe('connect', () => {
     beforeEach(() => setup());
 

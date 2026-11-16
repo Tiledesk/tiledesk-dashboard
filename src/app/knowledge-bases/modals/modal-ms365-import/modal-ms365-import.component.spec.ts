@@ -324,4 +324,42 @@ describe('ModalMs365ImportComponent', () => {
     setup([activeConn]);
     expect(component.refreshRates.map(r => r.value)).toEqual(['never', 'daily', 'weekly', 'monthly']);
   });
+
+  it('a blocked popup also offers "Continue in this window", which uses the full-page sign-in', fakeAsync(() => {
+    setup([], {}, true);
+    (svc as any).connectInWindow = jasmine.createSpy('connectInWindow').and.returnValue(Promise.resolve());
+    svc.connect.and.returnValue(Promise.resolve({ status: 'blocked' }));
+    component.startConnect('c9');
+    flush();
+    fixture.detectChanges();
+    expect(text()).toContain('KbPage.Ms365ContinueHere');
+    component.continueInWindow(component.lastConnectionId);
+    expect((svc as any).connectInWindow).toHaveBeenCalledWith('c9');
+  }));
+
+  it('"Continue in this window" is not offered when the user closed the popup', fakeAsync(() => {
+    setup([], {}, true);
+    svc.connect.and.returnValue(Promise.resolve({ status: 'closed' }));
+    component.startConnect();
+    flush();
+    fixture.detectChanges();
+    expect(text()).not.toContain('KbPage.Ms365ContinueHere');
+  }));
+
+  it('a failing full-page sign-in shows the generic connect error', fakeAsync(() => {
+    setup([], {});
+    (svc as any).connectInWindow = jasmine.createSpy('connectInWindow').and.returnValue(Promise.reject({ reason: 'connect_failed' }));
+    component.continueInWindow();
+    flush();
+    expect(component.connectError).toEqual({ key: 'KbPage.Ms365ErrConnect' });
+    expect(component.connectState).toBe('retry');
+  }));
+
+  it('initialConnectionId opens the browser of that account', () => {
+    setup([activeConn], { initialConnectionId: 'c1' });
+    expect(component.step).toBe('browse');
+    expect(component.connection._id).toBe('c1');
+    expect(svc.getRoots).toHaveBeenCalledWith('c1');
+  });
+
 });

@@ -120,4 +120,36 @@ describe('KbMs365ConnectionsComponent', () => {
     expect(component.connections.length).toBe(1);
     expect(emitted).toEqual([{ cascade: true }]);
   }));
+
+  it('Reconnect with blocked pop-ups asks and continues in this window', fakeAsync(() => {
+    setup([conn()]);
+    (kbSources as any).connectInWindow = jasmine.createSpy('connectInWindow').and.returnValue(Promise.resolve());
+    kbSources.connect.and.returnValue(Promise.resolve({ status: 'blocked' } as any));
+    fire.and.returnValue(Promise.resolve({ isConfirmed: true }));
+    component.reconnect(component.connections[0]);
+    flushMicrotasks();
+    expect(fire).toHaveBeenCalled();
+    expect((kbSources as any).connectInWindow).toHaveBeenCalledWith('c1');
+  }));
+
+  it('Reconnect with blocked pop-ups and a declined confirm does nothing', fakeAsync(() => {
+    setup([conn()]);
+    (kbSources as any).connectInWindow = jasmine.createSpy('connectInWindow');
+    kbSources.connect.and.returnValue(Promise.resolve({ status: 'blocked' } as any));
+    fire.and.returnValue(Promise.resolve({ isConfirmed: false }));
+    component.reconnect(component.connections[0]);
+    flushMicrotasks();
+    expect((kbSources as any).connectInWindow).not.toHaveBeenCalled();
+  }));
+
+  it('a failing full-page sign-in toasts the connect error', fakeAsync(() => {
+    setup([conn()]);
+    (kbSources as any).connectInWindow = jasmine.createSpy('connectInWindow').and.returnValue(Promise.reject({ reason: 'connect_failed' }));
+    kbSources.connect.and.returnValue(Promise.resolve({ status: 'blocked' } as any));
+    fire.and.returnValue(Promise.resolve({ isConfirmed: true }));
+    component.reconnect(component.connections[0]);
+    flushMicrotasks();
+    expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.Ms365ErrConnect');
+  }));
+
 });

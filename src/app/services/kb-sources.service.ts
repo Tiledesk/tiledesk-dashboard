@@ -174,6 +174,45 @@ export class KbSourcesService {
     });
   }
 
+  /**
+   * Full-page fallback when the popup is blocked: asks the server for the authorize_url with a
+   * `return_url` (the clean current page) and navigates this window to it. The browser comes back
+   * to return_url with ms365=connected|error appended to the hash route's query. The promise
+   * resolves just before leaving the page; it rejects with { reason: 'connect_failed' }.
+   */
+  connectInWindow(connectionId?: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.httpClient.post<{ authorize_url: string }>(
+        this.baseUrl + '/microsoft365/connect',
+        { connection_id: connectionId, origin: window.location.origin, return_url: this.cleanReturnUrl(window.location.href) },
+        this.httpOptions
+      ).subscribe({
+        next: (res) => {
+          if (res && typeof res.authorize_url === 'string' && res.authorize_url) {
+            this.navigate(res.authorize_url);
+            resolve();
+          } else {
+            reject({ reason: 'connect_failed' });
+          }
+        },
+        error: (err) => {
+          this.logger.error('[KB-SOURCES.SERVICE] - connectInWindow error ', err);
+          reject({ reason: 'connect_failed' });
+        }
+      });
+    });
+  }
+
+  /** Current page URL without the query string, in the hash part too (e.g. a leftover ?ms365=...). */
+  private cleanReturnUrl(href: string): string {
+    return href.split('?')[0];
+  }
+
+  /** Overridable for tests: leaves the page for the sign-in. */
+  navigate(url: string): void {
+    window.location.assign(url);
+  }
+
   /** Closes the pending sign-in popup (if any), removes its listener/timer and resolves connect() with 'closed'. */
   cancelConnect(): void {
     if (this.activeConnectCancel) { this.activeConnectCancel(); }
