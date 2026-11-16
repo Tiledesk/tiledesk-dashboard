@@ -96,6 +96,38 @@ describe('ModalDetailKnowledgeBaseComponent (Microsoft 365)', () => {
     expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[1]).toBe(4);
   });
 
+  it('a refresh-rate change is restored on the row after a failed PATCH', () => {
+    const row = { ...folder, refresh_rate: 'weekly' };
+    setup(row);
+    kbSources.updateFolderRefreshRate.and.returnValue(throwError({ status: 500, error: {} }));
+    component.onSelectRefreshRate('daily');
+    expect(component.kb.refresh_rate).toBe('daily');
+    component.onSaveMs365FolderRefreshRate();
+    expect(component.kb.refresh_rate).toBe('weekly');
+    expect(component.selectedRefreshRate).toBe('weekly');
+  });
+
+  it('a refresh-rate change is restored when the dialog closes without saving', () => {
+    const row = { ...folder, refresh_rate: 'weekly' };
+    setup(row);
+    component.onSelectRefreshRate('daily');
+    component.onCloseBaseModal();
+    expect(component.kb.refresh_rate).toBe('weekly');
+    component.onSelectRefreshRate('monthly');
+    fixture.destroy();
+    expect(component.kb.refresh_rate).toBe('weekly');
+  });
+
+  it('a saved refresh-rate change survives the dialog closing', () => {
+    const row = { ...folder, refresh_rate: 'weekly' };
+    setup(row);
+    kbSources.updateFolderRefreshRate.and.returnValue(of({}));
+    component.onSelectRefreshRate('daily');
+    component.onSaveMs365FolderRefreshRate();
+    fixture.destroy();
+    expect(component.kb.refresh_rate).toBe('daily');
+  });
+
   it('onUpdateKnowledgeBase never closes with an update for a Microsoft 365 folder', () => {
     setup(folder);
     component.onUpdateKnowledgeBase();

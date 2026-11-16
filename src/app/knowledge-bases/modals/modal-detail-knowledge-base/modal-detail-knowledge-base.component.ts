@@ -162,6 +162,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
           unwanted_classnames: [...(this.kb.scrape_options?.unwanted_classnames || [])],
         };
         const savedRate = this.kb.refresh_rate;
+        this.ms365OriginalRefreshRate = savedRate;
         const validRate = this.refresh_rate.some(r => r.value === savedRate);
         this.selectedRefreshRate = validRate ? savedRate : (this.refresh_rate[1]?.value || 'weekly');
         if (data.refreshRateIsEnabled !== undefined) this.refreshRateIsEnabled = data.refreshRateIsEnabled;
@@ -241,6 +242,8 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
   get ms365FileCount(): number { return ms365FileCount(this.kb); }
   get ms365LastSync(): any { return ms365LastSync(this.kb); }
   ms365Saving = false;
+  /** refresh_rate of the ms365 folder as saved; the row only carries the new value after a successful PATCH */
+  private ms365OriginalRefreshRate: string;
 
   /**
    * Folder: only the refresh rate is editable, saved through PATCH /kb/sources/folders/:id
@@ -255,6 +258,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       next: (res: any) => {
         this.ms365Saving = false;
         this.kb.refresh_rate = this.selectedRefreshRate;
+        this.ms365OriginalRefreshRate = this.kb.refresh_rate;
         if (res && res.schedule_pending) {
           this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365SchedulePending'), 3, 'warning');
         } else {
@@ -265,6 +269,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       },
       error: (err: any) => {
         this.ms365Saving = false;
+        this.restoreMs365RefreshRate();
         const key = ms365ErrorCode(err) === 'refresh_not_available' ? 'KbPage.Ms365ErrRefreshNotAvailable' : 'KbPage.Ms365ErrRefreshSave';
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant(key), 4, 'report_problem');
       }
@@ -280,6 +285,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     if (this.observer) {
       this.observer.disconnect();
     }
+    this.restoreMs365RefreshRate(); // any close path (backdrop, Esc, X) without a saved change
     this.closeScrapeSettingsDialog();
   }
 
@@ -328,7 +334,16 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
     // }
   }
 
+  /** Puts the saved refresh_rate back on the row (and in the selector) after a failed PATCH or a close without saving. */
+  private restoreMs365RefreshRate(): void {
+    if (this.isMs365Folder && this.ms365OriginalRefreshRate !== undefined) {
+      this.kb.refresh_rate = this.ms365OriginalRefreshRate;
+      this.selectedRefreshRate = this.ms365OriginalRefreshRate;
+    }
+  }
+
   onCloseBaseModal() {
+    this.restoreMs365RefreshRate();
     this.closeScrapeSettingsDialog();
     // this.closeBaseModal.emit();
     this.dialogRef.close();
