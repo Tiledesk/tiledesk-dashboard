@@ -3101,6 +3101,14 @@ _presentDialogImportContents() {
     });
   }
 
+  /** An account was reconnected or disconnected: refresh the folder rows' accounts, and the list after a cascade. */
+  onMs365ConnectionsChanged(ev: { cascade: boolean }) {
+    this.loadMs365Accounts(true);
+    if (ev && ev.cascade) {
+      this.scheduleMs365Reloads();
+    }
+  }
+
   /** The user signed in again: refresh the accounts and sync the folder (a running sync is fine, silently). */
   onMs365Reconnected(kb) {
     this.loadMs365Accounts(true);

@@ -37,6 +37,7 @@ export interface KbSourceConnection {
   status: string;
   last_error?: string;
   folders_count: number;
+  files_count?: number;
 }
 
 export type KbSourceItemKind = 'site' | 'onedrive' | 'drive' | 'folder' | 'file';

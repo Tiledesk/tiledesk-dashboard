@@ -9,6 +9,7 @@ import { ModalErrorComponent } from './modals/modal-error/modal-error.component'
 import { ModalGptKeyComponent } from './modals/modal-gpt-key/modal-gpt-key.component';
 import { ModalPageUrlComponent } from './modals/modal-page-url/modal-page-url.component';
 import { ModalPreviewKnowledgeBaseComponent } from './modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
+import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
 import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
@@ -68,6 +69,7 @@ const routes: Routes = [
     KnowledgeBasesComponent,
     AddContentMenuComponent,
     KnowledgeBaseTableComponent,
+    KbMs365ConnectionsComponent,
     ModalDeleteKnowledgeBaseComponent,
     ModalDetailKnowledgeBaseComponent,
     ModalErrorComponent,

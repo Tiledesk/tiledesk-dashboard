@@ -421,6 +421,8 @@
                     </div>
                   </div>
       
+                  <kb-ms365-connections *ngIf="ms365Available" (changed)="onMs365ConnectionsChanged($event)"></kb-ms365-connections>
+
                   <!-- TAB SWITCHER START -->
                     <!-- Vecchio switch a radio (segmented); sostituito da tab come in Domande -->
                   <!--

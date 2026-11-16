@@ -107,4 +107,13 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
     }
     expect(swal).not.toHaveBeenCalled();
   });
+
+  it('connections changed: accounts reload; the KB list only after a cascade', () => {
+    page.loadMs365Accounts = jasmine.createSpy('loadMs365Accounts');
+    page.onMs365ConnectionsChanged({ cascade: false });
+    expect(page.loadMs365Accounts).toHaveBeenCalledWith(true);
+    expect(page.scheduleMs365Reloads).not.toHaveBeenCalled();
+    page.onMs365ConnectionsChanged({ cascade: true });
+    expect(page.scheduleMs365Reloads).toHaveBeenCalled();
+  });
 });
