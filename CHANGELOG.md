@@ -1,5 +1,16 @@
 # tiledesk-dashboard
 
+### 2.7.191-AR
+- Adds the AI rating and its sentiment to the conversations history list and details, and redesigns the rating display as segmented bars.
+- Hides the user rating in the conversations history list when the customer has not left a rating. The AI rating still shows when present. The details always show the user row.
+- Hides the Rating column and the "Only rated conversations" filter in History when the role cannot read ratings (`rating_read`) or the plan does not include them (inactive subscription).
+- In conversation details, "Upgrade plan" on a paid plan with an inactive subscription opens a warning dialog instead of the pricing page. The title is "Subscription payment problem". "Contact us" opens a mail to sales and pulses. In the chat panel the dialog uses the smaller `swal-size-sm` size.
+- Adds an info icon next to "Able to view conversation rating" in Roles. The tooltip says the permission also controls the Rating column and the "Only rated conversations" filter in History.
+- Adds LLM models: GPT-6 Astra, GPT-6.1 Sol/Terra, GPT-6 Luna/Sol, Claude Opus/Sonnet/Haiku 5.5, Claude Fable 5.2/5.1, Groq MiniMax M2.7 and Muse Spark Open. DeepSeek V4 Flash is renamed to DeepSeek Flash.
+- Deprecates LLM models: GPT-5, GPT-5-mini, GPT-5-nano, GPT-5.3, GPT-4 (Legacy), GPT-3.5 Turbo, GPT-4.1 nano, Claude Opus 4.1, Claude Sonnet 4.5, Groq Llama 3.1 8B Instant, Llama 3.3 70B Versatile, Compound, Compound Mini, Qwen3.6-27B
+- Reactivates Groq GPT OSS 120B / 20B
+- Knowledge Base preview: GPT-6 models lock the temperature to 1, as GPT-5 models do.
+
 ### 2.7.190-AR
 - Aligns conversation visibility with the new request APIs (visibility / agentIds / visibilitySince) 
 
