@@ -510,7 +510,7 @@
               <!-- ------------------------------------- -->
               <!-- Checkbox rated conversation -->
               <!-- ------------------------------------- -->
-              <div class="row" *ngIf="IS_HERE_FOR_HISTORY" style="margin-top: 16px;">
+              <div class="row" *ngIf="IS_HERE_FOR_HISTORY && canFilterRatedConversations" style="margin-top: 16px;">
                   <div class="col-12 col-md-4">
                     <div class="rated-convs-checkbox">
                       <div class="checkbox">
@@ -668,7 +668,7 @@
         </span>
       </div>
 
-      <div id="rated-filter" *ngIf="rated_applied" class="applied-filter">
+      <div id="rated-filter" *ngIf="rated_applied && canFilterRatedConversations" class="applied-filter">
         {{ 'RatedConversations' | translate }}
       </div>
 
@@ -1048,7 +1048,7 @@
                 <!--  ----------------------------- -->
                 <!--  RATING (solo history)  -->
                 <!--  ----------------------------- -->
-                <th *ngIf="IS_HERE_FOR_HISTORY" class="table-header-text">
+                <th *ngIf="IS_HERE_FOR_HISTORY && canFilterRatedConversations" class="table-header-text">
                   <span class="column-th-span">
                     {{ 'HistoryPage.Rating' | translate }}
                   </span>
@@ -1086,7 +1086,7 @@
 
             <tbody *ngIf="showSpinner">
               <tr class="align-middle">
-                <td [attr.colspan]="IS_HERE_FOR_HISTORY ? 11 : 10">
+                <td [attr.colspan]="IS_HERE_FOR_HISTORY && canFilterRatedConversations ? 11 : 10">
                   <loading-spinner *ngIf="showSpinner"></loading-spinner>
 
                 </td>
@@ -1101,7 +1101,7 @@
               <!--  IF THERE ISN'T REQUEST -->
               <!--  ------------------------------ -->
               <tr *ngIf="(IS_HERE_FOR_HISTORY && (!requestList || requestList?.length === 0)) || (!IS_HERE_FOR_HISTORY && requestList && requestList?.length === 0)">
-                <td [attr.colspan]="IS_HERE_FOR_HISTORY ? 11 : 10" style="text-align: center; padding-top: 16px; height: 150px;">
+                <td [attr.colspan]="IS_HERE_FOR_HISTORY && canFilterRatedConversations ? 11 : 10" style="text-align: center; padding-top: 16px; height: 150px;">
 
                   <span class="material-icons no-request-icon" style="vertical-align: middle;" *ngIf="!has_searched">
                     search
@@ -2231,7 +2231,7 @@
 
 
                 <!-- ===== RATING (solo history) ===== -->
-                <td *ngIf="IS_HERE_FOR_HISTORY" (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                <td *ngIf="IS_HERE_FOR_HISTORY && canFilterRatedConversations" (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
                   <app-conversation-rating [request]="request"></app-conversation-rating>
                 </td>
 
