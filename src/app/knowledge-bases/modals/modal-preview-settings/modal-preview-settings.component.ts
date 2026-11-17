@@ -9,6 +9,7 @@ import {
   GOOGLE_MODEL,
   DEEPSEEK_MODEL,
   COHERE_MODEL,
+  GROQ_MODEL,
   LLM_DEFAULT_MAX_TOKENS_CAP,
   URL_AI_model_doc,
   URL_advanced_context_doc,
@@ -30,6 +31,8 @@ import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { IntegrationService } from 'app/services/integration.service';
+import { forkJoin, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 /** Providers served with the Tiledesk key through OpenRouter (OpenRouter vendor = LLM_MODEL value), with their static lists */
 const MANAGED_STATIC_MODELS: { [provider: string]: Array<any> } = {
@@ -38,6 +41,12 @@ const MANAGED_STATIC_MODELS: { [provider: string]: Array<any> } = {
   google: GOOGLE_MODEL,
   deepseek: DEEPSEEK_MODEL,
   cohere: COHERE_MODEL
+};
+
+/** Providers whose models the server reads with the project's own key, with their static lists */
+const KEYED_STATIC_MODELS: { [provider: string]: Array<any> } = {
+  ...MANAGED_STATIC_MODELS,
+  groq: GROQ_MODEL
 };
 
 @Component({
@@ -375,7 +384,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.getAgentPlatformModels()
     this.getOllamaModels()
     this.getOpenRouterModels()
-    this.getManagedModels()
+    this.getKeyedModels()
     this.loadModelGroups();
   }
 
@@ -588,21 +597,82 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   }
 
   /**
-   * Credits projects: the models of the providers served with the Tiledesk key come from OpenRouter, through the
-   * server. The value is the provider's own name (gpt-4.1, claude-sonnet-4-5): the server maps it back to the
-   * OpenRouter model, and it also works with the project's own key. The other projects keep the static lists.
+   * The models of the providers that depend on the key, with the key the server uses (the project's own one wins):
+   * - own key: the models the provider lists for that key;
+   * - Tiledesk key: on credits projects the managed models of OpenRouter, through the server, whose value is the
+   *   provider's own name (gpt-4.1, claude-sonnet-4-5) that the server maps back to OpenRouter; on quotas the
+   *   static OpenAI list;
+   * - no key: no models.
+   * A server without /llm/providers keeps the managed models of the credits projects and the static lists.
    */
-  getManagedModels() {
-    this.integrationService.getManagedLlmModels().subscribe({
+  getKeyedModels() {
+    forkJoin({
+      providers: this.integrationService.getLlmProviders().pipe(catchError((err) => {
+        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getLlmProviders:', err);
+        return of(null);
+      })),
+      managed: this.integrationService.getManagedLlmModels().pipe(catchError((err) => {
+        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getManagedLlmModels:', err);
+        return of(null);
+      }))
+    }).subscribe(({ providers, managed }: any) => {
+      const managedByProvider = this.groupManagedModels(managed?.data);
+      if (!Array.isArray(providers?.data)) {
+        this.applyManagedModels(managedByProvider);
+        return;
+      }
+      providers.data
+        .filter((row: any) => KEYED_STATIC_MODELS[row.provider])
+        .forEach((row: any) => {
+          if (row.key === 'own') {
+            this.getOwnKeyModels(row.provider);
+          } else if (row.key === 'tiledesk') {
+            const models = managedByProvider[row.provider];
+            this.setProviderModels(row.provider, models && models.length ? models : KEYED_STATIC_MODELS[row.provider]);
+          } else {
+            this.setProviderModels(row.provider, []);
+          }
+        });
+      this.loadModelGroups();
+    });
+  }
+
+  private getOwnKeyModels(providerValue: string) {
+    this.integrationService.getProviderModels(providerValue).subscribe({
       next: (res: any) => {
-        this.logger.log('[MODAL PREVIEW SETTINGS] - MANAGED MODELS:', res?.total_count);
-        this.applyManagedModels(this.groupManagedModels(res?.data));
+        this.logger.log('[MODAL PREVIEW SETTINGS] - OWN KEY MODELS ' + providerValue + ':', res?.total_count);
+        const models = Array.isArray(res?.data) ? res.data.map((model: any) => this.ownKeyModelOption(providerValue, model)) : [];
+        this.setProviderModels(providerValue, models.length ? models : KEYED_STATIC_MODELS[providerValue]);
+        this.loadModelGroups();
       },
       error: (err) => {
-        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getManagedModels:', err);
-        this.applyManagedModels({});
+        // a rejected or unreachable key: the static list, the call will show the error of the provider
+        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getProviderModels ' + providerValue + ':', err);
+        this.setProviderModels(providerValue, KEYED_STATIC_MODELS[providerValue]);
+        this.loadModelGroups();
       }
     });
+  }
+
+  private ownKeyModelOption(providerValue: string, model: any) {
+    const known = KEYED_STATIC_MODELS[providerValue].find((m) => m.value === model.id);
+    return {
+      name: model.name || known?.name || model.id,
+      value: model.id,
+      description: '',
+      status: 'active',
+      min_tokens: 1,
+      max_output_tokens: model.max_output_tokens || known?.max_output_tokens || LLM_DEFAULT_MAX_TOKENS_CAP,
+      reasoning: known?.reasoning ?? false
+    };
+  }
+
+  /** LLM_MODEL is shared by the projects: every load sets the models of the provider */
+  private setProviderModels(providerValue: string, models: Array<any>) {
+    const provider = LLM_MODEL.find(p => p.value === providerValue);
+    if (provider) {
+      provider.models = this.withSavedModel(providerValue, models);
+    }
   }
 
   private groupManagedModels(models: any): { [provider: string]: Array<any> } {
@@ -644,29 +714,23 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     return byProvider;
   }
 
-  /** LLM_MODEL is shared by the projects: a provider without managed models gets its static list back */
+  /** Without /llm/providers: the managed models where there are, the static lists elsewhere */
   private applyManagedModels(byProvider: { [provider: string]: Array<any> }) {
-    Object.keys(MANAGED_STATIC_MODELS).forEach((providerValue) => {
-      const provider = LLM_MODEL.find(p => p.value === providerValue);
-      if (!provider) {
-        return;
-      }
+    Object.keys(KEYED_STATIC_MODELS).forEach((providerValue) => {
       const managed = byProvider[providerValue];
-      provider.models = managed && managed.length
-        ? this.withSavedModel(providerValue, managed)
-        : MANAGED_STATIC_MODELS[providerValue];
+      this.setProviderModels(providerValue, managed && managed.length ? managed : KEYED_STATIC_MODELS[providerValue]);
     });
     this.loadModelGroups();
   }
 
-  /** Keeps selectable the model saved in the namespace when OpenRouter does not list it (e.g. claude-3-7-sonnet-latest) */
+  /** Keeps selectable the model saved in the namespace when the list does not have it (e.g. claude-3-7-sonnet-latest) */
   private withSavedModel(providerValue: string, models: Array<any>): Array<any> {
     const settings = this.selectedNamespace?.preview_settings;
     const savedProvider = settings?.llm || 'openai';
     if (!settings?.model || savedProvider !== providerValue || models.some((m) => m.value === settings.model)) {
       return models;
     }
-    const known = MANAGED_STATIC_MODELS[providerValue].find((m) => m.value === settings.model);
+    const known = KEYED_STATIC_MODELS[providerValue].find((m) => m.value === settings.model);
     const saved = known
       ? { ...known, status: 'active' }
       : { name: settings.model, value: settings.model, description: '', status: 'active' };

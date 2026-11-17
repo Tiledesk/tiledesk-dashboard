@@ -241,6 +241,42 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
   }
 
   /**
+   * The key the current project uses with each LLM provider (GET /:projectid/llm/providers):
+   * { data: [{ provider, ownKey, tiledeskKey, key: 'own' | 'tiledesk' | null }] }
+   */
+  getLlmProviders() {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/llm/providers";
+    this.logger.debug('[INTEGRATION.SERV] - get LLM providers URL: ', url);
+
+    return this.http.get(url, httpOptions);
+  }
+
+  /**
+   * The models of a provider read with the project's own key (GET /:projectid/llm/providers/:provider/models):
+   * { data: [{ id, name, context_length, max_output_tokens, credits }] }
+   */
+  getProviderModels(provider: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/llm/providers/" + provider + "/models";
+    this.logger.debug('[INTEGRATION.SERV] - get provider models URL: ', url);
+
+    return this.http.get(url, httpOptions);
+  }
+
+  /**
    * Retrieve MCP tools from server
    * @param serverUrl The URL of the MCP server
    * @returns Observable with tools array
