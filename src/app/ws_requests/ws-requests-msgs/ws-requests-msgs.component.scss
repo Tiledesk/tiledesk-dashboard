@@ -5435,12 +5435,30 @@ label {
 }
 
 .tags--container-wpr>.ticket--panel-row-header>svg {
-   fill: var(--icon-color);
+  fill: none;
+  color: var(--icon-color);
+  stroke: currentColor;
   vertical-align: middle;
+  transition: color 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 .tags--container-wpr:hover>.ticket--panel-row-header>svg {
-  fill: var(--icon-hover-color);
+  fill: none;
+  color: var(--icon-hover-color);
+  stroke: currentColor;
+}
+
+// Language row: outline globe (Lucide). Overrides the generic contact-row fill.
+.ul-wpr li.language .contact-row span svg {
+  fill: none;
+  color: var(--icon-color);
+  stroke: currentColor;
+}
+
+.ul-wpr li.language .contact-row:hover span svg {
+  fill: none;
+  color: var(--icon-hover-color);
+  stroke: currentColor;
 }
 
 .tags--container {

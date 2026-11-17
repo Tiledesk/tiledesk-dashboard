@@ -328,6 +328,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   PERMISSION_TO_UPDATE_APP: boolean;
   PERMISSION_TO_FILTER_BY_AGENT: boolean;
   PERMISSION_TO_EXPORT_REQUESTS: boolean;
+  PERMISSION_TO_VIEW_RATING_SECTION: boolean;
 
   private backSub?: Subscription;
   /**
@@ -543,6 +544,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
         }
 
         
+
+        // PERMISSION_TO_VIEW_RATING_SECTION (same rule as the conversation details)
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          this.PERMISSION_TO_VIEW_RATING_SECTION = status.matchedPermissions.includes(PERMISSIONS.RATING_READ);
+        } else {
+          this.PERMISSION_TO_VIEW_RATING_SECTION = true;
+        }
 
         // PERMISSION_TO_DELETE
         if (status.role === 'owner') {
@@ -1885,7 +1893,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
     this.showSpinner = true;
     let promise = new Promise((resolve, reject) => {
-      const ratedValue = this.IS_HERE_FOR_HISTORY ? this._rated : false;
+      const ratedValue = this.IS_HERE_FOR_HISTORY && this.canFilterRatedConversations ? this._rated : false;
       this.wsRequestsService.getHistoryAndNortRequests(this.operator, this.requests_status, this.requests_statuses, this._preflight, this.queryString, this.pageNo, ratedValue).subscribe((requests: any) => {
         this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS RES ', requests);
         // this.logger.log('[HISTORY & NORT-CONVS] - GET REQUESTS ', requests['requests']);
@@ -2219,6 +2227,26 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
   getBrowserLang() {
     this.browserLang = this.translate.getBrowserLang();
+  }
+
+  /** Same gates as the rating section in the conversation details. */
+  get planAllowsConversationRatings(): boolean {
+    if (this.prjct_profile_type === 'free') {
+      return this.trial_expired === false;
+    }
+    if (this.prjct_profile_type === 'payment') {
+      if (this.subscription_is_active === true) {
+        return true;
+      }
+      if (this.subscription_is_active === false) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  get canFilterRatedConversations(): boolean {
+    return !!this.PERMISSION_TO_VIEW_RATING_SECTION && this.planAllowsConversationRatings;
   }
 
   getProjectPlan() {
@@ -3059,7 +3087,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
       this._rated = this.IS_HERE_FOR_HISTORY ? this._rated : false;
       this.logger.log('[HISTORY & NORT-CONVS] - SEARCH FOR ._rated', this._rated);
     }
-    this.rated_applied = this.IS_HERE_FOR_HISTORY && this._rated;
+    this.rated_applied = this.IS_HERE_FOR_HISTORY && this.canFilterRatedConversations && this._rated;
     this.preflight_applied = this.IS_HERE_FOR_HISTORY && this._preflight;
     this.phone_applied = this.phone ? this.phone : null;
 
@@ -3580,7 +3608,7 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
   }
 
   dwnldCSV() {
-    const ratedValue = this.IS_HERE_FOR_HISTORY ? this._rated : false;
+    const ratedValue = this.IS_HERE_FOR_HISTORY && this.canFilterRatedConversations ? this._rated : false;
     this.wsRequestsService.downloadHistoryRequestsAsCsv(this.requests_status, this.queryString, this._preflight, 0, ratedValue).subscribe((requests: any) => {
       if (requests) {
         this.logger.log('[HISTORY & NORT-CONVS] - DOWNLOAD REQUESTS AS CSV - RES ', requests);

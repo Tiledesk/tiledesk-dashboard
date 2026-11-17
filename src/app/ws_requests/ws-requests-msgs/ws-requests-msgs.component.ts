@@ -1193,6 +1193,11 @@ updateTagContainerHeight() {
   goToPricingFromChat() {
     if (this.isVisiblePaymentTab) {
       if (this.CURRENT_USER_ROLE === 'owner') {
+        // Piano a pagamento con abbonamento scaduto: modale invece del pricing
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          this.presentModalPaidSubscriptionExpired();
+          return;
+        }
         const href = window.location.href;
         this.logger.log('[PRICING] href ', href)
 
@@ -1206,6 +1211,34 @@ updateTagContainerHeight() {
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
+  }
+
+  /** Piano a pagamento con abbonamento scaduto: titolo "Subscription payment problem". */
+  presentModalPaidSubscriptionExpired() {
+    Swal.fire({
+      title: this.translate.instant('Pricing.SubscriptionPaymentProblem'),
+      text: this.translate.instant('Pricing.WeWereUnableToAutomaticallyRenewYourSubscription') + '. ' + this.translate.instant('Pricing.PleaseContactUs') + ' ' + this.translate.instant('Pricing.ToUpdateYourPaymentInformation') + '.',
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('ContactUs'),
+      focusConfirm: false,
+      customClass: this.CHAT_PANEL_MODE === true ? 'swal-size-sm' : '',
+      didOpen: () => {
+        // Pulsazione del pulsante "Contact us" (Web Animations API: il popup di SweetAlert è fuori dal DOM del componente)
+        Swal.getConfirmButton()?.animate(
+          [
+            { boxShadow: '0 0 0 0 rgba(5, 102, 255, 0.45)' },
+            { boxShadow: '0 0 0 10px rgba(5, 102, 255, 0)' },
+          ],
+          { duration: 1500, iterations: Infinity }
+        );
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.open(`mailto:${this.notify.salesEmail}?subject=Upgrade plan (${this.profile_name} expired)`);
+      }
+    });
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {

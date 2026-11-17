@@ -5,15 +5,6 @@
   min-width: 0;
 }
 
-.conv-rating__title {
-  margin: 0 0 6px;
-  color: var(--text-color, #334155);
-  font-family: var(--header-font-family);
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.3;
-}
-
 .conv-rating__row {
   display: flex;
   align-items: center;
@@ -33,14 +24,6 @@
     width: 14px;
     height: 14px;
   }
-}
-
-.conv-rating__label {
-  flex: 0 0 9em;
-  color: var(--text-color, #334155);
-  font-size: 13px;
-  line-height: 1.2;
-  white-space: nowrap;
 }
 
 .conv-rating__bar {
@@ -82,14 +65,21 @@
   }
 
   .conv-rating__icon {
-    flex-basis: 16px;
-    width: 16px;
-    height: 16px;
+    flex-basis: 22px;
+    width: 22px;
+    height: 22px;
+    margin-right: 6px;
+    color: var(--icon-color, #8796af);
+    transition: color 0.2s ease-in-out;
 
     svg {
-      width: 16px;
-      height: 16px;
+      width: 22px;
+      height: 22px;
     }
+  }
+
+  .conv-rating__row:hover .conv-rating__icon {
+    color: var(--icon-hover-color, rgb(5, 102, 255));
   }
 
   .conv-rating__seg {
@@ -97,11 +87,8 @@
     height: 4px;
   }
 
-  .conv-rating__label {
-    font-weight: 400;
-  }
-
   .conv-rating__note {
+    margin-left: 34px;
     font-weight: 300;
   }
 

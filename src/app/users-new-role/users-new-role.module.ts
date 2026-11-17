@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
 const routes: Routes = [
@@ -37,6 +38,7 @@ const routes: Routes = [
     MatCheckboxModule,
     MatButtonModule,
     MatRadioModule,
+    MatTooltipModule,
     UnauthorizedForSettingsModule
   ]
 })
