@@ -267,12 +267,16 @@
                   <b class="ex-mono">{{ formatDuration(ts.sp.blockMs) }}</b> · {{ pctLabel(ts.sp.blockMs, ts.sp.total) }}</span>
                 <span class="tl-split-wait"><i class="tl-key tl-key-wait" aria-hidden="true"></i>{{ "Executions.Detail.Split.Waiting" | translate }}
                   <b class="ex-mono">{{ formatDuration(ts.sp.waitMs) }}</b> · {{ pctLabel(ts.sp.waitMs, ts.sp.total) }}</span>
+                <span *ngIf="ts.sp.waitMs > 0" class="ex-seg tl-split-mode" role="group" [attr.aria-label]="'Executions.Detail.Split.Mode' | translate">
+                  <button type="button" class="tl-mode-run" [attr.aria-pressed]="splitModeOf(ts.sp) === 'run'" (click)="setSplitMode('run')">{{ "Executions.Detail.Split.WholeRun" | translate }}</button>
+                  <button type="button" class="tl-mode-blocks" [attr.aria-pressed]="splitModeOf(ts.sp) === 'blocks'" (click)="setSplitMode('blocks')">{{ "Executions.Detail.Split.BlocksOnly" | translate }}</button>
+                </span>
               </span>
             </div>
             <div class="tl-split-bar" role="img" [class.tl-split-hl]="hlSeq !== null"
               [attr.aria-label]="('Executions.Detail.Split.InBlocks' | translate) + ' ' + pctLabel(ts.sp.blockMs, ts.sp.total) + ', ' + ('Executions.Detail.Split.Waiting' | translate) + ' ' + pctLabel(ts.sp.waitMs, ts.sp.total)">
-              <span *ngFor="let g of ts.sp.segments" class="tl-seg" [ngClass]="g.kind === 'wait' ? 'tl-seg-wait' : 'o-' + segOutcome(g.seq)"
-                [class.tl-seg-hl]="hlSeq !== null && g.seq === hlSeq" [class.tl-seg-click]="g.kind === 'block'"
+              <span *ngFor="let g of viewSplit(ts.sp).segments" class="tl-seg" [ngClass]="g.kind === 'wait' ? 'tl-seg-wait' : 'o-' + segOutcome(g.seq)"
+                [class.tl-seg-hl]="hlSeq !== null && g.seq === hlSeq" [class.tl-seg-click]="g.kind === 'block'" [class.tl-seg-mark]="g.mark"
                 [style.left.%]="g.left" [style.width.%]="g.width"
                 [attr.title]="(g.kind === 'wait' ? ('Executions.Detail.Split.Waiting' | translate) : segName(g.seq)) + ' · ' + formatDuration(g.ms) + ' · ' + pctLabel(g.ms, ts.sp.total)"
                 (mouseenter)="setHl(g.seq)" (mouseleave)="setHl(null)" (click)="g.kind === 'block' && openFromSplit(g.seq)"><span

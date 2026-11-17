@@ -4399,7 +4399,10 @@
                 "Title": "Where the time went",
                 "InBlocks": "In blocks",
                 "Waiting": "Waiting",
-                "WaitAfter": "+{{d}} waiting"
+                "WaitAfter": "+{{d}} waiting",
+                "Mode": "Strip scale",
+                "WholeRun": "Whole run",
+                "BlocksOnly": "Blocks only"
             }
         },
         "Audit": {
