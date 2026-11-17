@@ -8,7 +8,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
-import { ExecutionDetailComponent, POLL_MS } from './execution-detail.component';
+import { ExecutionDetailComponent, POLL_MS, POLL_WAITING_MS } from './execution-detail.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { FlowStatePanelComponent, MaskedValueComponent } from '../shared/flow-state-panel.component';
 import { ValueCellComponent } from '../shared/value-cell.component';
@@ -379,6 +379,28 @@ describe('ExecutionDetailComponent', () => {
       fixture.destroy();
       tick(POLL_MS * 3);
       expect(executions.get).toHaveBeenCalledTimes(3);
+    }));
+
+    it('a hidden tab holds the poll; shown again, it loads at once and polling goes on', fakeAsync(() => {
+      setup({ detail: detail('waiting') });
+      let hidden = true;
+      spyOn(component, 'isHidden').and.callFake(() => hidden);
+      tick(POLL_WAITING_MS * 5);
+      expect(executions.get).toHaveBeenCalledTimes(1);
+      hidden = false;
+      document.dispatchEvent(new Event('visibilitychange'));
+      expect(executions.get).toHaveBeenCalledTimes(2);
+      tick(POLL_WAITING_MS);
+      expect(executions.get).toHaveBeenCalledTimes(3);
+      fixture.destroy();
+    }));
+
+    it('shown again with no poll due: no extra load', fakeAsync(() => {
+      setup({ detail: detail('running') });
+      spyOn(component, 'isHidden').and.returnValue(false);
+      document.dispatchEvent(new Event('visibilitychange'));
+      expect(executions.get).toHaveBeenCalledTimes(1);
+      fixture.destroy();
     }));
 
     it('never polls a finished execution', fakeAsync(() => {
