@@ -275,7 +275,7 @@
             </div>
             <div class="tl-split-bar" role="img" [class.tl-split-hl]="hlSeq !== null"
               [attr.aria-label]="('Executions.Detail.Split.InBlocks' | translate) + ' ' + pctLabel(ts.sp.blockMs, ts.sp.total) + ', ' + ('Executions.Detail.Split.Waiting' | translate) + ' ' + pctLabel(ts.sp.waitMs, ts.sp.total)">
-              <span *ngFor="let g of viewSplit(ts.sp).segments" class="tl-seg" [ngClass]="g.kind === 'wait' ? 'tl-seg-wait' : 'o-' + segOutcome(g.seq)"
+              <span *ngFor="let g of drawnSegments(ts.sp)" class="tl-seg" [ngClass]="g.kind === 'wait' ? 'tl-seg-wait' : 'o-' + segOutcome(g.seq)"
                 [class.tl-seg-hl]="hlSeq !== null && g.seq === hlSeq" [class.tl-seg-click]="g.kind === 'block'" [class.tl-seg-mark]="g.mark"
                 [style.left.%]="g.left" [style.width.%]="g.width"
                 [attr.title]="(g.kind === 'wait' ? ('Executions.Detail.Split.Waiting' | translate) : segName(g.seq)) + ' · ' + formatDuration(g.ms) + ' · ' + pctLabel(g.ms, ts.sp.total)"

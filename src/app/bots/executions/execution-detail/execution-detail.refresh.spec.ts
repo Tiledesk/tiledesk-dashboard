@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
-import { blocksOnly, COPIED_MS, ExecutionDetailComponent, timeSplit, WAIT_MARK_PCT } from './execution-detail.component';
+import { blocksOnly, COPIED_MS, ExecutionDetailComponent, timeSplit, WAIT_MARK_MIN_MS, WAIT_MARK_PCT } from './execution-detail.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { ExecutionsService } from '../../../services/executions.service';
 import { RolesService } from '../../../services/roles.service';
@@ -394,29 +394,42 @@ describe('ExecutionDetailComponent refreshed layout', () => {
       end();
     }));
 
-    it('blocks only: waits shrink to a fixed mark, blocks share the rest by their own time', () => {
-      // blocks 0..200 and 1000..1600 in a 10 s run: waits 800 ms (between) and 8400 ms (after)
+    it('blocks only: a wait of a second or more is a fixed mark, shorter gaps take no room; blocks share the rest', () => {
+      // a 10 s run: block 1 0..200, gap 800 ms (under a second), block 2 1000..1600, wait 8400 ms
       const sp = timeSplit(0, 10000, steps([1, 0, 200], [2, 1000, 1600]));
       const v = blocksOnly(sp);
-      const w = v.segments.map(x => [x.kind, x.seq, x.width, x.ms]);
-      // two wait marks of WAIT_MARK_PCT; 100 - 2 marks shared 1:3 by the blocks; real ms kept for the tooltips
-      const rest = 100 - 2 * WAIT_MARK_PCT;
-      expect(w).toEqual([
-        ['block', 1, Math.round(rest * 0.25 * 100) / 100, 200], ['wait', 1, WAIT_MARK_PCT, 800],
-        ['block', 2, Math.round(rest * 0.75 * 100) / 100, 600], ['wait', 2, WAIT_MARK_PCT, 8400],
+      const rest = 100 - WAIT_MARK_PCT;
+      expect(v.segments.map(x => [x.kind, x.seq, x.width, x.ms, !!x.mark])).toEqual([
+        ['block', 1, Math.round(rest * 0.25 * 100) / 100, 200, false], ['wait', 1, 0, 800, false],
+        ['block', 2, Math.round(rest * 0.75 * 100) / 100, 600, false], ['wait', 2, WAIT_MARK_PCT, 8400, true],
       ]);
-      // laid out left to right without gaps
+      // laid out left to right without gaps; the short wait sits where block 2 starts
       expect(v.segments[1].left).toBe(v.segments[0].width);
+      expect(v.segments[2].left).toBe(v.segments[0].width);
       expect(v.segments[3].left).toBeCloseTo(100 - WAIT_MARK_PCT, 1);
       // totals are the run's, untouched
       expect([v.blockMs, v.waitMs, v.total]).toEqual([800, 9200, 10000]);
     });
 
+    it('blocks only: a short gap is not drawn in the strip', fakeAsync(() => {
+      // 1000 s run: block 1 0..10 s, a 500 ms gap, block 2 10.5..20.5 s, then waiting
+      setup(detail('completed', [], { execution: { duration_ms: 1000000 }, steps: [step(1, 0, 10000), step(2, 10500, 10000)] }));
+      const segs = Array.from(el().querySelectorAll('.tl-split-bar .tl-seg')) as HTMLElement[];
+      expect(segs.map(x => x.classList.contains('tl-seg-wait'))).toEqual([false, false, true]);
+      end();
+    }));
+
+    it('blocks only: a wait of exactly WAIT_MARK_MIN_MS is a mark', () => {
+      const v = blocksOnly(timeSplit(0, 3000, steps([1, 0, 1000], [2, 1000 + WAIT_MARK_MIN_MS, 3000])));
+      expect(v.segments[1]).toEqual(jasmine.objectContaining({ kind: 'wait', width: WAIT_MARK_PCT, mark: true }));
+    });
+
     it('blocks only with many waits: the marks never take more than 40 % together', () => {
       const xs: Array<[number, number, number]> = [];
-      for (let i = 0; i < 50; i++) xs.push([i + 1, i * 100, i * 100 + 10]);
-      const v = blocksOnly(timeSplit(0, 10000, steps(...xs)));
-      const marks = v.segments.filter(x => x.kind === 'wait').reduce((a, x) => a + x.width, 0);
+      for (let i = 0; i < 50; i++) xs.push([i + 1, i * 4000, i * 4000 + 10]);
+      const v = blocksOnly(timeSplit(0, 200000, steps(...xs)));
+      const marks = v.segments.filter(x => x.mark).reduce((a, x) => a + x.width, 0);
+      expect(v.segments.filter(x => x.mark).length).toBe(50);
       expect(marks).toBeLessThanOrEqual(40.01);
     });
 
