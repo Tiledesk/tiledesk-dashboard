@@ -18,7 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
 import { CHATBOT_MAX_NUM, containsXSS, formatBytesWithDecimal, isV3Chatbot, PLAN_NAME, openChatbotEditor } from 'app/utils/util';
 import { ProjectPlanService } from 'app/services/project-plan.service';
-import { forkJoin, Subject } from 'rxjs';
+import { forkJoin, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
@@ -38,6 +38,9 @@ import { aiAgents, automations } from 'app/integrations/utils';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { ExecutionsService } from 'app/services/executions.service';
+import { canViewExecutions } from './../executions/executions.models';
+import { monitorExecutionsLink } from '../executions/execution-links';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
@@ -216,6 +219,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   PERMISSION_TO_EXPORT_FLOW: boolean;
   PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
+  PERMISSION_TO_VIEW_EXECUTIONS: boolean;
+  // agentId (root id) -> failed+stopped count and running flag, from one summary call per visible page
+  executionsBadge: { [agentId: string]: { attention: number; running: boolean } } = {};
+  private executionsSummaryKey: string;
+  private executionsSummarySub: Subscription;
   
 
   // editBotName: boolean = false;
@@ -243,6 +251,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private rolesService: RolesService,
     // private kbService: KnowledgeBaseService,
     private agentPromptsService: AgentPromptsService,
+    private executionsService: ExecutionsService,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -334,6 +343,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.PERMISSIONS = status.matchedPermissions;
         this.logger.log('BOT-LIST] - this.ROLE:', this.ROLE);
         this.logger.log('BOT-LIST] - this.PERMISSIONS', this.PERMISSIONS);
+        this.applyExecutionsPermission(status.role, status.matchedPermissions);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
         this.logger.log('BOT-LIST] - hasDefaultRole', this.hasDefaultRole);
 
@@ -511,6 +521,60 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
       });
 
+  }
+
+  applyExecutionsPermission(role: string, matchedPermissions: string[]) {
+    this.PERMISSION_TO_VIEW_EXECUTIONS = canViewExecutions(role, matchedPermissions);
+    this.loadExecutionsSummary();
+  }
+
+  get executionsEnabled(): boolean {
+    return !!this.PERMISSION_TO_VIEW_EXECUTIONS && this.executionsService.isConfigured();
+  }
+
+  // One summary call for the agents on the visible page; repeated only when that set changes.
+  loadExecutionsSummary() {
+    if (!this.executionsEnabled || !this.project?._id || !this.pagedFaqkbList?.length) {
+      return;
+    }
+    const ids = this.pagedFaqkbList.map(bot => this.executionsAgentId(bot));
+    const key = this.project._id + '|' + ids.join(',');
+    if (key === this.executionsSummaryKey) {
+      return;
+    }
+    this.executionsSummaryKey = key;
+    this.executionsSummarySub?.unsubscribe();
+    this.executionsBadge = {};
+    this.executionsSummarySub = this.executionsService.summary(this.project._id, ids)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (summary) => {
+          const badge = {};
+          Object.keys(summary?.agents || {}).forEach(id => {
+            const a = summary.agents[id];
+            badge[id] = { attention: (a.failed || 0) + (a.stopped || 0), running: (a.running || 0) > 0 };
+          });
+          this.executionsBadge = badge;
+        },
+        error: (err) => {
+          this.executionsBadge = {};
+          this.logger.error('[BOTS-LIST] - executions summary failed (badges hidden)', err);
+        }
+      });
+  }
+
+  executionsAgentId(bot: any): string {
+    return bot.root_id || bot._id;
+  }
+
+  executionsBadgeText(agentId: string): string {
+    const n = this.executionsBadge[agentId]?.attention || 0;
+    return n > 99 ? '99+' : String(n);
+  }
+
+  /** The badge counts the last 24 hours (summary): open the agent's executions on that range, not on Now (the page's default). */
+  goToExecutions(bot: any) {
+    this.router.navigate(monitorExecutionsLink(this.project._id, this.executionsAgentId(bot)), { queryParams: { range: '24h' } });
   }
 
   checkChromeVersion(): boolean {
@@ -1287,7 +1351,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.updatePagedFaqkbList();
           this.logger.log('/flows/automations ', this.faqkbList);
         } 
-        
+
         if (this.faqkbList) {
           if (this.faqkbList.length === 0) {
             this.showSpinner = false;
@@ -1362,6 +1426,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.logger.log('[BOTS-LIST] pagedFaqkbList this.faqkbList ', this.faqkbList.slice(start, start + this.pageSize) )
     // return this.faqkbList.slice(start, start + this.pageSize);
     this.pagedFaqkbList = this.faqkbList.slice(start, start + this.pageSize);
+    this.loadExecutionsSummary();
   }
 
   nextPage() {

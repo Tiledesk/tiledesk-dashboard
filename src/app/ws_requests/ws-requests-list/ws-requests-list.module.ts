@@ -17,6 +17,7 @@ import { MapRequestComponent } from 'app/map-request/map-request.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { UnauthorizedForSettingsModule } from 'app/auth/unauthorized-for-settings/unauthorized-for-settings.module';
 
+import { MonitorTabsModule } from 'app/bots/executions/monitor-tabs/monitor-tabs.module';
 
 const routes: Routes = [
   { path: "", component: WsRequestsListComponent},
@@ -43,7 +44,8 @@ const routes: Routes = [
     MatFormFieldModule,
     MatIconModule,
     MatMenuModule,
-    UnauthorizedForSettingsModule
+    UnauthorizedForSettingsModule,
+    MonitorTabsModule
   ]
 })
 export class WsRequestsListModule { }

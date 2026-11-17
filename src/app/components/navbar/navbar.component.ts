@@ -50,6 +50,9 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { RolesService } from 'app/services/roles.service';
 import { NavigationService } from 'app/services/navigation.service';
 import { isRequestVisibleToAgent } from 'app/utils/request-visibility.util';
+import { ExecutionsService } from 'app/services/executions.service';
+import { canViewExecutions } from 'app/bots/executions/executions.models';
+import { monitorNavbarTitle } from 'app/bots/executions/monitor-tabs/monitor-title';
 
 
 const Swal = require('sweetalert2')
@@ -270,6 +273,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
+  // Same gate as the Monitor tab bar (monitor-tabs): when it is shown, the tabs are the page title.
+  private monitorTabsPermitted = false;
+
   constructor(
     @Inject(DOCUMENT) private document: Document,
     location: Location,
@@ -296,7 +302,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     private sleekplanService: SleekplanService,
     public rolesService: RolesService,
     private navSvc: NavigationService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private executionsService: ExecutionsService
   ) {
 
     super(prjctPlanService, notifyService);
@@ -462,6 +469,15 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         this.logger.log('[NAVBAR] Title set to:', this.currentTitle);
         return; // Esci subito per evitare che altri controlli sovrascrivano il titolo
       }
+    }
+
+    // Monitor pages (conversations list with the tab bar, /monitor/ executions and graph)
+    const monitorTitle = monitorNavbarTitle(cleanUrl, this.monitorTabsShown());
+    if (monitorTitle !== undefined) {
+      this.currentTitle = monitorTitle;
+      this.currentIcon = null;
+      this.logger.log('[NAVBAR] Title set to:', this.currentTitle);
+      return;
     }
 
     // Controlla i percorsi specifici in ordine di priorità
@@ -671,6 +687,18 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     this.logger.log('[NAVBAR] Title set to:', this.currentTitle);
   }
 
+  private monitorTabsShown(): boolean {
+    return this.monitorTabsPermitted && this.executionsService.isConfigured();
+  }
+
+  /** The role/permissions may arrive after the first navigation: re-evaluate the title then. */
+  applyMonitorTabsPermission(status: { role: string; matchedPermissions: string[] }) {
+    const permitted = !!status && !!status.role && canViewExecutions(status.role, status.matchedPermissions);
+    if (permitted === this.monitorTabsPermitted) return;
+    this.monitorTabsPermitted = permitted;
+    this.updateTitle(this.router.url);
+  }
+
   /**
    * Verifica se una route appartiene alla settings-sidebar
    */
@@ -783,6 +811,8 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
         .subscribe(status => {
           this.logger.log('[NAVBAR] - Role:', status.role);
           this.logger.log('[NAVBAR] - Permissions:', status.matchedPermissions);
+
+          this.applyMonitorTabsPermission(status);
   
           // PERMISSION_TO_CHANGE_PROJCT
           if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
