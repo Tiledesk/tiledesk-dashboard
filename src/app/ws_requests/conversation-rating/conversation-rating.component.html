@@ -1,10 +1,7 @@
 <div class="conv-rating" [class.conv-rating--detail]="detail">
-  <div class="conv-rating__title" *ngIf="detail">
-    {{ 'HistoryPage.Rating' | translate }}
-  </div>
-
   <div
     class="conv-rating__row"
+    *ngIf="detail || userScore !== null"
     matTooltipClass="custom-mat-tooltip"
     matTooltipPosition="above"
     matTooltipHideDelay="100"
@@ -12,13 +9,19 @@
     [matTooltip]="userScore !== null
       ? ('HistoryPage.UserRatingTooltip' | translate:{ value: userScore })
       : ('HistoryPage.NoUserRating' | translate)">
-    <span class="conv-rating__icon" aria-hidden="true">
+    <span
+      class="conv-rating__icon"
+      [attr.aria-hidden]="detail ? null : true"
+      matTooltipClass="custom-mat-tooltip"
+      matTooltipPosition="right"
+      matTooltipHideDelay="100"
+      [matTooltipDisabled]="!detail"
+      [matTooltip]="'HistoryPage.RatingUser' | translate">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="8" r="5"></circle>
         <path d="M20 21a8 8 0 0 0-16 0"></path>
       </svg>
     </span>
-    <span class="conv-rating__label" *ngIf="detail">{{ 'HistoryPage.RatingUser' | translate }}</span>
     <span class="conv-rating__bar" aria-hidden="true">
       <span
         class="conv-rating__seg"
@@ -38,7 +41,14 @@
     matTooltipHideDelay="100"
     [matTooltipDisabled]="detail"
     [matTooltip]="('HistoryPage.AiRatingTooltip' | translate:{ value: aiScore }) + (sentiment ? ' — ' + sentiment : '')">
-    <span class="conv-rating__icon" aria-hidden="true">
+    <span
+      class="conv-rating__icon"
+      [attr.aria-hidden]="detail ? null : true"
+      matTooltipClass="custom-mat-tooltip"
+      matTooltipPosition="right"
+      matTooltipHideDelay="100"
+      [matTooltipDisabled]="!detail"
+      [matTooltip]="'HistoryPage.RatingAi' | translate">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z"></path>
         <path d="M20 3v4"></path>
@@ -47,7 +57,6 @@
         <path d="M5 18H3"></path>
       </svg>
     </span>
-    <span class="conv-rating__label" *ngIf="detail">{{ 'HistoryPage.RatingAi' | translate }}</span>
     <span class="conv-rating__bar" aria-hidden="true">
       <span
         class="conv-rating__seg"

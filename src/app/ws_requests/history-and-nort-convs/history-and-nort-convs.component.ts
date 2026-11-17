@@ -545,6 +545,13 @@ export class HistoryAndNortConvsComponent extends WsSharedComponent implements O
 
         
 
+        // PERMISSION_TO_VIEW_RATING_SECTION (same rule as the conversation details)
+        if (status.role !== 'owner' && status.role !== 'admin' && status.role !== 'agent') {
+          this.PERMISSION_TO_VIEW_RATING_SECTION = status.matchedPermissions.includes(PERMISSIONS.RATING_READ);
+        } else {
+          this.PERMISSION_TO_VIEW_RATING_SECTION = true;
+        }
+
         // PERMISSION_TO_DELETE
         if (status.role === 'owner') {
           // Owner always has permission
