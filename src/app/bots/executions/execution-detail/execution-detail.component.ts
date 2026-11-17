@@ -307,6 +307,8 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   private reset$ = new Subject<void>();
   private load$ = new Subject<void>();
   private pollSub: Subscription | null = null;
+  /** A poll came due while the tab was hidden: it runs when the tab is shown again. */
+  private pollDue = false;
   private historySub: Subscription | null = null;
   private started = false;
 
@@ -492,7 +494,11 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return this.detail ? this.detail.steps.find(s => s.seq === seq) : undefined;
   }
 
-  // ---- polling: 2 s after each answer while running or stopping, 10 s while waiting ----
+  // ---- polling: 2 s after each answer while running or stopping, 10 s while waiting; held while the tab is hidden ----
+
+  isHidden(): boolean {
+    return typeof document !== 'undefined' && document.hidden;
+  }
 
   /**
    * Called after each response or error: the next poll starts POLL_MS later, so a response slower
@@ -505,12 +511,15 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       const delay = status === 'waiting' && !this.pending ? POLL_WAITING_MS : POLL_MS;
       this.pollSub = timer(delay).pipe(takeUntil(this.destroy$)).subscribe(() => {
         this.pollSub = null;
+        // hidden tab: no load until it is shown again (a forgotten tab on a waiting run would poll for hours)
+        if (this.isHidden()) { this.pollDue = true; return; }
         this.load$.next();
       });
     }
   }
 
   private stopPolling() {
+    this.pollDue = false;
     if (this.pollSub) {
       this.pollSub.unsubscribe();
       this.pollSub = null;
@@ -1086,10 +1095,17 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  /** A hidden tab throttles the countdown: when it is shown again, a grant past its deadline ends at once. */
+  /**
+   * A hidden tab throttles the countdown: when it is shown again, a grant past its deadline ends at once. A poll held
+   * while hidden runs now.
+   */
   @HostListener('document:visibilitychange')
   onVisibilityChange() {
     this.session.checkExpiry();
+    if (!this.isHidden() && this.pollDue) {
+      this.pollDue = false;
+      this.load$.next();
+    }
   }
 
   /**
