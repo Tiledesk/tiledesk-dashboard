@@ -206,6 +206,10 @@ $tl-cols: 104px minmax(0, 1fr) 128px 150px 120px 20px;
 }
 .tl-seg-wait .tl-seg-label { color: var(--exec-fg); text-shadow: 0 0 3px #fff, 0 0 3px #fff; }
 .tl-seg-click { cursor: pointer; }
+/* blocks only: a wait is a small mark, not to scale */
+.tl-seg.tl-seg-mark { min-width: 6px; }
+.tl-split-legend { align-items: center; }
+.tl-split-mode button { font-size: 12px; padding: 2px 10px; }
 /* hovering a segment or a row: its block (and the wait after it) stands out, the rest fades */
 .tl-split-hl .tl-seg:not(.tl-seg-hl) { opacity: .35; }
 .tl-seg { transition: opacity .12s; }

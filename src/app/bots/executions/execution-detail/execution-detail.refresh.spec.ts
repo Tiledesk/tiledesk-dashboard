@@ -9,7 +9,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltip, MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
 import { By } from '@angular/platform-browser';
-import { COPIED_MS, ExecutionDetailComponent, timeSplit } from './execution-detail.component';
+import { blocksOnly, COPIED_MS, ExecutionDetailComponent, timeSplit, WAIT_MARK_PCT } from './execution-detail.component';
 import { ExecutionStatusChipComponent } from '../shared/execution-status-chip.component';
 import { ExecutionsService } from '../../../services/executions.service';
 import { RolesService } from '../../../services/roles.service';
@@ -391,6 +391,62 @@ describe('ExecutionDetailComponent refreshed layout', () => {
       const segs = Array.from(el().querySelectorAll('.tl-split-bar .tl-seg')) as HTMLElement[];
       expect(segs.map(x => x.style.width)).toEqual(['25%', '25%', '50%']);
       expect(segs[2].classList).toContain('o-running');
+      end();
+    }));
+
+    it('blocks only: waits shrink to a fixed mark, blocks share the rest by their own time', () => {
+      // blocks 0..200 and 1000..1600 in a 10 s run: waits 800 ms (between) and 8400 ms (after)
+      const sp = timeSplit(0, 10000, steps([1, 0, 200], [2, 1000, 1600]));
+      const v = blocksOnly(sp);
+      const w = v.segments.map(x => [x.kind, x.seq, x.width, x.ms]);
+      // two wait marks of WAIT_MARK_PCT; 100 - 2 marks shared 1:3 by the blocks; real ms kept for the tooltips
+      const rest = 100 - 2 * WAIT_MARK_PCT;
+      expect(w).toEqual([
+        ['block', 1, Math.round(rest * 0.25 * 100) / 100, 200], ['wait', 1, WAIT_MARK_PCT, 800],
+        ['block', 2, Math.round(rest * 0.75 * 100) / 100, 600], ['wait', 2, WAIT_MARK_PCT, 8400],
+      ]);
+      // laid out left to right without gaps
+      expect(v.segments[1].left).toBe(v.segments[0].width);
+      expect(v.segments[3].left).toBeCloseTo(100 - WAIT_MARK_PCT, 1);
+      // totals are the run's, untouched
+      expect([v.blockMs, v.waitMs, v.total]).toEqual([800, 9200, 10000]);
+    });
+
+    it('blocks only with many waits: the marks never take more than 40 % together', () => {
+      const xs: Array<[number, number, number]> = [];
+      for (let i = 0; i < 50; i++) xs.push([i + 1, i * 100, i * 100 + 10]);
+      const v = blocksOnly(timeSplit(0, 10000, steps(...xs)));
+      const marks = v.segments.filter(x => x.kind === 'wait').reduce((a, x) => a + x.width, 0);
+      expect(marks).toBeLessThanOrEqual(40.01);
+    });
+
+    it('opens in blocks only when blocks are under 10 % of the run, and the switch flips it', fakeAsync(() => {
+      // 20 s of blocks in 1000 s
+      setup(detail('completed', [], { execution: { duration_ms: 1000000 }, steps: [step(1, 0, 10000), step(2, 10000, 10000)] }));
+      const pressed = () => (el().querySelector('.tl-split-mode [aria-pressed="true"]') as HTMLElement).classList;
+      expect(pressed()).toContain('tl-mode-blocks');
+      let segs = Array.from(el().querySelectorAll('.tl-split-bar .tl-seg')) as HTMLElement[];
+      expect(segs[0].style.width).not.toBe('1%');
+      expect(segs[2].classList).toContain('tl-seg-mark');
+      // the legend keeps the real totals
+      expect(el().querySelector('.tl-split-wait').textContent).toContain('98%');
+      (el().querySelector('.tl-mode-run') as HTMLElement).click();
+      fixture.detectChanges();
+      expect(pressed()).toContain('tl-mode-run');
+      segs = Array.from(el().querySelectorAll('.tl-split-bar .tl-seg')) as HTMLElement[];
+      expect(segs[0].style.width).toBe('1%');
+      end();
+    }));
+
+    it('opens on the whole run when blocks take 10 % or more', fakeAsync(() => {
+      setup(detail('completed', [], { execution: { duration_ms: 200000 }, steps: [step(1, 0, 10000), step(2, 10000, 10000)] }));
+      expect(el().querySelector('.tl-split-mode [aria-pressed="true"]').classList).toContain('tl-mode-run');
+      end();
+    }));
+
+    it('no switch when the run has no wait', fakeAsync(() => {
+      setup(detail('completed', [], { execution: { duration_ms: 20000 }, steps: [step(1, 0, 10000), step(2, 10000, 10000)] }));
+      expect(el().querySelector('.tl-split-mode')).toBeNull();
       end();
     }));
 

@@ -44,6 +44,10 @@ export const LIVE_REFETCH_MAX_MS = 30000;
 export const COPIED_MS = 2000;
 /** A segment of the "where the time went" strip at least this wide (% of the run) carries its label. */
 export const SEG_LABEL_MIN_PCT = 12;
+/** Blocks only: each wait is a mark this wide (% of the strip), whatever it lasted; all marks together at most 40 %. */
+export const WAIT_MARK_PCT = 1.5;
+/** The strip opens in blocks only when the blocks took less than this share of the run (waits would hide them). */
+export const BLOCKS_ONLY_BELOW = 0.1;
 
 /**
  * The header's primary control, by status: the first of these the API offers. Any other status (completed,
@@ -67,6 +71,8 @@ export interface TimeSegment {
   /** % of the run it lasted */
   width: number;
   ms: number;
+  /** blocks only: a wait drawn as a fixed mark, not to scale (its ms is still the real one) */
+  mark?: boolean;
 }
 
 /** Where the run's time went: blocks and waits in time order, with their totals. */
@@ -131,6 +137,27 @@ export function timeSplit(execStart: number, total: number, steps: Array<{ seq: 
   }
   push('wait', prev, cursor, runEnd);
   return { segments, total, blockMs, waitMs, waitAfter };
+}
+
+/**
+ * The split drawn by the blocks' own time: each wait becomes a WAIT_MARK_PCT mark (smaller when there are many, all
+ * marks at most 40 %), the blocks share the rest in proportion to their ms (equally when all took 0 ms). Same order,
+ * laid out left to right; totals and each segment's ms unchanged.
+ */
+export function blocksOnly(sp: TimeSplit): TimeSplit {
+  const waits = sp.segments.filter(g => g.kind === 'wait').length;
+  const blocks = sp.segments.length - waits;
+  const mark = waits ? Math.min(WAIT_MARK_PCT, 40 / waits) : 0;
+  const rest = 100 - mark * waits;
+  const r2 = (n: number) => Math.round(n * 100) / 100;
+  let left = 0;
+  const segments = sp.segments.map(g => {
+    const width = g.kind === 'wait' ? r2(mark) : r2(sp.blockMs > 0 ? (rest * g.ms) / sp.blockMs : rest / Math.max(blocks, 1));
+    const out: TimeSegment = { ...g, left: r2(left), width, mark: g.kind === 'wait' };
+    left += width;
+    return out;
+  });
+  return { ...sp, segments };
 }
 
 /** A share of the run as text: "<1%" for a sliver, else whole percent. */
@@ -737,6 +764,23 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   }
 
   readonly SEG_LABEL_MIN_PCT = SEG_LABEL_MIN_PCT;
+
+  /** The strip's scale, as picked with its switch; null = by default (blocks only when the blocks are a sliver). */
+  splitMode: 'run' | 'blocks' | null = null;
+
+  splitModeOf(sp: TimeSplit): 'run' | 'blocks' {
+    if (this.splitMode) return this.splitMode;
+    return sp.waitMs > 0 && sp.blockMs < sp.total * BLOCKS_ONLY_BELOW ? 'blocks' : 'run';
+  }
+
+  setSplitMode(mode: 'run' | 'blocks') {
+    this.splitMode = mode;
+  }
+
+  /** The segments as drawn: to scale, or blocks only. */
+  viewSplit(sp: TimeSplit): TimeSplit {
+    return this.splitModeOf(sp) === 'blocks' ? blocksOnly(sp) : sp;
+  }
 
   /** A block's time in ms (0 when its start is unknown). */
   stepMs(step: Step): number {
