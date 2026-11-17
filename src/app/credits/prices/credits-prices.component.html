@@ -1,0 +1,67 @@
+<div class="credits-columns">
+
+  <div class="credits-card">
+    <h2 class="credits-card-title">{{ 'Credits.PriceList' | translate }}</h2>
+    <h3 class="credits-card-subtitle credits-card-subtitle--first">{{ 'Credits.Groups.usage' | translate }}</h3>
+    <table class="credits-table">
+      <tbody>
+        <tr *ngFor="let resource of objectKeys(store.summary.usageCosts)">
+          <td>{{ ('Credits.Resources.' + resource) | translate }}</td>
+          <td class="num">{{ store.summary.usageCosts[resource] | credits }}</td>
+          <td class="credits-muted">{{ 'Credits.PerUse' | translate }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h3 class="credits-card-subtitle">{{ 'Credits.Groups.monthly' | translate }}</h3>
+    <table class="credits-table">
+      <tbody>
+        <tr *ngFor="let resource of objectKeys(store.summary.monthlyCosts)">
+          <td>{{ ('Credits.Resources.' + resource) | translate }}</td>
+          <td class="num">{{ store.summary.monthlyCosts[resource] | credits }}</td>
+          <td class="credits-muted">{{ 'Credits.PerMonth' | translate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="credits-card">
+    <h2 class="credits-card-title">{{ 'Credits.LlmPrices' | translate }}</h2>
+    <input *ngIf="store.llmPrices.length" type="search" class="form-control credits-price-filter"
+      [(ngModel)]="llmPriceFilter" placeholder="{{ 'Credits.FilterModels' | translate }}">
+    <p *ngIf="!llmPriceRows.length" class="credits-empty">
+      {{ (llmPriceFilter ? 'Credits.NoModelFound' : 'Credits.NoModelUsed') | translate }}
+    </p>
+    <div *ngIf="llmPriceRows.length" class="credits-price-scroll">
+      <table class="credits-table">
+        <thead>
+          <tr>
+            <th rowspan="2">{{ 'Credits.Model' | translate }}</th>
+            <th class="num" colspan="2">{{ 'Credits.TiledeskKey' | translate }}</th>
+            <th class="num" colspan="2">{{ 'Credits.OwnKey' | translate }}</th>
+          </tr>
+          <tr>
+            <th class="num">Input</th>
+            <th class="num">Output</th>
+            <th class="num">Input</th>
+            <th class="num">Output</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let price of llmPriceRows; trackBy: trackPrice">
+            <td>{{ price.id }}</td>
+            <ng-container *ngIf="price.tiledeskKey; else notManaged">
+              <td class="num">{{ price.tiledeskKey.input | credits: 4 }}</td>
+              <td class="num">{{ price.tiledeskKey.output | credits: 4 }}</td>
+            </ng-container>
+            <ng-template #notManaged>
+              <td class="num credits-muted" colspan="2">{{ 'Credits.NotAvailable' | translate }}</td>
+            </ng-template>
+            <td class="num">{{ price.ownKey.input | credits: 4 }}</td>
+            <td class="num">{{ price.ownKey.output | credits: 4 }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="credits-card-hint">{{ 'Credits.LlmPricesHint' | translate }}</p>
+  </div>
+</div>

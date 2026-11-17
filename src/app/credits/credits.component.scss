@@ -230,7 +230,7 @@ $credits-green: #2e7d32;
   }
 }
 
-.credits-breakdown span {
+.credits-breakdown > span {
   display: inline-block;
   margin-right: 10px;
   color: $credits-muted;
@@ -268,6 +268,295 @@ $credits-green: #2e7d32;
   &--warning {
     background: #fff4e5;
     color: $credits-amber;
+  }
+}
+
+.credits-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid $credits-border;
+  margin-bottom: 16px;
+  overflow-x: auto;
+}
+
+.credits-tab {
+  padding: 8px 14px;
+  color: $credits-muted;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    color: $credits-text;
+    text-decoration: none;
+  }
+
+  &--active {
+    color: $credits-text;
+    font-weight: 600;
+    border-bottom-color: $credits-blue;
+  }
+}
+
+.credits-columns--wide {
+  grid-template-columns: minmax(0, 2fr) minmax(280px, 1fr);
+
+  @media (max-width: 991px) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.credits-stack-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .credits-card {
+    margin-bottom: 0;
+  }
+}
+
+.credits-card-total {
+  font-size: 16px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.credits-card-subtitle--first {
+  margin-top: 0;
+}
+
+.credits-link {
+  margin-left: 8px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.credits-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.credits-stack {
+  display: flex;
+  height: 14px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: $credits-border;
+  margin-bottom: 16px;
+
+  &--thin {
+    height: 10px;
+    margin-bottom: 0;
+  }
+}
+
+.credits-stack-part {
+  height: 100%;
+  min-width: 2px;
+
+  & + & {
+    border-left: 1px solid #fff;
+  }
+}
+
+.credits-groups {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.credits-group {
+  display: flex;
+  align-items: flex-start;
+
+  .credits-dot {
+    margin-top: 5px;
+  }
+}
+
+.credits-group-label {
+  color: $credits-muted;
+  font-size: 13px;
+}
+
+.credits-group-value {
+  font-size: 18px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.credits-share-col {
+  width: 140px;
+}
+
+.credits-share {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .num {
+    width: 36px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.credits-share-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: #f0f2f5;
+  overflow: hidden;
+
+  > div {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  &--tall {
+    height: 10px;
+    border-radius: 5px;
+
+    > div {
+      border-radius: 5px;
+    }
+  }
+}
+
+.credits-bar-row {
+  margin-bottom: 10px;
+
+  &--inline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+}
+
+.credits-bar-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+
+  span:first-child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.credits-bar-name {
+  width: 220px;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.credits-bar-value {
+  width: 90px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.credits-history-bar {
+  position: relative;
+  flex: 1;
+}
+
+.credits-history-included {
+  position: absolute;
+  top: -4px;
+  bottom: -4px;
+  width: 2px;
+  margin-left: -1px;
+  background: $credits-text;
+}
+
+.credits-kv {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid #f2f4f7;
+
+  strong {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.credits-notice--inline {
+  margin: 12px 0 8px;
+}
+
+.credits-progress-fill--muted {
+  background: $credits-muted;
+}
+
+.credits-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+    color: $credits-muted;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .form-control {
+    min-width: 180px;
+    height: 34px;
+    padding: 4px 8px;
+    color: $credits-text;
+  }
+}
+
+.credits-filters-search {
+  flex: 1;
+  max-width: 320px;
+}
+
+.credits-table-scroll {
+  overflow-x: auto;
+}
+
+.credits-scroll {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.credits-sortable {
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    color: $credits-text;
+  }
+}
+
+.credits-sorted {
+  color: $credits-text;
+
+  &::after {
+    content: ' ↓';
   }
 }
 

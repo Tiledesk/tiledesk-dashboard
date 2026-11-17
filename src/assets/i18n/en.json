@@ -2730,6 +2730,54 @@
         "ExtraCheckoutError": "Could not start the payment, try again.",
         "IncludedResets": "Included credits renewal",
         "SeeCosts": "See credits and costs",
+        "Tabs": {
+            "Overview": "Overview",
+            "Models": "AI models",
+            "History": "History",
+            "Prices": "Prices"
+        },
+        "Groups": {
+            "monthly": "Monthly fees",
+            "monthlyHint": "Chatbots, KB contents and team members",
+            "usage": "Usage",
+            "usageHint": "Flow executions, emails, WhatsApp, OCR and namespaces",
+            "ai": "AI",
+            "aiHint": "Tokens of the AI models, KB indexing and vibe coder"
+        },
+        "Overview": {
+            "Spending": "How the credits of the period were spent",
+            "ByModel": "by model",
+            "Projection": "End of period estimate",
+            "ElapsedPeriod": "Elapsed period",
+            "PerDay": "Usage per day",
+            "Projected": "Estimated at the end of the period",
+            "RunOut": "At this pace the available credits run out on",
+            "Enough": "At this pace the available credits last until the end of the period.",
+            "ProjectionHint": "Monthly fees counted once, the rest at the average pace of the elapsed days.",
+            "TopModels": "AI models that cost the most",
+            "SeeAll": "See all",
+            "NoModels": "No AI model used in this period.",
+            "AiTotal": "Total AI credits"
+        },
+        "Models": {
+            "AllResources": "All the resources",
+            "AllKeys": "All the keys",
+            "Credits": "AI credits",
+            "OfConsumed": "{{perc}}% of the credits consumed in the period",
+            "UnpricedCalls": "{{calls}} calls not priced",
+            "NoUsage": "No AI usage for these filters.",
+            "TopModels": "Credits by model",
+            "Detail": "Detail by model, resource and key",
+            "PerThousand": "Credits / 1000 token",
+            "NoModel": "Model not specified",
+            "Hint": "With the Tiledesk key the credits are the cost of the tokens of the model; with your own key a fixed fee per token."
+        },
+        "HistoryPage": {
+            "Empty": "No period yet.",
+            "Chart": "Credits consumed per period",
+            "ChartHint": "The black line marks the included credits of the period.",
+            "Periods": "Periods"
+        },
         "Resources": {
             "flow_execution": "Flow executions",
             "conversation": "Conversations",
