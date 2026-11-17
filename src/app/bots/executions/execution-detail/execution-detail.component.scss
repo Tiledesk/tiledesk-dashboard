@@ -105,7 +105,7 @@
 .ex-grant-title { font-weight: 500; }
 .ex-grant-sep { color: var(--exec-faint); }
 .ex-grant-countdown { font-variant-numeric: tabular-nums; }
-.ex-grant-trigger { flex-basis: 100%; display: flex; align-items: baseline; gap: 10px; min-width: 0;
+.ex-grant-trigger { flex-basis: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0;
   border-top: 1px dashed var(--exec-line-strong); padding-top: 6px; }
 .ex-grant-trigger-label { font-weight: 500; white-space: nowrap; }
 .ex-grant-trigger-value { min-width: 0; overflow-wrap: anywhere; }
