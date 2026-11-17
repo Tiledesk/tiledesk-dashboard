@@ -1,0 +1,62 @@
+<div class="credits-card" *ngIf="!bars.length">
+  <p class="credits-empty">{{ 'Credits.HistoryPage.Empty' | translate }}</p>
+</div>
+
+<ng-container *ngIf="bars.length">
+  <div class="credits-card">
+    <h2 class="credits-card-title">{{ 'Credits.HistoryPage.Chart' | translate }}</h2>
+    <div *ngFor="let bar of bars; trackBy: trackPeriod" class="credits-bar-row credits-bar-row--inline">
+      <span class="credits-bar-name">{{ bar.period.start | amDateFormat: 'MMM YYYY' }}</span>
+      <div class="credits-history-bar">
+        <div class="credits-stack credits-stack--thin">
+          <div *ngFor="let part of bar.parts" class="credits-stack-part" [style.width.%]="part.width" [style.background]="color(part.row.resource)"
+            title="{{ ('Credits.Resources.' + part.row.resource) | translate }}: {{ part.row.credits | credits }}"></div>
+        </div>
+        <div class="credits-history-included" *ngIf="bar.period.includedCredits" [style.left.%]="bar.includedAt"
+          title="{{ 'Credits.IncludedCredits' | translate }}: {{ bar.period.includedCredits | credits: 0 }}"></div>
+      </div>
+      <span class="num credits-bar-value">{{ bar.period.consumed | credits }}</span>
+    </div>
+    <p class="credits-card-hint">{{ 'Credits.HistoryPage.ChartHint' | translate }}</p>
+  </div>
+
+  <div class="credits-card">
+    <h2 class="credits-card-title">{{ 'Credits.HistoryPage.Periods' | translate }}</h2>
+    <div class="credits-table-scroll">
+      <table class="credits-table">
+        <thead>
+          <tr>
+            <th>{{ 'Credits.Period' | translate }}</th>
+            <th class="num">{{ 'Credits.IncludedCredits' | translate }}</th>
+            <th class="num">{{ 'Credits.Consumed' | translate }}</th>
+            <th class="num">{{ 'Credits.FromIncluded' | translate }}</th>
+            <th class="num">{{ 'Credits.FromExtra' | translate }}</th>
+            <th class="num">{{ 'Credits.ExtraPurchased' | translate }}</th>
+            <th class="num">{{ 'Credits.Expired' | translate }}</th>
+            <th>{{ 'Credits.Breakdown' | translate }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let bar of bars; let first = first; trackBy: trackPeriod">
+            <td>
+              {{ bar.period.start | amDateFormat: 'll' }} – {{ bar.period.end | amDateFormat: 'll' }}
+              <span *ngIf="first && !bar.period.closed" class="credits-badge">{{ 'Credits.InProgress' | translate }}</span>
+            </td>
+            <td class="num">{{ bar.period.includedCredits | credits: 0 }}</td>
+            <td class="num">{{ bar.period.consumed | credits }}</td>
+            <td class="num">{{ bar.period.fromIncluded | credits }}</td>
+            <td class="num">{{ bar.period.fromExtra | credits }}</td>
+            <td class="num">{{ bar.period.extraPurchased | credits: 0 }}</td>
+            <td class="num">{{ bar.period.expired | credits }}</td>
+            <td class="credits-breakdown">
+              <span *ngFor="let part of bar.parts">
+                <span class="credits-dot" [style.background]="color(part.row.resource)"></span>
+                {{ ('Credits.Resources.' + part.row.resource) | translate }} {{ part.row.credits | credits }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-container>

@@ -1,0 +1,133 @@
+<div class="credits-filters">
+  <label>
+    {{ 'Credits.Period' | translate }}
+    <select class="form-control" [(ngModel)]="periodStart">
+      <option [ngValue]="null">{{ 'Credits.CurrentPeriod' | translate }}</option>
+      <ng-container *ngFor="let period of store.history; let first = first">
+        <option *ngIf="!first" [ngValue]="period.start">
+          {{ period.start | amDateFormat: 'll' }} – {{ period.end | amDateFormat: 'll' }}
+        </option>
+      </ng-container>
+    </select>
+  </label>
+  <label>
+    {{ 'Credits.Resource' | translate }}
+    <select class="form-control" [(ngModel)]="resource">
+      <option value="">{{ 'Credits.Models.AllResources' | translate }}</option>
+      <option *ngFor="let item of resources" [value]="item">{{ ('Credits.Resources.' + item) | translate }}</option>
+    </select>
+  </label>
+  <label>
+    {{ 'Credits.Key' | translate }}
+    <select class="form-control" [(ngModel)]="key">
+      <option value="">{{ 'Credits.Models.AllKeys' | translate }}</option>
+      <option value="tiledesk">{{ 'Credits.TiledeskKey' | translate }}</option>
+      <option value="own">{{ 'Credits.OwnKey' | translate }}</option>
+    </select>
+  </label>
+  <label class="credits-filters-search">
+    {{ 'Credits.Model' | translate }}
+    <input type="search" class="form-control" [(ngModel)]="search" placeholder="{{ 'Credits.FilterModels' | translate }}">
+  </label>
+</div>
+
+<ng-container *ngIf="view.totals as total">
+  <div class="credits-cards">
+    <div class="credits-card credits-card--main">
+      <div class="credits-card-label">{{ 'Credits.Models.Credits' | translate }}</div>
+      <div class="credits-card-value">{{ total.credits | credits }}</div>
+      <div class="credits-card-hint" *ngIf="period?.consumed">
+        {{ 'Credits.Models.OfConsumed' | translate: { perc: ((period.consumed ? total.credits / period.consumed * 100 : 0) | number: '1.0-0') } }}
+      </div>
+    </div>
+    <div class="credits-card">
+      <div class="credits-card-label">{{ 'Credits.Calls' | translate }}</div>
+      <div class="credits-card-value">{{ total.calls | number }}</div>
+    </div>
+    <div class="credits-card">
+      <div class="credits-card-label">Token</div>
+      <div class="credits-card-value">{{ total.tokens | number }}</div>
+    </div>
+    <div class="credits-card">
+      <div class="credits-card-label">{{ 'Credits.Cost' | translate }}</div>
+      <div class="credits-card-value">{{ total.cost ? ('$' + (total.cost | number: '1.2-4')) : '–' }}</div>
+      <div class="credits-card-hint credits-negative" *ngIf="total.unpriced">
+        {{ 'Credits.Models.UnpricedCalls' | translate: { calls: total.unpriced } }}
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<div class="credits-card" *ngIf="!view.rows.length">
+  <p class="credits-empty">{{ 'Credits.Models.NoUsage' | translate }}</p>
+</div>
+
+<ng-container *ngIf="view.rows.length">
+  <div class="credits-card">
+    <h2 class="credits-card-title">{{ 'Credits.Models.TopModels' | translate }}</h2>
+    <div *ngFor="let model of view.chart" class="credits-bar-row credits-bar-row--inline">
+      <span class="credits-bar-name" [title]="model.label">{{ model.label || (('Credits.Resources.' + model.resource) | translate) }}</span>
+      <div class="credits-share-bar credits-share-bar--tall"><div [style.width.%]="model.perc" [style.background]="color(model.resource)"></div></div>
+      <span class="num credits-bar-value">{{ model.credits | credits }}</span>
+    </div>
+  </div>
+
+  <div class="credits-card">
+    <h2 class="credits-card-title">{{ 'Credits.Models.Detail' | translate }}</h2>
+    <div class="credits-table-scroll">
+      <table class="credits-table">
+        <thead>
+          <tr>
+            <th>{{ 'Credits.Model' | translate }}</th>
+            <th>{{ 'Credits.Resource' | translate }}</th>
+            <th>{{ 'Credits.Key' | translate }}</th>
+            <th class="num credits-sortable" [class.credits-sorted]="sort === 'calls'" (click)="setSort('calls')">{{ 'Credits.Calls' | translate }}</th>
+            <th class="num credits-sortable" [class.credits-sorted]="sort === 'tokens'" (click)="setSort('tokens')">Token</th>
+            <th class="num credits-sortable" [class.credits-sorted]="sort === 'cost'" (click)="setSort('cost')">{{ 'Credits.Cost' | translate }}</th>
+            <th class="num">{{ 'Credits.Models.PerThousand' | translate }}</th>
+            <th class="num credits-sortable" [class.credits-sorted]="sort === 'credits'" (click)="setSort('credits')">{{ 'Credits.Credits' | translate }}</th>
+            <th class="credits-share-col">%</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of view.rows; trackBy: trackRow">
+            <td>
+              {{ row.label || ('Credits.Models.NoModel' | translate) }}
+              <span *ngIf="row.unpriced" class="credits-badge credits-badge--warning" title="{{ 'Credits.UnpricedHint' | translate }}">
+                {{ 'Credits.Unpriced' | translate }}: {{ row.unpriced }}
+              </span>
+            </td>
+            <td>
+              <span class="credits-dot" [style.background]="color(row.resource)"></span>
+              {{ ('Credits.Resources.' + row.resource) | translate }}
+            </td>
+            <td class="credits-muted">{{ (row.ownKey ? 'Credits.OwnKey' : 'Credits.TiledeskKey') | translate }}</td>
+            <td class="num">{{ row.calls | number }}</td>
+            <td class="num">{{ row.tokens | number }}</td>
+            <td class="num">{{ row.cost ? ('$' + (row.cost | number: '1.2-6')) : '–' }}</td>
+            <td class="num">{{ row.perThousand === null ? '–' : (row.perThousand | credits: 4) }}</td>
+            <td class="num">{{ row.credits | credits: 4 }}</td>
+            <td class="credits-share-col">
+              <div class="credits-share">
+                <div class="credits-share-bar"><div [style.width.%]="row.perc" [style.background]="color(row.resource)"></div></div>
+                <span class="num">{{ row.perc | number: '1.0-0' }}%</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot *ngIf="view.totals as total">
+          <tr>
+            <td colspan="3">{{ 'Credits.Total' | translate }}</td>
+            <td class="num">{{ total.calls | number }}</td>
+            <td class="num">{{ total.tokens | number }}</td>
+            <td class="num">{{ total.cost ? ('$' + (total.cost | number: '1.2-6')) : '–' }}</td>
+            <td></td>
+            <td class="num">{{ total.credits | credits: 4 }}</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <p class="credits-card-hint">{{ 'Credits.Models.Hint' | translate }}</p>
+  </div>
+</ng-container>

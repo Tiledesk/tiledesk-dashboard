@@ -31,9 +31,13 @@ export interface CreditsSummary {
   extraCreditsMin?: number;
 }
 
+/** Usage on tokens of one model; resource is missing on servers that returned only the 'llm' one */
 export interface CreditsLlmUsage {
-  provider: string;
-  model: string;
+  /** llm, kb_indexing, ocr_llm, vibe_coder */
+  resource?: string;
+  /** missing when the service reported only the cost */
+  provider?: string;
+  model?: string;
   /** call with the project's own key */
   ownKey: boolean;
   credits: number;

@@ -2713,6 +2713,54 @@
         "ExtraCheckoutError": "Impossibile avviare il pagamento, riprova.",
         "IncludedResets": "Rinnovo dei crediti inclusi",
         "SeeCosts": "Vedi crediti e costi",
+        "Tabs": {
+            "Overview": "Panoramica",
+            "Models": "Modelli AI",
+            "History": "Storico",
+            "Prices": "Listino"
+        },
+        "Groups": {
+            "monthly": "Costi mensili",
+            "monthlyHint": "Chatbot, contenuti KB e membri del team",
+            "usage": "Utilizzo",
+            "usageHint": "Esecuzioni dei flussi, email, WhatsApp, OCR e namespace",
+            "ai": "AI",
+            "aiHint": "Token dei modelli AI, indicizzazione KB e vibe coder"
+        },
+        "Overview": {
+            "Spending": "Come sono stati spesi i crediti del periodo",
+            "ByModel": "per modello",
+            "Projection": "Stima a fine periodo",
+            "ElapsedPeriod": "Periodo trascorso",
+            "PerDay": "Consumo al giorno",
+            "Projected": "Stima a fine periodo",
+            "RunOut": "A questo ritmo i crediti disponibili finiscono il",
+            "Enough": "A questo ritmo i crediti disponibili bastano fino a fine periodo.",
+            "ProjectionHint": "Costi mensili contati una volta, il resto al ritmo medio dei giorni trascorsi.",
+            "TopModels": "Modelli AI che costano di più",
+            "SeeAll": "Vedi tutti",
+            "NoModels": "Nessun modello AI usato in questo periodo.",
+            "AiTotal": "Totale crediti AI"
+        },
+        "Models": {
+            "AllResources": "Tutte le risorse",
+            "AllKeys": "Tutte le chiavi",
+            "Credits": "Crediti AI",
+            "OfConsumed": "{{perc}}% dei crediti consumati nel periodo",
+            "UnpricedCalls": "{{calls}} chiamate senza prezzo",
+            "NoUsage": "Nessun utilizzo AI con questi filtri.",
+            "TopModels": "Crediti per modello",
+            "Detail": "Dettaglio per modello, risorsa e chiave",
+            "PerThousand": "Crediti / 1000 token",
+            "NoModel": "Modello non indicato",
+            "Hint": "Con la chiave Tiledesk i crediti sono il costo dei token del modello; con la chiave propria un costo fisso per token."
+        },
+        "HistoryPage": {
+            "Empty": "Nessun periodo.",
+            "Chart": "Crediti consumati per periodo",
+            "ChartHint": "La linea nera indica i crediti inclusi del periodo.",
+            "Periods": "Periodi"
+        },
         "Resources": {
             "flow_execution": "Esecuzioni dei flussi",
             "conversation": "Conversazioni",
