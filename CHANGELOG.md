@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.7.278-stage
+- Refines the conversation rating in the details: removes the "Rating" title and the User / AI labels.
+- Hides the user rating in the conversations history list when the customer has not left a rating. The AI rating still shows when present. The details always show the user row.
+- Hides the Rating column and the "Only rated conversations" filter in History when the role cannot read ratings (`rating_read`) or the plan does not include them (inactive subscription).
+- In conversation details, "Upgrade plan" on a paid plan with an inactive subscription opens a warning dialog instead of the pricing page. 
+
 ### 2.7.277-stage
 - Refactors the Create Agent modal: the description is required to start, as on Home, and Start stays disabled while it is empty. The type select moves to the bottom, after the vibe coder
 - Adds the AI rating and its sentiment to the conversations history list and details, and redesigns the rating display as segmented bars.
