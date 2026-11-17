@@ -46,6 +46,8 @@ export const COPIED_MS = 2000;
 export const SEG_LABEL_MIN_PCT = 12;
 /** Blocks only: each wait is a mark this wide (% of the strip), whatever it lasted; all marks together at most 40 %. */
 export const WAIT_MARK_PCT = 1.5;
+/** Blocks only: a wait shorter than this (the ms between two blocks) gets no mark and takes no room. */
+export const WAIT_MARK_MIN_MS = 1000;
 /** The strip opens in blocks only when the blocks took less than this share of the run (waits would hide them). */
 export const BLOCKS_ONLY_BELOW = 0.1;
 
@@ -140,20 +142,23 @@ export function timeSplit(execStart: number, total: number, steps: Array<{ seq: 
 }
 
 /**
- * The split drawn by the blocks' own time: each wait becomes a WAIT_MARK_PCT mark (smaller when there are many, all
- * marks at most 40 %), the blocks share the rest in proportion to their ms (equally when all took 0 ms). Same order,
- * laid out left to right; totals and each segment's ms unchanged.
+ * The split drawn by the blocks' own time: each wait of WAIT_MARK_MIN_MS or more becomes a WAIT_MARK_PCT mark (smaller
+ * when there are many, all marks at most 40 %); shorter gaps take no room. The blocks share the rest in proportion to
+ * their ms (equally when all took 0 ms). Same order, laid out left to right; totals and each segment's ms unchanged.
  */
 export function blocksOnly(sp: TimeSplit): TimeSplit {
-  const waits = sp.segments.filter(g => g.kind === 'wait').length;
-  const blocks = sp.segments.length - waits;
+  const isMark = (g: TimeSegment) => g.kind === 'wait' && g.ms >= WAIT_MARK_MIN_MS;
+  const waits = sp.segments.filter(isMark).length;
+  const blocks = sp.segments.filter(g => g.kind === 'block').length;
   const mark = waits ? Math.min(WAIT_MARK_PCT, 40 / waits) : 0;
   const rest = 100 - mark * waits;
   const r2 = (n: number) => Math.round(n * 100) / 100;
   let left = 0;
   const segments = sp.segments.map(g => {
-    const width = g.kind === 'wait' ? r2(mark) : r2(sp.blockMs > 0 ? (rest * g.ms) / sp.blockMs : rest / Math.max(blocks, 1));
-    const out: TimeSegment = { ...g, left: r2(left), width, mark: g.kind === 'wait' };
+    const width = g.kind === 'wait'
+      ? (isMark(g) ? r2(mark) : 0)
+      : r2(sp.blockMs > 0 ? (rest * g.ms) / sp.blockMs : rest / Math.max(blocks, 1));
+    const out: TimeSegment = { ...g, left: r2(left), width, mark: isMark(g) };
     left += width;
     return out;
   });
@@ -775,6 +780,11 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
 
   setSplitMode(mode: 'run' | 'blocks') {
     this.splitMode = mode;
+  }
+
+  /** The segments the strip draws: a wait with no width (a short gap in blocks only) is not drawn. */
+  drawnSegments(sp: TimeSplit): TimeSegment[] {
+    return this.viewSplit(sp).segments.filter(g => g.kind === 'block' || g.width > 0);
   }
 
   /** The segments as drawn: to scale, or blocks only. */
