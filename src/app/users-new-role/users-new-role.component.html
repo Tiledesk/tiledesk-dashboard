@@ -88,10 +88,15 @@
                                                             <!-- Child Checkboxes -->
                                                             <div
                                                                 style="margin-left: 16px; margin-top: 8px; display: flex; flex-direction: column;">
-                                                                <mat-checkbox *ngFor="let child of section.children"
-                                                                    [formControl]="form.get(child.key)">
-                                                                    {{ child.label }}
-                                                                </mat-checkbox>
+                                                                <div class="permission-child-row" *ngFor="let child of section.children">
+                                                                    <mat-checkbox [formControl]="form.get(child.key)">
+                                                                        {{ child.label }}
+                                                                    </mat-checkbox>
+                                                                    <i *ngIf="child.info"
+                                                                        class="material-icons-outlined permission-info-icon"
+                                                                        [matTooltip]="child.info"
+                                                                        matTooltipPosition="right">help_outline</i>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </ng-container>

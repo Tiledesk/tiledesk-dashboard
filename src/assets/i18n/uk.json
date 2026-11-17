@@ -1947,6 +1947,11 @@
     },
     "HistoryPage": {
         "Rating": "Оцінка",
+        "UserRatingTooltip": "Оцінка користувача: {{value}}/5",
+        "NoUserRating": "Немає оцінки",
+        "AiRatingTooltip": "Оцінка ШІ: {{value}}/5",
+        "RatingUser": "Оцінка користувача",
+        "RatingAi": "Оцінка ШІ",
         "Requester": "Запитувач",
         "Message": "повідомлення",
         "NoRequests": "Немає розмови",

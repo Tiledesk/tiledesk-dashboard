@@ -208,7 +208,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.max_tokens = this.selectedNamespace.preview_settings.max_tokens;
       this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
 
-      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5')) {
+      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5') || this.selectedNamespace.preview_settings.model.startsWith('gpt-6')) {
 
         // this.temperature = 1
         // this.aiSettingsObject[0].temperature = 1
@@ -226,7 +226,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       }
 
 
-      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5'))  {
+      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5') || this.selectedNamespace.preview_settings.model.startsWith('gpt-6'))  {
         this.temperature_slider_disabled = true;
         this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
       } else { 
@@ -589,7 +589,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.selectedNamespace.preview_settings.llm = selected.llmValue
     }
 
-    if (selectedModel.startsWith('gpt-5')) {
+    if (selectedModel.startsWith('gpt-5') || selectedModel.startsWith('gpt-6')) {
 
       this.temperature = 1;
       this.aiSettingsObject[0].temperature = 1;
@@ -1069,7 +1069,7 @@ private restoreDialogScrollPosition(): void {
     this.max_tokens = this.selectedNamespaceClone.preview_settings.max_tokens;
     // this.selectedNamespace.preview_settings.max_tokens = this.maxTokensDefaultValue;
 
-    if (this.selectedModel.startsWith('gpt-5')) {
+    if (this.selectedModel.startsWith('gpt-5') || this.selectedModel.startsWith('gpt-6')) {
       this.temperature = 1
       this.temperature_slider_disabled = true;
       //  this.max_tokens_max = 100000

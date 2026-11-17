@@ -1946,6 +1946,11 @@
     },
     "HistoryPage": {
         "Rating": "Évaluation",
+        "UserRatingTooltip": "Évaluation de l'utilisateur : {{value}}/5",
+        "NoUserRating": "Aucune évaluation",
+        "AiRatingTooltip": "Évaluation de l'IA : {{value}}/5",
+        "RatingUser": "Évaluation de l'utilisateur",
+        "RatingAi": "Évaluation de l'IA",
         "Requester": "Demandeur",
         "Message": "Message",
         "NoRequests": "Pas de conversation",

@@ -1947,6 +1947,11 @@
     },
     "HistoryPage": {
         "Rating": "Betyg",
+        "UserRatingTooltip": "Användarbetyg: {{value}}/5",
+        "NoUserRating": "Inget betyg",
+        "AiRatingTooltip": "AI-betyg: {{value}}/5",
+        "RatingUser": "Användarbetyg",
+        "RatingAi": "AI-betyg",
         "Requester": "Förfrågare",
         "Message": "Meddelande",
         "NoRequests": "Inget samtal",

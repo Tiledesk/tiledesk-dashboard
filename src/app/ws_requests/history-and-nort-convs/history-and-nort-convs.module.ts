@@ -12,6 +12,7 @@ import { MomentModule } from 'ngx-moment';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { ConversationRatingModule } from '../conversation-rating/conversation-rating.module';
 
 const routes: Routes = [
   { path: "", component: HistoryAndNortConvsComponent},
@@ -34,7 +35,8 @@ const routes: Routes = [
     MatDatepickerModule,
     MomentModule,
     MatFormFieldModule,
-    MatIconModule
+    MatIconModule,
+    ConversationRatingModule,
   ]
 })
 export class HistoryAndNortConvsModule { }

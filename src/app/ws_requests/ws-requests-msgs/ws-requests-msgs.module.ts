@@ -21,6 +21,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
 import { AssignReassignDialogComponent } from './assign-reassign-dialog/assign-reassign-dialog.component';
 import { ContactRequestMessagesDialogComponent } from './contact-request-messages-dialog/contact-request-messages-dialog.component';
+import { ConversationRatingModule } from '../conversation-rating/conversation-rating.module';
 
 
 const routes: Routes = [
@@ -55,7 +56,8 @@ const routes: Routes = [
     MatButtonModule,
     MatDialogModule,
     MatExpansionModule,
-    MatTabsModule
+    MatTabsModule,
+    ConversationRatingModule,
   ]
 })
 export class WsRequestsMsgsModule { }

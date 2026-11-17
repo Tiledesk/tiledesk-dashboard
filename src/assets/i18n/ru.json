@@ -1947,6 +1947,11 @@
     },
     "HistoryPage": {
         "Rating": "Оценка",
+        "UserRatingTooltip": "Оценка пользователя: {{value}}/5",
+        "NoUserRating": "Нет оценки",
+        "AiRatingTooltip": "Оценка ИИ: {{value}}/5",
+        "RatingUser": "Оценка пользователя",
+        "RatingAi": "Оценка ИИ",
         "Requester": "Заявитель",
         "Message": "Сообщение",
         "NoRequests": "Нет разговора",

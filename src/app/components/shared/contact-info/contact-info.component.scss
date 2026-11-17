@@ -81,10 +81,11 @@ textarea[type="text"] {
 }
 
 .ul-wpr li .tag--row .tag--icon {
-    // fill: rgb(135, 150, 175);
-    fill: var(--icon-color);
+    fill: none;
+    color: var(--icon-color);
+    stroke: currentColor;
     margin-right: var(--tag-icon-margin-right);
-    transition: fill 0.2s ease-in-out 0s;
+    transition: color 0.2s ease-in-out, stroke 0.2s ease-in-out;
 }
 
 // .ul-wpr li .form-control {
@@ -194,11 +195,15 @@ textarea[type="text"] {
 
 // ----
 .ul-wpr li .tag--row:hover span .tag--icon {
-    fill: var(--icon-hover-color);
+    fill: none;
+    color: var(--icon-hover-color);
+    stroke: currentColor;
 }
 
 .ul-wpr li .tag--row:hover div .tag--icon {
-    fill: var(--icon-hover-color);
+    fill: none;
+    color: var(--icon-hover-color);
+    stroke: currentColor;
 }
 
 .ul-wpr li #contact-row-source-page:hover div input {

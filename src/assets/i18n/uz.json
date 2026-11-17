@@ -1946,6 +1946,11 @@
     },
     "HistoryPage": {
         "Rating": "Baholash",
+        "UserRatingTooltip": "Foydalanuvchi bahosi: {{value}}/5",
+        "NoUserRating": "Baholash yo'q",
+        "AiRatingTooltip": "AI bahosi: {{value}}/5",
+        "RatingUser": "Foydalanuvchi bahosi",
+        "RatingAi": "AI bahosi",
         "Requester": "So'rovchi",
         "Message": "Xabar",
         "NoRequests": "Suhbat yo'q",
