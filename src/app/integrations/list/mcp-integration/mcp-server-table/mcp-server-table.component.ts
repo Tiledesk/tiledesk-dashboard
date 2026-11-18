@@ -7,12 +7,20 @@ export interface McpTool {
   description?: string;
 }
 
+export interface McpCustomHeader {
+  key: string;
+  value: string;
+  /** When false the header is kept in config but not used. Omitted/true = enabled. */
+  enabled?: boolean;
+}
+
 export interface McpServer {
   id?: string;
   name: string;
   url: string;
   transport: string;
   tools?: McpTool[];
+  customHeaders?: McpCustomHeader[];
   /** Null removes a stored OAuth reference. Omitting the key keeps the previous value on save. */
   oauth?: McpOAuthReference | null;
 }

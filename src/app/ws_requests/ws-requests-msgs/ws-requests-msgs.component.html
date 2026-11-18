@@ -1872,14 +1872,13 @@
                           <div class="tags--container-wpr">
                             <div class="ticket--panel-row-header">
 
-                              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24"
                                 style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
                                 matTooltip="{{ 'Tags.Tags' | translate }}" #tooltip="matTooltip"
-                                matTooltipPosition='right' matTooltipHideDelay="100">
-                                <path d="M0 0h22v22H0z" fill="none"></path>
-                                <path
-                                  d="M19.626 10.615l-8.25-8.25a1.822 1.822 0 00-1.293-.532H3.667a1.839 1.839 0 00-1.834 1.834v6.416c0 .505.202.963.541 1.302l8.25 8.25c.33.33.788.532 1.293.532.504 0 .962-.202 1.292-.541l6.417-6.417c.339-.33.54-.788.54-1.292 0-.505-.21-.972-.54-1.302zM5.042 6.417c-.761 0-1.375-.614-1.375-1.375s.614-1.375 1.375-1.375c.76 0 1.375.614 1.375 1.375 0 .76-.614 1.375-1.375 1.375z">
-                                </path>
+                                matTooltipPosition='right' matTooltipHideDelay="100"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"></path>
+                                <circle cx="7.5" cy="7.5" r=".5" fill="currentColor"></circle>
                               </svg>
 
                             </div>
@@ -2371,12 +2370,13 @@
                       <div class="contact-row">
                         <span>
                           <svg xmlns="http://www.w3.org/2000/svg" height="22px" width="22px" viewBox="0 0 24 24"
-                            style="min-width: 22px; min-height: 22px;" fill="none" matTooltipClass="custom-mat-tooltip"
+                            style="min-width: 22px; min-height: 22px;" matTooltipClass="custom-mat-tooltip"
                             matTooltip="{{ 'Language' | translate }}" #tooltip="matTooltip" matTooltipPosition='right'
-                            matTooltipHideDelay="100">
-                            <path d="M0 0h24v24H0V0z" fill="none" />
-                            <path
-                              d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2s.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2s.07-1.35.16-2h4.68c.09.65.16 1.32.16 2s-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2s-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z" />
+                            matTooltipHideDelay="100"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                            <path d="M2 12h20"></path>
                           </svg>
                         </span>
                         <div class="form-group" style="margin-top: 9px;">
@@ -2661,56 +2661,7 @@
                     [ngClass]="{'tab0-card2-content-wpr-chat': CHAT_PANEL_MODE === true}">
                     <ng-container *ngIf="displayChatRatings">
                       <div class="tab0-card2-content" [ngClass]="{'tab0-card2-content-chat': CHAT_PANEL_MODE === true}">
-                        <header class="tab0-card2-header">
-                          <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" height="22px"
-                            viewBox="0 0 24 24" fill="none" style="min-width: 22px; min-height: 22px;"
-                            class="rating-icon" matTooltipClass="custom-mat-tooltip"
-                            matTooltip="{{ 'RequestMsgsPage.Rating' | translate }}" #tooltip="matTooltip"
-                            matTooltipPosition='right' matTooltipHideDelay="100">
-                            <g>
-                              <path d="M0,0h24v24H0V0z" fill="none" />
-                            </g>
-                            <g>
-                              <g>
-                                <path
-                                  d="M20,2H4C2.9,2,2,2.9,2,4v18l4-4h14c1.1,0,2-0.9,2-2V4C22,2.9,21.1,2,20,2z M20,16H5.17L4,17.17V4h16V16z" />
-                                <polygon points="12,15 13.57,11.57 17,10 13.57,8.43 12,5 10.43,8.43 7,10 10.43,11.57" />
-                              </g>
-                            </g>
-                          </svg>
-                          <div>
-                            <div class="rating-group" *ngIf="request">
-
-                              <span class="material-icons"
-                                [ngClass]="{'yellow-star': request?.rating === 1 || request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
-                                star
-                              </span>
-                              <span class="material-icons"
-                                [ngClass]="{'yellow-star': request?.rating === 2 || request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
-                                star
-                              </span>
-                              <span class="material-icons"
-                                [ngClass]="{'yellow-star': request?.rating === 3 || request?.rating === 4 || request?.rating === 5}">
-                                star
-                              </span>
-                              <span class="material-icons"
-                                [ngClass]="{'yellow-star': request?.rating === 4 || request?.rating === 5}">
-                                star
-                              </span>
-                              <span class="material-icons" [ngClass]="{'yellow-star': request?.rating === 5 }">
-                                star
-                              </span>
-                            </div>
-                            <span tabindex="0" class="rating-message" *ngIf="request">
-                              <span *ngIf="!request.rating_message">
-                                {{'NoCustomerReviewMessage' | translate}}
-                              </span>
-                              <span *ngIf="request.rating_message">
-                                {{request?.rating_message}}
-                              </span>
-                            </span>
-                          </div>
-                        </header>
+                        <app-conversation-rating *ngIf="request" [request]="request" mode="detail"></app-conversation-rating>
                       </div>
                     </ng-container>
                     <!--  -->
@@ -3017,10 +2968,13 @@
                             </td>
                           </tr>
 
-                          <tr *ngFor="let request of contact_requests">
+                          <ng-container *ngFor="let request of contact_requests">
+                          <tr class="contact-request-row"
+                            [ngClass]="{'contact-request-row--current': isCurrentContactRequest(request)}"
+                            (click)="onContactRequestRowClick(request)"
+                            [style.cursor]="isCurrentContactRequest(request) ? 'default' : 'pointer'">
 
-                            <td class="contact--conversations" (click)='goToRequestMsgs(request?.request_id)'
-                              style="cursor:pointer">
+                            <td class="contact--conversations">
 
                               <!-- ------------------------------------- -->
                               <!-- IF IS A CLOSED REQUEST -->
@@ -3282,7 +3236,7 @@
                             <!-- ------------------------------------------------------------- -->
                             <!-- REQUEST FIRST TEXT style="cursor:pointer"  -->
                             <!-- ------------------------------------------------------------- -->
-                            <td (click)='goToRequestMsgs(request?.request_id)' style="cursor:pointer">
+                            <td>
                               <p class="contact--conversations-first_text"
                                 [innerHTML]="getRequestText(request?.first_text)">
                               </p>
@@ -3297,6 +3251,7 @@
                               </span>
                             </td>
                           </tr>
+                          </ng-container>
                         </tbody>
                       </table>
                     </div> <!-- ./ card-content table-responsive -->

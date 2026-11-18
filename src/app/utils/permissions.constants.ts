@@ -144,13 +144,14 @@ export const PERMISSIONS = {
   PROJECTSETTINGS_SMARTASSIGNMENT_READ: 'projectsettings_smartassignment_read',
   PROJECTSETTINGS_SMARTASSIGNMENT_UPDATE: 'projectsettings_smartassignment_update',
 
+  PROJECTSETTINGS_RETENTION_READ: 'projectsettings_retention_read',
+
   PROJECTSETTINGS_NOTIFICATION_READ: 'projectsettings_notification_read',
 
   PROJECTSETTINGS_SECURITY_READ: 'projectsettings_security_read',
 
   PROJECTSETTINGS_BANNED_READ: 'projectsettings_banned_read',
 
-  PROJECTSETTINGS_RETENTION_READ: 'projectsettings_retention_read',
 
   PROJECTSETTINGS_ADVANCED_READ: 'projectsettings_advanced_read',
   

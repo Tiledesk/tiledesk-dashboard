@@ -1,11 +1,19 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { LoggerService } from 'app/services/logger/logger.service';
 
+export interface VllmCustomHeader {
+  key: string;
+  value: string;
+  /** When false the header is kept in config but not used. Omitted/true = enabled. */
+  enabled?: boolean;
+}
+
 export interface VllmEndpoint {
   name: string;
   url: string;
   apikey?: string;
   models: string[];
+  customHeaders?: VllmCustomHeader[];
 }
 
 @Component({

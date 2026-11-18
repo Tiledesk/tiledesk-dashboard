@@ -46,6 +46,7 @@ import { FaqService } from 'app/services/faq.service';
 import { Chatbot } from 'app/models/faq_kb-model';
 import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
 import { ImagePreviewModalComponent } from './image-preview-modal/image-preview-modal.component';
+import { ContactRequestMessagesDialogComponent } from './contact-request-messages-dialog/contact-request-messages-dialog.component';
 import { RolesService } from 'app/services/roles.service';
 import { ExecutionsService } from 'app/services/executions.service';
 import { canViewExecutions } from 'app/bots/executions/executions.models';
@@ -288,6 +289,20 @@ export class WsRequestsMsgsComponent extends WsSharedComponent implements OnInit
   // for accordion Contact conversations
   contact_requests: any
   pageNo = 0;
+  isCurrentContactRequest(request: any): boolean {
+    const currentRequestId = this.normalizeRequestId(this.id_request || this.request?.request_id);
+    if (!currentRequestId || !request?.request_id) {
+      return false;
+    }
+    return this.normalizeRequestId(request.request_id) === currentRequestId;
+  }
+
+  private normalizeRequestId(id: string): string {
+    if (!id) {
+      return id;
+    }
+    return id.includes('%2B') ? id.replace(/%2B/g, '+') : id;
+  }
   totalPagesNo_roundToUp: number;
   displaysFooterPagination: boolean;
   // HAS_OPENED_APPS: boolean = false;
@@ -1178,6 +1193,11 @@ updateTagContainerHeight() {
   goToPricingFromChat() {
     if (this.isVisiblePaymentTab) {
       if (this.CURRENT_USER_ROLE === 'owner') {
+        // Piano a pagamento con abbonamento scaduto: modale invece del pricing
+        if (this.prjct_profile_type === 'payment' && this.subscription_is_active === false) {
+          this.presentModalPaidSubscriptionExpired();
+          return;
+        }
         const href = window.location.href;
         this.logger.log('[PRICING] href ', href)
 
@@ -1191,6 +1211,34 @@ updateTagContainerHeight() {
     } else {
       this.notify._displayContactUsModal(true, 'upgrade_plan');
     }
+  }
+
+  /** Piano a pagamento con abbonamento scaduto: titolo "Subscription payment problem". */
+  presentModalPaidSubscriptionExpired() {
+    Swal.fire({
+      title: this.translate.instant('Pricing.SubscriptionPaymentProblem'),
+      text: this.translate.instant('Pricing.WeWereUnableToAutomaticallyRenewYourSubscription') + '. ' + this.translate.instant('Pricing.PleaseContactUs') + ' ' + this.translate.instant('Pricing.ToUpdateYourPaymentInformation') + '.',
+      icon: 'warning',
+      showCloseButton: true,
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('ContactUs'),
+      focusConfirm: false,
+      customClass: this.CHAT_PANEL_MODE === true ? 'swal-size-sm' : '',
+      didOpen: () => {
+        // Pulsazione del pulsante "Contact us" (Web Animations API: il popup di SweetAlert è fuori dal DOM del componente)
+        Swal.getConfirmButton()?.animate(
+          [
+            { boxShadow: '0 0 0 0 rgba(5, 102, 255, 0.45)' },
+            { boxShadow: '0 0 0 10px rgba(5, 102, 255, 0)' },
+          ],
+          { duration: 1500, iterations: Infinity }
+        );
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.open(`mailto:${this.notify.salesEmail}?subject=Upgrade plan (${this.profile_name} expired)`);
+      }
+    });
   }
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
@@ -8056,20 +8104,55 @@ extractUrls(text: string): string[] {
     }
   }
 
-  goToRequestMsgs(request_recipient: string) {
-    const calledFromIframe = (window.self !== window.top);
-   this.logger.log("[WS-REQUESTS-MSGS] goToRequestMsgs calledFromIframe ", calledFromIframe);
-    if (this.CHAT_PANEL_MODE === false) {
-      this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
-    } else if (this.CHAT_PANEL_MODE === true) {
-     if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.CURRENT_USER_ROLE === 'agent') {
-        const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
-        window.open(url, '_blank');
-      } else {
-        const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
-        window.open(url, '_top');
-      }
+  // goToRequestMsgs(request_recipient: string) {
+  //   const calledFromIframe = (window.self !== window.top);
+  //  this.logger.log("[WS-REQUESTS-MSGS] goToRequestMsgs calledFromIframe ", calledFromIframe);
+  //   if (this.CHAT_PANEL_MODE === false) {
+  //     this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
+  //   } else if (this.CHAT_PANEL_MODE === true) {
+  //    if (this.CURRENT_USER_ROLE === 'owner' || this.CURRENT_USER_ROLE === 'admin' || this.CURRENT_USER_ROLE === 'agent') {
+  //       const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
+  //       window.open(url, '_blank');
+  //     } else {
+  //       const url = this.dshbrdBaseUrl + '/#/project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages'
+  //       window.open(url, '_top');
+  //     }
+  //   }
+  // }
+
+   goToRequestMsgs(request_recipient: string) {
+    this.router.navigate(['project/' + this.id_project + '/wsrequest/' + request_recipient + '/messages']);
+  }
+
+   onContactRequestRowClick(request: any): void {
+    if (this.isCurrentContactRequest(request)) {
+      return;
     }
+    if (this.CHAT_PANEL_MODE) {
+      this.openContactRequestMessagesDialog(request);
+    } else {
+      this.goToRequestMsgs(request?.request_id);
+    }
+  }
+
+  openContactRequestMessagesDialog(request: any): void {
+    this.dialog.open(ContactRequestMessagesDialogComponent, {
+      panelClass: 'contact-request-messages-dialog-panel',
+      width: '100%',
+      maxWidth: '100%',
+      height: 'calc(100vh + 2px)',
+      maxHeight: 'calc(100vh + 2px)',
+      position: { top: '-2px' },
+      autoFocus: false,
+      hasBackdrop: true,
+      data: {
+        request,
+        requester_id: this.requester_id,
+        fillColour: this.fillColour,
+        requester_fullname_initial: this.requester_fullname_initial,
+        requestFirstText: this.getRequestText(request?.first_text),
+      },
+    });
   }
 
   // emailChange(event) {

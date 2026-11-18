@@ -203,6 +203,24 @@ export class FaqKbService {
       .post(url, null, httpOptions)
 
   }
+
+  /**
+   * Clones a V2 agent as a new V3 agent "<name> (V3)" (see utils/migrate-to-v3.util.ts).
+   * With dryRun nothing is written: the answer carries only the report.
+   */
+  migrateChatbotToV3(botid: string, dryRun: boolean) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+    const url = this.SERVER_BASE_PATH + this.project._id + "/faq_kb/" + botid + "/migrate-v3" + (dryRun ? "?dryRun=true" : "");
+    this.logger.log('[FAQ-KB.SERV] - MIGRATE TO V3 - URL ', url);
+
+    return this._httpClient
+      .post(url, null, httpOptions)
+  }
   /**
    * READ (GET ALL FAQKB WITH THE CURRENT PROJECT ID)
    * NOTE: chat21-api-node.js READ THE CURRENT PROJECT ID FROM THE URL SO IT SO NO LONGER NECESSARY TO PASS THE PROJECT 

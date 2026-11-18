@@ -278,14 +278,21 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
   }
 
   /**
-   * Retrieve MCP tools from server
-   * When the server is connected with OAuth, send only the connection id:
+   * Retrieve MCP tools from server.
+   * When the server is connected with OAuth, send the connection id:
    * the server attaches the bearer token and refreshes it.
+   * The second argument is either the enabled custom headers or an OAuth
+   * reference, so existing callers and the OAuth flow both keep working.
    * @param serverUrl The URL of the MCP server
-   * @param oauth Connection reference, or null when the server has no OAuth
+   * @param customHeadersOrOAuth Enabled headers, or an OAuth connection reference
+   * @param oauth Connection reference when custom headers are passed as the second argument
    * @returns Observable with tools array
    */
-  getMcpTools(serverUrl: string, oauth?: McpOAuthReference | null) {
+  getMcpTools(
+    serverUrl: string,
+    customHeadersOrOAuth?: Array<{ key: string; value: string }> | McpOAuthReference | null,
+    oauth?: McpOAuthReference | null,
+  ) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -297,16 +304,53 @@ checkElevenLabsKeyValidity(url: string, api_key?: string) {
     this.logger.debug('[INTEGRATION.SERV] - get MCP tools URL: ', url);
     this.logger.debug('[INTEGRATION.SERV] - server URL: ', serverUrl);
 
-    const body: { url: string; oauth?: { connection_id: string } } = {
+    const customHeaders = Array.isArray(customHeadersOrOAuth) ? customHeadersOrOAuth : undefined;
+    const oauthRef = Array.isArray(customHeadersOrOAuth) || customHeadersOrOAuth == null
+      ? oauth
+      : customHeadersOrOAuth;
+
+    const body: {
+      url: string;
+      customHeaders?: Array<{ key: string; value: string }>;
+      oauth?: { connection_id: string };
+    } = {
       url: serverUrl
     };
 
-    if (oauth && oauth.connection_id) {
-      body.oauth = { connection_id: oauth.connection_id };
+    if (customHeaders && customHeaders.length) {
+      body.customHeaders = customHeaders;
+    }
+
+    if (oauthRef && oauthRef.connection_id) {
+      body.oauth = { connection_id: oauthRef.connection_id };
     }
 
     return this.http.post(url, body, httpOptions);
   }
 
+  /**
+   * Fetch a connector's manifest via the tiledesk-server proxy (avoids CORS,
+   * keeps a server-side validation point). See routes/connectors.js.
+   * @param connectorUrl Base URL of the connector (e.g. https://my-connector.example.com)
+   * @returns Observable<{ success: boolean, manifest: any }>
+   */
+  getConnectorManifest(connectorUrl: string) {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    };
+
+    const url = this.SERVER_BASE_PATH + this.project_id + "/connectors/manifest";
+    this.logger.debug('[INTEGRATION.SERV] - get connector manifest URL: ', url);
+    this.logger.debug('[INTEGRATION.SERV] - connector URL: ', connectorUrl);
+
+    const body = {
+      url: connectorUrl
+    };
+
+    return this.http.post(url, body, httpOptions);
+  }
 
 }

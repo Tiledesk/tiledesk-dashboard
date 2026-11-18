@@ -23,7 +23,7 @@ import { Chart } from 'chart.js'; /// VISITOR GRAPH FOR THE NEW NOME
 // import * as moment from 'moment';
 import moment from "moment";
 import { FaqKbService } from '../services/faq-kb.service'; // USED FOR COUNT OF BOTS FOR THE NEW HOME
-import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, goToCDSVersion, openChatbotEditor, PLAN_NAME, projectDefaultsDashletFiltersOff } from '../utils/util';
+import { APP_SUMO_PLAN_NAME, avatarPlaceholder, getColorBck, openChatbotEditor, PLAN_NAME, projectDefaultsDashletFiltersOff } from '../utils/util';
 import { LoggerService } from '../services/logger/logger.service';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators'
@@ -506,6 +506,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.getUserRole();
     // Same plan → chatBotLimit resolution as bots-list (create / import)
     this.planLimitsBridge.getProjectPlan();
+    // this.getProjectPlan(); 
     // this.getVisitorCounter();
     this.getOSCODE();
     this.checkPromoURL()
@@ -3922,6 +3923,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             openEditor();
             return;
           }
+          // Primary handoff for CDS (prompt + attachment URLs in the same sessionStorage note).
           saveAgentPrompt({
             botId: faqKb._id,
             prompt: normalizedPrompt,

@@ -1611,6 +1611,9 @@ export const appRoutes: Routes = [
   // Prompt from website: /build?prompt=... (no AuthGuard; prompt saved before login redirect)
   { path: 'build', component: BuildFromWebsiteComponent },
   { path: 'onboarding', component: OnboardingWelcomeComponent, canActivate: [AuthGuard] }, // wizard
+  // Prompt written on the website: /build?prompt=... -> saved, then the last project's Home with the
+  // vibe coder field filled. No AuthGuard: the prompt has to be saved before any redirect to the login.
+  { path: 'build', component: BuildFromWebsiteComponent },
   { path: 'create-new-project', component: OnboardingContentComponent, canActivate: [AuthGuard] }, // wizard 
   { path: 'project/:projectid/onboarding-widget', component: OnboardingWidgetComponent, canActivate: [AuthGuard] },
   { path: 'project/:projectid/desktop-access/:botid', component: CnpIsMobileComponent, canActivate: [AuthGuard] }, // wizard 

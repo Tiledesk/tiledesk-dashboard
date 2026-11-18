@@ -34,7 +34,7 @@ interface PermissionSection {
   parentLabel: string;
   type: string;
   expanded: boolean,
-  children: { key: string; label: string }[];
+  children: { key: string; label: string; info?: string }[];
 }
 
 @Component({
@@ -153,7 +153,7 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.CONVERSATION_DETAIL_READ, label: 'Able to view' },
         { key: PERMISSIONS.TICKET_ID_READ, label: 'Able to view ticked id' },
-        { key: PERMISSIONS.RATING_READ, label: 'Able to view conversation rating' },
+        { key: PERMISSIONS.RATING_READ, label: 'Able to view conversation rating', info: 'This permission also controls the Rating column and the "Only rated conversations" filter in History.' },
         { key: PERMISSIONS.TAGS_READ_ALL, label: 'Able to view all conversation tags' },
       ]
     },
@@ -470,7 +470,7 @@ export class UsersNewRoleComponent implements OnInit {
         { key: PERMISSIONS.PROJECTSETTINGS_SECURITY_READ, label: 'Able to view Security' },
         { key: PERMISSIONS.PROJECTSETTINGS_BANNED_READ, label: 'Able to view Banned visitors' },
         { key: PERMISSIONS.LEAD_UNBAN, label: 'Able to unban visitor' },
-        // { key: PERMISSIONS.PROJECTSETTINGS_RETENTION_READ, label: 'Able to view Messages retention' },
+        { key: PERMISSIONS.PROJECTSETTINGS_RETENTION_READ, label: 'Able to view Messages retention' },
         { key: PERMISSIONS.PROJECTSETTINGS_ADVANCED_READ, label: 'Able to view Advanced' },
       ]
     },

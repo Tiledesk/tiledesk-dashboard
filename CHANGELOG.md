@@ -77,111 +77,275 @@
 ### 2.8.28
 - Updates Flow engagement metrics and terminology in the Dashboard Home for greater clarity.
 
-### 2.8.27
-- Redesigns the home page dashboard with a new layout
+### 2.7.278-stage
+- Refines the conversation rating in the details: removes the "Rating" title and the User / AI labels.
+- Hides the user rating in the conversations history list when the customer has not left a rating. The AI rating still shows when present. The details always show the user row.
+- Hides the Rating column and the "Only rated conversations" filter in History when the role cannot read ratings (`rating_read`) or the plan does not include them (inactive subscription).
+- In conversation details, "Upgrade plan" on a paid plan with an inactive subscription opens a warning dialog instead of the pricing page. 
 
-### 2.8.26
-- Improves translations in the integration Gemini Agent Platform
+### 2.7.277-stage
+- Refactors the Create Agent modal: the description is required to start, as on Home, and Start stays disabled while it is empty. The type select moves to the bottom, after the vibe coder
+- Adds the AI rating and its sentiment to the conversations history list and details, and redesigns the rating display as segmented bars.
+
+### 2.7.276-stage
+- Improves Home vibe coder spacing 
+- Shows “Updated …” next to the icon on the Home last-edited agent card (replaces Draft/Published)
+- Replaces the paperclip attach control with a borderless plus
+- Fixes the bug: on Home the “Pick up where you left off” section and its edit button ignored flow permissions. The section now shows only with view-flows permission, the edit button only with edit-flows permission, and agent teammates never see it
+- Fixes the bug: creating an AI agent from the Home vibe coder (with or without a prompt, and from the Create Agent modal) ignored the chatbot limit of the plan
+
+### 2.7.275-stage
+- Edits the scopes of a Google or manual MCP server as tags: type a scope and press Enter to add it, click the tag to remove it
+- Changing scopes, the manual OAuth client, or the authentication type of an existing MCP server asks for a new authorization before saving
+- Deleting an MCP server also deletes its OAuth authorization when no other server uses it; if the authorization cannot be deleted, the server stays in the list
+- The executions list shows every trigger and Design Studio test runs by default; test runs have a badge, and a Test runs toggle hides them (the counters follow the toggle)
+- An execution block that is still open shows the action currently running; a block closed as interrupted uses the interrupted style
+- Monitor → Graph: time range Now / 1h / 24h / 7d / 30d, only agents that have executions in the view, and the same big-number cards as the executions list
+- Executions filters for agent, trigger, status and period are selects; clicking a counter card sets the status filter
+- Adds a With errors card next to Failed: runs of any status that took a failure condition. On the list it filters executions with failure conditions
+- Project settings, next to executions retention: a Stop notice, the message the chatbot sends once in the conversation when a user writes while the agent's execution is stopped
+
+### 2.7.274-stage
+- Improves Home vibe coder spacing and layout- Adds on the Home page a compact last-edited AI Agent pickup card with publish/draft status, updated date, and last-10-days conversations char
+- Opens Design Studio V3 when the agent has `ds_version = v3` (Home edit, bots list, Knowledge Bases “served by”)
+- Fixes the bug: Knowledge Base namespace AI agents were missing `ds_version`, so V2/V3 editor routing could be wrong
+- Hides navbar, sidebar and KB stats charts when Knowledge Bases is opened with `?embed` (CDS iframe)
+- Shows the new Create Agent modal (with description) on the bots list page only when the new Home creation experience is enabled; otherwise keeps the previous Create Flows modal
+- Fixes the bug: Knowledge Base preview settings model select could be empty when the saved model was inactive or missing from the catalog
+- Adds LLM models: GPT-6 Astra, GPT-6.1 Sol/Terra, GPT-6 Luna/Sol, Gemini 4 Carbon/Argon, Gemini 3.8 Flash, Claude Opus/Sonnet/Haiku 5.5, Claude Fable 5.2/5.1, Cohere Command A Translate, Groq MiniMax M2.7 and Muse Spark Open
+- Deprecates LLM models: GPT-5, GPT-5-mini, GPT-5-nano, GPT-5.3, GPT-4 (Legacy), GPT-3.5 Turbo, Claude Opus 4.1, Claude Sonnet 4.5, Gemini 2.5 Flash, Groq Llama 3.1 8B Instant, Llama 3.3 70B Versatile, Compound, Compound Mini, Qwen3.6-27B
+- Reactivates Gemini 2.5 Flash Lite and Groq GPT OSS 120B / 20B
+
+### 2.7.273-stage
+- Fills the Scopes field of a Google or manual MCP server with the scopes returned by the OAuth connection, when the server is opened and right after authorization
+
+### 2.7.272-stage
+- Adds ready-made dashboard settings for stage, production, and Aruba, so each environment can be used as-is
+- Those settings stay on the machine that prepares the app and are included when the dashboard is built
+
+### 2.7.271-stage
+- Updates the New Flow → AI Agent modal: embeds the Home vibe coder (prompt, examples, file attachments), replaces Create with Start, widens the dialog, and passes attachment URLs to Design Studio the same way as Home
+- Adds OAuth authentication for MCP servers in Integrations → MCP Servers: automatic (MCP discovery), Google and manual; connection status with reconnect.
+
+### 2.7.270-stage
+- Adds file attachments to the Home vibe coder (up to 5 files, 10 MB each): upload on Start, chips with preview/remove, and handoff of attachment URLs to Design Studio via `cds-agent-from-prompt` and `agent-prompts`
+
+### 2.7.269-stage
+- Home asks only for the description: with a prompt no name modal opens, the agent is created with a provisional name from the first words of the description, and the Design Studio (3.1.4) renames it after the title the agent runtime generates for its conversation (runtime 0.12.0). In New flow → AI Agent the name becomes optional when a description is written. The note left for the Design Studio carries `provisionalName`
+
+### 2.7.268-stage
+- Adds the ability to create TTL columns in Data Tables
+
+### 2.7.267-stage
+- Aligns conversation visibility with the new request APIs (visibility / agentIds / visibilitySince) 
+
+### 2.7.266-stage
+- Adds "Clone to V3" to the menu of V2 agents (owners and admins): after a preview of the migration report, the agent is cloned as a new V3 agent "<name> (V3)" and opened in Design Studio V3, leaving the V2 agent unchanged
+- Requires server 3.1.0-rc2 and `cdsV3BaseUrl`; not offered for V3 agents, sub agents or published versions, and a refused migration shows its reason
+
+### 2.7.265-stage
+- Shows the AI Agent tokens quota (`agent_tokens`, Design Studio V3 vibe coder) in the navbar quota panel and in Home Current usage, with help text in every language
+
+### 2.7.264-stage
+- Removes the Home vibe-coder badge chip
+- Prevents a stale `/build` redirect from skipping onboarding on signup
+
+### 2.7.263-stage
+- Improves Home vibe-coder UX (optional prompt, Copilot gate, send button, ng-select)
+- Defaults Overview and Current usage off for new projects
+- Shows Home quick-card counters as N/N
+
+### 2.7.262-stage
+- The saved prompt also keeps where it was written: the dashboard, or the web page that sent it, given by that page on `/build?prompt=…&origin=<page address>` (otherwise the site the browser reports, when it is not the dashboard)
+
+### 2.7.261-stage
+- Saves the prompt an AI agent is created from (Home and agents list), with the agent and where it was written (Home, website, onboarding, agents list); author, project and date are set by the server
+- The save never blocks: the agent opens anyway if it fails, if the server does not answer within 2 seconds or does not have the service yet
+- Adds the `/build?prompt=` landing page for a prompt written on the website: the prompt is kept and the user lands on the Home of the last project used, with the vibe-coder field filled in (nothing starts until the user presses it)
+- Not logged in: login first, then back to the same Home; a new user who signs up gets a first project created as in the onboarding and lands on its Home
+- Remembers the last project each user opened, so the landing works also after a logout; login, signup and onboarding pages are unchanged
+
+### 2.7.260-stage
+- Removes onboarding vibe-coder prompt boxes
+- Improves Home vibe-coder prompt boxes
+- Adds Current usage dashlet toggle (first in the menu)
+- Centers signup form (removes left marketing split)
+- Adds custom headers support to the MCP integration
+
+### 2.7.259-stage
+- Adds a prompt box on onboarding welcome and Home that lets users enter a description used by the CDS vibe coder to create an AI Agent
+
+### 2.7.258-stage
+- An agent that still carries the `v3` label inside its attributes, saved before the `ds_version` field existed, is treated as v3 too: it gets the tag and opens in the new Design Studio, which moves the label to the field on open
+
+### 2.7.257-stage
+- Reads the version of an agent from the `ds_version` field of the bot, where the server keeps it since 2.30.0, no longer from its attributes; the "v3" tag and the choice of the Design Studio follow
+- An agent created from scratch is born with the version the deployment sets (`chatbotVersion`, env `CHATBOT_VERSION`) written as `ds_version`, no longer as `attributes.dsVersion`, so the server builds its flow in that form; without that setting creation is unchanged
+- Adds `CHATBOT_VERSION` to the environment sample
+
+### 2.7.256-stage
+- Opens the right Design Studio also after creating or importing an agent (from scratch, from a prompt, from a JSON, from a template, from the onboarding wizard, from a knowledge base): the editor follows the version label the server answers with, instead of always the previous editor; where only the agent id is at hand, the agent is read back first
+
+### 2.7.255-stage
+- Shows a small "v3" tag beside the name, in the chatbots list, for the agents managed by the new Design Studio
+- Opens those agents in the new Design Studio from the chatbots list and from the home cards, when its URL is configured (`CDS_V3_URL`); without that URL, and for every other agent, nothing changes
+
+### 2.7.254-stage
+- Adds Custom Headers to OpenAI-Compatible (vLLM) endpoints, with enable/disable via toggle
+- Shows custom retention periods in the Message Retention select
+
+### 2.7.253-stage
+- Adds a new modal to create an AI Agent: its name and a description of what it should do, offered only where agents are created with the new editor
+- Hands that description to the Design Studio, so the AI chat can build the flow on the canvas
+- Leaves every other way of creating something on the previous modal, unchanged
+
+### 2.7.252-stage
+- Replaces the Token Consumption Over Time chart with Queries per KB Over Time in the Home Overview
+- Removes the section KB analytics
+- Other improvements
+
+### 2.7.251-stage
+- Accepts Gemini Agent Platform URLs up to `/publishers/google` (model is configured separately)
 - Fixes the bug: conversation detail showed oversized `h1` text inside chat message bubbles
+- Improves translations in the integration Gemini Agent Platform
 
-### 2.8.25
-- Adds Gemini Agent Platform integration with Project/Location fields in the endpoint setup and table
+### 2.7.250-stage
+- Updates the Gemini Agent Platform integration to make the API key required
+
+### 2.7.249-stage
+- Improves Gemini Agent Platform endpoint setup with Project/Location fields and table columns
+- Uses `llmServer` in KB preview QA requests for vLLM and Gemini Agent Platform
+- Updates OpenRouter Provider sorting to use ng-select
+
+### 2.7.248-stage
+- Agents created from scratch open with the new Design Studio editor. Set by `CHATBOT_VERSION`: empty leaves creation as before. Templates, copies and imports keep their own version
+
+### 2.7.247-stage
+- Refactors home page
+
+### 2.7.246-stage
 - Adds the OpenRouter integration: configure the API key, pick models and the providers that run the inference
 
-### 2.8.24
+### 2.7.245-stage 
+- Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
+
+### 2.7.244-stage 
+-  Updates LLM models
+
+### 2.7.243-stage 
 - Adds Gemini Agent Platform integration
 
-### 2.8.23
-- Improves API Key masking for integrations
-
-### 2.8.22
--  Updates integration API key fields to show server-masked keys as read-only and replace them via Change/Cancel instead of the show/hide eye icon
-
-### 2.8.21
-- Fixes the bug: FAQ content cannot be updated
-
-### 2.8.20
-- Updates LLM models
-
-### 2.8.19
-- Adds permissions to Data tables
-
-### 2.8.18
-- Migrates the dashboard core to Angular 15 (CLI, @angular/core, and Material/CDK 15 with MDC)
-- Adapts key UI surfaces to Material MDC (History date range, Knowledge Base actions, Data Tables …)
-- Removes unused components 
+### 2.7.242-stage 
+- Migrates the dashboard core to Angular 15 (CLI, `@angular/core`, and Material/CDK 15 with MDC)
+- Adapts key UI surfaces to Material MDC (History date range, Knowledge Base actions, Data Tables)
+- Removes unused components (in-app CDS, FAQ test, Native bot, Tilebot UI and more) 
+- Improves Analytics loading feedback  
+- Adds LEAVE_CONVERSATION to the new Activities page
 - Improvements and bug fixing
 
-### 2.8.16
+### 2.7.241-stage 	
 - Shows the current size of data tables in MB against the maximum allowed size
 - Adds the ability to filter data tables by conditions
 - Adds tooltips in the Knowledge Bases and Data Tables sidebars to show the full name when truncated
 
-### 2.8.15
-- Implements the new activities
+### 2.7.240-stage
+- Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically (GA and Rewardful on panel.tiledesk.com; Stripe when PAY is enabled)
 
-### 2.8.14
-- Removes Google Analytics, Stripe, and Rewardful scripts from index.html and loads them dynamically
+### 2.7.239-stage
+- Improves data tables
 
-### 2.8.12
-- Adds data tables
-
-### 2.8.11
+### 2.7.238-stage
 - Updates the widget installation script on the knowledge base page (adds the default department ID and chatbot ID)
 
-### 2.8.10
-- Implement automatic path switching for Analytics pages
-- Fixes the bug: Message retention time does not display the user-set value when changing paths.
+### 2.7.237-stage
+- Improves new activities
 
-### 2.8.9
-- Adds a button to the Analytics page that redirects to legacy Analytics page
+### 2.7.236-stage
+- Implements automatic path switching for Analytics pages
+- Fixes the bug: Message retention time does not display the user-set value when changing paths
+- Improves Data Tables
 
-### 2.8.8
+### 2.7.235-stage
+- Improves new activities
+
+### 2.7.234-stage
+- In panel mode, clicking a row in the Contact conversations tab opens a full-height `MatDialog` with the conversation messages
+
+### 2.7.233-stage
+- Implements new activities
+
+### 2.7.232-stage
 - Fixes the bug: Uploaded files can be modified
 - Improves the TXT contents type filter in the knowledge base table to also include regex_custom  file type upload 
 
-### 2.8.7
-- Implements a new chunking option using regular expressions in the File upload modal, allowing users to define chunks for TXT and Markdown files
-- Refactors the vLLM integration to manage OpenAI-compatible endpoints and models
+### 2.7.231-stage
+- Replaces the regex chunking tooltip with an always-visible description in the Import File dialog
+- Adds an upload failure message and retry action in the Import File dialog
+- Adds sitemap fetch error feedback in the Import from Websites dialog 
+- Replaces server-reported response time with client-side wait time in the Knowledge Base Preview dialog
 
-### 2.8.6
-- Fixes the bug: the behavior of the switch buttons in the widget set up > advanced section is not aligned with the other ones on the page
-- Removes the query param ?tiledeskLogout
+### 2.7.230-stage
+- Introduces a new chunking option using regular expressions in the file upload modal, allowing users to define chunks for TXT and Markdown files
+- Improves the file upload component to handle regular expression input and validation
 
-### 2.8.5
-- Minor improvements
+### 2.7.229-stage
+- Refactors the VLLM integration to manage OpenAI-compatible endpoints and models
 
-### 2.8.4
-- Latest stable
-
-### 2.8.3
+### 2.7.228-stage
 - Fixes the bug: Knowledge base statistics links to new analytics don't work
 
- ### 2.8.2
-- Adds bar charts for answered and unanswered questions and line charts for answer rate to knowledge base KPIs.
+### 2.7.227-stage
+- Enhances knowledge base analytics by implementing shared Y-axis scaling for bar charts
 - Update the format of knowledge base statistics counts
 - Removes links to old analytics
 
-### 2.8.1
-- Implements new analytics
+### 2.7.226-stage
+- Fixes the bug: Analytics sidebar menu item redirects to old version of Analytics
 
-### 2.8.0
+### 2.7.225-stage
+- Improves Data tables
+
+### 2.7.224-stage
+- Implements Data tables
+
+### 2.7.223-stage 
 - Changes the ElevenLabs integration value from "voice_streaming" to "elevenlabs"
 
-### 2.7.180
-- Fixes the bug: WhatsApp menu item missing from integrations
+### 2.7.222-stage 
+- Improves the knowledge base charts rendering 
+- Adds the date range (from and to) to the payload of POST messages sent to the analytics iframe
 
-### 2.7.179
-- Implements ElevenLabs, Cerebras and OpenRouter in Integrations
+### 2.7.221-stage 
+- Increases the date range of the charts on the knowledge bases page from 7 to 21 days
 
-### 2.7.178
-- Implements the new analytics (for test purpose)
+### 2.7.220-stage 
+- Refactors knowledge base charts to use bar charts for Answered and Unanswered questions
+- Move charts to knowledge base KPIs
 
-### 2.7.177
+### 2.7.219-stage 
+- Adds charts for visualizing answered/unanswered questions and answer rates over time. 
+￼
+### 2.7.218-stage
 - Disables the stream option if the Chunks only option is enabled
-- Gets the fonts from the metadata object returned in the response if the Chunks only option is enabled.
+- Gets the sources from the metadata object returned in the response if the Chunks only option is enabled.
 - Displays a specific message in the response field of the Knowledge Base Preview dialog if the Chunks only option is enabled
-- Fixes the bug: Ollama and Vllm models not displayed in Knowledge base preview dialog
+- Fixes the bug : Ollama and Vllm models not displayed in preview
+
+### 2.7.216-stage
+- Implements integrations with Cerebras and OpenRouter
+
+### 2.7.215-stage
+- Deletes all content associated with a sitemap when the sitemap is deleted
+
+### 2.7.214-stage
+- Implements ElevenLabs integration
+- Adds a setting in the widget's advanced settings to show/hide the voice streaming button
+
+ 
+### 2.7.212-stage
+- Implement multi-project availability
+- Adds the ability to export unanswered and answered questions in CSV or JSON format
+- Enables the message retention tab in the project settings
 
 ### 2.7.176
 - Implements multi-project availability
@@ -193,6 +357,19 @@
 - Adds OpenAI GPT-5.5 model
 
 ### 2.7.174
+- Fixed the bug: the permission to Create a Department does not work
+- Fixes bug: The name displayed in the navbar on the support page is incorrect
+
+### 2.7.211-stage 
+- Adds new analytics (fix)
+
+### 2.7.210-stage 
+- Adds new analytics
+
+### 2.7.209-stage 
+- Adds OpenAI GPT-5.5 model
+
+### 2.7.208-stage 
 - Fixed the bug: the permission to Create a Department does not work
 - Fixes bug: The name displayed in the navbar on the support page is incorrect
 

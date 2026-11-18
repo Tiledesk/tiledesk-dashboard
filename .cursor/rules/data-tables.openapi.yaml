@@ -276,6 +276,13 @@ paths:
 
         Parametri in query string; `conditions` può essere JSON (URL-encoded).
         Opzionalmente `must_match` / `conditions` nel body se il client lo supporta su GET.
+
+        **Client race (dashboard):** se l’utente applica un filtro (`listRows` con `conditions`) e subito dopo
+        resetta/ricarica senza filtro, possono essere in volo due GET. Se la risposta del filtro (spesso `[]`)
+        arriva *dopo* quella senza filtro, la UI riscrive `rows` con la lista vuota e sembra che la tabella
+        sia stata cancellata — i dati sul server non vengono cancellati da questo endpoint (sola lettura).
+        Mitigazione client: ignorare risposte stale (sequence token / unsubscribe della subscription precedente)
+        a ogni nuovo `listRows`.
       operationId: listRows
       parameters:
         - name: must_match

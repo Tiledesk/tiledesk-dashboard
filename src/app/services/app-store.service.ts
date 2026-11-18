@@ -144,7 +144,7 @@ export class AppStoreService {
 
   }
 
-  // 
+  //
   public createNewApp(
     app_icon_url: string,
     app_name: string,
@@ -155,7 +155,8 @@ export class AppStoreService {
     app_learn_more_url: string,
     app_status: string,
     user_id: string,
-    clients: any) {
+    clients: any,
+    category?: string) {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -179,7 +180,8 @@ export class AppStoreService {
       status: app_status,
       visibleForUserIds: [user_id],
       where: clients,
-      version: 'v2'
+      version: 'v2',
+      category: category
     };
 
     this.logger.log('[APP-STORE-SERVICE] CREATE NEW APP BODY ', body);
@@ -200,7 +202,8 @@ export class AppStoreService {
     app_learn_more_url: string,
     app_status: string,
     user_id: string,
-    clients: any) {
+    clients: any,
+    category?: string) {
 
     const httpOptions = {
       headers: new HttpHeaders({
@@ -224,7 +227,8 @@ export class AppStoreService {
       status: app_status,
       visibleForUserIds: [user_id],
       where: clients,
-      version: 'v2'
+      version: 'v2',
+      category: category
     };
 
     this.logger.log('[APP-STORE-SERVICE] UPDATE NEW APP BODY ', body);

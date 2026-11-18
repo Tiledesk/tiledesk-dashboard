@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, of, Subscription } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ActivatedRoute } from '@angular/router';
@@ -128,6 +128,9 @@ export class DataTablesComponent implements OnInit {
 
   isLoadingTables = true;
   isLoadingRows = false;
+  /** Ignores stale listRows responses when a newer load has started (e.g. filter then reset). */
+  private rowsLoadSeq = 0;
+  private rowsLoadSub: Subscription | null = null;
   rowSearchQuery = '';
   private rowSearchDebounceTimer: ReturnType<typeof setTimeout> | null = null;
   isDeletingRows = false;
@@ -286,25 +289,43 @@ export class DataTablesComponent implements OnInit {
       return;
     }
 
+    const isFilteredRequest = !!search?.conditions?.length;
+    const loadSeq = ++this.rowsLoadSeq;
+    this.rowsLoadSub?.unsubscribe();
     this.isLoadingRows = true;
-    this.dataTablesService.listRows(table._id, search).subscribe({
+    this.rowsLoadSub = this.dataTablesService.listRows(table._id, search).subscribe({
       next: (loadedRows) => {
-        this.rows = this.buildRowsFromLoaded(table.schema, loadedRows || []);
+        if (loadSeq !== this.rowsLoadSeq) {
+          return;
+        }
+        const rows = Array.isArray(loadedRows) ? loadedRows : [];
+        if (!Array.isArray(loadedRows)) {
+          this.logger.error('[DATA-TABLES] listRows returned non-array payload', loadedRows);
+        }
+        this.rows = this.buildRowsFromLoaded(table.schema, rows);
         this.syncRowsPagination();
         this.isLoadingRows = false;
         this.maybeFocusFirstColumnCell();
       },
       error: (err) => {
+        if (loadSeq !== this.rowsLoadSeq) {
+          return;
+        }
         this.isLoadingRows = false;
-        this.rows = this.buildRowsFromLoaded(table.schema, []);
         this.logger.error('[DATA-TABLES] listRows error', err);
-        if (search?.conditions?.length) {
+        if (isFilteredRequest) {
+          // Keep current rows visible: a failed filter must not wipe the grid.
+          this.clearActiveRowFilter();
+          this.rowSearchQuery = '';
           this.notify.showWidgetStyleUpdateNotification(
             this.translate.instant('DataTables.FilterFailed'),
             4,
             'report_problem',
           );
+          this.loadTableRows(table);
+          return;
         }
+        this.rows = this.buildRowsFromLoaded(table.schema, []);
         this.maybeFocusFirstColumnCell();
       },
     });
@@ -751,7 +772,10 @@ export class DataTablesComponent implements OnInit {
     this.rowSearchQuery = '';
     this.closeFilterPopover();
     if (table) {
-      this.loadTableRows(table);
+      // Bump load seq / abort in-flight filtered list, then reload unfiltered + refresh stats.
+      this.refreshSelectedTableStats(() => {
+        this.loadTableRows(table);
+      });
     }
   }
 

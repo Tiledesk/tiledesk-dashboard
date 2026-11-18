@@ -22,7 +22,7 @@ import { OpenaiService } from 'app/services/openai.service';
 import { ProjectService } from 'app/services/project.service';
 import { TranslateService } from '@ngx-translate/core';
 import { forkJoin, Observable, of, Subject } from 'rxjs';
-import { catchError, map, takeUntil } from 'rxjs/operators';
+import { catchError, map, switchMap, takeUntil } from 'rxjs/operators';
 import { FaqKbService } from 'app/services/faq-kb.service';
 import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam, openChatbotEditor, isV3Chatbot, v3AgentOrStub } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
@@ -1553,33 +1553,21 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
 
     this.chatbotsUsingNamespace = []
-    this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).subscribe((chatbots: any) => {
-
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots', chatbots);
-      // let isArray = this.isArray(chatbots)
-      // if (isArray) {
-      if (chatbots.length > 0) {
-        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots ', chatbots)
-
+    this.kbService.getChatbotsUsingNamespace(selectedNamespaceid).pipe(
+      switchMap((chatbots: any) => {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE chatbots (API stubs)', chatbots);
+        if (!Array.isArray(chatbots) || !chatbots.length) {
+          this.chatbotsUsingNamespace = undefined;
+          return of(null);
+        }
 
         chatbots.forEach(bot => {
           this.logger.log('[KNOWLEDGE-BASES-COMP] - GET FAQKB forEach bot: ', bot)
 
-
           let imgUrl = ''
           if (this.UPLOAD_ENGINE_IS_FIREBASE === true) {
-
-            // this.logger.log('[HOME] - CHECK IF BOT HAS IMAGE - USECASE UPLOAD-ENGINE FIREBASE ');
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Firebase 
-            // ------------------------------------------------------------------------------
             imgUrl = "https://firebasestorage.googleapis.com/v0/b/" + this.storageBucket + "/o/profiles%2F" + bot['_id'] + "%2Fphoto.jpg?alt=media"
-
           } else {
-
-            // ------------------------------------------------------------------------------
-            // Usecase uploadEngine Native 
-            // ------------------------------------------------------------------------------
             imgUrl = this.baseUrl + "files?path=uploads%2Fusers%2F" + bot['_id'] + "%2Fimages%2Fthumbnails_200_200-photo.jpg"
           }
           this.checkImageExists(imgUrl, (existsImage) => {
@@ -1594,20 +1582,26 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
           });
         });
 
-        this.ensureProjectFaqKbList().pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
-          this.applyChatbotsUsingNamespace(chatbots);
-          this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE enriched', this.chatbotsUsingNamespace);
-        });
-
-      } else {
-        this.chatbotsUsingNamespace = undefined
+        // Wait for project faqKb list so enrich always runs with ds_version available
+        return this.ensureProjectFaqKbList().pipe(
+          map(() => {
+            this.applyChatbotsUsingNamespace(chatbots);
+            this.logger.log(
+              '[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE enriched',
+              this.chatbotsUsingNamespace
+            );
+            return this.chatbotsUsingNamespace;
+          })
+        );
+      }),
+      takeUntil(this.unsubscribe$)
+    ).subscribe({
+      error: (error) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE ', error);
+      },
+      complete: () => {
+        this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
       }
-
-    }, (error) => {
-      this.logger.error('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE ', error);
-
-    }, () => {
-      this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CHATBOTS USING NAMESPACE * COMPLETE *');
     });
   }
 
@@ -1632,7 +1626,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   /**
    * Namespace chatbot endpoint returns stubs (_id, name). Merge ds_version / createdAt
-   * from the project faqKb list so CDS open can pick v2 vs v3.
+   * from the project faqKb list so CDS open can pick v2 vs v3 without an extra fetch.
    */
   private enrichNamespaceChatbotsWithProjectFaqKb(chatbots: any[]): any[] {
     if (!Array.isArray(chatbots) || !chatbots.length) {
@@ -1656,6 +1650,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
         ...bot,
         createdAt: full.createdAt ?? bot.createdAt,
       };
+      // Only attach when present (v2 bots have no key — still correctly open CDS v2)
       if (full.ds_version != null && full.ds_version !== '') {
         enriched.ds_version = full.ds_version;
       }
@@ -2447,6 +2442,7 @@ _presentDialogImportContents() {
   }
 
   goToBotDetails() {
+    // this.router.navigate(['project/' + this.projectId + '/cds/', this.botid, 'intent', '0'])
     // Only the agent id is at hand here: the server's copy carries the version label
     // (ds_version), and the editor follows it. If the lookup fails, open with the stub.
     const stub = { createdAt: new Date(), _id: this.botid } as any;
@@ -3152,6 +3148,7 @@ _presentDialogImportContents() {
       if (faqKb) {
         this.projectFaqKbList = Array.isArray(faqKb) ? faqKb : [];
         this.myChatbotOtherCount = faqKb.length
+        // If served-by row already loaded, attach ds_version now
         this.reenrichChatbotsUsingNamespaceFromProjectList();
 
         // ---------------------------------------------------------------------
@@ -3178,6 +3175,8 @@ _presentDialogImportContents() {
           this.increaseSalesBotsCount = increaseSalesBots.length;
           this.logger.log('[KNOWLEDGE-BASES-COMP] - Increase Sales BOTS COUNT', this.increaseSalesTemplatesCount);
         }
+      } else {
+        this.projectFaqKbList = [];
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] GET BOTS ERROR ', error);

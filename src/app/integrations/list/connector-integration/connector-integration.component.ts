@@ -1,0 +1,182 @@
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { IntegrationService } from 'app/services/integration.service';
+import { LoggerService } from 'app/services/logger/logger.service';
+import { NotifyService } from 'app/core/notify.service';
+import { TranslateService } from '@ngx-translate/core';
+
+export interface ConnectorItemSummary {
+  id: string;
+  name: string;
+  group?: string;
+}
+
+export interface ConnectorGroupSummary {
+  id: string;
+  name: string;
+}
+
+export interface ConnectorEntry {
+  name: string;
+  baseUrl: string;
+  addedAt?: number;
+  actionCount?: number;
+  triggerCount?: number;
+  icon?: string;
+  actions?: ConnectorItemSummary[];
+  triggers?: ConnectorItemSummary[];
+  groups?: ConnectorGroupSummary[];
+}
+
+@Component({
+  selector: 'connector-integration',
+  templateUrl: './connector-integration.component.html',
+  styleUrls: ['./connector-integration.component.scss']
+})
+export class ConnectorIntegrationComponent implements OnInit {
+
+  @Input() integration: any;
+  @Output() onUpdateIntegration = new EventEmitter;
+  @Output() onDeleteIntegration = new EventEmitter;
+
+  currentEntry: ConnectorEntry = { name: '', baseUrl: '' };
+
+  isLoadingManifest: boolean = false;
+  manifestPreview: {
+    connectorName: string,
+    actionCount: number,
+    triggerCount: number,
+    icon?: string,
+    actions?: ConnectorItemSummary[],
+    triggers?: ConnectorItemSummary[],
+    groups?: ConnectorGroupSummary[]
+  } | null = null;
+  loadingBaseUrl: string = '';
+  private previewedBaseUrl: string = '';
+
+  constructor(
+    private integrationService: IntegrationService,
+    private logger: LoggerService,
+    private notify: NotifyService,
+    private translate: TranslateService
+  ) { }
+
+  ngOnInit(): void {
+    this.logger.log('[INT-CONNECTOR] integration ', this.integration);
+    if (!this.integration.value.items) {
+      this.integration.value.items = [];
+    }
+  }
+
+  resetForm(): void {
+    this.currentEntry = { name: '', baseUrl: '' };
+    this.manifestPreview = null;
+    this.previewedBaseUrl = '';
+  }
+
+  onUrlChange(): void {
+    if (this.manifestPreview && this.currentEntry.baseUrl !== this.previewedBaseUrl) {
+      this.manifestPreview = null;
+    }
+  }
+
+  previewManifest(): void {
+    if (!this.currentEntry.baseUrl) {
+      this.notify.showWidgetStyleUpdateNotification('Please enter a connector URL', 3, 'error');
+      return;
+    }
+
+    this.isLoadingManifest = true;
+    this.loadingBaseUrl = this.currentEntry.baseUrl;
+    this.manifestPreview = null;
+
+    this.integrationService.getConnectorManifest(this.currentEntry.baseUrl).subscribe(
+      (response: any) => {
+        if (this.currentEntry.baseUrl !== this.loadingBaseUrl) {
+          // The URL field changed while this request was in flight; the response
+          // no longer matches what's displayed, so discard it silently.
+          this.isLoadingManifest = false;
+          this.loadingBaseUrl = '';
+          return;
+        }
+
+        const manifest = response && response.manifest;
+        if (!manifest || !manifest.connector) {
+          this.notify.showWidgetStyleUpdateNotification('No manifest found at this URL', 3, 'warning');
+          this.isLoadingManifest = false;
+          this.loadingBaseUrl = '';
+          return;
+        }
+
+        const actions: ConnectorItemSummary[] = Array.isArray(manifest.actions)
+          ? manifest.actions.map((a: any) => ({ id: a.id, name: a.name, group: a.group }))
+          : [];
+        const triggers: ConnectorItemSummary[] = Array.isArray(manifest.triggers)
+          ? manifest.triggers.map((t: any) => ({ id: t.id, name: t.name, group: t.group }))
+          : [];
+        const groups: ConnectorGroupSummary[] = Array.isArray(manifest.groups)
+          ? manifest.groups.map((g: any) => ({ id: g.id, name: g.name }))
+          : [];
+
+        this.manifestPreview = {
+          connectorName: manifest.connector.name || this.loadingBaseUrl,
+          actionCount: actions.length,
+          triggerCount: triggers.length,
+          icon: manifest.connector.icon,
+          actions,
+          triggers,
+          groups
+        };
+        this.previewedBaseUrl = this.loadingBaseUrl;
+
+        if (!this.currentEntry.name) {
+          this.currentEntry.name = manifest.connector.name;
+        }
+
+        this.isLoadingManifest = false;
+        this.loadingBaseUrl = '';
+      },
+      (error) => {
+        this.logger.error('[INT-CONNECTOR] Error fetching manifest:', error);
+        this.isLoadingManifest = false;
+        this.loadingBaseUrl = '';
+        const errorMessage = error?.error?.error || error?.message || 'Failed to fetch manifest from this URL';
+        this.notify.showWidgetStyleUpdateNotification(errorMessage, 3, 'error');
+      }
+    );
+  }
+
+  addConnector(): void {
+    if (!this.currentEntry.name || !this.currentEntry.baseUrl || !this.manifestPreview) {
+      return;
+    }
+
+    const alreadyRegistered = (this.integration.value.items || []).some(
+      (item: ConnectorEntry) => item.baseUrl === this.currentEntry.baseUrl
+    );
+    if (alreadyRegistered) {
+      this.notify.showWidgetStyleUpdateNotification('A connector with this URL is already registered', 3, 'error');
+      return;
+    }
+
+    const entry: ConnectorEntry = {
+      name: this.currentEntry.name,
+      baseUrl: this.currentEntry.baseUrl,
+      addedAt: Date.now(),
+      actionCount: this.manifestPreview.actionCount,
+      triggerCount: this.manifestPreview.triggerCount,
+      icon: this.manifestPreview.icon,
+      actions: this.manifestPreview.actions,
+      triggers: this.manifestPreview.triggers,
+      groups: this.manifestPreview.groups
+    };
+
+    this.integration.value.items.push(entry);
+    this.resetForm();
+    this.save();
+  }
+
+  private save(): void {
+    this.onUpdateIntegration.emit({ integration: this.integration });
+  }
+
+}

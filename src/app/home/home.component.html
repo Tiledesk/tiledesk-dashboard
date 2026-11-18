@@ -180,6 +180,7 @@
             *ngIf="isVisibleVBC && USER_ROLE !== 'agent' && PERMISSION_TO_ADD_FLOWS">
             <div class="home-vibe-coder-box">
               <div class="home-vibe-coder-box__heading">
+                <!-- home-vibe-coder__badge (HomeVibeCoderBadge) removed -->
                 <div class="home-vibe-coder__title">
                   {{ 'HomeVibeCoderTitle' | translate }}
                 </div>
@@ -208,7 +209,8 @@
               [chatbotsLoading]="showskeleton"
               [project]="project"
               [PERMISSION_TO_VIEW_FLOWS]="PERMISSION_TO_VIEW_FLOWS"
-              [PERMISSION_TO_EDIT_FLOWS]="PERMISSION_TO_EDIT_FLOWS">
+              [PERMISSION_TO_EDIT_FLOWS]="PERMISSION_TO_EDIT_FLOWS"
+              (featuredChatbotIdChange)="featuredHomeFlowChatbotId = $event">
             </home-pickup-flow>
           </section>
 

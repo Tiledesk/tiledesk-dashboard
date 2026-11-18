@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { IntegrationService } from 'app/services/integration.service';
 import { LoggerService } from 'app/services/logger/logger.service';
-import { McpServer, McpTool } from './mcp-server-table/mcp-server-table.component';
+import { McpCustomHeader, McpServer, McpTool } from './mcp-server-table/mcp-server-table.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NotifyService } from 'app/core/notify.service';
 import { McpToolsModalComponent } from './mcp-tools-modal/mcp-tools-modal.component';
@@ -9,6 +9,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { McpOAuthAuthorizeBody, McpOAuthConnection, McpOAuthMode, McpOAuthReference, McpOAuthResult, McpOAuthService } from 'app/services/mcp-oauth.service';
 
 const Swal = require('sweetalert2');
+
+/** UI row: persisted headers are only { key, value } when enabled + both filled. */
+interface McpHeaderRow {
+  key: string;
+  value: string;
+  enabled: boolean;
+}
 
 type McpAuthType = 'none' | McpOAuthMode;
 
@@ -34,6 +41,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
   
   isEditing: boolean = false;
   editingIndex: number = -1;
+  headerRows: McpHeaderRow[] = [];
 
   authType: McpAuthType = 'none';
   scopesText: string = '';
@@ -94,6 +102,10 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     // Validation
     if (!this.currentServer.name || !this.currentServer.url || !this.currentServer.transport) {
       this.logger.error('[INT-MCP] Missing required fields');
+      return;
+    }
+
+    if (this.hasIncompleteHeaders()) {
       return;
     }
 
@@ -165,6 +177,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
 
     // Preserve tools if they were retrieved
     const toolsToPreserve = this.currentServer.tools || [];
+    const customHeaders = this.serializeCustomHeaders();
 
     if (this.isEditing && this.editingIndex >= 0) {
       // Update existing server - preserve existing tools if no new ones were retrieved
@@ -174,6 +187,11 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         oauth: this.authType === 'none' ? null : this.currentServer.oauth,
         tools: toolsToPreserve.length > 0 ? toolsToPreserve : existingServer.tools
       };
+      if (customHeaders.length) {
+        serverToSave.customHeaders = customHeaders;
+      } else {
+        delete serverToSave.customHeaders;
+      }
       this.integration.value.servers[this.editingIndex] = serverToSave;
       this.logger.log('[INT-MCP] Updated server at index', this.editingIndex);
     } else {
@@ -183,6 +201,11 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
         oauth: this.authType === 'none' ? null : this.currentServer.oauth,
         tools: toolsToPreserve
       };
+      if (customHeaders.length) {
+        serverToAdd.customHeaders = customHeaders;
+      } else {
+        delete serverToAdd.customHeaders;
+      }
       this.integration.value.servers.push(serverToAdd);
       this.logger.log('[INT-MCP] Added new server');
     }
@@ -201,8 +224,12 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     if (index >= 0) {
       this.currentServer = {
         ...server,
+        customHeaders: Array.isArray(server.customHeaders)
+          ? server.customHeaders.map((h) => ({ ...h }))
+          : [],
         oauth: server.oauth ? { ...server.oauth } : server.oauth
       };
+      this.headerRows = this.mapStoredHeadersToRows(server.customHeaders);
       this.isEditing = true;
       this.editingIndex = index;
       this.originalOAuth = server.oauth && server.oauth.connection_id ? { ...server.oauth } : null;
@@ -249,6 +276,9 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
   }
 
   isUpdateDisabled(): boolean {
+    if (this.hasIncompleteHeaders()) {
+      return true;
+    }
     if (!this.currentServer.name || !this.currentServer.url || this.isLoadingTools || this.waitingForAuthorization) {
       return true;
     }
@@ -297,6 +327,7 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
       url: '',
       transport: 'streamable_http'
     };
+    this.headerRows = [];
     this.isEditing = false;
     this.editingIndex = -1;
     this.toolsRetrieved = false;
@@ -315,6 +346,118 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     this.originalOAuth = null;
     this.stashedOAuth = null;
     this.waitingForAuthorization = false;
+  }
+
+  addHeaderRow(): void {
+    this.headerRows = [
+      ...this.headerRows,
+      { key: '', value: '', enabled: true },
+    ];
+  }
+
+  removeHeaderRow(index: number): void {
+    this.headerRows = this.headerRows.filter((_, i) => i !== index);
+  }
+
+  /** Switch is interactive only when both Key and Value are filled. */
+  canToggleHeader(row: McpHeaderRow): boolean {
+    return !!String(row.key || '').trim() && !!String(row.value || '').trim();
+  }
+
+  onHeaderFieldsChange(row: McpHeaderRow): void {
+    // Incomplete / empty rows stay ON but the switch control is disabled.
+    if (!this.canToggleHeader(row)) {
+      row.enabled = true;
+    }
+  }
+
+  isHeaderKeyMissing(row: McpHeaderRow): boolean {
+    if (!row.enabled) {
+      return false;
+    }
+    const key = String(row.key || '').trim();
+    const value = String(row.value || '').trim();
+    return !key && !!value;
+  }
+
+  isHeaderValueMissing(row: McpHeaderRow): boolean {
+    if (!row.enabled) {
+      return false;
+    }
+    const key = String(row.key || '').trim();
+    const value = String(row.value || '').trim();
+    return !!key && !value;
+  }
+
+  hasIncompleteHeaders(): boolean {
+    return this.headerRows.some((row) => this.isHeaderKeyMissing(row) || this.isHeaderValueMissing(row));
+  }
+
+  private serializeCustomHeaders(): McpCustomHeader[] {
+    return this.headerRows
+      .map((row) => ({
+        key: String(row.key || '').trim(),
+        value: String(row.value || '').trim(),
+        enabled: !!row.enabled,
+      }))
+      .filter((header) => !!header.key && !!header.value);
+  }
+
+  private mapStoredHeadersToRows(headers: McpCustomHeader[] | undefined): McpHeaderRow[] {
+    if (!Array.isArray(headers) || !headers.length) {
+      return [];
+    }
+    return headers
+      .map((header) => ({
+        key: String(header?.key || '').trim(),
+        value: String(header?.value || '').trim(),
+        // Legacy headers without `enabled` default to on.
+        enabled: header?.enabled !== false,
+      }))
+      .filter((row) => !!row.key && !!row.value);
+  }
+
+  /**
+   * Pass headers only when there are some, and pass an OAuth reference as the
+   * second argument when there are no headers, so both call styles stay valid.
+   */
+  private requestMcpTools(
+    serverUrl: string,
+    customHeaders: Array<{ key: string; value: string }>,
+    oauth?: McpOAuthReference,
+  ) {
+    const headers = customHeaders && customHeaders.length ? customHeaders : undefined;
+    if (headers && oauth) {
+      return this.integrationService.getMcpTools(serverUrl, headers, oauth);
+    }
+    if (headers) {
+      return this.integrationService.getMcpTools(serverUrl, headers);
+    }
+    if (oauth) {
+      return this.integrationService.getMcpTools(serverUrl, oauth);
+    }
+    return this.integrationService.getMcpTools(serverUrl);
+  }
+
+  /** Enabled headers only, for Connect / Refresh tools proxy calls. */
+  private getEnabledHeadersForRequest(): Array<{ key: string; value: string }> {
+    return this.serializeCustomHeaders()
+      .filter((header) => header.enabled !== false)
+      .map(({ key, value }) => ({ key, value }));
+  }
+
+  private getEnabledHeadersFromServer(server: McpServer): Array<{ key: string; value: string }> {
+    if (!Array.isArray(server?.customHeaders)) {
+      return [];
+    }
+    return server.customHeaders
+      .map((header) => ({
+        key: String(header?.key || '').trim(),
+        value: String(header?.value || '').trim(),
+        enabled: header?.enabled !== false,
+      }))
+      .filter((header) => !!header.key && !!header.value && header.enabled)
+      .map(({ key, value }) => ({ key, value }));
   }
 
   /**
@@ -342,6 +485,10 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
   connectToServer(): void {
     if (!this.currentServer.url) {
       this.notify.showWidgetStyleUpdateNotification('Please enter a server URL', 3, 'error');
+      return;
+    }
+
+    if (this.hasIncompleteHeaders()) {
       return;
     }
 
@@ -408,11 +555,11 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     const oauth = this.currentServer.oauth && this.currentServer.oauth.connection_id
       ? this.currentServer.oauth
       : undefined;
-    const toolsRequest = oauth
-      ? this.integrationService.getMcpTools(this.currentServer.url, oauth)
-      : this.integrationService.getMcpTools(this.currentServer.url);
-
-    toolsRequest.subscribe(
+    this.requestMcpTools(
+      this.currentServer.url,
+      this.getEnabledHeadersForRequest(),
+      oauth,
+    ).subscribe(
       (response: any) => {
         this.logger.log('[INT-MCP] Tools retrieved:', response);
         
@@ -482,11 +629,12 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
 
     this.logger.log('[INT-MCP] Refreshing tools for server:', server.url);
 
-    const toolsRequest = server.oauth && server.oauth.connection_id
-      ? this.integrationService.getMcpTools(server.url, server.oauth)
-      : this.integrationService.getMcpTools(server.url);
-
-    toolsRequest.subscribe(
+    const serverOauth = server.oauth && server.oauth.connection_id ? server.oauth : undefined;
+    this.requestMcpTools(
+      server.url,
+      this.getEnabledHeadersFromServer(server),
+      serverOauth,
+    ).subscribe(
       (response: any) => {
         this.logger.log('[INT-MCP] Tools refreshed:', response);
         
@@ -622,11 +770,11 @@ export class McpIntegrationComponent implements OnInit, OnDestroy {
     const currentOauth = this.currentServer.oauth && this.currentServer.oauth.connection_id
       ? this.currentServer.oauth
       : undefined;
-    const currentToolsRequest = currentOauth
-      ? this.integrationService.getMcpTools(this.currentServer.url, currentOauth)
-      : this.integrationService.getMcpTools(this.currentServer.url);
-
-    currentToolsRequest.subscribe(
+    this.requestMcpTools(
+      this.currentServer.url,
+      this.getEnabledHeadersForRequest(),
+      currentOauth,
+    ).subscribe(
       (response: any) => {
         this.logger.log('[INT-MCP] Tools refreshed:', response);
         
