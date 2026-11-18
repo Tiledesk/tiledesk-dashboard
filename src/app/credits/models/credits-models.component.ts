@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { CreditsLlmUsage, CreditsPeriod } from 'app/services/credits.service';
@@ -65,7 +65,8 @@ export class CreditsModelsComponent implements OnInit, OnDestroy {
 
   constructor(
     public store: CreditsStore,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -94,6 +95,12 @@ export class CreditsModelsComponent implements OnInit, OnDestroy {
       this.cached = { period, filters, rows, totals: totals(rows), chart: chart(rows) };
     }
     return this.cached;
+  }
+
+  /** The resource filter lives in the query string, so a reload or a shared link keeps it */
+  setResource(resource: string) {
+    this.resource = resource;
+    this.router.navigate([], { relativeTo: this.route, queryParams: { resource: resource || null }, replaceUrl: true });
   }
 
   setSort(sort: CreditsModelsSort) {

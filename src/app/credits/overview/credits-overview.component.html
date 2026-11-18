@@ -49,7 +49,7 @@
     <ng-container *ngIf="view.rows.length">
       <div class="credits-stack" role="img" [attr.aria-label]="'Credits.Overview.Spending' | translate">
         <div *ngFor="let row of view.rows; trackBy: trackResource" class="credits-stack-part" [style.width.%]="row.perc" [style.background]="color(row.resource)"
-          title="{{ ('Credits.Resources.' + row.resource) | translate }}: {{ row.credits | credits }} ({{ row.perc | number: '1.0-0' }}%)"></div>
+          title="{{ ('Credits.Resources.' + row.resource) | translate }}: {{ row.credits | credits }} ({{ row.perc | credits: 0 }}%)"></div>
       </div>
 
       <div class="credits-groups">
@@ -57,7 +57,7 @@
           <span class="credits-dot" [style.background]="total.color"></span>
           <div>
             <div class="credits-group-label">{{ ('Credits.Groups.' + total.group) | translate }}</div>
-            <div class="credits-group-value">{{ total.credits | credits }} <span class="credits-muted">{{ total.perc | number: '1.0-0' }}%</span></div>
+            <div class="credits-group-value">{{ total.credits | credits }} <span class="credits-muted">{{ total.perc | credits: 0 }}%</span></div>
             <div class="credits-muted">{{ ('Credits.Groups.' + total.group + 'Hint') | translate }}</div>
           </div>
         </div>
@@ -81,12 +81,12 @@
                 {{ 'Credits.Overview.ByModel' | translate }}
               </a>
             </td>
-            <td class="num">{{ row.units | number }}<span *ngIf="row.tokens" class="credits-muted"> · {{ row.tokens | number }} token</span></td>
+            <td class="num">{{ row.units | credits: 0 }}<span *ngIf="row.tokens" class="credits-muted"> · {{ row.tokens | credits: 0 }} token</span></td>
             <td class="num">{{ row.credits | credits }}</td>
             <td class="credits-share-col">
               <div class="credits-share">
                 <div class="credits-share-bar"><div [style.width.%]="row.perc" [style.background]="color(row.resource)"></div></div>
-                <span class="num">{{ row.perc | number: '1.0-0' }}%</span>
+                <span class="num">{{ row.perc | credits: 0 }}%</span>
               </div>
             </td>
           </tr>

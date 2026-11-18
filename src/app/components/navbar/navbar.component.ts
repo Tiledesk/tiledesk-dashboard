@@ -470,7 +470,10 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }
 
     // Controlla i percorsi specifici in ordine di priorità
-    if (cleanUrl.indexOf('/home') !== -1) {
+    if (/\/project\/[^\/]+\/credits(\/|$)/.test(cleanUrl)) {
+      this.currentTitle = 'Credits.Title';
+    }
+    else if (cleanUrl.indexOf('/home') !== -1) {
       this.currentTitle = 'Home';
     } 
     else if (cleanUrl.indexOf('/knowledge-bases') !== -1) {

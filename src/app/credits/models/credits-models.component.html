@@ -12,7 +12,7 @@
   </label>
   <label>
     {{ 'Credits.Resource' | translate }}
-    <select class="form-control" [(ngModel)]="resource">
+    <select class="form-control" [ngModel]="resource" (ngModelChange)="setResource($event)">
       <option value="">{{ 'Credits.Models.AllResources' | translate }}</option>
       <option *ngFor="let item of resources" [value]="item">{{ ('Credits.Resources.' + item) | translate }}</option>
     </select>
@@ -37,20 +37,20 @@
       <div class="credits-card-label">{{ 'Credits.Models.Credits' | translate }}</div>
       <div class="credits-card-value">{{ total.credits | credits }}</div>
       <div class="credits-card-hint" *ngIf="period?.consumed">
-        {{ 'Credits.Models.OfConsumed' | translate: { perc: ((period.consumed ? total.credits / period.consumed * 100 : 0) | number: '1.0-0') } }}
+        {{ 'Credits.Models.OfConsumed' | translate: { perc: ((period.consumed ? total.credits / period.consumed * 100 : 0) | credits: 0) } }}
       </div>
     </div>
     <div class="credits-card">
       <div class="credits-card-label">{{ 'Credits.Calls' | translate }}</div>
-      <div class="credits-card-value">{{ total.calls | number }}</div>
+      <div class="credits-card-value">{{ total.calls | credits: 0 }}</div>
     </div>
     <div class="credits-card">
       <div class="credits-card-label">Token</div>
-      <div class="credits-card-value">{{ total.tokens | number }}</div>
+      <div class="credits-card-value">{{ total.tokens | credits: 0 }}</div>
     </div>
     <div class="credits-card">
       <div class="credits-card-label">{{ 'Credits.Cost' | translate }}</div>
-      <div class="credits-card-value">{{ total.cost ? ('$' + (total.cost | number: '1.2-4')) : '–' }}</div>
+      <div class="credits-card-value">{{ total.cost ? ('$' + (total.cost | credits: 2 : 4)) : '–' }}</div>
       <div class="credits-card-hint credits-negative" *ngIf="total.unpriced">
         {{ 'Credits.Models.UnpricedCalls' | translate: { calls: total.unpriced } }}
       </div>
@@ -102,15 +102,15 @@
               {{ ('Credits.Resources.' + row.resource) | translate }}
             </td>
             <td class="credits-muted">{{ (row.ownKey ? 'Credits.OwnKey' : 'Credits.TiledeskKey') | translate }}</td>
-            <td class="num">{{ row.calls | number }}</td>
-            <td class="num">{{ row.tokens | number }}</td>
-            <td class="num">{{ row.cost ? ('$' + (row.cost | number: '1.2-6')) : '–' }}</td>
+            <td class="num">{{ row.calls | credits: 0 }}</td>
+            <td class="num">{{ row.tokens | credits: 0 }}</td>
+            <td class="num">{{ row.cost ? ('$' + (row.cost | credits: 2 : 6)) : '–' }}</td>
             <td class="num">{{ row.perThousand === null ? '–' : (row.perThousand | credits: 4) }}</td>
             <td class="num">{{ row.credits | credits: 4 }}</td>
             <td class="credits-share-col">
               <div class="credits-share">
                 <div class="credits-share-bar"><div [style.width.%]="row.perc" [style.background]="color(row.resource)"></div></div>
-                <span class="num">{{ row.perc | number: '1.0-0' }}%</span>
+                <span class="num">{{ row.perc | credits: 0 }}%</span>
               </div>
             </td>
           </tr>
@@ -118,9 +118,9 @@
         <tfoot *ngIf="view.totals as total">
           <tr>
             <td colspan="3">{{ 'Credits.Total' | translate }}</td>
-            <td class="num">{{ total.calls | number }}</td>
-            <td class="num">{{ total.tokens | number }}</td>
-            <td class="num">{{ total.cost ? ('$' + (total.cost | number: '1.2-6')) : '–' }}</td>
+            <td class="num">{{ total.calls | credits: 0 }}</td>
+            <td class="num">{{ total.tokens | credits: 0 }}</td>
+            <td class="num">{{ total.cost ? ('$' + (total.cost | credits: 2 : 6)) : '–' }}</td>
             <td></td>
             <td class="num">{{ total.credits | credits: 4 }}</td>
             <td></td>
