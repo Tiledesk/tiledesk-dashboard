@@ -2499,6 +2499,14 @@ print {
   flex-direction: column !important;
 }
 
+// VBC: input shell top sits 340px from the viewport top. The navbar is 60px,
+// so the gap under the navbar is 280px. Pickup stays 340px under the shell.
+$home-vibe-anchor-gap: 340px;
+$home-vibe-navbar-height: 60px;
+$home-vibe-anchor-offset: $home-vibe-anchor-gap - $home-vibe-navbar-height;
+$home-vibe-title-gap: 16px;
+$home-vibe-shell-height: 107px;
+
 .bg-card {
   opacity: 1;
   background-color: #fff;
@@ -2511,6 +2519,14 @@ print {
   position: relative;
   z-index: 2;
   overflow: visible;
+
+  // VBC: no toolbar. 60px is the navbar, and the only offset before the 280px gap.
+  &--vbc {
+    height: 0;
+    min-height: 0;
+    margin-top: $home-vibe-navbar-height;
+    overflow: hidden;
+  }
 }
 
 /* Same horizontal inset as .home-dashboard-inset (quick cards / blocks) */
@@ -2897,6 +2913,13 @@ img {
   padding-left: 0px;
   padding-right: 0px;
   margin-top: 0px;
+
+  // VBC: navbar clearance is only .bg-card--vbc margin-top (60px).
+  // Drop the global .main-content margin/padding so they are not added on top.
+  &:has(.home-dashboard-inset--vbc) {
+    margin-top: 0;
+    padding-top: 0;
+  }
   // background: rgb(241, 245, 249);
   background: #fff;
   min-height: calc(100% - 70px) !important;
@@ -2919,6 +2942,11 @@ img {
   @media (max-width: 1400px) {
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  // VBC: start the 340px count from the inset top edge
+  &--vbc {
+    padding-top: 0;
   }
 }
 
@@ -2956,37 +2984,122 @@ img {
   gap: 0.75rem;
 }
 
-/* Title + vibe coder + examples — under toolbar, above quick cards */
+/* VBC: anchor = top of .vibe-coder input shell (rounded box in DevTools) */
+
+.home-vibe-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+  padding: 0;
+  overflow: visible;
+}
+
 .home-vibe-coder-box {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
-  width: 100%;
+  gap: 0;
+  width: min(760px, 100%);
   box-sizing: border-box;
-  margin: 0 0 28px;
-  padding: 24px 20px;
+  margin: 0;
+  // Shell top = 280px under the navbar = 340px from the viewport top.
+  padding: $home-vibe-anchor-offset 20px 0;
   border: none;
   border-radius: 12px;
-  background-color: #fff;
-  background-image: radial-gradient(
-    70% 60% at 50% 50%,
-    color-mix(in srgb, #bee4ff 20%, transparent),
-    transparent 90%
-  );
+  background: transparent;
   box-shadow: none;
   position: relative;
   z-index: 1;
   overflow: visible;
+
+  // Blue wash centered on the vibe coder input shell
+  &::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: calc(#{$home-vibe-anchor-offset} + #{$home-vibe-shell-height} / 2);
+    width: min(880px, 145%);
+    height: min(340px, 160%);
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      ellipse at center,
+      color-mix(in srgb, #bee4ff 28%, transparent) 0%,
+      color-mix(in srgb, #bee4ff 12%, transparent) 40%,
+      transparent 72%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  > .home-vibe-coder {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.home-vibe-scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #64748b;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+  transition: opacity 0.2s ease, color 0.15s ease, background 0.15s ease;
+  animation: home-vibe-scroll-hint-bounce 1.8s ease-in-out infinite;
+
+  mat-icon {
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
+  }
+
+  &:hover {
+    color: #334155;
+    background: #fff;
+  }
+}
+
+@keyframes home-vibe-scroll-hint-bounce {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+  50% {
+    transform: translateX(-50%) translateY(5px);
+  }
 }
 
 .home-vibe-coder-box__heading {
+  // Sit just above the .vibe-coder top edge (280px under the navbar)
+  position: absolute;
+  left: 50%;
+  top: $home-vibe-anchor-offset;
+  transform: translate(-50%, calc(-100% - #{$home-vibe-title-gap}));
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   text-align: center;
+  width: max-content;
   max-width: 100%;
+  z-index: 2;
 }
 
 // .home-vibe-coder__badge / __badge-star — removed from Home (kept commented for restore)
@@ -3017,9 +3130,34 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 0;
   width: 100%;
   margin: 0;
+
+  // Keep exactly 340px from the .vibe-coder input shell to the pickup.
+  // Examples (and errors) sit in the second grid row inside that band.
+  ::ng-deep .vibe-coder-wpr {
+    display: grid;
+    grid-template-rows: auto #{$home-vibe-anchor-gap};
+    justify-items: center;
+    width: max-content;
+    max-width: 100%;
+  }
+
+  ::ng-deep .vibe-coder {
+    grid-row: 1;
+  }
+
+  ::ng-deep .vibe-coder__examples,
+  ::ng-deep .vibe-coder__error {
+    grid-row: 2;
+    align-self: start;
+    justify-self: center;
+  }
+
+  ::ng-deep .vibe-coder__examples {
+    margin-top: 14px;
+  }
 }
 
 .home-vibe-coder__heading {
@@ -3075,6 +3213,39 @@ img {
   width: 100%;
   min-width: 0;
   max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Vibe home: pickup follows the 340px band under the input shell */
+.home-pickup-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 40px;
+  padding-top: 0;
+}
+
+.home-pickup-section__title {
+  margin: 0;
+  color: #334155;
+  font-family: var(--header-font-family, inherit);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.home-pickup-section home-pickup-flow {
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  min-width: 0;
+  margin-left: auto;
+  margin-right: auto;
   box-sizing: border-box;
 }
 

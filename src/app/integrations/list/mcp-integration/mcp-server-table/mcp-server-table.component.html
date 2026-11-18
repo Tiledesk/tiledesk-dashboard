@@ -39,6 +39,9 @@
                             <span>{{ 'Type' | translate }}</span>
                             <span class="material-icons-outlined sort-icon">{{ getSortIcon('transport') }}</span>
                         </th>
+                        <th class="auth-column">
+                            <span>{{ 'Integration.Authentication' | translate }}</span>
+                        </th>
                         <th class="tools-column">
                             <span>{{ 'Integration.Tools' | translate }}</span>
                         </th>
@@ -60,6 +63,22 @@
                                 <span>{{ getTransportDisplay(server.transport) }}</span>
                             </div>
                         </td>
+                        <td class="auth-column">
+                            <span *ngIf="authStatus(server) !== 'none' && oauthStatusUnavailable" class="auth-chip">
+                                {{ authModeKey(server) | translate }}
+                            </span>
+                            <button *ngIf="authStatus(server) !== 'none' && !oauthStatusUnavailable"
+                                type="button"
+                                class="auth-chip"
+                                [class.connected]="authStatus(server) === 'connected'"
+                                [class.pending]="authStatus(server) === 'pending'"
+                                [class.reconnect]="authChipClickable(server)"
+                                [disabled]="!authChipClickable(server)"
+                                (click)="onAuthChipClick(server, $event)">
+                                <span class="auth-mode">{{ authModeKey(server) | translate }}</span>
+                                <span class="auth-status">{{ authStatusKey(server) | translate }}</span>
+                            </button>
+                        </td>
                         <td class="tools-column">
                             <div class="tools-badge">
                                 <span class="badge-number">{{ getToolsCount(server) }}</span>
@@ -80,7 +99,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="filteredServers.length === 0">
-                        <td colspan="5" class="no-data">
+                        <td colspan="6" class="no-data">
                             <div class="no-data-message">
                                 <span class="material-icons-outlined">inbox</span>
                                 <p>{{ 'Integration.NoMCPServersFound' | translate }}</p>

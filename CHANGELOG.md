@@ -1,5 +1,32 @@
 # tiledesk-dashboard
 
+### 2.10.0
+- Adds OAuth authentication for MCP servers in Integrations → MCP Servers: automatic (MCP discovery), Google and manual; connection status with reconnect.
+
+### 2.9.0
+- Adds Agent Executions (shown only when `EXECUTIONS_BASE_URL` is set): Monitor → Executions with a List | Graph switch, status cards (running, waiting, paused, failed, with errors, completed, destroyed) over a time range from "Now" to 30 days, filters (agent, trigger, status, failure conditions, test runs, execution id), sortable columns and polling while runs are live
+- Adds the execution graph: project → agents → recent runs, agent colours by status priority, deleted agents, zoom / fit / centre / full screen
+- Adds the execution detail: header with controls (pause after the current action or now, resume, start new, destroy), summary tiles, "Where the time went" strip (whole run or blocks only), timeline with block name / type filters, expanded blocks with actions and attribute changes, Flow state tab, Audit tab; polling pauses while the tab is hidden
+- Adds View data: time-limited, audited access to the sealed attribute values and trigger input
+- Adds project settings for executions retention (trace and sealed data) and the pause notice sent to users who write while a run is paused
+- Adds the Executions button on each agent in the agents list and the execution rows in Activities
+- Fixes the bug: index.html and the translation files are served with `Cache-Control: no-cache`, so new labels show after a deploy without a hard reload
+
+### 2.8.43
+- Adds the Vibe coder Home mode: the Home opens on the vibe coder, with the "Pick up where you left off" section of last edited flow below it.
+- Home vibe coder and Create Agent modal: file attachments (up to 5 files of 10 MB, uploaded on Start and handed to the Design Studio).
+- Create Agent modal: the type select moves to the bottom.
+- Fixes the bug: a new user signing in with Google and no projects now goes to the onboarding instead of the projects page.
+
+### 2.8.42
+- Hides the navbar, the sidebar and the KB stats charts when Knowledge Bases is opened with `?embed` (CDS iframe)
+
+### 2.8.41
+- Fixes the bug: creating an AI agent from the Home vibe coder (with or without a prompt) and from the Create Agent modal ignored the chatbot limit of the plan
+- Fixes the bug: Knowledge Base namespace AI agents were missing `ds_version`, so the V2/V3 editor routing could be wrong
+- Replaces the description textarea in the Create Agent modal with the shared Home vibe coder, keeping the existing header, name and type fields
+- Shows a small v3 badge on agents in the Knowledge Base "used by" list
+
 ### 2.8.40
 - Adds the ability to create TTL columns in Data Tables
 - Fixes the bug: Data Tables grid could go empty after filter reset due to a stale listRows race

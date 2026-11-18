@@ -22,6 +22,7 @@ import { HomeCreateTeammateComponent } from 'app/home-components/home-create-tea
 import { HomeKbComponent } from 'app/home-components/home-kb/home-kb.component';
 import { HomeCdsComponent } from 'app/home-components/home-cds/home-cds.component';
 import { HomeFlowComponent } from 'app/home-components/home-flow/home-flow.component';
+import { HomePickupFlowComponent } from 'app/home-components/home-pickup-flow/home-pickup-flow.component';
 import { HomeQuickCardsComponent } from 'app/home-components/home-quick-cards/home-quick-cards.component';
 import { HomeGoToChatComponent } from 'app/home-components/home-go-to-chat/home-go-to-chat.component';
 import { HomeAnalyticsEmbedComponent } from 'app/home-components/home-analytics-embed/home-analytics-embed.component';
@@ -55,6 +56,7 @@ const routes: Routes = [
     HomeKbComponent,
     HomeCdsComponent,
     HomeFlowComponent,
+    HomePickupFlowComponent,
     HomeQuickCardsComponent,
     HomeGoToChatComponent,
     HomeAnalyticsEmbedComponent,

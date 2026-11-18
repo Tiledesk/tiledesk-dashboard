@@ -5,6 +5,7 @@
   "rasaBotCredentialsURL": "${RASA_BOT_CREDENTIAL_URL}",
   "SERVER_BASE_URL": "${SERVER_BASE_URL}",
   "CHAT_BASE_URL": "${CHAT_BASE_URL}",
+  "EXECUTIONS_BASE_URL": "${EXECUTIONS_BASE_URL}",
   "wsUrl": "${WS_URL}",
   "wsUrlRel": "${WS_URL_RELATIVE}",
   "brandSrc": "${BRAND_SRC}",

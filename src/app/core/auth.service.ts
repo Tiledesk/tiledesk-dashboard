@@ -31,8 +31,9 @@ import { CachePuService } from 'app/services/cache/cache-pu.service'
 import { DepartmentsCacheService } from 'app/services/cache/departments-cache.service'
 import { SleekplanSsoService } from 'app/services/sleekplan-sso.service'
 import { SleekplanService } from 'app/services/sleekplan.service'
-import { UsersService } from 'app/services/users.service'
-import { RolesService } from 'app/services/roles.service'
+// UsersService and RolesService are loaded inside projectSelected() (require)
+// so this module can finish initializing. A top-level import cycles back through
+// FaqKbService / RolesService before this class exists.
 // import { ProjectService } from 'app/services/project.service'
 // import { AppComponent } from 'app/app.component'
 // import { ProjectPlanService } from 'app/services/project-plan.service'
@@ -318,6 +319,9 @@ export class AuthService {
     // Sidebar and Navbar will reload project user data via getProjectUser() after receiving the new project
     // Using Injector to avoid circular dependency issues
     try {
+      // Loaded here, not at module scope, to avoid a circular import with UsersService.
+      const { UsersService } = require('app/services/users.service');
+      const { RolesService } = require('app/services/roles.service');
       const usersService = this.injector.get(UsersService);
       if (usersService && usersService.project_user_role_bs && usersService.projectUser_bs) {
         usersService.project_user_role_bs.next('');

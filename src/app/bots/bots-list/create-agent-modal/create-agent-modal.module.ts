@@ -7,6 +7,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { VibeCoderModule } from 'app/shared/vibe-coder/vibe-coder.module';
 import { CreateAgentModalComponent } from './create-agent-modal.component';
 
 @NgModule({
@@ -21,7 +22,8 @@ import { CreateAgentModalComponent } from './create-agent-modal.component';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    NgSelectModule
+    NgSelectModule,
+    VibeCoderModule,
   ],
   exports: [
     CreateAgentModalComponent

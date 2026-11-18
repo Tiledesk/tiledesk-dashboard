@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, isDevMode, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ElementRef, ViewChild, isDevMode, ViewEncapsulation, HostListener } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { AuthService } from '../core/auth.service';
 
@@ -49,9 +49,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { BotLocalDbService } from 'app/services/bot-local-db.service';
 import { CreateAgentModalComponent, CreateAgentModalResult } from 'app/bots/bots-list/create-agent-modal/create-agent-modal.component';
 import { CreateChatbotModalComponent } from 'app/bots/bots-list/create-chatbot-modal/create-chatbot-modal.component';
-import { MAX_PROMPT_LENGTH, provisionalAgentName, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
+import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
+import { AgentPromptAttachment, MAX_PROMPT_LENGTH, provisionalAgentName, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
-import { VibeCoderComponent } from 'app/shared/vibe-coder/vibe-coder.component';
+import { VibeCoderComponent, VibeCoderStartPayload } from 'app/shared/vibe-coder/vibe-coder.component';
 import {
   ONBOARDING_FOCUS_VIBE_CODER_STATE,
   ONBOARDING_VIBE_CODER_PROMPT_STATE,
@@ -139,8 +141,19 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   vibeCoderBusy = false;
   vibeCoderError: string | null = null;
   private pendingHomeBuildPrompt: string | null = null;
+  /**
+   * Plan chatbot limit (same source as bots-list / templates).
+   * Home does not extend PricingBase (property clashes); bridge only for chatBotLimit.
+   */
+  private planLimitsBridge: PricingBaseComponent;
 
   @ViewChild('homeVibeCoder') homeVibeCoder?: VibeCoderComponent;
+  @ViewChild('homePickupSection') homePickupSection?: ElementRef<HTMLElement>;
+
+  /** VBC hero: down-arrow hint; hidden after user scrolls toward pickup. */
+  showVibeScrollHint = true;
+  private homeScrollListener?: () => void;
+  private homeScrollTargets: HTMLElement[] = [];
   /** Set from onboarding Get started router state — focus (+ optional prefill) once permissions ready. */
   private focusHomeVibeCoderPending = false;
   private homeVibeCoderInitialPrompt: string | null = null;
@@ -156,6 +169,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   isVisibleHomeBanner: boolean;
   isVisiblePay: boolean;
   isVisibleKNB: boolean;
+  /** Home vibe coder (env key VBC). Missing or F → hidden. */
+  isVisibleVBC = false;
+
+  get hasHomePickupSection(): boolean {
+    return this.isVisibleVBC
+      && this.USER_ROLE !== 'agent'
+      && !!this.PERMISSION_TO_VIEW_FLOWS
+      && !!(this.showskeleton || this.chatbots?.length);
+  }
 
   hidechangelogrocket: boolean;
   onlyOwnerCanManageTheAccountPlanMsg: string;
@@ -447,6 +469,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     private botLocalDbService: BotLocalDbService,
     private agentPromptsService: AgentPromptsService,
   ) {
+    this.planLimitsBridge = new PricingBaseComponent(prjctPlanService, notify);
     const brand = brandService.getBrand();
     this.company_name = brand['BRAND_NAME'];
     this.custom_company_home_logo = brand['CUSTOM_COMPANY_HOME_LOGO'];
@@ -481,7 +504,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // this.getAvailableProjectUsersByProjectId();
 
     this.getUserRole();
-    // this.getProjectPlan(); 
+    // Same plan → chatBotLimit resolution as bots-list (create / import)
+    this.planLimitsBridge.getProjectPlan();
     // this.getVisitorCounter();
     this.getOSCODE();
     this.checkPromoURL()
@@ -515,12 +539,65 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     }
+    this.bindHomeScrollListeners();
+    this.updateVibeScrollHint();
+  }
+
+  @HostListener('window:scroll')
+  onWindowScroll(): void {
+    this.updateVibeScrollHint();
+  }
+
+  scrollToHomePickup(): void {
+    const el = this.homePickupSection?.nativeElement;
+    if (!el) {
+      return;
+    }
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  private bindHomeScrollListeners(): void {
+    this.unbindHomeScrollListeners();
+    this.homeScrollListener = () => this.updateVibeScrollHint();
+    const selectors = ['.main-panel', '.home-main-content', '.main-content'];
+    selectors.forEach((selector) => {
+      const el = document.querySelector(selector) as HTMLElement | null;
+      if (el && !this.homeScrollTargets.includes(el)) {
+        this.homeScrollTargets.push(el);
+        el.addEventListener('scroll', this.homeScrollListener, { passive: true });
+      }
+    });
+  }
+
+  private unbindHomeScrollListeners(): void {
+    if (this.homeScrollListener) {
+      this.homeScrollTargets.forEach((el) => {
+        el.removeEventListener('scroll', this.homeScrollListener);
+      });
+    }
+    this.homeScrollTargets = [];
+    this.homeScrollListener = undefined;
+  }
+
+  private updateVibeScrollHint(): void {
+    if (!this.isVisibleVBC || !this.hasHomePickupSection) {
+      this.showVibeScrollHint = false;
+      return;
+    }
+    const scrollTop = Math.max(
+      window.pageYOffset || 0,
+      document.documentElement.scrollTop || 0,
+      document.body.scrollTop || 0,
+      ...this.homeScrollTargets.map((el) => el.scrollTop || 0),
+    );
+    this.showVibeScrollHint = scrollTop < 48;
   }
 
   ngOnDestroy() {
     this.logger.log('[QUOTA-DEBUG][HOME COMP] - CALLING ON DESTROY')
     this.cancelCloseQuotaHelp();
     this.quotaHelpOpen = null;
+    this.unbindHomeScrollListeners();
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
 
@@ -855,7 +932,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.focusHomeVibeCoderPending) {
       return;
     }
-    if (this.USER_ROLE === 'agent' || !this.PERMISSION_TO_ADD_FLOWS) {
+    if (!this.isVisibleVBC || this.USER_ROLE === 'agent' || !this.PERMISSION_TO_ADD_FLOWS) {
       // Leave tiledesk-pending-build in place: a later Home open can still prefill.
       this.focusHomeVibeCoderPending = false;
       this.homeVibeCoderInitialPrompt = null;
@@ -1587,7 +1664,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.logger.log('[HOME] - GET FAQKB * COMPLETE *');
       this.showskeleton = false;
       this.delayNewsFeedSkeleton();
-
+      this.updateVibeScrollHint();
     });
   }
 
@@ -2662,6 +2739,15 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
 
+      if (key.includes("VBC")) {
+        let vbc = key.split(":");
+        if (vbc[1] === "F") {
+          this.isVisibleVBC = false;
+        } else {
+          this.isVisibleVBC = true;
+        }
+      }
+
 
     });
 
@@ -2702,6 +2788,10 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (!this.public_Key.includes("QIN")) {
       this.isVisibleQuoteSection = false;
       // this.logger.log('PUBLIC-KEY (Navbar) - isVisibleQuoteSection', this.isVisibleQuoteSection);
+    }
+
+    if (!this.public_Key.includes("VBC")) {
+      this.isVisibleVBC = false;
     }
   }
 
@@ -3568,13 +3658,18 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
   //     });
   // }
 
-  onHomeVibeCoderStart(prompt: string): void {
-    const normalized = (prompt || '').trim().slice(0, MAX_PROMPT_LENGTH);
+  onHomeVibeCoderStart(payload: VibeCoderStartPayload): void {
+    const normalized = (payload?.prompt || '').trim().slice(0, MAX_PROMPT_LENGTH);
+    const attachments = Array.isArray(payload?.attachments) ? payload.attachments : [];
     if (this.vibeCoderBusy) {
       return;
     }
     if (!this.PERMISSION_TO_ADD_FLOWS || this.USER_ROLE === 'agent') {
       this.vibeCoderError = this.translate.instant('NoPermissionToCreateAIAgents');
+      return;
+    }
+    // Same gate as bots-list createBlankTilebot / import from JSON
+    if (!this.assertCanCreateChatbot()) {
       return;
     }
 
@@ -3587,7 +3682,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     // title the runtime generates for its conversation.
     if (normalized) {
       this.pendingHomeBuildPrompt = null;
-      this.createHomeAgentFromPrompt(provisionalAgentName(normalized), normalized, 'chatbot', true);
+      this.createHomeAgentFromPrompt(provisionalAgentName(normalized), normalized, 'chatbot', true, attachments);
       return;
     }
 
@@ -3715,6 +3810,9 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     if (subtype === 'copilot' && !namespaceId) {
       return;
     }
+    if (!this.assertCanCreateChatbot()) {
+      return;
+    }
     const language = this.translate.currentLang || 'en';
     this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', subtype, language, namespaceId)
       .pipe(takeUntil(this.unsubscribe$))
@@ -3739,12 +3837,53 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       });
   }
 
+  /**
+   * Same checks as bots-list `createBlankTilebot` / `fileChangeUploadChatbotFromJSON`:
+   * if the plan has a chatbot cap and the project already reached it, open ChatbotModal.
+   */
+  private assertCanCreateChatbot(): boolean {
+    const chatBotCount = Array.isArray(this.chatbots) ? this.chatbots.length : 0;
+    const chatBotLimit = this.planLimitsBridge?.chatBotLimit;
+    this.logger.log('[HOME] assertCanCreateChatbot chatBotCount', chatBotCount, 'chatBotLimit', chatBotLimit);
+
+    if (chatBotLimit || chatBotLimit === 0) {
+      if (chatBotCount < chatBotLimit) {
+        return true;
+      }
+      this.presentDialogReachedChatbotLimit();
+      return false;
+    }
+
+    // null = no cap (e.g. Scale trial); undefined = plan not resolved yet → allow
+    return true;
+  }
+
+  /** Same dialog as bots-list when create / import exceeds the plan chatbot cap. */
+  private presentDialogReachedChatbotLimit(): void {
+    this.logger.log('[HOME] presentDialogReachedChatbotLimit prjct_profile_name', this.prjct_profile_name,
+      'chatBotLimit', this.planLimitsBridge?.chatBotLimit);
+    this.dialog.open(ChatbotModalComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      data: {
+        projectProfile: this.prjct_profile_name,
+        subscriptionIsActive: this.subscription_is_active,
+        prjctProfileType: this.prjct_profile_type,
+        trialExpired: this.prjct_trial_expired,
+        chatBotLimit: this.planLimitsBridge?.chatBotLimit,
+      },
+    });
+  }
+
   /** `provisionalName`: the name was not asked for, so the Design Studio may replace it with the
    *  conversation's title. */
   private createHomeAgentFromPrompt(chatbotName: string, prompt: string, subtype: string = 'chatbot',
-    provisionalName: boolean = false): void {
+    provisionalName: boolean = false, attachments: AgentPromptAttachment[] = []): void {
     if (!chatbotName || !this.projectId) {
       this.vibeCoderError = this.translate.instant('CouldNotCreateAIAgent');
+      return;
+    }
+    if (!this.assertCanCreateChatbot()) {
       return;
     }
 
@@ -3752,8 +3891,12 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     this.vibeCoderError = null;
     const language = this.translate.currentLang || 'en';
     const normalizedPrompt = (prompt || '').trim();
+    const readyAttachments = Array.isArray(attachments)
+      ? attachments.filter((a) => a && a.url && a.name)
+      : [];
 
-    this.logger.log('[HOME] Prompt box create agent', chatbotName, 'subtype', subtype, 'hasPrompt', !!normalizedPrompt);
+    this.logger.log('[HOME] Prompt box create agent', chatbotName, 'subtype', subtype, 'hasPrompt', !!normalizedPrompt,
+      'attachments', readyAttachments.length);
 
     this.faqKbService.createChatbotFromScratch(chatbotName, 'tilebot', subtype, language)
       .pipe(takeUntil(this.unsubscribe$))
@@ -3771,16 +3914,6 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             faqKb._id,
             subtype,
           );
-          // Only hand off to CDS vibe coder when the Home box had a prompt (Flussi may omit it).
-          if (normalizedPrompt) {
-            saveAgentPrompt({
-              botId: faqKb._id,
-              prompt: normalizedPrompt,
-              language,
-              createdAt: Date.now(),
-              ...(provisionalName ? { provisionalName: faqKb.name || chatbotName } : {}),
-            });
-          }
           // Server answer carries ds_version — openChatbotEditor picks v2 / v3.
           const openEditor = () => openChatbotEditor(this.router, faqKb, this.projectId, this.appConfigService.getConfig());
           // Only hand off to CDS vibe coder when the Home box had a prompt (Flussi may omit it).
@@ -3795,6 +3928,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             language,
             createdAt: Date.now(),
             ...(provisionalName ? { provisionalName: faqKb.name || chatbotName } : {}),
+            ...(readyAttachments.length ? { attachments: readyAttachments } : {}),
           });
           // The prompt is saved with its agent before leaving the page (the editor opens in the
           // same tab); the save never fails and has a time limit, so the agent always opens.
@@ -3808,6 +3942,7 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
             language,
             source,
             origin: originUrl ? { kind: 'web', url: originUrl } : { kind: 'dashboard' },
+            attachments: readyAttachments,
           }).pipe(takeUntil(this.unsubscribe$)).subscribe(() => {
             this.vibeCoderBusy = false;
             openEditor();
