@@ -5084,3 +5084,23 @@ li.li-active a {
   flex: 1;
   min-width: 0;
 }
+
+/* Knowledge Bases opened inside CDS iframe: ?embed / ?Embed */
+body.td-embed-mode .sidebar,
+body.td-embed-mode app-sidebar,
+body.td-embed-mode .user-details-sidebar,
+body.td-embed-mode app-navbar,
+body.td-embed-mode .navbar {
+  display: none !important;
+}
+
+body.td-embed-mode .main-panel {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  float: none !important;
+}
+
+body.td-embed-mode .main-panel .main-content {
+  margin-top: 0 !important;
+}

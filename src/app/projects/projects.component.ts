@@ -815,6 +815,12 @@ export class ProjectsComponent implements OnInit, AfterContentInit, OnDestroy {
 
       this.showSpinner = false;
 
+      if (Array.isArray(projects) && projects.length === 0) {
+        this.logger.log('[PROJECTS] no projects — open onboarding');
+        this.router.navigate(['/onboarding'], { replaceUrl: true });
+        return;
+      }
+
       if (projects) {
         this.projects = projects;
         // SET THE IDs and the NAMES OF THE PROJECT IN THE LOCAL STORAGE.

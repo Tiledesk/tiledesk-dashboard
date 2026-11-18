@@ -104,6 +104,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   public useCache: boolean // = false;
   wasOpenedFromThePreviewKBModal: boolean
 
+  // Must stay an active OpenAI model in OPENAI_MODEL.
   private modelDefaultValue = "gpt-4o";
   /** Valore errato ancora restituito dal server per max_tokens con gpt-4o (workaround sotto). */
   private static readonly SERVER_LEGACY_MAX_TOKENS_SENTINEL = 256;
@@ -646,14 +647,20 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
 
     this.logger.log('[MODAL PREVIEW SETTINGS] flattenedModels ', this.flattenedModels)
 
-    const modelRow = this.resolveInitialModelRow();
+    // Prefer saved preview model; if inactive/missing from the select, fall back to default/first active.
+    const modelRow = this.resolveInitialModelRow() || this.resolveDefaultActiveModelRow();
     const settings = this.selectedNamespace.preview_settings;
-    this.selectedModel = modelRow?.selectValue ?? this.buildModelSelectValue(
-      settings.model,
-      settings.llm,
-      settings.vllmServer || settings.agentplatformServer,
-    );
-    this.applyPreviewSettingsLlmFromModel(modelRow);
+    if (modelRow) {
+      this.selectedModel = modelRow.selectValue;
+      settings.model = modelRow.value;
+      this.applyPreviewSettingsLlmFromModel(modelRow);
+    } else {
+      this.selectedModel = this.buildModelSelectValue(
+        settings.model || this.modelDefaultValue,
+        settings.llm,
+        settings.vllmServer || settings.agentplatformServer,
+      );
+    }
     if (!settings.llm && modelRow?.llmValue) {
       settings.llm = modelRow.llmValue;
     }
@@ -727,6 +734,17 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
 
   private resolveInitialModelRow(): any {
     return this.resolveModelRowFromSettings(this.selectedNamespace?.preview_settings);
+  }
+
+  /** First selectable row for modelDefaultValue (openai preferred), else first OpenAI active, else first active. */
+  private resolveDefaultActiveModelRow(): any {
+    return this.flattenedModels.find(
+      (m) => m.value === this.modelDefaultValue && m.llmValue === 'openai',
+    )
+      || this.flattenedModels.find((m) => m.value === this.modelDefaultValue)
+      || this.flattenedModels.find((m) => m.llmValue === 'openai')
+      || this.flattenedModels[0]
+      || null;
   }
 
   private resolveModelRowFromSettings(settings: any): any {
@@ -1314,11 +1332,9 @@ private restoreDialogScrollPosition(): void {
   }
 
   resetToDefault() {
-    const defaultModelRow = this.flattenedModels.find(
-      m => m.value === this.modelDefaultValue && m.llmValue === 'openai',
-    ) || this.flattenedModels.find(m => m.value === this.modelDefaultValue);
+    const defaultModelRow = this.resolveDefaultActiveModelRow();
     this.selectedModel = defaultModelRow?.selectValue ?? this.modelDefaultValue;
-    this.selectedNamespace.preview_settings.model = this.modelDefaultValue;
+    this.selectedNamespace.preview_settings.model = defaultModelRow?.value ?? this.modelDefaultValue;
     this.applyPreviewSettingsLlmFromModel(defaultModelRow);
     if (!defaultModelRow) {
       this.selectedNamespace.preview_settings.llm = 'openai';

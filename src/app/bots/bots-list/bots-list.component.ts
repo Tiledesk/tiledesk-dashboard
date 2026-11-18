@@ -18,7 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CloneBotComponent } from './clone-bot/clone-bot.component';
 import { CHATBOT_MAX_NUM, containsXSS, formatBytesWithDecimal, isV3Chatbot, PLAN_NAME, openChatbotEditor } from 'app/utils/util';
 import { ProjectPlanService } from 'app/services/project-plan.service';
-import { forkJoin, Subject } from 'rxjs';
+import { forkJoin, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from './chatbot-modal/chatbot-modal.component';
@@ -31,13 +31,16 @@ import { WebhookService } from 'app/services/webhook.service';
 import { CreateFlowsModalComponent } from './create-flows-modal/create-flows-modal.component';
 import { CreateChatbotModalComponent } from './create-chatbot-modal/create-chatbot-modal.component';
 import { CreateAgentModalComponent, CreateAgentModalResult } from './create-agent-modal/create-agent-modal.component';
-import { saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
+import { AgentPromptAttachment, saveAgentPrompt } from 'app/utils/agent-from-prompt.util';
 import { hookFirstFlowToDefaultDepartment } from 'app/utils/hook-first-flow-to-default-dept.util';
 import { AgentPromptsService } from 'app/services/agent-prompts.service';
 import { aiAgents, automations } from 'app/integrations/utils';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { ExecutionsService } from 'app/services/executions.service';
+import { canViewExecutions } from './../executions/executions.models';
+import { monitorExecutionsLink } from '../executions/execution-links';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
@@ -170,6 +173,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   orderByChatbotName: boolean = false;
   pageName: string;
   isVisiblePAY: boolean;
+  /** Env key VBC: New Flow → CreateAgent (T) vs CreateFlows modal (F / missing). */
+  isVisibleVBC = false;
   chatbotNumExceedChatbotLimit: boolean = false;
 
   isAllFlowRoute: boolean
@@ -180,6 +185,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   chatbotName: string;
   /** The description of the agent to build, left for the Design Studio once the agent exists. */
   chatbotPrompt: string = '';
+  chatbotAttachments: AgentPromptAttachment[] = [];
   /** The name was made from the description, not typed (CreateAgentModalResult.provisionalName). */
   chatbotNameIsProvisional: boolean = false;
   chatbotToImportSubtype: string;
@@ -213,6 +219,11 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   PERMISSION_TO_EXPORT_FLOW: boolean;
   PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
+  PERMISSION_TO_VIEW_EXECUTIONS: boolean;
+  // agentId (root id) -> failed+stopped count and running flag, from one summary call per visible page
+  executionsBadge: { [agentId: string]: { attention: number; running: boolean } } = {};
+  private executionsSummaryKey: string;
+  private executionsSummarySub: Subscription;
   
 
   // editBotName: boolean = false;
@@ -240,6 +251,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     private rolesService: RolesService,
     // private kbService: KnowledgeBaseService,
     private agentPromptsService: AgentPromptsService,
+    private executionsService: ExecutionsService,
   ) {
     super(prjctPlanService, notify);
     const brand = brandService.getBrand();
@@ -331,6 +343,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
         this.PERMISSIONS = status.matchedPermissions;
         this.logger.log('BOT-LIST] - this.ROLE:', this.ROLE);
         this.logger.log('BOT-LIST] - this.PERMISSIONS', this.PERMISSIONS);
+        this.applyExecutionsPermission(status.role, status.matchedPermissions);
         this.hasDefaultRole = ['owner', 'admin', 'agent'].includes(status.role);
         this.logger.log('BOT-LIST] - hasDefaultRole', this.hasDefaultRole);
 
@@ -508,6 +521,60 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
       });
 
+  }
+
+  applyExecutionsPermission(role: string, matchedPermissions: string[]) {
+    this.PERMISSION_TO_VIEW_EXECUTIONS = canViewExecutions(role, matchedPermissions);
+    this.loadExecutionsSummary();
+  }
+
+  get executionsEnabled(): boolean {
+    return !!this.PERMISSION_TO_VIEW_EXECUTIONS && this.executionsService.isConfigured();
+  }
+
+  // One summary call for the agents on the visible page; repeated only when that set changes.
+  loadExecutionsSummary() {
+    if (!this.executionsEnabled || !this.project?._id || !this.pagedFaqkbList?.length) {
+      return;
+    }
+    const ids = this.pagedFaqkbList.map(bot => this.executionsAgentId(bot));
+    const key = this.project._id + '|' + ids.join(',');
+    if (key === this.executionsSummaryKey) {
+      return;
+    }
+    this.executionsSummaryKey = key;
+    this.executionsSummarySub?.unsubscribe();
+    this.executionsBadge = {};
+    this.executionsSummarySub = this.executionsService.summary(this.project._id, ids)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe({
+        next: (summary) => {
+          const badge = {};
+          Object.keys(summary?.agents || {}).forEach(id => {
+            const a = summary.agents[id];
+            badge[id] = { attention: (a.failed || 0) + (a.stopped || 0), running: (a.running || 0) > 0 };
+          });
+          this.executionsBadge = badge;
+        },
+        error: (err) => {
+          this.executionsBadge = {};
+          this.logger.error('[BOTS-LIST] - executions summary failed (badges hidden)', err);
+        }
+      });
+  }
+
+  executionsAgentId(bot: any): string {
+    return bot.root_id || bot._id;
+  }
+
+  executionsBadgeText(agentId: string): string {
+    const n = this.executionsBadge[agentId]?.attention || 0;
+    return n > 99 ? '99+' : String(n);
+  }
+
+  /** The badge counts the last 24 hours (summary): open the agent's executions on that range, not on Now (the page's default). */
+  goToExecutions(bot: any) {
+    this.router.navigate(monitorExecutionsLink(this.project._id, this.executionsAgentId(bot)), { queryParams: { range: '24h' } });
   }
 
   checkChromeVersion(): boolean {
@@ -1284,7 +1351,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.updatePagedFaqkbList();
           this.logger.log('/flows/automations ', this.faqkbList);
         } 
-        
+
         if (this.faqkbList) {
           if (this.faqkbList.length === 0) {
             this.showSpinner = false;
@@ -1359,6 +1426,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     this.logger.log('[BOTS-LIST] pagedFaqkbList this.faqkbList ', this.faqkbList.slice(start, start + this.pageSize) )
     // return this.faqkbList.slice(start, start + this.pageSize);
     this.pagedFaqkbList = this.faqkbList.slice(start, start + this.pageSize);
+    this.loadExecutionsSummary();
   }
 
   nextPage() {
@@ -1445,6 +1513,15 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           this.isVisiblePAY = true;
         }
       }
+
+      if (key.includes("VBC")) {
+        let vbc = key.split(":");
+        if (vbc[1] === "F") {
+          this.isVisibleVBC = false;
+        } else {
+          this.isVisibleVBC = true;
+        }
+      }
     })
 
     if (!this.public_Key.includes("PAY")) {
@@ -1453,6 +1530,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
 
     if (!this.public_Key.includes("ANA")) {
       this.isVisibleAnalytics = false;
+    }
+
+    if (!this.public_Key.includes("VBC")) {
+      this.isVisibleVBC = false;
     }
   }
 
@@ -1808,12 +1889,16 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           openEditor()
           return
         }
+        const readyAttachments = Array.isArray(this.chatbotAttachments)
+          ? this.chatbotAttachments.filter((a) => a && a.url && a.name)
+          : [];
         saveAgentPrompt({
           botId: faqKb['_id'],
           prompt: this.chatbotPrompt,
           language: this.botDefaultLangCode,
           createdAt: Date.now(),
-          ...(this.chatbotNameIsProvisional ? { provisionalName: faqKb['name'] || this.chatbotName } : {})
+          ...(this.chatbotNameIsProvisional ? { provisionalName: faqKb['name'] || this.chatbotName } : {}),
+          ...(readyAttachments.length ? { attachments: readyAttachments } : {}),
         });
         // The prompt is saved with its agent before leaving the page (the editor opens in the
         // same tab); the save never fails and has a time limit, so the agent always opens.
@@ -1821,7 +1906,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
           id_faq_kb: faqKb['_id'],
           text: this.chatbotPrompt,
           language: this.botDefaultLangCode,
-          source: 'bots_list'
+          source: 'bots_list',
+          attachments: readyAttachments,
         }).subscribe(() => openEditor())
       }
 
@@ -1834,6 +1920,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.logger.log('[BOT-LIST] CREATE FAQKB - POST REQUEST * COMPLETE *');
       this.chatbotName = null;
       this.chatbotPrompt = '';
+      this.chatbotAttachments = [];
       this.chatbotNameIsProvisional = false;
       // this.getFaqKbByProjectId();
       // this.router.navigate(['project/' + this.project._id + '/cds/', this.newBot_Id, 'intent', '0']);
@@ -2055,13 +2142,20 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
 
-  /** Header "New Flow" (route all): open create-agent modal directly (no AI Agents / Automations dropdown). */
+  /**
+   * Header "New Flow" (route all) + empty-state AI Agents card.
+   * VBC:T → CreateAgent modal; VBC:F / missing → previous CreateFlows modal.
+   */
   presentNewFlowCreateAgent() {
     if (!this.PERMISSION_TO_ADD_FLOWS) {
       this.notify.presentDialogNoPermissionToPermomfAction();
       return;
     }
-    this.presentModalCreateAgent('chatbot');
+    if (this.isVisibleVBC) {
+      this.presentModalCreateAgent('chatbot');
+      return;
+    }
+    this.presentDialogCreateFlows(true);
   }
 
   presentDialogCreateFlows(isChatbotRoute) {
@@ -2131,8 +2225,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     // The AI Agent is the first creation path moved onto the new modal, and only where agents are
     // born V3: the description is built by the AI chat, which exists in that editor alone. The
     // other paths -- voice, webhook, copilot, templates -- still open the old modal, and each is
-    // moved over on its own.
-    if (subtype === 'chatbot' && this.createsV3Agents()) {
+    // moved over on its own. When VBC is off, keep the previous CreateChatbot name-only flow.
+    if (subtype === 'chatbot' && this.createsV3Agents() && this.isVisibleVBC) {
       this.presentModalCreateAgent(subtype);
       return;
     }
@@ -2174,7 +2268,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     const dialogRef = this.dialog.open(CreateAgentModalComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '480px',
+      width: '720px',
+      maxWidth: '92vw',
       data: {
         subtype: subtype,
         // The flag stays in the modal's own interface: it will be opened from places where a
@@ -2196,6 +2291,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       if (!result.chatbotName) { return; }
       this.chatbotName = result.chatbotName;
       this.chatbotPrompt = result.prompt || '';
+      this.chatbotAttachments = Array.isArray(result.attachments) ? result.attachments : [];
       this.chatbotNameIsProvisional = result.provisionalName === true;
       this.createBlankTilebot(result.subType);
     });

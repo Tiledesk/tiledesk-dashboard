@@ -1,0 +1,101 @@
+:host {
+  --exec-fg: #1f2a3d;
+  --exec-muted: #5d6b82;
+  --exec-line: #dfe3ed;
+  --exec-line-strong: #c9d0de;
+  --exec-accent: #1b6ef3;
+  --exec-accent-weak: #e8f0fe;
+  --exec-bad: #c62f2f;
+  --exec-warn: #a15c00;
+  display: block;
+  color: var(--exec-fg);
+}
+
+.exec-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
+.exec-head-tools { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+/* List | Graph: the dashboard's segmented switch (as the knowledge bases' kb-switch-field) */
+.exec-view-switch {
+  display: inline-flex; align-items: center; padding: 4px; gap: 0;
+  background: #fff; border: 1px solid #e3e8ee; border-radius: 10px;
+  button {
+    display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 14px; margin: 0;
+    border: 0; border-radius: 8px; background: transparent; color: #3c4858; font-size: 14px; cursor: pointer;
+    transition: background .2s, color .2s;
+    mat-icon { font-size: 20px; width: 20px; height: 20px; }
+    &:hover:not(.active) { background: #f4f6fa; }
+    &.active { background: #e3e9f6; color: #1b1919; font-weight: bold; }
+    &:focus-visible { outline: 2px solid var(--exec-accent); outline-offset: 1px; }
+  }
+}
+.exec-title { font-size: 22px; font-weight: 500; margin: 0; }
+
+.exec-input {
+  height: 36px; border: 1px solid var(--exec-line-strong); border-radius: 8px; background: #fff;
+  padding: 0 10px; font-size: 13px; color: var(--exec-fg);
+}
+.exec-filter-q { min-width: 220px; }
+
+.exec-select-ng { font-size: 13px; }
+.exec-agent-switcher { width: 240px; }
+.exec-filter-trigger, .exec-filter-range { width: 180px; }
+.exec-filter-status { width: 170px; }
+
+.exec-cards { margin-bottom: 14px; }
+.exec-cards-hint { display: block; margin-top: 6px; color: var(--exec-muted); font-size: 12px; }
+
+.exec-filters { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
+.exec-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; }
+/* Refresh and the updated note, at the end of the toolbar; they serve both views */
+.exec-filters-end { display: inline-flex; align-items: center; gap: 10px; margin-left: auto; }
+.exec-updated { font-size: 12px; color: var(--exec-muted); white-space: nowrap; }
+.exec-refresh {
+  display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; font-weight: 500; color: #3b4250;
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  &:hover:not(:disabled) { background: #f4f6f8; }
+  &:disabled { cursor: default; color: #9aa4b2; }
+}
+.exec-refresh mat-icon.spin { animation: exec-spin 1s linear infinite; }
+@keyframes exec-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .exec-refresh mat-icon.spin { animation: none; } }
+
+.exec-card { background: #fff; border: 1px solid var(--exec-line); border-radius: 10px; overflow-x: auto; }
+.exec-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+  th { text-align: left; font-weight: 500; color: var(--exec-muted); padding: 10px 12px; border-bottom: 1px solid var(--exec-line); white-space: nowrap; }
+  td { padding: 10px 12px; border-bottom: 1px solid var(--exec-line); vertical-align: middle; }
+}
+/* sortable headers: the whole label is the button; the arrow shows the active column and its direction */
+.exec-sort {
+  display: inline-flex; align-items: center; gap: 2px; border: 0; background: none; padding: 2px 4px; margin: -2px -4px;
+  font: inherit; font-weight: 500; color: inherit; cursor: pointer; border-radius: 4px; white-space: nowrap;
+  &:hover { color: var(--exec-fg); }
+  &:focus-visible { outline: 2px solid var(--exec-accent); outline-offset: 1px; }
+}
+.exec-sort-active { color: var(--exec-fg); }
+.exec-sort-arrow { font-size: 15px; width: 15px; height: 15px; }
+.exec-row { cursor: pointer; &:hover, &:focus { background: #f8f9fc; outline: none; } }
+.exec-muted { color: var(--exec-muted); }
+.exec-fail { color: var(--exec-bad); font-weight: 500; }
+.exec-agent { font-weight: 500; }
+.exec-warn-icon { color: var(--exec-warn); font-size: 16px; width: 16px; height: 16px; margin-left: 4px; vertical-align: middle; }
+.exec-chevron { color: var(--exec-muted); text-align: right; }
+
+.exec-empty { padding: 40px 16px; text-align: center; color: var(--exec-muted); }
+.exec-link { border: 0; background: none; color: var(--exec-accent); cursor: pointer; padding: 0 4px; }
+.exec-more { text-align: center; padding: 12px; }
+.exec-btn { border: 1px solid var(--exec-line-strong); background: #fff; border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }
+
+.unauthorized-message-container-in-page { text-align: center; padding: 80px 16px; }
+
+// a test run (Design Studio, draft agent): listed with the real ones, marked
+.exec-test-badge {
+  display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 8px;
+  font-size: 11px; line-height: 18px; color: #6b5b00; background: #fff4c2; vertical-align: middle;
+}
+.exec-fc-cell { white-space: nowrap; }
+/* the run had an unhandled action (errors > 0): a small red mark beside its failure conditions */
+.exec-errors-mark {
+  display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 8px;
+  font-size: 11px; line-height: 18px; color: #fff; background: var(--exec-bad); vertical-align: middle;
+}
