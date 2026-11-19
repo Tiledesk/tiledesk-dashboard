@@ -1,7 +1,8 @@
 .add-content-cards-wpr {
     width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 220px));
+    // flexible columns: 4 per row in the 900px dialog, so all source tiles show without scrolling
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 20px;
     -webkit-box-pack: center;
     justify-content: center;
