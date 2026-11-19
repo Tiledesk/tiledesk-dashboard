@@ -175,7 +175,23 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
       expect(page.presentModalImportMs365).toHaveBeenCalledTimes(1);
     });
 
-    it('kbsrc return keeps its provider; legacy ms365 return is microsoft365', () => {
+    it('googledrive connected return: accounts reloaded, Microsoft import dialog NOT opened', () => {
+      withQuery({ kbsrc: 'connected', provider: 'googledrive', connection_id: 'G' });
+      page.readMs365Return();
+      page.applyMs365Return();
+      expect(page.loadMs365Accounts).toHaveBeenCalledWith(true);
+      expect(page.ms365Connections.load).toHaveBeenCalled();
+      expect(page.presentModalImportMs365).not.toHaveBeenCalled();
+    });
+
+    it('microsoft365 kbsrc return opens the import dialog with the connection', () => {
+      withQuery({ kbsrc: 'connected', provider: 'microsoft365', connection_id: 'M' });
+      page.readMs365Return();
+      page.applyMs365Return();
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith('M');
+    });
+
+    it('stored return keeps its provider (kbsrc googledrive; legacy ms365 is microsoft365)', () => {
       withQuery({ kbsrc: 'connected', provider: 'googledrive', connection_id: 'G' });
       page.readMs365Return();
       expect(page.ms365Return).toEqual({ status: 'connected', reason: '', connectionId: 'G', provider: 'googledrive' });

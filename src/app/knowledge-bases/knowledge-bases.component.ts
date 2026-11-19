@@ -3070,7 +3070,8 @@ _presentDialogImportContents() {
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365Connected'), 2, 'done');
       this.loadMs365Accounts(true);
       if (this.ms365Connections) { this.ms365Connections.load(); }
-      this.presentModalImportMs365(ret.connectionId || undefined);
+      // other providers get their own dialog later; only Microsoft 365 opens its import dialog here
+      if (ret.provider === 'microsoft365') { this.presentModalImportMs365(ret.connectionId || undefined); }
     } else if (ret.status === 'error') {
       let key = 'KbPage.Ms365ErrConnect'; // state_invalid, exchange_failed, anything else
       if (ret.reason === 'access_denied') { key = 'KbPage.Ms365ErrAccessDenied'; }
