@@ -45,6 +45,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refreshRateIsEnabled: boolean;
   @Input() payIsVisible: boolean;
   @Input() ms365Available: boolean = false;
+  @Input() gdriveAvailable: boolean = false;
   /** connection_id -> "name — upn" for the folder rows (empty for non-admins). */
   @Input() ms365Accounts: { [connectionId: string]: string } = {};
   @Input() t_params: string;

@@ -478,4 +478,94 @@ describe('ModalMs365ImportComponent', () => {
     expect(text()).not.toContain('t.sharepoint.com/sites');
     expect(fixture.nativeElement.querySelectorAll('.ms365-place').length).toBe(3);
   });
+  describe('Google Drive', () => {
+    const gConn = { ...activeConn, _id: 'g1', provider: 'googledrive', account: { display_name: 'Gus', upn: 'gus@gmail.com', tenant_id: '' } };
+    const gRoots = { items: [
+      { kind: 'mydrive', id: 'root', name: 'My Drive', drive_id: 'root' },
+      { kind: 'shared_drive', id: 'sd1', name: 'Team drive', drive_id: 'sd1' }] };
+
+    function setupGoogle(render = false) {
+      setup([activeConn, gConn], { provider: 'googledrive' }, render);
+      svc.getRoots.and.returnValue(of(gRoots));
+    }
+
+    it('shows only the Google connections and uses the Google texts', () => {
+      setupGoogle(true);
+      expect(component.connections.map(c => c._id)).toEqual(['g1']);
+      expect(component.providerLabelKey).toBe('KbPage.GdriveCard');
+      expect(text()).toContain('KbPage.GdriveTitle');
+      expect(text()).not.toContain('KbPage.Ms365Title');
+      expect(text()).not.toContain('ann@x.com');
+    });
+
+    it('Microsoft dialog shows only Microsoft connections', () => {
+      setup([activeConn, gConn]);
+      expect(component.connections.map(c => c._id)).toEqual(['c1']);
+      expect(component.providerLabelKey).toBe('KbPage.Ms365Card');
+    });
+
+    it('connect and reconnect go through connect(googledrive, id)', fakeAsync(() => {
+      setupGoogle();
+      svc.connect.and.returnValue(Promise.resolve({ status: 'blocked' }));
+      component.startConnect('g1');
+      flush();
+      expect(svc.connect).toHaveBeenCalledWith('googledrive', 'g1');
+    }));
+
+    it('"Continue in this window" passes the provider', fakeAsync(() => {
+      setupGoogle();
+      (svc as any).connectInWindow = jasmine.createSpy('connectInWindow').and.returnValue(Promise.resolve());
+      component.continueInWindow('g1');
+      expect((svc as any).connectInWindow).toHaveBeenCalledWith('googledrive', 'g1');
+    }));
+
+    it('scope_missing shows the Google permission message', fakeAsync(() => {
+      setupGoogle();
+      svc.connect.and.returnValue(Promise.resolve({ status: 'error', reason: 'scope_missing' }));
+      component.startConnect();
+      flush();
+      expect(component.connectError).toEqual({ key: 'KbPage.GdriveErrScope' });
+      expect(component.connectState).toBe('retry');
+    }));
+
+    it('groups the roots as My Drive / Shared drives', () => {
+      setupGoogle(true);
+      component.chooseConnection(gConn as any);
+      fixture.detectChanges();
+      expect(text()).toContain('KbPage.GdriveMyDriveSection');
+      expect(text()).toContain('KbPage.GdriveSharedDrivesSection');
+      expect(text()).not.toContain('KbPage.Ms365OneDriveSection');
+      expect(fixture.nativeElement.querySelectorAll('.ms365-place').length).toBe(2);
+      expect(component.crumbs[0].label).toBe('KbPage.GdriveCard');
+    });
+
+    it('opening My Drive or a shared drive goes straight to its children', () => {
+      setupGoogle();
+      component.chooseConnection(gConn as any);
+      component.openItem(component.items[0]);
+      expect(svc.getChildren).toHaveBeenCalledWith('g1', 'root', undefined, undefined);
+      expect(component.crumbs.length).toBe(2);
+      component.goToCrumb(0);
+      component.openItem(component.items[1]);
+      expect(svc.getChildren).toHaveBeenCalledWith('g1', 'sd1', undefined, undefined);
+    });
+
+    it('import goes through importItems(googledrive, ...)', () => {
+      setupGoogle();
+      component.chooseConnection(gConn as any);
+      component.openItem(component.items[0]);
+      component.toggleItem(component.items.find(i => i.kind === 'file'));
+      component.goToOptions();
+      svc.importItems.and.returnValue(of({ contents: [] }));
+      component.onImport();
+      expect(svc.importItems.calls.mostRecent().args[0]).toBe('googledrive');
+      expect(svc.importItems.calls.mostRecent().args[1].connection_id).toBe('g1');
+    });
+
+    it('initialConnectionId opens the Google account', () => {
+      setup([gConn], { provider: 'googledrive', initialConnectionId: 'g1' });
+      expect(component.step).toBe('browse');
+      expect(svc.getRoots).toHaveBeenCalledWith('g1');
+    });
+  });
 });

@@ -1,7 +1,7 @@
 <div class="ms365-header">
     <div class="ms365-header-main">
-        <h1 mat-dialog-title class="ms365-title">{{ 'KbPage.Ms365Title' | translate }}</h1>
-        <ol class="ms365-steps" [attr.aria-label]="'KbPage.Ms365Title' | translate">
+        <h1 mat-dialog-title class="ms365-title">{{ titleKey | translate }}</h1>
+        <ol class="ms365-steps" [attr.aria-label]="titleKey | translate">
             <li class="ms365-step" [class.ms365-step--current]="stepIndex === 1" [class.ms365-step--done]="stepIndex > 1"
                 [attr.aria-current]="stepIndex === 1 ? 'step' : null">
                 <span class="ms365-step-dot">
@@ -60,11 +60,11 @@
         <ng-container *ngIf="!loadingConnections">
             <div *ngIf="connections.length === 0" class="ms365-empty">
                 <span aria-hidden="true" class="material-icons-outlined ms365-empty-icon">cloud_sync</span>
-                <p class="ms365-empty-title">{{ 'KbPage.Ms365Connect' | translate }}</p>
-                <p class="ms365-muted">{{ 'KbPage.Ms365ConnectHint' | translate }}</p>
+                <p class="ms365-empty-title">{{ connectKey | translate }}</p>
+                <p class="ms365-muted">{{ connectHintKey | translate }}</p>
             </div>
 
-            <p *ngIf="connections.length > 0" class="ms365-label">{{ 'KbPage.Ms365ChooseAccount' | translate }}</p>
+            <p *ngIf="connections.length > 0 && !isGoogle" class="ms365-label">{{ 'KbPage.Ms365ChooseAccount' | translate }}</p>
             <ul class="ms365-accounts" *ngIf="connections.length > 0">
                 <li *ngFor="let conn of connections" class="ms365-account"
                     [class.ms365-account--warn]="conn.status === 'needs_reconnect'"
@@ -92,7 +92,7 @@
 
             <button type="button" class="ms365-btn ms365-connect-btn" [class.ms365-btn--primary]="connections.length === 0" (click)="startConnect()">
                 <span aria-hidden="true" class="material-icons-outlined">add</span>
-                {{ (connections.length > 0 ? 'KbPage.Ms365ConnectAnother' : 'KbPage.Ms365Connect') | translate }}
+                {{ (connections.length > 0 ? 'KbPage.Ms365ConnectAnother' : connectKey) | translate }}
             </button>
         </ng-container>
     </ng-container>
@@ -130,23 +130,15 @@
 
         <div class="ms365-list" *ngIf="!browseError">
 
-            <!-- top level: OneDrive and SharePoint sites -->
+            <!-- top level: OneDrive and SharePoint sites, or My Drive and shared drives -->
             <ng-container *ngIf="atRoots">
-                <ng-container *ngIf="rootOneDrive.length">
-                    <div class="ms365-group">{{ 'KbPage.Ms365OneDriveSection' | translate }}</div>
-                    <button *ngFor="let item of rootOneDrive" type="button" class="ms365-place" (click)="openItem(item)">
-                        <span aria-hidden="true" class="material-icons-outlined ms365-icon ms365-icon--place">{{ itemIcon(item) }}</span>
-                        <span class="ms365-place-name">{{ item.name }}</span>
-                        <span aria-hidden="true" class="material-icons-outlined ms365-chevron">chevron_right</span>
-                    </button>
-                </ng-container>
-                <ng-container *ngIf="rootSites.length">
-                    <div class="ms365-group">{{ 'KbPage.Ms365SitesSection' | translate }}</div>
-                    <button *ngFor="let item of rootSites" type="button" class="ms365-place" (click)="openItem(item)">
+                <ng-container *ngFor="let group of rootGroups">
+                    <div class="ms365-group">{{ group.labelKey | translate }}</div>
+                    <button *ngFor="let item of group.items" type="button" class="ms365-place" (click)="openItem(item)">
                         <span aria-hidden="true" class="material-icons-outlined ms365-icon ms365-icon--place">{{ itemIcon(item) }}</span>
                         <span class="ms365-place-text">
                             <span class="ms365-place-name">{{ item.name }}</span>
-                            <span *ngIf="siteHint(item)" class="ms365-muted ms365-small ms365-ellipsis">{{ siteHint(item) }}</span>
+                            <span *ngIf="group.showHint && siteHint(item)" class="ms365-muted ms365-small ms365-ellipsis">{{ siteHint(item) }}</span>
                         </span>
                         <span aria-hidden="true" class="material-icons-outlined ms365-chevron">chevron_right</span>
                     </button>

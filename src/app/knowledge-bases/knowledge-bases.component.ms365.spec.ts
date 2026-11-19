@@ -170,17 +170,26 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
       expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args).toEqual(['KbPage.Ms365Connected', 2, 'done']);
       expect(page.loadMs365Accounts).toHaveBeenCalledWith(true);
       expect(page.ms365Connections.load).toHaveBeenCalled();
-      expect(page.presentModalImportMs365).toHaveBeenCalledWith('X');
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith('X', 'microsoft365');
       page.applyMs365Return(); // applied once
       expect(page.presentModalImportMs365).toHaveBeenCalledTimes(1);
     });
 
-    it('googledrive connected return: accounts reloaded, Microsoft import dialog NOT opened', () => {
+    it('googledrive connected return: Google toast, accounts reloaded, import dialog opens for googledrive', () => {
       withQuery({ kbsrc: 'connected', provider: 'googledrive', connection_id: 'G' });
       page.readMs365Return();
       page.applyMs365Return();
       expect(page.loadMs365Accounts).toHaveBeenCalledWith(true);
       expect(page.ms365Connections.load).toHaveBeenCalled();
+      expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args).toEqual(['KbPage.GdriveConnected', 2, 'done']);
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith('G', 'googledrive');
+    });
+
+    it('scope_missing error return toasts the Google scope message', () => {
+      withQuery({ kbsrc: 'error', provider: 'googledrive', reason: 'scope_missing' });
+      page.readMs365Return();
+      page.applyMs365Return();
+      expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.GdriveErrScope');
       expect(page.presentModalImportMs365).not.toHaveBeenCalled();
     });
 
@@ -188,7 +197,7 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
       withQuery({ kbsrc: 'connected', provider: 'microsoft365', connection_id: 'M' });
       page.readMs365Return();
       page.applyMs365Return();
-      expect(page.presentModalImportMs365).toHaveBeenCalledWith('M');
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith('M', 'microsoft365');
     });
 
     it('stored return keeps its provider (kbsrc googledrive; legacy ms365 is microsoft365)', () => {
@@ -213,6 +222,46 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
         expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe(key);
       }
       expect(page.presentModalImportMs365).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Google Drive tile', () => {
+    it("the 'gdrive' add-content choice opens the dialog for googledrive", () => {
+      page.presentModalImportMs365 = jasmine.createSpy('presentModalImportMs365');
+      page.openAddKnowledgeBaseModal('gdrive');
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith(undefined, 'googledrive');
+      page.presentModalImportMs365.calls.reset();
+      page.openAddKnowledgeBaseModal('ms365');
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith();
+    });
+
+    it('presentModalImportMs365 passes the provider to the dialog data (default microsoft365)', () => {
+      const open = jasmine.createSpy('open').and.returnValue({ afterClosed: () => of(undefined) });
+      page.dialog = { open };
+      page.selectedNamespace = { id: 'n' };
+      page.presentModalImportMs365('c1', 'googledrive');
+      expect(open.calls.mostRecent().args[1].data.provider).toBe('googledrive');
+      expect(open.calls.mostRecent().args[1].data.initialConnectionId).toBe('c1');
+      page.presentModalImportMs365();
+      expect(open.calls.mostRecent().args[1].data.provider).toBe('microsoft365');
+    });
+
+    it('gdriveAvailable comes from /providers, independent of Microsoft', () => {
+      kbSources.getProviders = jasmine.createSpy('getProviders').and.returnValue(of({
+        providers: [{ id: 'microsoft365', available: false }, { id: 'googledrive', available: true }], kb_max_file_size: 1 }));
+      page.id_project = 'p1';
+      page.loadKbSourceProviders();
+      expect(page.gdriveAvailable).toBe(true);
+      expect(page.ms365Available).toBe(false);
+    });
+
+    it('a failing /providers hides both cards', () => {
+      kbSources.getProviders = jasmine.createSpy('getProviders').and.returnValue(throwError(() => ({ status: 403 })));
+      page.id_project = 'p1';
+      page.gdriveAvailable = true;
+      page.loadKbSourceProviders();
+      expect(page.gdriveAvailable).toBe(false);
+      expect(page.ms365Available).toBe(false);
     });
   });
 

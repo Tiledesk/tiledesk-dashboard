@@ -140,6 +140,20 @@
                 </p>
             </div>
         </div>
+
+        <div class="add-content-card-wpr" *ngIf="data?.gdriveAvailable" (click)="onOkPresssed('gdrive')">
+            <div class="add-content-card-content">
+                <div class="add-content-card-content-icon-wpr">
+                    <span class="material-icons-outlined">add_to_drive</span>
+                </div>
+                <span class="span-6"> </span>
+                <p class="add-content-card-content-title"> {{'KbPage.GdriveCard' | translate }} </p>
+                <span class="span-8"> </span>
+                <p class="add-content-card-content-subtitle">
+                    {{'KbPage.GdriveCardDesc' | translate }}
+                </p>
+            </div>
+        </div>
     </div>
 
     <div class="link-to-docs--container"> 
