@@ -132,9 +132,9 @@
 
             <!-- top level: OneDrive and SharePoint sites, or My Drive and shared drives -->
             <ng-container *ngIf="atRoots">
-                <ng-container *ngFor="let group of rootGroups">
+                <ng-container *ngFor="let group of rootGroups; trackBy: trackGroup">
                     <div class="ms365-group">{{ group.labelKey | translate }}</div>
-                    <button *ngFor="let item of group.items" type="button" class="ms365-place" (click)="openItem(item)">
+                    <button *ngFor="let item of group.items; trackBy: trackItem" type="button" class="ms365-place" (click)="openItem(item)">
                         <span aria-hidden="true" class="material-icons-outlined ms365-icon ms365-icon--place">{{ itemIcon(item) }}</span>
                         <span class="ms365-place-text">
                             <span class="ms365-place-name">{{ item.name }}</span>
@@ -154,7 +154,7 @@
                     <span class="ms365-num">{{ 'KbPage.Ms365ColModified' | translate }}</span>
                     <span></span>
                 </div>
-                <div *ngFor="let item of items" class="ms365-row"
+                <div *ngFor="let item of items; trackBy: trackItem" class="ms365-row"
                     [class.ms365-row--selected]="isSelected(item)"
                     [class.ms365-row--disabled]="!isSelectable(item) && (item.kind === 'file' || item.kind === 'folder')"
                     [class.ms365-row--nav]="item.kind !== 'file' && item.supported !== false"
@@ -193,7 +193,7 @@
         <div class="ms365-summary">
             <p class="ms365-label">{{ 'KbPage.Ms365SelectedCount' | translate: { count: selectedCount } }}</p>
             <ul class="ms365-summary-list">
-                <li *ngFor="let s of selectedPreview">
+                <li *ngFor="let s of selectedPreview; trackBy: trackPreview">
                     <span class="material-icons-outlined ms365-icon" aria-hidden="true" [ngClass]="'ms365-icon--' + s.tone">{{ itemIcon({ kind: s.kind, id: '', name: s.name }) }}</span>
                     <span class="ms365-ellipsis">{{ s.name }}</span>
                 </li>
