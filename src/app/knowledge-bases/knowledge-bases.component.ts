@@ -42,6 +42,10 @@ import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowled
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
+import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
+import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
+import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
+import { KbSourcesService } from 'app/services/kb-sources.service';
 import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
 import { ModalChatbotNameComponent } from './modals/modal-chatbot-name/modal-chatbot-name.component';
@@ -92,6 +96,7 @@ const Swal = require('sweetalert2')
 
 export class KnowledgeBasesComponent extends PricingBaseComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(KnowledgeBaseTableComponent) kbTableComponent: KnowledgeBaseTableComponent;
+  @ViewChild(KbMs365ConnectionsComponent) ms365Connections: KbMs365ConnectionsComponent;
 
   PLAN_NAME = PLAN_NAME;
   public IS_OPEN_SETTINGS_SIDEBAR: boolean;
@@ -130,6 +135,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   isAvailableRefreshRateFeature: boolean;
   t_params: any
+  ms365Available = false;
+  ms365Accounts: { [connectionId: string]: string } = {};
+  private ms365AccountsLoaded = false;
+  private providersLoadedFor: string | undefined;
+  private ms365Return: { status: string; reason: string; connectionId: string } | null = null;
+  kbMaxFileSize: number;
+  private ms365ReloadTimers: any[] = [];
 
   callingPage: string;
   errorMessage: string;
@@ -486,6 +498,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     private roleService: RoleService,
     private rolesService: RolesService,
     private cdr: ChangeDetectorRef,
+    private kbSources: KbSourcesService,
 
   ) {
     super(prjctPlanService, notify);
@@ -498,6 +511,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   ngOnInit(): void {
     this.roleService.checkRoleForCurrentProject('kb')
     performance.mark('kb-parent-init');
+    this.readMs365Return();
 
     // Restore the user's preferred KB sort direction from localStorage.
     // Done in ngOnInit (instead of constructor) to keep the constructor
@@ -557,6 +571,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
 
   ngOnDestroy(): void {
     clearInterval(this.interval_id);
+    this.clearMs365ReloadTimers();
     if (this.questionsSearchDebounceTimer != null) {
       clearTimeout(this.questionsSearchDebounceTimer);
       this.questionsSearchDebounceTimer = null;
@@ -837,6 +852,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       if (this.project) {
         this.project_name = project.name;
         this.id_project = project._id;
+        this.loadKbSourceProviders();
         this.getProjectById(this.id_project)
         this.logger.log('[KNOWLEDGE-BASES-COMP] - GET CURRENT PROJECT - PROJECT-NAME ', this.project_name, ' PROJECT-ID ', this.id_project)
       }
@@ -1266,6 +1282,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     }
     this.paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + "&namespace=" + this.selectedNamespace.id;
     this.getListOfKb(this.paramsDefault, 'selectLastUsedNamespaceAndGetKbList');
+    this.applyMs365Return();
 
     if (deepTab === 'questions' && this.selectedNamespace) {
       this.selectedTab = 'unanswered';
@@ -2719,6 +2736,9 @@ _presentDialogImportContents() {
         this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method);
         this.logger.log('[Modal KB DETAILS] Dialog afterClosed kb:  ' , res.kb);
         this.updateKbContent(res.kb)
+      } else if (res.method === 'ms365-refresh-saved') {
+        // the folder rate was saved by the modal through PATCH /kb/sources/folders/:id
+        this.scheduleMs365Reloads();
       } else if (res.method === 'delete') {
         
         this.logger.log('[Modal KB DETAILS] Dialog afterClosed method : ', res.method, );
@@ -2755,7 +2775,11 @@ _presentDialogImportContents() {
     this.kbid_selected.deleting = true;
     this.baseModalDelete = true;
 
-    if (kb.type !== 'sitemap') {
+    if (isMs365Folder(kb)) {
+      this.presentDialogComfimDeleteSitemap(kb, 'KbPage.Ms365DeleteFolder')
+    } else if (isMs365File(kb)) {
+      this.presentDialogComfimDeleteSitemap(kb, 'KbPage.Ms365DeleteChild')
+    } else if (kb.type !== 'sitemap') {
       const dialogRef = this.dialog.open(ModalDeleteKnowledgeBaseComponent, {
         backdropClass: 'cdk-overlay-transparent-backdrop',
         hasBackdrop: true,
@@ -2775,11 +2799,12 @@ _presentDialogImportContents() {
     }
   }
 
-  presentDialogComfimDeleteSitemap(kb) {
+  /** Cascade confirm for a sitemap; also used (with its own text) for Microsoft 365 folders and files. */
+  presentDialogComfimDeleteSitemap(kb, htmlKey: string = 'KbPage.DeletingTheSitemapDeleteTheContentsStrong') {
      kb.deleting = false;
      Swal.fire({
       title: this.translate.instant('Warning'),
-      html: this.translate.instant('KbPage.DeletingTheSitemapDeleteTheContentsStrong'),
+      html: this.translate.instant(htmlKey),
       icon: "warning",
       showCloseButton: false,
       showCancelButton: true,
@@ -2808,6 +2833,7 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '900px',
+      data: { ms365Available: this.ms365Available },
     });
 
     dialogRef.afterClosed().subscribe(type => {
@@ -2869,6 +2895,9 @@ _presentDialogImportContents() {
     }
     if (typeOrKb === 'file-upload') {
       this.presentModalUploadFile()
+    }
+    if (typeOrKb === 'ms365') {
+      this.presentModalImportMs365()
     }
     if (typeOrKb === 'faq') {
       this.presentModalAddFaqs()
@@ -2990,6 +3019,167 @@ _presentDialogImportContents() {
       }
 
     });
+  }
+
+  /** Admin-only call: a failure (e.g. 403) simply hides the Microsoft 365 card. */
+  loadKbSourceProviders() {
+    // the request URL contains the project id: wait until it is known (and ask once per project)
+    if (!this.id_project || this.providersLoadedFor === this.id_project) { return; }
+    this.providersLoadedFor = this.id_project;
+    this.kbSources.getProviders().subscribe({
+      next: (res) => {
+        this.ms365Available = !!(res && res.providers && res.providers.some(p => p.id === 'microsoft365' && p.available));
+        this.kbMaxFileSize = res && res.kb_max_file_size;
+      },
+      error: () => { this.ms365Available = false; }
+    });
+  }
+
+  /**
+   * Back from a full-page Microsoft 365 sign-in (?ms365=connected|error&reason=&connection_id=):
+   * remember the outcome, strip the params from the URL; it is applied once the namespace is known.
+   */
+  readMs365Return() {
+    const qpm = this.route.snapshot.queryParamMap;
+    const status = qpm.get('ms365');
+    if (!status) { return; }
+    this.ms365Return = { status, reason: qpm.get('reason') || '', connectionId: qpm.get('connection_id') || '' };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { ms365: null, reason: null, connection_id: null },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  }
+
+  applyMs365Return() {
+    const ret = this.ms365Return;
+    if (!ret) { return; }
+    this.ms365Return = null;
+    if (ret.status === 'connected') {
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365Connected'), 2, 'done');
+      this.loadMs365Accounts(true);
+      if (this.ms365Connections) { this.ms365Connections.load(); }
+      this.presentModalImportMs365(ret.connectionId || undefined);
+    } else if (ret.status === 'error') {
+      let key = 'KbPage.Ms365ErrConnect'; // state_invalid, exchange_failed, anything else
+      if (ret.reason === 'access_denied') { key = 'KbPage.Ms365ErrAccessDenied'; }
+      // account_mismatch: the expected upn is unknown here, so the generic message is used
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant(key), 4, 'report_problem');
+    }
+  }
+
+  presentModalImportMs365(initialConnectionId?: string) {
+    const dialogRef = this.dialog.open(ModalMs365ImportComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '600px',
+      autoFocus: false,
+      position: { top: '60px' },
+      data: {
+        namespace: this.selectedNamespace.id,
+        isAvailableRefreshRateFeature: this.isAvailableRefreshRateFeature,
+        refreshRateIsEnabled: this.refreshRateIsEnabled,
+        payIsVisible: this.payIsVisible,
+        kbMaxFileSize: this.kbMaxFileSize,
+        t_params: this.t_params,
+        id_project: this.id_project,
+        project_name: this.project_name,
+        initialConnectionId,
+        onPlanLimit: (planLimit: number) => this.onMs365PlanLimit(planLimit),
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      // any close: a new account or folder counts may have appeared
+      if (this.ms365Connections) { this.ms365Connections.load(); }
+      if (result && result.upgrade_plan) {
+        this.goToPricing();
+      } else if (result && result.contents) {
+        this.scheduleMs365Reloads();
+      }
+    });
+  }
+
+  /** Same plan-limit dialog as onAddKb. */
+  onMs365PlanLimit(planLimit: number) {
+    this.getTranslatedStringKbLimitReached(planLimit);
+    this.presentKbLimitSwal(this.msgErrorAddUpdateKbLimit);
+  }
+
+  /** Imported folders fill in asynchronously: reload the list now and at 3 s, 10 s, 30 s. */
+  scheduleMs365Reloads() {
+    this.clearMs365ReloadTimers();
+    this.ms365AccountsLoaded = false; // next list load refreshes the accounts
+    const reload = () => {
+      const paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'after-add');
+    };
+    reload();
+    this.ms365ReloadTimers = [3000, 10000, 30000].map(ms => setTimeout(reload, ms));
+  }
+
+  /**
+   * Accounts shown in the folder rows: loaded once when the list has a Microsoft 365 folder
+   * (and again on demand). A failure (403 for non-admins) just leaves the account out, no toast.
+   */
+  loadMs365Accounts(force = false) {
+    if (!(this.kbsList || []).some(kb => isMs365Folder(kb))) {
+      return;
+    }
+    if (this.ms365AccountsLoaded && !force) {
+      return;
+    }
+    this.ms365AccountsLoaded = true;
+    this.kbSources.getConnections().subscribe({
+      next: (connections) => {
+        this.ms365Accounts = buildMs365AccountMap(connections);
+        this.refreshKbsList = !this.refreshKbsList;
+      },
+      error: () => { /* not an admin: no account shown */ }
+    });
+  }
+
+  /** An account was reconnected or disconnected: refresh the folder rows' accounts, and the list after a cascade. */
+  onMs365ConnectionsChanged(ev: { cascade: boolean }) {
+    this.loadMs365Accounts(true);
+    if (ev && ev.cascade) {
+      this.scheduleMs365Reloads();
+    }
+  }
+
+  /** The user signed in again: refresh the accounts and sync the folder (a running sync is fine, silently). */
+  onMs365Reconnected(kb) {
+    this.loadMs365Accounts(true);
+    this.onMs365SyncNow(kb, true);
+  }
+
+  /**
+   * Sync now on a Microsoft 365 folder: 202 -> toast and the 0/3/10/30 s reloads;
+   * 409 sync_running -> "already syncing"; anything else -> error toast.
+   */
+  onMs365SyncNow(kb, silentIfRunning = false) {
+    this.kbSources.syncFolder(kb._id).subscribe({
+      next: () => {
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365SyncStarted'), 2, 'done');
+        this.scheduleMs365Reloads();
+      },
+      error: (err) => {
+        this.logger.error('[KNOWLEDGE-BASES-COMP] syncFolder error', err);
+        if (err?.status === 409 && ms365ErrorCode(err) === 'sync_running') {
+          if (silentIfRunning) {
+            return;
+          }
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365AlreadySyncing'), 3, 'sync');
+        } else {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365SyncFailed'), 4, 'report_problem');
+        }
+      }
+    });
+  }
+
+  private clearMs365ReloadTimers() {
+    this.ms365ReloadTimers.forEach(t => clearTimeout(t));
+    this.ms365ReloadTimers = [];
   }
 
   presentModalUploadFile() {
@@ -3565,6 +3755,7 @@ _presentDialogImportContents() {
       }
 
       this.refreshKbsList = !this.refreshKbsList;
+      this.loadMs365Accounts();
   }
 
   private handleKbListError(error: any): void {
@@ -3688,6 +3879,19 @@ _presentDialogImportContents() {
         error = this.msgErrorAddUpdateKbLimit
       }
 
+      this.presentKbLimitSwal(error);
+      if (doneCb) doneCb(false);
+    }, () => {
+      this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
+      this.getAllNamespaces();
+      this.trackUserActioOnKB('Added Knowledge Base')
+    })
+  }
+
+
+
+  /** Plan-limit / generic add error dialog (upgrade / contact us), shared by onAddKb and the Microsoft 365 import. */
+  presentKbLimitSwal(error: string) {
       if (this.payIsVisible === true) {
         Swal.fire({
           title: this.warningTitle,
@@ -3751,15 +3955,7 @@ _presentDialogImportContents() {
           }
         })
       }
-      if (doneCb) doneCb(false);
-    }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
-      this.getAllNamespaces();
-      this.trackUserActioOnKB('Added Knowledge Base')
-    })
   }
-
-
 
   presentModalOnlyOwnerCanManageTheAccountPlan() {
     this.notify.presentModalOnlyOwnerCanManageTheAccountPlan(this.onlyOwnerCanManageTheAccountPlanMsg, this.learnMoreAboutDefaultRoles)
@@ -3996,7 +4192,8 @@ _presentDialogImportContents() {
         this.kbsContentTotalCount = Math.max(0, (Number(this.kbsContentTotalCount) || 0) - 1);
         this.syncNamespaceContentCount(this.kbsContentTotalCount);
         this.hasRemovedKb = true;
-        if (kb.type === 'sitemap' && this.kbTableComponent) {
+        if ((kb.type === 'sitemap' || isMs365Folder(kb)) && this.kbTableComponent) {
+          // a folder takes its imported files with it: reload the list like a sitemap
           this.kbTableComponent.resetFiltersAfterSitemapDelete();
         } else {
           this.refreshKbsList = !this.refreshKbsList;
@@ -4013,6 +4210,21 @@ _presentDialogImportContents() {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR delete kb: ", err);
       kb.deleting = false;
       //this.kbid_selected.deleting = false;
+
+      // Microsoft 365: remove_failed / sync_running -> error toast, the list stays as it is
+      const ms365Key = ms365DeleteErrorKey(err);
+      if (ms365Key) {
+        const removed = Number(err?.error?.removed) || 0;
+        if (ms365ErrorCode(err) === 'remove_failed' && removed > 0) {
+          // a folder delete that removed some files before failing: the list is stale -> say so and reload
+          this.notify.showWidgetStyleUpdateNotification(
+            this.translate.instant('KbPage.Ms365DeleteRemovePartial', { failed: err.error.failed, removed }), 4, 'report_problem');
+          this.scheduleMs365Reloads();
+        } else {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant(ms365Key), 4, 'report_problem');
+        }
+        return;
+      }
 
       // this.onOpenErrorModal(error);
       Swal.fire({

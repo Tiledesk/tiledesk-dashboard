@@ -5,6 +5,7 @@ import { UploadImageNativeService } from 'app/services/upload-image-native.servi
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { BrandService } from 'app/services/brand.service';
 import { URL_kb_contents_tags} from 'app/utils/util';
+import { KbSourcesService } from 'app/services/kb-sources.service';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
@@ -33,7 +34,9 @@ export class ModalUploadFileComponent implements OnInit {
   fileSizeExceeds: boolean;
   fileSupported: boolean = true;
   body: any;
-  tparams = { "file_size_limit": "10" }
+  static readonly DEFAULT_KB_MAX_FILE_SIZE = 52428800; // 50 MB
+  maxFileSize = ModalUploadFileComponent.DEFAULT_KB_MAX_FILE_SIZE;
+  tparams = { "file_size_limit": String(Math.round(ModalUploadFileComponent.DEFAULT_KB_MAX_FILE_SIZE / 1048576)) }
 
   fileUrlInput = '';
   urlImportInvalid = false;
@@ -72,14 +75,26 @@ export class ModalUploadFileComponent implements OnInit {
     public dialogRef: MatDialogRef<ModalUploadFileComponent>,
     private uploadImageNativeService: UploadImageNativeService,
     private logger: LoggerService,
-    public brandService: BrandService
+    public brandService: BrandService,
+    private kbSourcesService: KbSourcesService
   ) { 
     const brand = brandService.getBrand();
     this.hideHelpLink = brand['DOCS'];
   }
 
   ngOnInit(): void {
-
+    this.kbSourcesService.getProviders().subscribe({
+      next: (res) => {
+        if (res && Number(res.kb_max_file_size) > 0) {
+          this.maxFileSize = Number(res.kb_max_file_size);
+          this.tparams = { "file_size_limit": String(Math.round(this.maxFileSize / 1048576)) };
+        }
+      },
+      error: (err) => {
+        // not admin or call failed: keep the default limit
+        this.logger.log('[MODAL-UPLOAD-FILE] getProviders error, using default limit ', err);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -184,7 +199,7 @@ export class ModalUploadFileComponent implements OnInit {
       // const formData: FormData = new FormData();
       // formData.append('uploadFile', file, file.name);
       // this.logger.log('FORM DATA ', formData)
-      if (file.size <= 10485760) {
+      if (file.size <= this.maxFileSize) {
         this.handleFileUploading(file);
         this.fileSizeExceeds = false;
         // this.logger.log('[MODAL-UPLOAD-FILE] onFileChange fileSizeExceeds ', this.fileSizeExceeds);
@@ -221,7 +236,7 @@ export class ModalUploadFileComponent implements OnInit {
         // this.logger.log('[MODAL-UPLOAD-FILE] ----> FILE - drop this.uploadedFile ', this.uploadedFile);
         // this.uploadedFileName = this.uploadedFile.name
         // this.logger.log('[MODAL-UPLOAD-FILE] Create Faq Kb - drop uploadedFileName ', this.uploadedFileName);
-        if (file.size <= 10485760) {
+        if (file.size <= this.maxFileSize) {
           this.handleFileUploading(file);
           this.fileSizeExceeds = false;
           // this.logger.log('[MODAL-UPLOAD-FILE] drop  fileSizeExceeds ', this.fileSizeExceeds);
@@ -361,7 +376,7 @@ export class ModalUploadFileComponent implements OnInit {
 
   private uploadFileToStorage(file: File): Promise<boolean> {
     this.uploadedFile = file;
-    return this.uploadImageNativeService.uploadAssetFile(file, 86400).then((downloadURL) => {
+    return this.uploadImageNativeService.uploadKbFile(file).then((downloadURL) => {
       if (downloadURL) {
         this.uploadCompleted = true;
         this.uploadFailed = false;

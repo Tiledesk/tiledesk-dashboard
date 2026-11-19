@@ -377,6 +377,51 @@ export class UploadImageNativeService {
 
   
 
+  private static readonly KB_MIME_BY_EXT = {
+    md: 'text/markdown',
+    txt: 'text/plain',
+    pdf: 'application/pdf',
+    docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  };
+
+  /**
+   * The server checks the declared mimetype against the extension; browsers often send an
+   * empty type for .md / .txt, so re-wrap the file with the expected type in that case.
+   */
+  private normalizeKbFileMime(file: File): File {
+    if (file.type && file.type !== 'application/octet-stream') {
+      return file;
+    }
+    const dot = file.name.lastIndexOf('.');
+    const ext = dot >= 0 ? file.name.slice(dot + 1).toLowerCase() : '';
+    const type = UploadImageNativeService.KB_MIME_BY_EXT[ext];
+    return type ? new File([file], file.name, { type }) : file;
+  }
+
+  uploadKbFile(file: File): Promise<string> {
+    const headers = new HttpHeaders({
+      Authorization: this.TOKEN,
+    });
+    const formData = new FormData();
+    formData.append('file', this.normalizeKbFileMime(file));
+
+    const url = this.BASE_URL + this.projectId + '/files/kb';
+
+    return new Promise((resolve, reject) => {
+      this.uploadAttachment$.next(0);
+      this._httpClient.post(url, formData, { headers }).subscribe(data => {
+        const downloadURL = this.BASE_URL + 'files' + '?path=' + (data['filename']);
+        resolve(downloadURL);
+        this.uploadAttachment$.next(100);
+      }, (error) => {
+        this.uploadAttachment$.next(100);
+        this.manageUploadError(error);
+        this.logger.error('[NATIVE UPLOAD] - ERROR upload KB file ', error);
+        reject(error);
+      });
+    });
+  }
+
   manageUploadError(error) {
     if (error.status === 413) {
       // this.logger.log(`[NATIVE UPLOAD] - upload native error message 1`, error.error.err)

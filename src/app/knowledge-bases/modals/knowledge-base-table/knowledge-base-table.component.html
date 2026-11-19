@@ -136,6 +136,19 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="add-content-card-wpr" *ngIf="ms365Available" (click)="onOpenAddKnowledgeBaseModal('ms365')">
+                                <div class="add-content-card-content">
+                                    <div class="add-content-card-content-icon-wpr">
+                                        <span class="material-icons-outlined">cloud_sync</span>
+                                    </div>
+                                    <span class="span-6"> </span>
+                                    <p class="add-content-card-content-title"> {{'KbPage.Ms365Card' | translate }} </p>
+                                    <span class="span-8"> </span>
+                                    <p class="add-content-card-content-subtitle">
+                                        {{'KbPage.Ms365CardDesc' | translate }}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -257,6 +270,9 @@
                             </ng-option> -->
                             <ng-option value="sitemap">
                                 {{'KbPage.AddKbSitemap'| translate}}
+                            </ng-option>
+                            <ng-option value="ms365_folder">
+                                {{'KbPage.Ms365Card'| translate}}
                             </ng-option>
                             <ng-option value="txt">
                                 TXT
@@ -504,6 +520,10 @@
                                     style="font-size: 16px; color: white; transform: rotate(-90deg);">schema</span> -->
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Sitemap</span>
                             </div>
+                            <div *ngIf="kb.type == 'ms365_folder'" class="chip ms365-chip"
+                                style="display: flex; align-items: center; justify-content: center; background-color: #0078d4; color: white; padding: 2px 6px; border-radius: 10px;">
+                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px; white-space: nowrap;">Microsoft 365</span>
+                            </div>
                             <div *ngIf="kb.type == 'faq'" class="chip"
                                 style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 10px;">
                                 <span id="description" class="material-icons-outlined"
@@ -515,7 +535,7 @@
 
                         <td style="min-width: 50px; width: 50px; text-align:center;"
                             (click)="onOpenBaseModalDetail(kb)">
-                            <ng-container *ngIf="kb.type !== 'sitemap'"> 
+                            <ng-container *ngIf="kb.type !== 'sitemap' && kb.type !== 'ms365_folder'"> 
                                 <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
                                     class="material-icons-outlined status-icon" 
                                     style="vertical-align: middle;"
@@ -577,9 +597,12 @@
                                     delete_sweep
                                 </span>
                             </ng-container>
-                            <ng-container *ngIf="kb.type === 'sitemap'"> 
-                                <span class="material-icons-outlined status-icon" style="vertical-align: middle;">
+                            <ng-container *ngIf="kb.type === 'sitemap' || kb.type === 'ms365_folder'"> 
+                                <span *ngIf="!isMs365Syncing(kb)" class="material-icons-outlined status-icon" style="vertical-align: middle;">
                                     remove
+                                </span>
+                                <span *ngIf="isMs365Syncing(kb)" class="ms365-syncing" style="font-size: 11px; color: #566787;">
+                                    {{'KbPage.Ms365Syncing' | translate}}
                                 </span>
                             </ng-container>
                         </td>
@@ -588,7 +611,7 @@
                         <!-- Refresh rate -->
                         <!-- ----------------------- -->
                         <td style="min-width:150px; width:150px; font-size: small;text-align: center;" (click)="onOpenBaseModalDetail(kb)">
-                            <span *ngIf="kb.type === 'url' || kb.type === 'sitemap'"
+                            <span *ngIf="showRefreshRate(kb)"
                                 matTooltipClass="kb-custom-mat-tooltip" 
                                 matTooltip="{{'FeatureAvailableFromThe' | translate: t_params}}" 
                                 #tooltip="matTooltip"
@@ -611,7 +634,7 @@
                                     {{'Monthly' | translate}}
                                 </span>
                             </span>
-                            <span *ngIf="kb.type !== 'url' && kb.type !== 'sitemap'">
+                            <span *ngIf="!showRefreshRate(kb)">
                                 —
                             </span>
 
@@ -656,6 +679,38 @@
 
                                 </div>
 
+                                <div *ngIf="kb.type === 'ms365_folder'" class="subtitle ellipsis-text ms365-folder-meta" style="max-width: 100%;">
+                                    <span *ngIf="ms365Account(kb)" class="ms365-account">{{ ms365Account(kb) }} · </span>
+                                    <span *ngIf="kb.external?.site_name">{{ kb.external.site_name }} · </span>
+                                    <span class="ms365-file-count">{{ 'KbPage.Ms365FilesCount' | translate: { count: ms365FileCount(kb) } }}</span>
+                                    <span *ngIf="ms365LastSync(kb)"> · {{ ms365LastSync(kb) | amTimeAgo }}</span>
+                                </div>
+
+                                <div *ngIf="ms365Origin(kb)" class="subtitle ellipsis-text ms365-origin" style="max-width: 100%;">
+                                    <span class="ms365-origin-pill" style="background: #0078d4;
+                                        color: #fff;
+                                        border-radius: 9999px;
+                                        padding: 0 5px;
+                                        font-size: 9px;
+                                        font-weight: 400;
+                                        margin-right: 3px;">
+                                        {{'KbPage.Ms365Card'| translate}}
+                                    </span>
+                                    {{ kb.source_origin }}
+                                </div>
+
+                                <div *ngIf="ms365Warning(kb) as warn" class="ms365-warning" style="display: flex; align-items: center; gap: 6px; margin-top: 2px;">
+                                    <span class="ms365-warning-chip" style="display: inline-flex; align-items: center; gap: 3px; font-size: 11px; color: #b45309; background: #fef3c7; border-radius: 9999px; padding: 0 8px;">
+                                        <span class="material-icons-outlined" style="font-size: 13px;">warning</span>
+                                        {{ warn.key | translate }}
+                                    </span>
+                                    <button *ngIf="warn.reconnect" type="button" class="ms365-reconnect-btn"
+                                        style="border: none; background: none; color: #0078d4; font-size: 11px; cursor: pointer; padding: 0;"
+                                        (click)="onMs365Reconnect(kb, $event)">
+                                        {{ 'KbPage.Ms365Reconnect' | translate }}
+                                    </button>
+                                </div>
+
                                 <div class="kb-tags-wpr" *ngIf="kb?.tags?.length > 0" style="display: flex;gap: 2px;">
                                     <div *ngFor="let tag of kb?.tags">
                                         <div class="kb-tag-wpr" style="display: flex;align-items: center;gap:1px;margin-right: 3px;">
@@ -694,7 +749,12 @@
                                         <mat-icon>play_arrow</mat-icon>
                                         <span>{{'KbPage.ReIndex' | translate}}</span>
                                     </button>
-                                    <button mat-menu-item (click)="onCheckStatus(kb)">
+                                    <button *ngIf="kb.type === 'ms365_folder'" class="ms365-sync-now"
+                                        mat-menu-item (click)="onMs365SyncNow(kb)">
+                                        <mat-icon>sync</mat-icon>
+                                        <span>{{'KbPage.Ms365SyncNow' | translate}}</span>
+                                    </button>
+                                    <button *ngIf="kb.type !== 'ms365_folder'" mat-menu-item (click)="onCheckStatus(kb)">
                                         <mat-icon>published_with_changes</mat-icon>
                                         <span>{{'KbPage.RunCheckStatus' | translate}}</span>
                                     </button>

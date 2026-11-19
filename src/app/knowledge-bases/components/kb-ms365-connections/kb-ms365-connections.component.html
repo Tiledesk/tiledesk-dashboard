@@ -1,0 +1,19 @@
+<div class="ms365-conn" *ngIf="connections.length">
+  <div class="ms365-conn-title">{{ 'KbPage.Ms365Accounts' | translate }}</div>
+  <div class="ms365-conn-row" *ngFor="let c of connections">
+    <div class="ms365-conn-main">
+      <span class="ms365-conn-account">{{ accountLabel(c) }}</span>
+      <span class="ms365-conn-meta">{{ 'KbPage.Ms365ConnectedBy' | translate: { name: c.created_by?.name } }}</span>
+      <span class="ms365-conn-meta">{{ 'KbPage.Ms365FoldersFiles' | translate: { folders: c.folders_count || 0, files: c.files_count || 0 } }}</span>
+      <span *ngIf="c.status === 'needs_reconnect'" class="ms365-conn-warning">
+        <span class="material-icons-outlined" style="font-size: 14px; vertical-align: middle;">warning</span>
+        {{ 'KbPage.Ms365NeedsReconnect' | translate }}
+      </span>
+      <span *ngIf="c.status !== 'needs_reconnect'" class="ms365-conn-ok">{{ 'KbPage.Ms365AccountStatusOk' | translate }}</span>
+    </div>
+    <div class="ms365-conn-actions">
+      <button type="button" class="ms365-conn-btn ms365-conn-reconnect" (click)="reconnect(c)">{{ 'KbPage.Ms365Reconnect' | translate }}</button>
+      <button type="button" class="ms365-conn-btn ms365-conn-disconnect" [disabled]="busyId === c._id" (click)="disconnect(c)">{{ 'KbPage.Ms365Disconnect' | translate }}</button>
+    </div>
+  </div>
+</div>

@@ -421,6 +421,8 @@
                     </div>
                   </div>
       
+                  <kb-ms365-connections *ngIf="ms365Available" (changed)="onMs365ConnectionsChanged($event)"></kb-ms365-connections>
+
                   <!-- TAB SWITCHER START -->
                     <!-- Vecchio switch a radio (segmented); sostituito da tab come in Domande -->
                   <!--
@@ -461,6 +463,7 @@
                       [selectedNamespaceName]="selectedNamespaceName" [hasAlreadyVisitedKb]="hasAlreadyVisitedKb"
                       [isAvailableRefreshRateFeature]="isAvailableRefreshRateFeature" [t_params]="t_params"
                       [refreshRateIsEnabled]="refreshRateIsEnabled" [payIsVisible]="payIsVisible" [salesEmail]="salesEmail"
+                      [ms365Available]="ms365Available"
                       [project_name]="project_name" [id_project]="id_project"
                       [showKBTableSpinner]="showKBTableSpinner"
                       [currentSortParams]="currentSortParams"
@@ -470,7 +473,7 @@
                       (openBaseModalPreview)="onOpenBaseModalPreview()" (onOpenAddContents)="onOpenAddContent()"
                       (openBaseModalPreviewSettings)="onOpenBaseModalPreviewSettings()"
                       (openAddKnowledgeBaseModal)="openAddKnowledgeBaseModal($event)" (checkStatus)="onCheckStatus($event)"
-                      (runIndexing)="onRunIndexing($event)" (loadPage)="onLoadPage($event)"
+                      (runIndexing)="onRunIndexing($event)" (ms365SyncNow)="onMs365SyncNow($event)" (ms365Reconnected)="onMs365Reconnected($event)" [ms365Accounts]="ms365Accounts" (loadPage)="onLoadPage($event)"
                       (loadByFilter)="onLoadByFilter($event)">
                     </knowledge-base-table>
                   </div>

@@ -1,0 +1,12 @@
+.ms365-conn { margin: 0 0 16px; padding: 12px 16px; border: 1px solid #e0e4ea; border-radius: 8px; background: #fff; }
+.ms365-conn-title { font-weight: 600; margin-bottom: 8px; }
+.ms365-conn-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 0; flex-wrap: wrap; }
+.ms365-conn-main { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.ms365-conn-account { font-weight: 500; }
+.ms365-conn-meta { font-size: 12px; color: #566787; }
+.ms365-conn-ok { font-size: 12px; color: #2e7d32; }
+.ms365-conn-warning { font-size: 12px; color: #b26a00; }
+.ms365-conn-actions { display: flex; gap: 8px; }
+.ms365-conn-btn { border: 1px solid #c5ccd6; background: #fff; border-radius: 6px; padding: 4px 12px; font-size: 13px; cursor: pointer; }
+.ms365-conn-disconnect { color: #c62828; border-color: #e5a9a9; }
+.ms365-conn-btn[disabled] { opacity: .5; cursor: default; }
