@@ -14,6 +14,8 @@ describe('KbSourcesService', () => {
   let http: HttpTestingController;
   let popup: { closed: boolean; close: jasmine.Spy; location: { href: string } };
   let openSpy: jasmine.Spy;
+  let fakeChannel: any;
+  function relay(data: any) { fakeChannel.onmessage({ data } as MessageEvent); }
 
   function setup(serverBase = BASE) {
     TestBed.configureTestingModule({
@@ -26,6 +28,8 @@ describe('KbSourcesService', () => {
         { provide: LoggerService, useValue: { log: () => {}, error: () => {}, warn: () => {} } },
       ]
     });
+    fakeChannel = { onmessage: null, postMessage: () => {}, close: () => {} };
+    spyOn(KbSourcesService.prototype as any, 'createChannel').and.returnValue(fakeChannel);
     service = TestBed.inject(KbSourcesService);
     http = TestBed.inject(HttpTestingController);
     popup = { closed: false, close: jasmine.createSpy('close'), location: { href: '' } };
@@ -148,7 +152,9 @@ describe('KbSourcesService', () => {
     function answerConnect() {
       const r = http.expectOne(URL_ + '/microsoft365/connect');
       expect(r.request.method).toBe('POST');
-      expect(r.request.body).toEqual({ connection_id: 'c1', origin: window.location.origin });
+      expect(r.request.body).toEqual({
+        connection_id: 'c1', origin: window.location.origin, return_url: window.location.href.split('?')[0], popup: true
+      });
       r.flush({ authorize_url: 'https://api.example.com/kb-sources/oauth/microsoft365/start?ticket=t' });
     }
 
@@ -290,6 +296,52 @@ describe('KbSourcesService', () => {
       expect(count).toBe(1);
       expect(res.status).toBe('connected');
     }));
+  });
+
+  describe('relayed results (window.opener cut by the sign-in pages)', () => {
+    beforeEach(() => setup());
+
+    function answer() {
+      http.expectOne(URL_ + '/microsoft365/connect').flush({ authorize_url: 'https://api.example.com/kb-sources/oauth/microsoft365/start?ticket=t' });
+    }
+
+    it('a relayed result resolves a pending connect once and drops the timer', fakeAsync(() => {
+      let res: any; let count = 0;
+      service.connect('c1').then(r => { res = r; count++; });
+      answer();
+      relay({ type: 'ms365-connect', status: 'connected', connection_id: 'c9' });
+      flushMicrotasks();
+      expect(res).toEqual({ status: 'connected', reason: undefined, connection_id: 'c9' });
+      popup.closed = true;
+      tick(3000);
+      flushMicrotasks();
+      expect(count).toBe(1);
+    }));
+
+    it('emits a result relayed after connect resolved closed', fakeAsync(() => {
+      const seen: any[] = [];
+      const sub = service.relayedConnectResults$.subscribe(r => seen.push(r));
+      let res: any;
+      service.connect('c1').then(r => res = r);
+      answer();
+      popup.closed = true; // the cut opener looks like a closed popup
+      tick(1000);
+      flushMicrotasks();
+      expect(res).toEqual({ status: 'closed' });
+      relay({ type: 'ms365-connect', status: 'error', reason: 'access_denied' });
+      expect(seen).toEqual([{ status: 'error', reason: 'access_denied', connection_id: undefined }]);
+      sub.unsubscribe();
+    }));
+
+    it('ignores malformed relayed messages', () => {
+      const seen: any[] = [];
+      const sub = service.relayedConnectResults$.subscribe(r => seen.push(r));
+      relay(null);
+      relay({ type: 'other', status: 'connected' });
+      relay({ type: 'ms365-connect', status: 'closed' });
+      expect(seen).toEqual([]);
+      sub.unsubscribe();
+    });
   });
 
   describe('connect origin from authorize_url', () => {

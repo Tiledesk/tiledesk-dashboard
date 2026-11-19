@@ -3,7 +3,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 
 import { ModalMs365ImportComponent } from './modal-ms365-import.component';
 import { KbSourcesService } from 'app/services/kb-sources.service';
@@ -20,10 +20,13 @@ describe('ModalMs365ImportComponent', () => {
   let svc: jasmine.SpyObj<KbSourcesService>;
   let dialogRef: { close: jasmine.Spy };
   let onPlanLimit: jasmine.Spy;
+  let relay$: Subject<any>;
 
   function setup(conns: any[], dataOverride: any = {}, render = false) {
     svc = jasmine.createSpyObj('KbSourcesService',
       ['getConnections', 'connect', 'cancelConnect', 'getRoots', 'getDrives', 'getChildren', 'importItems']);
+    relay$ = new Subject<any>();
+    (svc as any).relayedConnectResults$ = relay$;
     svc.getConnections.and.returnValue(of(conns));
     svc.getRoots.and.returnValue(of({ items: [
       { kind: 'onedrive', id: 'me', name: 'My OneDrive', drive_id: 'd-me' },
@@ -103,6 +106,31 @@ describe('ModalMs365ImportComponent', () => {
     expect(svc.getConnections).toHaveBeenCalledTimes(2);
     expect(component.step).toBe('browse');
     expect(svc.getRoots).toHaveBeenCalledWith('c1');
+  }));
+
+  it('a result relayed after the popup looked closed is applied in the retry state', fakeAsync(() => {
+    setup([]);
+    svc.connect.and.returnValue(Promise.resolve({ status: 'closed' }));
+    component.startConnect();
+    flush();
+    expect(component.connectState).toBe('retry');
+    svc.getConnections.and.returnValue(of([activeConn]));
+    relay$.next({ status: 'connected', connection_id: 'c1' });
+    flush();
+    expect(component.step).toBe('browse');
+    expect(svc.getRoots).toHaveBeenCalledWith('c1');
+  }));
+
+  it('a relayed result is ignored while connect() is pending or after destroy', fakeAsync(() => {
+    setup([]);
+    svc.connect.and.returnValue(new Promise(() => {}));
+    component.startConnect();
+    relay$.next({ status: 'connected', connection_id: 'c1' });
+    flush();
+    expect(component.step).toBe('account');
+    expect(component.connectState).toBe('waiting');
+    fixture.destroy();
+    expect(relay$.observers.length).toBe(0);
   }));
 
   it('account_mismatch shows the expected upn; access_denied and others have their own text', fakeAsync(() => {

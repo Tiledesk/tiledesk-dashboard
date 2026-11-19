@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
 import { KbSourcesService } from 'app/services/kb-sources.service';
@@ -11,12 +12,13 @@ import { KbSourceConnection } from 'app/models/kb-sources.model';
   templateUrl: './kb-ms365-connections.component.html',
   styleUrls: ['./kb-ms365-connections.component.scss']
 })
-export class KbMs365ConnectionsComponent implements OnInit {
+export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
   /** Something changed on the server: the page refreshes its accounts (and the KB list after a cascade). */
   @Output() changed = new EventEmitter<{ cascade: boolean }>();
 
   connections: KbSourceConnection[] = [];
   busyId: string | null = null;
+  private relaySub: Subscription | null = null;
 
   constructor(
     private kbSources: KbSourcesService,
@@ -26,6 +28,16 @@ export class KbMs365ConnectionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    // a reconnect whose popup lost window.opener reports here, after connect() resolved 'closed'
+    this.relaySub = this.kbSources.relayedConnectResults$.subscribe(result => {
+      if (result.status !== 'connected') { return; }
+      this.load();
+      this.changed.emit({ cascade: false });
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.relaySub) { this.relaySub.unsubscribe(); }
   }
 
   load() {

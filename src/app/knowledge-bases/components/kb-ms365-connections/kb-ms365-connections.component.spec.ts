@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, fakeAsync, flushMicrotasks } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 
 import { KbMs365ConnectionsComponent } from './kb-ms365-connections.component';
@@ -19,10 +19,13 @@ describe('KbMs365ConnectionsComponent', () => {
   let kbSources: jasmine.SpyObj<KbSourcesService>;
   let notify: jasmine.SpyObj<NotifyService>;
   let fire: jasmine.Spy;
+  let relay$: Subject<any>;
 
   function setup(list: any[]) {
     kbSources = jasmine.createSpyObj('KbSourcesService', ['getConnections', 'deleteConnection', 'connect']);
     kbSources.getConnections.and.returnValue(of(list));
+    relay$ = new Subject<any>();
+    (kbSources as any).relayedConnectResults$ = relay$;
     notify = jasmine.createSpyObj('NotifyService', ['showWidgetStyleUpdateNotification']);
     TestBed.configureTestingModule({
       declarations: [KbMs365ConnectionsComponent],
@@ -37,6 +40,18 @@ describe('KbMs365ConnectionsComponent', () => {
   const text = () => fixture.nativeElement.textContent;
 
   beforeEach(() => { fire = spyOn(Swal, 'fire'); });
+
+  it('a relayed connected result reloads the accounts and emits changed; errors are ignored', () => {
+    setup([conn()]);
+    const changed = spyOn(component.changed, 'emit');
+    relay$.next({ status: 'error', reason: 'access_denied' });
+    expect(kbSources.getConnections).toHaveBeenCalledTimes(1);
+    relay$.next({ status: 'connected', connection_id: 'c1' });
+    expect(kbSources.getConnections).toHaveBeenCalledTimes(2);
+    expect(changed).toHaveBeenCalledWith({ cascade: false });
+    fixture.destroy();
+    expect(relay$.observers.length).toBe(0);
+  });
 
   it('renders account, connected by and counts', () => {
     setup([conn()]);
