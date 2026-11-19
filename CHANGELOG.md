@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.12.0-rc1
+- Adds Google Drive as a Knowledge Base source next to Microsoft 365: Add content → Google Drive, connect a Google account, browse My Drive and shared drives, import folders and files with a refresh rate; Google Docs come in as .docx and Slides as .pdf
+- Connected accounts: one header button and dialog for Microsoft 365 and Google Drive accounts, grouped by provider; the reconnect banner names the provider
+- Every source text names the right provider; new texts translated in all languages, Microsoft 365 texts translated in Italian
+- Needs tiledesk-server >= 3.8.0-rc1 (sign-in result params kbsrc/provider)
+
 ### 2.11.0-rc4
 - Microsoft 365 UI polish: header button label, site path hints (none for internal sites), Empty / 1 item / singular counts, label colors, file-type icons in the summary, icons hidden from screen readers
 
