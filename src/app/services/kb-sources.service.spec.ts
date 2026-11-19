@@ -1,4 +1,5 @@
 import { TestBed, fakeAsync, tick, flushMicrotasks } from '@angular/core/testing';
+import { NgZone } from '@angular/core';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { BehaviorSubject } from 'rxjs';
 import { KbSourcesService } from './kb-sources.service';
@@ -356,7 +357,18 @@ describe('KbSourcesService', () => {
       sub.unsubscribe();
     }));
 
-    it('ignores malformed relayed messages', () => {
+    it('emits a relayed result inside the Angular zone', () => {
+      const zone = TestBed.inject(NgZone);
+      const runSpy = spyOn(zone, 'run').and.callThrough();
+      const seen: boolean[] = [];
+      const sub = service.relayedConnectResults$.subscribe(() => seen.push(NgZone.isInAngularZone()));
+      relay({ type: 'ms365-connect', status: 'connected', connection_id: 'c1', provider: 'googledrive' });
+      expect(runSpy).toHaveBeenCalled();
+      expect(seen).toEqual([true]);
+      sub.unsubscribe();
+    });
+
+        it('ignores malformed relayed messages', () => {
       const seen: any[] = [];
       const sub = service.relayedConnectResults$.subscribe(r => seen.push(r));
       relay(null);

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, Subject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
@@ -33,6 +33,7 @@ export class KbSourcesService {
     private auth: AuthService,
     private httpClient: HttpClient,
     private logger: LoggerService,
+    private zone: NgZone,
   ) {
     this.auth.user_bs.subscribe((user) => {
       if (user) {
@@ -57,9 +58,11 @@ export class KbSourcesService {
     let ch: BroadcastChannel | null = null;
     try { ch = this.createChannel(); } catch (e) { ch = null; }
     if (!ch) { return; }
+    // zone.js does not patch BroadcastChannel: without zone.run the dialog would update its state
+    // outside Angular and stay half-rendered (clicks ignored) until something else triggers detection
     ch.onmessage = (event: MessageEvent) => {
       const result = parseMs365Relayed(event.data);
-      if (result) { this.relayed.next(result); }
+      if (result) { this.zone.run(() => this.relayed.next(result)); }
     };
   }
 
