@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.12.0-rc2
+- KB sources: the import dialog reacts right after the sign-in popup (result applied inside Angular); every Add content tile is visible without scrolling
+
 ### 2.12.0-rc1
 - Adds Google Drive as a Knowledge Base source next to Microsoft 365: Add content → Google Drive, connect a Google account, browse My Drive and shared drives, import folders and files with a refresh rate; Google Docs come in as .docx and Slides as .pdf
 - Connected accounts: one header button and dialog for Microsoft 365 and Google Drive accounts, grouped by provider; the reconnect banner names the provider
