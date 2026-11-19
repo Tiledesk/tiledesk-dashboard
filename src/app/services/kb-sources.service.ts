@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { AppConfigService } from './app-config.service';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from './logger/logger.service';
 import {
   KbImportRequest, KbImportResponse, KbSourceConnection, KbSourceItems, KbSourceProviders, Ms365ConnectResult
 } from 'app/models/kb-sources.model';
+import { MS365_CONNECT_CHANNEL, parseMs365Relayed } from 'app/knowledge-bases/utils/ms365-popup-return';
 
 export type { KbSourceProvider, KbSourceProviders } from 'app/models/kb-sources.model';
 
@@ -17,6 +18,13 @@ export class KbSourcesService {
 
   SERVER_BASE_PATH: string;
   private activeConnectCancel: (() => void) | null = null;
+  private relayed = new Subject<Ms365ConnectResult>();
+  /**
+   * Sign-in results relayed by the popup on the BroadcastChannel (when the Microsoft pages cut
+   * window.opener). connect() resolves with them while pending; a result arriving after connect()
+   * already resolved 'closed' (the cut opener looks like a closed popup) is still emitted here.
+   */
+  readonly relayedConnectResults$: Observable<Ms365ConnectResult> = this.relayed.asObservable();
   TOKEN: string;
   project_id: string;
 
@@ -37,6 +45,22 @@ export class KbSourcesService {
       }
     });
     this.SERVER_BASE_PATH = this.appConfigService.getConfig().SERVER_BASE_URL;
+    this.listenRelayedResults();
+  }
+
+  /** Overridable for tests. */
+  protected createChannel(): BroadcastChannel | null {
+    return typeof BroadcastChannel === 'undefined' ? null : new BroadcastChannel(MS365_CONNECT_CHANNEL);
+  }
+
+  private listenRelayedResults() {
+    let ch: BroadcastChannel | null = null;
+    try { ch = this.createChannel(); } catch (e) { ch = null; }
+    if (!ch) { return; }
+    ch.onmessage = (event: MessageEvent) => {
+      const result = parseMs365Relayed(event.data);
+      if (result) { this.relayed.next(result); }
+    };
   }
 
   private get baseUrl(): string {
@@ -119,6 +143,7 @@ export class KbSourcesService {
       const finish = (result: Ms365ConnectResult) => {
         if (done) { return; }
         done = true;
+        relaySub.unsubscribe();
         window.removeEventListener('message', onMessage);
         clearInterval(timer);
         if (this.activeConnectCancel === cancel) { this.activeConnectCancel = null; }
@@ -136,6 +161,7 @@ export class KbSourcesService {
         if (!data || data.type !== 'ms365-connect' || (data.status !== 'connected' && data.status !== 'error')) { return; }
         finish({ status: data.status, reason: data.reason, connection_id: data.connection_id });
       };
+      const relaySub = this.relayed.subscribe(result => finish(result));
       const timer = setInterval(() => {
         if (popup.closed) { finish({ status: 'closed' }); }
       }, 1000);
@@ -143,7 +169,8 @@ export class KbSourcesService {
 
       this.httpClient.post<{ authorize_url: string }>(
         this.baseUrl + '/microsoft365/connect',
-        { connection_id: connectionId, origin: window.location.origin },
+        // return_url + popup: where the popup lands when the sign-in pages cut window.opener
+        { connection_id: connectionId, origin: window.location.origin, return_url: this.cleanReturnUrl(window.location.href), popup: true },
         this.httpOptions
       ).subscribe({
         next: (res) => {

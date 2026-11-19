@@ -4,6 +4,7 @@ import { KbSourcesService } from 'app/services/kb-sources.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 import { KbSourceConnection, KbSourceItem, KbImportRequest } from 'app/models/kb-sources.model';
+import { Subscription } from 'rxjs';
 
 export type Ms365Step = 'account' | 'browse' | 'options';
 export type Ms365ConnectState = 'idle' | 'waiting' | 'retry';
@@ -43,6 +44,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   connectError: MsgKey | null = null;
   reconnectTarget: KbSourceConnection | null = null;
   private connectAttempt = 0;
+  private relaySub: Subscription | null = null;
   lastConnectionId: string | undefined;
   popupBlocked = false;
   private initialConnectionId: string | undefined;
@@ -98,6 +100,13 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    // the popup relays its result even after connect() resolved 'closed' (window.opener cut by the
+    // sign-in pages): apply it while the dialog waits for a retry
+    this.relaySub = this.kbSources.relayedConnectResults$.subscribe(result => {
+      if (this.connectState !== 'retry') { return; } // a pending connect() gets it itself
+      this.connectAttempt++;
+      this.handleConnectResult(result, this.lastConnectionId);
+    });
     this.loadConnections(() => {
       if (!this.initialConnectionId) { return; }
       const conn = this.connections.find(c => c._id === this.initialConnectionId);
@@ -107,6 +116,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.relaySub) { this.relaySub.unsubscribe(); }
     // a pending sign-in result must not touch a closed dialog
     this.connectAttempt++;
     this.browseToken++;
