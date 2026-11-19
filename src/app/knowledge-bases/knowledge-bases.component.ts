@@ -43,7 +43,7 @@ import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
-import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
+import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode, sourceProviderOf } from './modals/knowledge-base-table/kb-ms365-row.util';
 import { KbSourceConnection, KbSourceProviderId } from 'app/models/kb-sources.model';
 import { sourceMessageKey } from './utils/kb-source-keys';
 import { asProvider } from 'app/knowledge-bases/utils/ms365-popup-return';
@@ -2787,7 +2787,7 @@ _presentDialogImportContents() {
     this.baseModalDelete = true;
 
     if (isMs365Folder(kb)) {
-      this.presentDialogComfimDeleteSitemap(kb, 'KbPage.Ms365DeleteFolder')
+      this.presentDialogComfimDeleteSitemap(kb, sourceMessageKey(sourceProviderOf(kb), 'DeleteFolder'))
     } else if (isMs365File(kb)) {
       this.presentDialogComfimDeleteSitemap(kb, 'KbPage.Ms365DeleteChild')
     } else if (kb.type !== 'sitemap') {

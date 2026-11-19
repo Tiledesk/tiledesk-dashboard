@@ -190,6 +190,23 @@ describe('KnowledgeBaseTableComponent (Microsoft 365 rows)', () => {
     expect(notify.showWidgetStyleUpdateNotification).toHaveBeenCalled();
   }));
 
+  it('Reconnect error toasts use the provider wording; scope_missing uses the Google scope text', fakeAsync(() => {
+    const g = { _id: 'g9', type: 'gdrive_folder', external: { provider: 'googledrive', connection_id: 'c9' } };
+    setup([g]);
+    kbSources.connect.and.returnValue(Promise.resolve({ status: 'error', reason: 'exchange_failed' }));
+    component.onMs365Reconnect(g);
+    flush();
+    expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.GdriveErrConnect');
+    kbSources.connect.and.returnValue(Promise.resolve({ status: 'error', reason: 'scope_missing' }));
+    component.onMs365Reconnect(g);
+    flush();
+    expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.GdriveErrScope');
+    kbSources.connect.and.returnValue(Promise.reject(new Error('x')));
+    component.onMs365Reconnect(g);
+    flush();
+    expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.GdriveErrConnect');
+  }));
+
   describe('Google Drive rows', () => {
     const gFolder = {
       _id: 'g1', type: 'gdrive_folder', name: 'My Drive/Docs', status: 0, refresh_rate: 'weekly', last_refresh: '2026-11-10',

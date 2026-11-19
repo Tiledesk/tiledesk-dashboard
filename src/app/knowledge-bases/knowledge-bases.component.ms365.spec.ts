@@ -93,6 +93,8 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
     expect(page.presentDialogComfimDeleteSitemap.calls.mostRecent().args[1]).toBe('KbPage.Ms365DeleteFolder');
     page.onOpenBaseModalDelete({ ...child });
     expect(page.presentDialogComfimDeleteSitemap.calls.mostRecent().args[1]).toBe('KbPage.Ms365DeleteChild');
+    page.onOpenBaseModalDelete({ ...folder, type: 'gdrive_folder', external: { provider: 'googledrive' } });
+    expect(page.presentDialogComfimDeleteSitemap.calls.mostRecent().args[1]).toBe('KbPage.GdriveDeleteFolder');
     expect(page.dialog.open).not.toHaveBeenCalled();
   });
 
