@@ -14,7 +14,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  getMs365Warning, ms365AccountLabel, showsMs365Origin, isMs365Folder, isMs365File, isMs365Syncing, ms365FileCount, ms365LastSync, showsRefreshRate, sourceLabelKey, sourceIconOf
+  getMs365Warning, ms365AccountLabel, showsMs365Origin, isMs365Folder, isMs365File, isMs365Syncing, ms365FileCount, ms365LastSync, showsRefreshRate, sourceLabelKey, sourceIconOf, sourceProviderOf
 } from './kb-ms365-row.util';
 
 
@@ -624,7 +624,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
       return;
     }
     const connectionId = kb?.external?.connection_id;
-    this.kbSources.connect('microsoft365', connectionId).then(result => {
+    this.kbSources.connect(sourceProviderOf(kb) || 'microsoft365', connectionId).then(result => {
       if (result.status === 'connected') {
         this.ms365Reconnected.emit(kb);
       } else if (result.status === 'blocked' || result.status === 'closed') {

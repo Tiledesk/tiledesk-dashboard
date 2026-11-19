@@ -201,6 +201,17 @@ describe('KnowledgeBaseTableComponent (Microsoft 365 rows)', () => {
       expect(q('.status-icon')).not.toBeNull();
     });
 
+    it('Reconnect on a gdrive_folder connects with googledrive', fakeAsync(() => {
+      setup([{ ...gFolder, last_error: { code: 'needs_reconnect' } }]);
+      kbSources.connect.and.returnValue(Promise.resolve({ status: 'connected', connection_id: 'c2' }));
+      const spy = jasmine.createSpy('sync');
+      component.ms365Reconnected.subscribe(spy);
+      (q('.ms365-reconnect-btn') as HTMLElement).click();
+      expect(kbSources.connect).toHaveBeenCalledWith('googledrive', 'c2');
+      flush();
+      expect(spy).toHaveBeenCalled();
+    }));
+
     it('a Google child renders the Drive origin pill', () => {
       setup([gChild]);
       expect(q('.ms365-origin-pill').textContent).toContain('KbPage.GdriveCard');
