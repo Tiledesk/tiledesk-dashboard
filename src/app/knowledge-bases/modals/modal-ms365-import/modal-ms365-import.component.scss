@@ -1,192 +1,361 @@
-.m-header {
+// Microsoft 365 import dialog. Colors follow the dashboard: --blue-20 is the primary,
+// #30373f the body text; the dialog keeps one size on every step (no jumps).
+$text: #30373f;
+$muted: #6b7684;
+$line: #e3e7ec;
+$soft: #f5f7fa;
+$sel: #eef6fe;
+$warn-bg: #fff6e0;
+$warn-line: #f0d48a;
+$warn-text: #7a5600;
+$err-bg: #fdecec;
+$err-text: #a32d2d;
+
+:host { display: block; color: $text; }
+
+.ms365-header {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
-    align-items: center;
-    padding-right: 12px;
+    align-items: flex-start;
+    padding: 20px 20px 4px 24px;
+}
+.ms365-title {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    font-weight: 500;
+}
+.ms365-close {
+    border: 0;
+    background: none;
+    color: $muted;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    &:hover { background: $soft; color: $text; }
 }
 
-.m-top-right-icon {
+// ---- steps ----
+.ms365-steps {
+    display: flex;
+    gap: 18px;
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+}
+.ms365-step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: $muted;
+    &--current { color: $text; font-weight: 500; }
+}
+.ms365-step-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid $line;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    .material-icons-outlined { font-size: 13px; }
+    .ms365-step--current & { background: var(--blue-20); border-color: var(--blue-20); color: #fff; }
+    .ms365-step--done & { background: $sel; border-color: $sel; color: var(--blue-20); }
+}
+
+// ---- body: fixed height, inner scroll ----
+.ms365-content {
+    height: 420px;
+    max-height: 62vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 16px !important;
+    font-size: 14px;
+}
+.ms365-muted { color: $muted; font-size: 13px; font-weight: 400; margin: 0; }
+.ms365-small { font-size: 12px; }
+.ms365-ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.ms365-label { font-size: 13px; font-weight: 500; margin: 0 0 8px; }
+.ms365-error { color: $err-text; font-size: 13px; margin: 8px 0; }
+
+// ---- buttons ----
+.ms365-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 34px;
+    padding: 0 14px;
+    border: 1px solid $line;
+    border-radius: var(--btn-border-radius, 8px);
+    background: #fff;
+    color: $text;
+    font-size: 13px;
+    font-family: var(--header-font-family);
     cursor: pointer;
+    white-space: nowrap;
+    .material-icons-outlined { font-size: 18px; }
+    &:hover { background: $soft; }
+    &--primary {
+        background: var(--blue-20);
+        border-color: var(--blue-20);
+        color: #fff;
+        &:hover { background: var(--blue-20); filter: brightness(0.95); }
+    }
+}
+.ms365-text-btn {
+    border: 0;
+    background: none;
+    padding: 2px 4px;
+    color: var(--blue-20);
+    font-size: 13px;
+    cursor: pointer;
+    &:hover { text-decoration: underline; }
+}
+.ms365-connect-btn { align-self: flex-start; margin-top: 12px; }
+
+// ---- avatar ----
+.ms365-avatar {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: $sel;
+    color: var(--blue-20);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    &--sm { width: 26px; height: 26px; font-size: 11px; }
+}
+
+// ---- step 1: accounts ----
+.ms365-empty {
+    text-align: center;
+    padding: 36px 24px 8px;
+    p { margin: 0 auto; max-width: 360px; }
+}
+.ms365-empty-icon { font-size: 40px; color: var(--blue-20); }
+.ms365-empty-title { font-size: 15px; font-weight: 500; margin: 8px 0 4px !important; }
+.ms365-empty + .ms365-connect-btn { align-self: center; margin-top: 18px; }
+
+.ms365-accounts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.ms365-account {
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 12px 14px;
+    border: 1px solid $line;
+    border-radius: 10px;
+    cursor: pointer;
+    &:hover, &:focus-visible { border-color: var(--blue-20); outline: none; }
+    &--warn { border-color: $warn-line; }
+    &--active { background: $warn-bg; }
+}
+.ms365-account-text { display: flex; flex-direction: column; flex: 1; min-width: 0; gap: 1px; }
+.ms365-account-name { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ms365-chevron { color: #a6aeb8; font-size: 20px; }
+.ms365-badge {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+    &--warn { background: $warn-bg; color: $warn-text; }
 }
 
-.ms365-content {
-    min-height: 220px;
-    max-height: 60vh;
+// ---- sign-in panel ----
+.ms365-signin {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 8px;
+    p { max-width: 380px; }
 }
+.ms365-signin-title { font-size: 15px; font-weight: 500; margin: 6px 0 0; }
+.ms365-signin-icon { font-size: 32px; color: var(--blue-20); }
+.ms365-signin-actions { display: flex; gap: 8px; margin-top: 6px; }
 
-.ms365-muted {
-    color: #6b7280;
-    font-size: 13px;
-    font-weight: 400;
-}
-
-.ms365-label {
-    font-size: 14px;
-    font-weight: 500;
-    margin-bottom: 6px;
-}
-
-.ms365-error {
-    color: #c0392b;
-    font-size: 13px;
-    margin: 8px 0;
-}
-
-.ms365-accounts,
-.ms365-items {
-    list-style: none;
-    margin: 0 0 12px 0;
-    padding: 0;
-}
-
-.ms365-account {
+// ---- notices ----
+.ms365-notice {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 10px 12px;
-    border: 1px solid #d1d9e0;
+    margin-top: 12px;
     border-radius: 8px;
-    margin-bottom: 8px;
-    cursor: pointer;
-
-    &:hover { background: #f5f7fa; }
-    &--warn { border-color: #e0a800; }
-    &--active { background: #fff8e1; }
-}
-
-.ms365-account-text {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 0;
-}
-
-.ms365-account-name {
-    font-size: 14px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.ms365-warning {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 12px;
-    color: #8a6d00;
-
-    .material-icons-outlined { font-size: 16px; }
-}
-
-.ms365-notice {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 12px;
-    border-radius: 8px;
-    background: #eef3fb;
+    background: $soft;
+    color: $muted;
     font-size: 13px;
-    margin-bottom: 12px;
-
-    .material-icons-outlined { font-size: 18px; }
-
-    &--warn { background: #fff8e1; justify-content: space-between; }
-    &--error { background: #fdecea; justify-content: space-between; }
+    > .material-icons-outlined { font-size: 18px; }
+    &--warn { background: $warn-bg; color: $warn-text; border: 1px solid $warn-line; }
+    &--error { background: $err-bg; color: $err-text; }
 }
+.ms365-notice-text { flex: 1; }
 
-.ms365-waiting {
+// ---- step 2: browse ----
+.ms365-account-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    background: $soft;
+    font-size: 13px;
+    .ms365-ellipsis { flex: 1; }
+}
+.ms365-crumbs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px;
+    margin: 12px 0 8px;
+    font-size: 13px;
+    color: $muted;
+}
+.ms365-crumb-home { font-size: 17px; margin-right: 4px; }
+.ms365-crumb { padding: 2px 2px; color: $text; }
+.ms365-crumb--link {
+    border: 0;
+    background: none;
+    color: var(--blue-20);
+    cursor: pointer;
+    &:hover { text-decoration: underline; }
+}
+.ms365-crumb-sep { font-size: 16px; color: #a6aeb8; }
+
+.ms365-list {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    border: 1px solid $line;
+    border-radius: 10px;
+}
+.ms365-list-note { display: block; padding: 14px 16px; }
+
+.ms365-group {
+    padding: 12px 16px 6px;
+    font-size: 12px;
+    color: $muted;
+    background: #fff;
+    &:not(:first-child) { border-top: 1px solid $line; margin-top: 4px; }
+}
+.ms365-place {
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 12px 0;
-}
-
-.ms365-retry {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 6px;
-}
-
-.ms365-primary-btn {
-    border: none;
-    background: var(--blue-light, #0f62ff);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 6px;
-    font-size: 13px;
+    padding: 9px 16px;
+    border: 0;
+    background: none;
+    text-align: left;
+    color: $text;
     cursor: pointer;
+    &:hover, &:focus-visible { background: $soft; outline: none; }
 }
+.ms365-place-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.ms365-place-name { flex: 1; font-size: 14px; }
 
-.ms365-connect-btn { margin-top: 4px; }
-
-.ms365-link-btn {
-    border: none;
-    background: transparent;
-    color: var(--blue-20, #0f62ff);
-    cursor: pointer;
+.ms365-row {
+    display: grid;
+    grid-template-columns: 32px 24px minmax(0, 1fr) 78px 84px 20px;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 8px;
+    border-bottom: 1px solid $line;
     font-size: 13px;
-    padding: 4px 6px;
+    &:last-of-type { border-bottom: 0; }
+    &--head {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: $soft;
+        color: $muted;
+        font-size: 12px;
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+    &--nav { cursor: pointer; }
+    &:not(.ms365-row--head):hover { background: $soft; }
+    &--selected, &--selected:not(.ms365-row--head):hover { background: $sel; }
+    &--disabled { color: #a6aeb8; cursor: default; }
+}
+.ms365-check { display: flex; justify-content: center; }
+.ms365-name { display: flex; flex-direction: column; min-width: 0; }
+.ms365-reason { font-size: 11px; color: $muted; }
+.ms365-num { text-align: right; color: $muted; font-size: 12px; white-space: nowrap; }
+.ms365-row .ms365-chevron { font-size: 18px; }
 
-    &:hover { text-decoration: underline; }
+.ms365-icon {
+    font-size: 20px;
+    &--folder { color: #d29a2a; }
+    &--pdf { color: #c4372f; }
+    &--word { color: #2b6cb8; }
+    &--text { color: #6b7684; }
+    &--other { color: #b7bec7; }
+    &--place { color: var(--blue-20); }
 }
 
-.ms365-crumbs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 10px;
-    font-size: 13px;
+// ---- step 3: sync settings ----
+.ms365-summary { margin-bottom: 4px; }
+.ms365-summary-list {
+    list-style: none;
+    margin: 0;
+    padding: 8px 12px;
+    border: 1px solid $line;
+    border-radius: 10px;
+    li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 3px 0;
+        font-size: 13px;
+        min-width: 0;
+    }
 }
-
-.ms365-crumb--link {
-    color: var(--blue-20, #0f62ff);
-    cursor: pointer;
-    &:hover { text-decoration: underline; }
+.ms365-field { margin-top: 16px; }
+.ms365-select, .ms365-input {
+    display: block;
+    width: 100%;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid $line;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 14px;
+    color: $text;
+    &:focus { outline: none; border-color: var(--blue-20); }
 }
+.ms365-help { margin-top: 6px; }
 
-.ms365-crumb-sep { color: #9aa4b2; }
-
-.ms365-item {
+// ---- footer ----
+.ms365-actions {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 4px 4px;
-    border-bottom: 1px solid #f0f2f5;
-
-    &--disabled { opacity: 0.55; }
+    padding: 12px 24px 16px !important;
+    border-top: 1px solid $line;
 }
-
-.ms365-item-icon { font-size: 20px; color: #6b7280; }
-
-.ms365-item-name {
+.ms365-actions-left {
     flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
     min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-size: 14px;
-
-    &--link { cursor: pointer; &:hover { text-decoration: underline; } }
 }
-
-.ms365-item-reason { white-space: nowrap; }
-
-.ms365-field { margin-top: 14px; }
-
-.ms365-select {
-    min-width: 200px;
-    padding: 6px 8px;
-    border: 1px solid #d1d9e0;
-    border-radius: 6px;
-    font-size: 14px;
-}
-
-.ms365-actions { justify-content: center; }
 
 .upsell-for-refresh-rate {
     display: flex;

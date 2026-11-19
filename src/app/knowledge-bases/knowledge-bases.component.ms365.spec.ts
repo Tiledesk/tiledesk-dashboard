@@ -1,4 +1,4 @@
-import { of, throwError } from 'rxjs';
+import { of, throwError, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { KnowledgeBasesComponent } from './knowledge-bases.component';
 
@@ -201,4 +201,25 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
     });
   });
 
+  describe('accounts header button', () => {
+    it('counts the accounts and flags one that needs to sign in again', () => {
+      page.onMs365ConnectionsLoaded([{ _id: 'a', status: 'active' }, { _id: 'b', status: 'needs_reconnect' }] as any);
+      expect(page.ms365ConnectionsCount).toBe(2);
+      expect(page.ms365NeedsReconnect).toBe(true);
+      page.onMs365ConnectionsLoaded([] as any);
+      expect(page.ms365ConnectionsCount).toBe(0);
+      expect(page.ms365NeedsReconnect).toBe(false);
+    });
+
+    it('closing the accounts dialog reloads the banner and, after a change, the rows', () => {
+      const closed$ = new Subject<any>();
+      page.dialog = { open: jasmine.createSpy('open').and.returnValue({ afterClosed: () => closed$ }) };
+      page.ms365Connections = { load: jasmine.createSpy('load') };
+      spyOn(page, 'onMs365ConnectionsChanged');
+      page.presentModalMs365Accounts();
+      closed$.next({ changed: true, cascade: true });
+      expect(page.ms365Connections.load).toHaveBeenCalled();
+      expect(page.onMs365ConnectionsChanged).toHaveBeenCalledWith({ cascade: true });
+    });
+  });
 });

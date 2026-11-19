@@ -44,7 +44,9 @@ import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-b
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
 import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
+import { KbSourceConnection } from 'app/models/kb-sources.model';
 import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
+import { ModalMs365AccountsComponent } from './modals/modal-ms365-accounts/modal-ms365-accounts.component';
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
@@ -137,6 +139,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   t_params: any
   ms365Available = false;
   ms365Accounts: { [connectionId: string]: string } = {};
+  ms365ConnectionsCount = 0;
+  ms365NeedsReconnect = false;
   private ms365AccountsLoaded = false;
   private providersLoadedFor: string | undefined;
   private ms365Return: { status: string; reason: string; connectionId: string } | null = null;
@@ -3077,7 +3081,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalMs365ImportComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '640px',
       autoFocus: false,
       position: { top: '60px' },
       data: {
@@ -3140,6 +3144,26 @@ _presentDialogImportContents() {
         this.refreshKbsList = !this.refreshKbsList;
       },
       error: () => { /* not an admin: no account shown */ }
+    });
+  }
+
+  /** The banner component (re)loaded the accounts: drives the header button. */
+  onMs365ConnectionsLoaded(list: KbSourceConnection[]) {
+    this.ms365ConnectionsCount = (list || []).length;
+    this.ms365NeedsReconnect = (list || []).some(c => c.status === 'needs_reconnect');
+  }
+
+  presentModalMs365Accounts() {
+    const dialogRef = this.dialog.open(ModalMs365AccountsComponent, {
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+      hasBackdrop: true,
+      width: '640px',
+      autoFocus: false,
+      position: { top: '60px' },
+    });
+    dialogRef.afterClosed().subscribe((res: { changed: boolean; cascade: boolean } | undefined) => {
+      if (this.ms365Connections) { this.ms365Connections.load(); }
+      if (res && res.changed) { this.onMs365ConnectionsChanged({ cascade: res.cascade }); }
     });
   }
 

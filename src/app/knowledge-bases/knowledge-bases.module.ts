@@ -11,6 +11,7 @@ import { ModalPageUrlComponent } from './modals/modal-page-url/modal-page-url.co
 import { ModalPreviewKnowledgeBaseComponent } from './modals/modal-preview-knowledge-base/modal-preview-knowledge-base.component';
 import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
 import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
+import { ModalMs365AccountsComponent } from './modals/modal-ms365-accounts/modal-ms365-accounts.component';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
@@ -94,7 +95,8 @@ const routes: Routes = [
     KbScrapeSettingsComponent,
     ModalKbScrapeSettingsComponent,
     KbScrapeSummaryComponent,
-    ModalMs365ImportComponent
+    ModalMs365ImportComponent,
+    ModalMs365AccountsComponent
   ],
   imports: [
     ClipboardModule,

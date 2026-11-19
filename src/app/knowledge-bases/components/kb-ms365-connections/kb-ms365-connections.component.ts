@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
@@ -6,7 +6,11 @@ import { KbSourcesService } from 'app/services/kb-sources.service';
 import { NotifyService } from 'app/core/notify.service';
 import { KbSourceConnection } from 'app/models/kb-sources.model';
 
-/** "Microsoft 365 accounts" of the project: reconnect or disconnect each connected account. */
+/**
+ * Microsoft 365 accounts of the project.
+ * view 'list' (accounts dialog): every account, with reconnect and disconnect.
+ * view 'banner' (KB page): only the accounts that need to sign in again, as warnings with Reconnect.
+ */
 @Component({
   selector: 'kb-ms365-connections',
   templateUrl: './kb-ms365-connections.component.html',
@@ -15,6 +19,9 @@ import { KbSourceConnection } from 'app/models/kb-sources.model';
 export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
   /** Something changed on the server: the page refreshes its accounts (and the KB list after a cascade). */
   @Output() changed = new EventEmitter<{ cascade: boolean }>();
+  /** The accounts were (re)loaded: the page shows their count on its header button. */
+  @Output() loaded = new EventEmitter<KbSourceConnection[]>();
+  @Input() view: 'list' | 'banner' = 'list';
 
   connections: KbSourceConnection[] = [];
   busyId: string | null = null;
@@ -42,9 +49,19 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
 
   load() {
     this.kbSources.getConnections().subscribe({
-      next: (list) => { this.connections = list || []; },
-      error: () => { this.connections = []; } // not an admin: nothing to manage
+      next: (list) => { this.connections = list || []; this.loaded.emit(this.connections); },
+      error: () => { this.connections = []; this.loaded.emit(this.connections); } // not an admin: nothing to manage
     });
+  }
+
+  get needsReconnect(): KbSourceConnection[] {
+    return this.connections.filter(c => c.status === 'needs_reconnect');
+  }
+
+  initials(c: KbSourceConnection): string {
+    const src = (c.account?.display_name || c.account?.upn || '?').replace(/@.*/, '');
+    const parts = src.split(/[\s._-]+/).filter(Boolean);
+    return ((parts[0] || '?')[0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
   }
 
   accountLabel(c: KbSourceConnection): string {

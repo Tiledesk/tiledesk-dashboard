@@ -1,12 +1,69 @@
-.ms365-conn { margin: 0 0 16px; padding: 12px 16px; border: 1px solid #e0e4ea; border-radius: 8px; background: #fff; }
-.ms365-conn-title { font-weight: 600; margin-bottom: 8px; }
-.ms365-conn-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 0; flex-wrap: wrap; }
-.ms365-conn-main { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-.ms365-conn-account { font-weight: 500; }
-.ms365-conn-meta { font-size: 12px; color: #566787; }
-.ms365-conn-ok { font-size: 12px; color: #2e7d32; }
-.ms365-conn-warning { font-size: 12px; color: #b26a00; }
-.ms365-conn-actions { display: flex; gap: 8px; }
-.ms365-conn-btn { border: 1px solid #c5ccd6; background: #fff; border-radius: 6px; padding: 4px 12px; font-size: 13px; cursor: pointer; }
-.ms365-conn-disconnect { color: #c62828; border-color: #e5a9a9; }
-.ms365-conn-btn[disabled] { opacity: .5; cursor: default; }
+$text: #30373f;
+$muted: #6b7684;
+$line: #e3e7ec;
+
+:host { display: block; color: $text; }
+
+// ---- banner (KB page) ----
+.ms365-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border: 1px solid #f0d48a;
+  border-radius: 8px;
+  background: #fff6e0;
+  color: #7a5600;
+  font-size: 13px;
+}
+.ms365-banner-icon { font-size: 20px; }
+.ms365-banner-text { flex: 1; min-width: 0; }
+
+// ---- list (accounts dialog) ----
+.ms365-conn-empty { color: $muted; font-size: 13px; margin: 8px 0; }
+.ms365-conn-list { list-style: none; margin: 0; padding: 0; }
+.ms365-conn-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid $line;
+  &:last-child { border-bottom: 0; }
+}
+.ms365-conn-avatar {
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #eef6fe;
+  color: var(--blue-20);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+}
+.ms365-conn-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.ms365-conn-account { font-weight: 500; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ms365-conn-meta { font-size: 12px; color: $muted; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ms365-conn-sep { display: inline-block; width: 3px; height: 3px; border-radius: 50%; background: #a6aeb8; vertical-align: middle; margin: 0 6px; }
+.ms365-conn-badge { font-size: 11px; padding: 3px 8px; border-radius: 10px; white-space: nowrap; }
+.ms365-conn-ok { background: #e7f5ec; color: #1f6b3a; }
+.ms365-conn-warning { background: #fff6e0; color: #7a5600; }
+.ms365-conn-actions { display: flex; gap: 6px; flex: none; }
+.ms365-conn-btn {
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid $line;
+  border-radius: var(--btn-border-radius, 8px);
+  background: #fff;
+  color: $text;
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  &:hover { background: #f5f7fa; }
+  &[disabled] { opacity: .5; cursor: default; }
+}
+.ms365-banner .ms365-conn-btn { border-color: #e2bf62; background: transparent; color: #7a5600; &:hover { background: #fdecc0; } }
+.ms365-conn-disconnect { color: #b3261e; border-color: transparent; background: transparent; &:hover { background: #fdecec; } }

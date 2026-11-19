@@ -50,6 +50,9 @@ export interface KbSourceItem {
   size?: number;       // folder/file children
   supported?: boolean; // folder/file children
   reason?: string;     // why a child is not supported
+  last_modified?: string; // folder/file children (ISO)
+  child_count?: number;   // folders
+  web_url?: string;       // sites
 }
 
 export interface KbSourceItems {

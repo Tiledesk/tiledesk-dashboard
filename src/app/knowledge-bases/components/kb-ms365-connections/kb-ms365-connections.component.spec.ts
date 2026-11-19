@@ -55,7 +55,8 @@ describe('KbMs365ConnectionsComponent', () => {
 
   it('renders account, connected by and counts', () => {
     setup([conn()]);
-    expect(text()).toContain('Ann — ann@x.com');
+    expect(text()).toContain('Ann');
+    expect(text()).toContain('ann@x.com');
     expect(text()).toContain('KbPage.Ms365ConnectedBy');
     expect(text()).toContain('KbPage.Ms365FoldersFiles');
   });
@@ -167,4 +168,22 @@ describe('KbMs365ConnectionsComponent', () => {
     expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.Ms365ErrConnect');
   }));
 
+  it('emits loaded with the accounts', () => {
+    setup([conn(), conn({ _id: 'c2' })]);
+    // loaded fired during the first load; a reload emits again
+    const seen: any[] = [];
+    component.loaded.subscribe(l => seen.push(l.length));
+    component.load();
+    expect(seen).toEqual([2]);
+  });
+
+  it('banner view shows only the accounts that need to sign in again', () => {
+    setup([conn(), conn({ _id: 'c2', status: 'needs_reconnect', account: { display_name: 'Bo', upn: 'bo@x.com', tenant_id: 't' } })]);
+    component.view = 'banner';
+    fixture.detectChanges();
+    const banners = fixture.nativeElement.querySelectorAll('.ms365-banner');
+    expect(banners.length).toBe(1);
+    expect(text()).toContain('KbPage.Ms365ReconnectBanner');
+    expect(text()).not.toContain('KbPage.Ms365Disconnect');
+  });
 });
