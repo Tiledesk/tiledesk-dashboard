@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.11.0-rc3
+- Microsoft 365: redesigned import dialog (step indicator, account bar, OneDrive and sites groups, file rows with size and modified date, selection footer, sync settings summary) and accounts (header button with an accounts dialog; banner only when an account must sign in again)
+
 ### 2.11.0-rc2
 - Microsoft 365 sign-in popup: the result reaches the dashboard also when the Microsoft pages cut window.opener (relayed on a BroadcastChannel; the popup closes itself)
 
