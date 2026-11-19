@@ -221,11 +221,11 @@
     
                     <div class="buttons-div" *ngIf="selectedTab === 'contents'">
       
-                      <!-- Microsoft 365 accounts (admins, once an account is connected) -->
-                      <button *ngIf="ms365Available && ms365ConnectionsCount > 0" type="button" class="btn btn-blu-gray-outline kb-ms365-accounts-btn"
+                      <!-- Connected accounts (admins, once an account is connected) -->
+                      <button *ngIf="showAccountsButton" type="button" class="btn btn-blu-gray-outline kb-ms365-accounts-btn"
                         (click)="presentModalMs365Accounts()">
-                        <span aria-hidden="true" class="material-icons-outlined kb-ms365-accounts-btn__icon">cloud_sync</span>
-                        <span>{{ 'KbPage.Ms365Card' | translate }}</span>
+                        <span aria-hidden="true" class="material-icons-outlined kb-ms365-accounts-btn__icon">manage_accounts</span>
+                        <span>{{ 'KbPage.ConnectedAccounts' | translate }}</span>
                         <span class="kb-ms365-accounts-btn__count">{{ ms365ConnectionsCount }}</span>
                         <span *ngIf="ms365NeedsReconnect" class="kb-ms365-accounts-btn__dot" [attr.aria-label]="'KbPage.Ms365StatusNeedsReconnect' | translate"></span>
                       </button>
@@ -430,7 +430,7 @@
                     </div>
                   </div>
       
-                  <kb-ms365-connections *ngIf="ms365Available" view="banner" (loaded)="onMs365ConnectionsLoaded($event)" (changed)="onMs365ConnectionsChanged($event)"></kb-ms365-connections>
+                  <kb-ms365-connections *ngIf="ms365Available || gdriveAvailable" view="banner" (loaded)="onMs365ConnectionsLoaded($event)" (changed)="onMs365ConnectionsChanged($event)"></kb-ms365-connections>
 
                   <!-- TAB SWITCHER START -->
                     <!-- Vecchio switch a radio (segmented); sostituito da tab come in Domande -->

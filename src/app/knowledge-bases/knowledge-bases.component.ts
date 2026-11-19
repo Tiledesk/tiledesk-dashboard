@@ -3158,6 +3158,11 @@ _presentDialogImportContents() {
     });
   }
 
+  /** The header button: either provider is on and an account exists. */
+  get showAccountsButton(): boolean {
+    return (this.ms365Available || this.gdriveAvailable) && this.ms365ConnectionsCount > 0;
+  }
+
   /** The banner component (re)loaded the accounts: drives the header button. */
   onMs365ConnectionsLoaded(list: KbSourceConnection[]) {
     this.ms365ConnectionsCount = (list || []).length;

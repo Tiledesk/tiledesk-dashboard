@@ -2,16 +2,21 @@
 <ng-container *ngIf="view === 'banner'">
   <div class="ms365-banner" *ngFor="let c of needsReconnect" role="status">
     <span aria-hidden="true" class="material-icons-outlined ms365-banner-icon">warning_amber</span>
-    <span class="ms365-banner-text">{{ 'KbPage.Ms365ReconnectBanner' | translate: { upn: c.account?.upn } }}</span>
+    <span class="ms365-banner-text">{{ 'KbPage.SourceReconnectBanner' | translate: { upn: c.account?.upn, provider: (providerLabelKey(c) | translate) } }}</span>
     <button type="button" class="ms365-conn-btn ms365-conn-reconnect" (click)="reconnect(c)">{{ 'KbPage.Ms365Reconnect' | translate }}</button>
   </div>
 </ng-container>
 
 <!-- accounts dialog: every account -->
 <ng-container *ngIf="view === 'list'">
-  <p *ngIf="!connections.length" class="ms365-conn-empty">{{ 'KbPage.Ms365AccountsEmpty' | translate }}</p>
-  <ul class="ms365-conn-list" *ngIf="connections.length">
-    <li class="ms365-conn-row" *ngFor="let c of connections">
+  <p *ngIf="!connections.length" class="ms365-conn-empty">{{ 'KbPage.ConnectedAccountsEmpty' | translate }}</p>
+  <section class="ms365-conn-group" *ngFor="let g of groups">
+  <h2 class="ms365-conn-group-title">
+    <span aria-hidden="true" class="material-icons-outlined ms365-conn-group-icon">{{ g.icon }}</span>
+    {{ g.labelKey | translate }}
+  </h2>
+  <ul class="ms365-conn-list">
+    <li class="ms365-conn-row" *ngFor="let c of g.items">
       <span class="ms365-conn-avatar">{{ initials(c) }}</span>
       <span class="ms365-conn-main">
         <span class="ms365-conn-account">{{ c.account?.display_name || c.account?.upn }}</span>
@@ -31,4 +36,5 @@
       </span>
     </li>
   </ul>
+  </section>
 </ng-container>

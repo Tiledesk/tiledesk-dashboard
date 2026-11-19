@@ -1,6 +1,7 @@
 import { of, throwError, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { KnowledgeBasesComponent } from './knowledge-bases.component';
+import { ms365AccountLabel } from './modals/knowledge-base-table/kb-ms365-row.util';
 
 /**
  * The page is too tangled for a TestBed spec (dozens of services), so the Microsoft 365
@@ -294,6 +295,31 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
   });
 
   describe('accounts header button', () => {
+    it('a Google folder row shows its Google account', () => {
+      const gfolder = { _id: 'gf', type: 'gdrive_folder', name: 'Docs', external: { provider: 'googledrive', connection_id: 'g1' } };
+      page.kbsList = [gfolder];
+      page.ms365AccountsLoaded = false;
+      kbSources.getConnections.and.returnValue(of([
+        { _id: 'c1', provider: 'microsoft365', account: { display_name: 'Ann', upn: 'ann@x.com' } },
+        { _id: 'g1', provider: 'googledrive', account: { display_name: 'Gus', upn: 'gus@gmail.com' } },
+      ]));
+      page.loadMs365Accounts(true);
+      expect(page.ms365Accounts['g1']).toBe('Gus — gus@gmail.com');
+      expect(ms365AccountLabel(gfolder, page.ms365Accounts)).toBe('Gus — gus@gmail.com');
+    });
+
+    it('the button shows when either provider is available and an account exists', () => {
+      page.ms365ConnectionsCount = 1;
+      page.ms365Available = false; page.gdriveAvailable = true;
+      expect(page.showAccountsButton).toBe(true);
+      page.ms365Available = true; page.gdriveAvailable = false;
+      expect(page.showAccountsButton).toBe(true);
+      page.ms365Available = false;
+      expect(page.showAccountsButton).toBe(false);
+      page.ms365Available = true; page.ms365ConnectionsCount = 0;
+      expect(page.showAccountsButton).toBe(false);
+    });
+
     it('counts the accounts and flags one that needs to sign in again', () => {
       page.onMs365ConnectionsLoaded([{ _id: 'a', status: 'active' }, { _id: 'b', status: 'needs_reconnect' }] as any);
       expect(page.ms365ConnectionsCount).toBe(2);
