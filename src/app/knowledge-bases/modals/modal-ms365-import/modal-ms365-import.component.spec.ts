@@ -414,11 +414,21 @@ describe('ModalMs365ImportComponent', () => {
     });
 
     it('site hint drops the scheme; modified date is empty when missing or invalid', () => {
-      expect(component.siteHint({ kind: 'site', web_url: 'https://t.sharepoint.com/sites/all' } as any)).toBe('t.sharepoint.com/sites/all');
+      expect(component.siteHint({ kind: 'site', web_url: 'https://t.sharepoint.com/sites/all' } as any)).toBe('/sites/all');
+      expect(component.siteHint({ kind: 'site', web_url: 'https://t.sharepoint.com/sites/All%20Hands/' } as any)).toBe('/sites/All Hands');
+      expect(component.siteHint({ kind: 'site', web_url: 'https://t.sharepoint.com' } as any)).toBe('t.sharepoint.com');
+      expect(component.siteHint({ kind: 'site', web_url: 'https://t.sharepoint.com/contentstorage/x8FNO-abc' } as any)).toBe('');
+      expect(component.siteHint({ kind: 'site', web_url: 'not a url' } as any)).toBe('');
       expect(component.siteHint({ kind: 'site' } as any)).toBe('');
       expect(component.formatModified(undefined)).toBe('');
       expect(component.formatModified('nope')).toBe('');
       expect(component.formatModified('2020-03-05T10:00:00Z')).toContain('2020');
+    });
+
+    it('folder counts read Empty, 1 item, N items', () => {
+      expect(component.folderCount({ kind: 'folder', child_count: 0 } as any)).toEqual({ key: 'KbPage.Ms365FolderEmpty' });
+      expect(component.folderCount({ kind: 'folder', child_count: 1 } as any)).toEqual({ key: 'KbPage.Ms365ItemOne' });
+      expect(component.folderCount({ kind: 'folder', child_count: 7 } as any)).toEqual({ key: 'KbPage.Ms365ItemsCount', params: { count: 7 } });
     });
 
     it('stepIndex follows the step', () => {
@@ -464,7 +474,8 @@ describe('ModalMs365ImportComponent', () => {
     fixture.detectChanges();
     expect(text()).toContain('KbPage.Ms365OneDriveSection');
     expect(text()).toContain('KbPage.Ms365SitesSection');
-    expect(text()).toContain('t.sharepoint.com/sites/allcompany2');
+    expect(text()).toContain('/sites/allcompany2');
+    expect(text()).not.toContain('t.sharepoint.com/sites');
     expect(fixture.nativeElement.querySelectorAll('.ms365-place').length).toBe(3);
   });
 });

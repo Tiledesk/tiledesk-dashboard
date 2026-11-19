@@ -682,7 +682,7 @@
                                 <div *ngIf="kb.type === 'ms365_folder'" class="subtitle ellipsis-text ms365-folder-meta" style="max-width: 100%;">
                                     <span *ngIf="ms365Account(kb)" class="ms365-account">{{ ms365Account(kb) }} · </span>
                                     <span *ngIf="kb.external?.site_name">{{ kb.external.site_name }} · </span>
-                                    <span class="ms365-file-count">{{ 'KbPage.Ms365FilesCount' | translate: { count: ms365FileCount(kb) } }}</span>
+                                    <span class="ms365-file-count">{{ (ms365FileCount(kb) === 1 ? 'KbPage.Ms365FileOne' : 'KbPage.Ms365FilesCount') | translate: { count: ms365FileCount(kb) } }}</span>
                                     <span *ngIf="ms365LastSync(kb)"> · {{ ms365LastSync(kb) | amTimeAgo }}</span>
                                 </div>
 

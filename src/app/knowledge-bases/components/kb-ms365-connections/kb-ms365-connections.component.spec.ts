@@ -58,7 +58,16 @@ describe('KbMs365ConnectionsComponent', () => {
     expect(text()).toContain('Ann');
     expect(text()).toContain('ann@x.com');
     expect(text()).toContain('KbPage.Ms365ConnectedBy');
-    expect(text()).toContain('KbPage.Ms365FoldersFiles');
+    expect(text()).toContain('KbPage.Ms365FoldersCount');
+    expect(text()).toContain('KbPage.Ms365FilesCount');
+  });
+
+  it('uses the singular for exactly one folder or file', () => {
+    setup([conn({ folders_count: 1, files_count: 1 })]);
+    expect(text()).toContain('KbPage.Ms365FolderOne');
+    expect(text()).toContain('KbPage.Ms365FileOne');
+    expect(component.countKey(0, 'File')).toBe('KbPage.Ms365FilesCount');
+    expect(component.countKey(undefined, 'Folder')).toBe('KbPage.Ms365FoldersCount');
   });
 
   it('flags needs_reconnect with the warning', () => {
