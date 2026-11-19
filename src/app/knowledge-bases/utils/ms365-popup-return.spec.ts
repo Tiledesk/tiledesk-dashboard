@@ -30,6 +30,7 @@ describe('ms365-popup-return', () => {
   it('parseMs365Relayed keeps only valid fields', () => {
     expect(parseMs365Relayed({ type: 'ms365-connect', status: 'connected', connection_id: 'c', reason: 5, provider: 'googledrive' }))
       .toEqual({ status: 'connected', reason: undefined, connection_id: 'c', provider: 'googledrive' });
+    expect(parseMs365Relayed({ type: 'ms365-connect', status: 'connected' })!.provider).toBe('microsoft365');
     expect(parseMs365Relayed({ type: 'ms365-connect', status: 'blocked' })).toBeNull();
   });
 

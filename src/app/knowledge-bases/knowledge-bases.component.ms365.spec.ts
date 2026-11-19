@@ -164,7 +164,7 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
       withQuery({ ms365: 'connected', reason: '', connection_id: 'X' });
       page.readMs365Return();
       const args = navigate.calls.mostRecent().args;
-      expect(args[1].queryParams).toEqual({ ms365: null, reason: null, connection_id: null });
+      expect(args[1].queryParams).toEqual({ kbsrc: null, kbsrc_popup: null, provider: null, ms365: null, reason: null, connection_id: null });
       expect(args[1].replaceUrl).toBe(true);
       page.applyMs365Return();
       expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args).toEqual(['KbPage.Ms365Connected', 2, 'done']);
@@ -173,6 +173,18 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
       expect(page.presentModalImportMs365).toHaveBeenCalledWith('X');
       page.applyMs365Return(); // applied once
       expect(page.presentModalImportMs365).toHaveBeenCalledTimes(1);
+    });
+
+    it('kbsrc return keeps its provider; legacy ms365 return is microsoft365', () => {
+      withQuery({ kbsrc: 'connected', provider: 'googledrive', connection_id: 'G' });
+      page.readMs365Return();
+      expect(page.ms365Return).toEqual({ status: 'connected', reason: '', connectionId: 'G', provider: 'googledrive' });
+      withQuery({ ms365: 'connected', connection_id: 'M' });
+      page.readMs365Return();
+      expect(page.ms365Return.provider).toBe('microsoft365');
+      withQuery({ kbsrc: 'error', reason: 'scope_missing' });
+      page.readMs365Return();
+      expect(page.ms365Return).toEqual({ status: 'error', reason: 'scope_missing', connectionId: '', provider: 'microsoft365' });
     });
 
     it('error reasons map to their message; the modal is not opened', () => {

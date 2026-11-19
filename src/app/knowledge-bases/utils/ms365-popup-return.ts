@@ -23,7 +23,7 @@ export function parseMs365Relayed(data: any): Ms365ConnectResult | null {
     status: data.status,
     reason: typeof data.reason === 'string' && data.reason ? data.reason : undefined,
     connection_id: typeof data.connection_id === 'string' && data.connection_id ? data.connection_id : undefined,
-    provider: asProvider(data.provider),
+    provider: asProvider(data.provider) || 'microsoft365',
   };
 }
 

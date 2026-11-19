@@ -159,7 +159,7 @@ export class KbSourcesService {
         if (!expectedOrigin || event.origin !== expectedOrigin || event.source !== popup) { return; }
         const data = event.data;
         if (!data || data.type !== 'ms365-connect' || (data.status !== 'connected' && data.status !== 'error')) { return; }
-        finish({ status: data.status, reason: data.reason, connection_id: data.connection_id, provider: asProvider(data.provider) });
+        finish({ status: data.status, reason: data.reason, connection_id: data.connection_id, provider: asProvider(data.provider) || 'microsoft365' });
       };
       const relaySub = this.relayed.subscribe(result => finish(result));
       const timer = setInterval(() => {

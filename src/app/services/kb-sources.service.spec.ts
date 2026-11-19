@@ -195,9 +195,9 @@ describe('KbSourcesService', () => {
       let res: any;
       service.connect('microsoft365', 'c1').then(r => res = r);
       answerConnect();
-      post('https://api.example.com', { type: 'ms365-connect', status: 'connected', connection_id: 'c1', provider: undefined });
+      post('https://api.example.com', { type: 'ms365-connect', status: 'connected', connection_id: 'c1', provider: 'microsoft365' });
       flushMicrotasks();
-      expect(res).toEqual({ status: 'connected', reason: undefined, connection_id: 'c1', provider: undefined });
+      expect(res).toEqual({ status: 'connected', reason: undefined, connection_id: 'c1', provider: 'microsoft365' });
     }));
 
     it('resolves error with reason', fakeAsync(() => {
@@ -332,9 +332,9 @@ describe('KbSourcesService', () => {
       let res: any; let count = 0;
       service.connect('microsoft365', 'c1').then(r => { res = r; count++; });
       answer();
-      relay({ type: 'ms365-connect', status: 'connected', connection_id: 'c9', provider: undefined });
+      relay({ type: 'ms365-connect', status: 'connected', connection_id: 'c9', provider: 'microsoft365' });
       flushMicrotasks();
-      expect(res).toEqual({ status: 'connected', reason: undefined, connection_id: 'c9', provider: undefined });
+      expect(res).toEqual({ status: 'connected', reason: undefined, connection_id: 'c9', provider: 'microsoft365' });
       popup.closed = true;
       tick(3000);
       flushMicrotasks();
@@ -352,7 +352,7 @@ describe('KbSourcesService', () => {
       flushMicrotasks();
       expect(res).toEqual({ status: 'closed' });
       relay({ type: 'ms365-connect', status: 'error', reason: 'access_denied' });
-      expect(seen).toEqual([{ status: 'error', reason: 'access_denied', connection_id: undefined, provider: undefined }]);
+      expect(seen).toEqual([{ status: 'error', reason: 'access_denied', connection_id: undefined, provider: 'microsoft365' }]);
       sub.unsubscribe();
     }));
 
@@ -389,7 +389,7 @@ describe('KbSourcesService', () => {
       post('https://api.example.com', { type: 'ms365-connect', status: 'connected' });
       flushMicrotasks();
       expect(res).toBeUndefined();
-      post('https://public.example.org', { type: 'ms365-connect', status: 'connected', connection_id: 'c9', provider: undefined });
+      post('https://public.example.org', { type: 'ms365-connect', status: 'connected', connection_id: 'c9', provider: 'microsoft365' });
       flushMicrotasks();
       expect(res.connection_id).toBe('c9');
     }));

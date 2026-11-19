@@ -44,7 +44,8 @@ import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-b
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
 import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
-import { KbSourceConnection } from 'app/models/kb-sources.model';
+import { KbSourceConnection, KbSourceProviderId } from 'app/models/kb-sources.model';
+import { asProvider } from 'app/knowledge-bases/utils/ms365-popup-return';
 import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
 import { ModalMs365AccountsComponent } from './modals/modal-ms365-accounts/modal-ms365-accounts.component';
 import { KbSourcesService } from 'app/services/kb-sources.service';
@@ -143,7 +144,7 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   ms365NeedsReconnect = false;
   private ms365AccountsLoaded = false;
   private providersLoadedFor: string | undefined;
-  private ms365Return: { status: string; reason: string; connectionId: string } | null = null;
+  private ms365Return: { status: string; reason: string; connectionId: string; provider: KbSourceProviderId } | null = null;
   kbMaxFileSize: number;
   private ms365ReloadTimers: any[] = [];
 
@@ -3044,17 +3045,18 @@ _presentDialogImportContents() {
   }
 
   /**
-   * Back from a full-page Microsoft 365 sign-in (?ms365=connected|error&reason=&connection_id=):
+   * Back from a full-page Microsoft 365 sign-in (?kbsrc=connected|error&provider=&reason=&connection_id=, or the legacy ?ms365=...):
    * remember the outcome, strip the params from the URL; it is applied once the namespace is known.
    */
   readMs365Return() {
     const qpm = this.route.snapshot.queryParamMap;
-    const status = qpm.get('ms365');
+    const status = qpm.get('kbsrc') ?? qpm.get('ms365');
     if (!status) { return; }
-    this.ms365Return = { status, reason: qpm.get('reason') || '', connectionId: qpm.get('connection_id') || '' };
+    this.ms365Return = { status, reason: qpm.get('reason') || '', connectionId: qpm.get('connection_id') || '',
+      provider: asProvider(qpm.get('provider')) || 'microsoft365' };
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { ms365: null, reason: null, connection_id: null },
+      queryParams: { kbsrc: null, kbsrc_popup: null, provider: null, ms365: null, reason: null, connection_id: null },
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });
