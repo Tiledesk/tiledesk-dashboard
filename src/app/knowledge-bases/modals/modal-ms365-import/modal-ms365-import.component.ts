@@ -392,6 +392,12 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   get stepIndex(): number { return this.step === 'account' ? 1 : this.step === 'browse' ? 2 : 3; }
 
   /** At the top level the list mixes OneDrive and sites: grouped under two headings. */
+  // rootGroups and selectedPreview build new objects on every change detection: without trackBy the
+  // rows are destroyed and recreated between mousedown and mouseup, and the browser drops the click
+  trackGroup = (_: number, g: { labelKey: string }) => g.labelKey;
+  trackItem = (_: number, item: KbSourceItem) => item.kind + ':' + item.id;
+  trackPreview = (i: number, p: { name: string }) => i + ':' + p.name;
+
   get atRoots(): boolean { return this.crumbs.length <= 1; }
   get rootOneDrive(): KbSourceItem[] { return this.items.filter(i => i.kind === 'onedrive'); }
   get rootSites(): KbSourceItem[] { return this.items.filter(i => i.kind === 'site'); }

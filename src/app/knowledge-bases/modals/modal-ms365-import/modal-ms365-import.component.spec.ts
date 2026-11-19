@@ -464,7 +464,17 @@ describe('ModalMs365ImportComponent', () => {
     expect(component.crumbs[component.crumbs.length - 1].label).toBe('Folder');
   });
 
-  it('renders OneDrive and sites in two groups, with the site URL', () => {
+  it('keeps the same location buttons across change detection (a click needs the element pressed to survive)', () => {
+    setup([activeConn], {}, true);
+    component.chooseConnection(activeConn as any);
+    fixture.detectChanges();
+    const before = fixture.nativeElement.querySelector('.ms365-place');
+    fixture.detectChanges();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.ms365-place')).toBe(before);
+  });
+
+    it('renders OneDrive and sites in two groups, with the site URL', () => {
     setup([activeConn], {}, true);
     svc.getRoots.and.returnValue(of({ items: [
       { kind: 'onedrive', id: 'me', name: 'My OneDrive', drive_id: 'd-me' },
