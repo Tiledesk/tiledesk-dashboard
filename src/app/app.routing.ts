@@ -1,4 +1,5 @@
 import { OnboardingWidgetComponent } from './create-project-wizard/onboarding-widget/onboarding-widget.component';
+import { monitorGraphRedirect } from './bots/executions/graph-redirect';
 // import { MapRequestComponent } from './map-request/map-request.component'; // now lazy
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
@@ -166,7 +167,7 @@ import { MaintenancePageComponent } from './auth/maintenance-page/maintenance-pa
 
 
 
-const routes: Routes = [
+export const appRoutes: Routes = [
 
   // no-auth page
   {
@@ -1320,6 +1321,40 @@ const routes: Routes = [
   //   canActivate: [AuthGuard]
   // },
 
+  // Executions (agent execution traceability) live under Monitor. The permission is checked in the
+  // component (executions_read), the API refuses anyway.
+  {
+    path: 'project/:projectid/monitor/executions',
+    loadChildren: () => import('app/bots/executions/executions.module').then(m => m.ExecutionsModule),
+    canActivate: [AuthGuard],
+  },
+  // The graph is a view of the executions page (view=graph): the old Graph page redirects there, its range kept.
+  {
+    path: 'project/:projectid/monitor/graph',
+    canActivate: [monitorGraphRedirect],
+    children: [],
+  },
+  {
+    path: 'project/:projectid/monitor/:botid/executions',
+    loadChildren: () => import('app/bots/executions/executions.module').then(m => m.ExecutionsModule),
+    canActivate: [AuthGuard],
+  },
+  // Old addresses (bookmarks, emails): redirect to Monitor, query params are kept by the router.
+  // Must stay before 'project/:projectid/bots' and 'project/:projectid/bots/:faqkbid/:type' (FaqComponent),
+  // which would otherwise swallow these paths. Prefix match so a trailing :executionid follows along.
+  {
+    path: 'project/:projectid/bots/executions',
+    redirectTo: 'project/:projectid/monitor/executions',
+  },
+  {
+    path: 'project/:projectid/bots/:botid/executions/:executionid',
+    redirectTo: 'project/:projectid/monitor/:botid/executions/:executionid',
+  },
+  {
+    path: 'project/:projectid/bots/:botid/executions',
+    redirectTo: 'project/:projectid/monitor/:botid/executions',
+  },
+
   {
     path: 'project/:projectid/bots',
     loadChildren: () => import('app/bots/bots-list/bots-list.module').then(m => m.BotsListModule),
@@ -1719,7 +1754,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     BrowserModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(appRoutes)
   ],
   exports: [RouterModule],
   providers: [AuthGuard, AdminGuard, ProjectProfileGuard, RoleGuard]

@@ -845,6 +845,12 @@
                           <em>{{ parts.link }}</em>
                         </span>
                         <em *ngIf="parts.kbSource">{{ parts.kbSource }}</em>
+                        <activities-execution-link
+                          *ngIf="parts.executionLinkLabel && executionRouterLink(activity)"
+                          [label]="parts.executionLinkLabel"
+                          (linkClick)="goToExecution(activity)">
+                        </activities-execution-link>
+                        <span *ngIf="parts.executionLinkLabel && !executionRouterLink(activity)">{{ parts.executionLinkLabel }}</span>
                         <span>{{ parts.after }}</span>
                         <span *ngIf="parts.chatbotLink && parts.chatbotId" class="link-to-user-profile"
                           (click)="goToChatbotCds(activity)">

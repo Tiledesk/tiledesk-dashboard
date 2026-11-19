@@ -11,14 +11,14 @@
 
 <div mat-dialog-content class="create-agent-modal__content">
 
-    <mat-form-field appearance="outline" class="cc-mat-form-field">
+    <!-- <mat-form-field appearance="outline" class="cc-mat-form-field">
         <mat-label>{{'ChatbotName' | translate}}</mat-label>
         <input matInput
             [(ngModel)]="agentName"
             (keydown.enter)="onNameEnter()"
             cdkFocusInitial>
         <mat-hint *ngIf="showPromptField && subtype === 'chatbot'">{{'AIAgentNameOptionalHint' | translate}}</mat-hint>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <div class="create-agent-modal__vibe" *ngIf="showPromptField">
         <appdashboard-vibe-coder

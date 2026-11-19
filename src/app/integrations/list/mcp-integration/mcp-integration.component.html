@@ -18,8 +18,58 @@
             <label>URL</label>
             <input id="mcp-url" class="custom-input" type="url" name="mcp-url"
                 placeholder="URL of the external MCP server"
-                [(ngModel)]="currentServer.url" autocomplete="off" style="font-size: 14px;">
+                [(ngModel)]="currentServer.url" (ngModelChange)="onServerUrlChange()" autocomplete="off" style="font-size: 14px;">
+            <p class="field-hint warn" *ngIf="urlChanged">{{ 'Integration.UrlChangedConnectAgain' | translate }}</p>
         </div>
+
+        <div class="input-field">
+            <label>{{ 'Integration.Authentication' | translate }}</label>
+            <select id="mcp-auth" class="custom-input" name="mcp-auth" [(ngModel)]="authType">
+                <option value="none">{{ 'Integration.AuthNone' | translate }}</option>
+                <option value="mcp">{{ 'Integration.AuthOAuth' | translate }}</option>
+                <option value="google">{{ 'Integration.AuthGoogle' | translate }}</option>
+                <option value="manual">{{ 'Integration.AuthManual' | translate }}</option>
+            </select>
+            <p class="field-hint" *ngIf="authType === 'mcp'">{{ 'Integration.AuthOAuthHint' | translate }}</p>
+        </div>
+
+        <div class="input-field" *ngIf="authType === 'google'">
+            <label>{{ 'Integration.Scopes' | translate }}</label>
+            <ng-container *ngTemplateOutlet="scopeEditor"></ng-container>
+        </div>
+
+        <ng-container *ngIf="authType === 'manual'">
+            <div class="input-field">
+                <label>{{ 'Integration.AuthorizationUrl' | translate }}</label>
+                <input id="mcp-auth-url" class="custom-input" type="url" name="mcp-auth-url"
+                    [(ngModel)]="manualAuthorizationUrl" autocomplete="off" style="font-size: 14px;">
+            </div>
+            <div class="input-field">
+                <label>{{ 'Integration.TokenUrl' | translate }}</label>
+                <input id="mcp-token-url" class="custom-input" type="url" name="mcp-token-url"
+                    [(ngModel)]="manualTokenUrl" autocomplete="off" style="font-size: 14px;">
+            </div>
+            <div class="input-field">
+                <label>{{ 'Integration.ClientId' | translate }}</label>
+                <input id="mcp-client-id" class="custom-input" type="text" name="mcp-client-id"
+                    [(ngModel)]="manualClientId" autocomplete="off" style="font-size: 14px;">
+            </div>
+            <div class="input-field">
+                <label>{{ 'Integration.ClientSecret' | translate }}</label>
+                <input id="mcp-client-secret" class="custom-input" type="password" name="mcp-client-secret"
+                    [placeholder]="keepsStoredClientSecret() ? ('Integration.ClientSecretKeep' | translate) : ''"
+                    [(ngModel)]="manualClientSecret" autocomplete="new-password" style="font-size: 14px;">
+            </div>
+            <div class="input-field">
+                <label>{{ 'Integration.RevocationUrl' | translate }}</label>
+                <input id="mcp-revocation-url" class="custom-input" type="url" name="mcp-revocation-url"
+                    [(ngModel)]="manualRevocationUrl" autocomplete="off" style="font-size: 14px;">
+            </div>
+            <div class="input-field">
+                <label>{{ 'Integration.Scopes' | translate }}</label>
+                <ng-container *ngTemplateOutlet="scopeEditor"></ng-container>
+            </div>
+        </ng-container>
 
         <div class="input-field">
             <label>{{ 'Type' | translate }}</label>
@@ -48,25 +98,53 @@
             </button> -->
         </div>
 
+        <ng-template #scopeEditor>
+            <div class="scope-editor" (click)="focusScopeInput(scopeInput)">
+                <span class="scope-tag" *ngFor="let scope of scopeList()">
+                    <span class="scope-tag-label" [attr.title]="scope">{{ scope }}</span>
+                    <button type="button" class="scope-tag-remove" (click)="removeScope(scope, $event)"
+                        [attr.aria-label]="('Integration.RemoveScope' | translate) + ': ' + scope">
+                        <span class="material-icons">close</span>
+                    </button>
+                </span>
+                <input #scopeInput id="mcp-scope-draft" class="scope-draft" type="text" name="mcp-scope-draft"
+                    [placeholder]="scopeList().length ? '' : ('Integration.ScopePlaceholder' | translate)"
+                    [(ngModel)]="scopeDraft"
+                    (keydown.enter)="$event.preventDefault(); addScopeFromDraft()"
+                    (keydown.backspace)="onScopeDraftBackspace()"
+                    autocomplete="off">
+            </div>
+            <p class="field-hint">{{ 'Integration.ScopeAddHint' | translate }}</p>
+            <p class="field-hint warn" *ngIf="isEditing && scopesChanged()">{{ 'Integration.ScopesChangedAuthorizeAgain' | translate }}</p>
+        </ng-template>
+
         <div class="form-actions">
             <!-- Connect button - shown when NOT editing OR when editing a server WITHOUT tools -->
             <button 
-                *ngIf="!isEditing || (isEditing && !currentServerHasTools())"
+                *ngIf="!isEditing || (isEditing && !currentServerHasTools()) || urlChanged"
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="connectToServer()"
-                [disabled]="isLoadingTools || !currentServer.url">
-                <span *ngIf="!isLoadingTools || loadingServerUrl !== currentServer.url">
+                [disabled]="isLoadingTools || waitingForAuthorization || !currentServer.url">
+                <span *ngIf="!waitingForAuthorization && (!isLoadingTools || loadingServerUrl !== currentServer.url)">
                     {{ 'Integration.Connect' | translate }}
                 </span>
-                <span *ngIf="isLoadingTools && loadingServerUrl === currentServer.url" class="loading-state">
+                <span *ngIf="waitingForAuthorization" class="loading-state">
+                    <span class="spinner"></span>
+                    {{ 'Integration.WaitingForAuthorization' | translate }}
+                </span>
+                <span *ngIf="!waitingForAuthorization && isLoadingTools && loadingServerUrl === currentServer.url" class="loading-state">
                     <span class="spinner"></span>
                     {{ 'Integration.LoadingTools' | translate }}
                 </span>
             </button>
 
+            <a *ngIf="waitingForAuthorization" class="cancel-auth" (click)="cancelAuthorization()">
+                {{ 'Cancel' | translate }}
+            </a>
+
             <!-- Refresh Tools button - shown when editing a server WITH tools -->
             <button 
-                *ngIf="isEditing && currentServerHasTools()"
+                *ngIf="isEditing && currentServerHasTools() && !urlChanged"
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="refreshCurrentServerTools()"
                 [disabled]="isLoadingTools || !currentServer.url">
@@ -93,11 +171,15 @@
                 *ngIf="isEditing"
                 class="btn btn-tdblu-no-boxshadow" 
                 (click)="addOrUpdateServer()"
-                [disabled]="!currentServer.name || !currentServer.url || isLoadingTools">
-                {{ 'Update' | translate }}
+                [disabled]="isUpdateDisabled()">
+                <span *ngIf="!waitingForAuthorization">{{ 'Update' | translate }}</span>
+                <span *ngIf="waitingForAuthorization" class="loading-state">
+                    <span class="spinner"></span>
+                    {{ 'Integration.WaitingForAuthorization' | translate }}
+                </span>
             </button>
 
-            <button *ngIf="isEditing" class="btn btn-outlined" (click)="resetForm()">
+            <button *ngIf="isEditing && !waitingForAuthorization" class="btn btn-outlined" (click)="resetForm()">
                 {{ 'Cancel' | translate }}
             </button>
         </div>
@@ -106,8 +188,12 @@
     <!-- Table Section -->
     <mcp-server-table 
         [mcpServers]="integration.value.servers"
+        [oauthConnections]="oauthConnections"
+        [reconnectRequired]="reconnectRequired"
+        [oauthStatusUnavailable]="oauthStatusUnavailable"
         (onSelectServer)="onSelectServer($event)"
-        (onDeleteServer)="onDeleteServer($event)">
+        (onDeleteServer)="onDeleteServer($event)"
+        (onReconnectServer)="reconnectServer($event)">
     </mcp-server-table>
 
 </div>
