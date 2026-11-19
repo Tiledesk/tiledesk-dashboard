@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.12.0-rc3
+- KB sources: clicks on My Drive, OneDrive and SharePoint site rows open them again (rows no longer re-rendered on every check)
+
 ### 2.12.0-rc2
 - KB sources: the import dialog reacts right after the sign-in popup (result applied inside Angular); every Add content tile is visible without scrolling
 
