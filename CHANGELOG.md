@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.11.0-rc4
+- Microsoft 365 UI polish: header button label, site path hints (none for internal sites), Empty / 1 item / singular counts, label colors, file-type icons in the summary, icons hidden from screen readers
+
 ### 2.11.0-rc3
 - Microsoft 365: redesigned import dialog (step indicator, account bar, OneDrive and sites groups, file rows with size and modified date, selection footer, sync settings summary) and accounts (header button with an accounts dialog; banner only when an account must sign in again)
 
