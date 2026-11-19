@@ -77,7 +77,8 @@ $err-text: #a32d2d;
 .ms365-muted { color: $muted; font-size: 13px; font-weight: 400; margin: 0; }
 .ms365-small { font-size: 12px; }
 .ms365-ellipsis { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
-.ms365-label { font-size: 13px; font-weight: 500; margin: 0 0 8px; }
+.ms365-label { font-size: 13px; font-weight: 500; margin: 0 0 8px; color: $text; }
+label.ms365-label { display: block; color: $text !important; opacity: 1; }
 .ms365-error { color: $err-text; font-size: 13px; margin: 8px 0; }
 
 // ---- buttons ----

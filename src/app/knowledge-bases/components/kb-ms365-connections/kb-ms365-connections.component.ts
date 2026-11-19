@@ -64,6 +64,11 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
     return ((parts[0] || '?')[0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
   }
 
+  /** 'KbPage.Ms365FolderOne' / 'KbPage.Ms365FoldersCount' (and File...): singular for exactly one. */
+  countKey(n: number | undefined, what: 'Folder' | 'File'): string {
+    return (n || 0) === 1 ? 'KbPage.Ms365' + what + 'One' : 'KbPage.Ms365' + what + 's' + 'Count';
+  }
+
   accountLabel(c: KbSourceConnection): string {
     return (c.account?.display_name || '') + ' — ' + (c.account?.upn || '');
   }

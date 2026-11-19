@@ -123,7 +123,7 @@
     <div *ngIf="isMs365Folder" class="ms365-folder-detail" style="margin-bottom: 12px;">
         <div *ngIf="kb.external?.site_name" class="ms365-site" style="font-size: 13px; color: #566787;">{{ kb.external.site_name }}</div>
         <div class="ms365-count" style="font-size: 13px; color: #566787;">
-            {{ 'KbPage.Ms365FilesCount' | translate: { count: ms365FileCount } }}
+            {{ (ms365FileCount === 1 ? 'KbPage.Ms365FileOne' : 'KbPage.Ms365FilesCount') | translate: { count: ms365FileCount } }}
         </div>
         <div *ngIf="ms365Warning as warn" class="ms365-warning" style="font-size: 13px; color: #b45309; margin-top: 4px;">
             <span class="material-icons-outlined" style="font-size: 15px; vertical-align: middle;">warning</span>

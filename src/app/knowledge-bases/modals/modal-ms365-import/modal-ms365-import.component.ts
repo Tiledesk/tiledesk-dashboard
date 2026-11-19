@@ -369,8 +369,9 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   get selectedCount(): number { return this.selected.size; }
 
   /** Options step summary: the first items picked, by name. */
-  get selectedPreview(): { name: string; kind: 'folder' | 'file' }[] {
-    return Array.from(this.selected.values()).slice(0, SUMMARY_ITEMS).map(s => ({ name: s.name || s.item_id, kind: s.kind }));
+  get selectedPreview(): { name: string; kind: 'folder' | 'file'; tone: string }[] {
+    return Array.from(this.selected.values()).slice(0, SUMMARY_ITEMS)
+      .map(s => ({ name: s.name || s.item_id, kind: s.kind, tone: this.itemTone({ kind: s.kind, id: s.item_id, name: s.name || '' }) }));
   }
   get selectedMore(): number { return Math.max(0, this.selected.size - SUMMARY_ITEMS); }
 
@@ -427,9 +428,26 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     return d.toLocaleDateString(undefined, sameYear ? { day: 'numeric', month: 'short' } : { day: 'numeric', month: 'short', year: 'numeric' });
   }
 
-  /** Site URL without the scheme, to tell apart sites with the same name. */
+  /**
+   * Site path, to tell apart sites with the same name (all sites share the tenant host).
+   * Microsoft's internal contentstorage sites (Loop, Designer) get no hint: their paths are ids.
+   */
   siteHint(item: KbSourceItem): string {
-    return item.web_url ? item.web_url.replace(/^https?:\/\//, '') : '';
+    if (!item.web_url) { return ''; }
+    let u: URL;
+    try { u = new URL(item.web_url); } catch (e) { return ''; }
+    const path = u.pathname.replace(/\/+$/, '');
+    if (!path) { return u.host; }
+    if (/^\/contentstorage\//i.test(path)) { return ''; }
+    try { return decodeURIComponent(path); } catch (e) { return path; }
+  }
+
+  /** "Empty", "1 item" or "N items": translation key and params. */
+  folderCount(item: KbSourceItem): { key: string; params?: any } {
+    const n = item.child_count;
+    if (n === 0) { return { key: 'KbPage.Ms365FolderEmpty' }; }
+    if (n === 1) { return { key: 'KbPage.Ms365ItemOne' }; }
+    return { key: 'KbPage.Ms365ItemsCount', params: { count: n } };
   }
 
   onRowClick(item: KbSourceItem) {

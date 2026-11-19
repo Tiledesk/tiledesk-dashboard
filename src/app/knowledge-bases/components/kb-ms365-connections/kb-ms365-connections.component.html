@@ -1,7 +1,7 @@
 <!-- KB page: only what needs action -->
 <ng-container *ngIf="view === 'banner'">
   <div class="ms365-banner" *ngFor="let c of needsReconnect" role="status">
-    <span class="material-icons-outlined ms365-banner-icon">warning_amber</span>
+    <span aria-hidden="true" class="material-icons-outlined ms365-banner-icon">warning_amber</span>
     <span class="ms365-banner-text">{{ 'KbPage.Ms365ReconnectBanner' | translate: { upn: c.account?.upn } }}</span>
     <button type="button" class="ms365-conn-btn ms365-conn-reconnect" (click)="reconnect(c)">{{ 'KbPage.Ms365Reconnect' | translate }}</button>
   </div>
@@ -19,7 +19,8 @@
         <span class="ms365-conn-meta">
           {{ 'KbPage.Ms365ConnectedBy' | translate: { name: c.created_by?.name } }}
           <span class="ms365-conn-sep" aria-hidden="true"></span>
-          {{ 'KbPage.Ms365FoldersFiles' | translate: { folders: c.folders_count || 0, files: c.files_count || 0 } }}
+          {{ countKey(c.folders_count, 'Folder') | translate: { count: c.folders_count || 0 } }},
+          {{ countKey(c.files_count, 'File') | translate: { count: c.files_count || 0 } }}
         </span>
       </span>
       <span *ngIf="c.status === 'needs_reconnect'" class="ms365-conn-badge ms365-conn-warning">{{ 'KbPage.Ms365StatusNeedsReconnect' | translate }}</span>
