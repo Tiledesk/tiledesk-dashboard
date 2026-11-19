@@ -148,7 +148,7 @@ describe('KnowledgeBaseTableComponent (Microsoft 365 rows)', () => {
     component.ms365Reconnected.subscribe(spy);
     const ev = jasmine.createSpyObj('ev', ['stopPropagation']);
     component.onMs365Reconnect(folder, ev);
-    expect(kbSources.connect).toHaveBeenCalledWith('c1');
+    expect(kbSources.connect).toHaveBeenCalledWith('microsoft365', 'c1');
     expect(ev.stopPropagation).toHaveBeenCalled();
     flush();
     expect(spy).toHaveBeenCalledWith(folder);

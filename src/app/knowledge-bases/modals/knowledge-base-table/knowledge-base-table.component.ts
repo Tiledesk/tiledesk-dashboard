@@ -622,7 +622,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
       return;
     }
     const connectionId = kb?.external?.connection_id;
-    this.kbSources.connect(connectionId).then(result => {
+    this.kbSources.connect('microsoft365', connectionId).then(result => {
       if (result.status === 'connected') {
         this.ms365Reconnected.emit(kb);
       } else if (result.status === 'blocked' || result.status === 'closed') {

@@ -262,7 +262,7 @@ describe('ModalMs365ImportComponent', () => {
     component.addsKbTag();
     svc.importItems.and.returnValue(of({ contents: [{ _id: 'k1', type: 'ms365_folder', name: 'Folder' }] }));
     component.onImport();
-    expect(svc.importItems).toHaveBeenCalledWith({
+    expect(svc.importItems).toHaveBeenCalledWith('microsoft365', {
       namespace: 'ns1', connection_id: 'c1',
       items: [
         { drive_id: 'd-s1', item_id: 'f1', kind: 'folder', site_name: 'Team Site' },
@@ -280,7 +280,7 @@ describe('ModalMs365ImportComponent', () => {
     pickAndGoToOptions(true);
     svc.importItems.and.returnValue(of({ contents: [] }));
     component.onImport();
-    const req: any = svc.importItems.calls.mostRecent().args[0];
+    const req: any = svc.importItems.calls.mostRecent().args[1];
     expect(req.items[0].site_name).toBe('x'.repeat(200));
   });
 
@@ -297,7 +297,7 @@ describe('ModalMs365ImportComponent', () => {
     pickAndGoToOptions(false);
     svc.importItems.and.returnValue(of({ contents: [] }));
     component.onImport();
-    const req = svc.importItems.calls.mostRecent().args[0];
+    const req = svc.importItems.calls.mostRecent().args[1];
     expect(req.items.every(i => !('site_name' in i))).toBe(true);
     expect(req.items[0].drive_id).toBe('d-me');
   });
@@ -346,7 +346,7 @@ describe('ModalMs365ImportComponent', () => {
     pickAndGoToOptions(false);
     svc.importItems.and.returnValue(of({ contents: [] }));
     component.onImport();
-    expect(svc.importItems.calls.mostRecent().args[0].refresh_rate).toBe('never');
+    expect(svc.importItems.calls.mostRecent().args[1].refresh_rate).toBe('never');
   });
 
   it('with the refresh feature the rates are never/daily/weekly/monthly', () => {
@@ -363,7 +363,7 @@ describe('ModalMs365ImportComponent', () => {
     fixture.detectChanges();
     expect(text()).toContain('KbPage.Ms365ContinueHere');
     component.continueInWindow(component.lastConnectionId);
-    expect((svc as any).connectInWindow).toHaveBeenCalledWith('c9');
+    expect((svc as any).connectInWindow).toHaveBeenCalledWith('microsoft365', 'c9');
   }));
 
   it('"Continue in this window" is not offered when the user closed the popup', fakeAsync(() => {

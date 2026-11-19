@@ -18,6 +18,8 @@ export interface KbSourceError {
   folders_count?: number;  // in_use (DELETE /connections/:id -> 409)
 }
 
+export type KbSourceProviderId = 'microsoft365' | 'googledrive';
+
 export interface KbSourceProvider {
   id: string;
   available: boolean;
@@ -31,7 +33,7 @@ export interface KbSourceProviders {
 
 export interface KbSourceConnection {
   _id: string;
-  provider: string;
+  provider: KbSourceProviderId;
   account: { display_name: string; upn: string; tenant_id: string };
   created_by: { id: string; name: string };
   status: string;
@@ -40,7 +42,7 @@ export interface KbSourceConnection {
   files_count?: number;
 }
 
-export type KbSourceItemKind = 'site' | 'onedrive' | 'drive' | 'folder' | 'file';
+export type KbSourceItemKind = 'site' | 'onedrive' | 'drive' | 'folder' | 'file' | 'mydrive' | 'shared_drive';
 
 export interface KbSourceItem {
   kind: KbSourceItemKind;
@@ -76,4 +78,5 @@ export interface Ms365ConnectResult {
   status: 'connected' | 'error' | 'blocked' | 'closed';
   reason?: string;
   connection_id?: string;
+  provider?: KbSourceProviderId;
 }

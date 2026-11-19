@@ -82,7 +82,7 @@ describe('KbMs365ConnectionsComponent', () => {
     component.changed.subscribe(v => emitted.push(v));
     component.reconnect(component.connections[0]);
     flushMicrotasks();
-    expect(kbSources.connect).toHaveBeenCalledWith('c1');
+    expect(kbSources.connect).toHaveBeenCalledWith('microsoft365', 'c1');
     expect(kbSources.getConnections).toHaveBeenCalledTimes(2);
     expect(emitted).toEqual([{ cascade: false }]);
   }));
@@ -154,7 +154,7 @@ describe('KbMs365ConnectionsComponent', () => {
     component.reconnect(component.connections[0]);
     flushMicrotasks();
     expect(fire).toHaveBeenCalled();
-    expect((kbSources as any).connectInWindow).toHaveBeenCalledWith('c1');
+    expect((kbSources as any).connectInWindow).toHaveBeenCalledWith('microsoft365', 'c1');
   }));
 
   it('Reconnect with blocked pop-ups and a declined confirm does nothing', fakeAsync(() => {

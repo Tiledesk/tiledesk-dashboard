@@ -157,7 +157,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     this.connectState = 'waiting';
     this.connectError = null;
     this.popupBlocked = false;
-    this.kbSources.connect(connectionId).then((result) => {
+    this.kbSources.connect('microsoft365', connectionId).then((result) => {
       if (attempt !== this.connectAttempt) { return; } // cancelled
       this.handleConnectResult(result, connectionId);
     });
@@ -166,7 +166,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   /** Full-page sign-in when pop-ups are blocked; the page comes back with ?ms365=... */
   continueInWindow(connectionId?: string) {
     this.connectError = null;
-    this.kbSources.connectInWindow(connectionId).catch(() => {
+    this.kbSources.connectInWindow('microsoft365', connectionId).catch(() => {
       this.connectState = 'retry';
       this.connectError = { key: 'KbPage.Ms365ErrConnect' };
     });
@@ -509,7 +509,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     };
     this.importing = true;
     this.importError = null;
-    this.kbSources.importItems(req).subscribe({
+    this.kbSources.importItems('microsoft365', req).subscribe({
       next: (res) => {
         this.importing = false;
         this.dialogRef.close({ contents: (res && res.contents) || [] });

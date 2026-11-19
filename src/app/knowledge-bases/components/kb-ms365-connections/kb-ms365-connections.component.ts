@@ -75,7 +75,7 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
 
   /** connect() opens the popup synchronously, so it is called straight from the click. */
   reconnect(c: KbSourceConnection) {
-    this.kbSources.connect(c._id).then(result => {
+    this.kbSources.connect('microsoft365', c._id).then(result => {
       if (result.status === 'connected') {
         this.load();
         this.changed.emit({ cascade: false });
@@ -96,7 +96,7 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
     const text = this.translate.instant('KbPage.Ms365BlockedContinue');
     if (!await this.confirm(text, 'KbPage.Ms365ContinueHere')) { return; }
     try {
-      await this.kbSources.connectInWindow(c._id);
+      await this.kbSources.connectInWindow('microsoft365', c._id);
     } catch (e) {
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
     }
