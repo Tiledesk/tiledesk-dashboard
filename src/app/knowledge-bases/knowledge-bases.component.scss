@@ -1844,12 +1844,18 @@ table {
 .kb-link-to-docs:hover {
     text-decoration: underline;
 }
-// Microsoft 365 accounts button in the KB header (opens the accounts dialog)
-.kb-ms365-accounts-btn {
+// Microsoft 365 accounts button in the KB header (opens the accounts dialog).
+// btn-blu-gray-outline is a 40px icon circle with a light text color: this one carries a label.
+.btn-blu-gray-outline.kb-ms365-accounts-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  width: auto;
+  padding: 0 12px 0 10px !important;
+  color: #30373f !important;
+  font-size: 13px;
+  white-space: nowrap;
   text-transform: none;
   .kb-ms365-accounts-btn__icon { font-size: 18px; }
   .kb-ms365-accounts-btn__count {
