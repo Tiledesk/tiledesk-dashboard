@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.11.0-rc2
+- Microsoft 365 sign-in popup: the result reaches the dashboard also when the Microsoft pages cut window.opener (relayed on a BroadcastChannel; the popup closes itself)
+
 ### 2.11.0-rc1
 - Adds Microsoft 365 (SharePoint / OneDrive) as a Knowledge Base source: Add content → Microsoft 365, connect an account in a popup (or in the same window when popups are blocked), browse sites, libraries and folders, import with a refresh rate; folder rows show account, files, last sync and warnings (Reconnect), with Sync now, refresh-rate edit and delete; Microsoft 365 accounts section to reconnect or disconnect
 - KB file upload uses `/files/kb` and the server's KB file limit (50 MB default), `.md` accepted
