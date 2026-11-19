@@ -5,6 +5,7 @@ import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
 import { KbSourceConnection, KbSourceItem, KbImportRequest, KbSourceProviderId } from 'app/models/kb-sources.model';
 import { Subscription } from 'rxjs';
+import { KbSourceMessage, sourceMessageKey } from '../../utils/kb-source-keys';
 
 export type Ms365Step = 'account' | 'browse' | 'options';
 export type Ms365ConnectState = 'idle' | 'waiting' | 'retry';
@@ -145,7 +146,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
         this.logger.error('[MODAL-MS365] getConnections error ', err);
         this.connections = [];
         this.loadingConnections = false;
-        this.connectError = { key: 'KbPage.Ms365ErrConnect' };
+        this.connectError = { key: this.msgKey('ErrConnect') };
       }
     });
   }
@@ -171,7 +172,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     this.connectError = null;
     this.kbSources.connectInWindow(this.provider, connectionId).catch(() => {
       this.connectState = 'retry';
-      this.connectError = { key: 'KbPage.Ms365ErrConnect' };
+      this.connectError = { key: this.msgKey('ErrConnect') };
     });
   }
 
@@ -202,7 +203,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     this.connectState = 'retry';
     switch (result.reason) {
       case 'access_denied':
-        this.connectError = { key: 'KbPage.Ms365ErrAccessDenied' };
+        this.connectError = { key: this.msgKey('ErrAccessDenied') };
         break;
       case 'scope_missing': // Google: the Drive permission was unticked on the consent screen
         this.connectError = { key: 'KbPage.GdriveErrScope' };
@@ -213,7 +214,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
         break;
       }
       default: // state_invalid, exchange_failed, connect_failed, anything else
-        this.connectError = { key: 'KbPage.Ms365ErrConnect' };
+        this.connectError = { key: this.msgKey('ErrConnect') };
     }
   }
 
@@ -288,7 +289,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     }
     if (code === 'folder_not_found' || code === 'connection_not_found') { this.browseError = 'KbPage.Ms365ErrNotFound'; }
     else if (code === 'graph_forbidden') { this.browseError = 'KbPage.Ms365ErrForbidden'; }
-    else if (code === 'connection_busy') { this.browseError = 'KbPage.Ms365ErrBusy'; }
+    else if (code === 'connection_busy') { this.browseError = this.msgKey('ErrBusy'); }
     else { this.browseError = 'KbPage.Ms365ErrBrowse'; } // graph_error, invalid_page_token, site_required, ...
   }
 
@@ -406,6 +407,9 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
          { labelKey: 'KbPage.Ms365SitesSection', items: this.rootSites, showHint: true }];
     return groups.filter(g => g.items.length > 0);
   }
+
+  /** Key of a product-named message for this dialog's provider. */
+  msgKey(message: KbSourceMessage): string { return sourceMessageKey(this.provider, message); }
 
   get isGoogle(): boolean { return this.provider === 'googledrive'; }
   get providerLabelKey(): string { return this.isGoogle ? 'KbPage.GdriveCard' : 'KbPage.Ms365Card'; }

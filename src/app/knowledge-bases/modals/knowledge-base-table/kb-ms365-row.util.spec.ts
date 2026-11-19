@@ -38,6 +38,17 @@ describe('kb-ms365-row.util', () => {
     expect(getMs365Warning({ type: 'url', last_error: { code: 'x' } })).toBeNull();
   });
 
+  it('a googledrive row gets the Google variants of the product-named warnings', () => {
+    const g = { type: 'gdrive_folder', external: { provider: 'googledrive' } };
+    expect(getMs365Warning({ ...g, last_error: { code: 'needs_reconnect' } }))
+      .toEqual({ code: 'needs_reconnect', key: 'KbPage.GdriveNeedsReconnect', reconnect: true });
+    expect(getMs365Warning({ ...g, last_error: { code: 'connection_needs_reconnect' } }).key).toBe('KbPage.GdriveNeedsReconnect');
+    expect(getMs365Warning({ ...g, last_error: { code: 'folder_not_found' } }).key).toBe('KbPage.GdriveWarnFolderNotFound');
+    expect(getMs365Warning({ ...g, last_error: { code: 'sync_failed' } }).key).toBe('KbPage.Ms365WarnSyncFailed');
+    const gFile = { type: 'pdf', source_origin_id: 'f', external: { provider: 'googledrive' } };
+    expect(getMs365Warning({ ...gFile, last_error: { code: 'needs_reconnect' } }).key).toBe('KbPage.GdriveNeedsReconnect');
+  });
+
   it('counts, last sync and refresh rate column', () => {
     expect(ms365FileCount(folder)).toBe(7);
     expect(ms365FileCount({})).toBe(0);

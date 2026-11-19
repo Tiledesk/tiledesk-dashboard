@@ -1,4 +1,5 @@
 import { KbSourceProviderId } from 'app/models/kb-sources.model';
+import { sourceMessageKey } from '../../utils/kb-source-keys';
 
 /**
  * Pure helpers for rendering and managing Microsoft 365 contents (folders `ms365_folder`
@@ -77,8 +78,12 @@ export function getMs365Warning(kb: any): Ms365Warning | null {
   if (!code) {
     return null;
   }
-  const key = WARNING_KEYS[code] || WARNING_KEYS['sync_failed'];
-  return { code, key, reconnect: key === WARNING_KEYS['needs_reconnect'] };
+  const reconnect = WARNING_KEYS[code] === WARNING_KEYS['needs_reconnect'];
+  let key = WARNING_KEYS[code] || WARNING_KEYS['sync_failed'];
+  // the texts that name the product have a Google Drive variant
+  if (reconnect) { key = sourceMessageKey(sourceProviderOf(kb), 'NeedsReconnect'); }
+  else if (code === 'folder_not_found') { key = sourceMessageKey(sourceProviderOf(kb), 'WarnFolderNotFound'); }
+  return { code, key, reconnect };
 }
 
 export function ms365FileCount(kb: any): number {

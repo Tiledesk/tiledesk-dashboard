@@ -34,8 +34,8 @@
     <!-- Sign-in in progress / to retry: same panel in every step -->
     <div *ngIf="connectState === 'waiting'" class="ms365-signin">
         <mat-spinner diameter="28"></mat-spinner>
-        <p class="ms365-signin-title">{{ 'KbPage.Ms365Waiting' | translate }}</p>
-        <p class="ms365-muted">{{ 'KbPage.Ms365WaitingHint' | translate }}</p>
+        <p class="ms365-signin-title">{{ msgKey('Waiting') | translate }}</p>
+        <p class="ms365-muted">{{ msgKey('WaitingHint') | translate }}</p>
         <button type="button" class="ms365-text-btn" (click)="cancelConnect()">{{ 'Cancel' | translate }}</button>
     </div>
     <div *ngIf="connectState === 'retry'" class="ms365-signin">
@@ -64,7 +64,7 @@
                 <p class="ms365-muted">{{ connectHintKey | translate }}</p>
             </div>
 
-            <p *ngIf="connections.length > 0 && !isGoogle" class="ms365-label">{{ 'KbPage.Ms365ChooseAccount' | translate }}</p>
+            <p *ngIf="connections.length > 0" class="ms365-label">{{ msgKey('ChooseAccount') | translate }}</p>
             <ul class="ms365-accounts" *ngIf="connections.length > 0">
                 <li *ngFor="let conn of connections" class="ms365-account"
                     [class.ms365-account--warn]="conn.status === 'needs_reconnect'"
@@ -119,7 +119,7 @@
 
         <div *ngIf="browseError === 'needs_reconnect'" class="ms365-notice ms365-notice--warn">
             <span aria-hidden="true" class="material-icons-outlined">warning_amber</span>
-            <span class="ms365-notice-text">{{ 'KbPage.Ms365NeedsReconnect' | translate }}</span>
+            <span class="ms365-notice-text">{{ msgKey('NeedsReconnect') | translate }}</span>
             <button type="button" class="ms365-btn" (click)="startConnect(connection._id)">{{ 'KbPage.Ms365Reconnect' | translate }}</button>
         </div>
         <div *ngIf="browseError && browseError !== 'needs_reconnect'" class="ms365-notice ms365-notice--error">
@@ -226,7 +226,7 @@
                 <option *ngFor="let rate of refreshRates" [value]="rate.value">{{ rate.label | translate }}</option>
             </select>
             <p class="ms365-muted ms365-small ms365-help">
-                {{ (selectedRefreshRate === 'never' ? 'KbPage.Ms365RefreshHelpNever' : 'KbPage.Ms365RefreshHelp') | translate }}
+                {{ (selectedRefreshRate === 'never' ? 'KbPage.Ms365RefreshHelpNever' : msgKey('RefreshHelp')) | translate }}
             </p>
         </div>
 

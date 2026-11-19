@@ -193,6 +193,21 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
       expect(page.presentModalImportMs365).not.toHaveBeenCalled();
     });
 
+    it('a Google error return toasts the Google texts; Microsoft keeps its own', () => {
+      const cases: [string, string, string][] = [
+        ['googledrive', 'access_denied', 'KbPage.GdriveErrAccessDenied'],
+        ['googledrive', 'state_invalid', 'KbPage.GdriveErrConnect'],
+        ['googledrive', 'exchange_failed', 'KbPage.GdriveErrConnect'],
+        ['microsoft365', 'access_denied', 'KbPage.Ms365ErrAccessDenied'],
+        ['microsoft365', 'exchange_failed', 'KbPage.Ms365ErrConnect']];
+      for (const [provider, reason, key] of cases) {
+        withQuery({ kbsrc: 'error', provider, reason });
+        page.readMs365Return();
+        page.applyMs365Return();
+        expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe(key);
+      }
+    });
+
     it('microsoft365 kbsrc return opens the import dialog with the connection', () => {
       withQuery({ kbsrc: 'connected', provider: 'microsoft365', connection_id: 'M' });
       page.readMs365Return();

@@ -562,6 +562,69 @@ describe('ModalMs365ImportComponent', () => {
       expect(svc.importItems.calls.mostRecent().args[1].connection_id).toBe('g1');
     });
 
+    it('the waiting panel and the retry errors use Google keys only', fakeAsync(() => {
+      setupGoogle(true);
+      let resolve: any;
+      svc.connect.and.returnValue(new Promise(r => resolve = r));
+      component.startConnect();
+      fixture.detectChanges();
+      expect(text()).toContain('KbPage.GdriveWaiting');
+      expect(text()).toContain('KbPage.GdriveWaitingHint');
+      expect(fixture.nativeElement.querySelector('.ms365-signin').textContent).not.toContain('Ms365');
+      resolve({ status: 'error', reason: 'access_denied' });
+      flush();
+      expect(component.connectError.key).toBe('KbPage.GdriveErrAccessDenied');
+      fixture.detectChanges();
+      expect(text()).toContain('KbPage.GdriveErrAccessDenied');
+      for (const reason of ['state_invalid', 'exchange_failed', 'connect_failed']) {
+        svc.connect.and.returnValue(Promise.resolve({ status: 'error', reason }));
+        component.startConnect();
+        flush();
+        expect(component.connectError.key).toBe('KbPage.GdriveErrConnect');
+      }
+      (svc as any).connectInWindow = jasmine.createSpy('connectInWindow').and.returnValue(Promise.reject({}));
+      component.continueInWindow();
+      flush();
+      expect(component.connectError.key).toBe('KbPage.GdriveErrConnect');
+    }));
+
+    it('the account list label and reconnect/busy notices use Google keys', () => {
+      setupGoogle(true);
+      expect(text()).toContain('KbPage.GdriveChooseAccount');
+      component.chooseConnection(gConn as any);
+      component.browseError = 'needs_reconnect';
+      fixture.detectChanges();
+      expect(text()).toContain('KbPage.GdriveNeedsReconnect');
+      svc.getChildren.and.returnValue(throwError({ error: { error: 'connection_busy' } }));
+      component.openItem(component.items[0]);
+      expect(component.browseError).toBe('KbPage.GdriveErrBusy');
+      fixture.detectChanges();
+      expect(text()).not.toContain('Ms365Err');
+      expect(text()).not.toContain('Ms365NeedsReconnect');
+    });
+
+    it('the options step help uses the Google refresh key, with no Ms365 product key', () => {
+      setupGoogle(true);
+      component.chooseConnection(gConn as any);
+      component.openItem(component.items[0]);
+      component.toggleItem(component.items.find(i => i.kind === 'file'));
+      component.goToOptions();
+      component.selectedRefreshRate = 'weekly';
+      fixture.detectChanges();
+      expect(text()).toContain('KbPage.GdriveRefreshHelp');
+      expect(text()).not.toContain('KbPage.Ms365RefreshHelp');
+    });
+
+    it('Microsoft keeps its keys', fakeAsync(() => {
+      setup([activeConn], {}, true);
+      expect(text()).toContain('KbPage.Ms365ChooseAccount');
+      svc.connect.and.returnValue(new Promise(() => {}));
+      component.startConnect();
+      fixture.detectChanges();
+      expect(text()).toContain('KbPage.Ms365Waiting');
+      expect(text()).not.toContain('Gdrive');
+    }));
+
     it('initialConnectionId opens the Google account', () => {
       setup([gConn], { provider: 'googledrive', initialConnectionId: 'g1' });
       expect(component.step).toBe('browse');

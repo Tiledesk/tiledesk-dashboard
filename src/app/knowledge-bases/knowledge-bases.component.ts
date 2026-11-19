@@ -45,6 +45,7 @@ import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.co
 import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
 import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
 import { KbSourceConnection, KbSourceProviderId } from 'app/models/kb-sources.model';
+import { sourceMessageKey } from './utils/kb-source-keys';
 import { asProvider } from 'app/knowledge-bases/utils/ms365-popup-return';
 import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
 import { ModalMs365AccountsComponent } from './modals/modal-ms365-accounts/modal-ms365-accounts.component';
@@ -3078,8 +3079,8 @@ _presentDialogImportContents() {
       if (this.ms365Connections) { this.ms365Connections.load(); }
       this.presentModalImportMs365(ret.connectionId || undefined, ret.provider);
     } else if (ret.status === 'error') {
-      let key = 'KbPage.Ms365ErrConnect'; // state_invalid, exchange_failed, anything else
-      if (ret.reason === 'access_denied') { key = 'KbPage.Ms365ErrAccessDenied'; }
+      let key = sourceMessageKey(ret.provider, 'ErrConnect'); // state_invalid, exchange_failed, anything else
+      if (ret.reason === 'access_denied') { key = sourceMessageKey(ret.provider, 'ErrAccessDenied'); }
       if (ret.reason === 'scope_missing') { key = 'KbPage.GdriveErrScope'; }
       // account_mismatch: the expected upn is unknown here, so the generic message is used
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant(key), 4, 'report_problem');

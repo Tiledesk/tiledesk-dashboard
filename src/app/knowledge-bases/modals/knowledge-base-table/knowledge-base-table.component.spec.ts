@@ -84,6 +84,13 @@ describe('KnowledgeBaseTableComponent (Microsoft 365 rows)', () => {
     expect(q('.ms365-reconnect-btn')).not.toBeNull();
   });
 
+  it('a Google Drive row warns with the Google text and keeps Reconnect', () => {
+    setup([{ ...folder, type: 'gdrive_folder', external: { ...folder.external, provider: 'googledrive' }, last_error: { code: 'needs_reconnect' } }]);
+    expect(q('.ms365-warning-chip').textContent).toContain('KbPage.GdriveNeedsReconnect');
+    expect(q('.ms365-warning-chip').textContent).not.toContain('Ms365');
+    expect(q('.ms365-reconnect-btn')).not.toBeNull();
+  });
+
   it('other codes warn without a Reconnect button', () => {
     setup([{ ...folder, last_error: { code: 'folder_not_found' } }]);
     expect(q('.ms365-warning-chip').textContent).toContain('KbPage.Ms365WarnFolderNotFound');
