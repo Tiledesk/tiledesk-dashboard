@@ -12,7 +12,7 @@ import { ModalKbScrapeSettingsComponent } from '../modal-kb-scrape-settings/moda
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { NotifyService } from 'app/core/notify.service';
 import { TranslateService } from '@ngx-translate/core';
-import { getMs365Warning, isMs365Folder, isMs365File, isMs365Content, ms365ErrorCode, ms365FileCount, ms365LastSync } from '../knowledge-base-table/kb-ms365-row.util';
+import { getMs365Warning, isMs365Folder, isMs365File, isMs365Content, ms365ErrorCode, ms365FileCount, ms365LastSync, sourceLabelKey, sourceIconOf } from '../knowledge-base-table/kb-ms365-row.util';
 
 
 @Component({
@@ -146,7 +146,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
           this.refresh_rate.splice(0, 1);
       }
 
-     if (this.kb.type === 'url' || this.kb.type === 'sitemap' || this.kb.type === 'ms365_folder') {
+     if (this.kb.type === 'url' || this.kb.type === 'sitemap' || isMs365Folder(this.kb)) {
         // Build the shared `scrapeConfig` from the values already saved on the
         // KB so the side-by-side settings dialog reflects the user's previous
         // choices on first open.
@@ -179,7 +179,7 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
       this.situatedContextEnabled = Boolean(this.kb.situated_context);
 
       // Recupera i chunks solo se esiste _id
-      if (this.kb._id && this.kb.type !== 'sitemap' && this.kb.type !== 'ms365_folder') {
+      if (this.kb._id && this.kb.type !== 'sitemap' && !isMs365Folder(this.kb)) {
         this.getContentChuncks(this.kb.id_project, this.kb.namespace, this.kb._id)
       } else {
         this.showSpinner = false;
@@ -238,6 +238,8 @@ export class ModalDetailKnowledgeBaseComponent implements OnInit {
 
   // ---------- Microsoft 365 ----------
   get isMs365Folder(): boolean { return isMs365Folder(this.kb); }
+  get sourceLabelKey(): string { return sourceLabelKey(this.kb); }
+  get sourceIcon(): string { return sourceIconOf(this.kb); }
   get ms365Warning() { return getMs365Warning(this.kb); }
   get ms365FileCount(): number { return ms365FileCount(this.kb); }
   get ms365LastSync(): any { return ms365LastSync(this.kb); }

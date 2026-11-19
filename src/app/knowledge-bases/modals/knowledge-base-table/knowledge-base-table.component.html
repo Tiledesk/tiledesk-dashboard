@@ -274,6 +274,9 @@
                             <ng-option value="ms365_folder">
                                 {{'KbPage.Ms365Card'| translate}}
                             </ng-option>
+                            <ng-option value="gdrive_folder">
+                                {{'KbPage.GdriveCard'| translate}}
+                            </ng-option>
                             <ng-option value="txt">
                                 TXT
                             </ng-option>
@@ -520,9 +523,11 @@
                                     style="font-size: 16px; color: white; transform: rotate(-90deg);">schema</span> -->
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">Sitemap</span>
                             </div>
-                            <div *ngIf="kb.type == 'ms365_folder'" class="chip ms365-chip"
+                            <div *ngIf="isMs365Folder(kb)" class="chip ms365-chip"
+                                [style.background-color]="kb.type == 'gdrive_folder' ? '#1a73e8' : '#0078d4'"
                                 style="display: flex; align-items: center; justify-content: center; background-color: #0078d4; color: white; padding: 2px 6px; border-radius: 10px;">
-                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px; white-space: nowrap;">Microsoft 365</span>
+                                <span class="material-icons-outlined source-chip-icon" style="font-size: 16px; color: white;">{{ sourceIcon(kb) }}</span>
+                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px; white-space: nowrap;">{{ sourceLabelKey(kb) | translate }}</span>
                             </div>
                             <div *ngIf="kb.type == 'faq'" class="chip"
                                 style="display: flex; align-items: center; justify-content: center; background-color: #8021ea; color: white; padding: 2px 6px; border-radius: 10px;">
@@ -535,7 +540,7 @@
 
                         <td style="min-width: 50px; width: 50px; text-align:center;"
                             (click)="onOpenBaseModalDetail(kb)">
-                            <ng-container *ngIf="kb.type !== 'sitemap' && kb.type !== 'ms365_folder'"> 
+                            <ng-container *ngIf="kb.type !== 'sitemap' && !isMs365Folder(kb)"> 
                                 <span *ngIf="kb.status == -1 || kb.status == 0" id="done"
                                     class="material-icons-outlined status-icon" 
                                     style="vertical-align: middle;"
@@ -597,7 +602,7 @@
                                     delete_sweep
                                 </span>
                             </ng-container>
-                            <ng-container *ngIf="kb.type === 'sitemap' || kb.type === 'ms365_folder'"> 
+                            <ng-container *ngIf="kb.type === 'sitemap' || isMs365Folder(kb)"> 
                                 <span *ngIf="!isMs365Syncing(kb)" class="material-icons-outlined status-icon" style="vertical-align: middle;">
                                     remove
                                 </span>
@@ -679,7 +684,7 @@
 
                                 </div>
 
-                                <div *ngIf="kb.type === 'ms365_folder'" class="subtitle ellipsis-text ms365-folder-meta" style="max-width: 100%;">
+                                <div *ngIf="isMs365Folder(kb)" class="subtitle ellipsis-text ms365-folder-meta" style="max-width: 100%;">
                                     <span *ngIf="ms365Account(kb)" class="ms365-account">{{ ms365Account(kb) }} · </span>
                                     <span *ngIf="kb.external?.site_name">{{ kb.external.site_name }} · </span>
                                     <span class="ms365-file-count">{{ (ms365FileCount(kb) === 1 ? 'KbPage.Ms365FileOne' : 'KbPage.Ms365FilesCount') | translate: { count: ms365FileCount(kb) } }}</span>
@@ -687,14 +692,14 @@
                                 </div>
 
                                 <div *ngIf="ms365Origin(kb)" class="subtitle ellipsis-text ms365-origin" style="max-width: 100%;">
-                                    <span class="ms365-origin-pill" style="background: #0078d4;
+                                    <span class="ms365-origin-pill" [style.background]="kb.external?.provider === 'googledrive' ? '#1a73e8' : '#0078d4'" style="background: #0078d4;
                                         color: #fff;
                                         border-radius: 9999px;
                                         padding: 0 5px;
                                         font-size: 9px;
                                         font-weight: 400;
                                         margin-right: 3px;">
-                                        {{'KbPage.Ms365Card'| translate}}
+                                        {{ sourceLabelKey(kb) | translate }}
                                     </span>
                                     {{ kb.source_origin }}
                                 </div>
@@ -747,12 +752,12 @@
                                         <mat-icon>play_arrow</mat-icon>
                                         <span>{{'KbPage.ReIndex' | translate}}</span>
                                     </button>
-                                    <button *ngIf="kb.type === 'ms365_folder'" class="ms365-sync-now"
+                                    <button *ngIf="isMs365Folder(kb)" class="ms365-sync-now"
                                         mat-menu-item (click)="onMs365SyncNow(kb)">
                                         <mat-icon>sync</mat-icon>
                                         <span>{{'KbPage.Ms365SyncNow' | translate}}</span>
                                     </button>
-                                    <button *ngIf="kb.type !== 'ms365_folder'" mat-menu-item (click)="onCheckStatus(kb)">
+                                    <button *ngIf="!isMs365Folder(kb)" mat-menu-item (click)="onCheckStatus(kb)">
                                         <mat-icon>published_with_changes</mat-icon>
                                         <span>{{'KbPage.RunCheckStatus' | translate}}</span>
                                     </button>

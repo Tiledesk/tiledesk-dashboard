@@ -14,7 +14,7 @@ import { NotifyService } from 'app/core/notify.service';
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  getMs365Warning, ms365AccountLabel, showsMs365Origin, isMs365Folder, isMs365File, isMs365Syncing, ms365FileCount, ms365LastSync, showsRefreshRate
+  getMs365Warning, ms365AccountLabel, showsMs365Origin, isMs365Folder, isMs365File, isMs365Syncing, ms365FileCount, ms365LastSync, showsRefreshRate, sourceLabelKey, sourceIconOf
 } from './kb-ms365-row.util';
 
 
@@ -592,6 +592,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // ---------- Microsoft 365 ----------
   isMs365Folder = isMs365Folder;
   isMs365File = isMs365File;
+  sourceLabelKey = sourceLabelKey;
+  sourceIcon = sourceIconOf;
   isMs365Syncing = isMs365Syncing;
   ms365Warning = getMs365Warning;
   ms365Origin = showsMs365Origin;

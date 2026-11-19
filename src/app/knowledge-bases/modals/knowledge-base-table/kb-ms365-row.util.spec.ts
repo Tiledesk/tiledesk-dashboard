@@ -1,6 +1,7 @@
 import {
   getMs365Warning, isMs365Content, isMs365File, isMs365Folder, isMs365StandaloneFile, isMs365Syncing,
-  ms365DeleteErrorKey, ms365ErrorCode, ms365FileCount, ms365LastSync, showsRefreshRate
+  ms365DeleteErrorKey, ms365ErrorCode, ms365FileCount, ms365LastSync, showsRefreshRate,
+  isSourceFolder, sourceProviderOf, sourceLabelKey, sourceIconOf, showsMs365Origin
 } from './kb-ms365-row.util';
 
 describe('kb-ms365-row.util', () => {
@@ -55,5 +56,39 @@ describe('kb-ms365-row.util', () => {
     expect(ms365DeleteErrorKey({ status: 409, error: { error: 'sync_running' } })).toBe('KbPage.Ms365DeleteSyncRunning');
     expect(ms365DeleteErrorKey({ status: 500, error: {} })).toBeNull();
     expect(ms365DeleteErrorKey({ status: 409, error: { error: 'other' } })).toBeNull();
+  });
+
+  describe('Google Drive', () => {
+    const gFolder = { type: 'gdrive_folder', external: { provider: 'googledrive' } };
+    const gChild = { type: 'pdf', source_origin: '/Docs', source_origin_id: 'g1', external: { provider: 'googledrive' } };
+
+    it('isSourceFolder covers both folder types; the old names are aliases', () => {
+      expect(isSourceFolder(gFolder)).toBe(true);
+      expect(isSourceFolder(folder)).toBe(true);
+      expect(isSourceFolder(gChild)).toBe(false);
+      expect(isMs365Folder(gFolder)).toBe(true);
+      expect(isMs365File(gFolder)).toBe(false);
+      expect(isMs365File(gChild)).toBe(true);
+      expect(isMs365Content(gFolder)).toBe(true);
+      expect(isMs365StandaloneFile({ type: 'pdf', external: { provider: 'googledrive' } })).toBe(true);
+      expect(showsRefreshRate(gFolder)).toBe(true);
+    });
+
+    it('sourceProviderOf, sourceLabelKey and sourceIconOf', () => {
+      expect(sourceProviderOf(gFolder)).toBe('googledrive');
+      expect(sourceProviderOf(folder)).toBe('microsoft365');
+      expect(sourceProviderOf(gChild)).toBe('googledrive');
+      expect(sourceProviderOf(child)).toBe('microsoft365');
+      expect(sourceProviderOf({ type: 'url' })).toBeNull();
+      expect(sourceLabelKey(gFolder)).toBe('KbPage.GdriveCard');
+      expect(sourceLabelKey(folder)).toBe('KbPage.Ms365Card');
+      expect(sourceIconOf(gFolder)).toBe('add_to_drive');
+      expect(sourceIconOf(folder)).toBe('cloud_sync');
+    });
+
+    it('origin pill and syncing work for Google', () => {
+      expect(showsMs365Origin(gChild)).toBe(true);
+      expect(isMs365Syncing({ type: 'gdrive_folder', external: { sync: { state: 'syncing' } } })).toBe(true);
+    });
   });
 });

@@ -1,3 +1,5 @@
+import { KbSourceProviderId } from 'app/models/kb-sources.model';
+
 /**
  * Pure helpers for rendering and managing Microsoft 365 contents (folders `ms365_folder`
  * and the files imported from them / on their own) in the KB contents table and detail modal.
@@ -21,13 +23,35 @@ const WARNING_KEYS: { [code: string]: string } = {
   sync_failed: 'KbPage.Ms365WarnSyncFailed',
 };
 
-export function isMs365Folder(kb: any): boolean {
-  return kb?.type === 'ms365_folder';
+/** A folder source of any provider (`ms365_folder` or `gdrive_folder`). */
+export function isSourceFolder(kb: any): boolean {
+  return kb?.type === 'ms365_folder' || kb?.type === 'gdrive_folder';
 }
 
-/** A file that comes from Microsoft 365 (inside a folder, or imported on its own). */
+/** Provider of a source content (folder by type, file by `external.provider`), or null. */
+export function sourceProviderOf(kb: any): KbSourceProviderId | null {
+  if (kb?.type === 'ms365_folder') return 'microsoft365';
+  if (kb?.type === 'gdrive_folder') return 'googledrive';
+  const p = kb?.external?.provider;
+  return p === 'microsoft365' || p === 'googledrive' ? p : null;
+}
+
+/** i18n key of the provider name shown in the chips and pills. */
+export function sourceLabelKey(kb: any): 'KbPage.Ms365Card' | 'KbPage.GdriveCard' {
+  return sourceProviderOf(kb) === 'googledrive' ? 'KbPage.GdriveCard' : 'KbPage.Ms365Card';
+}
+
+/** Material icon of the provider. */
+export function sourceIconOf(kb: any): string {
+  return sourceProviderOf(kb) === 'googledrive' ? 'add_to_drive' : 'cloud_sync';
+}
+
+/** Kept under its old name: a folder of any provider (Microsoft 365 or Google Drive). */
+export const isMs365Folder = isSourceFolder;
+
+/** A file that comes from a source provider (inside a folder, or imported on its own). */
 export function isMs365File(kb: any): boolean {
-  return !!kb?.external?.provider && kb?.type !== 'ms365_folder';
+  return !!kb?.external?.provider && !isSourceFolder(kb);
 }
 
 export function isMs365Content(kb: any): boolean {
@@ -108,7 +132,7 @@ export function ms365AccountLabel(kb: any, map: { [connectionId: string]: string
   return (id && map && map[id]) || '';
 }
 
-/** The "Microsoft 365" origin pill is only for Microsoft 365 files that carry a source_origin. */
+/** The provider origin pill is only for source files that carry a source_origin. */
 export function showsMs365Origin(kb: any): boolean {
-  return kb?.external?.provider === 'microsoft365' && kb?.type !== 'ms365_folder' && !!kb?.source_origin;
+  return isMs365File(kb) && !!sourceProviderOf(kb) && !!kb?.source_origin;
 }
