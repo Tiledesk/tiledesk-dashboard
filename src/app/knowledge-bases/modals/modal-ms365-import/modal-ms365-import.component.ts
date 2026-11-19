@@ -3,8 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { BrandService } from 'app/services/brand.service';
-import { KbSourceConnection, KbSourceItem, KbImportRequest } from 'app/models/kb-sources.model';
+import { KbSourceConnection, KbSourceItem, KbImportRequest, KbSourceProviderId } from 'app/models/kb-sources.model';
 import { Subscription } from 'rxjs';
+import { KbSourceMessage, sourceMessageKey } from '../../utils/kb-source-keys';
 
 export type Ms365Step = 'account' | 'browse' | 'options';
 export type Ms365ConnectState = 'idle' | 'waiting' | 'retry';
@@ -25,6 +26,7 @@ const MB = 1048576;
 export class ModalMs365ImportComponent implements OnInit, OnDestroy {
 
   step: Ms365Step = 'account';
+  provider: KbSourceProviderId = 'microsoft365';
 
   // ---- gating (same flags as the sitemap modal) ----
   namespace: string;
@@ -79,6 +81,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     public brandService: BrandService,
   ) {
     data = data || {};
+    this.provider = data.provider === 'googledrive' ? 'googledrive' : 'microsoft365';
     this.namespace = data.namespace;
     this.refreshRateIsEnabled = !!data.refreshRateIsEnabled;
     this.isAvailableRefreshRateFeature = !!data.isAvailableRefreshRateFeature;
@@ -134,7 +137,8 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     this.loadingConnections = true;
     this.kbSources.getConnections().subscribe({
       next: (conns) => {
-        this.connections = conns || [];
+        // the endpoint lists every provider's accounts; the dialog shows its own
+        this.connections = (conns || []).filter(c => (c.provider || 'microsoft365') === this.provider);
         this.loadingConnections = false;
         if (then) { then(); }
       },
@@ -142,7 +146,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
         this.logger.error('[MODAL-MS365] getConnections error ', err);
         this.connections = [];
         this.loadingConnections = false;
-        this.connectError = { key: 'KbPage.Ms365ErrConnect' };
+        this.connectError = { key: this.msgKey('ErrConnect') };
       }
     });
   }
@@ -157,7 +161,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     this.connectState = 'waiting';
     this.connectError = null;
     this.popupBlocked = false;
-    this.kbSources.connect(connectionId).then((result) => {
+    this.kbSources.connect(this.provider, connectionId).then((result) => {
       if (attempt !== this.connectAttempt) { return; } // cancelled
       this.handleConnectResult(result, connectionId);
     });
@@ -166,9 +170,9 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   /** Full-page sign-in when pop-ups are blocked; the page comes back with ?ms365=... */
   continueInWindow(connectionId?: string) {
     this.connectError = null;
-    this.kbSources.connectInWindow(connectionId).catch(() => {
+    this.kbSources.connectInWindow(this.provider, connectionId).catch(() => {
       this.connectState = 'retry';
-      this.connectError = { key: 'KbPage.Ms365ErrConnect' };
+      this.connectError = { key: this.msgKey('ErrConnect') };
     });
   }
 
@@ -199,7 +203,10 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     this.connectState = 'retry';
     switch (result.reason) {
       case 'access_denied':
-        this.connectError = { key: 'KbPage.Ms365ErrAccessDenied' };
+        this.connectError = { key: this.msgKey('ErrAccessDenied') };
+        break;
+      case 'scope_missing': // Google: the Drive permission was unticked on the consent screen
+        this.connectError = { key: 'KbPage.GdriveErrScope' };
         break;
       case 'account_mismatch': {
         const conn = this.connections.find(c => c._id === connectionId) || this.reconnectTarget;
@@ -207,7 +214,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
         break;
       }
       default: // state_invalid, exchange_failed, connect_failed, anything else
-        this.connectError = { key: 'KbPage.Ms365ErrConnect' };
+        this.connectError = { key: this.msgKey('ErrConnect') };
     }
   }
 
@@ -233,7 +240,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   }
 
   loadRoots() {
-    this.crumbs = [{ label: 'KbPage.Ms365Locations', kind: 'roots' }];
+    this.crumbs = [{ label: this.isGoogle ? this.providerLabelKey : 'KbPage.Ms365Locations', kind: 'roots' }];
     this.currentSite = null;
     this.currentDriveId = undefined;
     this.currentItemId = undefined;
@@ -282,12 +289,15 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     }
     if (code === 'folder_not_found' || code === 'connection_not_found') { this.browseError = 'KbPage.Ms365ErrNotFound'; }
     else if (code === 'graph_forbidden') { this.browseError = 'KbPage.Ms365ErrForbidden'; }
-    else if (code === 'connection_busy') { this.browseError = 'KbPage.Ms365ErrBusy'; }
+    else if (code === 'connection_busy') { this.browseError = this.msgKey('ErrBusy'); }
     else { this.browseError = 'KbPage.Ms365ErrBrowse'; } // graph_error, invalid_page_token, site_required, ...
   }
 
   openItem(item: KbSourceItem) {
-    if (item.kind === 'onedrive') {
+    if (item.kind === 'mydrive' || item.kind === 'shared_drive') {
+      this.crumbs.push({ label: item.name, kind: 'drive', id: item.drive_id });
+      this.loadChildren(item.drive_id);
+    } else if (item.kind === 'onedrive') {
       this.crumbs.push({ label: item.name, kind: 'drive', id: item.drive_id });
       this.loadChildren(item.drive_id);
     } else if (item.kind === 'site') {
@@ -385,6 +395,27 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   get atRoots(): boolean { return this.crumbs.length <= 1; }
   get rootOneDrive(): KbSourceItem[] { return this.items.filter(i => i.kind === 'onedrive'); }
   get rootSites(): KbSourceItem[] { return this.items.filter(i => i.kind === 'site'); }
+  get rootMyDrive(): KbSourceItem[] { return this.items.filter(i => i.kind === 'mydrive'); }
+  get rootSharedDrives(): KbSourceItem[] { return this.items.filter(i => i.kind === 'shared_drive'); }
+
+  /** Root locations of this dialog's provider, one group per heading. */
+  get rootGroups(): { labelKey: string; items: KbSourceItem[]; showHint: boolean }[] {
+    const groups = this.isGoogle
+      ? [{ labelKey: 'KbPage.GdriveMyDriveSection', items: this.rootMyDrive, showHint: false },
+         { labelKey: 'KbPage.GdriveSharedDrivesSection', items: this.rootSharedDrives, showHint: false }]
+      : [{ labelKey: 'KbPage.Ms365OneDriveSection', items: this.rootOneDrive, showHint: false },
+         { labelKey: 'KbPage.Ms365SitesSection', items: this.rootSites, showHint: true }];
+    return groups.filter(g => g.items.length > 0);
+  }
+
+  /** Key of a product-named message for this dialog's provider. */
+  msgKey(message: KbSourceMessage): string { return sourceMessageKey(this.provider, message); }
+
+  get isGoogle(): boolean { return this.provider === 'googledrive'; }
+  get providerLabelKey(): string { return this.isGoogle ? 'KbPage.GdriveCard' : 'KbPage.Ms365Card'; }
+  get titleKey(): string { return this.isGoogle ? 'KbPage.GdriveTitle' : 'KbPage.Ms365Title'; }
+  get connectKey(): string { return this.isGoogle ? 'KbPage.GdriveConnect' : 'KbPage.Ms365Connect'; }
+  get connectHintKey(): string { return this.isGoogle ? 'KbPage.GdriveCardDesc' : 'KbPage.Ms365ConnectHint'; }
 
   initials(conn: KbSourceConnection | null): string {
     const src = (conn && (conn.account.display_name || conn.account.upn)) || '?';
@@ -395,6 +426,8 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
   itemIcon(item: KbSourceItem): string {
     switch (item.kind) {
       case 'onedrive': return 'cloud';
+      case 'mydrive': return 'cloud';
+      case 'shared_drive': return 'groups';
       case 'site': return 'groups';
       case 'drive': return 'folder_special';
       case 'folder': return 'folder';
@@ -509,7 +542,7 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     };
     this.importing = true;
     this.importError = null;
-    this.kbSources.importItems(req).subscribe({
+    this.kbSources.importItems(this.provider, req).subscribe({
       next: (res) => {
         this.importing = false;
         this.dialogRef.close({ contents: (res && res.contents) || [] });

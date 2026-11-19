@@ -82,7 +82,7 @@ describe('KbMs365ConnectionsComponent', () => {
     component.changed.subscribe(v => emitted.push(v));
     component.reconnect(component.connections[0]);
     flushMicrotasks();
-    expect(kbSources.connect).toHaveBeenCalledWith('c1');
+    expect(kbSources.connect).toHaveBeenCalledWith('microsoft365', 'c1');
     expect(kbSources.getConnections).toHaveBeenCalledTimes(2);
     expect(emitted).toEqual([{ cascade: false }]);
   }));
@@ -154,7 +154,7 @@ describe('KbMs365ConnectionsComponent', () => {
     component.reconnect(component.connections[0]);
     flushMicrotasks();
     expect(fire).toHaveBeenCalled();
-    expect((kbSources as any).connectInWindow).toHaveBeenCalledWith('c1');
+    expect((kbSources as any).connectInWindow).toHaveBeenCalledWith('microsoft365', 'c1');
   }));
 
   it('Reconnect with blocked pop-ups and a declined confirm does nothing', fakeAsync(() => {
@@ -192,7 +192,56 @@ describe('KbMs365ConnectionsComponent', () => {
     fixture.detectChanges();
     const banners = fixture.nativeElement.querySelectorAll('.ms365-banner');
     expect(banners.length).toBe(1);
-    expect(text()).toContain('KbPage.Ms365ReconnectBanner');
+    expect(text()).toContain('KbPage.SourceReconnectBanner');
     expect(text()).not.toContain('KbPage.Ms365Disconnect');
+  });
+
+  describe('two providers', () => {
+    const g = () => conn({ _id: 'g1', provider: 'googledrive', account: { display_name: 'Gus', upn: 'gus@gmail.com', tenant_id: 'google' } });
+
+    it('groups the accounts by provider, one heading and icon each', () => {
+      setup([g(), conn()]);
+      const groups = fixture.nativeElement.querySelectorAll('.ms365-conn-group');
+      expect(groups.length).toBe(2);
+      expect(groups[0].textContent).toContain('KbPage.Ms365Card');
+      expect(groups[0].textContent).toContain('Ann');
+      expect(groups[1].textContent).toContain('KbPage.GdriveCard');
+      expect(groups[1].textContent).toContain('Gus');
+      expect(groups[1].querySelector('.ms365-conn-group-icon').textContent).toContain('add_to_drive');
+    });
+
+    it('a provider without accounts has no group', () => {
+      setup([g()]);
+      expect(fixture.nativeElement.querySelectorAll('.ms365-conn-group').length).toBe(1);
+    });
+
+    it('Reconnect on a Google account calls connect(googledrive, id)', fakeAsync(() => {
+      setup([g()]);
+      kbSources.connect.and.returnValue(Promise.resolve({ status: 'connected' } as any));
+      component.reconnect(component.connections[0]);
+      flushMicrotasks();
+      expect(kbSources.connect).toHaveBeenCalledWith('googledrive', 'g1');
+    }));
+
+    it('the banner of a Google account names Google Drive, not Microsoft', () => {
+      setup([g()]);
+      component.connections[0].status = 'needs_reconnect';
+      component.view = 'banner';
+      fixture.detectChanges();
+      expect(component.providerLabelKey(component.connections[0])).toBe('KbPage.GdriveCard');
+      expect(text()).toContain('KbPage.SourceReconnectBanner');
+    });
+
+    it('provider-specific texts follow the account provider', fakeAsync(() => {
+      setup([g()]);
+      fire.and.returnValue(Promise.resolve({ isConfirmed: false }));
+      component.disconnect(component.connections[0]);
+      flushMicrotasks();
+      expect(fire.calls.mostRecent().args[0].text).toBe('KbPage.GdriveDisconnectConfirm');
+      kbSources.connect.and.returnValue(Promise.reject({}));
+      component.reconnect(component.connections[0]);
+      flushMicrotasks();
+      expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.GdriveErrConnect');
+    }));
   });
 });

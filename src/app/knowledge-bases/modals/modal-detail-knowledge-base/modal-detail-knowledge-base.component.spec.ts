@@ -155,4 +155,22 @@ describe('ModalDetailKnowledgeBaseComponent (Microsoft 365)', () => {
     fixture.detectChanges();
     expect(q('input[name="name"]').value).toBe('a.pdf');
   });
+
+  it('a Google folder shows the refresh-rate select, provider label and loads no chunks', () => {
+    setup({ ...folder, type: 'gdrive_folder', external: { provider: 'googledrive', connection_id: 'c2', sync: { state: 'idle', counts: { files: 2 } } } });
+    expect(q('.ms365-refresh-select')).not.toBeNull();
+    expect(q('.ms365-provider').textContent).toContain('KbPage.GdriveCard');
+    expect(q('.ms365-provider').textContent).toContain('add_to_drive');
+    expect(kbService.getContentChuncks).not.toHaveBeenCalled();
+    expect(q('.ms365-save-btn')).not.toBeNull();
+  });
+
+  it('a Google child keeps the read-only file view like a Microsoft one', async () => {
+    setup({ ...child, external: { provider: 'googledrive', connection_id: 'c2' } });
+    await fixture.whenStable();
+    fixture.detectChanges();
+    expect(q('.ms365-refresh-select')).toBeNull();
+    expect(component.isImportedFileDetailReadonly).toBe(true);
+    expect(q('input[name="name"]').disabled).toBe(true);
+  });
 });

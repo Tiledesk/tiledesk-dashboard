@@ -5,9 +5,9 @@ import { AppConfigService } from './app-config.service';
 import { AuthService } from 'app/core/auth.service';
 import { LoggerService } from './logger/logger.service';
 import {
-  KbImportRequest, KbImportResponse, KbSourceConnection, KbSourceItems, KbSourceProviders, Ms365ConnectResult
+  KbImportRequest, KbImportResponse, KbSourceConnection, KbSourceItems, KbSourceProviderId, KbSourceProviders, Ms365ConnectResult
 } from 'app/models/kb-sources.model';
-import { MS365_CONNECT_CHANNEL, parseMs365Relayed } from 'app/knowledge-bases/utils/ms365-popup-return';
+import { MS365_CONNECT_CHANNEL, asProvider, parseMs365Relayed } from 'app/knowledge-bases/utils/ms365-popup-return';
 
 export type { KbSourceProvider, KbSourceProviders } from 'app/models/kb-sources.model';
 
@@ -109,8 +109,8 @@ export class KbSourcesService {
       this.baseUrl + '/connections/' + connId + '/drives/' + driveId + '/children', { ...this.httpOptions, params });
   }
 
-  importItems(req: KbImportRequest): Observable<KbImportResponse> {
-    return this.httpClient.post<KbImportResponse>(this.baseUrl + '/microsoft365/import', req, this.httpOptions);
+  importItems(provider: KbSourceProviderId, req: KbImportRequest): Observable<KbImportResponse> {
+    return this.httpClient.post<KbImportResponse>(this.baseUrl + '/' + provider + '/import', req, this.httpOptions);
   }
 
   updateFolderRefreshRate(kbId: string, rate: string): Observable<any> {
@@ -122,13 +122,13 @@ export class KbSourcesService {
   }
 
   /**
-   * Microsoft 365 sign-in in a popup. MUST be called directly from the click handler:
+   * Provider (Microsoft 365, Google Drive) sign-in in a popup. MUST be called directly from the click handler:
    * the popup is opened synchronously (before any await/HTTP) so the browser does not block it,
    * then navigated to the server `authorize_url`. Resolves once with connected | error (server
    * message), closed (user closed the popup, polled every 1000 ms) or blocked (popup refused).
    * An HTTP failure closes the popup and resolves { status: 'error', reason: 'connect_failed' }.
    */
-  connect(connectionId?: string): Promise<Ms365ConnectResult> {
+  connect(provider: KbSourceProviderId, connectionId?: string): Promise<Ms365ConnectResult> {
     this.cancelConnect(); // one popup at a time
     const popup = window.open('', 'ms365-connect', 'width=520,height=680');
     if (!popup) {
@@ -159,7 +159,7 @@ export class KbSourcesService {
         if (!expectedOrigin || event.origin !== expectedOrigin || event.source !== popup) { return; }
         const data = event.data;
         if (!data || data.type !== 'ms365-connect' || (data.status !== 'connected' && data.status !== 'error')) { return; }
-        finish({ status: data.status, reason: data.reason, connection_id: data.connection_id });
+        finish({ status: data.status, reason: data.reason, connection_id: data.connection_id, provider: asProvider(data.provider) || 'microsoft365' });
       };
       const relaySub = this.relayed.subscribe(result => finish(result));
       const timer = setInterval(() => {
@@ -168,7 +168,7 @@ export class KbSourcesService {
       window.addEventListener('message', onMessage);
 
       this.httpClient.post<{ authorize_url: string }>(
-        this.baseUrl + '/microsoft365/connect',
+        this.baseUrl + '/' + provider + '/connect',
         // return_url + popup: where the popup lands when the sign-in pages cut window.opener
         { connection_id: connectionId, origin: window.location.origin, return_url: this.cleanReturnUrl(window.location.href), popup: true },
         this.httpOptions
@@ -207,10 +207,10 @@ export class KbSourcesService {
    * to return_url with ms365=connected|error appended to the hash route's query. The promise
    * resolves just before leaving the page; it rejects with { reason: 'connect_failed' }.
    */
-  connectInWindow(connectionId?: string): Promise<void> {
+  connectInWindow(provider: KbSourceProviderId, connectionId?: string): Promise<void> {
     return new Promise<void>((resolve, reject) => {
       this.httpClient.post<{ authorize_url: string }>(
-        this.baseUrl + '/microsoft365/connect',
+        this.baseUrl + '/' + provider + '/connect',
         { connection_id: connectionId, origin: window.location.origin, return_url: this.cleanReturnUrl(window.location.href) },
         this.httpOptions
       ).subscribe({

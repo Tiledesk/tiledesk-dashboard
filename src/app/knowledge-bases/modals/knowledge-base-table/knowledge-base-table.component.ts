@@ -14,8 +14,9 @@ import { NotifyService } from 'app/core/notify.service';
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { TranslateService } from '@ngx-translate/core';
 import {
-  getMs365Warning, ms365AccountLabel, showsMs365Origin, isMs365Folder, isMs365File, isMs365Syncing, ms365FileCount, ms365LastSync, showsRefreshRate
+  getMs365Warning, ms365AccountLabel, showsMs365Origin, isMs365Folder, isMs365File, isMs365Syncing, ms365FileCount, ms365LastSync, showsRefreshRate, sourceLabelKey, sourceIconOf, sourceProviderOf
 } from './kb-ms365-row.util';
+import { sourceMessageKey } from '../../utils/kb-source-keys';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class KnowledgeBaseTableComponent implements OnInit {
   @Input() refreshRateIsEnabled: boolean;
   @Input() payIsVisible: boolean;
   @Input() ms365Available: boolean = false;
+  @Input() gdriveAvailable: boolean = false;
   /** connection_id -> "name — upn" for the folder rows (empty for non-admins). */
   @Input() ms365Accounts: { [connectionId: string]: string } = {};
   @Input() t_params: string;
@@ -592,6 +594,8 @@ export class KnowledgeBaseTableComponent implements OnInit {
   // ---------- Microsoft 365 ----------
   isMs365Folder = isMs365Folder;
   isMs365File = isMs365File;
+  sourceLabelKey = sourceLabelKey;
+  sourceIcon = sourceIconOf;
   isMs365Syncing = isMs365Syncing;
   ms365Warning = getMs365Warning;
   ms365Origin = showsMs365Origin;
@@ -622,16 +626,18 @@ export class KnowledgeBaseTableComponent implements OnInit {
       return;
     }
     const connectionId = kb?.external?.connection_id;
-    this.kbSources.connect(connectionId).then(result => {
+    const errKey = sourceMessageKey(sourceProviderOf(kb), 'ErrConnect');
+    this.kbSources.connect(sourceProviderOf(kb) || 'microsoft365', connectionId).then(result => {
       if (result.status === 'connected') {
         this.ms365Reconnected.emit(kb);
       } else if (result.status === 'blocked' || result.status === 'closed') {
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365OpenAgain'), 3, 'open_in_new');
       } else {
-        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
+        const key = result.reason === 'scope_missing' ? 'KbPage.GdriveErrScope' : errKey;
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant(key), 4, 'report_problem');
       }
     }).catch(() => {
-      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant(errKey), 4, 'report_problem');
     });
   }
 

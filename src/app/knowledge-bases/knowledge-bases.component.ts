@@ -43,8 +43,10 @@ import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
-import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode } from './modals/knowledge-base-table/kb-ms365-row.util';
-import { KbSourceConnection } from 'app/models/kb-sources.model';
+import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode, sourceProviderOf } from './modals/knowledge-base-table/kb-ms365-row.util';
+import { KbSourceConnection, KbSourceProviderId } from 'app/models/kb-sources.model';
+import { sourceMessageKey } from './utils/kb-source-keys';
+import { asProvider } from 'app/knowledge-bases/utils/ms365-popup-return';
 import { ModalMs365ImportComponent } from './modals/modal-ms365-import/modal-ms365-import.component';
 import { ModalMs365AccountsComponent } from './modals/modal-ms365-accounts/modal-ms365-accounts.component';
 import { KbSourcesService } from 'app/services/kb-sources.service';
@@ -138,12 +140,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   isAvailableRefreshRateFeature: boolean;
   t_params: any
   ms365Available = false;
+  gdriveAvailable = false;
   ms365Accounts: { [connectionId: string]: string } = {};
   ms365ConnectionsCount = 0;
   ms365NeedsReconnect = false;
   private ms365AccountsLoaded = false;
   private providersLoadedFor: string | undefined;
-  private ms365Return: { status: string; reason: string; connectionId: string } | null = null;
+  private ms365Return: { status: string; reason: string; connectionId: string; provider: KbSourceProviderId } | null = null;
   kbMaxFileSize: number;
   private ms365ReloadTimers: any[] = [];
 
@@ -2780,7 +2783,7 @@ _presentDialogImportContents() {
     this.baseModalDelete = true;
 
     if (isMs365Folder(kb)) {
-      this.presentDialogComfimDeleteSitemap(kb, 'KbPage.Ms365DeleteFolder')
+      this.presentDialogComfimDeleteSitemap(kb, sourceMessageKey(sourceProviderOf(kb), 'DeleteFolder'))
     } else if (isMs365File(kb)) {
       this.presentDialogComfimDeleteSitemap(kb, 'KbPage.Ms365DeleteChild')
     } else if (kb.type !== 'sitemap') {
@@ -2837,7 +2840,7 @@ _presentDialogImportContents() {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
       width: '900px',
-      data: { ms365Available: this.ms365Available },
+      data: { ms365Available: this.ms365Available, gdriveAvailable: this.gdriveAvailable },
     });
 
     dialogRef.afterClosed().subscribe(type => {
@@ -2902,6 +2905,9 @@ _presentDialogImportContents() {
     }
     if (typeOrKb === 'ms365') {
       this.presentModalImportMs365()
+    }
+    if (typeOrKb === 'gdrive') {
+      this.presentModalImportMs365(undefined, 'googledrive')
     }
     if (typeOrKb === 'faq') {
       this.presentModalAddFaqs()
@@ -3033,24 +3039,26 @@ _presentDialogImportContents() {
     this.kbSources.getProviders().subscribe({
       next: (res) => {
         this.ms365Available = !!(res && res.providers && res.providers.some(p => p.id === 'microsoft365' && p.available));
+        this.gdriveAvailable = !!(res && res.providers && res.providers.some(p => p.id === 'googledrive' && p.available));
         this.kbMaxFileSize = res && res.kb_max_file_size;
       },
-      error: () => { this.ms365Available = false; }
+      error: () => { this.ms365Available = false; this.gdriveAvailable = false; }
     });
   }
 
   /**
-   * Back from a full-page Microsoft 365 sign-in (?ms365=connected|error&reason=&connection_id=):
+   * Back from a full-page Microsoft 365 sign-in (?kbsrc=connected|error&provider=&reason=&connection_id=, or the legacy ?ms365=...):
    * remember the outcome, strip the params from the URL; it is applied once the namespace is known.
    */
   readMs365Return() {
     const qpm = this.route.snapshot.queryParamMap;
-    const status = qpm.get('ms365');
+    const status = qpm.get('kbsrc') ?? qpm.get('ms365');
     if (!status) { return; }
-    this.ms365Return = { status, reason: qpm.get('reason') || '', connectionId: qpm.get('connection_id') || '' };
+    this.ms365Return = { status, reason: qpm.get('reason') || '', connectionId: qpm.get('connection_id') || '',
+      provider: asProvider(qpm.get('provider')) || 'microsoft365' };
     this.router.navigate([], {
       relativeTo: this.route,
-      queryParams: { ms365: null, reason: null, connection_id: null },
+      queryParams: { kbsrc: null, kbsrc_popup: null, provider: null, ms365: null, reason: null, connection_id: null },
       queryParamsHandling: 'merge',
       replaceUrl: true,
     });
@@ -3061,19 +3069,21 @@ _presentDialogImportContents() {
     if (!ret) { return; }
     this.ms365Return = null;
     if (ret.status === 'connected') {
-      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365Connected'), 2, 'done');
+      const connectedKey = ret.provider === 'googledrive' ? 'KbPage.GdriveConnected' : 'KbPage.Ms365Connected';
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant(connectedKey), 2, 'done');
       this.loadMs365Accounts(true);
       if (this.ms365Connections) { this.ms365Connections.load(); }
-      this.presentModalImportMs365(ret.connectionId || undefined);
+      this.presentModalImportMs365(ret.connectionId || undefined, ret.provider);
     } else if (ret.status === 'error') {
-      let key = 'KbPage.Ms365ErrConnect'; // state_invalid, exchange_failed, anything else
-      if (ret.reason === 'access_denied') { key = 'KbPage.Ms365ErrAccessDenied'; }
+      let key = sourceMessageKey(ret.provider, 'ErrConnect'); // state_invalid, exchange_failed, anything else
+      if (ret.reason === 'access_denied') { key = sourceMessageKey(ret.provider, 'ErrAccessDenied'); }
+      if (ret.reason === 'scope_missing') { key = 'KbPage.GdriveErrScope'; }
       // account_mismatch: the expected upn is unknown here, so the generic message is used
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant(key), 4, 'report_problem');
     }
   }
 
-  presentModalImportMs365(initialConnectionId?: string) {
+  presentModalImportMs365(initialConnectionId?: string, provider: KbSourceProviderId = 'microsoft365') {
     const dialogRef = this.dialog.open(ModalMs365ImportComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
@@ -3090,6 +3100,7 @@ _presentDialogImportContents() {
         id_project: this.id_project,
         project_name: this.project_name,
         initialConnectionId,
+        provider,
         onPlanLimit: (planLimit: number) => this.onMs365PlanLimit(planLimit),
       },
     });
@@ -3141,6 +3152,11 @@ _presentDialogImportContents() {
       },
       error: () => { /* not an admin: no account shown */ }
     });
+  }
+
+  /** The header button: either provider is on and an account exists. */
+  get showAccountsButton(): boolean {
+    return (this.ms365Available || this.gdriveAvailable) && this.ms365ConnectionsCount > 0;
   }
 
   /** The banner component (re)loaded the accounts: drives the header button. */

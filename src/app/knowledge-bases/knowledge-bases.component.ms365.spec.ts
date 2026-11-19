@@ -1,6 +1,7 @@
 import { of, throwError, Subject } from 'rxjs';
 import Swal from 'sweetalert2';
 import { KnowledgeBasesComponent } from './knowledge-bases.component';
+import { ms365AccountLabel } from './modals/knowledge-base-table/kb-ms365-row.util';
 
 /**
  * The page is too tangled for a TestBed spec (dozens of services), so the Microsoft 365
@@ -92,6 +93,8 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
     expect(page.presentDialogComfimDeleteSitemap.calls.mostRecent().args[1]).toBe('KbPage.Ms365DeleteFolder');
     page.onOpenBaseModalDelete({ ...child });
     expect(page.presentDialogComfimDeleteSitemap.calls.mostRecent().args[1]).toBe('KbPage.Ms365DeleteChild');
+    page.onOpenBaseModalDelete({ ...folder, type: 'gdrive_folder', external: { provider: 'googledrive' } });
+    expect(page.presentDialogComfimDeleteSitemap.calls.mostRecent().args[1]).toBe('KbPage.GdriveDeleteFolder');
     expect(page.dialog.open).not.toHaveBeenCalled();
   });
 
@@ -164,15 +167,67 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
       withQuery({ ms365: 'connected', reason: '', connection_id: 'X' });
       page.readMs365Return();
       const args = navigate.calls.mostRecent().args;
-      expect(args[1].queryParams).toEqual({ ms365: null, reason: null, connection_id: null });
+      expect(args[1].queryParams).toEqual({ kbsrc: null, kbsrc_popup: null, provider: null, ms365: null, reason: null, connection_id: null });
       expect(args[1].replaceUrl).toBe(true);
       page.applyMs365Return();
       expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args).toEqual(['KbPage.Ms365Connected', 2, 'done']);
       expect(page.loadMs365Accounts).toHaveBeenCalledWith(true);
       expect(page.ms365Connections.load).toHaveBeenCalled();
-      expect(page.presentModalImportMs365).toHaveBeenCalledWith('X');
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith('X', 'microsoft365');
       page.applyMs365Return(); // applied once
       expect(page.presentModalImportMs365).toHaveBeenCalledTimes(1);
+    });
+
+    it('googledrive connected return: Google toast, accounts reloaded, import dialog opens for googledrive', () => {
+      withQuery({ kbsrc: 'connected', provider: 'googledrive', connection_id: 'G' });
+      page.readMs365Return();
+      page.applyMs365Return();
+      expect(page.loadMs365Accounts).toHaveBeenCalledWith(true);
+      expect(page.ms365Connections.load).toHaveBeenCalled();
+      expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args).toEqual(['KbPage.GdriveConnected', 2, 'done']);
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith('G', 'googledrive');
+    });
+
+    it('scope_missing error return toasts the Google scope message', () => {
+      withQuery({ kbsrc: 'error', provider: 'googledrive', reason: 'scope_missing' });
+      page.readMs365Return();
+      page.applyMs365Return();
+      expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe('KbPage.GdriveErrScope');
+      expect(page.presentModalImportMs365).not.toHaveBeenCalled();
+    });
+
+    it('a Google error return toasts the Google texts; Microsoft keeps its own', () => {
+      const cases: [string, string, string][] = [
+        ['googledrive', 'access_denied', 'KbPage.GdriveErrAccessDenied'],
+        ['googledrive', 'state_invalid', 'KbPage.GdriveErrConnect'],
+        ['googledrive', 'exchange_failed', 'KbPage.GdriveErrConnect'],
+        ['microsoft365', 'access_denied', 'KbPage.Ms365ErrAccessDenied'],
+        ['microsoft365', 'exchange_failed', 'KbPage.Ms365ErrConnect']];
+      for (const [provider, reason, key] of cases) {
+        withQuery({ kbsrc: 'error', provider, reason });
+        page.readMs365Return();
+        page.applyMs365Return();
+        expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe(key);
+      }
+    });
+
+    it('microsoft365 kbsrc return opens the import dialog with the connection', () => {
+      withQuery({ kbsrc: 'connected', provider: 'microsoft365', connection_id: 'M' });
+      page.readMs365Return();
+      page.applyMs365Return();
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith('M', 'microsoft365');
+    });
+
+    it('stored return keeps its provider (kbsrc googledrive; legacy ms365 is microsoft365)', () => {
+      withQuery({ kbsrc: 'connected', provider: 'googledrive', connection_id: 'G' });
+      page.readMs365Return();
+      expect(page.ms365Return).toEqual({ status: 'connected', reason: '', connectionId: 'G', provider: 'googledrive' });
+      withQuery({ ms365: 'connected', connection_id: 'M' });
+      page.readMs365Return();
+      expect(page.ms365Return.provider).toBe('microsoft365');
+      withQuery({ kbsrc: 'error', reason: 'scope_missing' });
+      page.readMs365Return();
+      expect(page.ms365Return).toEqual({ status: 'error', reason: 'scope_missing', connectionId: '', provider: 'microsoft365' });
     });
 
     it('error reasons map to their message; the modal is not opened', () => {
@@ -185,6 +240,46 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
         expect(notify.showWidgetStyleUpdateNotification.calls.mostRecent().args[0]).toBe(key);
       }
       expect(page.presentModalImportMs365).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Google Drive tile', () => {
+    it("the 'gdrive' add-content choice opens the dialog for googledrive", () => {
+      page.presentModalImportMs365 = jasmine.createSpy('presentModalImportMs365');
+      page.openAddKnowledgeBaseModal('gdrive');
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith(undefined, 'googledrive');
+      page.presentModalImportMs365.calls.reset();
+      page.openAddKnowledgeBaseModal('ms365');
+      expect(page.presentModalImportMs365).toHaveBeenCalledWith();
+    });
+
+    it('presentModalImportMs365 passes the provider to the dialog data (default microsoft365)', () => {
+      const open = jasmine.createSpy('open').and.returnValue({ afterClosed: () => of(undefined) });
+      page.dialog = { open };
+      page.selectedNamespace = { id: 'n' };
+      page.presentModalImportMs365('c1', 'googledrive');
+      expect(open.calls.mostRecent().args[1].data.provider).toBe('googledrive');
+      expect(open.calls.mostRecent().args[1].data.initialConnectionId).toBe('c1');
+      page.presentModalImportMs365();
+      expect(open.calls.mostRecent().args[1].data.provider).toBe('microsoft365');
+    });
+
+    it('gdriveAvailable comes from /providers, independent of Microsoft', () => {
+      kbSources.getProviders = jasmine.createSpy('getProviders').and.returnValue(of({
+        providers: [{ id: 'microsoft365', available: false }, { id: 'googledrive', available: true }], kb_max_file_size: 1 }));
+      page.id_project = 'p1';
+      page.loadKbSourceProviders();
+      expect(page.gdriveAvailable).toBe(true);
+      expect(page.ms365Available).toBe(false);
+    });
+
+    it('a failing /providers hides both cards', () => {
+      kbSources.getProviders = jasmine.createSpy('getProviders').and.returnValue(throwError(() => ({ status: 403 })));
+      page.id_project = 'p1';
+      page.gdriveAvailable = true;
+      page.loadKbSourceProviders();
+      expect(page.gdriveAvailable).toBe(false);
+      expect(page.ms365Available).toBe(false);
     });
   });
 
@@ -202,6 +297,31 @@ describe('KnowledgeBasesComponent (Microsoft 365 handlers)', () => {
   });
 
   describe('accounts header button', () => {
+    it('a Google folder row shows its Google account', () => {
+      const gfolder = { _id: 'gf', type: 'gdrive_folder', name: 'Docs', external: { provider: 'googledrive', connection_id: 'g1' } };
+      page.kbsList = [gfolder];
+      page.ms365AccountsLoaded = false;
+      kbSources.getConnections.and.returnValue(of([
+        { _id: 'c1', provider: 'microsoft365', account: { display_name: 'Ann', upn: 'ann@x.com' } },
+        { _id: 'g1', provider: 'googledrive', account: { display_name: 'Gus', upn: 'gus@gmail.com' } },
+      ]));
+      page.loadMs365Accounts(true);
+      expect(page.ms365Accounts['g1']).toBe('Gus — gus@gmail.com');
+      expect(ms365AccountLabel(gfolder, page.ms365Accounts)).toBe('Gus — gus@gmail.com');
+    });
+
+    it('the button shows when either provider is available and an account exists', () => {
+      page.ms365ConnectionsCount = 1;
+      page.ms365Available = false; page.gdriveAvailable = true;
+      expect(page.showAccountsButton).toBe(true);
+      page.ms365Available = true; page.gdriveAvailable = false;
+      expect(page.showAccountsButton).toBe(true);
+      page.ms365Available = false;
+      expect(page.showAccountsButton).toBe(false);
+      page.ms365Available = true; page.ms365ConnectionsCount = 0;
+      expect(page.showAccountsButton).toBe(false);
+    });
+
     it('counts the accounts and flags one that needs to sign in again', () => {
       page.onMs365ConnectionsLoaded([{ _id: 'a', status: 'active' }, { _id: 'b', status: 'needs_reconnect' }] as any);
       expect(page.ms365ConnectionsCount).toBe(2);

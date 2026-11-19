@@ -22,6 +22,17 @@ $line: #e3e7ec;
 
 // ---- list (accounts dialog) ----
 .ms365-conn-empty { color: $muted; font-size: 13px; margin: 8px 0; }
+.ms365-conn-group + .ms365-conn-group { margin-top: 12px; }
+.ms365-conn-group-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: $muted;
+}
+.ms365-conn-group-icon { font-size: 18px; }
 .ms365-conn-list { list-style: none; margin: 0; padding: 0; }
 .ms365-conn-row {
   display: flex;

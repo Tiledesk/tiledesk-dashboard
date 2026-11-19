@@ -4,11 +4,19 @@ import { TranslateService } from '@ngx-translate/core';
 import Swal from 'sweetalert2';
 import { KbSourcesService } from 'app/services/kb-sources.service';
 import { NotifyService } from 'app/core/notify.service';
-import { KbSourceConnection } from 'app/models/kb-sources.model';
+import { KbSourceConnection, KbSourceProviderId } from 'app/models/kb-sources.model';
+import { sourceMessageKey, KbSourceMessage } from '../../utils/kb-source-keys';
+
+const PROVIDERS: { id: KbSourceProviderId; labelKey: string; icon: string }[] = [
+  { id: 'microsoft365', labelKey: 'KbPage.Ms365Card', icon: 'cloud_sync' },
+  { id: 'googledrive', labelKey: 'KbPage.GdriveCard', icon: 'add_to_drive' },
+];
+
+export interface KbConnectionGroup { id: KbSourceProviderId; labelKey: string; icon: string; items: KbSourceConnection[]; }
 
 /**
- * Microsoft 365 accounts of the project.
- * view 'list' (accounts dialog): every account, with reconnect and disconnect.
+ * Connected accounts of the project (Microsoft 365 and Google Drive).
+ * view 'list' (accounts dialog): every account grouped by provider, with reconnect and disconnect.
  * view 'banner' (KB page): only the accounts that need to sign in again, as warnings with Reconnect.
  */
 @Component({
@@ -24,6 +32,8 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
   @Input() view: 'list' | 'banner' = 'list';
 
   connections: KbSourceConnection[] = [];
+  /** The accounts grouped by provider (only providers that have accounts). */
+  groups: KbConnectionGroup[] = [];
   busyId: string | null = null;
   private relaySub: Subscription | null = null;
 
@@ -49,9 +59,26 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
 
   load() {
     this.kbSources.getConnections().subscribe({
-      next: (list) => { this.connections = list || []; this.loaded.emit(this.connections); },
-      error: () => { this.connections = []; this.loaded.emit(this.connections); } // not an admin: nothing to manage
+      next: (list) => { this.setConnections(list || []); },
+      error: () => { this.setConnections([]); } // not an admin: nothing to manage
     });
+  }
+
+  private setConnections(list: KbSourceConnection[]) {
+    this.connections = list;
+    this.groups = PROVIDERS
+      .map(p => ({ ...p, items: list.filter(c => c.provider === p.id) }))
+      .filter(g => g.items.length);
+    this.loaded.emit(this.connections);
+  }
+
+  /** i18n key of the product name of the account's provider. */
+  providerLabelKey(c: KbSourceConnection): string {
+    return (PROVIDERS.find(p => p.id === c.provider) || PROVIDERS[0]).labelKey;
+  }
+
+  private msgKey(c: KbSourceConnection, message: KbSourceMessage): string {
+    return sourceMessageKey(c.provider, message);
   }
 
   get needsReconnect(): KbSourceConnection[] {
@@ -75,7 +102,7 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
 
   /** connect() opens the popup synchronously, so it is called straight from the click. */
   reconnect(c: KbSourceConnection) {
-    this.kbSources.connect(c._id).then(result => {
+    this.kbSources.connect(c.provider, c._id).then(result => {
       if (result.status === 'connected') {
         this.load();
         this.changed.emit({ cascade: false });
@@ -84,10 +111,10 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
       } else if (result.status === 'closed') {
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365OpenAgain'), 3, 'open_in_new');
       } else {
-        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant(this.msgKey(c, 'ErrConnect')), 4, 'report_problem');
       }
     }).catch(() => {
-      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant(this.msgKey(c, 'ErrConnect')), 4, 'report_problem');
     });
   }
 
@@ -96,9 +123,9 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
     const text = this.translate.instant('KbPage.Ms365BlockedContinue');
     if (!await this.confirm(text, 'KbPage.Ms365ContinueHere')) { return; }
     try {
-      await this.kbSources.connectInWindow(c._id);
+      await this.kbSources.connectInWindow(c.provider, c._id);
     } catch (e) {
-      this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.Ms365ErrConnect'), 4, 'report_problem');
+      this.notify.showWidgetStyleUpdateNotification(this.translate.instant(this.msgKey(c, 'ErrConnect')), 4, 'report_problem');
     }
   }
 
@@ -118,7 +145,7 @@ export class KbMs365ConnectionsComponent implements OnInit, OnDestroy {
 
   async disconnect(c: KbSourceConnection) {
     if (this.busyId) { return; }
-    if (!await this.confirm(this.translate.instant('KbPage.Ms365DisconnectConfirm'), 'KbPage.Ms365Disconnect')) {
+    if (!await this.confirm(this.translate.instant(this.msgKey(c, 'DisconnectConfirm')), 'KbPage.Ms365Disconnect')) {
       return;
     }
     this.busyId = c._id;
