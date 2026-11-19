@@ -1,0 +1,7 @@
+:host { display: block; color: #30373f; }
+.ms365-acc-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 20px 0 24px; }
+.ms365-acc-title { margin: 0; padding: 0; font-size: 18px; font-weight: 500; }
+.ms365-acc-close { border: 0; background: none; color: #6b7684; cursor: pointer; padding: 4px; border-radius: 6px; &:hover { background: #f5f7fa; color: #30373f; } }
+.ms365-acc-content { padding-top: 8px !important; max-height: 60vh; }
+.ms365-acc-intro { color: #6b7684; font-size: 13px; margin: 0 0 4px; }
+.ms365-acc-actions { display: flex; justify-content: flex-end; padding: 12px 24px 16px !important; border-top: 1px solid #e3e7ec; }

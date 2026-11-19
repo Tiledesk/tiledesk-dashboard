@@ -157,7 +157,8 @@ describe('ModalMs365ImportComponent', () => {
     expect(svc.getRoots).not.toHaveBeenCalled();
     expect(component.step).toBe('account');
     expect(text()).toContain('KbPage.Ms365Reconnect');
-    expect(text()).toContain('KbPage.Ms365NeedsReconnect');
+    expect(text()).toContain('KbPage.Ms365StatusNeedsReconnect');
+    expect(text()).toContain('KbPage.Ms365ReconnectBanner');
   });
 
   it('a 409 connection_needs_reconnect while browsing shows the reconnect prompt', () => {
@@ -390,4 +391,80 @@ describe('ModalMs365ImportComponent', () => {
     expect(svc.getRoots).toHaveBeenCalledWith('c1');
   });
 
+  describe('display helpers', () => {
+    beforeEach(() => setup([activeConn]));
+
+    it('formats sizes and initials', () => {
+      expect(component.formatSize(512)).toBe('512 B');
+      expect(component.formatSize(310 * 1024)).toBe('310 KB');
+      expect(component.formatSize(2.4 * 1048576)).toBe('2.4 MB');
+      expect(component.formatSize(60 * 1048576)).toBe('60 MB');
+      expect(component.initials(activeConn as any)).toBe('A');
+      expect(component.initials({ account: { display_name: 'Nico Cardone', upn: 'n@x' } } as any)).toBe('NC');
+      expect(component.initials({ account: { display_name: '', upn: 'mario.rossi@acme.com' } } as any)).toBe('MR');
+    });
+
+    it('picks icon tones by kind and extension', () => {
+      expect(component.itemTone({ kind: 'folder' } as any)).toBe('folder');
+      expect(component.itemTone({ kind: 'file', name: 'a.PDF' } as any)).toBe('pdf');
+      expect(component.itemTone({ kind: 'file', name: 'a.docx' } as any)).toBe('word');
+      expect(component.itemTone({ kind: 'file', name: 'a.md' } as any)).toBe('text');
+      expect(component.itemTone({ kind: 'file', name: 'a.pptx', supported: false } as any)).toBe('other');
+      expect(component.itemTone({ kind: 'site' } as any)).toBe('place');
+    });
+
+    it('site hint drops the scheme; modified date is empty when missing or invalid', () => {
+      expect(component.siteHint({ kind: 'site', web_url: 'https://t.sharepoint.com/sites/all' } as any)).toBe('t.sharepoint.com/sites/all');
+      expect(component.siteHint({ kind: 'site' } as any)).toBe('');
+      expect(component.formatModified(undefined)).toBe('');
+      expect(component.formatModified('nope')).toBe('');
+      expect(component.formatModified('2020-03-05T10:00:00Z')).toContain('2020');
+    });
+
+    it('stepIndex follows the step', () => {
+      expect(component.stepIndex).toBe(1);
+      component.step = 'browse';
+      expect(component.stepIndex).toBe(2);
+      component.step = 'options';
+      expect(component.stepIndex).toBe(3);
+    });
+  });
+
+  it('summary shows the first picked names, Clear empties the selection, the request carries no name', () => {
+    setup([activeConn]);
+    component.chooseConnection(activeConn as any);
+    component.openItem({ kind: 'onedrive', id: 'me', name: 'My OneDrive', drive_id: 'd-me' } as any);
+    const names = ['a', 'b', 'c', 'd', 'e', 'f'];
+    names.forEach(n => component.toggleItem({ kind: 'file', id: n, name: n + '.pdf', supported: true } as any));
+    expect(component.selectedPreview.map(p => p.name)).toEqual(['a.pdf', 'b.pdf', 'c.pdf', 'd.pdf']);
+    expect(component.selectedMore).toBe(2);
+    component.clearSelection();
+    expect(component.selectedCount).toBe(0);
+  });
+
+  it('a file row toggles on click; a folder row opens', () => {
+    setup([activeConn]);
+    component.chooseConnection(activeConn as any);
+    component.openItem({ kind: 'onedrive', id: 'me', name: 'My OneDrive', drive_id: 'd-me' } as any);
+    component.onRowClick({ kind: 'file', id: 'x1', name: 'a.pdf', supported: true } as any);
+    expect(component.selectedCount).toBe(1);
+    const calls = svc.getChildren.calls.count();
+    component.onRowClick({ kind: 'folder', id: 'f1', name: 'Folder', supported: true } as any);
+    expect(svc.getChildren.calls.count()).toBe(calls + 1);
+    expect(component.crumbs[component.crumbs.length - 1].label).toBe('Folder');
+  });
+
+  it('renders OneDrive and sites in two groups, with the site URL', () => {
+    setup([activeConn], {}, true);
+    svc.getRoots.and.returnValue(of({ items: [
+      { kind: 'onedrive', id: 'me', name: 'My OneDrive', drive_id: 'd-me' },
+      { kind: 'site', id: 's1', name: 'All Company', web_url: 'https://t.sharepoint.com/sites/allcompany' },
+      { kind: 'site', id: 's2', name: 'All Company', web_url: 'https://t.sharepoint.com/sites/allcompany2' }] }));
+    component.chooseConnection(activeConn as any);
+    fixture.detectChanges();
+    expect(text()).toContain('KbPage.Ms365OneDriveSection');
+    expect(text()).toContain('KbPage.Ms365SitesSection');
+    expect(text()).toContain('t.sharepoint.com/sites/allcompany2');
+    expect(fixture.nativeElement.querySelectorAll('.ms365-place').length).toBe(3);
+  });
 });

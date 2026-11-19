@@ -11,9 +11,10 @@ export type Ms365ConnectState = 'idle' | 'waiting' | 'retry';
 
 interface MsgKey { key: string; params?: any; }
 interface Crumb { label: string; kind: 'roots' | 'site' | 'drive' | 'folder'; id?: string; }
-interface Selected { drive_id: string; item_id: string; kind: 'folder' | 'file'; site_name?: string; }
+interface Selected { drive_id: string; item_id: string; kind: 'folder' | 'file'; site_name?: string; name?: string; }
 
 const MAX_SELECTED_ITEMS = 50;
+const SUMMARY_ITEMS = 4;
 const MB = 1048576;
 
 @Component({
@@ -360,12 +361,81 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
       return;
     }
     if (this.selected.size >= MAX_SELECTED_ITEMS) { return; }
-    const sel: Selected = { drive_id: this.currentDriveId, item_id: item.id, kind: item.kind as 'folder' | 'file' };
+    const sel: Selected = { drive_id: this.currentDriveId, item_id: item.id, kind: item.kind as 'folder' | 'file', name: item.name };
     if (this.currentSite) { sel.site_name = (this.currentSite.name || '').slice(0, 200); }
     this.selected.set(key, sel);
   }
 
   get selectedCount(): number { return this.selected.size; }
+
+  /** Options step summary: the first items picked, by name. */
+  get selectedPreview(): { name: string; kind: 'folder' | 'file' }[] {
+    return Array.from(this.selected.values()).slice(0, SUMMARY_ITEMS).map(s => ({ name: s.name || s.item_id, kind: s.kind }));
+  }
+  get selectedMore(): number { return Math.max(0, this.selected.size - SUMMARY_ITEMS); }
+
+  clearSelection() { this.selected.clear(); }
+
+  // ---- display helpers ----
+
+  get stepIndex(): number { return this.step === 'account' ? 1 : this.step === 'browse' ? 2 : 3; }
+
+  /** At the top level the list mixes OneDrive and sites: grouped under two headings. */
+  get atRoots(): boolean { return this.crumbs.length <= 1; }
+  get rootOneDrive(): KbSourceItem[] { return this.items.filter(i => i.kind === 'onedrive'); }
+  get rootSites(): KbSourceItem[] { return this.items.filter(i => i.kind === 'site'); }
+
+  initials(conn: KbSourceConnection | null): string {
+    const src = (conn && (conn.account.display_name || conn.account.upn)) || '?';
+    const parts = src.replace(/@.*/, '').split(/[\s._-]+/).filter(Boolean);
+    return ((parts[0] || '?')[0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+  }
+
+  itemIcon(item: KbSourceItem): string {
+    switch (item.kind) {
+      case 'onedrive': return 'cloud';
+      case 'site': return 'groups';
+      case 'drive': return 'folder_special';
+      case 'folder': return 'folder';
+    }
+    const ext = (item.name || '').split('.').pop().toLowerCase();
+    return ext === 'pdf' ? 'picture_as_pdf' : ext === 'docx' ? 'article' : 'description';
+  }
+
+  /** Color family for the row icon: folder, pdf, word, text, other. */
+  itemTone(item: KbSourceItem): string {
+    if (item.kind === 'folder' || item.kind === 'drive') { return 'folder'; }
+    if (item.kind !== 'file') { return 'place'; }
+    if (item.supported === false) { return 'other'; }
+    const ext = (item.name || '').split('.').pop().toLowerCase();
+    return ext === 'pdf' ? 'pdf' : ext === 'docx' ? 'word' : 'text';
+  }
+
+  formatSize(bytes: number): string {
+    if (!bytes && bytes !== 0) { return ''; }
+    if (bytes < 1024) { return bytes + ' B'; }
+    if (bytes < MB) { return Math.round(bytes / 1024) + ' KB'; }
+    return (bytes / MB).toFixed(bytes < 10 * MB ? 1 : 0) + ' MB';
+  }
+
+  /** Short date: day and month this year, with the year otherwise. */
+  formatModified(iso: string): string {
+    if (!iso) { return ''; }
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) { return ''; }
+    const sameYear = d.getFullYear() === new Date().getFullYear();
+    return d.toLocaleDateString(undefined, sameYear ? { day: 'numeric', month: 'short' } : { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  /** Site URL without the scheme, to tell apart sites with the same name. */
+  siteHint(item: KbSourceItem): string {
+    return item.web_url ? item.web_url.replace(/^https?:\/\//, '') : '';
+  }
+
+  onRowClick(item: KbSourceItem) {
+    if (item.kind === 'file') { this.toggleItem(item); return; }
+    if (item.supported !== false) { this.openItem(item); }
+  }
   get selectionLimitReached(): boolean { return this.selected.size >= MAX_SELECTED_ITEMS; }
 
   reasonKey(item: KbSourceItem): string | null {
@@ -414,7 +484,8 @@ export class ModalMs365ImportComponent implements OnInit, OnDestroy {
     const req: KbImportRequest = {
       namespace: this.namespace,
       connection_id: this.connection._id,
-      items: Array.from(this.selected.values()),
+      // name is display-only (summary): not part of the import request
+      items: Array.from(this.selected.values()).map(({ name, ...item }) => item),
       refresh_rate: this.refreshRateFeatureOn ? this.selectedRefreshRate : 'never',
       tags: this.kbTagsArray
     };

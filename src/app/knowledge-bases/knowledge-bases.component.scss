@@ -1844,3 +1844,32 @@ table {
 .kb-link-to-docs:hover {
     text-decoration: underline;
 }
+// Microsoft 365 accounts button in the KB header (opens the accounts dialog)
+.kb-ms365-accounts-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-transform: none;
+  .kb-ms365-accounts-btn__icon { font-size: 18px; }
+  .kb-ms365-accounts-btn__count {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 9px;
+    background: rgba(25, 29, 34, 0.08);
+    font-size: 11px;
+    line-height: 18px;
+    text-align: center;
+  }
+  .kb-ms365-accounts-btn__dot {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e0a100;
+    box-shadow: 0 0 0 2px #fff;
+  }
+}

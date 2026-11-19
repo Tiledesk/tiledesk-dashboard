@@ -1,151 +1,212 @@
-<div class="m-header">
-    <h1 mat-dialog-title>
-        <span *ngIf="step === 'account'">{{ 'KbPage.Ms365Title' | translate }}</span>
-        <span *ngIf="step === 'browse'">{{ 'KbPage.Ms365ChooseItems' | translate }}</span>
-        <span *ngIf="step === 'options'">{{ 'KbPage.Ms365ImportOptions' | translate }}</span>
-    </h1>
-    <div class="m-top-right-icon">
-        <span class="material-icons-outlined" (click)="onNoClick()">close</span>
+<div class="ms365-header">
+    <div class="ms365-header-main">
+        <h1 mat-dialog-title class="ms365-title">{{ 'KbPage.Ms365Title' | translate }}</h1>
+        <ol class="ms365-steps" [attr.aria-label]="'KbPage.Ms365Title' | translate">
+            <li class="ms365-step" [class.ms365-step--current]="stepIndex === 1" [class.ms365-step--done]="stepIndex > 1"
+                [attr.aria-current]="stepIndex === 1 ? 'step' : null">
+                <span class="ms365-step-dot">
+                    <span *ngIf="stepIndex > 1" class="material-icons-outlined">check</span>
+                    <span *ngIf="stepIndex <= 1">1</span>
+                </span>
+                {{ 'KbPage.Ms365StepAccount' | translate }}
+            </li>
+            <li class="ms365-step" [class.ms365-step--current]="stepIndex === 2" [class.ms365-step--done]="stepIndex > 2"
+                [attr.aria-current]="stepIndex === 2 ? 'step' : null">
+                <span class="ms365-step-dot">
+                    <span *ngIf="stepIndex > 2" class="material-icons-outlined">check</span>
+                    <span *ngIf="stepIndex <= 2">2</span>
+                </span>
+                {{ 'KbPage.Ms365StepItems' | translate }}
+            </li>
+            <li class="ms365-step" [class.ms365-step--current]="stepIndex === 3" [attr.aria-current]="stepIndex === 3 ? 'step' : null">
+                <span class="ms365-step-dot">3</span>
+                {{ 'KbPage.Ms365StepSettings' | translate }}
+            </li>
+        </ol>
     </div>
+    <button type="button" class="ms365-close" (click)="onNoClick()" [attr.aria-label]="'Close' | translate">
+        <span class="material-icons-outlined">close</span>
+    </button>
 </div>
 
 <div mat-dialog-content class="ms365-content">
 
+    <!-- Sign-in in progress / to retry: same panel in every step -->
+    <div *ngIf="connectState === 'waiting'" class="ms365-signin">
+        <mat-spinner diameter="28"></mat-spinner>
+        <p class="ms365-signin-title">{{ 'KbPage.Ms365Waiting' | translate }}</p>
+        <p class="ms365-muted">{{ 'KbPage.Ms365WaitingHint' | translate }}</p>
+        <button type="button" class="ms365-text-btn" (click)="cancelConnect()">{{ 'Cancel' | translate }}</button>
+    </div>
+    <div *ngIf="connectState === 'retry'" class="ms365-signin">
+        <span class="material-icons-outlined ms365-signin-icon">open_in_new</span>
+        <p *ngIf="connectError" class="ms365-error">{{ connectError.key | translate: connectError.params }}</p>
+        <div class="ms365-signin-actions">
+            <button type="button" class="ms365-btn ms365-btn--primary" (click)="startConnect(step === 'browse' && connection ? connection._id : lastConnectionId)">
+                {{ 'KbPage.Ms365OpenAgain' | translate }}
+            </button>
+            <button *ngIf="popupBlocked" type="button" class="ms365-btn" (click)="continueInWindow(step === 'browse' && connection ? connection._id : lastConnectionId)">
+                {{ 'KbPage.Ms365ContinueHere' | translate }}
+            </button>
+        </div>
+        <button *ngIf="step === 'account'" type="button" class="ms365-text-btn" (click)="cancelConnect()">{{ 'Cancel' | translate }}</button>
+    </div>
+
     <!-- ============================== STEP 1: ACCOUNT ============================== -->
-    <ng-container *ngIf="step === 'account'">
+    <ng-container *ngIf="step === 'account' && connectState === 'idle'">
 
         <p *ngIf="loadingConnections" class="ms365-muted">{{ 'KbPage.Loading' | translate }}…</p>
 
-        <ng-container *ngIf="!loadingConnections && connectState === 'idle'">
-            <p *ngIf="connections.length > 0" class="ms365-label">{{ 'KbPage.Ms365ChooseAccount' | translate }}</p>
+        <ng-container *ngIf="!loadingConnections">
+            <div *ngIf="connections.length === 0" class="ms365-empty">
+                <span class="material-icons-outlined ms365-empty-icon">cloud_sync</span>
+                <p class="ms365-empty-title">{{ 'KbPage.Ms365Connect' | translate }}</p>
+                <p class="ms365-muted">{{ 'KbPage.Ms365ConnectHint' | translate }}</p>
+            </div>
 
+            <p *ngIf="connections.length > 0" class="ms365-label">{{ 'KbPage.Ms365ChooseAccount' | translate }}</p>
             <ul class="ms365-accounts" *ngIf="connections.length > 0">
                 <li *ngFor="let conn of connections" class="ms365-account"
                     [class.ms365-account--warn]="conn.status === 'needs_reconnect'"
                     [class.ms365-account--active]="reconnectTarget && reconnectTarget._id === conn._id"
-                    (click)="chooseConnection(conn)">
-                    <span class="material-icons-outlined ms365-account-icon">account_circle</span>
+                    tabindex="0" role="button"
+                    (click)="chooseConnection(conn)" (keyup.enter)="chooseConnection(conn)">
+                    <span class="ms365-avatar">{{ initials(conn) }}</span>
                     <span class="ms365-account-text">
-                        <span class="ms365-account-name">{{ conn.account.display_name }} — {{ conn.account.upn }}</span>
-                        <span class="ms365-muted">{{ 'KbPage.Ms365ConnectedBy' | translate: { name: conn.created_by?.name } }}</span>
+                        <span class="ms365-account-name">{{ conn.account.display_name || conn.account.upn }}</span>
+                        <span class="ms365-muted ms365-ellipsis">{{ conn.account.upn }}</span>
+                        <span class="ms365-muted ms365-small">{{ 'KbPage.Ms365ConnectedBy' | translate: { name: conn.created_by?.name } }}</span>
                     </span>
-                    <span *ngIf="conn.status === 'needs_reconnect'" class="ms365-warning">
-                        <span class="material-icons-outlined">warning_amber</span>
-                        {{ 'KbPage.Ms365NeedsReconnect' | translate }}
-                    </span>
-                    <button *ngIf="conn.status === 'needs_reconnect'" type="button" class="ms365-link-btn"
-                        (click)="$event.stopPropagation(); startConnect(conn._id)">
-                        {{ 'KbPage.Ms365Reconnect' | translate }}
-                    </button>
+                    <span *ngIf="conn.status === 'needs_reconnect'" class="ms365-badge ms365-badge--warn">{{ 'KbPage.Ms365StatusNeedsReconnect' | translate }}</span>
+                    <span *ngIf="conn.status !== 'needs_reconnect'" class="material-icons-outlined ms365-chevron">chevron_right</span>
                 </li>
             </ul>
 
             <div *ngIf="reconnectTarget" class="ms365-notice ms365-notice--warn">
-                <span>{{ 'KbPage.Ms365NeedsReconnect' | translate }}: {{ reconnectTarget.account.upn }}</span>
-                <button type="button" class="ms365-primary-btn" (click)="startConnect(reconnectTarget._id)">
-                    {{ 'KbPage.Ms365Reconnect' | translate }}
-                </button>
+                <span class="material-icons-outlined">warning_amber</span>
+                <span class="ms365-notice-text">{{ 'KbPage.Ms365ReconnectBanner' | translate: { upn: reconnectTarget.account.upn } }}</span>
+                <button type="button" class="ms365-btn" (click)="startConnect(reconnectTarget._id)">{{ 'KbPage.Ms365Reconnect' | translate }}</button>
             </div>
 
             <p *ngIf="connectError" class="ms365-error">{{ connectError.key | translate: connectError.params }}</p>
 
-            <button type="button" class="ms365-primary-btn ms365-connect-btn" (click)="startConnect()">
+            <button type="button" class="ms365-btn ms365-connect-btn" [class.ms365-btn--primary]="connections.length === 0" (click)="startConnect()">
+                <span class="material-icons-outlined">add</span>
                 {{ (connections.length > 0 ? 'KbPage.Ms365ConnectAnother' : 'KbPage.Ms365Connect') | translate }}
             </button>
         </ng-container>
-
-        <div *ngIf="connectState === 'waiting'" class="ms365-waiting">
-            <mat-spinner diameter="22"></mat-spinner>
-            <span>{{ 'KbPage.Ms365Waiting' | translate }}</span>
-            <button type="button" class="ms365-link-btn" (click)="cancelConnect()">{{ 'Cancel' | translate }}</button>
-        </div>
-
-        <div *ngIf="connectState === 'retry'" class="ms365-retry">
-            <p *ngIf="connectError" class="ms365-error">{{ connectError.key | translate: connectError.params }}</p>
-            <button type="button" class="ms365-primary-btn" (click)="startConnect(lastConnectionId)">
-                {{ 'KbPage.Ms365OpenAgain' | translate }}
-            </button>
-            <button *ngIf="popupBlocked" type="button" class="ms365-primary-btn ms365-continue-btn" (click)="continueInWindow(lastConnectionId)">
-                {{ 'KbPage.Ms365ContinueHere' | translate }}
-            </button>
-            <button type="button" class="ms365-link-btn" (click)="cancelConnect()">{{ 'Cancel' | translate }}</button>
-        </div>
     </ng-container>
 
     <!-- ============================== STEP 2: BROWSE ============================== -->
-    <ng-container *ngIf="step === 'browse'">
+    <ng-container *ngIf="step === 'browse' && connectState === 'idle'">
+
+        <div class="ms365-account-bar" *ngIf="connection">
+            <span class="ms365-avatar ms365-avatar--sm">{{ initials(connection) }}</span>
+            <span class="ms365-ellipsis">{{ connection.account.upn }}</span>
+            <button type="button" class="ms365-text-btn" (click)="backToAccounts()">{{ 'KbPage.Ms365ChangeAccount' | translate }}</button>
+        </div>
 
         <nav class="ms365-crumbs" aria-label="breadcrumb">
+            <span class="material-icons-outlined ms365-crumb-home">home</span>
             <ng-container *ngFor="let crumb of crumbs; let i = index; let last = last">
-                <span *ngIf="!last" class="ms365-crumb ms365-crumb--link" (click)="goToCrumb(i)">
+                <button *ngIf="!last" type="button" class="ms365-crumb ms365-crumb--link" (click)="goToCrumb(i)">
                     {{ i === 0 ? (crumb.label | translate) : crumb.label }}
-                </span>
-                <span *ngIf="last" class="ms365-crumb">{{ i === 0 ? (crumb.label | translate) : crumb.label }}</span>
-                <span *ngIf="!last" class="ms365-crumb-sep">/</span>
+                </button>
+                <span *ngIf="last" class="ms365-crumb" aria-current="page">{{ i === 0 ? (crumb.label | translate) : crumb.label }}</span>
+                <span *ngIf="!last" class="material-icons-outlined ms365-crumb-sep">chevron_right</span>
             </ng-container>
         </nav>
 
         <div *ngIf="browseError === 'needs_reconnect'" class="ms365-notice ms365-notice--warn">
-            <span>{{ 'KbPage.Ms365NeedsReconnect' | translate }}</span>
-            <button type="button" class="ms365-primary-btn" (click)="startConnect(connection._id)">
-                {{ 'KbPage.Ms365Reconnect' | translate }}
-            </button>
+            <span class="material-icons-outlined">warning_amber</span>
+            <span class="ms365-notice-text">{{ 'KbPage.Ms365NeedsReconnect' | translate }}</span>
+            <button type="button" class="ms365-btn" (click)="startConnect(connection._id)">{{ 'KbPage.Ms365Reconnect' | translate }}</button>
         </div>
         <div *ngIf="browseError && browseError !== 'needs_reconnect'" class="ms365-notice ms365-notice--error">
-            <span>{{ browseError | translate }}</span>
-            <button type="button" class="ms365-link-btn" (click)="retryBrowse()">{{ 'KbPage.Ms365Retry' | translate }}</button>
+            <span class="material-icons-outlined">error_outline</span>
+            <span class="ms365-notice-text">{{ browseError | translate }}</span>
+            <button type="button" class="ms365-btn" (click)="retryBrowse()">{{ 'KbPage.Ms365Retry' | translate }}</button>
         </div>
 
-        <div *ngIf="connectState === 'waiting'" class="ms365-waiting">
-            <mat-spinner diameter="22"></mat-spinner>
-            <span>{{ 'KbPage.Ms365Waiting' | translate }}</span>
-            <button type="button" class="ms365-link-btn" (click)="cancelConnect()">{{ 'Cancel' | translate }}</button>
-        </div>
-        <div *ngIf="connectState === 'retry'" class="ms365-retry">
-            <p *ngIf="connectError" class="ms365-error">{{ connectError.key | translate: connectError.params }}</p>
-            <button type="button" class="ms365-primary-btn" (click)="startConnect(connection._id)">
-                {{ 'KbPage.Ms365OpenAgain' | translate }}
+        <div class="ms365-list" *ngIf="!browseError">
+
+            <!-- top level: OneDrive and SharePoint sites -->
+            <ng-container *ngIf="atRoots">
+                <ng-container *ngIf="rootOneDrive.length">
+                    <div class="ms365-group">{{ 'KbPage.Ms365OneDriveSection' | translate }}</div>
+                    <button *ngFor="let item of rootOneDrive" type="button" class="ms365-place" (click)="openItem(item)">
+                        <span class="material-icons-outlined ms365-icon ms365-icon--place">{{ itemIcon(item) }}</span>
+                        <span class="ms365-place-name">{{ item.name }}</span>
+                        <span class="material-icons-outlined ms365-chevron">chevron_right</span>
+                    </button>
+                </ng-container>
+                <ng-container *ngIf="rootSites.length">
+                    <div class="ms365-group">{{ 'KbPage.Ms365SitesSection' | translate }}</div>
+                    <button *ngFor="let item of rootSites" type="button" class="ms365-place" (click)="openItem(item)">
+                        <span class="material-icons-outlined ms365-icon ms365-icon--place">{{ itemIcon(item) }}</span>
+                        <span class="ms365-place-text">
+                            <span class="ms365-place-name">{{ item.name }}</span>
+                            <span *ngIf="siteHint(item)" class="ms365-muted ms365-small ms365-ellipsis">{{ siteHint(item) }}</span>
+                        </span>
+                        <span class="material-icons-outlined ms365-chevron">chevron_right</span>
+                    </button>
+                </ng-container>
+            </ng-container>
+
+            <!-- libraries, folders and files -->
+            <ng-container *ngIf="!atRoots && items.length">
+                <div class="ms365-row ms365-row--head" *ngIf="items[0].kind === 'folder' || items[0].kind === 'file'">
+                    <span></span><span></span>
+                    <span>{{ 'KbPage.Ms365ColName' | translate }}</span>
+                    <span class="ms365-num">{{ 'KbPage.Ms365ColSize' | translate }}</span>
+                    <span class="ms365-num">{{ 'KbPage.Ms365ColModified' | translate }}</span>
+                    <span></span>
+                </div>
+                <div *ngFor="let item of items" class="ms365-row"
+                    [class.ms365-row--selected]="isSelected(item)"
+                    [class.ms365-row--disabled]="!isSelectable(item) && (item.kind === 'file' || item.kind === 'folder')"
+                    [class.ms365-row--nav]="item.kind !== 'file' && item.supported !== false"
+                    (click)="onRowClick(item)">
+                    <span class="ms365-check" (click)="$event.stopPropagation()">
+                        <mat-checkbox *ngIf="item.kind === 'folder' || item.kind === 'file'"
+                            [checked]="isSelected(item)" [disabled]="!isSelectable(item) || (selectionLimitReached && !isSelected(item))"
+                            [attr.aria-label]="item.name"
+                            (change)="toggleItem(item)"></mat-checkbox>
+                    </span>
+                    <span class="material-icons-outlined ms365-icon" [ngClass]="'ms365-icon--' + itemTone(item)">{{ itemIcon(item) }}</span>
+                    <span class="ms365-name">
+                        <span class="ms365-ellipsis">{{ item.name }}</span>
+                        <span *ngIf="reasonKey(item)" class="ms365-reason">{{ reasonKey(item) | translate: { size: maxFileSizeMb } }}</span>
+                    </span>
+                    <span class="ms365-num">
+                        <ng-container *ngIf="item.kind === 'file'">{{ formatSize(item.size) }}</ng-container>
+                        <ng-container *ngIf="item.kind === 'folder' && item.child_count !== undefined">{{ 'KbPage.Ms365ItemsCount' | translate: { count: item.child_count } }}</ng-container>
+                    </span>
+                    <span class="ms365-num">{{ formatModified(item.last_modified) }}</span>
+                    <span class="material-icons-outlined ms365-chevron">{{ item.kind !== 'file' && item.supported !== false ? 'chevron_right' : '' }}</span>
+                </div>
+            </ng-container>
+
+            <p *ngIf="loading" class="ms365-muted ms365-list-note">{{ 'KbPage.Loading' | translate }}…</p>
+            <p *ngIf="!loading && items.length === 0" class="ms365-muted ms365-list-note">{{ 'KbPage.Ms365Empty' | translate }}</p>
+            <button *ngIf="nextPage && !loading" type="button" class="ms365-text-btn ms365-list-note" (click)="loadMore()">
+                {{ 'KbPage.Ms365LoadMore' | translate }}
             </button>
-            <button *ngIf="popupBlocked" type="button" class="ms365-primary-btn ms365-continue-btn" (click)="continueInWindow(connection._id)">
-                {{ 'KbPage.Ms365ContinueHere' | translate }}
-            </button>
         </div>
-
-        <ul class="ms365-items" *ngIf="!browseError">
-            <li *ngFor="let item of items" class="ms365-item" [class.ms365-item--disabled]="!isSelectable(item) && (item.kind === 'file' || item.kind === 'folder')">
-                <mat-checkbox *ngIf="item.kind === 'folder' || item.kind === 'file'"
-                    [checked]="isSelected(item)" [disabled]="!isSelectable(item) || (selectionLimitReached && !isSelected(item))"
-                    (change)="toggleItem(item)"></mat-checkbox>
-                <span class="material-icons-outlined ms365-item-icon">
-                    {{ item.kind === 'file' ? 'description' : item.kind === 'site' ? 'groups' : item.kind === 'onedrive' ? 'cloud' : item.kind === 'drive' ? 'folder_special' : 'folder' }}
-                </span>
-                <span class="ms365-item-name"
-                    [class.ms365-item-name--link]="item.kind !== 'file' && item.supported !== false"
-                    (click)="openItem(item)">{{ item.name }}</span>
-                <span *ngIf="reasonKey(item)" class="ms365-muted ms365-item-reason">
-                    {{ reasonKey(item) | translate: { size: maxFileSizeMb } }}
-                </span>
-            </li>
-        </ul>
-
-        <p *ngIf="loading" class="ms365-muted">{{ 'KbPage.Loading' | translate }}…</p>
-        <p *ngIf="!loading && !browseError && items.length === 0" class="ms365-muted">{{ 'KbPage.Ms365Empty' | translate }}</p>
-
-        <button *ngIf="nextPage && !loading" type="button" class="ms365-link-btn" (click)="loadMore()">
-            {{ 'KbPage.Ms365LoadMore' | translate }}
-        </button>
-
-        <p *ngIf="selectionLimitReached" class="ms365-muted">{{ 'KbPage.Ms365SelectionLimit' | translate }}</p>
     </ng-container>
 
-    <!-- ============================== STEP 3: OPTIONS ============================== -->
+    <!-- ============================== STEP 3: SYNC SETTINGS ============================== -->
     <ng-container *ngIf="step === 'options'">
 
-        <p class="ms365-label">{{ 'KbPage.Ms365SelectedCount' | translate: { count: selectedCount } }}</p>
-
-        <div class="ms365-notice">
-            <span class="material-icons-outlined">info</span>
-            <span>{{ 'KbPage.Ms365Everything' | translate }}</span>
+        <div class="ms365-summary">
+            <p class="ms365-label">{{ 'KbPage.Ms365SelectedCount' | translate: { count: selectedCount } }}</p>
+            <ul class="ms365-summary-list">
+                <li *ngFor="let s of selectedPreview">
+                    <span class="material-icons-outlined ms365-icon" [ngClass]="s.kind === 'folder' ? 'ms365-icon--folder' : 'ms365-icon--text'">{{ s.kind === 'folder' ? 'folder' : 'description' }}</span>
+                    <span class="ms365-ellipsis">{{ s.name }}</span>
+                </li>
+                <li *ngIf="selectedMore > 0" class="ms365-muted">{{ 'KbPage.Ms365AndMore' | translate: { count: selectedMore } }}</li>
+            </ul>
         </div>
 
         <ng-container *ngIf="payIsVisible">
@@ -172,10 +233,14 @@
                 [(ngModel)]="selectedRefreshRate" [disabled]="!refreshRateFeatureOn">
                 <option *ngFor="let rate of refreshRates" [value]="rate.value">{{ rate.label | translate }}</option>
             </select>
+            <p class="ms365-muted ms365-small ms365-help">
+                {{ (selectedRefreshRate === 'never' ? 'KbPage.Ms365RefreshHelpNever' : 'KbPage.Ms365RefreshHelp') | translate }}
+            </p>
         </div>
 
-        <div class="ms365-field kb-tags-section">
-            <input *ngIf="refreshRateIsEnabled" id="kb-tags" class="adds-kb-input" name="kb-tags" type="text" autocomplete="off"
+        <div class="ms365-field kb-tags-section" *ngIf="refreshRateIsEnabled">
+            <label class="ms365-label" for="kb-tags">{{ 'KbPage.Ms365Tags' | translate }}</label>
+            <input id="kb-tags" class="adds-kb-input ms365-input" name="kb-tags" type="text" autocomplete="off"
                 [placeholder]="'AddsTagsAndPressEnter' | translate"
                 [(ngModel)]="kbTag" (keyup.enter)="addsKbTag()">
             <div class="kb-tags-container">
@@ -191,17 +256,34 @@
             </div>
         </div>
 
+        <div class="ms365-notice">
+            <span class="material-icons-outlined">info</span>
+            <span class="ms365-notice-text">{{ 'KbPage.Ms365Everything' | translate }}</span>
+        </div>
+
         <p *ngIf="importError" class="ms365-error">{{ importError.key | translate: importError.params }}</p>
     </ng-container>
 </div>
 
 <div mat-dialog-actions class="ms365-actions">
+    <div class="ms365-actions-left">
+        <ng-container *ngIf="step === 'browse' && selectedCount > 0">
+            <span>{{ 'KbPage.Ms365SelectedCount' | translate: { count: selectedCount } }}</span>
+            <button type="button" class="ms365-text-btn" (click)="clearSelection()">{{ 'KbPage.Ms365Clear' | translate }}</button>
+        </ng-container>
+        <span *ngIf="step === 'browse' && selectionLimitReached" class="ms365-muted ms365-small">{{ 'KbPage.Ms365SelectionLimit' | translate }}</span>
+    </div>
+
+    <button *ngIf="step === 'account'" class="mat-dialog-close-btn" mat-button (click)="onNoClick()">
+        {{ 'Cancel' | translate }}
+    </button>
+
     <button *ngIf="step === 'browse'" class="mat-dialog-close-btn" mat-button (click)="backToAccounts()">
         {{ 'KbPage.Ms365Back' | translate }}
     </button>
     <button *ngIf="step === 'browse'" class="mat-dialog-ok-btn" mat-button
         [disabled]="selectedCount === 0" (click)="goToOptions()">
-        {{ 'KbPage.Ms365Next' | translate }} ({{ selectedCount }})
+        {{ 'KbPage.Ms365Continue' | translate }}
     </button>
 
     <button *ngIf="step === 'options'" class="mat-dialog-close-btn" mat-button (click)="backToBrowse()">
