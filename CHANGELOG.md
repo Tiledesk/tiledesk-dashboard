@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.11.0-rc1
+- Adds Microsoft 365 (SharePoint / OneDrive) as a Knowledge Base source: Add content → Microsoft 365, connect an account in a popup (or in the same window when popups are blocked), browse sites, libraries and folders, import with a refresh rate; folder rows show account, files, last sync and warnings (Reconnect), with Sync now, refresh-rate edit and delete; Microsoft 365 accounts section to reconnect or disconnect
+- KB file upload uses `/files/kb` and the server's KB file limit (50 MB default), `.md` accepted
+- Includes the credits work of the stage branch
+
 ### 2.10.0
 - Adds OAuth authentication for MCP servers in Integrations → MCP Servers: automatic (MCP discovery), Google and manual; connection status with reconnect.
 
