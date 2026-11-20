@@ -1,5 +1,9 @@
 # tiledesk-dashboard
 
+### 2.13.0-rc4
+- Import from websites is now a wizard like the Microsoft 365 / Google Drive import: 1 Website (scan a site with options for max pages, depth and linked files; use a sitemap; or paste URLs), 2 Pages (page titles, search, All/Pages/Files filter, sections below the folder the pages share, Select all shown), 3 Import settings (summary, content extraction, refresh rate, tags)
+- Pasted addresses without https:// are accepted; lines that are not web addresses are reported
+
 ### 2.13.0-rc3
 - Find pages on a site ("Scansiona sito" in Italian), listed before "Add URLs from a sitemap": Depth field (0-5, default 3) and Include linked files (PDF, Word, Excel, CSV, Text, Markdown); found files show a type badge and are imported one by one with their own type (not as web pages), once, without refresh; one Select all checkbox above the sections
 - KB table: XLSX, XLS and CSV type chips and filter options
