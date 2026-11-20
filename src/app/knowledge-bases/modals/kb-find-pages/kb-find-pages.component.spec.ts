@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { of, Subject, throwError } from 'rxjs';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
+import { AppConfigService } from 'app/services/app-config.service';
 import { KbFindPagesComponent } from './kb-find-pages.component';
 import { CrawlDiscoverResult } from './kb-find-pages.util';
 
@@ -20,13 +21,18 @@ describe('KbFindPagesComponent', () => {
   let fixture: ComponentFixture<KbFindPagesComponent>;
   let component: KbFindPagesComponent;
   let kb: jasmine.SpyObj<KnowledgeBaseService>;
+  let config: any;
 
   beforeEach(async () => {
     kb = jasmine.createSpyObj('KnowledgeBaseService', ['discoverPages']);
+    config = {};
     await TestBed.configureTestingModule({
       declarations: [KbFindPagesComponent],
       imports: [FormsModule, TranslateModule.forRoot()],
-      providers: [{ provide: KnowledgeBaseService, useValue: kb }],
+      providers: [
+        { provide: KnowledgeBaseService, useValue: kb },
+        { provide: AppConfigService, useValue: { getConfig: () => config } },
+      ],
     }).compileComponents();
     fixture = TestBed.createComponent(KbFindPagesComponent);
     component = fixture.componentInstance;
@@ -46,6 +52,25 @@ describe('KbFindPagesComponent', () => {
     component.maxPages = 900;
     component.scan();
     expect(kb.discoverPages).toHaveBeenCalledWith('https://a.com', 300, 45);
+  });
+
+  it('uses the scan time from the dashboard config', () => {
+    kb.discoverPages.and.returnValue(of(RESULT));
+    config.kbCrawlMaxSeconds = '240';
+    fixture = TestBed.createComponent(KbFindPagesComponent);
+    component = fixture.componentInstance;
+    component.source = 'https://a.com';
+    component.scan();
+    expect(kb.discoverPages).toHaveBeenCalledWith('https://a.com', 50, 240);
+    expect(component.maxSeconds).toBe(240);
+  });
+
+  it('tells how long the scan can take', () => {
+    expect(component.scanningText()).toEqual({ key: 'KbPage.FindPagesScanning', params: {} });
+    component.maxSeconds = 240;
+    expect(component.scanningText()).toEqual({ key: 'KbPage.FindPagesScanningMinutes', params: { n: 4 } });
+    component.maxSeconds = 90;
+    expect(component.scanningText()).toEqual({ key: 'KbPage.FindPagesScanningMinutes', params: { n: 2 } });
   });
 
   it('shows the found pages grouped by section', () => {

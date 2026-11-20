@@ -2404,6 +2404,7 @@
         "FindPagesScan": "Сканувати",
         "FindPagesMaxPages": "Макс. сторінок",
         "FindPagesScanning": "Сканування… це може тривати до хвилини",
+        "FindPagesScanningMinutes": "Сканування… це може тривати до {{n}} хв.",
         "FindPagesFound": "Знайдено сторінок: {{n}}",
         "FindPagesSelectAll": "Вибрати все",
         "FindPagesClear": "Скинути",

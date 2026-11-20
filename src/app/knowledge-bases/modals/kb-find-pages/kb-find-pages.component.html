@@ -26,7 +26,7 @@
 
     <div *ngIf="phase === 'scanning'" class="find-pages__progress" aria-live="polite">
         <div class="find-pages__bar"><div></div></div>
-        <span>{{ 'KbPage.FindPagesScanning' | translate }} {{ elapsedSeconds }}s</span>
+        <span>{{ scanningText().key | translate: scanningText().params }} {{ elapsedSeconds }}s</span>
     </div>
 
     <div *ngIf="phase === 'picking'" class="find-pages__pick">

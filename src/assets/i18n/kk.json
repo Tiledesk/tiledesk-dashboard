@@ -2404,6 +2404,7 @@
         "FindPagesScan": "Сканерлеу",
         "FindPagesMaxPages": "Ең көп бет",
         "FindPagesScanning": "Сканерленуде… бұл бір минутқа дейін созылуы мүмкін",
+        "FindPagesScanningMinutes": "Сканерленуде… бұл {{n}} минутқа дейін созылуы мүмкін",
         "FindPagesFound": "{{n}} бет табылды",
         "FindPagesSelectAll": "Барлығын таңдау",
         "FindPagesClear": "Тазалау",

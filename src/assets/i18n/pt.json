@@ -2404,6 +2404,7 @@
         "FindPagesScan": "Verificar",
         "FindPagesMaxPages": "Máx. de páginas",
         "FindPagesScanning": "Verificando… isso pode levar até um minuto",
+        "FindPagesScanningMinutes": "Verificando… isso pode levar até {{n}} minutos",
         "FindPagesFound": "{{n}} páginas encontradas",
         "FindPagesSelectAll": "Selecionar tudo",
         "FindPagesClear": "Limpar",

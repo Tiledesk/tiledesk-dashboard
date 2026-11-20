@@ -2404,6 +2404,7 @@
         "FindPagesScan": "Analyser",
         "FindPagesMaxPages": "Pages max.",
         "FindPagesScanning": "Analyse en cours… cela peut prendre jusqu'à une minute",
+        "FindPagesScanningMinutes": "Analyse en cours… cela peut prendre jusqu'à {{n}} minutes",
         "FindPagesFound": "{{n}} pages trouvées",
         "FindPagesSelectAll": "Tout sélectionner",
         "FindPagesClear": "Effacer",

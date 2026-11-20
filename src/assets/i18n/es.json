@@ -2388,6 +2388,7 @@
         "FindPagesScan": "Escanear",
         "FindPagesMaxPages": "Máx. páginas",
         "FindPagesScanning": "Escaneando… puede tardar hasta un minuto",
+        "FindPagesScanningMinutes": "Escaneando… puede tardar hasta {{n}} minutos",
         "FindPagesFound": "{{n}} páginas encontradas",
         "FindPagesSelectAll": "Seleccionar todo",
         "FindPagesClear": "Borrar selección",
