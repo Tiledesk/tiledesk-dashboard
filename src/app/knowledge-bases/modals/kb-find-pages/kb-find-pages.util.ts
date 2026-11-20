@@ -136,3 +136,83 @@ export function importPickedFiles(
     })),
   );
 }
+
+/** One row of the Import from websites picker: a web page, or a linked file when `type` is set. */
+export interface PickerItem {
+  url: string;
+  title?: string;
+  type?: CrawlFileType;
+}
+
+/** Group key of the linked files section. */
+export const FILES_GROUP = 'files';
+
+function pathSegments(url: string): string[] | null {
+  try {
+    return new URL(url).pathname.split('/').filter((s) => s);
+  } catch (e) {
+    return null;
+  }
+}
+
+/**
+ * How many leading path segments every URL shares ("/compliance-policy-privacy/" → 1). An item that is the
+ * shared folder's own page does not end it; the first place where items go different ways does.
+ */
+export function sharedFolderDepth(urls: string[]): number {
+  const all = (urls || []).map(pathSegments).filter((s): s is string[] => !!s);
+  let d = 0;
+  for (;;) {
+    const deeper = all.filter((s) => s.length > d + 1);
+    if (deeper.length === 0) return d;
+    const folder = deeper[0][d];
+    if (all.some((s) => s.length > d && s[d] !== folder)) return d;
+    d++;
+  }
+}
+
+/**
+ * Sections of the picker: web pages by the first path segment below the shared folder ("/" for the folder
+ * page itself or the site root, listed last), linked files in one FILES_GROUP section at the end.
+ */
+export function groupItems(items: PickerItem[]): PageGroup[] {
+  const unique = new Map<string, PickerItem>();
+  for (const i of items || []) if (i && i.url && !unique.has(i.url)) unique.set(i.url, i);
+  const list = Array.from(unique.values());
+  const depth = sharedFolderDepth(list.map((i) => i.url));
+  const pages = new Map<string, string[]>();
+  const files: string[] = [];
+  for (const i of list) {
+    if (i.type) { files.push(i.url); continue; }
+    const s = pathSegments(i.url);
+    if (!s) continue;
+    const key = '/' + (s.slice(depth)[0] || '');
+    if (!pages.has(key)) pages.set(key, []);
+    pages.get(key)!.push(i.url);
+  }
+  const keys = Array.from(pages.keys()).sort((a, b) => (a === '/' ? 1 : b === '/' ? -1 : a.localeCompare(b)));
+  const groups = keys.map((key) => ({ key, urls: pages.get(key)! }));
+  if (files.length) groups.push({ key: FILES_GROUP, urls: files });
+  return groups;
+}
+
+/** Search (title or path, case-insensitive) and the All / Pages / Files filter. */
+export function matchesFilter(item: PickerItem, query: string, kind: 'all' | 'pages' | 'files'): boolean {
+  if (kind === 'pages' && item.type) return false;
+  if (kind === 'files' && !item.type) return false;
+  const q = (query || '').trim().toLowerCase();
+  if (!q) return true;
+  let path = item.url;
+  try { const u = new URL(item.url); path = u.pathname + u.search; } catch (e) { /* keep the url */ }
+  return (item.title || '').toLowerCase().includes(q) || path.toLowerCase().includes(q) || item.url.toLowerCase().includes(q);
+}
+
+/** URLs pasted one per line: trimmed, http(s) only, without duplicates. */
+export function parsePastedUrls(text: string): string[] {
+  const out: string[] = [];
+  for (const raw of (text || '').split('\n')) {
+    const u = raw.trim();
+    if (/^https?:\/\/\S+$/i.test(u) && !out.includes(u)) out.push(u);
+  }
+  return out;
+}
