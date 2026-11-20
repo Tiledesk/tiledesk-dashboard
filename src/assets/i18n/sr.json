@@ -2429,6 +2429,8 @@
         "WizardSelectAllShown": "Izaberi sve prikazano",
         "WizardNoMatch": "Nema rezultata za pretragu",
         "WizardLinkedFiles": "Povezani fajlovi",
+        "WizardPasteIgnored": "Zanemareno redova: {{n}} — nisu veb adrese.",
+        "WizardOverLimit": "Odjednom možeš uvesti do {{n}} stavki. Poništi izbor nekih da nastaviš.",
         "FindPagesDepth": "Dubina",
         "FindPagesDepthHelp": "Nivoi linkova od početne stranice (0 = samo početna stranica)",
         "FindPagesIncludeFiles": "Uključi povezane fajlove:",

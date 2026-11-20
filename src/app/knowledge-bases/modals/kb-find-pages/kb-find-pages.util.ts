@@ -207,14 +207,29 @@ export function matchesFilter(item: PickerItem, query: string, kind: 'all' | 'pa
   return (item.title || '').toLowerCase().includes(q) || path.toLowerCase().includes(q) || item.url.toLowerCase().includes(q);
 }
 
-/** URLs pasted one per line: trimmed, http(s) only, without duplicates. */
+/** A pasted line as an http(s) URL: "www.example.com" and "example.com/page" get https://; anything else is null. */
+function pastedLineToUrl(raw: string): string | null {
+  const line = (raw || '').trim();
+  if (!line || /\s/.test(line)) return null;
+  if (/^https?:\/\/\S+$/i.test(line)) return line;
+  if (/^[a-z][a-z0-9+.-]*:/i.test(line)) return null; // another scheme (ftp:, mailto:…)
+  if (/^[a-z0-9-]+(\.[a-z0-9-]+)+(:\d+)?(\/\S*)?$/i.test(line)) return 'https://' + line;
+  return null;
+}
+
+/** URLs pasted one per line: trimmed, http(s) (https:// added to bare addresses), without duplicates. */
 export function parsePastedUrls(text: string): string[] {
   const out: string[] = [];
   for (const raw of (text || '').split('\n')) {
-    const u = raw.trim();
-    if (/^https?:\/\/\S+$/i.test(u) && !out.includes(u)) out.push(u);
+    const u = pastedLineToUrl(raw);
+    if (u && !out.includes(u)) out.push(u);
   }
   return out;
+}
+
+/** Non-empty pasted lines that are not web addresses (shown so nothing disappears silently). */
+export function ignoredPastedLines(text: string): number {
+  return (text || '').split('\n').filter((l) => l.trim() !== '' && pastedLineToUrl(l) === null).length;
 }
 
 export const FIND_PAGES_DEFAULT_MAX = 50;

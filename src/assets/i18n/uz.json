@@ -2427,6 +2427,8 @@
         "WizardSelectAllShown": "Ko'rsatilganlarning barchasini tanlash",
         "WizardNoMatch": "Qidiruvingizga mos natija yo'q",
         "WizardLinkedFiles": "Bog'langan fayllar",
+        "WizardPasteIgnored": "{{n}} ta qator e'tiborga olinmadi: ular veb-manzil emas.",
+        "WizardOverLimit": "Bir martada {{n}} tagacha elementni import qilishingiz mumkin. Davom etish uchun ba'zilarini olib tashlang.",
         "FindPagesDepth": "Chuqurlik",
         "FindPagesDepthHelp": "Boshlang'ich sahifadan kuzatiladigan havola darajalari (0 = faqat boshlang'ich sahifa)",
         "FindPagesIncludeFiles": "Bog'langan fayllarni qo'shish:",

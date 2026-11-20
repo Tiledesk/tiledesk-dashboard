@@ -2429,6 +2429,8 @@
         "WizardSelectAllShown": "Gösterilenlerin tümünü seç",
         "WizardNoMatch": "Aramanızla eşleşen sonuç yok",
         "WizardLinkedFiles": "Bağlantılı dosyalar",
+        "WizardPasteIgnored": "{{n}} satır yok sayıldı: web adresi değiller.",
+        "WizardOverLimit": "Tek seferde en fazla {{n}} öğe içe aktarabilirsiniz. Devam etmek için bazılarının seçimini kaldırın.",
         "FindPagesDepth": "Derinlik",
         "FindPagesDepthHelp": "Başlangıç sayfasından izlenen bağlantı seviyeleri (0 = yalnızca başlangıç sayfası)",
         "FindPagesIncludeFiles": "Bağlantılı dosyaları dahil et:",

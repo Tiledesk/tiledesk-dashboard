@@ -2429,6 +2429,8 @@
         "WizardSelectAllShown": "Göstərilənlərin hamısını seç",
         "WizardNoMatch": "Axtarışa uyğun nəticə yoxdur",
         "WizardLinkedFiles": "Əlaqəli fayllar",
+        "WizardPasteIgnored": "{{n}} sətir nəzərə alınmadı: veb ünvanı deyil.",
+        "WizardOverLimit": "Bir dəfəyə {{n}} elementə qədər idxal edə bilərsiniz. Davam etmək üçün bəzilərinin seçimini ləğv edin.",
         "FindPagesDepth": "Dərinlik",
         "FindPagesDepthHelp": "Başlanğıc səhifədən izlənilən keçid səviyyələri (0 = yalnız başlanğıc səhifə)",
         "FindPagesIncludeFiles": "Əlaqəli faylları daxil et:",

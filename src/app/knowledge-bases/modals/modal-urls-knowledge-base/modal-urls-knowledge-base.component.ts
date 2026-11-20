@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import { AppConfigService } from 'app/services/app-config.service';
 import {
   CRAWL_FILE_TYPES, CrawlDiscoverResult, CrawlFileType, FILE_OPTIONS, FIND_PAGES_DEFAULT_DEPTH, FIND_PAGES_DEFAULT_MAX,
-  FIND_PAGES_MAX, FIND_PAGES_MAX_DEPTH, fileNameOf, parsePastedUrls, PickerItem, resolveScanMaxSeconds,
+  FIND_PAGES_MAX, FIND_PAGES_MAX_DEPTH, fileNameOf, ignoredPastedLines, parsePastedUrls, PickerItem, resolveScanMaxSeconds,
 } from '../kb-find-pages/kb-find-pages.util';
 
 
@@ -279,6 +279,10 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     if (this.step > 1) this.step = (this.step - 1) as 1 | 2;
   }
 
+  ignoredPasted(): number {
+    return ignoredPastedLines(this.pastedText);
+  }
+
   clearSelection(): void {
     this.selected = new Set();
   }
@@ -491,7 +495,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
       width: '380px',
       // Place the dialog flush to the right of the wizard (600px wide → half is 300px,
       // plus a 10px gap so the two cards do not touch).
-      position: { left: 'calc(50% + 310px)', top: '60px' },
+      // beside the wizard when the screen is wide enough, else pinned to the right edge (no overflow)
+      position: window.innerWidth >= 1400 ? { left: 'calc(50% + 310px)', top: '60px' } : { right: '16px', top: '60px' },
       autoFocus: false,
       hasBackdrop: false,
       data: {

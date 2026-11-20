@@ -2,7 +2,7 @@
     <div class="kb-picker__tools">
         <span class="kb-picker__search">
             <span class="material-icons-outlined" aria-hidden="true">search</span>
-            <input type="search" [(ngModel)]="query" [placeholder]="'KbPage.WizardSearch' | translate"
+            <input type="search" [(ngModel)]="query" (keydown.escape)="$event.stopPropagation(); query = ''" [placeholder]="'KbPage.WizardSearch' | translate"
                 [attr.aria-label]="'KbPage.WizardSearch' | translate">
         </span>
         <span class="kb-picker__kinds" role="group" [attr.aria-label]="'KbPage.WizardFilter' | translate">

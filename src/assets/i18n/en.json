@@ -2444,6 +2444,8 @@
         "WizardSelectAllShown": "Select all shown",
         "WizardNoMatch": "Nothing matches your search",
         "WizardLinkedFiles": "Linked files",
+        "WizardPasteIgnored": "{{n}} lines ignored: they are not web addresses.",
+        "WizardOverLimit": "You can import up to {{n}} items at a time. Deselect some to continue.",
         "FindPagesDepth": "Depth",
         "FindPagesDepthHelp": "Link levels followed from the start page (0 = start page only)",
         "FindPagesIncludeFiles": "Include linked files:",

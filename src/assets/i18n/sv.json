@@ -2429,6 +2429,8 @@
         "WizardSelectAllShown": "Markera alla som visas",
         "WizardNoMatch": "Inget matchar din sökning",
         "WizardLinkedFiles": "Länkade filer",
+        "WizardPasteIgnored": "{{n}} rader ignorerades: de är inte webbadresser.",
+        "WizardOverLimit": "Du kan importera upp till {{n}} objekt åt gången. Avmarkera några för att fortsätta.",
         "FindPagesDepth": "Djup",
         "FindPagesDepthHelp": "Länknivåer som följs från startsidan (0 = bara startsidan)",
         "FindPagesIncludeFiles": "Ta med länkade filer:",

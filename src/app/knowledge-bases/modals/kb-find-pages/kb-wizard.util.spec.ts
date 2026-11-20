@@ -1,4 +1,4 @@
-import { groupItems, matchesFilter, parsePastedUrls, PickerItem, sharedFolderDepth } from './kb-find-pages.util';
+import { groupItems, ignoredPastedLines, matchesFilter, parsePastedUrls, PickerItem, sharedFolderDepth } from './kb-find-pages.util';
 
 const D = 'https://drexel.edu/compliance-policy-privacy';
 const drexel: PickerItem[] = [
@@ -52,6 +52,12 @@ describe('wizard helpers', () => {
   describe('parsePastedUrls', () => {
     it('keeps unique http(s) lines, trimmed', () => {
       expect(parsePastedUrls(' https://a.com/x \n\nftp://b\nhttps://a.com/x\nnot a url\nhttp://c.com')).toEqual(['https://a.com/x', 'http://c.com']);
+    });
+    it('adds https:// to addresses typed without it', () => {
+      expect(parsePastedUrls('www.example.com\nexample.org/docs/a\nhttps://example.org/docs/a')).toEqual(['https://www.example.com', 'https://example.org/docs/a']);
+    });
+    it('counts the lines it cannot use', () => {
+      expect(ignoredPastedLines('https://a.com\nnot a url\n\nftp://b\nwww.c.com')).toBe(2);
     });
   });
 });

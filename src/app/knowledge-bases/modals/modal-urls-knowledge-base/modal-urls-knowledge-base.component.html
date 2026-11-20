@@ -3,22 +3,22 @@
         {{ 'KbPage.ImportFromWebsites' | translate }}
     </h1>
     <div class="m-top-right-icon">
-        <span id="close" class="material-icons-outlined" role="button" [attr.aria-label]="'KbPage.FindPagesClose' | translate" (click)="onCloseBaseModal()">
+        <span id="close" class="material-icons-outlined" role="button" tabindex="0" [attr.aria-label]="'KbPage.FindPagesClose' | translate" (click)="onCloseBaseModal()" (keydown.enter)="onCloseBaseModal()">
             close
         </span>
     </div>
 </div>
 
 <ol class="wz-steps">
-    <li class="wz-step" [class.on]="step === 1" [class.done]="step > 1">
+    <li class="wz-step" [class.on]="step === 1" [class.done]="step > 1" [attr.aria-current]="step === 1 ? 'step' : null">
         <span class="wz-dot"><span *ngIf="step > 1" class="material-icons-outlined" aria-hidden="true">check</span><ng-container *ngIf="step === 1">1</ng-container></span>
         {{ 'KbPage.WizardStepWebsite' | translate }}
     </li>
-    <li class="wz-step" [class.on]="step === 2" [class.done]="step > 2">
+    <li class="wz-step" [class.on]="step === 2" [class.done]="step > 2" [attr.aria-current]="step === 2 ? 'step' : null">
         <span class="wz-dot"><span *ngIf="step > 2" class="material-icons-outlined" aria-hidden="true">check</span><ng-container *ngIf="step <= 2">2</ng-container></span>
         {{ 'KbPage.WizardStepPages' | translate }}
     </li>
-    <li class="wz-step" [class.on]="step === 3">
+    <li class="wz-step" [class.on]="step === 3" [attr.aria-current]="step === 3 ? 'step' : null">
         <span class="wz-dot">3</span>
         {{ 'KbPage.WizardStepSettings' | translate }}
     </li>
@@ -75,6 +75,7 @@
                 <div *ngIf="method === 'paste'" class="wz-card__extra" (click)="$event.stopPropagation()">
                     <textarea class="wz-input wz-textarea" rows="5" [(ngModel)]="pastedText"
                         [placeholder]="'KbPage.placeholderUrls' | translate" [attr.aria-label]="'KbPage.WizardPasteTitle' | translate"></textarea>
+                    <p *ngIf="ignoredPasted()" class="wz-note">{{ 'KbPage.WizardPasteIgnored' | translate: { n: ignoredPasted() } }}</p>
                 </div>
             </div>
         </div>
@@ -94,7 +95,8 @@
         <ng-container *ngIf="!loading && items.length">
             <p *ngIf="truncated" class="wz-note">{{ 'KbPage.FindPagesTruncated' | translate: { n: items.length } }}</p>
             <app-kb-page-picker [items]="items" [(selected)]="selected"></app-kb-page-picker>
-            <p *ngIf="overLimit()" class="wz-error-text">{{ 'KbPage.InfoSitemapList' | translate }} {{ KB_LIMIT_CONTENT }}</p>
+            <p *ngIf="overLimit()" class="wz-error-text">{{ 'KbPage.WizardOverLimit' | translate: { n: KB_LIMIT_CONTENT } }}</p>
+            <p *ngIf="!overLimit()" class="wz-muted wz-limit">{{ 'KbPage.YouCanAddKBUrlsLimit' | translate }} {{ KB_LIMIT_CONTENT }}</p>
         </ng-container>
     </div>
 
@@ -113,7 +115,7 @@
                 (openSettings)="openScrapeSettings()"
                 (closeSettings)="closeScrapeSettingsDialog()">
             </app-kb-scrape-summary>
-        <button type="button" class="wz-link" (click)="isScrapeSettingsOpen ? closeScrapeSettingsDialog() : openScrapeSettings()">
+        <button type="button" class="wz-link" [attr.aria-expanded]="isScrapeSettingsOpen" (click)="isScrapeSettingsOpen ? closeScrapeSettingsDialog() : openScrapeSettings()">
             <span class="material-icons-outlined" aria-hidden="true">tune</span> {{ 'Settings' | translate }}
         </button>
 
@@ -258,7 +260,7 @@
                     <!-- <p [innerHTML]="'KbPage.helpUrls' | translate"></p> -->
                     <p [innerHTML]="'HelpsURLsInfoMsg' | translate" style="line-height: 1.3;"></p>
                 </div>
-
+            </div>
     </div>
 </div>
 

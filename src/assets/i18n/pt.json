@@ -2428,6 +2428,8 @@
         "WizardSelectAllShown": "Selecionar todos os exibidos",
         "WizardNoMatch": "Nada corresponde à sua pesquisa",
         "WizardLinkedFiles": "Arquivos vinculados",
+        "WizardPasteIgnored": "{{n}} linhas ignoradas: não são endereços web.",
+        "WizardOverLimit": "Você pode importar até {{n}} itens por vez. Desmarque alguns para continuar.",
         "FindPagesDepth": "Profundidade",
         "FindPagesDepthHelp": "Níveis de links seguidos a partir da página inicial (0 = apenas a página inicial)",
         "FindPagesIncludeFiles": "Incluir arquivos vinculados:",

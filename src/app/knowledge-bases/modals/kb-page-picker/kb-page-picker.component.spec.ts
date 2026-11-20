@@ -82,4 +82,13 @@ describe('KbPagePickerComponent', () => {
     expect(text).toContain('/cpp/policy/tools');
     expect(fixture.nativeElement.querySelector('.kb-picker__badge').textContent.trim()).toBe('PDF');
   });
+
+  it('starts with a clean search and filter when it gets new items', () => {
+    c.query = 'tools';
+    c.kind = 'files';
+    c.items = [{ url: 'https://a.com/x' }];
+    expect(c.query).toBe('');
+    expect(c.kind).toBe('all');
+    expect(c.visible().length).toBe(1);
+  });
 });

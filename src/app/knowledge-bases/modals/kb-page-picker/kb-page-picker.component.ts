@@ -19,6 +19,9 @@ export class KbPagePickerComponent {
     this.list = value || [];
     this.byUrl = new Map(this.list.map((i) => [i.url, i]));
     this.allGroups = groupItems(this.list);
+    // a new list starts with a clean search and filter
+    this.query = '';
+    this.kind = 'all';
     this.expanded = new Set(this.allGroups.length <= 2 ? this.allGroups.map((g) => g.key) : []);
   }
   get items(): PickerItem[] {

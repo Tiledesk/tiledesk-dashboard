@@ -2428,6 +2428,8 @@
         "WizardSelectAllShown": "Вибрати всі показані",
         "WizardNoMatch": "Нічого не знайдено",
         "WizardLinkedFiles": "Пов'язані файли",
+        "WizardPasteIgnored": "Пропущено рядків: {{n}} — це не вебадреси.",
+        "WizardOverLimit": "За раз можна імпортувати до {{n}} елементів. Зніміть вибір із деяких, щоб продовжити.",
         "FindPagesDepth": "Глибина",
         "FindPagesDepthHelp": "Рівні посилань від початкової сторінки (0 = лише початкова сторінка)",
         "FindPagesIncludeFiles": "Включити пов'язані файли:",

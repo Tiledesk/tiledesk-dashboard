@@ -2429,6 +2429,8 @@
         "WizardSelectAllShown": "Выбрать все показанные",
         "WizardNoMatch": "Ничего не найдено",
         "WizardLinkedFiles": "Связанные файлы",
+        "WizardPasteIgnored": "Пропущено строк: {{n}} — это не веб-адреса.",
+        "WizardOverLimit": "За раз можно импортировать до {{n}} элементов. Снимите выбор с некоторых, чтобы продолжить.",
         "FindPagesDepth": "Глубина",
         "FindPagesDepthHelp": "Уровни ссылок от начальной страницы (0 = только начальная страница)",
         "FindPagesIncludeFiles": "Включить связанные файлы:",
