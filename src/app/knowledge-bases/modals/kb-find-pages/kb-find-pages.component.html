@@ -1,0 +1,78 @@
+<div class="find-pages" (keydown.escape)="close()">
+    <div class="find-pages__head">
+        <span class="find-pages__title">{{ 'KbPage.FindPagesOnSite' | translate }}</span>
+        <button class="find-pages__close" type="button" aria-label="Close" (click)="close()">
+            <span class="material-icons-outlined">close</span>
+        </button>
+    </div>
+
+    <div class="find-pages__row">
+        <input class="find-pages__input" type="url" [(ngModel)]="source"
+            placeholder="https://example.com"
+            [attr.aria-label]="'KbPage.FindPagesOnSite' | translate"
+            [disabled]="phase === 'scanning'"
+            (input)="errorKey = null"
+            (keydown.enter)="scan()">
+        <label class="find-pages__max">
+            <span>{{ 'KbPage.FindPagesMaxPages' | translate }}</span>
+            <input type="number" min="1" [max]="maxAllowed" [(ngModel)]="maxPages" [disabled]="phase === 'scanning'">
+        </label>
+        <button class="find-pages__scan" type="button" [disabled]="phase === 'scanning'" (click)="scan()">
+            {{ 'KbPage.FindPagesScan' | translate }}
+        </button>
+    </div>
+
+    <p *ngIf="errorKey" class="find-pages__error" role="alert">{{ errorKey | translate }}</p>
+
+    <div *ngIf="phase === 'scanning'" class="find-pages__progress" aria-live="polite">
+        <div class="find-pages__bar"><div></div></div>
+        <span>{{ 'KbPage.FindPagesScanning' | translate }} {{ elapsedSeconds }}s</span>
+    </div>
+
+    <div *ngIf="phase === 'picking'" class="find-pages__pick">
+        <div class="find-pages__summary">
+            <span>{{ 'KbPage.FindPagesFound' | translate: { n: pageCount } }}</span>
+            <span>
+                <a class="find-pages__link" (click)="selectAll()">{{ 'KbPage.FindPagesSelectAll' | translate }}</a>
+                ·
+                <a class="find-pages__link" (click)="clear()">{{ 'KbPage.FindPagesClear' | translate }}</a>
+            </span>
+        </div>
+        <p *ngIf="truncated" class="find-pages__note">{{ 'KbPage.FindPagesTruncated' | translate: { n: pageCount } }}</p>
+
+        <div class="find-pages__list">
+            <div class="find-pages__group" *ngFor="let g of groups; trackBy: trackGroup">
+                <div class="find-pages__group-row">
+                    <label class="find-pages__check">
+                        <input type="checkbox"
+                            [checked]="groupState(g) === 'all'"
+                            [indeterminate]="groupState(g) === 'some'"
+                            (change)="toggleGroup(g)">
+                        <span class="find-pages__key">{{ g.key }}</span>
+                        <span class="find-pages__count">
+                            <ng-container *ngIf="groupState(g) === 'some'">{{ selectedIn(g) }} / </ng-container>{{ g.urls.length }}
+                        </span>
+                    </label>
+                    <button class="find-pages__expand" type="button"
+                        [attr.aria-expanded]="expanded.has(g.key)"
+                        [attr.aria-label]="g.key"
+                        (click)="toggleExpanded(g)">
+                        <span class="material-icons-outlined">{{ expanded.has(g.key) ? 'expand_less' : 'expand_more' }}</span>
+                    </button>
+                </div>
+                <div *ngIf="expanded.has(g.key)" class="find-pages__pages">
+                    <label class="find-pages__check find-pages__page" *ngFor="let u of g.urls; trackBy: trackUrl" [title]="u">
+                        <input type="checkbox" [checked]="selected.has(u)" (change)="togglePage(u)">
+                        <span>{{ pathOf(u) }}</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="find-pages__actions">
+            <button class="find-pages__add" type="button" [disabled]="selected.size === 0" (click)="add()">
+                {{ 'KbPage.FindPagesAdd' | translate: { n: selected.size } }}
+            </button>
+        </div>
+    </div>
+</div>
