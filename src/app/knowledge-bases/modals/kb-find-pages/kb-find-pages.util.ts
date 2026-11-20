@@ -216,3 +216,19 @@ export function parsePastedUrls(text: string): string[] {
   }
   return out;
 }
+
+export const FIND_PAGES_DEFAULT_MAX = 50;
+export const FIND_PAGES_MAX = 300;
+export const FIND_PAGES_DEFAULT_DEPTH = 3;
+/** The server caps max_depth at 5 (CRAWL_DISCOVER_MAX_DEPTH). */
+export const FIND_PAGES_MAX_DEPTH = 5;
+
+/** Linked-file options shown to the user; Excel covers both workbook formats. */
+export const FILE_OPTIONS: { id: string; labelKey: string; types: CrawlFileType[] }[] = [
+  { id: 'pdf', labelKey: 'KbPage.FindPagesTypePdf', types: ['pdf'] },
+  { id: 'word', labelKey: 'KbPage.FindPagesTypeWord', types: ['docx'] },
+  { id: 'excel', labelKey: 'KbPage.FindPagesTypeExcel', types: ['xlsx', 'xls'] },
+  { id: 'csv', labelKey: 'KbPage.FindPagesTypeCsv', types: ['csv'] },
+  { id: 'txt', labelKey: 'KbPage.FindPagesTypeText', types: ['txt'] },
+  { id: 'md', labelKey: 'KbPage.FindPagesTypeMarkdown', types: ['md'] },
+];

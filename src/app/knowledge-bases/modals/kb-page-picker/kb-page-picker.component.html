@@ -1,0 +1,59 @@
+<div class="kb-picker">
+    <div class="kb-picker__tools">
+        <span class="kb-picker__search">
+            <span class="material-icons-outlined" aria-hidden="true">search</span>
+            <input type="search" [(ngModel)]="query" [placeholder]="'KbPage.WizardSearch' | translate"
+                [attr.aria-label]="'KbPage.WizardSearch' | translate">
+        </span>
+        <span class="kb-picker__kinds" role="group" [attr.aria-label]="'KbPage.WizardFilter' | translate">
+            <button type="button" class="kb-picker__kind" [class.on]="kind === 'all'" [attr.aria-pressed]="kind === 'all'" (click)="kind = 'all'">
+                {{ 'KbPage.WizardFilterAll' | translate }} <span>{{ items.length }}</span></button>
+            <button type="button" class="kb-picker__kind" [class.on]="kind === 'pages'" [attr.aria-pressed]="kind === 'pages'" (click)="kind = 'pages'">
+                {{ 'KbPage.WizardFilterPages' | translate }} <span>{{ countOf('pages') }}</span></button>
+            <button *ngIf="countOf('files')" type="button" class="kb-picker__kind" [class.on]="kind === 'files'" [attr.aria-pressed]="kind === 'files'" (click)="kind = 'files'">
+                {{ 'KbPage.WizardFilterFiles' | translate }} <span>{{ countOf('files') }}</span></button>
+        </span>
+    </div>
+
+    <div class="kb-picker__list">
+        <div class="kb-picker__all">
+            <label class="kb-picker__check">
+                <input type="checkbox" [checked]="allShownState() === 'all'" [indeterminate]="allShownState() === 'some'"
+                    [disabled]="visible().length === 0" (change)="toggleAllShown()">
+                <span class="kb-picker__strong">{{ 'KbPage.WizardSelectAllShown' | translate }}</span>
+            </label>
+            <span class="kb-picker__count">{{ visible().length }}</span>
+        </div>
+
+        <p *ngIf="visible().length === 0" class="kb-picker__empty">{{ 'KbPage.WizardNoMatch' | translate }}</p>
+
+        <div class="kb-picker__group" *ngFor="let g of groups(); trackBy: trackGroup">
+            <div class="kb-picker__group-row">
+                <label class="kb-picker__check">
+                    <input type="checkbox" [checked]="groupState(g) === 'all'" [indeterminate]="groupState(g) === 'some'" (change)="toggleGroup(g)">
+                    <span class="kb-picker__strong">
+                        <ng-container *ngIf="g.key !== filesGroup">{{ g.key }}</ng-container>
+                        <ng-container *ngIf="g.key === filesGroup">{{ 'KbPage.WizardLinkedFiles' | translate }}</ng-container>
+                    </span>
+                </label>
+                <span class="kb-picker__count"><ng-container *ngIf="groupState(g) === 'some'">{{ selectedIn(g) }} / </ng-container>{{ g.urls.length }}</span>
+                <button type="button" class="kb-picker__expand" [attr.aria-expanded]="isOpen(g)"
+                    [attr.aria-label]="(g.key === filesGroup ? ('KbPage.WizardLinkedFiles' | translate) : g.key)" (click)="toggleOpen(g)">
+                    <span class="material-icons-outlined" aria-hidden="true">{{ isOpen(g) ? 'expand_less' : 'expand_more' }}</span>
+                </button>
+            </div>
+            <div *ngIf="isOpen(g)">
+                <label class="kb-picker__item" *ngFor="let u of g.urls; trackBy: trackUrl" [title]="u">
+                    <input type="checkbox" [checked]="selected.has(u)" (change)="togglePage(u)">
+                    <span class="kb-picker__text">
+                        <span class="kb-picker__title">
+                            <span *ngIf="item(u).type" class="kb-picker__badge">{{ item(u).type | uppercase }}</span>
+                            {{ item(u).title || pathOf(u) }}
+                        </span>
+                        <span *ngIf="item(u).title" class="kb-picker__path">{{ pathOf(u) }}</span>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

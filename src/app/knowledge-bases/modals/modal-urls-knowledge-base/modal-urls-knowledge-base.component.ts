@@ -9,7 +9,12 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 import { TranslateService } from '@ngx-translate/core';
 import { buildDefaultKbScrapeConfig, KbScrapeConfig } from 'app/models/kb-scrape-config-model';
 import { ModalKbScrapeSettingsComponent } from '../modal-kb-scrape-settings/modal-kb-scrape-settings.component';
-import { fileNameOf, FindPagesPick, mergeUrls, PickedFile } from '../kb-find-pages/kb-find-pages.util';
+import { Subscription } from 'rxjs';
+import { AppConfigService } from 'app/services/app-config.service';
+import {
+  CRAWL_FILE_TYPES, CrawlDiscoverResult, CrawlFileType, FILE_OPTIONS, FIND_PAGES_DEFAULT_DEPTH, FIND_PAGES_DEFAULT_MAX,
+  FIND_PAGES_MAX, FIND_PAGES_MAX_DEPTH, fileNameOf, parsePastedUrls, PickerItem, resolveScanMaxSeconds,
+} from '../kb-find-pages/kb-find-pages.util';
 
 
 @Component({
@@ -23,25 +28,37 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   @Output() closeBaseModal = new EventEmitter();
 
   KB_LIMIT_CONTENT = KB_LIMIT_CONTENT;
-  buttonDisabled: boolean = true;
 
-  listOfUrls: string;
-  countSitemap: number;
-  errorLimit: boolean = false;
-
-  /** Stato espansione pannello import da sitemap (accordion separato). */
-  sitemapImportPanelExpanded = false;
-
-  /**
-   * Controls the visibility of the inline sitemap fetch mini-panel
-   * (the lightweight replacement for the legacy `mat-expansion-panel`).
-   * Toggled by the "Add URLs from a sitemap" link in the textarea label
-   * row; auto-set back to `false` by `fetchSiteMap()` on a successful
-   * sitemap fetch (i.e. when at least one URL is loaded into the textarea).
-   * On error or empty result the panel stays open so the user can correct
-   * the URL without re-opening.
-   */
-  sitemapInputOpen = false;
+  // -----------------------------------------------------------------------
+  // Wizard: 1 Website (scan a site / sitemap / paste URLs) · 2 Pages · 3 Import settings
+  // -----------------------------------------------------------------------
+  step: 1 | 2 | 3 = 1;
+  method: 'scan' | 'sitemap' | 'paste' = 'scan';
+  readonly fileOptions = FILE_OPTIONS;
+  readonly maxPagesAllowed = FIND_PAGES_MAX;
+  readonly maxDepthAllowed = FIND_PAGES_MAX_DEPTH;
+  scanUrl = '';
+  sitemapUrl = '';
+  pastedText = '';
+  maxPages = FIND_PAGES_DEFAULT_MAX;
+  maxDepth = FIND_PAGES_DEFAULT_DEPTH;
+  /** Ticked linked-file options (ids of FILE_OPTIONS); none = web pages only. */
+  fileOptionIds = new Set<string>();
+  scanOptionsOpen = false;
+  /** Scan time limit (kbCrawlMaxSeconds / KB_CRAWL_MAX_SECONDS, 45 s when unset). */
+  maxSeconds: number;
+  /** What step 2 lists; files carry their type. */
+  items: PickerItem[] = [];
+  selected = new Set<string>();
+  loading = false;
+  truncated = false;
+  /** Translation key of a scan/paste problem shown in step 2. */
+  errorKey: string | null = null;
+  /** Already translated sitemap problem (from the sitemap API errors). */
+  errorText: string | null = null;
+  elapsedSeconds = 0;
+  private loadSub: Subscription | null = null;
+  private timer: any = null;
 
     // -----------------------------------------------------------------------
   // Scrape settings — data flow between components
@@ -101,10 +118,6 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   payIsVisible:  boolean;
   t_params: any;
   salesEmail: string;
-  siteMap:string;
-  /** User-facing message when `/kb/sitemap` returns errors or no URLs. */
-  sitemapFetchError: string | null = null;
-  sitemapFetchInProgress = false;
 
   // KB Tags
   kbTag: string = '';
@@ -129,34 +142,6 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   ];
 
   // ---------------------------------------------------------------
-  // Sitemap fetch popover positions (CDK overlay).
-  // Trigger is the "Add URLs from a sitemap" link, sitting at the
-  // top-right of the URL textarea label row. Primary placement is
-  // BELOW the link, right-aligned (origin end/bottom <-> overlay
-  // end/top) so the popover hangs from the link and doesn't cover
-  // the textarea title. Fallback is ABOVE the link with a flipped
-  // arrow when there isn't enough room below.
-  // ---------------------------------------------------------------
-  sitemapPopoverPositions: ConnectedPosition[] = [
-    {
-      originX: 'end',
-      originY: 'bottom',
-      overlayX: 'end',
-      overlayY: 'top',
-      offsetX: -2,
-      offsetY: 6,
-    },
-    {
-      originX: 'end',
-      originY: 'top',
-      overlayX: 'end',
-      overlayY: 'bottom',
-      offsetX: -2,
-      offsetY: -6,
-    },
-  ];
-
-  // ---------------------------------------------------------------
   // Refresh-rate help popover (replaces the legacy mat-tooltip).
   // Mirrors the kb-tags hover-popover pattern: isolated state so the
   // two popovers don't share the same `isOpen` flag, but reuses the
@@ -174,8 +159,10 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     private kbService: KnowledgeBaseService,
     private dialog: MatDialog,
     private translate: TranslateService,
+    private appConfigService: AppConfigService,
   ) {
     this.selectedRefreshRate = this.refresh_rate[0].value;
+    this.maxSeconds = resolveScanMaxSeconds(this.appConfigService?.getConfig()?.kbCrawlMaxSeconds);
     this.logger.log("[MODALS-URLS] data: ", data);
     if (data ) {
       this.isAvailableRefreshRateFeature = data.isAvailableRefreshRateFeature;
@@ -221,6 +208,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     }
     // Cascade-close the side-by-side scrape settings dialog if still open.
     this.closeScrapeSettingsDialog();
+    this.stopLoading();
   }
 
    // CDK methods
@@ -255,149 +243,158 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     clearTimeout(this.refreshRateHelpCloseTimeout);
   }
 
-  /**
-   * Toggle the sitemap fetch popover (CDK overlay). The overlay is
-   * anchored to the "Add URLs from a sitemap" link; its content
-   * (input + Fetch + ✕) is created on demand via `*cdkConnectedOverlay`.
-   */
-  toggleSitemapInput(): void {
-    this.sitemapInputOpen = !this.sitemapInputOpen;
-    if (this.sitemapInputOpen) {
-      this.findPagesOpen = false;
+  chooseMethod(method: 'scan' | 'sitemap' | 'paste'): void {
+    this.method = method;
+  }
+
+  toggleFileOption(id: string): void {
+    this.fileOptionIds.has(id) ? this.fileOptionIds.delete(id) : this.fileOptionIds.add(id);
+  }
+
+  /** Whether the footer's primary button can go on from the current step. */
+  canContinue(): boolean {
+    if (this.step === 1) {
+      if (this.method === 'scan') return /^https?:\/\/\S+$/i.test((this.scanUrl || '').trim());
+      if (this.method === 'sitemap') return /^https?:\/\/\S+$/i.test((this.sitemapUrl || '').trim());
+      return parsePastedUrls(this.pastedText).length > 0;
+    }
+    if (this.step === 2) return !this.loading && this.selected.size > 0 && !this.overLimit();
+    return this.canImport();
+  }
+
+  next(): void {
+    if (!this.canContinue()) return;
+    if (this.step === 1) {
+      this.step = 2;
+      this.load();
+    } else if (this.step === 2) {
+      this.step = 3;
     } else {
-      this.sitemapFetchError = null;
+      this.onSaveKnowledgeBase();
     }
   }
 
-  /** "Find pages on a site" panel (inline, under the label row); one helper panel open at a time. */
-  findPagesOpen = false;
-
-  toggleFindPages(): void {
-    this.findPagesOpen = !this.findPagesOpen;
-    if (this.findPagesOpen) {
-      this.closeSitemapInput();
-    }
+  back(): void {
+    if (this.step === 2) this.stopLoading();
+    if (this.step > 1) this.step = (this.step - 1) as 1 | 2;
   }
 
-  /** Linked files picked in the scan: imported one by one with their own type, never as web pages. */
-  pickedFiles: PickedFile[] = [];
-  readonly fileNameOf = fileNameOf;
-
-  /** URLs in the box plus picked files: the content limit counts both. */
-  get itemCount(): number {
-    const urls = (this.listOfUrls || '').split('\n').filter((l) => l.trim() !== '').length;
-    return urls + this.pickedFiles.length;
+  clearSelection(): void {
+    this.selected = new Set();
   }
 
-  /** Picked pages go into the URL box like typed URLs; picked files into their own list; the usual limit applies. */
-  onPicked(pick: FindPagesPick): void {
-    this.listOfUrls = mergeUrls(this.listOfUrls || '', pick.pages || []).text;
-    for (const f of pick.files || []) {
-      if (!this.pickedFiles.some((x) => x.url === f.url)) this.pickedFiles.push(f);
-    }
-    this.findPagesOpen = false;
-    this.updateItemLimit();
+  overLimit(): boolean {
+    return this.selected.size > KB_LIMIT_CONTENT;
   }
 
-  removeFile(url: string): void {
-    this.pickedFiles = this.pickedFiles.filter((f) => f.url !== url);
-    this.updateItemLimit();
+  selectedPageCount(): number {
+    return this.items.filter((i) => !i.type && this.selected.has(i.url)).length;
+  }
+
+  selectedFileCount(): number {
+    return this.items.filter((i) => !!i.type && this.selected.has(i.url)).length;
+  }
+
+  /** Titles of the first selected items, for the step 3 summary. */
+  summaryTitles(max = 4): string[] {
+    return this.items.filter((i) => this.selected.has(i.url)).slice(0, max).map((i) => i.title || i.url);
   }
 
   canImport(): boolean {
-    if (this.buttonDisabled || this.itemCount === 0) return false;
-    const hasUrls = (this.listOfUrls || '').split('\n').some((l) => l.trim() !== '');
+    if (this.selected.size === 0 || this.overLimit()) return false;
     // manual extraction rules (tags) apply to web pages only; files are parsed by type
-    return !hasUrls || this.scrapeConfig.automaticContentExtraction || this.scrapeConfig.extract_tags.length > 0;
+    return this.selectedPageCount() === 0 || this.scrapeConfig.automaticContentExtraction || this.scrapeConfig.extract_tags.length > 0;
   }
 
-  private updateItemLimit(): void {
-    this.countSitemap = this.itemCount;
-    this.errorLimit = this.countSitemap > KB_LIMIT_CONTENT;
-    this.buttonDisabled = this.errorLimit;
+  /** "up to a minute" for scans of 60 s or less, else "up to N minutes" (rounded up). */
+  scanningText(): { key: string; params: { n?: number } } {
+    return this.maxSeconds <= 60
+      ? { key: 'KbPage.FindPagesScanning', params: {} }
+      : { key: 'KbPage.FindPagesScanningMinutes', params: { n: Math.ceil(this.maxSeconds / 60) } };
   }
 
-  /**
-   * Explicit dismiss for the sitemap fetch popover: closes the overlay
-   * but DOES NOT clear `siteMap`. Used by the ✕ button, the transparent
-   * backdrop click, and the Esc key so that a user who changes their
-   * mind can later re-open the popover and find the URL they had
-   * previously typed still there. Different from the auto-hide branch
-   * in `fetchSiteMap()`, which clears the input as part of the
-   * post-success "clean state" transition.
-   */
-  closeSitemapInput(): void {
-    this.sitemapInputOpen = false;
-    this.sitemapFetchError = null;
-  }
-
-  /**
-   * Auto-focus the sitemap URL input once the CDK overlay attaches.
-   * The input is rendered inside an `ng-template` and only exists in
-   * the DOM after attach, so we defer the focus to a microtask. We
-   * scope the query to the freshly-attached `.sitemap-popover` to
-   * avoid stale matches if multiple overlays were ever opened.
-   */
-  onSitemapPopoverAttach(): void {
-    setTimeout(() => {
-      const input = document.querySelector<HTMLInputElement>(
-        '.sitemap-popover input[type="url"]'
-      );
-      input?.focus();
-    });
-  }
-
-  onSitemapUrlInput(): void {
-    this.sitemapFetchError = null;
-  }
-
-  fetchSiteMap() {
-    const sitemapUrl = (this.siteMap || '').trim();
-    if (!sitemapUrl) {
+  /** Step 2 content for the chosen method; a new load replaces the previous items and selection. */
+  private load(): void {
+    this.stopLoading();
+    this.items = [];
+    this.selected = new Set();
+    this.truncated = false;
+    this.errorKey = null;
+    this.errorText = null;
+    if (this.method === 'paste') {
+      this.items = parsePastedUrls(this.pastedText).map((url) => ({ url }));
+      this.selected = new Set(this.items.map((i) => i.url));
       return;
     }
-
-    this.sitemapFetchError = null;
-    this.sitemapFetchInProgress = true;
-    const body = { sitemap: sitemapUrl, tags: this.kbTagsArray };
-    this.kbService.addSitemap(body).subscribe({
-      next: (resp: any) => {
-        this.sitemapFetchInProgress = false;
-        this.logger.log('[MODALS-URLS] addSitemap:', resp);
-
-        const apiErrors = Array.isArray(resp?.errors) ? resp.errors : [];
-        if (apiErrors.length > 0) {
-          this.sitemapFetchError = this.formatSitemapApiErrors(apiErrors);
+    this.loading = true;
+    if (this.method === 'sitemap') {
+      this.loadSub = this.kbService.addSitemap({ sitemap: this.sitemapUrl.trim(), tags: this.kbTagsArray }).subscribe({
+        next: (resp: any) => {
+          this.finishLoading();
+          const apiErrors = Array.isArray(resp?.errors) ? resp.errors : [];
+          if (apiErrors.length > 0) {
+            this.errorText = this.formatSitemapApiErrors(apiErrors);
+            return;
+          }
+          const sites: string[] = Array.isArray(resp?.sites) ? resp.sites : [];
+          if (sites.length === 0) {
+            this.errorText = this.translate.instant('KbPage.SitemapFetchNoUrls');
+            return;
+          }
+          this.items = Array.from(new Set(sites)).map((url) => ({ url }));
+          this.selected = new Set(this.items.map((i) => i.url));
+        },
+        error: (err) => {
+          this.finishLoading();
+          this.logger.error('[MODALS-URLS] addSitemap error:', err);
+          this.errorText = this.translate.instant('KbPage.SitemapFetchFailed');
+        },
+      });
+      return;
+    }
+    // scan a site
+    this.maxPages = Math.min(Math.max(Math.floor(Number(this.maxPages) || FIND_PAGES_DEFAULT_MAX), 1), FIND_PAGES_MAX);
+    // an emptied depth means "default", an explicit 0 means "start page only"
+    const rawDepth = this.maxDepth === null || this.maxDepth === undefined || (this.maxDepth as any) === '' ? NaN : Number(this.maxDepth);
+    this.maxDepth = Number.isFinite(rawDepth) ? Math.min(Math.max(Math.floor(rawDepth), 0), FIND_PAGES_MAX_DEPTH) : FIND_PAGES_DEFAULT_DEPTH;
+    const fileTypes = FILE_OPTIONS.filter((o) => this.fileOptionIds.has(o.id)).reduce((all, o) => all.concat(o.types), [] as CrawlFileType[]);
+    this.elapsedSeconds = 0;
+    this.timer = setInterval(() => this.elapsedSeconds++, 1000);
+    this.loadSub = this.kbService.discoverPages(this.scanUrl.trim(), this.maxPages, this.maxSeconds, this.maxDepth, fileTypes).subscribe({
+      next: (res: CrawlDiscoverResult) => {
+        this.finishLoading();
+        const listed = res && Array.isArray(res.pages) ? res.pages : [];
+        const seen = new Set<string>();
+        this.items = listed
+          .filter((p) => p && p.url && (p.kind === 'page' || (p.kind === 'file' && !!p.file_type && CRAWL_FILE_TYPES.includes(p.file_type))))
+          .filter((p) => (seen.has(p.url) ? false : (seen.add(p.url), true)))
+          .map((p) => ({ url: p.url, title: p.title || (p.kind === 'file' ? fileNameOf(p.url) : undefined), type: p.kind === 'file' ? p.file_type : undefined }));
+        if (this.items.length === 0) {
+          this.errorKey = 'KbPage.FindPagesNoneFound';
           return;
         }
-
-        const sites = Array.isArray(resp?.sites) ? resp.sites : [];
-        if (sites.length === 0) {
-          this.sitemapFetchError = this.translate.instant('KbPage.SitemapFetchNoUrls');
-          return;
-        }
-
-        this.listOfUrls = sites.join('\n');
-        this.countSitemap = sites.length;
-
-        if (this.countSitemap > KB_LIMIT_CONTENT) {
-          this.buttonDisabled = true;
-          this.errorLimit = true;
-        } else {
-          this.errorLimit = false;
-          this.buttonDisabled = false;
-        }
-
-        this.sitemapFetchError = null;
-        this.sitemapInputOpen = false;
-        this.siteMap = '';
+        this.truncated = !!(res && res.truncated);
       },
       error: (err) => {
-        this.sitemapFetchInProgress = false;
-        this.logger.error('[MODALS-URLS] addSitemap error:', err);
-        this.sitemapFetchError = this.translate.instant('KbPage.SitemapFetchFailed');
+        this.finishLoading();
+        const status = err && err.status;
+        this.errorKey = status === 504 ? 'KbPage.FindPagesTimeout' : status === 501 ? 'KbPage.FindPagesUnavailable' : 'KbPage.FindPagesFailed';
       },
     });
+  }
+
+  private finishLoading(): void {
+    this.loading = false;
+    this.loadSub = null;
+    if (this.timer) {
+      clearInterval(this.timer);
+      this.timer = null;
+    }
+  }
+
+  private stopLoading(): void {
+    if (this.loadSub) this.loadSub.unsubscribe();
+    this.finishLoading();
   }
 
   private formatSitemapApiErrors(errors: Array<{ message?: string; type?: string }>): string {
@@ -410,30 +407,6 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
 
     return this.translate.instant('KbPage.SitemapFetchFailed');
   }
-
-  /** */
-  onChangeInput(event): void {
-    let listSitesOfSitemap = this.listOfUrls.split("\n").filter(function(row) {
-      return row.trim() !== '';
-    });
-    var lines = this.listOfUrls.split('\n');
-    if (lines.length > KB_LIMIT_CONTENT) {
-      this.errorLimit = true;
-      this.buttonDisabled = true;
-      this.listOfUrls = lines.slice(0, KB_LIMIT_CONTENT).join('\n');
-      // this.logger.log("onChangeInput: ",this.listOfUrls);
-    } else {
-      this.errorLimit = false;
-      this.buttonDisabled = false;
-    }
-    this.countSitemap = listSitesOfSitemap.length;
-    if (this.pickedFiles.length) {
-      // picked files count in the same limit as the URLs
-      this.updateItemLimit();
-    }
-  }
-
-
 
   onSelectRefreshRate(refreshRateSelected) {
     this.logger.log("[MODALS-URLS] onSelectRefreshRate: ", refreshRateSelected);
@@ -465,10 +438,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   onSaveKnowledgeBase(){
     // Close the side-by-side settings dialog (if open) before resolving the parent dialog.
     this.closeScrapeSettingsDialog();
-    //const arrayURLS = this.content.split('\n');
-    const arrayURLS = this.listOfUrls.split("\n").filter(function(row) {
-      return row.trim() !== '';
-    });
+    const picked = this.items.filter((i) => this.selected.has(i.url));
     // `scrape_type: 0` means automatic content extraction; any other value
     // (currently only 4 = "Advanced") means manual rules. We always send
     // `scrape_options` regardless of the mode so the server can persist
@@ -476,8 +446,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     // manual extraction in the future.
     const scrapeType = this.scrapeConfig.automaticContentExtraction ? 0 : this.scrapeConfig.selectedScrapeType;
     const body: any = {
-      list: arrayURLS,
-      files: this.pickedFiles,
+      list: picked.filter((i) => !i.type).map((i) => i.url),
+      files: picked.filter((i) => !!i.type).map((i) => ({ url: i.url, type: i.type })),
       scrape_type: scrapeType,
       refresh_rate: this.selectedRefreshRate,
       tags: this.kbTagsArray,
@@ -490,7 +460,6 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     };
 
     this.dialogRef.close(body);
-    // this.saveKnowledgeBase.emit(body);
   }
 
 
@@ -503,7 +472,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   /** */
   onCloseBaseModal() {
     this.closeScrapeSettingsDialog();
-    this.countSitemap = 0;
+    this.stopLoading();
     this.dialogRef.close();
     // this.closeBaseModal.emit();
   }
@@ -520,9 +489,9 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     this.isScrapeSettingsOpen = true;
     this.scrapeSettingsDialogRef = this.dialog.open(ModalKbScrapeSettingsComponent, {
       width: '380px',
-      // Place the dialog flush to the right of the URLs modal (URLs is 500px wide → half is 250px,
+      // Place the dialog flush to the right of the wizard (600px wide → half is 300px,
       // plus a 10px gap so the two cards do not touch).
-      position: { left: 'calc(50% + 260px)', top: '60px' },
+      position: { left: 'calc(50% + 310px)', top: '60px' },
       autoFocus: false,
       hasBackdrop: false,
       data: {

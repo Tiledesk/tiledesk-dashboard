@@ -1,333 +1,281 @@
-<div class="m-header" style="margin-bottom: 20px !important;">
+<div class="m-header wz-header">
     <h1 mat-dialog-title style="font-family: var(--header-font-family); margin-bottom: 0px !important;">
         {{ 'KbPage.ImportFromWebsites' | translate }}
     </h1>
     <div class="m-top-right-icon">
-        <span *ngIf="!isScrapeSettingsOpen" id="settings" class="material-icons-outlined"
-            matTooltipClass="kb-custom-mat-tooltip"
-            [matTooltip]="'Settings' | translate"
-            matTooltipPosition="below"
-            matTooltipHideDelay="100"
-            (click)="openScrapeSettings()">
-            tune
-        </span>
-        <span *ngIf="isScrapeSettingsOpen" id="settings" class="material-icons-outlined close-ai-settings"
-            matTooltipClass="kb-custom-mat-tooltip"
-            [matTooltip]="'Settings' | translate"
-            matTooltipPosition="below"
-            matTooltipHideDelay="100"
-            (click)="closeScrapeSettingsDialog()">
-            remove
-        </span>
-        <span id="close" class="material-icons-outlined" (click)="onCloseBaseModal()">
+        <span id="close" class="material-icons-outlined" role="button" [attr.aria-label]="'KbPage.FindPagesClose' | translate" (click)="onCloseBaseModal()">
             close
         </span>
     </div>
 </div>
 
-<div mat-dialog-content style="font-family: var(--header-font-family);">
+<ol class="wz-steps">
+    <li class="wz-step" [class.on]="step === 1" [class.done]="step > 1">
+        <span class="wz-dot"><span *ngIf="step > 1" class="material-icons-outlined" aria-hidden="true">check</span><ng-container *ngIf="step === 1">1</ng-container></span>
+        {{ 'KbPage.WizardStepWebsite' | translate }}
+    </li>
+    <li class="wz-step" [class.on]="step === 2" [class.done]="step > 2">
+        <span class="wz-dot"><span *ngIf="step > 2" class="material-icons-outlined" aria-hidden="true">check</span><ng-container *ngIf="step <= 2">2</ng-container></span>
+        {{ 'KbPage.WizardStepPages' | translate }}
+    </li>
+    <li class="wz-step" [class.on]="step === 3">
+        <span class="wz-dot">3</span>
+        {{ 'KbPage.WizardStepSettings' | translate }}
+    </li>
+</ol>
 
-    <div class="info-container" style="margin-bottom: 12px;">
-        <i class="material-icons-outlined info-icon">help_outline</i>
-        <div class="info-text">
-            <!-- <p [innerHTML]="'KbPage.helpUrls' | translate"></p> -->
-            <p [innerHTML]="'HelpsURLsInfoMsg' | translate" style="line-height: 1.3;"></p>
-        </div>
-    </div>
+<div mat-dialog-content class="wz-body" style="font-family: var(--header-font-family);">
 
-     <!-- 
-    Scrape configuration summary: blue/grey chips with popovers, mirrors live the
-    settings the user has applied. Sits at the bottom of the content so it is the
-    last thing the user sees before clicking "Import". -->
-    <app-kb-scrape-summary
-        [config]="scrapeConfig"
-        [isSettingsOpen]="isScrapeSettingsOpen"
-        (openSettings)="openScrapeSettings()"
-        (closeSettings)="closeScrapeSettingsDialog()">
-    </app-kb-scrape-summary>
-
-
-    <!--
-        Replaced by the inline link "Add URLs from a sitemap" + toggleable
-        mini-panel below (see `.urls-label-row` and `*ngIf="sitemapInputOpen"`).
-        The accordion was visually heavy and competed with the URL textarea
-        for attention; the link variant keeps the same fetch flow but in a
-        leaner layout. Kept here commented for archaeological reference.
-    -->
-    <!--
-    <mat-accordion>
-        <mat-expansion-panel [(expanded)]="sitemapImportPanelExpanded"
-            class="html-tags--expansion-panel" style="margin-bottom: 8px;">
-            <mat-expansion-panel-header class="disable_ripple">
-                <mat-panel-title> {{'ImportURLsFromSitemap' | translate}} </mat-panel-title>
-            </mat-expansion-panel-header>
-            <div class="expansion-panel-content">
-                <div class="expansion-panel-wpr-input-btn" style=" padding: 0px 10px 10px 15px; display: flex;">
-                    <mat-form-field class="chip-list" appearance="outline" style="width: 95%; font-size: 13px;">
-                        <input matInput type="url" [(ngModel)]="siteMap">
-                    </mat-form-field>
-
-                    <button class="fetch-button" (click)="fetchSiteMap()">
-                        {{'Fetch' | translate }}
+    <!-- 1 · Website -->
+    <div [hidden]="step !== 1">
+        <div class="wz-card" [class.on]="method === 'scan'" (click)="chooseMethod('scan')">
+            <span class="material-icons-outlined wz-card__icon" aria-hidden="true">travel_explore</span>
+            <div class="wz-card__body">
+                <label class="wz-card__title"><input type="radio" name="wz-method" [checked]="method === 'scan'" (change)="chooseMethod('scan')"> {{ 'KbPage.WizardScanTitle' | translate }}</label>
+                <div class="wz-card__sub">{{ 'KbPage.WizardScanSub' | translate }}</div>
+                <div *ngIf="method === 'scan'" class="wz-card__extra" (click)="$event.stopPropagation()">
+                    <input class="wz-input" type="url" [(ngModel)]="scanUrl" placeholder="https://example.com"
+                        [attr.aria-label]="'KbPage.WizardScanTitle' | translate" (keydown.enter)="next()">
+                    <button type="button" class="wz-link" [attr.aria-expanded]="scanOptionsOpen" (click)="scanOptionsOpen = !scanOptionsOpen">
+                        <span class="material-icons-outlined" aria-hidden="true">tune</span> {{ 'KbPage.WizardScanOptions' | translate }}
                     </button>
-                </div>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
-    -->
-
-    <div class="form-container" style="margin-bottom: 8px;">
-        <!-- <form [formGroup]="kbForm"> -->
-        <div class="input-container" style="margin-bottom: 6px;">
-            <!-- Label row: title on the left, "Add URLs from a sitemap" link on
-                 the right. Uses flex with wrap so on narrow viewports / long
-                 translations the link drops onto its own row instead of
-                 overlapping the title. -->
-            <div class="urls-label-row">
-                <span class="textarea-label">{{ 'KbPage.titleTextareaUrls' | translate }}</span>
-                <!-- "Add URLs from a sitemap" link: trigger of the sitemap fetch
-                     popover (CDK overlay anchored to this anchor). Click toggles
-                     `sitemapInputOpen`; the popover renders the URL input + Fetch
-                     + ✕ button (see ng-template below). -->
-                <span class="urls-label-row__links">
-                <a class="urls-label-row__link" (click)="toggleFindPages()">
-                    {{ 'KbPage.FindPagesOnSite' | translate }}
-                </a>
-                <span class="urls-label-row__sep">·</span>
-                <a class="urls-label-row__link"
-                    #sitemapTrigger="cdkOverlayOrigin"
-                    cdkOverlayOrigin
-                    (click)="toggleSitemapInput()">
-                    {{ 'KbPage.AddUrlsFromSitemap' | translate }}
-                </a>
-                </span>
-            </div>
-            <app-kb-find-pages *ngIf="findPagesOpen"
-                (picked)="onPicked($event)"
-                (closed)="findPagesOpen = false">
-            </app-kb-find-pages>
-            <textarea type="text" class="custom-textarea" [ngClass]="{'invalid':errorLimit }" [(ngModel)]="listOfUrls"
-                placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)"
-                rows="4" style="margin-top: 3px;"></textarea>
-            <div *ngIf="pickedFiles.length" class="picked-files">
-                <span class="picked-files__label">{{ 'KbPage.FindPagesFilesToImport' | translate: { n: pickedFiles.length } }} {{ 'KbPage.FindPagesFilesNoRefresh' | translate }}</span>
-                <span class="picked-files__chip" *ngFor="let f of pickedFiles" [title]="f.url">
-                    <span class="picked-files__type">{{ f.type | uppercase }}</span>
-                    {{ fileNameOf(f.url) }}
-                    <button type="button" class="picked-files__remove" [attr.aria-label]="('KbPage.FindPagesRemoveFile' | translate) + ': ' + fileNameOf(f.url)" (click)="removeFile(f.url)">
-                        <span class="material-icons-outlined" aria-hidden="true">close</span>
-                    </button>
-                </span>
-            </div>
-            <!-- [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched" -->
-            <!-- <span class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.infoUrls' | translate }}</span> -->
-            <div *ngIf="!errorLimit" class="input-label input-label-on-bottom" style="margin-top: -3px;"> 
-                {{'KbPage.YouCanAddKBUrlsLimit' | translate }} {{KB_LIMIT_CONTENT}}
-            </div>
-            <!-- <span *ngIf="!errorLimit" class="input-label">{{countSitemap}} {{ 'KbPage.LabelSitemapList' | translate }}</span> -->
-            <div *ngIf="errorLimit" class="input-label-error" style="margin-top: -3px;">
-                {{ 'KbPage.InfoSitemapList' | translate }} {{KB_LIMIT_CONTENT}}
-            </div>
-
-            <!-- Sitemap fetch popover: anchored to the "Add URLs from a sitemap"
-                 link (cdkOverlayOrigin = #sitemapTrigger). Opens on click of the
-                 link (toggleSitemapInput) and closes via:
-                   - the in-popover ✕ button (closeSitemapInput),
-                   - clicking the transparent backdrop,
-                   - pressing Esc inside the input,
-                   - or auto-hide on a successful `fetchSiteMap()` (which also
-                     clears `siteMap`). On error / empty result the popover stays
-                     open so the user can correct the URL without re-opening. -->
-            <ng-template
-                cdk-connected-overlay
-                [cdkConnectedOverlayOrigin]="sitemapTrigger"
-                [cdkConnectedOverlayOpen]="sitemapInputOpen"
-                [cdkConnectedOverlayPositions]="sitemapPopoverPositions"
-                [cdkConnectedOverlayHasBackdrop]="true"
-                cdkConnectedOverlayBackdropClass="cdk-overlay-transparent-backdrop"
-                (backdropClick)="closeSitemapInput()"
-                (attach)="onSitemapPopoverAttach()"
-                (detach)="sitemapInputOpen = false">
-                <div class="sitemap-popover" (keydown.escape)="closeSitemapInput()">
-                    <div class="sitemap-popover__row">
-                        <mat-form-field appearance="outline" style="flex: 1 1 auto; font-size: 13px;">
-                            <input matInput type="url" [(ngModel)]="siteMap"
-                                #sitemapUrlInput
-                                placeholder="https://example.com/sitemap.xml"
-                                (input)="onSitemapUrlInput()"
-                                (keydown.enter)="fetchSiteMap()">
-                        </mat-form-field>
-                        <button class="fetch-button"
-                            [disabled]="sitemapFetchInProgress"
-                            (click)="fetchSiteMap()">
-                            {{ 'Fetch' | translate }}
-                        </button>
-                        <button class="sitemap-popover__close"
-                            type="button"
-                            aria-label="Close"
-                            (click)="closeSitemapInput()">
-                            <mat-icon>close</mat-icon>
-                        </button>
+                    <div *ngIf="scanOptionsOpen" class="wz-options">
+                        <label class="wz-num"><span>{{ 'KbPage.FindPagesMaxPages' | translate }}</span>
+                            <input type="number" min="1" [max]="maxPagesAllowed" [(ngModel)]="maxPages"></label>
+                        <label class="wz-num"><span>{{ 'KbPage.FindPagesDepth' | translate }}</span>
+                            <input type="number" min="0" [max]="maxDepthAllowed" [(ngModel)]="maxDepth" [title]="'KbPage.FindPagesDepthHelp' | translate"></label>
+                        <div class="wz-files" role="group" aria-labelledby="wz-files-label">
+                            <span id="wz-files-label">{{ 'KbPage.FindPagesIncludeFiles' | translate }}</span>
+                            <label class="wz-file" *ngFor="let o of fileOptions">
+                                <input type="checkbox" [checked]="fileOptionIds.has(o.id)" (change)="toggleFileOption(o.id)"> {{ o.labelKey | translate }}
+                            </label>
+                        </div>
                     </div>
-                    <p *ngIf="sitemapFetchError"
-                        class="sitemap-popover__error"
-                        role="alert">
-                        {{ sitemapFetchError }}
-                    </p>
                 </div>
-            </ng-template>
+            </div>
         </div>
-        <!-- </form> -->
+
+        <div class="wz-card" [class.on]="method === 'sitemap'" (click)="chooseMethod('sitemap')">
+            <span class="material-icons-outlined wz-card__icon" aria-hidden="true">account_tree</span>
+            <div class="wz-card__body">
+                <label class="wz-card__title"><input type="radio" name="wz-method" [checked]="method === 'sitemap'" (change)="chooseMethod('sitemap')"> {{ 'KbPage.WizardSitemapTitle' | translate }}</label>
+                <div class="wz-card__sub">{{ 'KbPage.WizardSitemapSub' | translate }}</div>
+                <div *ngIf="method === 'sitemap'" class="wz-card__extra" (click)="$event.stopPropagation()">
+                    <input class="wz-input" type="url" [(ngModel)]="sitemapUrl" placeholder="https://example.com/sitemap.xml"
+                        [attr.aria-label]="'KbPage.WizardSitemapTitle' | translate" (keydown.enter)="next()">
+                </div>
+            </div>
+        </div>
+
+        <div class="wz-card" [class.on]="method === 'paste'" (click)="chooseMethod('paste')">
+            <span class="material-icons-outlined wz-card__icon" aria-hidden="true">content_paste</span>
+            <div class="wz-card__body">
+                <label class="wz-card__title"><input type="radio" name="wz-method" [checked]="method === 'paste'" (change)="chooseMethod('paste')"> {{ 'KbPage.WizardPasteTitle' | translate }}</label>
+                <div class="wz-card__sub">{{ 'KbPage.WizardPasteSub' | translate }}</div>
+                <div *ngIf="method === 'paste'" class="wz-card__extra" (click)="$event.stopPropagation()">
+                    <textarea class="wz-input wz-textarea" rows="5" [(ngModel)]="pastedText"
+                        [placeholder]="'KbPage.placeholderUrls' | translate" [attr.aria-label]="'KbPage.WizardPasteTitle' | translate"></textarea>
+                </div>
+            </div>
+        </div>
     </div>
-    
-    <!-- ----------------------------------------------- -->
-    <!-- Refresh rate - How often will the URL(s) sync -->
-    <!-- ----------------------------------------------- -->
-    <div class="refresh-rate-wpr">
-        <div class="refresh-rate-select">
-            <!-- Refresh-rate help popover: same hover-popover pattern
-                 and styling as kb-tags below (CDK overlay + .cdk-popover).
-                 The label itself acts as the trigger; the legacy help_outline
-                 icon + mat-tooltip combo has been removed for a cleaner UI. -->
-            <span class="input-label" style="white-space: nowrap;"
-                #refreshRateHelpTrigger="cdkOverlayOrigin"
-                cdkOverlayOrigin
-                (mouseenter)="openRefreshRateHelp()"
-                (mouseleave)="scheduleCloseRefreshRateHelp()">
-                {{'KbPage.RefreshRate' | translate}}
-            </span>
-            <ng-template
-                cdk-connected-overlay
-                [cdkConnectedOverlayOrigin]="refreshRateHelpTrigger"
-                [cdkConnectedOverlayOpen]="isRefreshRateHelpOpen"
-                [cdkConnectedOverlayPositions]="positions"
-                [cdkConnectedOverlayHasBackdrop]="false"
-                (detach)="isRefreshRateHelpOpen = false">
-                <div class="cdk-popover"
-                    (mouseenter)="cancelCloseRefreshRateHelp()"
-                    (mouseleave)="scheduleCloseRefreshRateHelp()">
-                    <div class="cdk-popover-arrow"></div>
-                    <div class="cdk-popover-content">
+
+    <!-- 2 · Pages -->
+    <div [hidden]="step !== 2">
+        <div *ngIf="loading" class="wz-loading" aria-live="polite">
+            <div class="wz-bar"><div></div></div>
+            <p *ngIf="method === 'scan'">{{ scanningText().key | translate: scanningText().params }} <span class="wz-muted">{{ elapsedSeconds }}s</span></p>
+            <p *ngIf="method === 'sitemap'">{{ 'KbPage.WizardLoadingSitemap' | translate }}</p>
+        </div>
+        <div *ngIf="!loading && (errorKey || errorText)" class="wz-error" role="alert">
+            <span class="material-icons-outlined" aria-hidden="true">error_outline</span>
+            <span>{{ errorText || (errorKey | translate) }}</span>
+        </div>
+        <ng-container *ngIf="!loading && items.length">
+            <p *ngIf="truncated" class="wz-note">{{ 'KbPage.FindPagesTruncated' | translate: { n: items.length } }}</p>
+            <app-kb-page-picker [items]="items" [(selected)]="selected"></app-kb-page-picker>
+            <p *ngIf="overLimit()" class="wz-error-text">{{ 'KbPage.InfoSitemapList' | translate }} {{ KB_LIMIT_CONTENT }}</p>
+        </ng-container>
+    </div>
+
+    <!-- 3 · Import settings -->
+    <div [hidden]="step !== 3">
+        <div class="wz-summary">
+            <div class="wz-summary__count">{{ 'KbPage.WizardSummaryCount' | translate: { n: selected.size } }}</div>
+            <div class="wz-muted">{{ 'KbPage.WizardSummarySplit' | translate: { p: selectedPageCount(), f: selectedFileCount() } }}</div>
+            <div class="wz-summary__titles">{{ summaryTitles().join(' · ') }}<ng-container *ngIf="selected.size > 4"> · +{{ selected.size - 4 }}</ng-container></div>
+        </div>
+
+        <div class="wz-section-label">{{ 'KbPage.WizardExtraction' | translate }}</div>
+            <app-kb-scrape-summary
+                [config]="scrapeConfig"
+                [isSettingsOpen]="isScrapeSettingsOpen"
+                (openSettings)="openScrapeSettings()"
+                (closeSettings)="closeScrapeSettingsDialog()">
+            </app-kb-scrape-summary>
+        <button type="button" class="wz-link" (click)="isScrapeSettingsOpen ? closeScrapeSettingsDialog() : openScrapeSettings()">
+            <span class="material-icons-outlined" aria-hidden="true">tune</span> {{ 'Settings' | translate }}
+        </button>
+
+            <div class="refresh-rate-wpr">
+                <div class="refresh-rate-select">
+                    <!-- Refresh-rate help popover: same hover-popover pattern
+                         and styling as kb-tags below (CDK overlay + .cdk-popover).
+                         The label itself acts as the trigger; the legacy help_outline
+                         icon + mat-tooltip combo has been removed for a cleaner UI. -->
+                    <span class="input-label" style="white-space: nowrap;"
+                        #refreshRateHelpTrigger="cdkOverlayOrigin"
+                        cdkOverlayOrigin
+                        (mouseenter)="openRefreshRateHelp()"
+                        (mouseleave)="scheduleCloseRefreshRateHelp()">
+                        {{'KbPage.RefreshRate' | translate}}
+                    </span>
+                    <ng-template
+                        cdk-connected-overlay
+                        [cdkConnectedOverlayOrigin]="refreshRateHelpTrigger"
+                        [cdkConnectedOverlayOpen]="isRefreshRateHelpOpen"
+                        [cdkConnectedOverlayPositions]="positions"
+                        [cdkConnectedOverlayHasBackdrop]="false"
+                        (detach)="isRefreshRateHelpOpen = false">
+                        <div class="cdk-popover"
+                            (mouseenter)="cancelCloseRefreshRateHelp()"
+                            (mouseleave)="scheduleCloseRefreshRateHelp()">
+                            <div class="cdk-popover-arrow"></div>
+                            <div class="cdk-popover-content">
+                                {{'KbPage.URLsSyncFrequency' | translate}}
+                            </div>
+                        </div>
+                    </ng-template>
+                    <div class="scrape-types-select-wpr" style="font-size: 14px;margin-top: 6px;"> 
+                        <ng-select class="scrape-types-select" style="min-width: 200px;margin-top: -4px; max-width: 250px;"
+                            appendTo="body"
+                            [items]="refresh_rate | selectOptionsTranslate" 
+                            bindLabel="name" bindValue="value" 
+                            placeholder="Refresh rate"
+                            [clearable]="false" [searchable]="false" 
+                            [(ngModel)]="selectedRefreshRate"
+                            (change)="onSelectRefreshRate(selectedRefreshRate)" 
+                            [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled)" >
+                        </ng-select>
+                    </div>
+
+                    <!-- <span class="input-label input-label-on-bottom">
                         {{'KbPage.URLsSyncFrequency' | translate}}
+                    </span> -->
+                </div>
+
+                <ng-container *ngIf="payIsVisible">
+                    <div class="refresh-rate-upgrade-plan">
+                        <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: -23px;"
+                            *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()"
+                            matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
+                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
+                            <span class="material-icons-outlined get--feature-upgrade-plan-icon">
+                                upgrade
+                            </span>
+                            <span>
+                                {{ 'Pricing.UpgradePlan' | translate }}
+                            </span>
+                        </button>
                     </div>
-                </div>
-            </ng-template>
-            <div class="scrape-types-select-wpr" style="font-size: 14px;margin-top: 6px;"> 
-                <ng-select class="scrape-types-select" style="min-width: 200px;margin-top: -4px; max-width: 250px;"
-                    appendTo="body"
-                    [items]="refresh_rate | selectOptionsTranslate" 
-                    bindLabel="name" bindValue="value" 
-                    placeholder="Refresh rate"
-                    [clearable]="false" [searchable]="false" 
-                    [(ngModel)]="selectedRefreshRate"
-                    (change)="onSelectRefreshRate(selectedRefreshRate)" 
-                    [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled)" >
-                </ng-select>
+                </ng-container>
+
+                <ng-container *ngIf="payIsVisible">
+                    <div  *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled">
+                        <div class="contact-sales-to-enable-feature"> 
+                            {{'ThisFeatureIsInBeta' | translate}}.
+                            <div class="contact-sales-to-enable-feature-link" (click)="contacUsViaEmail()"> 
+                                {{'ContactUsToEnableIt' | translate}}
+                            </div> 
+                        </div>
+                    </div>
+                </ng-container>
             </div>
 
-            <!-- <span class="input-label input-label-on-bottom">
-                {{'KbPage.URLsSyncFrequency' | translate}}
-            </span> -->
-        </div>
+            <!-- ----------------------------------------------- -->
+            <!-- KB Tags - optional metadata for retrieval; placed after refresh rate so primary -->
+            <!-- inputs (URLs, sync frequency) come first and tagging is the final step.         -->
+            <!-- ----------------------------------------------- -->
 
-        <ng-container *ngIf="payIsVisible">
-            <div class="refresh-rate-upgrade-plan">
-                <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: -23px;"
-                    *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()"
-                    matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
-                    #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                    <span class="material-icons-outlined get--feature-upgrade-plan-icon">
-                        upgrade
+        <p *ngIf="selectedFileCount()" class="wz-muted">{{ 'KbPage.FindPagesFilesNoRefresh' | translate }}</p>
+
+            <div class="form-container kb-tags-section" style="margin-top: 12px; margin-bottom: 6px;">
+                <div class="kb-tags-input-wpr" style="display: flex; vertical-align: middle;">
+                    <input id="kb-tags" class="adds-kb-input" name="kb-tags"
+                        [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
+                        [(ngModel)]="kbTag" autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
+                        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
+                        #trigger="cdkOverlayOrigin"
+                        cdkOverlayOrigin
+                        (mouseenter)="open()"
+                        (mouseleave)="scheduleClose()">
+                </div>
+
+                <ng-template
+                    cdk-connected-overlay
+                    [cdkConnectedOverlayOrigin]="trigger"
+                    [cdkConnectedOverlayOpen]="isOpen"
+                    [cdkConnectedOverlayPositions]="positions"
+                    [cdkConnectedOverlayHasBackdrop]="false"
+                    (detach)="isOpen = false">
+                    <div class="cdk-popover"
+                        (mouseenter)="cancelClose()"
+                        (mouseleave)="scheduleClose()">
+
+                        <div class="cdk-popover-arrow"></div>
+
+                        <div class="cdk-popover-content">
+                            {{'AssignOneOrMoreTagsToThisContent' | translate}}
+                        </div>
+
+                        <div *ngIf="hideHelpLink" class="cdk-learn-more"
+                            (click)="goToKbTagsDoc()">
+                            {{ 'LearnMore' | translate }}
+                        </div>
+
+                    </div>
+                </ng-template>
+
+                <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
+                    <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="kb-tags-btn-wpr">
+                        <p weight="400" class="kb-tag">{{kbtag}}</p>
+                        <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
+                                class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;">
+                                <path
+                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
+                                </path>
+                                <path d="M0 0h24v24H0z" fill="none"></path>
+                            </svg>
+                        </button>
                     </span>
-                    <span>
-                        {{ 'Pricing.UpgradePlan' | translate }}
-                    </span>
-                </button>
-            </div>
-        </ng-container>
-
-        <ng-container *ngIf="payIsVisible">
-            <div  *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled">
-                <div class="contact-sales-to-enable-feature"> 
-                    {{'ThisFeatureIsInBeta' | translate}}.
-                    <div class="contact-sales-to-enable-feature-link" (click)="contacUsViaEmail()"> 
-                        {{'ContactUsToEnableIt' | translate}}
-                    </div> 
                 </div>
             </div>
-        </ng-container>
+
+            <div class="info-container" style="margin-bottom: 12px;">
+                <i class="material-icons-outlined info-icon">help_outline</i>
+                <div class="info-text">
+                    <!-- <p [innerHTML]="'KbPage.helpUrls' | translate"></p> -->
+                    <p [innerHTML]="'HelpsURLsInfoMsg' | translate" style="line-height: 1.3;"></p>
+                </div>
+
     </div>
-
-    <!-- ----------------------------------------------- -->
-    <!-- KB Tags - optional metadata for retrieval; placed after refresh rate so primary -->
-    <!-- inputs (URLs, sync frequency) come first and tagging is the final step.         -->
-    <!-- ----------------------------------------------- -->
-    <div class="form-container kb-tags-section" style="margin-top: 12px; margin-bottom: 6px;">
-        <div class="kb-tags-input-wpr" style="display: flex; vertical-align: middle;">
-            <input id="kb-tags" class="adds-kb-input" name="kb-tags"
-                [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
-                [(ngModel)]="kbTag" autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-                [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
-                #trigger="cdkOverlayOrigin"
-                cdkOverlayOrigin
-                (mouseenter)="open()"
-                (mouseleave)="scheduleClose()">
-        </div>
-
-        <ng-template
-            cdk-connected-overlay
-            [cdkConnectedOverlayOrigin]="trigger"
-            [cdkConnectedOverlayOpen]="isOpen"
-            [cdkConnectedOverlayPositions]="positions"
-            [cdkConnectedOverlayHasBackdrop]="false"
-            (detach)="isOpen = false">
-            <div class="cdk-popover"
-                (mouseenter)="cancelClose()"
-                (mouseleave)="scheduleClose()">
-
-                <div class="cdk-popover-arrow"></div>
-
-                <div class="cdk-popover-content">
-                    {{'AssignOneOrMoreTagsToThisContent' | translate}}
-                </div>
-
-                <div *ngIf="hideHelpLink" class="cdk-learn-more"
-                    (click)="goToKbTagsDoc()">
-                    {{ 'LearnMore' | translate }}
-                </div>
-
-            </div>
-        </ng-template>
-
-        <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
-            <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="kb-tags-btn-wpr">
-                <p weight="400" class="kb-tag">{{kbtag}}</p>
-                <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                        class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;">
-                        <path
-                            d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                        </path>
-                        <path d="M0 0h24v24H0z" fill="none"></path>
-                    </svg>
-                </button>
-            </span>
-        </div>
-    </div>
-
-
 </div>
 
-
-<div mat-dialog-actions style="justify-content: center; margin-bottom: 0px;">
-    <!-- <button class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">
-        {{ "Cancel" | translate }}
-    </button> -->
-    <button
-        [disabled]="!canImport()"
-        class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase()">
-        <ng-container *ngIf="!pickedFiles.length">{{ 'KbPage.Import' | translate }} {{countSitemap}} URL</ng-container>
-        <ng-container *ngIf="pickedFiles.length">{{ 'KbPage.ImportItems' | translate: { n: itemCount } }}</ng-container>
-
+<div mat-dialog-actions class="wz-footer">
+    <span class="wz-footer__info">
+        <ng-container *ngIf="step === 2 && !loading && items.length">
+            {{ 'KbPage.WizardSelected' | translate: { n: selected.size, p: selectedPageCount(), f: selectedFileCount() } }}
+            <button *ngIf="selected.size" type="button" class="wz-link" (click)="clearSelection()">{{ 'KbPage.FindPagesClear' | translate }}</button>
+        </ng-container>
+    </span>
+    <button *ngIf="step === 1" class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">{{ 'Cancel' | translate }}</button>
+    <button *ngIf="step > 1" class="mat-dialog-close-btn" mat-button (click)="back()">{{ 'KbPage.WizardBack' | translate }}</button>
+    <button class="mat-dialog-ok-btn" mat-button [disabled]="!canContinue()" (click)="next()">
+        <ng-container *ngIf="step === 1 && method === 'scan'">{{ 'KbPage.FindPagesScan' | translate }}</ng-container>
+        <ng-container *ngIf="step === 1 && method === 'sitemap'">{{ 'KbPage.WizardLoadSitemap' | translate }}</ng-container>
+        <ng-container *ngIf="step === 1 && method === 'paste'">{{ 'KbPage.WizardContinue' | translate }}</ng-container>
+        <ng-container *ngIf="step === 2">{{ 'KbPage.WizardContinue' | translate }}</ng-container>
+        <ng-container *ngIf="step === 3">{{ 'KbPage.ImportItems' | translate: { n: selected.size } }}</ng-container>
     </button>
 </div>
