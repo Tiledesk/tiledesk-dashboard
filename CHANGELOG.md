@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.13.0-rc6
+- Import from websites laid out like the Microsoft 365 / Google Drive import (header with steps, fixed body, footer); pasted URLs skip the Pages step; scan progress shows the site and the elapsed time; import settings in the same order as the Drive sync settings
+
 ### 2.13.0-rc5
 - Import from websites: a folder holding most of the found pages is split into its sub-folders, so the sections show the site's structure; step 3 says imported content can answer any user of the agent; the limit hint counts items
 
