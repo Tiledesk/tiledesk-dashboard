@@ -251,12 +251,33 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     this.fileOptionIds.has(id) ? this.fileOptionIds.delete(id) : this.fileOptionIds.add(id);
   }
 
+  /** Steps shown for the chosen method: pasted URLs need no Pages step. */
+  steps(): { id: 1 | 2 | 3; labelKey: string }[] {
+    const all: { id: 1 | 2 | 3; labelKey: string }[] = [
+      { id: 1, labelKey: 'KbPage.WizardStepWebsite' },
+      { id: 2, labelKey: 'KbPage.WizardStepPages' },
+      { id: 3, labelKey: 'KbPage.WizardStepSettings' },
+    ];
+    return this.method === 'paste' ? all.filter((x) => x.id !== 2) : all;
+  }
+
+  pastedOverLimit(): boolean {
+    return parsePastedUrls(this.pastedText).length > KB_LIMIT_CONTENT;
+  }
+
+  /** Scan time so far as m:ss. */
+  elapsedLabel(): string {
+    const s = Math.max(0, Math.floor(this.elapsedSeconds));
+    return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+  }
+
   /** Whether the footer's primary button can go on from the current step. */
   canContinue(): boolean {
     if (this.step === 1) {
       if (this.method === 'scan') return /^https?:\/\/\S+$/i.test((this.scanUrl || '').trim());
       if (this.method === 'sitemap') return /^https?:\/\/\S+$/i.test((this.sitemapUrl || '').trim());
-      return parsePastedUrls(this.pastedText).length > 0;
+      const n = parsePastedUrls(this.pastedText).length;
+      return n > 0 && n <= KB_LIMIT_CONTENT;
     }
     if (this.step === 2) return !this.loading && this.selected.size > 0 && !this.overLimit();
     return this.canImport();
@@ -265,8 +286,9 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   next(): void {
     if (!this.canContinue()) return;
     if (this.step === 1) {
-      this.step = 2;
       this.load();
+      // pasted URLs are already the selection: straight to the import settings
+      this.step = this.method === 'paste' ? 3 : 2;
     } else if (this.step === 2) {
       this.step = 3;
     } else {
@@ -276,7 +298,20 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
 
   back(): void {
     if (this.step === 2) this.stopLoading();
-    if (this.step > 1) this.step = (this.step - 1) as 1 | 2;
+    if (this.step === 3 && this.method === 'paste') {
+      this.step = 1;
+    } else if (this.step > 1) {
+      this.step = (this.step - 1) as 1 | 2;
+    }
+  }
+
+  /** Short host of the scanned site, for the progress title. */
+  scanHost(): string {
+    try {
+      return new URL(this.scanUrl.trim()).host;
+    } catch (e) {
+      return this.scanUrl;
+    }
   }
 
   ignoredPasted(): number {
@@ -299,9 +334,9 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     return this.items.filter((i) => !!i.type && this.selected.has(i.url)).length;
   }
 
-  /** Titles of the first selected items, for the step 3 summary. */
-  summaryTitles(max = 4): string[] {
-    return this.items.filter((i) => this.selected.has(i.url)).slice(0, max).map((i) => i.title || i.url);
+  /** The first selected items, for the step 3 summary list. */
+  summaryItems(max = 5): PickerItem[] {
+    return this.items.filter((i) => this.selected.has(i.url)).slice(0, max);
   }
 
   canImport(): boolean {
@@ -313,8 +348,8 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   /** "up to a minute" for scans of 60 s or less, else "up to N minutes" (rounded up). */
   scanningText(): { key: string; params: { n?: number } } {
     return this.maxSeconds <= 60
-      ? { key: 'KbPage.FindPagesScanning', params: {} }
-      : { key: 'KbPage.FindPagesScanningMinutes', params: { n: Math.ceil(this.maxSeconds / 60) } };
+      ? { key: 'KbPage.WizardUpToMinute', params: {} }
+      : { key: 'KbPage.WizardUpToMinutes', params: { n: Math.ceil(this.maxSeconds / 60) } };
   }
 
   /** Step 2 content for the chosen method; a new load replaces the previous items and selection. */
@@ -496,7 +531,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
       // Place the dialog flush to the right of the wizard (600px wide → half is 300px,
       // plus a 10px gap so the two cards do not touch).
       // beside the wizard when the screen is wide enough, else pinned to the right edge (no overflow)
-      position: window.innerWidth >= 1400 ? { left: 'calc(50% + 310px)', top: '60px' } : { right: '16px', top: '60px' },
+      position: window.innerWidth >= 1420 ? { left: 'calc(50% + 330px)', top: '60px' } : { right: '16px', top: '60px' },
       autoFocus: false,
       hasBackdrop: false,
       data: {
