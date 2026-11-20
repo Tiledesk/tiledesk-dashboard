@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.13.0-rc5
+- Import from websites: a folder holding most of the found pages is split into its sub-folders, so the sections show the site's structure; step 3 says imported content can answer any user of the agent; the limit hint counts items
+
 ### 2.13.0-rc4
 - Import from websites is now a wizard like the Microsoft 365 / Google Drive import: 1 Website (scan a site with options for max pages, depth and linked files; use a sitemap; or paste URLs), 2 Pages (page titles, search, All/Pages/Files filter, sections below the folder the pages share, Select all shown), 3 Import settings (summary, content extraction, refresh rate, tags)
 - Pasted addresses without https:// are accepted; lines that are not web addresses are reported
