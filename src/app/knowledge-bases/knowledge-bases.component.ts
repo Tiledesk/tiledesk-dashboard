@@ -41,6 +41,7 @@ import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/m
 import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
+import { importPickedFiles, PickedFile } from './modals/kb-find-pages/kb-find-pages.util';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { KbMs365ConnectionsComponent } from './components/kb-ms365-connections/kb-ms365-connections.component';
 import { buildMs365AccountMap, isMs365Folder, isMs365File, ms365DeleteErrorKey, ms365ErrorCode, sourceProviderOf } from './modals/knowledge-base-table/kb-ms365-row.util';
@@ -4096,8 +4097,57 @@ _presentDialogImportContents() {
   }
 
 
+  /**
+   * Add website result: linked files from "Find pages on a site" first (POST /kb each, own type), then the
+   * URL list (/kb/multi). One after the other, so quota checks and the list reload don't race.
+   */
   onAddMultiKb(body) {
     this.logger.log('onAddMultiKb body', body)
+    const files: PickedFile[] = Array.isArray(body && body.files) ? body.files : [];
+    if (body) delete body.files;
+    const hasList = !!body && Array.isArray(body.list) && body.list.length > 0;
+    if (!files.length) {
+      if (hasList) this.addUrlList(body, 0);
+      return;
+    }
+    importPickedFiles(this.kbService, files, {
+      namespace: this.selectedNamespace.id,
+      tags: (body && body.tags) || [],
+      situated_context: body && body.situated_context === true,
+    }).subscribe((r) => {
+      if (r.planLimitError) {
+        // quota reached: the URL list would be refused too
+        this.showAddKbError(r.planLimitError);
+        this.afterAdd(r.created);
+        return;
+      }
+      if (r.failed) {
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.FindPagesFilesFailed', { n: r.failed }), 3, 'warning');
+      }
+      if (hasList) {
+        this.addUrlList(body, r.created);
+      } else {
+        if (r.saved) this.notify.showWidgetStyleUpdateNotification(this.msgSuccesAddKb, 2, 'done');
+        this.afterAdd(r.created);
+      }
+    });
+  }
+
+  /** List reload and counters after `created` new contents. */
+  private afterAdd(created: number): void {
+    if (created) {
+      const paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+      this.getListOfKb(paramsDefault, 'after-add');
+      this.kbsListCount = this.kbsListCount + created;
+      this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + created;
+      this.syncNamespaceContentCount(this.kbsContentTotalCount);
+      this.refreshKbsList = !this.refreshKbsList;
+    }
+    this.getAllNamespaces();
+  }
+
+  /** The URL list of Add website (/kb/multi); `extraCreated` = files already saved in this import. */
+  private addUrlList(body, extraCreated: number) {
     // this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;
@@ -4113,12 +4163,24 @@ _presentDialogImportContents() {
       // clicks can never return items already cached locally.
       this.getListOfKb(paramsDefault, 'after-add');
 
-      this.kbsListCount = this.kbsListCount + kbs.length;
-      this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length;
+      this.kbsListCount = this.kbsListCount + kbs.length + extraCreated;
+      this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + kbs.length + extraCreated;
       this.syncNamespaceContentCount(this.kbsContentTotalCount);
       this.refreshKbsList = !this.refreshKbsList;
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
+      this.showAddKbError(err);
+      if (extraCreated) this.afterAdd(extraCreated);
+    }, () => {
+      this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
+      this.trackUserActioOnKB('Added Knowledge Base')
+      this.getAllNamespaces()
+    })
+  }
+
+  /** Plan limit and generic add errors: the upgrade / contact-us dialogs of the Add flows. */
+  private showAddKbError(err) {
+      let error = this.msgErrorAddUpdateKb;
 
       //this.onOpenErrorModal(error);
       if (err.error && err.error.plan_limit) {
@@ -4180,12 +4242,6 @@ _presentDialogImportContents() {
           }
         })
       }
-
-    }, () => {
-      this.logger.log("[KNOWLEDGE-BASES-COMP] add new kb *COMPLETED*");
-      this.trackUserActioOnKB('Added Knowledge Base')
-      this.getAllNamespaces()
-    })
   }
 
 

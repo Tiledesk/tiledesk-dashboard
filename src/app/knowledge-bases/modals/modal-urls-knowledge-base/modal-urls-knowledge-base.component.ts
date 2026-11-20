@@ -9,7 +9,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 import { TranslateService } from '@ngx-translate/core';
 import { buildDefaultKbScrapeConfig, KbScrapeConfig } from 'app/models/kb-scrape-config-model';
 import { ModalKbScrapeSettingsComponent } from '../modal-kb-scrape-settings/modal-kb-scrape-settings.component';
-import { mergeUrls } from '../kb-find-pages/kb-find-pages.util';
+import { fileNameOf, FindPagesPick, mergeUrls, PickedFile } from '../kb-find-pages/kb-find-pages.util';
 
 
 @Component({
@@ -279,13 +279,42 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     }
   }
 
-  /** Picked pages go into the URL box like typed URLs; the usual URL limit applies. */
-  onPagesPicked(urls: string[]): void {
-    this.listOfUrls = mergeUrls(this.listOfUrls || '', urls).text;
-    this.countSitemap = this.listOfUrls ? this.listOfUrls.split('\n').length : 0;
+  /** Linked files picked in the scan: imported one by one with their own type, never as web pages. */
+  pickedFiles: PickedFile[] = [];
+  readonly fileNameOf = fileNameOf;
+
+  /** URLs in the box plus picked files: the content limit counts both. */
+  get itemCount(): number {
+    const urls = (this.listOfUrls || '').split('\n').filter((l) => l.trim() !== '').length;
+    return urls + this.pickedFiles.length;
+  }
+
+  /** Picked pages go into the URL box like typed URLs; picked files into their own list; the usual limit applies. */
+  onPicked(pick: FindPagesPick): void {
+    this.listOfUrls = mergeUrls(this.listOfUrls || '', pick.pages || []).text;
+    for (const f of pick.files || []) {
+      if (!this.pickedFiles.some((x) => x.url === f.url)) this.pickedFiles.push(f);
+    }
+    this.findPagesOpen = false;
+    this.updateItemLimit();
+  }
+
+  removeFile(url: string): void {
+    this.pickedFiles = this.pickedFiles.filter((f) => f.url !== url);
+    this.updateItemLimit();
+  }
+
+  canImport(): boolean {
+    if (this.buttonDisabled || this.itemCount === 0) return false;
+    const hasUrls = (this.listOfUrls || '').split('\n').some((l) => l.trim() !== '');
+    // manual extraction rules (tags) apply to web pages only; files are parsed by type
+    return !hasUrls || this.scrapeConfig.automaticContentExtraction || this.scrapeConfig.extract_tags.length > 0;
+  }
+
+  private updateItemLimit(): void {
+    this.countSitemap = this.itemCount;
     this.errorLimit = this.countSitemap > KB_LIMIT_CONTENT;
     this.buttonDisabled = this.errorLimit;
-    this.findPagesOpen = false;
   }
 
   /**
@@ -398,6 +427,10 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
       this.buttonDisabled = false;
     }
     this.countSitemap = listSitesOfSitemap.length;
+    if (this.pickedFiles.length) {
+      // picked files count in the same limit as the URLs
+      this.updateItemLimit();
+    }
   }
 
 
@@ -444,6 +477,7 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
     const scrapeType = this.scrapeConfig.automaticContentExtraction ? 0 : this.scrapeConfig.selectedScrapeType;
     const body: any = {
       list: arrayURLS,
+      files: this.pickedFiles,
       scrape_type: scrapeType,
       refresh_rate: this.selectedRefreshRate,
       tags: this.kbTagsArray,

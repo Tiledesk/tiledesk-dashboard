@@ -2,10 +2,23 @@ import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { CrawlDiscoverResult, groupPages, PageGroup, resolveScanMaxSeconds } from './kb-find-pages.util';
+import { CRAWL_FILE_TYPES, CrawlDiscoverResult, CrawlFileType, FindPagesPick, groupPages, PageGroup, PickedFile, resolveScanMaxSeconds } from './kb-find-pages.util';
 
 export const FIND_PAGES_DEFAULT_MAX = 50;
 export const FIND_PAGES_MAX = 300;
+export const FIND_PAGES_DEFAULT_DEPTH = 3;
+/** The server caps max_depth at 5 (CRAWL_DISCOVER_MAX_DEPTH). */
+export const FIND_PAGES_MAX_DEPTH = 5;
+
+/** File type options shown to the user; Excel covers both workbook formats. */
+export const FILE_OPTIONS: { id: string; labelKey: string; types: CrawlFileType[] }[] = [
+  { id: 'pdf', labelKey: 'KbPage.FindPagesTypePdf', types: ['pdf'] },
+  { id: 'word', labelKey: 'KbPage.FindPagesTypeWord', types: ['docx'] },
+  { id: 'excel', labelKey: 'KbPage.FindPagesTypeExcel', types: ['xlsx', 'xls'] },
+  { id: 'csv', labelKey: 'KbPage.FindPagesTypeCsv', types: ['csv'] },
+  { id: 'txt', labelKey: 'KbPage.FindPagesTypeText', types: ['txt'] },
+  { id: 'md', labelKey: 'KbPage.FindPagesTypeMarkdown', types: ['md'] },
+];
 
 /**
  * "Find pages on a site" panel of the Add website dialog: scans a site through the server's crawl scan,
@@ -17,10 +30,17 @@ export const FIND_PAGES_MAX = 300;
   styleUrls: ['./kb-find-pages.component.scss'],
 })
 export class KbFindPagesComponent implements OnDestroy {
-  @Output() pagesPicked = new EventEmitter<string[]>();
+  @Output() picked = new EventEmitter<FindPagesPick>();
   @Output() closed = new EventEmitter<void>();
 
   readonly maxAllowed = FIND_PAGES_MAX;
+  readonly maxDepthAllowed = FIND_PAGES_MAX_DEPTH;
+  readonly fileOptions = FILE_OPTIONS;
+  maxDepth = FIND_PAGES_DEFAULT_DEPTH;
+  /** Ticked file options (ids of FILE_OPTIONS); none = web pages only. */
+  fileOptionIds = new Set<string>();
+  /** Type of each listed file, by URL; pages are not in it. */
+  private fileTypeByUrl = new Map<string, CrawlFileType>();
   source = '';
   maxPages = FIND_PAGES_DEFAULT_MAX;
   phase: 'idle' | 'scanning' | 'picking' = 'idle';
@@ -43,8 +63,31 @@ export class KbFindPagesComponent implements OnDestroy {
     this.maxSeconds = resolveScanMaxSeconds(this.appConfigService.getConfig()?.kbCrawlMaxSeconds);
   }
 
+  /** Pages and files listed. */
   get pageCount(): number {
     return this.groups.reduce((n, g) => n + g.urls.length, 0);
+  }
+
+  get fileCount(): number {
+    return this.fileTypeByUrl.size;
+  }
+
+  /** The file type of a listed URL, or null for a web page. */
+  typeOf(url: string): CrawlFileType | null {
+    return this.fileTypeByUrl.get(url) || null;
+  }
+
+  toggleFileOption(id: string): void {
+    this.fileOptionIds.has(id) ? this.fileOptionIds.delete(id) : this.fileOptionIds.add(id);
+  }
+
+  private selectedFileTypes(): CrawlFileType[] {
+    return FILE_OPTIONS.filter((o) => this.fileOptionIds.has(o.id)).reduce((all, o) => all.concat(o.types), [] as CrawlFileType[]);
+  }
+
+  get selectedHasFiles(): boolean {
+    for (const u of this.selected) if (this.fileTypeByUrl.has(u)) return true;
+    return false;
   }
 
   scan(): void {
@@ -56,14 +99,18 @@ export class KbFindPagesComponent implements OnDestroy {
     }
     const max = Math.min(Math.max(Math.floor(Number(this.maxPages) || FIND_PAGES_DEFAULT_MAX), 1), FIND_PAGES_MAX);
     this.maxPages = max;
+    // an emptied field means "default", an explicit 0 means "start page only"
+    const rawDepth = this.maxDepth === null || this.maxDepth === undefined || (this.maxDepth as any) === '' ? NaN : Number(this.maxDepth);
+    this.maxDepth = Number.isFinite(rawDepth) ? Math.min(Math.max(Math.floor(rawDepth), 0), FIND_PAGES_MAX_DEPTH) : FIND_PAGES_DEFAULT_DEPTH;
     this.stopScan();
     this.groups = [];
+    this.fileTypeByUrl = new Map();
     this.selected.clear();
     this.expanded.clear();
     this.truncated = false;
     this.phase = 'scanning';
     this.startTimer();
-    this.scanSub = this.kbService.discoverPages(source, max, this.maxSeconds).subscribe({
+    this.scanSub = this.kbService.discoverPages(source, max, this.maxSeconds, this.maxDepth, this.selectedFileTypes()).subscribe({
       next: (res: CrawlDiscoverResult) => this.onResult(res),
       error: (err) => this.onError(err),
     });
@@ -98,20 +145,31 @@ export class KbFindPagesComponent implements OnDestroy {
     this.expanded.has(g.key) ? this.expanded.delete(g.key) : this.expanded.add(g.key);
   }
 
-  selectAll(): void {
-    this.groups.forEach((g) => g.urls.forEach((u) => this.selected.add(u)));
+  allState(): 'all' | 'some' | 'none' {
+    const total = this.pageCount;
+    return this.selected.size === 0 ? 'none' : this.selected.size >= total ? 'all' : 'some';
   }
 
-  clear(): void {
-    this.selected.clear();
+  /** One checkbox for everything: selects all unless all are already selected, then clears. */
+  toggleAll(): void {
+    if (this.allState() === 'all') {
+      this.selected.clear();
+    } else {
+      this.groups.forEach((g) => g.urls.forEach((u) => this.selected.add(u)));
+    }
   }
 
-  /** Picked URLs in section order. */
+  /** Picked pages and files in section order; files keep their type. */
   add(): void {
     if (this.selected.size === 0) return;
-    const urls: string[] = [];
-    this.groups.forEach((g) => g.urls.forEach((u) => this.selected.has(u) && urls.push(u)));
-    this.pagesPicked.emit(urls);
+    const pages: string[] = [];
+    const files: PickedFile[] = [];
+    this.groups.forEach((g) => g.urls.forEach((u) => {
+      if (!this.selected.has(u)) return;
+      const type = this.fileTypeByUrl.get(u);
+      type ? files.push({ url: u, type }) : pages.push(u);
+    }));
+    this.picked.emit({ pages, files });
     this.reset();
   }
 
@@ -145,7 +203,9 @@ export class KbFindPagesComponent implements OnDestroy {
   private onResult(res: CrawlDiscoverResult): void {
     this.stopTimer();
     this.scanSub = null;
-    this.groups = groupPages(res && Array.isArray(res.pages) ? res.pages : []);
+    const listed = res && Array.isArray(res.pages) ? res.pages : [];
+    this.groups = groupPages(listed);
+    this.fileTypeByUrl = new Map(listed.filter((p) => p && p.kind === 'file' && p.file_type && CRAWL_FILE_TYPES.includes(p.file_type)).map((p) => [p.url, p.file_type] as [string, CrawlFileType]));
     if (this.groups.length === 0) {
       this.phase = 'idle';
       this.errorKey = 'KbPage.FindPagesNoneFound';
@@ -169,6 +229,7 @@ export class KbFindPagesComponent implements OnDestroy {
   private reset(): void {
     this.phase = 'idle';
     this.groups = [];
+    this.fileTypeByUrl = new Map();
     this.selected.clear();
     this.expanded.clear();
     this.truncated = false;

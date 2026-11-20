@@ -1,28 +1,29 @@
-import { DiscoveredPage, groupPages, mergeUrls, resolveScanMaxSeconds } from './kb-find-pages.util';
+import { of, throwError } from 'rxjs';
+import { DiscoveredPage, fileNameOf, groupPages, importPickedFiles, mergeUrls, resolveScanMaxSeconds } from './kb-find-pages.util';
 
-const page = (url: string, kind: 'page' | 'file' = 'page'): DiscoveredPage => ({ url, kind, depth: 1 });
+const page = (url: string, kind: 'page' | 'file' = 'page', file_type?: any): DiscoveredPage => ({ url, kind, depth: 1, file_type });
 
 describe('kb-find-pages util', () => {
   describe('groupPages', () => {
-    it('groups web pages by first path segment, drops files and duplicates', () => {
+    it('groups pages and files by first path segment and drops duplicates', () => {
       const groups = groupPages([
         page('https://a.com/'),
         page('https://a.com/docs/setup'),
         page('https://a.com/docs/api'),
         page('https://a.com/pricing'),
-        page('https://a.com/x.pdf', 'file'),
+        page('https://a.com/docs/guide.pdf', 'file', 'pdf'),
         page('https://a.com/docs/api'),
       ]);
       expect(groups).toEqual([
         { key: '/', urls: ['https://a.com/'] },
-        { key: '/docs', urls: ['https://a.com/docs/setup', 'https://a.com/docs/api'] },
+        { key: '/docs', urls: ['https://a.com/docs/setup', 'https://a.com/docs/api', 'https://a.com/docs/guide.pdf'] },
         { key: '/pricing', urls: ['https://a.com/pricing'] },
       ]);
     });
 
-    it('returns no groups for no pages or files only', () => {
+    it('drops files without a known type', () => {
       expect(groupPages([])).toEqual([]);
-      expect(groupPages([page('https://a.com/x.pdf', 'file')])).toEqual([]);
+      expect(groupPages([page('https://a.com/x.bin', 'file')])).toEqual([]);
     });
 
     it('skips invalid urls', () => {
@@ -62,6 +63,63 @@ describe('kb-find-pages util', () => {
     it('keeps the value inside the llm range 30..1800', () => {
       expect(resolveScanMaxSeconds('10')).toBe(30);
       expect(resolveScanMaxSeconds('5000')).toBe(1800);
+    });
+  });
+
+  describe('fileNameOf', () => {
+    it('returns the decoded last path segment', () => {
+      expect(fileNameOf('https://a.com/docs/My%20Guide.pdf')).toBe('My Guide.pdf');
+      expect(fileNameOf('https://a.com/')).toBe('https://a.com/');
+    });
+  });
+
+  describe('importPickedFiles', () => {
+    const files = [
+      { url: 'https://a.com/a.pdf', type: 'pdf' as const },
+      { url: 'https://a.com/b.docx', type: 'docx' as const },
+    ];
+
+    it('saves each file with its own type, name, tags, namespace and situated context', (done) => {
+      const kb = jasmine.createSpyObj('kb', ['addKb']);
+      kb.addKb.and.returnValue(of({}));
+      importPickedFiles(kb, files, { namespace: 'ns1', tags: ['t'], situated_context: true }).subscribe((r) => {
+        expect(kb.addKb.calls.allArgs()).toEqual([
+          [{ name: 'a.pdf', type: 'pdf', source: 'https://a.com/a.pdf', namespace: 'ns1', tags: ['t'], situated_context: true }],
+          [{ name: 'b.docx', type: 'docx', source: 'https://a.com/b.docx', namespace: 'ns1', tags: ['t'], situated_context: true }],
+        ]);
+        expect(r).toEqual({ saved: 2, created: 2, failed: 0, planLimitError: null });
+        done();
+      });
+    });
+
+    it('does not count a file that already existed as new', (done) => {
+      const kb = jasmine.createSpyObj('kb', ['addKb']);
+      kb.addKb.and.returnValues(of({ lastErrorObject: { updatedExisting: true } }), of({ lastErrorObject: { updatedExisting: false } }));
+      importPickedFiles(kb, files, { namespace: 'ns1', tags: [] }).subscribe((r) => {
+        expect(r).toEqual({ saved: 2, created: 1, failed: 0, planLimitError: null });
+        expect(kb.addKb.calls.argsFor(0)[0].situated_context).toBeUndefined();
+        done();
+      });
+    });
+
+    it('keeps going when one file fails, counts it and returns a plan-limit error', (done) => {
+      const kb = jasmine.createSpyObj('kb', ['addKb']);
+      const limit = { status: 403, error: { plan_limit: 10 } };
+      kb.addKb.and.returnValues(throwError(limit), of({}));
+      importPickedFiles(kb, files, { namespace: 'ns1', tags: [] }).subscribe((r) => {
+        expect(kb.addKb).toHaveBeenCalledTimes(2);
+        expect(r).toEqual({ saved: 1, created: 1, failed: 1, planLimitError: limit });
+        done();
+      });
+    });
+
+    it('does nothing without files', (done) => {
+      const kb = jasmine.createSpyObj('kb', ['addKb']);
+      importPickedFiles(kb, [], { namespace: 'ns1', tags: [] }).subscribe((r) => {
+        expect(kb.addKb).not.toHaveBeenCalled();
+        expect(r).toEqual({ saved: 0, created: 0, failed: 0, planLimitError: null });
+        done();
+      });
     });
   });
 });

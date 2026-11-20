@@ -1,9 +1,29 @@
+import { from, Observable, of } from 'rxjs';
+import { catchError, map, mergeMap, toArray } from 'rxjs/operators';
+
+/** Linked file types the llm can index from a link (also the scan's crawl_file_types values). */
+export type CrawlFileType = 'pdf' | 'docx' | 'xlsx' | 'xls' | 'csv' | 'txt' | 'md';
+export const CRAWL_FILE_TYPES: CrawlFileType[] = ['pdf', 'docx', 'xlsx', 'xls', 'csv', 'txt', 'md'];
+
 /** A URL found by POST /kb/crawl/discover. */
 export interface DiscoveredPage {
   url: string;
   title?: string;
   kind: 'page' | 'file';
+  file_type?: CrawlFileType;
   depth: number;
+}
+
+/** A linked file picked in the scan: imported on its own with its type, not as a web page. */
+export interface PickedFile {
+  url: string;
+  type: CrawlFileType;
+}
+
+/** What the scan panel hands to the Add website dialog. */
+export interface FindPagesPick {
+  pages: string[];
+  files: PickedFile[];
 }
 
 export interface CrawlDiscoverResult {
@@ -12,18 +32,19 @@ export interface CrawlDiscoverResult {
   fetched: number;
 }
 
-/** Pages sharing the first path segment ("/docs"); the site root and top-level pages without one go in "/". */
+/** Pages and files sharing the first path segment ("/docs"); the site root and top-level pages without one go in "/". */
 export interface PageGroup {
   key: string;
   urls: string[];
 }
 
-/** Web pages only (files are left out: this dialog saves every URL as type url), unique, grouped and sorted by key. */
+/** Web pages and files of a known type, unique, grouped and sorted by key. */
 export function groupPages(pages: DiscoveredPage[]): PageGroup[] {
   const groups = new Map<string, string[]>();
   const seen = new Set<string>();
   for (const p of pages || []) {
-    if (!p || p.kind !== 'page' || seen.has(p.url)) continue;
+    if (!p || seen.has(p.url)) continue;
+    if (p.kind !== 'page' && !(p.kind === 'file' && p.file_type && CRAWL_FILE_TYPES.includes(p.file_type))) continue;
     let segment: string;
     try {
       segment = new URL(p.url).pathname.split('/')[1] || '';
@@ -65,4 +86,53 @@ export function resolveScanMaxSeconds(rawValue: unknown): number {
   const seconds = typeof rawValue === 'number' ? rawValue : Number(String(rawValue).trim());
   if (!Number.isFinite(seconds) || seconds <= 0) return SCAN_MAX_SECONDS_FALLBACK;
   return Math.min(Math.max(Math.round(seconds), SCAN_MAX_SECONDS_MIN), SCAN_MAX_SECONDS_MAX);
+}
+
+/** File name shown for a linked file: the decoded last path segment, or the URL when there is none. */
+export function fileNameOf(url: string): string {
+  try {
+    const last = new URL(url).pathname.split('/').filter((x) => x).pop();
+    return last ? decodeURIComponent(last) : url;
+  } catch (e) {
+    return url;
+  }
+}
+
+export interface FilesImportResult {
+  saved: number;
+  /** Saved files that did not exist yet (POST /kb updates an existing file with the same type and source). */
+  created: number;
+  failed: number;
+  /** The first error carrying `plan_limit` (content quota reached), for the usual upgrade dialog. */
+  planLimitError: any;
+}
+
+/**
+ * Saves each picked file with POST /kb and its own type (pdf, docx…): /kb/multi would save it as a web page,
+ * which fails to index. The server keeps a refresh rate only for web pages, so none is sent. One failure does
+ * not stop the others; the result counts both.
+ */
+export function importPickedFiles(
+  kbService: { addKb(body: any): Observable<any> },
+  files: PickedFile[],
+  opts: { namespace: string; tags: string[]; situated_context?: boolean },
+): Observable<FilesImportResult> {
+  if (!files || files.length === 0) return of({ saved: 0, created: 0, failed: 0, planLimitError: null });
+  return from(files).pipe(
+    // a few at a time: up to 300 files must not flood the server
+    mergeMap((f) => kbService.addKb({
+      name: fileNameOf(f.url), type: f.type, source: f.url, namespace: opts.namespace, tags: opts.tags,
+      ...(opts.situated_context === true ? { situated_context: true } : {}),
+    }).pipe(
+      map((resp: any) => ({ ok: true, isNew: !(resp && resp.lastErrorObject && resp.lastErrorObject.updatedExisting), err: null })),
+      catchError((err) => of({ ok: false, isNew: false, err })),
+    ), 4),
+    toArray(),
+    map((r) => ({
+      saved: r.filter((x) => x.ok).length,
+      created: r.filter((x) => x.ok && x.isNew).length,
+      failed: r.filter((x) => !x.ok).length,
+      planLimitError: (r.find((x) => x.err && x.err.error && x.err.error.plan_limit) || { err: null }).err,
+    })),
+  );
 }
