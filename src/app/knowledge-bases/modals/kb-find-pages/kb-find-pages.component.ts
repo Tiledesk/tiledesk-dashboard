@@ -5,6 +5,11 @@ import { CrawlDiscoverResult, groupPages, PageGroup } from './kb-find-pages.util
 
 export const FIND_PAGES_DEFAULT_MAX = 50;
 export const FIND_PAGES_MAX = 300;
+/**
+ * The scan answers only when it ends, and the edge in front of the server (stage ALB) closes a
+ * request idle for 60 s; a 45 s walk returns in time and reports `truncated` when it stopped early.
+ */
+export const FIND_PAGES_MAX_SECONDS = 45;
 
 /**
  * "Find pages on a site" panel of the Add website dialog: scans a site through the server's crawl scan,
@@ -55,7 +60,7 @@ export class KbFindPagesComponent implements OnDestroy {
     this.truncated = false;
     this.phase = 'scanning';
     this.startTimer();
-    this.scanSub = this.kbService.discoverPages(source, max).subscribe({
+    this.scanSub = this.kbService.discoverPages(source, max, FIND_PAGES_MAX_SECONDS).subscribe({
       next: (res: CrawlDiscoverResult) => this.onResult(res),
       error: (err) => this.onError(err),
     });
@@ -98,6 +103,12 @@ export class KbFindPagesComponent implements OnDestroy {
     this.groups.forEach((g) => g.urls.forEach((u) => this.selected.has(u) && urls.push(u)));
     this.pagesPicked.emit(urls);
     this.reset();
+  }
+
+  /** Esc closes this panel only: stopping the event keeps MatDialog from closing the whole dialog. */
+  onEscape(event: Event): void {
+    event.stopPropagation();
+    this.close();
   }
 
   close(): void {

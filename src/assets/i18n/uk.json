@@ -2390,7 +2390,7 @@
         "FindPagesOnSite": "Знайти сторінки на сайті",
         "FindPagesScan": "Сканувати",
         "FindPagesMaxPages": "Макс. сторінок",
-        "FindPagesScanning": "Сканування… це може тривати кілька хвилин",
+        "FindPagesScanning": "Сканування… це може тривати до хвилини",
         "FindPagesFound": "Знайдено сторінок: {{n}}",
         "FindPagesSelectAll": "Вибрати все",
         "FindPagesClear": "Скинути",

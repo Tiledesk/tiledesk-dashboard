@@ -2390,7 +2390,7 @@
         "FindPagesOnSite": "Encontrar páginas de um site",
         "FindPagesScan": "Verificar",
         "FindPagesMaxPages": "Máx. de páginas",
-        "FindPagesScanning": "Verificando… isso pode levar alguns minutos",
+        "FindPagesScanning": "Verificando… isso pode levar até um minuto",
         "FindPagesFound": "{{n}} páginas encontradas",
         "FindPagesSelectAll": "Selecionar tudo",
         "FindPagesClear": "Limpar",

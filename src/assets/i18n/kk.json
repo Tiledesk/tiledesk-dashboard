@@ -2390,7 +2390,7 @@
         "FindPagesOnSite": "Сайттағы беттерді табу",
         "FindPagesScan": "Сканерлеу",
         "FindPagesMaxPages": "Ең көп бет",
-        "FindPagesScanning": "Сканерленуде… бұл бірнеше минутқа созылуы мүмкін",
+        "FindPagesScanning": "Сканерленуде… бұл бір минутқа дейін созылуы мүмкін",
         "FindPagesFound": "{{n}} бет табылды",
         "FindPagesSelectAll": "Барлығын таңдау",
         "FindPagesClear": "Тазалау",

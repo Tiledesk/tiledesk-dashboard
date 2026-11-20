@@ -2391,7 +2391,7 @@
         "FindPagesOnSite": "Найти страницы на сайте",
         "FindPagesScan": "Сканировать",
         "FindPagesMaxPages": "Макс. страниц",
-        "FindPagesScanning": "Сканирование… это может занять несколько минут",
+        "FindPagesScanning": "Сканирование… это может занять до минуты",
         "FindPagesFound": "Найдено страниц: {{n}}",
         "FindPagesSelectAll": "Выбрать все",
         "FindPagesClear": "Сбросить",

@@ -1,4 +1,4 @@
-<div class="find-pages" (keydown.escape)="close()">
+<div class="find-pages" (keydown.escape)="onEscape($event)">
     <div class="find-pages__head">
         <span class="find-pages__title">{{ 'KbPage.FindPagesOnSite' | translate }}</span>
         <button class="find-pages__close" type="button" aria-label="Close" (click)="close()">

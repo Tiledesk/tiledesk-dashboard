@@ -45,7 +45,7 @@ describe('KbFindPagesComponent', () => {
     component.source = ' https://a.com ';
     component.maxPages = 900;
     component.scan();
-    expect(kb.discoverPages).toHaveBeenCalledWith('https://a.com', 300);
+    expect(kb.discoverPages).toHaveBeenCalledWith('https://a.com', 300, 45);
   });
 
   it('shows the found pages grouped by section', () => {
@@ -101,6 +101,20 @@ describe('KbFindPagesComponent', () => {
     component.scan();
     expect(component.errorKey).toBe('KbPage.FindPagesFailed');
     expect(component.phase).toBe('idle');
+  });
+
+  it('keeps Esc inside the panel so the dialog stays open, and closes the panel', () => {
+    const closed: number[] = [];
+    component.closed.subscribe(() => closed.push(1));
+    let reachedDocument = false;
+    const onDoc = () => (reachedDocument = true);
+    document.addEventListener('keydown', onDoc);
+    document.body.appendChild(fixture.nativeElement);
+    const panel: HTMLElement = fixture.nativeElement.querySelector('.find-pages');
+    panel.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    document.removeEventListener('keydown', onDoc);
+    expect(reachedDocument).toBe(false);
+    expect(closed.length).toBe(1);
   });
 
   it('cancels a running scan when destroyed', () => {

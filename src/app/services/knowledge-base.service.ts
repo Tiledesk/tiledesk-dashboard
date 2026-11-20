@@ -245,7 +245,7 @@ export class KnowledgeBaseService {
   }
 
   /** Lists the web pages of a site (no files) through the server's crawl scan; can take minutes. */
-  discoverPages(source: string, maxPages: number): Observable<CrawlDiscoverResult> {
+  discoverPages(source: string, maxPages: number, maxSeconds: number): Observable<CrawlDiscoverResult> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -253,7 +253,7 @@ export class KnowledgeBaseService {
       })
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/crawl/discover";
-    const body = { source, max_pages: maxPages, crawl_file_types: [] };
+    const body = { source, max_pages: maxPages, max_seconds: maxSeconds, crawl_file_types: [] };
     return this.httpClient.post<CrawlDiscoverResult>(url, body, httpOptions);
   }
 

@@ -2404,7 +2404,7 @@
         "FindPagesOnSite": "Trova le pagine di un sito",
         "FindPagesScan": "Scansiona",
         "FindPagesMaxPages": "Pagine max",
-        "FindPagesScanning": "Scansione in corso… può richiedere qualche minuto",
+        "FindPagesScanning": "Scansione in corso… può richiedere fino a un minuto",
         "FindPagesFound": "{{n}} pagine trovate",
         "FindPagesSelectAll": "Seleziona tutto",
         "FindPagesClear": "Deseleziona",

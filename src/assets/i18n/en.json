@@ -2406,7 +2406,7 @@
         "FindPagesOnSite": "Find pages on a site",
         "FindPagesScan": "Scan",
         "FindPagesMaxPages": "Max pages",
-        "FindPagesScanning": "Scanning… this can take a few minutes",
+        "FindPagesScanning": "Scanning… this can take up to a minute",
         "FindPagesFound": "{{n}} pages found",
         "FindPagesSelectAll": "Select all",
         "FindPagesClear": "Clear",

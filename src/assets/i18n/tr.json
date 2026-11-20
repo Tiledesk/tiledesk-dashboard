@@ -2391,7 +2391,7 @@
         "FindPagesOnSite": "Sitedeki sayfaları bul",
         "FindPagesScan": "Tara",
         "FindPagesMaxPages": "Maks. sayfa",
-        "FindPagesScanning": "Taranıyor… bu birkaç dakika sürebilir",
+        "FindPagesScanning": "Taranıyor… bu bir dakikaya kadar sürebilir",
         "FindPagesFound": "{{n}} sayfa bulundu",
         "FindPagesSelectAll": "Tümünü seç",
         "FindPagesClear": "Temizle",

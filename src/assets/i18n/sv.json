@@ -2391,7 +2391,7 @@
         "FindPagesOnSite": "Hitta sidor på en webbplats",
         "FindPagesScan": "Skanna",
         "FindPagesMaxPages": "Max sidor",
-        "FindPagesScanning": "Skannar… det kan ta några minuter",
+        "FindPagesScanning": "Skannar… det kan ta upp till en minut",
         "FindPagesFound": "{{n}} sidor hittades",
         "FindPagesSelectAll": "Markera alla",
         "FindPagesClear": "Rensa",
