@@ -2401,7 +2401,7 @@
         "helpUrls": "Inserisci le pagine web dagli URL pubblici nell'area di testo sottostante, separate da un ritorno a capo.",
         "titleTextareaUrls": "Elenco degli URL",
         "AddUrlsFromSitemap": "Aggiungi URL da una sitemap",
-        "FindPagesOnSite": "Trova le pagine di un sito",
+        "FindPagesOnSite": "Scansiona sito",
         "FindPagesScan": "Scansiona",
         "FindPagesMaxPages": "Pagine max",
         "FindPagesScanning": "Scansione in corso… può richiedere fino a un minuto",

@@ -93,6 +93,34 @@ describe('KbFindPagesComponent', () => {
     expect(component.selected.size).toBe(docs.urls.length - 1);
   });
 
+  it('selects and deselects everything from one checkbox', () => {
+    kb.discoverPages.and.returnValue(of(RESULT));
+    component.source = 'https://a.com';
+    component.scan();
+    expect(component.allState()).toBe('none');
+    component.toggleAll();
+    expect(component.allState()).toBe('all');
+    expect(component.selected.size).toBe(3);
+    component.togglePage('https://a.com/pricing');
+    expect(component.allState()).toBe('some');
+    component.toggleAll();
+    expect(component.allState()).toBe('all');
+    component.toggleAll();
+    expect(component.allState()).toBe('none');
+    expect(component.selected.size).toBe(0);
+  });
+
+  it('renders the select-all checkbox above the sections', () => {
+    kb.discoverPages.and.returnValue(of(RESULT));
+    component.source = 'https://a.com';
+    component.scan();
+    fixture.detectChanges();
+    const all: HTMLInputElement = fixture.nativeElement.querySelector('.find-pages__all input[type=checkbox]');
+    expect(all).toBeTruthy();
+    all.click();
+    expect(component.selected.size).toBe(3);
+  });
+
   it('emits the picked urls on add and goes back to idle', () => {
     kb.discoverPages.and.returnValue(of(RESULT));
     const emitted: string[][] = [];

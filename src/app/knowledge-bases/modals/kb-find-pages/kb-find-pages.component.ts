@@ -98,12 +98,18 @@ export class KbFindPagesComponent implements OnDestroy {
     this.expanded.has(g.key) ? this.expanded.delete(g.key) : this.expanded.add(g.key);
   }
 
-  selectAll(): void {
-    this.groups.forEach((g) => g.urls.forEach((u) => this.selected.add(u)));
+  allState(): 'all' | 'some' | 'none' {
+    const total = this.pageCount;
+    return this.selected.size === 0 ? 'none' : this.selected.size >= total ? 'all' : 'some';
   }
 
-  clear(): void {
-    this.selected.clear();
+  /** One checkbox for everything: selects all unless all are already selected, then clears. */
+  toggleAll(): void {
+    if (this.allState() === 'all') {
+      this.selected.clear();
+    } else {
+      this.groups.forEach((g) => g.urls.forEach((u) => this.selected.add(u)));
+    }
   }
 
   /** Picked URLs in section order. */

@@ -30,17 +30,19 @@
     </div>
 
     <div *ngIf="phase === 'picking'" class="find-pages__pick">
-        <div class="find-pages__summary">
-            <span>{{ 'KbPage.FindPagesFound' | translate: { n: pageCount } }}</span>
-            <span>
-                <a class="find-pages__link" (click)="selectAll()">{{ 'KbPage.FindPagesSelectAll' | translate }}</a>
-                ·
-                <a class="find-pages__link" (click)="clear()">{{ 'KbPage.FindPagesClear' | translate }}</a>
-            </span>
-        </div>
         <p *ngIf="truncated" class="find-pages__note">{{ 'KbPage.FindPagesTruncated' | translate: { n: pageCount } }}</p>
 
         <div class="find-pages__list">
+            <div class="find-pages__all">
+                <label class="find-pages__check">
+                    <input type="checkbox"
+                        [checked]="allState() === 'all'"
+                        [indeterminate]="allState() === 'some'"
+                        (change)="toggleAll()">
+                    <span class="find-pages__key">{{ (allState() === 'all' ? 'KbPage.FindPagesClear' : 'KbPage.FindPagesSelectAll') | translate }}</span>
+                    <span class="find-pages__count">{{ 'KbPage.FindPagesFound' | translate: { n: pageCount } }}</span>
+                </label>
+            </div>
             <div class="find-pages__group" *ngFor="let g of groups; trackBy: trackGroup">
                 <div class="find-pages__group-row">
                     <label class="find-pages__check">

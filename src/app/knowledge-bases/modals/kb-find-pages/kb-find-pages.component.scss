@@ -140,25 +140,23 @@
     margin-top: 10px;
 }
 
-.find-pages__summary {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: #566787;
-    margin-bottom: 4px;
-}
-
-.find-pages__link {
-    color: var(--blue-20);
-    cursor: pointer;
-}
-
 .find-pages__list {
     max-height: 240px;
     overflow-y: auto;
     background: #fff;
     border: 1px solid #e6e9f0;
     border-radius: 4px;
+}
+
+.find-pages__all {
+    display: flex;
+    align-items: center;
+    padding: 6px 8px;
+    border-bottom: 1px solid #e6e9f0;
+    background: #f9fafc;
+    position: sticky;
+    top: 0;
+    z-index: 1;
 }
 
 .find-pages__group + .find-pages__group {
