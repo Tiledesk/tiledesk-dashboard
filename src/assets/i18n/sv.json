@@ -2415,6 +2415,8 @@
         "FindPagesFoundWithFiles": "{{n}} sidor och {{f}} filer hittades",
         "FindPagesAddItems": "Lägg till {{n}} objekt",
         "FindPagesFilesToImport": "{{n}} filer importeras med sin egen typ",
+        "FindPagesFilesNoRefresh": "Filer importeras en gång och uppdateras inte.",
+        "FindPagesClose": "Stäng",
         "FindPagesRemoveFile": "Ta bort fil",
         "FindPagesFilesFailed": "{{n}} filer kunde inte importeras",
         "ImportItems": "Importera {{n}} objekt",

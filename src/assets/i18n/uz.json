@@ -2413,6 +2413,8 @@
         "FindPagesFoundWithFiles": "{{n}} ta sahifa va {{f}} ta fayl topildi",
         "FindPagesAddItems": "{{n}} ta element qo'shish",
         "FindPagesFilesToImport": "{{n}} ta fayl o'z turi bilan import qilinadi",
+        "FindPagesFilesNoRefresh": "Fayllar bir marta import qilinadi va yangilanmaydi.",
+        "FindPagesClose": "Yopish",
         "FindPagesRemoveFile": "Faylni olib tashlash",
         "FindPagesFilesFailed": "{{n}} ta faylni import qilib bo'lmadi",
         "ImportItems": "{{n}} ta elementni import qilish",

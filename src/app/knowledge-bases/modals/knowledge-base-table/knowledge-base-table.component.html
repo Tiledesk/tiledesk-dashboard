@@ -264,6 +264,15 @@
                             <ng-option value="docx">
                                 DOCX
                             </ng-option>
+                            <ng-option value="xlsx">
+                                XLSX
+                            </ng-option>
+                            <ng-option value="xls">
+                                XLS
+                            </ng-option>
+                            <ng-option value="csv">
+                                CSV
+                            </ng-option>
                             <ng-option value="faq">
                                 FAQs
                             </ng-option>
@@ -486,6 +495,24 @@
                                     style="font-size: 16px; color: white">description</span>
                                 <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">MD</span>
                             </div>
+                            <div *ngIf="kb.type == 'xlsx'" class="chip"
+                                style="display: flex; align-items: center; justify-content: center; background-color: #1d7a4a; color: white; padding: 2px 6px; border-radius: 10px;">
+                                <span class="material-icons-outlined" aria-hidden="true"
+                                    style="font-size: 16px; color: white">table_chart</span>
+                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">XLSX</span>
+                            </div>
+                            <div *ngIf="kb.type == 'xls'" class="chip"
+                                style="display: flex; align-items: center; justify-content: center; background-color: #1d7a4a; color: white; padding: 2px 6px; border-radius: 10px;">
+                                <span class="material-icons-outlined" aria-hidden="true"
+                                    style="font-size: 16px; color: white">table_chart</span>
+                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">XLS</span>
+                            </div>
+                            <div *ngIf="kb.type == 'csv'" class="chip"
+                                style="display: flex; align-items: center; justify-content: center; background-color: #4a7a8c; color: white; padding: 2px 6px; border-radius: 10px;">
+                                <span class="material-icons-outlined" aria-hidden="true"
+                                    style="font-size: 16px; color: white">table_chart</span>
+                                <span style="font-weight: 500; margin-left: 4px; font-size: 12px;">CSV</span>
+                            </div>
                             <div *ngIf="kb.type == 'text' || (kb.type == 'regex_custom' && kb.content != '')" class="chip"
                                 style="display: flex; align-items: center; justify-content: center; background-color: #90ADC6; color: white; padding: 2px 6px; border-radius: 10px;">
                                 <span id="description" class="material-icons-outlined"
@@ -625,7 +652,7 @@
 
                         <td class="kb-name-col" (click)="onOpenBaseModalDetail(kb)">
                             <div class="kb-name-col-inner">
-                                <div [ngClass]="{'imported-file': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx' || kb.type === 'md' || kb.type === 'regex_custom') && (!kb?.tags || kb?.tags?.length === 0), 'imported-file-with-tags': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx' || kb.type === 'md' || kb.type === 'regex_custom') && kb?.tags?.length > 0}"
+                                <div [ngClass]="{'imported-file': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx' || kb.type === 'md' || kb.type === 'xlsx' || kb.type === 'xls' || kb.type === 'csv' || kb.type === 'regex_custom') && (!kb?.tags || kb?.tags?.length === 0), 'imported-file-with-tags': (kb.type === 'pdf' || kb.type === 'txt' || kb.type === 'docx' || kb.type === 'md' || kb.type === 'xlsx' || kb.type === 'xls' || kb.type === 'csv' || kb.type === 'regex_custom') && kb?.tags?.length > 0}"
                                     class="ellipsis-text" style="max-width: 100%; font-size: 14px; font-weight: 400;">
                                     {{ kb.name }}
                                 </div>

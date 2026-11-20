@@ -110,12 +110,12 @@
                 placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)"
                 rows="4" style="margin-top: 3px;"></textarea>
             <div *ngIf="pickedFiles.length" class="picked-files">
-                <span class="picked-files__label">{{ 'KbPage.FindPagesFilesToImport' | translate: { n: pickedFiles.length } }}</span>
+                <span class="picked-files__label">{{ 'KbPage.FindPagesFilesToImport' | translate: { n: pickedFiles.length } }} {{ 'KbPage.FindPagesFilesNoRefresh' | translate }}</span>
                 <span class="picked-files__chip" *ngFor="let f of pickedFiles" [title]="f.url">
                     <span class="picked-files__type">{{ f.type | uppercase }}</span>
                     {{ fileNameOf(f.url) }}
-                    <button type="button" class="picked-files__remove" [attr.aria-label]="'KbPage.FindPagesRemoveFile' | translate" (click)="removeFile(f.url)">
-                        <span class="material-icons-outlined">close</span>
+                    <button type="button" class="picked-files__remove" [attr.aria-label]="('KbPage.FindPagesRemoveFile' | translate) + ': ' + fileNameOf(f.url)" (click)="removeFile(f.url)">
+                        <span class="material-icons-outlined" aria-hidden="true">close</span>
                     </button>
                 </span>
             </div>

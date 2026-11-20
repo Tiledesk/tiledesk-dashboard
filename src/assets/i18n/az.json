@@ -2415,6 +2415,8 @@
         "FindPagesFoundWithFiles": "{{n}} səhifə və {{f}} fayl tapıldı",
         "FindPagesAddItems": "{{n}} element əlavə et",
         "FindPagesFilesToImport": "{{n}} fayl öz növü ilə idxal ediləcək",
+        "FindPagesFilesNoRefresh": "Fayllar bir dəfə idxal edilir və yenilənmir.",
+        "FindPagesClose": "Bağla",
         "FindPagesRemoveFile": "Faylı sil",
         "FindPagesFilesFailed": "{{n}} fayl idxal edilə bilmədi",
         "ImportItems": "{{n}} element idxal et",

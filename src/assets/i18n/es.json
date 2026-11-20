@@ -2398,6 +2398,8 @@
         "FindPagesFoundWithFiles": "{{n}} páginas y {{f}} archivos encontrados",
         "FindPagesAddItems": "Añadir {{n}} elementos",
         "FindPagesFilesToImport": "{{n}} archivos se importarán con su propio tipo",
+        "FindPagesFilesNoRefresh": "Los archivos se importan una vez y no se actualizan.",
+        "FindPagesClose": "Cerrar",
         "FindPagesRemoveFile": "Quitar archivo",
         "FindPagesFilesFailed": "No se pudieron importar {{n}} archivos",
         "ImportItems": "Importar {{n}} elementos",

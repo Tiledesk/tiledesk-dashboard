@@ -146,6 +146,23 @@ describe('KbFindPagesComponent', () => {
     component.maxDepth = 0;
     component.scan();
     expect(kb.discoverPages.calls.mostRecent().args[3]).toBe(0);
+    component.maxDepth = null as any;
+    component.scan();
+    expect(kb.discoverPages.calls.mostRecent().args[3]).toBe(3);
+  });
+
+  it('ignores listed files of a type it cannot import', () => {
+    kb.discoverPages.and.returnValue(of({
+      pages: [
+        { url: 'https://a.com/p', kind: 'page', depth: 1 },
+        { url: 'https://a.com/s.pptx', kind: 'file', file_type: 'pptx' as any, depth: 1 },
+      ],
+      truncated: false, fetched: 2,
+    } as CrawlDiscoverResult));
+    component.source = 'https://a.com';
+    component.scan();
+    expect(component.fileCount).toBe(0);
+    expect(component.pageCount).toBe(1);
   });
 
   it('asks for the ticked file types (Excel means xlsx and xls)', () => {

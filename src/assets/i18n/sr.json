@@ -2415,6 +2415,8 @@
         "FindPagesFoundWithFiles": "Pronađeno stranica: {{n}}, fajlova: {{f}}",
         "FindPagesAddItems": "Dodaj stavke ({{n}})",
         "FindPagesFilesToImport": "Fajlovi ({{n}}) biće uvezeni sa svojim tipom",
+        "FindPagesFilesNoRefresh": "Fajlovi se uvoze jednom i ne osvežavaju se.",
+        "FindPagesClose": "Zatvori",
         "FindPagesRemoveFile": "Ukloni fajl",
         "FindPagesFilesFailed": "Nije moguće uvesti fajlove: {{n}}",
         "ImportItems": "Uvezi stavke ({{n}})",

@@ -2414,6 +2414,8 @@
         "FindPagesFoundWithFiles": "{{n}} бет және {{f}} файл табылды",
         "FindPagesAddItems": "{{n}} элемент қосу",
         "FindPagesFilesToImport": "{{n}} файл өз түрімен импортталады",
+        "FindPagesFilesNoRefresh": "Файлдар бір рет импортталады және жаңартылмайды.",
+        "FindPagesClose": "Жабу",
         "FindPagesRemoveFile": "Файлды жою",
         "FindPagesFilesFailed": "{{n}} файлды импорттау мүмкін болмады",
         "ImportItems": "{{n}} элемент импорттау",

@@ -2414,6 +2414,8 @@
         "FindPagesFoundWithFiles": "تم العثور على {{n}} صفحة و{{f}} ملف",
         "FindPagesAddItems": "إضافة {{n}} عنصر",
         "FindPagesFilesToImport": "سيتم استيراد {{n}} ملف بنوعه الخاص",
+        "FindPagesFilesNoRefresh": "يتم استيراد الملفات مرة واحدة ولا يتم تحديثها.",
+        "FindPagesClose": "إغلاق",
         "FindPagesRemoveFile": "إزالة الملف",
         "FindPagesFilesFailed": "تعذّر استيراد {{n}} ملف",
         "ImportItems": "استيراد {{n}} عنصر",

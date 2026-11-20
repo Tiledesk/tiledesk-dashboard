@@ -98,23 +98,41 @@ export function fileNameOf(url: string): string {
   }
 }
 
+export interface FilesImportResult {
+  saved: number;
+  /** Saved files that did not exist yet (POST /kb updates an existing file with the same type and source). */
+  created: number;
+  failed: number;
+  /** The first error carrying `plan_limit` (content quota reached), for the usual upgrade dialog. */
+  planLimitError: any;
+}
+
 /**
  * Saves each picked file with POST /kb and its own type (pdf, docx…): /kb/multi would save it as a web page,
- * which fails to index. One failure does not stop the others; the result counts both.
+ * which fails to index. The server keeps a refresh rate only for web pages, so none is sent. One failure does
+ * not stop the others; the result counts both.
  */
 export function importPickedFiles(
   kbService: { addKb(body: any): Observable<any> },
   files: PickedFile[],
-  opts: { namespace: string; refresh_rate: string; tags: string[] },
-): Observable<{ saved: number; failed: number }> {
-  if (!files || files.length === 0) return of({ saved: 0, failed: 0 });
+  opts: { namespace: string; tags: string[]; situated_context?: boolean },
+): Observable<FilesImportResult> {
+  if (!files || files.length === 0) return of({ saved: 0, created: 0, failed: 0, planLimitError: null });
   return from(files).pipe(
     // a few at a time: up to 300 files must not flood the server
     mergeMap((f) => kbService.addKb({
-      name: fileNameOf(f.url), type: f.type, source: f.url,
-      namespace: opts.namespace, refresh_rate: opts.refresh_rate, tags: opts.tags,
-    }).pipe(map(() => true), catchError(() => of(false))), 4),
+      name: fileNameOf(f.url), type: f.type, source: f.url, namespace: opts.namespace, tags: opts.tags,
+      ...(opts.situated_context === true ? { situated_context: true } : {}),
+    }).pipe(
+      map((resp: any) => ({ ok: true, isNew: !(resp && resp.lastErrorObject && resp.lastErrorObject.updatedExisting), err: null })),
+      catchError((err) => of({ ok: false, isNew: false, err })),
+    ), 4),
     toArray(),
-    map((r) => ({ saved: r.filter((x) => x).length, failed: r.filter((x) => !x).length })),
+    map((r) => ({
+      saved: r.filter((x) => x.ok).length,
+      created: r.filter((x) => x.ok && x.isNew).length,
+      failed: r.filter((x) => !x.ok).length,
+      planLimitError: (r.find((x) => x.err && x.err.error && x.err.error.plan_limit) || { err: null }).err,
+    })),
   );
 }

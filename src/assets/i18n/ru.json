@@ -2415,6 +2415,8 @@
         "FindPagesFoundWithFiles": "Найдено страниц: {{n}}, файлов: {{f}}",
         "FindPagesAddItems": "Добавить элементов: {{n}}",
         "FindPagesFilesToImport": "Файлы ({{n}}) будут импортированы со своим типом",
+        "FindPagesFilesNoRefresh": "Файлы импортируются один раз и не обновляются.",
+        "FindPagesClose": "Закрыть",
         "FindPagesRemoveFile": "Удалить файл",
         "FindPagesFilesFailed": "Не удалось импортировать файлов: {{n}}",
         "ImportItems": "Импортировать элементов: {{n}}",

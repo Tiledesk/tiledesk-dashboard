@@ -305,8 +305,10 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
   }
 
   canImport(): boolean {
-    return !this.buttonDisabled && this.itemCount > 0
-      && (this.scrapeConfig.automaticContentExtraction || this.scrapeConfig.extract_tags.length > 0);
+    if (this.buttonDisabled || this.itemCount === 0) return false;
+    const hasUrls = (this.listOfUrls || '').split('\n').some((l) => l.trim() !== '');
+    // manual extraction rules (tags) apply to web pages only; files are parsed by type
+    return !hasUrls || this.scrapeConfig.automaticContentExtraction || this.scrapeConfig.extract_tags.length > 0;
   }
 
   private updateItemLimit(): void {

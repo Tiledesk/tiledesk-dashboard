@@ -67,6 +67,10 @@ describe('ModalUrlsKnowledgeBaseComponent — find pages on a site', () => {
     modal.listOfUrls = '';
     modal.onPicked({ pages: [], files: [{ url: 'https://a.com/a.pdf', type: 'pdf' }] });
     expect(modal.canImport()).toBe(true);
+    // manual extraction without tags blocks web pages, not files
+    modal.scrapeConfig.automaticContentExtraction = false;
+    modal.scrapeConfig.extract_tags = [];
+    expect(modal.canImport()).toBe(true);
     modal.onSaveKnowledgeBase();
     expect(closedWith.list).toEqual([]);
     expect(closedWith.files).toEqual([{ url: 'https://a.com/a.pdf', type: 'pdf' }]);

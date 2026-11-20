@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 import { AppConfigService } from 'app/services/app-config.service';
-import { CrawlDiscoverResult, CrawlFileType, FindPagesPick, groupPages, PageGroup, PickedFile, resolveScanMaxSeconds } from './kb-find-pages.util';
+import { CRAWL_FILE_TYPES, CrawlDiscoverResult, CrawlFileType, FindPagesPick, groupPages, PageGroup, PickedFile, resolveScanMaxSeconds } from './kb-find-pages.util';
 
 export const FIND_PAGES_DEFAULT_MAX = 50;
 export const FIND_PAGES_MAX = 300;
@@ -99,8 +99,9 @@ export class KbFindPagesComponent implements OnDestroy {
     }
     const max = Math.min(Math.max(Math.floor(Number(this.maxPages) || FIND_PAGES_DEFAULT_MAX), 1), FIND_PAGES_MAX);
     this.maxPages = max;
-    const depth = Math.min(Math.max(Math.floor(Number(this.maxDepth)), 0), FIND_PAGES_MAX_DEPTH);
-    this.maxDepth = Number.isFinite(depth) ? depth : FIND_PAGES_DEFAULT_DEPTH;
+    // an emptied field means "default", an explicit 0 means "start page only"
+    const rawDepth = this.maxDepth === null || this.maxDepth === undefined || (this.maxDepth as any) === '' ? NaN : Number(this.maxDepth);
+    this.maxDepth = Number.isFinite(rawDepth) ? Math.min(Math.max(Math.floor(rawDepth), 0), FIND_PAGES_MAX_DEPTH) : FIND_PAGES_DEFAULT_DEPTH;
     this.stopScan();
     this.groups = [];
     this.fileTypeByUrl = new Map();
@@ -204,7 +205,7 @@ export class KbFindPagesComponent implements OnDestroy {
     this.scanSub = null;
     const listed = res && Array.isArray(res.pages) ? res.pages : [];
     this.groups = groupPages(listed);
-    this.fileTypeByUrl = new Map(listed.filter((p) => p && p.kind === 'file' && p.file_type).map((p) => [p.url, p.file_type] as [string, CrawlFileType]));
+    this.fileTypeByUrl = new Map(listed.filter((p) => p && p.kind === 'file' && p.file_type && CRAWL_FILE_TYPES.includes(p.file_type)).map((p) => [p.url, p.file_type] as [string, CrawlFileType]));
     if (this.groups.length === 0) {
       this.phase = 'idle';
       this.errorKey = 'KbPage.FindPagesNoneFound';

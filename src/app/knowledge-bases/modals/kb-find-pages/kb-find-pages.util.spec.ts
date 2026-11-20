@@ -79,34 +79,45 @@ describe('kb-find-pages util', () => {
       { url: 'https://a.com/b.docx', type: 'docx' as const },
     ];
 
-    it('saves each file with its own type, name, refresh rate, tags and namespace', (done) => {
+    it('saves each file with its own type, name, tags, namespace and situated context', (done) => {
       const kb = jasmine.createSpyObj('kb', ['addKb']);
       kb.addKb.and.returnValue(of({}));
-      importPickedFiles(kb, files, { namespace: 'ns1', refresh_rate: 'weekly', tags: ['t'] }).subscribe((r) => {
+      importPickedFiles(kb, files, { namespace: 'ns1', tags: ['t'], situated_context: true }).subscribe((r) => {
         expect(kb.addKb.calls.allArgs()).toEqual([
-          [{ name: 'a.pdf', type: 'pdf', source: 'https://a.com/a.pdf', namespace: 'ns1', refresh_rate: 'weekly', tags: ['t'] }],
-          [{ name: 'b.docx', type: 'docx', source: 'https://a.com/b.docx', namespace: 'ns1', refresh_rate: 'weekly', tags: ['t'] }],
+          [{ name: 'a.pdf', type: 'pdf', source: 'https://a.com/a.pdf', namespace: 'ns1', tags: ['t'], situated_context: true }],
+          [{ name: 'b.docx', type: 'docx', source: 'https://a.com/b.docx', namespace: 'ns1', tags: ['t'], situated_context: true }],
         ]);
-        expect(r).toEqual({ saved: 2, failed: 0 });
+        expect(r).toEqual({ saved: 2, created: 2, failed: 0, planLimitError: null });
         done();
       });
     });
 
-    it('keeps going when one file fails and counts it', (done) => {
+    it('does not count a file that already existed as new', (done) => {
       const kb = jasmine.createSpyObj('kb', ['addKb']);
-      kb.addKb.and.returnValues(throwError({ status: 500 }), of({}));
-      importPickedFiles(kb, files, { namespace: 'ns1', refresh_rate: 'never', tags: [] }).subscribe((r) => {
+      kb.addKb.and.returnValues(of({ lastErrorObject: { updatedExisting: true } }), of({ lastErrorObject: { updatedExisting: false } }));
+      importPickedFiles(kb, files, { namespace: 'ns1', tags: [] }).subscribe((r) => {
+        expect(r).toEqual({ saved: 2, created: 1, failed: 0, planLimitError: null });
+        expect(kb.addKb.calls.argsFor(0)[0].situated_context).toBeUndefined();
+        done();
+      });
+    });
+
+    it('keeps going when one file fails, counts it and returns a plan-limit error', (done) => {
+      const kb = jasmine.createSpyObj('kb', ['addKb']);
+      const limit = { status: 403, error: { plan_limit: 10 } };
+      kb.addKb.and.returnValues(throwError(limit), of({}));
+      importPickedFiles(kb, files, { namespace: 'ns1', tags: [] }).subscribe((r) => {
         expect(kb.addKb).toHaveBeenCalledTimes(2);
-        expect(r).toEqual({ saved: 1, failed: 1 });
+        expect(r).toEqual({ saved: 1, created: 1, failed: 1, planLimitError: limit });
         done();
       });
     });
 
     it('does nothing without files', (done) => {
       const kb = jasmine.createSpyObj('kb', ['addKb']);
-      importPickedFiles(kb, [], { namespace: 'ns1', refresh_rate: 'never', tags: [] }).subscribe((r) => {
+      importPickedFiles(kb, [], { namespace: 'ns1', tags: [] }).subscribe((r) => {
         expect(kb.addKb).not.toHaveBeenCalled();
-        expect(r).toEqual({ saved: 0, failed: 0 });
+        expect(r).toEqual({ saved: 0, created: 0, failed: 0, planLimitError: null });
         done();
       });
     });

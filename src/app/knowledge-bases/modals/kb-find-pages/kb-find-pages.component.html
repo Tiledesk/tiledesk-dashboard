@@ -1,8 +1,8 @@
 <div class="find-pages" (keydown.escape)="onEscape($event)">
     <div class="find-pages__head">
         <span class="find-pages__title">{{ 'KbPage.FindPagesOnSite' | translate }}</span>
-        <button class="find-pages__close" type="button" aria-label="Close" (click)="close()">
-            <span class="material-icons-outlined">close</span>
+        <button class="find-pages__close" type="button" [attr.aria-label]="'KbPage.FindPagesClose' | translate" (click)="close()">
+            <span class="material-icons-outlined" aria-hidden="true">close</span>
         </button>
     </div>
 
@@ -27,8 +27,8 @@
         </button>
     </div>
 
-    <div class="find-pages__files">
-        <span>{{ 'KbPage.FindPagesIncludeFiles' | translate }}</span>
+    <div class="find-pages__files" role="group" aria-labelledby="find-pages-files-label">
+        <span id="find-pages-files-label">{{ 'KbPage.FindPagesIncludeFiles' | translate }}</span>
         <label class="find-pages__file-option" *ngFor="let o of fileOptions">
             <input type="checkbox" [checked]="fileOptionIds.has(o.id)" [disabled]="phase === 'scanning'" (change)="toggleFileOption(o.id)">
             {{ o.labelKey | translate }}
@@ -52,9 +52,9 @@
                         [checked]="allState() === 'all'"
                         [indeterminate]="allState() === 'some'"
                         (change)="toggleAll()">
-                    <span class="find-pages__key">{{ (allState() === 'all' ? 'KbPage.FindPagesClear' : 'KbPage.FindPagesSelectAll') | translate }}</span>
-                    <span class="find-pages__count">{{ (fileCount ? 'KbPage.FindPagesFoundWithFiles' : 'KbPage.FindPagesFound') | translate: { n: pageCount - fileCount, f: fileCount } }}</span>
+                    <span class="find-pages__key">{{ 'KbPage.FindPagesSelectAll' | translate }}</span>
                 </label>
+                <span class="find-pages__count">{{ (fileCount ? 'KbPage.FindPagesFoundWithFiles' : 'KbPage.FindPagesFound') | translate: { n: pageCount - fileCount, f: fileCount } }}</span>
             </div>
             <div class="find-pages__group" *ngFor="let g of groups; trackBy: trackGroup">
                 <div class="find-pages__group-row">

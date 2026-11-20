@@ -2430,6 +2430,8 @@
         "FindPagesFoundWithFiles": "{{n}} pages and {{f}} files found",
         "FindPagesAddItems": "Add {{n}} items",
         "FindPagesFilesToImport": "{{n}} files will be imported with their own type",
+        "FindPagesFilesNoRefresh": "Files are imported once and not refreshed.",
+        "FindPagesClose": "Close",
         "FindPagesRemoveFile": "Remove file",
         "FindPagesFilesFailed": "{{n}} files could not be imported",
         "ImportItems": "Import {{n}} items",
