@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.13.0-rc1
+- Knowledge Base, Add website: "Find pages on a site" scans a site (web pages only, up to 300 pages), groups the pages by section and adds the picked ones to the URL list, for sites without a sitemap; each scan is capped at 45 s because the stage edge closes requests idle for 60 s (scans that stop early say so)
+- Esc closes only the scan panel, not the Add website dialog
+- Needs tiledesk-server with POST /:projectid/kb/crawl/discover (>= 3.2.1-rc2) and tiledesk-llm >= 0.13.0
+
 ### 2.12.0-rc3
 - KB sources: clicks on My Drive, OneDrive and SharePoint site rows open them again (rows no longer re-rendered on every check)
 
