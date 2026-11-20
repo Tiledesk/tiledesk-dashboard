@@ -5,13 +5,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoggerService } from './logger/logger.service';
 import { AnalyticsEmbedService } from './analytics-embed.service';
 import { KB } from 'app/models/kbsettings-model';
-import { BehaviorSubject, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import {
   lastNDaysChartRange,
   previousNDaysChartRange,
   resolveProjectTimezone,
 } from 'app/utils/project-timezone.util';
+import { CrawlDiscoverResult } from 'app/knowledge-bases/modals/kb-find-pages/kb-find-pages.util';
 
 
 
@@ -241,6 +242,19 @@ export class KnowledgeBaseService {
     this.logger.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", url);
     this.logger.log("[KNOWLEDGE BASE SERVICE] - importSitemap ", body);
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
+  }
+
+  /** Lists the web pages of a site (no files) through the server's crawl scan; can take minutes. */
+  discoverPages(source: string, maxPages: number): Observable<CrawlDiscoverResult> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': this.TOKEN
+      })
+    }
+    const url = this.SERVER_BASE_PATH + this.project_id + "/kb/crawl/discover";
+    const body = { source, max_pages: maxPages, crawl_file_types: [] };
+    return this.httpClient.post<CrawlDiscoverResult>(url, body, httpOptions);
   }
 
   addKb(body: any) {
