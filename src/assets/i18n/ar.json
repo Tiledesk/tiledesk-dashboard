@@ -2428,6 +2428,8 @@
         "WizardSelectAllShown": "تحديد كل المعروض",
         "WizardNoMatch": "لا توجد نتائج لبحثك",
         "WizardLinkedFiles": "الملفات المرتبطة",
+        "WizardAgentNote": "يمكن استخدام كل ما يتم استيراده للرد على أي مستخدم لهذا الوكيل.",
+        "WizardLimitHint": "حتى {{n}} عنصر في كل استيراد.",
         "WizardPasteIgnored": "تم تجاهل {{n}} سطر: ليست عناوين ويب.",
         "WizardOverLimit": "يمكنك استيراد ما يصل إلى {{n}} عنصر في المرة الواحدة. ألغِ تحديد بعضها للمتابعة.",
         "FindPagesDepth": "العمق",

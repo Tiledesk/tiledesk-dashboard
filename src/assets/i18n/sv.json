@@ -2429,6 +2429,8 @@
         "WizardSelectAllShown": "Markera alla som visas",
         "WizardNoMatch": "Inget matchar din sökning",
         "WizardLinkedFiles": "Länkade filer",
+        "WizardAgentNote": "Allt som importeras kan användas för att svara alla användare av den här agenten.",
+        "WizardLimitHint": "Upp till {{n}} objekt per import.",
         "WizardPasteIgnored": "{{n}} rader ignorerades: de är inte webbadresser.",
         "WizardOverLimit": "Du kan importera upp till {{n}} objekt åt gången. Avmarkera några för att fortsätta.",
         "FindPagesDepth": "Djup",

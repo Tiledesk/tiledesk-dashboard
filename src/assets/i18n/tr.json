@@ -2429,6 +2429,8 @@
         "WizardSelectAllShown": "Gösterilenlerin tümünü seç",
         "WizardNoMatch": "Aramanızla eşleşen sonuç yok",
         "WizardLinkedFiles": "Bağlantılı dosyalar",
+        "WizardAgentNote": "İçe aktarılan her şey bu ajanın herhangi bir kullanıcısını yanıtlamak için kullanılabilir.",
+        "WizardLimitHint": "İçe aktarma başına en fazla {{n}} öğe.",
         "WizardPasteIgnored": "{{n}} satır yok sayıldı: web adresi değiller.",
         "WizardOverLimit": "Tek seferde en fazla {{n}} öğe içe aktarabilirsiniz. Devam etmek için bazılarının seçimini kaldırın.",
         "FindPagesDepth": "Derinlik",

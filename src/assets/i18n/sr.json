@@ -2429,6 +2429,8 @@
         "WizardSelectAllShown": "Izaberi sve prikazano",
         "WizardNoMatch": "Nema rezultata za pretragu",
         "WizardLinkedFiles": "Povezani fajlovi",
+        "WizardAgentNote": "Sve što uvezeš može se koristiti za odgovore bilo kom korisniku ovog agenta.",
+        "WizardLimitHint": "Do {{n}} stavki po uvozu.",
         "WizardPasteIgnored": "Zanemareno redova: {{n}} — nisu veb adrese.",
         "WizardOverLimit": "Odjednom možeš uvesti do {{n}} stavki. Poništi izbor nekih da nastaviš.",
         "FindPagesDepth": "Dubina",
