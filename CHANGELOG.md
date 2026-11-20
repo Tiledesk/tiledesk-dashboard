@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.13.0-rc2
+- Find pages on a site: the scan time comes from the dashboard config (`kbCrawlMaxSeconds`, env `KB_CRAWL_MAX_SECONDS`, 30..1800 s, 45 s when not set); every proxy in front of the server must wait longer than it (stage ALB idle timeout is 330 s); the waiting text says "up to N minutes"
+
 ### 2.13.0-rc1
 - Knowledge Base, Add website: "Find pages on a site" scans a site (web pages only, up to 300 pages), groups the pages by section and adds the picked ones to the URL list, for sites without a sitemap; each scan is capped at 45 s because the stage edge closes requests idle for 60 s (scans that stop early say so)
 - Esc closes only the scan panel, not the Add website dialog
