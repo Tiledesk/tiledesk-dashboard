@@ -9,6 +9,7 @@ import { ConnectedPosition } from '@angular/cdk/overlay';
 import { TranslateService } from '@ngx-translate/core';
 import { buildDefaultKbScrapeConfig, KbScrapeConfig } from 'app/models/kb-scrape-config-model';
 import { ModalKbScrapeSettingsComponent } from '../modal-kb-scrape-settings/modal-kb-scrape-settings.component';
+import { mergeUrls } from '../kb-find-pages/kb-find-pages.util';
 
 
 @Component({
@@ -261,9 +262,30 @@ export class ModalUrlsKnowledgeBaseComponent implements OnInit, OnDestroy {
    */
   toggleSitemapInput(): void {
     this.sitemapInputOpen = !this.sitemapInputOpen;
-    if (!this.sitemapInputOpen) {
+    if (this.sitemapInputOpen) {
+      this.findPagesOpen = false;
+    } else {
       this.sitemapFetchError = null;
     }
+  }
+
+  /** "Find pages on a site" panel (inline, under the label row); one helper panel open at a time. */
+  findPagesOpen = false;
+
+  toggleFindPages(): void {
+    this.findPagesOpen = !this.findPagesOpen;
+    if (this.findPagesOpen) {
+      this.closeSitemapInput();
+    }
+  }
+
+  /** Picked pages go into the URL box like typed URLs; the usual URL limit applies. */
+  onPagesPicked(urls: string[]): void {
+    this.listOfUrls = mergeUrls(this.listOfUrls || '', urls).text;
+    this.countSitemap = this.listOfUrls ? this.listOfUrls.split('\n').length : 0;
+    this.errorLimit = this.countSitemap > KB_LIMIT_CONTENT;
+    this.buttonDisabled = this.errorLimit;
+    this.findPagesOpen = false;
   }
 
   /**

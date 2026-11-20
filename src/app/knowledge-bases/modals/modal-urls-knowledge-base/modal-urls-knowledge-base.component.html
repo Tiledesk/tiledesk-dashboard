@@ -89,13 +89,23 @@
                      popover (CDK overlay anchored to this anchor). Click toggles
                      `sitemapInputOpen`; the popover renders the URL input + Fetch
                      + ✕ button (see ng-template below). -->
+                <span class="urls-label-row__links">
                 <a class="urls-label-row__link"
                     #sitemapTrigger="cdkOverlayOrigin"
                     cdkOverlayOrigin
                     (click)="toggleSitemapInput()">
                     {{ 'KbPage.AddUrlsFromSitemap' | translate }}
                 </a>
+                <span class="urls-label-row__sep">·</span>
+                <a class="urls-label-row__link" (click)="toggleFindPages()">
+                    {{ 'KbPage.FindPagesOnSite' | translate }}
+                </a>
+                </span>
             </div>
+            <app-kb-find-pages *ngIf="findPagesOpen"
+                (pagesPicked)="onPagesPicked($event)"
+                (closed)="findPagesOpen = false">
+            </app-kb-find-pages>
             <textarea type="text" class="custom-textarea" [ngClass]="{'invalid':errorLimit }" [(ngModel)]="listOfUrls"
                 placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)"
                 rows="4" style="margin-top: 3px;"></textarea>

@@ -58,6 +58,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { KbScrapeSettingsComponent } from './modals/kb-scrape-settings/kb-scrape-settings.component';
 import { ModalKbScrapeSettingsComponent } from './modals/modal-kb-scrape-settings/modal-kb-scrape-settings.component';
 import { KbScrapeSummaryComponent } from './modals/kb-scrape-summary/kb-scrape-summary.component';
+import { KbFindPagesComponent } from './modals/kb-find-pages/kb-find-pages.component';
 
 const routes: Routes = [
   { path: "", component: KnowledgeBasesComponent},
@@ -81,6 +82,7 @@ const routes: Routes = [
     ModalTextFileComponent,
     ModalFaqsComponent,
     ModalUrlsKnowledgeBaseComponent,
+    KbFindPagesComponent,
     ModalDeleteNamespaceComponent,
     ModalPreviewSettingsComponent,
     ModalAddNamespaceComponent,

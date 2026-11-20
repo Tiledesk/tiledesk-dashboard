@@ -512,6 +512,18 @@
     gap: 8px;
 }
 
+.urls-label-row__links {
+    display: inline-flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.urls-label-row__sep {
+    font-size: 12px;
+    color: #a3abbd;
+}
+
 .urls-label-row__link {
     font-size: 12px;
     color: var(--blue-20);
