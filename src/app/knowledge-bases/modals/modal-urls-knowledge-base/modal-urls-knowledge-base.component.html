@@ -103,12 +103,22 @@
                 </span>
             </div>
             <app-kb-find-pages *ngIf="findPagesOpen"
-                (pagesPicked)="onPagesPicked($event)"
+                (picked)="onPicked($event)"
                 (closed)="findPagesOpen = false">
             </app-kb-find-pages>
             <textarea type="text" class="custom-textarea" [ngClass]="{'invalid':errorLimit }" [(ngModel)]="listOfUrls"
                 placeholder="{{'KbPage.placeholderUrls' | translate}}" (input)="onChangeInput($event)"
                 rows="4" style="margin-top: 3px;"></textarea>
+            <div *ngIf="pickedFiles.length" class="picked-files">
+                <span class="picked-files__label">{{ 'KbPage.FindPagesFilesToImport' | translate: { n: pickedFiles.length } }}</span>
+                <span class="picked-files__chip" *ngFor="let f of pickedFiles" [title]="f.url">
+                    <span class="picked-files__type">{{ f.type | uppercase }}</span>
+                    {{ fileNameOf(f.url) }}
+                    <button type="button" class="picked-files__remove" [attr.aria-label]="'KbPage.FindPagesRemoveFile' | translate" (click)="removeFile(f.url)">
+                        <span class="material-icons-outlined">close</span>
+                    </button>
+                </span>
+            </div>
             <!-- [class.invalid]="(kbForm.controls.content.errors?.pattern || kbForm.controls.content.errors?.required) && kbForm.controls.content.touched" -->
             <!-- <span class="input-label" style="font-size: 12px; font-weight: normal;">{{ 'KbPage.infoUrls' | translate }}</span> -->
             <div *ngIf="!errorLimit" class="input-label input-label-on-bottom" style="margin-top: -3px;"> 
@@ -314,9 +324,10 @@
         {{ "Cancel" | translate }}
     </button> -->
     <button
-        [disabled]="buttonDisabled || listOfUrls.length === 0 || (!scrapeConfig.automaticContentExtraction && scrapeConfig.extract_tags.length === 0)"
+        [disabled]="!canImport()"
         class="mat-dialog-ok-btn" mat-button (click)="onSaveKnowledgeBase()">
-        {{ 'KbPage.Import' | translate }} {{countSitemap}} URL
+        <ng-container *ngIf="!pickedFiles.length">{{ 'KbPage.Import' | translate }} {{countSitemap}} URL</ng-container>
+        <ng-container *ngIf="pickedFiles.length">{{ 'KbPage.ImportItems' | translate: { n: itemCount } }}</ng-container>
 
     </button>
 </div>

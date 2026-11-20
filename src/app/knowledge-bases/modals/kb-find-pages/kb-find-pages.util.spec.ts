@@ -1,28 +1,29 @@
-import { DiscoveredPage, groupPages, mergeUrls, resolveScanMaxSeconds } from './kb-find-pages.util';
+import { of, throwError } from 'rxjs';
+import { DiscoveredPage, fileNameOf, groupPages, importPickedFiles, mergeUrls, resolveScanMaxSeconds } from './kb-find-pages.util';
 
-const page = (url: string, kind: 'page' | 'file' = 'page'): DiscoveredPage => ({ url, kind, depth: 1 });
+const page = (url: string, kind: 'page' | 'file' = 'page', file_type?: any): DiscoveredPage => ({ url, kind, depth: 1, file_type });
 
 describe('kb-find-pages util', () => {
   describe('groupPages', () => {
-    it('groups web pages by first path segment, drops files and duplicates', () => {
+    it('groups pages and files by first path segment and drops duplicates', () => {
       const groups = groupPages([
         page('https://a.com/'),
         page('https://a.com/docs/setup'),
         page('https://a.com/docs/api'),
         page('https://a.com/pricing'),
-        page('https://a.com/x.pdf', 'file'),
+        page('https://a.com/docs/guide.pdf', 'file', 'pdf'),
         page('https://a.com/docs/api'),
       ]);
       expect(groups).toEqual([
         { key: '/', urls: ['https://a.com/'] },
-        { key: '/docs', urls: ['https://a.com/docs/setup', 'https://a.com/docs/api'] },
+        { key: '/docs', urls: ['https://a.com/docs/setup', 'https://a.com/docs/api', 'https://a.com/docs/guide.pdf'] },
         { key: '/pricing', urls: ['https://a.com/pricing'] },
       ]);
     });
 
-    it('returns no groups for no pages or files only', () => {
+    it('drops files without a known type', () => {
       expect(groupPages([])).toEqual([]);
-      expect(groupPages([page('https://a.com/x.pdf', 'file')])).toEqual([]);
+      expect(groupPages([page('https://a.com/x.bin', 'file')])).toEqual([]);
     });
 
     it('skips invalid urls', () => {
@@ -62,6 +63,52 @@ describe('kb-find-pages util', () => {
     it('keeps the value inside the llm range 30..1800', () => {
       expect(resolveScanMaxSeconds('10')).toBe(30);
       expect(resolveScanMaxSeconds('5000')).toBe(1800);
+    });
+  });
+
+  describe('fileNameOf', () => {
+    it('returns the decoded last path segment', () => {
+      expect(fileNameOf('https://a.com/docs/My%20Guide.pdf')).toBe('My Guide.pdf');
+      expect(fileNameOf('https://a.com/')).toBe('https://a.com/');
+    });
+  });
+
+  describe('importPickedFiles', () => {
+    const files = [
+      { url: 'https://a.com/a.pdf', type: 'pdf' as const },
+      { url: 'https://a.com/b.docx', type: 'docx' as const },
+    ];
+
+    it('saves each file with its own type, name, refresh rate, tags and namespace', (done) => {
+      const kb = jasmine.createSpyObj('kb', ['addKb']);
+      kb.addKb.and.returnValue(of({}));
+      importPickedFiles(kb, files, { namespace: 'ns1', refresh_rate: 'weekly', tags: ['t'] }).subscribe((r) => {
+        expect(kb.addKb.calls.allArgs()).toEqual([
+          [{ name: 'a.pdf', type: 'pdf', source: 'https://a.com/a.pdf', namespace: 'ns1', refresh_rate: 'weekly', tags: ['t'] }],
+          [{ name: 'b.docx', type: 'docx', source: 'https://a.com/b.docx', namespace: 'ns1', refresh_rate: 'weekly', tags: ['t'] }],
+        ]);
+        expect(r).toEqual({ saved: 2, failed: 0 });
+        done();
+      });
+    });
+
+    it('keeps going when one file fails and counts it', (done) => {
+      const kb = jasmine.createSpyObj('kb', ['addKb']);
+      kb.addKb.and.returnValues(throwError({ status: 500 }), of({}));
+      importPickedFiles(kb, files, { namespace: 'ns1', refresh_rate: 'never', tags: [] }).subscribe((r) => {
+        expect(kb.addKb).toHaveBeenCalledTimes(2);
+        expect(r).toEqual({ saved: 1, failed: 1 });
+        done();
+      });
+    });
+
+    it('does nothing without files', (done) => {
+      const kb = jasmine.createSpyObj('kb', ['addKb']);
+      importPickedFiles(kb, [], { namespace: 'ns1', refresh_rate: 'never', tags: [] }).subscribe((r) => {
+        expect(kb.addKb).not.toHaveBeenCalled();
+        expect(r).toEqual({ saved: 0, failed: 0 });
+        done();
+      });
     });
   });
 });

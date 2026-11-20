@@ -41,6 +41,7 @@ import { ModalDeleteNamespaceComponent } from './modals/modal-delete-namespace/m
 import { ModalDetailKnowledgeBaseComponent } from './modals/modal-detail-knowledge-base/modal-detail-knowledge-base.component';
 import { ModalTextFileComponent } from './modals/modal-text-file/modal-text-file.component';
 import { ModalUrlsKnowledgeBaseComponent } from './modals/modal-urls-knowledge-base/modal-urls-knowledge-base.component';
+import { importPickedFiles, PickedFile } from './modals/kb-find-pages/kb-find-pages.util';
 import { ModalSiteMapComponent } from './modals/modal-site-map/modal-site-map.component';
 import { ModalDeleteKnowledgeBaseComponent } from './modals/modal-delete-knowledge-base/modal-delete-knowledge-base.component';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
@@ -3861,8 +3862,37 @@ _presentDialogImportContents() {
   }
 
 
+  /** List reload and counters after contents were added outside /kb/multi (picked files). */
+  private refreshAfterAdd(added: number): void {
+    if (!added) return;
+    const paramsDefault = "?limit=" + KB_DEFAULT_PARAMS.LIMIT + "&page=" + KB_DEFAULT_PARAMS.NUMBER_PAGE + "&sortField=" + KB_DEFAULT_PARAMS.SORT_FIELD + "&direction=" + KB_DEFAULT_PARAMS.DIRECTION + '&namespace=' + this.selectedNamespace.id;
+    this.getListOfKb(paramsDefault, 'after-add');
+    this.kbsListCount = this.kbsListCount + added;
+    this.kbsContentTotalCount = (Number(this.kbsContentTotalCount) || 0) + added;
+    this.syncNamespaceContentCount(this.kbsContentTotalCount);
+    this.refreshKbsList = !this.refreshKbsList;
+  }
+
   onAddMultiKb(body) {
     this.logger.log('onAddMultiKb body', body)
+    // Linked files from "Find pages on a site" are saved one by one with their own type (pdf, docx…).
+    const files: PickedFile[] = Array.isArray(body && body.files) ? body.files : [];
+    if (body) delete body.files;
+    if (files.length) {
+      importPickedFiles(this.kbService, files, {
+        namespace: this.selectedNamespace.id,
+        refresh_rate: body.refresh_rate,
+        tags: body.tags || [],
+      }).subscribe((r) => {
+        if (r.failed) {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('KbPage.FindPagesFilesFailed', { n: r.failed }), 3, 'warning');
+        }
+        this.refreshAfterAdd(r.saved);
+      });
+    }
+    if (!body || !Array.isArray(body.list) || body.list.length === 0) {
+      return;
+    }
     // this.onCloseBaseModal();
     // this.logger.log("onAddMultiKb");
     let error = this.msgErrorAddUpdateKb;

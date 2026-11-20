@@ -717,3 +717,54 @@
 //         color: #000000de !important;
 //     }
 // }
+
+.picked-files {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 6px 0 2px;
+    font-size: 12px;
+}
+
+.picked-files__label {
+    color: #566787;
+    width: 100%;
+}
+
+.picked-files__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    padding: 2px 4px 2px 6px;
+    border: 1px solid #e0e3e8;
+    border-radius: 4px;
+    background: #f9fafc;
+    color: #1f2a44;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.picked-files__type {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 1px 3px;
+    border-radius: 3px;
+    background: #eef0f5;
+    color: #3d4a66;
+}
+
+.picked-files__remove {
+    background: transparent;
+    border: none;
+    padding: 0;
+    display: inline-flex;
+    cursor: pointer;
+    color: #566787;
+
+    .material-icons-outlined {
+        font-size: 14px;
+    }
+}

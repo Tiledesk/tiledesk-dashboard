@@ -12,7 +12,7 @@ import {
   previousNDaysChartRange,
   resolveProjectTimezone,
 } from 'app/utils/project-timezone.util';
-import { CrawlDiscoverResult } from 'app/knowledge-bases/modals/kb-find-pages/kb-find-pages.util';
+import { CrawlDiscoverResult, CrawlFileType } from 'app/knowledge-bases/modals/kb-find-pages/kb-find-pages.util';
 
 
 
@@ -244,8 +244,8 @@ export class KnowledgeBaseService {
     return this.httpClient.post(url, JSON.stringify(body), httpOptions);
   }
 
-  /** Lists the web pages of a site (no files) through the server's crawl scan; can take minutes. */
-  discoverPages(source: string, maxPages: number, maxSeconds: number): Observable<CrawlDiscoverResult> {
+  /** Lists the web pages (and linked files of `fileTypes`) of a site through the server's crawl scan; can take minutes. */
+  discoverPages(source: string, maxPages: number, maxSeconds: number, maxDepth: number, fileTypes: CrawlFileType[]): Observable<CrawlDiscoverResult> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -253,7 +253,7 @@ export class KnowledgeBaseService {
       })
     }
     const url = this.SERVER_BASE_PATH + this.project_id + "/kb/crawl/discover";
-    const body = { source, max_pages: maxPages, max_seconds: maxSeconds, crawl_file_types: [] };
+    const body = { source, max_pages: maxPages, max_seconds: maxSeconds, max_depth: maxDepth, crawl_file_types: fileTypes };
     return this.httpClient.post<CrawlDiscoverResult>(url, body, httpOptions);
   }
 

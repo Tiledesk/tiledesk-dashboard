@@ -17,9 +17,22 @@
             <span>{{ 'KbPage.FindPagesMaxPages' | translate }}</span>
             <input type="number" min="1" [max]="maxAllowed" [(ngModel)]="maxPages" [disabled]="phase === 'scanning'">
         </label>
+        <label class="find-pages__max">
+            <span>{{ 'KbPage.FindPagesDepth' | translate }}</span>
+            <input type="number" min="0" [max]="maxDepthAllowed" [(ngModel)]="maxDepth" [disabled]="phase === 'scanning'"
+                [title]="'KbPage.FindPagesDepthHelp' | translate">
+        </label>
         <button class="find-pages__scan" type="button" [disabled]="phase === 'scanning'" (click)="scan()">
             {{ 'KbPage.FindPagesScan' | translate }}
         </button>
+    </div>
+
+    <div class="find-pages__files">
+        <span>{{ 'KbPage.FindPagesIncludeFiles' | translate }}</span>
+        <label class="find-pages__file-option" *ngFor="let o of fileOptions">
+            <input type="checkbox" [checked]="fileOptionIds.has(o.id)" [disabled]="phase === 'scanning'" (change)="toggleFileOption(o.id)">
+            {{ o.labelKey | translate }}
+        </label>
     </div>
 
     <p *ngIf="errorKey" class="find-pages__error" role="alert">{{ errorKey | translate }}</p>
@@ -40,7 +53,7 @@
                         [indeterminate]="allState() === 'some'"
                         (change)="toggleAll()">
                     <span class="find-pages__key">{{ (allState() === 'all' ? 'KbPage.FindPagesClear' : 'KbPage.FindPagesSelectAll') | translate }}</span>
-                    <span class="find-pages__count">{{ 'KbPage.FindPagesFound' | translate: { n: pageCount } }}</span>
+                    <span class="find-pages__count">{{ (fileCount ? 'KbPage.FindPagesFoundWithFiles' : 'KbPage.FindPagesFound') | translate: { n: pageCount - fileCount, f: fileCount } }}</span>
                 </label>
             </div>
             <div class="find-pages__group" *ngFor="let g of groups; trackBy: trackGroup">
@@ -65,6 +78,7 @@
                 <div *ngIf="expanded.has(g.key)" class="find-pages__pages">
                     <label class="find-pages__check find-pages__page" *ngFor="let u of g.urls; trackBy: trackUrl" [title]="u">
                         <input type="checkbox" [checked]="selected.has(u)" (change)="togglePage(u)">
+                        <span *ngIf="typeOf(u) as t" class="find-pages__badge">{{ t | uppercase }}</span>
                         <span>{{ pathOf(u) }}</span>
                     </label>
                 </div>
@@ -73,7 +87,7 @@
 
         <div class="find-pages__actions">
             <button class="find-pages__add" type="button" [disabled]="selected.size === 0" (click)="add()">
-                {{ 'KbPage.FindPagesAdd' | translate: { n: selected.size } }}
+                {{ (selectedHasFiles ? 'KbPage.FindPagesAddItems' : 'KbPage.FindPagesAdd') | translate: { n: selected.size } }}
             </button>
         </div>
     </div>

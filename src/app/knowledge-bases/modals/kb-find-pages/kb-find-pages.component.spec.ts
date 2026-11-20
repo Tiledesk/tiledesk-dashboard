@@ -51,7 +51,7 @@ describe('KbFindPagesComponent', () => {
     component.source = ' https://a.com ';
     component.maxPages = 900;
     component.scan();
-    expect(kb.discoverPages).toHaveBeenCalledWith('https://a.com', 300, 45);
+    expect(kb.discoverPages).toHaveBeenCalledWith('https://a.com', 300, 45, 3, []);
   });
 
   it('uses the scan time from the dashboard config', () => {
@@ -61,7 +61,7 @@ describe('KbFindPagesComponent', () => {
     component = fixture.componentInstance;
     component.source = 'https://a.com';
     component.scan();
-    expect(kb.discoverPages).toHaveBeenCalledWith('https://a.com', 50, 240);
+    expect(kb.discoverPages).toHaveBeenCalledWith('https://a.com', 50, 240, 3, []);
     expect(component.maxSeconds).toBe(240);
   });
 
@@ -121,17 +121,62 @@ describe('KbFindPagesComponent', () => {
     expect(component.selected.size).toBe(3);
   });
 
-  it('emits the picked urls on add and goes back to idle', () => {
+  it('emits the picked pages on add and goes back to idle', () => {
     kb.discoverPages.and.returnValue(of(RESULT));
-    const emitted: string[][] = [];
-    component.pagesPicked.subscribe((u) => emitted.push(u));
+    const emitted: any[] = [];
+    component.picked.subscribe((u) => emitted.push(u));
     component.source = 'https://a.com';
     component.scan();
     component.togglePage('https://a.com/pricing');
     component.togglePage('https://a.com/docs/api');
     component.add();
-    expect(emitted).toEqual([['https://a.com/docs/api', 'https://a.com/pricing']]);
+    expect(emitted).toEqual([{ pages: ['https://a.com/docs/api', 'https://a.com/pricing'], files: [] }]);
     expect(component.phase).toBe('idle');
+  });
+
+  it('sends the depth, kept inside 0..5', () => {
+    kb.discoverPages.and.returnValue(of(RESULT));
+    component.source = 'https://a.com';
+    component.maxDepth = 9;
+    component.scan();
+    expect(kb.discoverPages.calls.mostRecent().args[3]).toBe(5);
+    component.maxDepth = -2;
+    component.scan();
+    expect(kb.discoverPages.calls.mostRecent().args[3]).toBe(0);
+    component.maxDepth = 0;
+    component.scan();
+    expect(kb.discoverPages.calls.mostRecent().args[3]).toBe(0);
+  });
+
+  it('asks for the ticked file types (Excel means xlsx and xls)', () => {
+    kb.discoverPages.and.returnValue(of(RESULT));
+    component.source = 'https://a.com';
+    component.toggleFileOption('pdf');
+    component.toggleFileOption('excel');
+    component.scan();
+    expect(kb.discoverPages.calls.mostRecent().args[4]).toEqual(['pdf', 'xlsx', 'xls']);
+  });
+
+  it('emits picked files with their type, apart from pages', () => {
+    kb.discoverPages.and.returnValue(of({
+      pages: [
+        { url: 'https://a.com/docs/setup', kind: 'page', depth: 1 },
+        { url: 'https://a.com/docs/guide.pdf', kind: 'file', file_type: 'pdf', depth: 2 },
+      ],
+      truncated: false, fetched: 2,
+    } as CrawlDiscoverResult));
+    const emitted: any[] = [];
+    component.picked.subscribe((u) => emitted.push(u));
+    component.source = 'https://a.com';
+    component.scan();
+    expect(component.fileCount).toBe(1);
+    expect(component.typeOf('https://a.com/docs/guide.pdf')).toBe('pdf');
+    component.toggleAll();
+    component.add();
+    expect(emitted).toEqual([{
+      pages: ['https://a.com/docs/setup'],
+      files: [{ url: 'https://a.com/docs/guide.pdf', type: 'pdf' }],
+    }]);
   });
 
   it('says no pages were found on an empty result', () => {
