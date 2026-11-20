@@ -768,3 +768,62 @@
         font-size: 14px;
     }
 }
+
+// ---------------------------------------------------------------
+// Import from websites wizard (same pattern as the Microsoft 365 / Google Drive import)
+// ---------------------------------------------------------------
+.wz-header { margin-bottom: 6px !important; }
+.wz-steps {
+    display: flex; flex-wrap: wrap; gap: 18px; list-style: none; padding: 0 0 12px; margin: 0 0 6px;
+    border-bottom: 1px solid #eef0f5; font-size: 13px; color: #8a93a6;
+}
+.wz-step { display: inline-flex; align-items: center; gap: 6px; }
+.wz-step.on { color: #1f2a44; font-weight: 500; }
+.wz-dot {
+    width: 20px; height: 20px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 11px; border: 1px solid #c9cfdb; background: #fff;
+    .material-icons-outlined { font-size: 14px; }
+}
+.wz-step.on .wz-dot { background: var(--blue-20); border-color: var(--blue-20); color: #fff; }
+.wz-step.done .wz-dot { background: #e3f4ea; border-color: #e3f4ea; color: #1e7b45; }
+.wz-body { min-height: 360px; }
+.wz-card {
+    display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; margin-bottom: 8px;
+    border: 1px solid #e0e3e8; border-radius: 6px; cursor: pointer; background: #fff;
+    &.on { border: 2px solid var(--blue-20); padding: 9px 11px; }
+}
+.wz-card__icon { font-size: 22px; color: #566787; margin-top: 2px; }
+.wz-card__body { flex: 1; min-width: 0; }
+.wz-card__title { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 14px; font-weight: 500; color: #1f2a44; cursor: pointer; input { margin: 0; } }
+.wz-card__sub { font-size: 12px; color: #566787; margin-top: 2px; }
+.wz-card__extra { margin-top: 8px; cursor: default; }
+.wz-input { width: 100%; box-sizing: border-box; height: 34px; border: 1px solid #d6dae2; border-radius: 4px; padding: 0 8px; font-size: 13px; background: #fff; }
+.wz-textarea { height: auto; padding: 6px 8px; font-family: monospace; font-size: 12px; resize: vertical; }
+.wz-link {
+    display: inline-flex; align-items: center; gap: 4px; background: transparent; border: none; padding: 4px 0; margin-top: 4px;
+    font-size: 12px; color: var(--blue-20); cursor: pointer;
+    .material-icons-outlined { font-size: 16px; }
+    &:hover { text-decoration: underline; }
+}
+.wz-options { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin-top: 6px; font-size: 12px; color: #566787; }
+.wz-num { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-weight: normal;
+    input { width: 64px; height: 30px; border: 1px solid #d6dae2; border-radius: 4px; padding: 0 6px; font-size: 13px; } }
+.wz-files { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: center; width: 100%; }
+.wz-file { display: inline-flex; align-items: center; gap: 4px; margin: 0; font-weight: normal; cursor: pointer; input { margin: 0; } }
+.wz-loading { padding: 70px 10px 0; text-align: center; font-size: 13px; color: #1f2a44; }
+.wz-bar { height: 4px; background: #e6e9f0; border-radius: 2px; overflow: hidden; margin: 0 auto 12px; max-width: 360px;
+    div { width: 30%; height: 100%; background: var(--blue-20); animation: wz-slide 1.2s ease-in-out infinite; } }
+@keyframes wz-slide { 0% { transform: translateX(-100%); } 100% { transform: translateX(340%); } }
+@media (prefers-reduced-motion: reduce) { .wz-bar div { animation: none; width: 100%; opacity: .5; } }
+.wz-muted { font-size: 12px; color: #8a93a6; }
+.wz-error { display: flex; gap: 8px; align-items: flex-start; padding: 10px 12px; margin-top: 10px; border-radius: 6px; background: #fdecee; color: #a01c35; font-size: 13px;
+    .material-icons-outlined { font-size: 18px; } }
+.wz-error-text { margin: 6px 0 0; font-size: 12px; color: #c62445; }
+.wz-note { margin: 0 0 6px; font-size: 12px; color: #8a5a00; }
+.wz-summary { background: #f7f8fc; border-radius: 6px; padding: 10px 12px; margin-bottom: 12px; font-size: 13px; }
+.wz-summary__count { font-weight: 500; }
+.wz-summary__titles { margin-top: 6px; font-size: 12px; color: #566787; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.wz-section-label { font-size: 12px; color: #566787; margin: 4px 0; }
+.wz-footer { display: flex !important; align-items: center; gap: 8px; justify-content: flex-end !important; margin-bottom: 0 !important; flex-wrap: wrap; }
+.wz-footer__info { margin-right: auto; font-size: 12px; color: #566787; display: inline-flex; align-items: center; gap: 8px; .wz-link { margin-top: 0; } }
+.wz-limit { margin: 6px 0 0; }
