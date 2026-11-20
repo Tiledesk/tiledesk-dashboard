@@ -2392,6 +2392,7 @@
         "FindPagesScan": "Skeniraj",
         "FindPagesMaxPages": "Maks. stranica",
         "FindPagesScanning": "Skeniranje… ovo može potrajati do jednog minuta",
+        "FindPagesScanningMinutes": "Skeniranje… ovo može potrajati do {{n}} min.",
         "FindPagesFound": "Pronađeno stranica: {{n}}",
         "FindPagesSelectAll": "Izaberi sve",
         "FindPagesClear": "Obriši izbor",

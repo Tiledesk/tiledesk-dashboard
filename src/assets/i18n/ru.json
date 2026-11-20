@@ -2392,6 +2392,7 @@
         "FindPagesScan": "Сканировать",
         "FindPagesMaxPages": "Макс. страниц",
         "FindPagesScanning": "Сканирование… это может занять до минуты",
+        "FindPagesScanningMinutes": "Сканирование… это может занять до {{n}} мин.",
         "FindPagesFound": "Найдено страниц: {{n}}",
         "FindPagesSelectAll": "Выбрать все",
         "FindPagesClear": "Сбросить",

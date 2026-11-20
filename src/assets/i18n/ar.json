@@ -2391,6 +2391,7 @@
         "FindPagesScan": "فحص",
         "FindPagesMaxPages": "الحد الأقصى للصفحات",
         "FindPagesScanning": "جارٍ الفحص… قد يستغرق ذلك ما يصل إلى دقيقة",
+        "FindPagesScanningMinutes": "جارٍ الفحص… قد يستغرق ذلك ما يصل إلى {{n}} دقائق",
         "FindPagesFound": "تم العثور على {{n}} صفحة",
         "FindPagesSelectAll": "تحديد الكل",
         "FindPagesClear": "مسح",

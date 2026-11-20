@@ -1,15 +1,11 @@
 import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
-import { CrawlDiscoverResult, groupPages, PageGroup } from './kb-find-pages.util';
+import { AppConfigService } from 'app/services/app-config.service';
+import { CrawlDiscoverResult, groupPages, PageGroup, resolveScanMaxSeconds } from './kb-find-pages.util';
 
 export const FIND_PAGES_DEFAULT_MAX = 50;
 export const FIND_PAGES_MAX = 300;
-/**
- * The scan answers only when it ends, and the edge in front of the server (stage ALB) closes a
- * request idle for 60 s; a 45 s walk returns in time and reports `truncated` when it stopped early.
- */
-export const FIND_PAGES_MAX_SECONDS = 45;
 
 /**
  * "Find pages on a site" panel of the Add website dialog: scans a site through the server's crawl scan,
@@ -34,11 +30,18 @@ export class KbFindPagesComponent implements OnDestroy {
   truncated = false;
   errorKey: string | null = null;
   elapsedSeconds = 0;
+  /**
+   * Scan time limit. The scan answers only when it ends, so every proxy in front of the server must
+   * wait longer than this (stage ALB idle timeout: 330 s). Set per environment with KB_CRAWL_MAX_SECONDS.
+   */
+  maxSeconds: number;
 
   private scanSub: Subscription | null = null;
   private timer: any = null;
 
-  constructor(private kbService: KnowledgeBaseService) {}
+  constructor(private kbService: KnowledgeBaseService, private appConfigService: AppConfigService) {
+    this.maxSeconds = resolveScanMaxSeconds(this.appConfigService.getConfig()?.kbCrawlMaxSeconds);
+  }
 
   get pageCount(): number {
     return this.groups.reduce((n, g) => n + g.urls.length, 0);
@@ -60,10 +63,17 @@ export class KbFindPagesComponent implements OnDestroy {
     this.truncated = false;
     this.phase = 'scanning';
     this.startTimer();
-    this.scanSub = this.kbService.discoverPages(source, max, FIND_PAGES_MAX_SECONDS).subscribe({
+    this.scanSub = this.kbService.discoverPages(source, max, this.maxSeconds).subscribe({
       next: (res: CrawlDiscoverResult) => this.onResult(res),
       error: (err) => this.onError(err),
     });
+  }
+
+  /** "up to a minute" for scans of 60 s or less, else "up to N minutes" (rounded up). */
+  scanningText(): { key: string; params: { n?: number } } {
+    return this.maxSeconds <= 60
+      ? { key: 'KbPage.FindPagesScanning', params: {} }
+      : { key: 'KbPage.FindPagesScanningMinutes', params: { n: Math.ceil(this.maxSeconds / 60) } };
   }
 
   groupState(g: PageGroup): 'all' | 'some' | 'none' {

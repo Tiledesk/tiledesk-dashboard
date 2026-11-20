@@ -52,3 +52,17 @@ export function mergeUrls(existing: string, picked: string[]): { text: string; a
   }
   return { text: lines.join('\n'), added };
 }
+
+/** Scan time used when `kbCrawlMaxSeconds` is not set: fits behind a load balancer that drops requests idle for 60 s. */
+export const SCAN_MAX_SECONDS_FALLBACK = 45;
+/** The llm accepts 30..1800 s for /crawl/discover; the server may cap it lower (KB_CRAWL_DISCOVER_MAX_SECONDS). */
+export const SCAN_MAX_SECONDS_MIN = 30;
+export const SCAN_MAX_SECONDS_MAX = 1800;
+
+/** `kbCrawlMaxSeconds` from dashboard-config.json (env KB_CRAWL_MAX_SECONDS): missing or invalid → 45 s, else clamped to 30..1800. */
+export function resolveScanMaxSeconds(rawValue: unknown): number {
+  if (rawValue == null || rawValue === '') return SCAN_MAX_SECONDS_FALLBACK;
+  const seconds = typeof rawValue === 'number' ? rawValue : Number(String(rawValue).trim());
+  if (!Number.isFinite(seconds) || seconds <= 0) return SCAN_MAX_SECONDS_FALLBACK;
+  return Math.min(Math.max(Math.round(seconds), SCAN_MAX_SECONDS_MIN), SCAN_MAX_SECONDS_MAX);
+}

@@ -2392,6 +2392,7 @@
         "FindPagesScan": "Tara",
         "FindPagesMaxPages": "Maks. sayfa",
         "FindPagesScanning": "Taranıyor… bu bir dakikaya kadar sürebilir",
+        "FindPagesScanningMinutes": "Taranıyor… bu {{n}} dakikaya kadar sürebilir",
         "FindPagesFound": "{{n}} sayfa bulundu",
         "FindPagesSelectAll": "Tümünü seç",
         "FindPagesClear": "Temizle",

@@ -1,4 +1,4 @@
-import { DiscoveredPage, groupPages, mergeUrls } from './kb-find-pages.util';
+import { DiscoveredPage, groupPages, mergeUrls, resolveScanMaxSeconds } from './kb-find-pages.util';
 
 const page = (url: string, kind: 'page' | 'file' = 'page'): DiscoveredPage => ({ url, kind, depth: 1 });
 
@@ -42,6 +42,26 @@ describe('kb-find-pages util', () => {
 
     it('fills an empty box', () => {
       expect(mergeUrls('', ['https://a.com/y'])).toEqual({ text: 'https://a.com/y', added: 1 });
+    });
+  });
+
+  describe('resolveScanMaxSeconds', () => {
+    it('uses the configured seconds', () => {
+      expect(resolveScanMaxSeconds('240')).toBe(240);
+      expect(resolveScanMaxSeconds(90)).toBe(90);
+    });
+
+    it('falls back to 45 s when missing, unsubstituted or invalid', () => {
+      expect(resolveScanMaxSeconds(undefined)).toBe(45);
+      expect(resolveScanMaxSeconds('')).toBe(45);
+      expect(resolveScanMaxSeconds('${KB_CRAWL_MAX_SECONDS}')).toBe(45);
+      expect(resolveScanMaxSeconds('abc')).toBe(45);
+      expect(resolveScanMaxSeconds('-5')).toBe(45);
+    });
+
+    it('keeps the value inside the llm range 30..1800', () => {
+      expect(resolveScanMaxSeconds('10')).toBe(30);
+      expect(resolveScanMaxSeconds('5000')).toBe(1800);
     });
   });
 });
