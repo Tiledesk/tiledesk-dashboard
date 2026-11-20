@@ -1,5 +1,10 @@
 # tiledesk-dashboard
 
+### 2.13.0-rc3
+- Find pages on a site ("Scansiona sito" in Italian), listed before "Add URLs from a sitemap": Depth field (0-5, default 3) and Include linked files (PDF, Word, Excel, CSV, Text, Markdown); found files show a type badge and are imported one by one with their own type (not as web pages), once, without refresh; one Select all checkbox above the sections
+- KB table: XLSX, XLS and CSV type chips and filter options
+- Needs tiledesk-llm that ingests pdf/docx/xlsx/xls/csv/txt/md from a URL
+
 ### 2.13.0-rc2
 - Find pages on a site: the scan time comes from the dashboard config (`kbCrawlMaxSeconds`, env `KB_CRAWL_MAX_SECONDS`, 30..1800 s, 45 s when not set); every proxy in front of the server must wait longer than it (stage ALB idle timeout is 330 s); the waiting text says "up to N minutes"
 
