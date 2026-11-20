@@ -1,4 +1,6 @@
-.kb-picker { font-size: 13px; color: #1f2a44; }
+.kb-picker { font-size: 13px; color: #30373f; }
+// the dashboard styles every <label> light grey; picker rows are content, not form labels
+.kb-picker label { color: #30373f !important; opacity: 1; }
 .kb-picker__tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .kb-picker__search {
     flex: 1 1 220px; display: flex; align-items: center; gap: 6px; height: 34px; padding: 0 8px;
