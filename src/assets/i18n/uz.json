@@ -2440,6 +2440,8 @@
         "WizardSelectAllShown": "Ko'rsatilganlarning barchasini tanlash",
         "WizardNoMatch": "Qidiruvingizga mos natija yo'q",
         "WizardLinkedFiles": "Bog'langan fayllar",
+        "WizardAgentNote": "Import qilingan hamma narsa ushbu agentning istalgan foydalanuvchisiga javob berish uchun ishlatilishi mumkin.",
+        "WizardLimitHint": "Har bir importda {{n}} tagacha element.",
         "WizardPasteIgnored": "{{n}} ta qator e'tiborga olinmadi: ular veb-manzil emas.",
         "WizardOverLimit": "Bir martada {{n}} tagacha elementni import qilishingiz mumkin. Davom etish uchun ba'zilarini olib tashlang.",
         "FindPagesDepth": "Chuqurlik",

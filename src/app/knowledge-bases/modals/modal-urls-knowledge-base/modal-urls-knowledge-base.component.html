@@ -96,7 +96,7 @@
             <p *ngIf="truncated" class="wz-note">{{ 'KbPage.FindPagesTruncated' | translate: { n: items.length } }}</p>
             <app-kb-page-picker [items]="items" [(selected)]="selected"></app-kb-page-picker>
             <p *ngIf="overLimit()" class="wz-error-text">{{ 'KbPage.WizardOverLimit' | translate: { n: KB_LIMIT_CONTENT } }}</p>
-            <p *ngIf="!overLimit()" class="wz-muted wz-limit">{{ 'KbPage.YouCanAddKBUrlsLimit' | translate }} {{ KB_LIMIT_CONTENT }}</p>
+            <p *ngIf="!overLimit()" class="wz-muted wz-limit">{{ 'KbPage.WizardLimitHint' | translate: { n: KB_LIMIT_CONTENT } }}</p>
         </ng-container>
     </div>
 
@@ -254,13 +254,10 @@
                 </div>
             </div>
 
-            <div class="info-container" style="margin-bottom: 12px;">
-                <i class="material-icons-outlined info-icon">help_outline</i>
-                <div class="info-text">
-                    <!-- <p [innerHTML]="'KbPage.helpUrls' | translate"></p> -->
-                    <p [innerHTML]="'HelpsURLsInfoMsg' | translate" style="line-height: 1.3;"></p>
-                </div>
-            </div>
+        <p class="wz-muted wz-agent-note">
+            <span class="material-icons-outlined" aria-hidden="true">info</span>
+            {{ 'KbPage.WizardAgentNote' | translate }}
+        </p>
     </div>
 </div>
 

@@ -34,6 +34,23 @@ describe('wizard helpers', () => {
       const items = ['https://t.com/', 'https://t.com/blog/a', 'https://t.com/blog/b', 'https://t.com/pricing/'].map((url) => ({ url }));
       expect(groupItems(items).map((g) => [g.key, g.urls.length])).toEqual([['/blog', 2], ['/pricing', 1], ['/', 1]]);
     });
+    it('splits a section that holds most pages into its sub-folders, even with a page outside it', () => {
+      const items: PickerItem[] = [{ url: D }, { url: 'https://drexel.edu/privacy' }];
+      for (let i = 0; i < 10; i++) items.push({ url: D + '/policy/p' + i });
+      for (let i = 0; i < 8; i++) items.push({ url: D + '/compliance/c' + i });
+      expect(groupItems(items).map((g) => [g.key, g.urls.length])).toEqual([
+        ['/compliance-policy-privacy', 1],
+        ['/compliance-policy-privacy/compliance', 8],
+        ['/compliance-policy-privacy/policy', 10],
+        ['/privacy', 1],
+      ]);
+    });
+
+    it('keeps a small or balanced section whole', () => {
+      const items = ['https://t.com/a/x', 'https://t.com/a/y', 'https://t.com/b/z', 'https://t.com/b/w'].map((url) => ({ url }));
+      expect(groupItems(items).map((g) => g.key)).toEqual(['/a', '/b']);
+    });
+
     it('drops duplicates', () => {
       expect(groupItems([{ url: D + '/a/x' }, { url: D + '/a/x' }])[0].urls.length).toBe(1);
     });

@@ -171,27 +171,60 @@ export function sharedFolderDepth(urls: string[]): number {
   }
 }
 
+/** A section holding at least this share of its parent's pages (and DOMINANT_MIN of them) is split further. */
+const DOMINANT_SHARE = 0.6;
+const DOMINANT_MIN = 8;
+
+interface PathEntry { url: string; segs: string[] }
+
+/** Splits pages by the segment at `depth`; a dominant folder is opened up into its sub-folders, recursively. */
+function splitSections(entries: PathEntry[], depth: number): { path: string[]; urls: string[] }[] {
+  const folderPages: PathEntry[] = [];
+  const byNext = new Map<string, PathEntry[]>();
+  for (const e of entries) {
+    const seg = e.segs[depth];
+    if (seg === undefined) { folderPages.push(e); continue; }
+    if (!byNext.has(seg)) byNext.set(seg, []);
+    byNext.get(seg)!.push(e);
+  }
+  const out: { path: string[]; urls: string[] }[] = [];
+  if (folderPages.length) out.push({ path: folderPages[0].segs.slice(0, depth), urls: folderPages.map((e) => e.url) });
+  byNext.forEach((list) => {
+    const dominant = list.length === entries.length || (list.length >= DOMINANT_MIN && list.length > DOMINANT_SHARE * entries.length);
+    const nextKinds = new Set(list.map((e) => (e.segs[depth + 1] === undefined ? '' : 'x' + e.segs[depth + 1])));
+    if (dominant && nextKinds.size >= 2) {
+      out.push(...splitSections(list, depth + 1));
+    } else {
+      out.push({ path: list[0].segs.slice(0, depth + 1), urls: list.map((e) => e.url) });
+    }
+  });
+  return out;
+}
+
 /**
- * Sections of the picker: web pages by the first path segment below the shared folder ("/" for the folder
- * page itself or the site root, listed last), linked files in one FILES_GROUP section at the end.
+ * Sections of the picker: web pages by folder, named below the folder they all share ("/" for that folder's
+ * own page or the site root, listed last). A folder holding most pages is split into its sub-folders, so a
+ * single big section does not hide the site's structure. Linked files go in one FILES_GROUP section at the end.
  */
 export function groupItems(items: PickerItem[]): PageGroup[] {
   const unique = new Map<string, PickerItem>();
   for (const i of items || []) if (i && i.url && !unique.has(i.url)) unique.set(i.url, i);
   const list = Array.from(unique.values());
-  const depth = sharedFolderDepth(list.map((i) => i.url));
-  const pages = new Map<string, string[]>();
-  const files: string[] = [];
+  const files = list.filter((i) => i.type).map((i) => i.url);
+  const pages: PathEntry[] = [];
   for (const i of list) {
-    if (i.type) { files.push(i.url); continue; }
-    const s = pathSegments(i.url);
-    if (!s) continue;
-    const key = '/' + (s.slice(depth)[0] || '');
-    if (!pages.has(key)) pages.set(key, []);
-    pages.get(key)!.push(i.url);
+    if (i.type) continue;
+    const segs = pathSegments(i.url);
+    if (segs) pages.push({ url: i.url, segs });
   }
-  const keys = Array.from(pages.keys()).sort((a, b) => (a === '/' ? 1 : b === '/' ? -1 : a.localeCompare(b)));
-  const groups = keys.map((key) => ({ key, urls: pages.get(key)! }));
+  const shared = sharedFolderDepth(pages.map((p) => p.url));
+  const merged = new Map<string, string[]>();
+  for (const sec of splitSections(pages, 0)) {
+    const key = '/' + sec.path.slice(shared).join('/');
+    merged.set(key, (merged.get(key) || []).concat(sec.urls));
+  }
+  const keys = Array.from(merged.keys()).sort((x, y) => (x === '/' ? 1 : y === '/' ? -1 : x.localeCompare(y)));
+  const groups: PageGroup[] = keys.map((key) => ({ key, urls: merged.get(key)! }));
   if (files.length) groups.push({ key: FILES_GROUP, urls: files });
   return groups;
 }

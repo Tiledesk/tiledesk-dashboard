@@ -2441,6 +2441,8 @@
         "WizardSelectAllShown": "Selecionar todos os exibidos",
         "WizardNoMatch": "Nada corresponde à sua pesquisa",
         "WizardLinkedFiles": "Arquivos vinculados",
+        "WizardAgentNote": "Tudo o que for importado pode ser usado para responder a qualquer usuário deste agente.",
+        "WizardLimitHint": "Até {{n}} itens por importação.",
         "WizardPasteIgnored": "{{n}} linhas ignoradas: não são endereços web.",
         "WizardOverLimit": "Você pode importar até {{n}} itens por vez. Desmarque alguns para continuar.",
         "FindPagesDepth": "Profundidade",

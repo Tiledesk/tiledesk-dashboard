@@ -2442,6 +2442,8 @@
         "WizardSelectAllShown": "Göstərilənlərin hamısını seç",
         "WizardNoMatch": "Axtarışa uyğun nəticə yoxdur",
         "WizardLinkedFiles": "Əlaqəli fayllar",
+        "WizardAgentNote": "İdxal edilən hər şey bu agentin istənilən istifadəçisinə cavab vermək üçün istifadə oluna bilər.",
+        "WizardLimitHint": "Hər idxalda {{n}} elementə qədər.",
         "WizardPasteIgnored": "{{n}} sətir nəzərə alınmadı: veb ünvanı deyil.",
         "WizardOverLimit": "Bir dəfəyə {{n}} elementə qədər idxal edə bilərsiniz. Davam etmək üçün bəzilərinin seçimini ləğv edin.",
         "FindPagesDepth": "Dərinlik",
