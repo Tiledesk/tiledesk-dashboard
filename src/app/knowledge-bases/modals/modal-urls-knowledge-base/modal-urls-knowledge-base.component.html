@@ -1,42 +1,37 @@
-<div class="m-header wz-header">
-    <h1 mat-dialog-title style="font-family: var(--header-font-family); margin-bottom: 0px !important;">
-        {{ 'KbPage.ImportFromWebsites' | translate }}
-    </h1>
-    <div class="m-top-right-icon">
-        <span id="close" class="material-icons-outlined" role="button" tabindex="0" [attr.aria-label]="'KbPage.FindPagesClose' | translate" (click)="onCloseBaseModal()" (keydown.enter)="onCloseBaseModal()">
-            close
-        </span>
+<!-- Import from websites: same frame as the Microsoft 365 / Google Drive import (header with steps, fixed body, footer). -->
+<div class="wz-header">
+    <div class="wz-header-main">
+        <h1 mat-dialog-title class="wz-title">{{ 'KbPage.ImportFromWebsites' | translate }}</h1>
+        <ol class="wz-steps" [attr.aria-label]="'KbPage.ImportFromWebsites' | translate">
+            <li *ngFor="let s of steps(); let i = index" class="wz-step"
+                [class.wz-step--current]="step === s.id" [class.wz-step--done]="step > s.id"
+                [attr.aria-current]="step === s.id ? 'step' : null">
+                <span class="wz-step-dot">
+                    <span *ngIf="step > s.id" class="material-icons-outlined" aria-hidden="true">check</span>
+                    <span *ngIf="step <= s.id">{{ i + 1 }}</span>
+                </span>
+                {{ s.labelKey | translate }}
+            </li>
+        </ol>
     </div>
+    <button type="button" class="wz-close" (click)="onCloseBaseModal()" [attr.aria-label]="'KbPage.FindPagesClose' | translate">
+        <span aria-hidden="true" class="material-icons-outlined">close</span>
+    </button>
 </div>
 
-<ol class="wz-steps">
-    <li class="wz-step" [class.on]="step === 1" [class.done]="step > 1" [attr.aria-current]="step === 1 ? 'step' : null">
-        <span class="wz-dot"><span *ngIf="step > 1" class="material-icons-outlined" aria-hidden="true">check</span><ng-container *ngIf="step === 1">1</ng-container></span>
-        {{ 'KbPage.WizardStepWebsite' | translate }}
-    </li>
-    <li class="wz-step" [class.on]="step === 2" [class.done]="step > 2" [attr.aria-current]="step === 2 ? 'step' : null">
-        <span class="wz-dot"><span *ngIf="step > 2" class="material-icons-outlined" aria-hidden="true">check</span><ng-container *ngIf="step <= 2">2</ng-container></span>
-        {{ 'KbPage.WizardStepPages' | translate }}
-    </li>
-    <li class="wz-step" [class.on]="step === 3" [attr.aria-current]="step === 3 ? 'step' : null">
-        <span class="wz-dot">3</span>
-        {{ 'KbPage.WizardStepSettings' | translate }}
-    </li>
-</ol>
-
-<div mat-dialog-content class="wz-body" style="font-family: var(--header-font-family);">
+<div mat-dialog-content class="wz-content">
 
     <!-- 1 · Website -->
     <div [hidden]="step !== 1">
-        <div class="wz-card" [class.on]="method === 'scan'" (click)="chooseMethod('scan')">
-            <span class="material-icons-outlined wz-card__icon" aria-hidden="true">travel_explore</span>
-            <div class="wz-card__body">
-                <label class="wz-card__title"><input type="radio" name="wz-method" [checked]="method === 'scan'" (change)="chooseMethod('scan')"> {{ 'KbPage.WizardScanTitle' | translate }}</label>
-                <div class="wz-card__sub">{{ 'KbPage.WizardScanSub' | translate }}</div>
-                <div *ngIf="method === 'scan'" class="wz-card__extra" (click)="$event.stopPropagation()">
+        <div class="wz-card" [class.wz-card--on]="method === 'scan'" (click)="chooseMethod('scan')">
+            <span class="material-icons-outlined wz-card-icon" aria-hidden="true">travel_explore</span>
+            <div class="wz-card-body">
+                <label class="wz-card-title"><input type="radio" name="wz-method" [checked]="method === 'scan'" (change)="chooseMethod('scan')"> {{ 'KbPage.WizardScanTitle' | translate }}</label>
+                <p class="wz-muted wz-small">{{ 'KbPage.WizardScanSub' | translate }}</p>
+                <div *ngIf="method === 'scan'" class="wz-card-extra" (click)="$event.stopPropagation()">
                     <input class="wz-input" type="url" [(ngModel)]="scanUrl" placeholder="https://example.com"
                         [attr.aria-label]="'KbPage.WizardScanTitle' | translate" (keydown.enter)="next()">
-                    <button type="button" class="wz-link" [attr.aria-expanded]="scanOptionsOpen" (click)="scanOptionsOpen = !scanOptionsOpen">
+                    <button type="button" class="wz-text-btn wz-options-toggle" [attr.aria-expanded]="scanOptionsOpen" (click)="scanOptionsOpen = !scanOptionsOpen">
                         <span class="material-icons-outlined" aria-hidden="true">tune</span> {{ 'KbPage.WizardScanOptions' | translate }}
                     </button>
                     <div *ngIf="scanOptionsOpen" class="wz-options">
@@ -55,219 +50,145 @@
             </div>
         </div>
 
-        <div class="wz-card" [class.on]="method === 'sitemap'" (click)="chooseMethod('sitemap')">
-            <span class="material-icons-outlined wz-card__icon" aria-hidden="true">account_tree</span>
-            <div class="wz-card__body">
-                <label class="wz-card__title"><input type="radio" name="wz-method" [checked]="method === 'sitemap'" (change)="chooseMethod('sitemap')"> {{ 'KbPage.WizardSitemapTitle' | translate }}</label>
-                <div class="wz-card__sub">{{ 'KbPage.WizardSitemapSub' | translate }}</div>
-                <div *ngIf="method === 'sitemap'" class="wz-card__extra" (click)="$event.stopPropagation()">
+        <div class="wz-card" [class.wz-card--on]="method === 'sitemap'" (click)="chooseMethod('sitemap')">
+            <span class="material-icons-outlined wz-card-icon" aria-hidden="true">account_tree</span>
+            <div class="wz-card-body">
+                <label class="wz-card-title"><input type="radio" name="wz-method" [checked]="method === 'sitemap'" (change)="chooseMethod('sitemap')"> {{ 'KbPage.WizardSitemapTitle' | translate }}</label>
+                <p class="wz-muted wz-small">{{ 'KbPage.WizardSitemapSub' | translate }}</p>
+                <div *ngIf="method === 'sitemap'" class="wz-card-extra" (click)="$event.stopPropagation()">
                     <input class="wz-input" type="url" [(ngModel)]="sitemapUrl" placeholder="https://example.com/sitemap.xml"
                         [attr.aria-label]="'KbPage.WizardSitemapTitle' | translate" (keydown.enter)="next()">
                 </div>
             </div>
         </div>
 
-        <div class="wz-card" [class.on]="method === 'paste'" (click)="chooseMethod('paste')">
-            <span class="material-icons-outlined wz-card__icon" aria-hidden="true">content_paste</span>
-            <div class="wz-card__body">
-                <label class="wz-card__title"><input type="radio" name="wz-method" [checked]="method === 'paste'" (change)="chooseMethod('paste')"> {{ 'KbPage.WizardPasteTitle' | translate }}</label>
-                <div class="wz-card__sub">{{ 'KbPage.WizardPasteSub' | translate }}</div>
-                <div *ngIf="method === 'paste'" class="wz-card__extra" (click)="$event.stopPropagation()">
+        <div class="wz-card" [class.wz-card--on]="method === 'paste'" (click)="chooseMethod('paste')">
+            <span class="material-icons-outlined wz-card-icon" aria-hidden="true">content_paste</span>
+            <div class="wz-card-body">
+                <label class="wz-card-title"><input type="radio" name="wz-method" [checked]="method === 'paste'" (change)="chooseMethod('paste')"> {{ 'KbPage.WizardPasteTitle' | translate }}</label>
+                <p class="wz-muted wz-small">{{ 'KbPage.WizardPasteSub' | translate }}</p>
+                <div *ngIf="method === 'paste'" class="wz-card-extra" (click)="$event.stopPropagation()">
                     <textarea class="wz-input wz-textarea" rows="5" [(ngModel)]="pastedText"
                         [placeholder]="'KbPage.placeholderUrls' | translate" [attr.aria-label]="'KbPage.WizardPasteTitle' | translate"></textarea>
-                    <p *ngIf="ignoredPasted()" class="wz-note">{{ 'KbPage.WizardPasteIgnored' | translate: { n: ignoredPasted() } }}</p>
+                    <p *ngIf="ignoredPasted()" class="wz-muted wz-small wz-help">{{ 'KbPage.WizardPasteIgnored' | translate: { n: ignoredPasted() } }}</p>
+                    <p *ngIf="pastedOverLimit()" class="wz-error">{{ 'KbPage.WizardOverLimit' | translate: { n: KB_LIMIT_CONTENT } }}</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 2 · Pages -->
-    <div [hidden]="step !== 2">
+    <!-- 2 · Pages (scan and sitemap only) -->
+    <div [hidden]="step !== 2" class="wz-pages">
         <div *ngIf="loading" class="wz-loading" aria-live="polite">
+            <p class="wz-loading-title">
+                <ng-container *ngIf="method === 'scan'">{{ 'KbPage.WizardScanningSite' | translate: { host: scanHost() } }}</ng-container>
+                <ng-container *ngIf="method === 'sitemap'">{{ 'KbPage.WizardLoadingSitemap' | translate }}</ng-container>
+            </p>
             <div class="wz-bar"><div></div></div>
-            <p *ngIf="method === 'scan'">{{ scanningText().key | translate: scanningText().params }} <span class="wz-muted">{{ elapsedSeconds }}s</span></p>
-            <p *ngIf="method === 'sitemap'">{{ 'KbPage.WizardLoadingSitemap' | translate }}</p>
+            <p *ngIf="method === 'scan'" class="wz-muted wz-small">
+                <span class="wz-elapsed">{{ 'KbPage.WizardElapsed' | translate: { t: elapsedLabel() } }}</span>
+                · {{ scanningText().key | translate: scanningText().params }}
+            </p>
         </div>
-        <div *ngIf="!loading && (errorKey || errorText)" class="wz-error" role="alert">
+        <div *ngIf="!loading && (errorKey || errorText)" class="wz-notice wz-notice--error" role="alert">
             <span class="material-icons-outlined" aria-hidden="true">error_outline</span>
-            <span>{{ errorText || (errorKey | translate) }}</span>
+            <span class="wz-notice-text">{{ errorText || (errorKey | translate) }}</span>
         </div>
         <ng-container *ngIf="!loading && items.length">
-            <p *ngIf="truncated" class="wz-note">{{ 'KbPage.FindPagesTruncated' | translate: { n: items.length } }}</p>
+            <p *ngIf="truncated" class="wz-muted wz-small wz-truncated">{{ 'KbPage.FindPagesTruncated' | translate: { n: items.length } }}</p>
             <app-kb-page-picker [items]="items" [(selected)]="selected"></app-kb-page-picker>
-            <p *ngIf="overLimit()" class="wz-error-text">{{ 'KbPage.WizardOverLimit' | translate: { n: KB_LIMIT_CONTENT } }}</p>
-            <p *ngIf="!overLimit()" class="wz-muted wz-limit">{{ 'KbPage.WizardLimitHint' | translate: { n: KB_LIMIT_CONTENT } }}</p>
         </ng-container>
     </div>
 
-    <!-- 3 · Import settings -->
+    <!-- 3 · Import settings (same fields and order as the Microsoft 365 / Google Drive sync settings) -->
     <div [hidden]="step !== 3">
         <div class="wz-summary">
-            <div class="wz-summary__count">{{ 'KbPage.WizardSummaryCount' | translate: { n: selected.size } }}</div>
-            <div class="wz-muted">{{ 'KbPage.WizardSummarySplit' | translate: { p: selectedPageCount(), f: selectedFileCount() } }}</div>
-            <div class="wz-summary__titles">{{ summaryTitles().join(' · ') }}<ng-container *ngIf="selected.size > 4"> · +{{ selected.size - 4 }}</ng-container></div>
+            <p class="wz-label">{{ 'KbPage.WizardSummaryCount' | translate: { n: selected.size } }}</p>
+            <ul class="wz-summary-list">
+                <li *ngFor="let i of summaryItems()">
+                    <span class="material-icons-outlined wz-summary-icon" [class.wz-summary-icon--file]="i.type" aria-hidden="true">{{ i.type ? 'description' : 'language' }}</span>
+                    <span class="wz-ellipsis">{{ i.title || i.url }}</span>
+                    <span *ngIf="i.type" class="wz-badge">{{ i.type | uppercase }}</span>
+                </li>
+                <li *ngIf="selected.size > summaryItems().length" class="wz-muted">{{ 'KbPage.WizardAndMore' | translate: { n: selected.size - summaryItems().length } }}</li>
+            </ul>
         </div>
 
-        <div class="wz-section-label">{{ 'KbPage.WizardExtraction' | translate }}</div>
-            <app-kb-scrape-summary
-                [config]="scrapeConfig"
-                [isSettingsOpen]="isScrapeSettingsOpen"
-                (openSettings)="openScrapeSettings()"
-                (closeSettings)="closeScrapeSettingsDialog()">
-            </app-kb-scrape-summary>
-        <button type="button" class="wz-link" [attr.aria-expanded]="isScrapeSettingsOpen" (click)="isScrapeSettingsOpen ? closeScrapeSettingsDialog() : openScrapeSettings()">
-            <span class="material-icons-outlined" aria-hidden="true">tune</span> {{ 'Settings' | translate }}
-        </button>
-
-            <div class="refresh-rate-wpr">
-                <div class="refresh-rate-select">
-                    <!-- Refresh-rate help popover: same hover-popover pattern
-                         and styling as kb-tags below (CDK overlay + .cdk-popover).
-                         The label itself acts as the trigger; the legacy help_outline
-                         icon + mat-tooltip combo has been removed for a cleaner UI. -->
-                    <span class="input-label" style="white-space: nowrap;"
-                        #refreshRateHelpTrigger="cdkOverlayOrigin"
-                        cdkOverlayOrigin
-                        (mouseenter)="openRefreshRateHelp()"
-                        (mouseleave)="scheduleCloseRefreshRateHelp()">
-                        {{'KbPage.RefreshRate' | translate}}
-                    </span>
-                    <ng-template
-                        cdk-connected-overlay
-                        [cdkConnectedOverlayOrigin]="refreshRateHelpTrigger"
-                        [cdkConnectedOverlayOpen]="isRefreshRateHelpOpen"
-                        [cdkConnectedOverlayPositions]="positions"
-                        [cdkConnectedOverlayHasBackdrop]="false"
-                        (detach)="isRefreshRateHelpOpen = false">
-                        <div class="cdk-popover"
-                            (mouseenter)="cancelCloseRefreshRateHelp()"
-                            (mouseleave)="scheduleCloseRefreshRateHelp()">
-                            <div class="cdk-popover-arrow"></div>
-                            <div class="cdk-popover-content">
-                                {{'KbPage.URLsSyncFrequency' | translate}}
-                            </div>
-                        </div>
-                    </ng-template>
-                    <div class="scrape-types-select-wpr" style="font-size: 14px;margin-top: 6px;"> 
-                        <ng-select class="scrape-types-select" style="min-width: 200px;margin-top: -4px; max-width: 250px;"
-                            appendTo="body"
-                            [items]="refresh_rate | selectOptionsTranslate" 
-                            bindLabel="name" bindValue="value" 
-                            placeholder="Refresh rate"
-                            [clearable]="false" [searchable]="false" 
-                            [(ngModel)]="selectedRefreshRate"
-                            (change)="onSelectRefreshRate(selectedRefreshRate)" 
-                            [disabled]="(!isAvailableRefreshRateFeature || !refreshRateIsEnabled)" >
-                        </ng-select>
-                    </div>
-
-                    <!-- <span class="input-label input-label-on-bottom">
-                        {{'KbPage.URLsSyncFrequency' | translate}}
-                    </span> -->
+        <ng-container *ngIf="selectedPageCount()">
+            <ng-container *ngIf="payIsVisible">
+                <div class="refresh-rate-upgrade-plan" *ngIf="isAvailableRefreshRateFeature === false">
+                    <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: 0px;" (click)="goToPricing()"
+                        matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
+                        matTooltipPosition='above' matTooltipHideDelay="100">
+                        <span class="material-icons-outlined get--feature-upgrade-plan-icon" aria-hidden="true">upgrade</span>
+                        <span>{{ 'Pricing.UpgradePlan' | translate }}</span>
+                    </button>
                 </div>
+                <div *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled" class="contact-sales-to-enable-feature">
+                    {{'ThisFeatureIsInBeta' | translate}}.
+                    <div class="contact-sales-to-enable-feature-link" (click)="contacUsViaEmail()">{{'ContactUsToEnableIt' | translate}}</div>
+                </div>
+            </ng-container>
 
-                <ng-container *ngIf="payIsVisible">
-                    <div class="refresh-rate-upgrade-plan">
-                        <button class="btn btn--get-feature-no-boxshadow pull-right" style="margin-bottom: -23px;"
-                            *ngIf="isAvailableRefreshRateFeature === false" (click)="goToPricing()"
-                            matTooltipClass="custom-mat-tooltip" matTooltip="{{'FeatureAvailableFromThe'| translate: t_params}}"
-                            #tooltip="matTooltip" matTooltipPosition='above' matTooltipHideDelay="100">
-                            <span class="material-icons-outlined get--feature-upgrade-plan-icon">
-                                upgrade
-                            </span>
-                            <span>
-                                {{ 'Pricing.UpgradePlan' | translate }}
-                            </span>
-                        </button>
-                    </div>
-                </ng-container>
-
-                <ng-container *ngIf="payIsVisible">
-                    <div  *ngIf="isAvailableRefreshRateFeature === true && !refreshRateIsEnabled">
-                        <div class="contact-sales-to-enable-feature"> 
-                            {{'ThisFeatureIsInBeta' | translate}}.
-                            <div class="contact-sales-to-enable-feature-link" (click)="contacUsViaEmail()"> 
-                                {{'ContactUsToEnableIt' | translate}}
-                            </div> 
-                        </div>
-                    </div>
-                </ng-container>
+            <div class="wz-field">
+                <label class="wz-label" for="wz-refresh-rate">{{ 'KbPage.RefreshRate' | translate }}</label>
+                <select id="wz-refresh-rate" class="wz-select" [(ngModel)]="selectedRefreshRate"
+                    [disabled]="!isAvailableRefreshRateFeature || !refreshRateIsEnabled">
+                    <option *ngFor="let r of refresh_rate" [value]="r.value">{{ r.name | translate }}</option>
+                </select>
+                <p class="wz-muted wz-small wz-help">{{ (selectedFileCount() ? 'KbPage.WizardRefreshHelpFiles' : 'KbPage.WizardRefreshHelp') | translate }}</p>
             </div>
 
-            <!-- ----------------------------------------------- -->
-            <!-- KB Tags - optional metadata for retrieval; placed after refresh rate so primary -->
-            <!-- inputs (URLs, sync frequency) come first and tagging is the final step.         -->
-            <!-- ----------------------------------------------- -->
-
-        <p *ngIf="selectedFileCount()" class="wz-muted">{{ 'KbPage.FindPagesFilesNoRefresh' | translate }}</p>
-
-            <div class="form-container kb-tags-section" style="margin-top: 12px; margin-bottom: 6px;">
-                <div class="kb-tags-input-wpr" style="display: flex; vertical-align: middle;">
-                    <input id="kb-tags" class="adds-kb-input" name="kb-tags"
-                        [placeholder]="('AddsTagsAndPressEnter' | translate)" type="text"
-                        [(ngModel)]="kbTag" autocomplete="off" (keyup.enter)="addsKbTag(kbTag)"
-                        [appAutoWidthInput]="('AddsTagsAndPressEnter' | translate)" [minWidth]="150" [padding]="15"
-                        #trigger="cdkOverlayOrigin"
-                        cdkOverlayOrigin
-                        (mouseenter)="open()"
-                        (mouseleave)="scheduleClose()">
-                </div>
-
-                <ng-template
-                    cdk-connected-overlay
-                    [cdkConnectedOverlayOrigin]="trigger"
-                    [cdkConnectedOverlayOpen]="isOpen"
-                    [cdkConnectedOverlayPositions]="positions"
-                    [cdkConnectedOverlayHasBackdrop]="false"
-                    (detach)="isOpen = false">
-                    <div class="cdk-popover"
-                        (mouseenter)="cancelClose()"
-                        (mouseleave)="scheduleClose()">
-
-                        <div class="cdk-popover-arrow"></div>
-
-                        <div class="cdk-popover-content">
-                            {{'AssignOneOrMoreTagsToThisContent' | translate}}
-                        </div>
-
-                        <div *ngIf="hideHelpLink" class="cdk-learn-more"
-                            (click)="goToKbTagsDoc()">
-                            {{ 'LearnMore' | translate }}
-                        </div>
-
-                    </div>
-                </ng-template>
-
-                <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
-                    <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="kb-tags-btn-wpr">
-                        <p weight="400" class="kb-tag">{{kbtag}}</p>
-                        <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"
-                                class="remove-tag-icon" style="min-width: 12px; min-height: 12px;margin-right: 0px;">
-                                <path
-                                    d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z">
-                                </path>
-                                <path d="M0 0h24v24H0z" fill="none"></path>
-                            </svg>
-                        </button>
-                    </span>
+            <div class="wz-field">
+                <span class="wz-label">{{ 'KbPage.WizardExtraction' | translate }}</span>
+                <div class="wz-extraction">
+                    <app-kb-scrape-summary
+                        [config]="scrapeConfig"
+                        [isSettingsOpen]="isScrapeSettingsOpen"
+                        (openSettings)="openScrapeSettings()"
+                        (closeSettings)="closeScrapeSettingsDialog()">
+                    </app-kb-scrape-summary>
+                    <button type="button" class="wz-text-btn" [attr.aria-expanded]="isScrapeSettingsOpen"
+                        (click)="isScrapeSettingsOpen ? closeScrapeSettingsDialog() : openScrapeSettings()">
+                        {{ 'KbPage.WizardChange' | translate }}
+                    </button>
                 </div>
             </div>
+        </ng-container>
 
-        <p class="wz-muted wz-agent-note">
-            <span class="material-icons-outlined" aria-hidden="true">info</span>
-            {{ 'KbPage.WizardAgentNote' | translate }}
-        </p>
+        <div class="wz-field kb-tags-section">
+            <label class="wz-label" for="kb-tags">{{ 'KbPage.WizardTags' | translate }}</label>
+            <input id="kb-tags" class="adds-kb-input wz-input" name="kb-tags" type="text" autocomplete="off"
+                [placeholder]="'AddsTagsAndPressEnter' | translate" [(ngModel)]="kbTag" (keyup.enter)="addsKbTag(kbTag)">
+            <div class="kb-tags-container" #kbTagsContainer [ngStyle]="{'height':tagContainerElementHeight }">
+                <span *ngFor="let kbtag of kbTagsArray" aria-label="tag" class="kb-tags-btn-wpr">
+                    <p weight="400" class="kb-tag">{{kbtag}}</p>
+                    <button aria-label="Delete {{kbtag}} tag" type="button" class="delete-kb-tag-btn" (click)="removeKbTag(kbtag)">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" class="remove-tag-icon"
+                            style="min-width: 12px; min-height: 12px;margin-right: 0px;">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                            <path d="M0 0h24v24H0z" fill="none"></path>
+                        </svg>
+                    </button>
+                </span>
+            </div>
+        </div>
+
+        <div class="wz-notice">
+            <span aria-hidden="true" class="material-icons-outlined">info</span>
+            <span class="wz-notice-text">{{ 'KbPage.WizardAgentNote' | translate }}</span>
+        </div>
     </div>
 </div>
 
-<div mat-dialog-actions class="wz-footer">
-    <span class="wz-footer__info">
+<div mat-dialog-actions class="wz-actions">
+    <div class="wz-actions-left">
         <ng-container *ngIf="step === 2 && !loading && items.length">
-            {{ 'KbPage.WizardSelected' | translate: { n: selected.size, p: selectedPageCount(), f: selectedFileCount() } }}
-            <button *ngIf="selected.size" type="button" class="wz-link" (click)="clearSelection()">{{ 'KbPage.FindPagesClear' | translate }}</button>
+            <span>{{ 'KbPage.WizardSelected' | translate: { n: selected.size, p: selectedPageCount(), f: selectedFileCount() } }}</span>
+            <button *ngIf="selected.size" type="button" class="wz-text-btn" (click)="clearSelection()">{{ 'KbPage.FindPagesClear' | translate }}</button>
+            <span *ngIf="overLimit()" class="wz-error wz-small">{{ 'KbPage.WizardOverLimit' | translate: { n: KB_LIMIT_CONTENT } }}</span>
         </ng-container>
-    </span>
+    </div>
     <button *ngIf="step === 1" class="mat-dialog-close-btn" mat-button (click)="onCloseBaseModal()">{{ 'Cancel' | translate }}</button>
     <button *ngIf="step > 1" class="mat-dialog-close-btn" mat-button (click)="back()">{{ 'KbPage.WizardBack' | translate }}</button>
     <button class="mat-dialog-ok-btn" mat-button [disabled]="!canContinue()" (click)="next()">

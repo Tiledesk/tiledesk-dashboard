@@ -2932,7 +2932,7 @@ _presentDialogImportContents() {
     const dialogRef = this.dialog.open(ModalUrlsKnowledgeBaseComponent, {
       backdropClass: 'cdk-overlay-transparent-backdrop',
       hasBackdrop: true,
-      width: '600px',
+      width: '640px',
       maxWidth: '95vw',
       autoFocus: false,
       position: { top: '60px' },

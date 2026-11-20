@@ -64,7 +64,7 @@ describe('Import from websites wizard', () => {
     m.maxPages = 900;
     m.next();
     expect(kb.discoverPages).toHaveBeenCalledWith('https://a.com', 300, 240, 3, []);
-    expect(m.scanningText()).toEqual({ key: 'KbPage.FindPagesScanningMinutes', params: { n: 4 } });
+    expect(m.scanningText()).toEqual({ key: 'KbPage.WizardUpToMinutes', params: { n: 4 } });
   });
 
   it('maps scan errors and an empty result to messages', () => {
@@ -93,15 +93,42 @@ describe('Import from websites wizard', () => {
     expect(m.loading).toBe(false);
   });
 
-  it('pasted URLs come in selected', () => {
+  it('pasted URLs skip the Pages step and go straight to import settings, all selected', () => {
     const { m } = make();
     m.method = 'paste';
-    m.pastedText = 'https://a.com/x\nnope\nhttps://a.com/y\nhttps://a.com/x';
+    expect(m.steps().map((x) => x.id)).toEqual([1, 3]);
+    m.pastedText = 'https://a.com/x\nnope\nwww.b.com\nhttps://a.com/x';
     m.next();
-    expect(m.step).toBe(2);
-    expect(m.items.map((i) => i.url)).toEqual(['https://a.com/x', 'https://a.com/y']);
+    expect(m.step).toBe(3);
+    expect(m.items.map((i) => i.url)).toEqual(['https://a.com/x', 'https://www.b.com']);
     expect(m.selected.size).toBe(2);
-    expect(m.canContinue()).toBe(true);
+    expect(m.canImport()).toBe(true);
+    m.back();
+    expect(m.step).toBe(1);
+  });
+
+  it('scan and sitemap keep all three steps', () => {
+    const { m } = make();
+    m.method = 'scan';
+    expect(m.steps().map((x) => x.id)).toEqual([1, 2, 3]);
+    m.method = 'sitemap';
+    expect(m.steps().length).toBe(3);
+  });
+
+  it('blocks more than 300 pasted URLs on step 1', () => {
+    const { m } = make();
+    m.method = 'paste';
+    m.pastedText = Array.from({ length: 301 }, (_, i) => 'https://a.com/p' + i).join('\n');
+    expect(m.pastedOverLimit()).toBe(true);
+    expect(m.canContinue()).toBe(false);
+  });
+
+  it('shows the elapsed scan time as m:ss', () => {
+    const { m } = make();
+    m.elapsedSeconds = 7;
+    expect(m.elapsedLabel()).toBe('0:07');
+    m.elapsedSeconds = 125;
+    expect(m.elapsedLabel()).toBe('2:05');
   });
 
   it('sitemap pages come in selected; sitemap errors are shown', () => {
@@ -119,10 +146,11 @@ describe('Import from websites wizard', () => {
     expect(m.items.length).toBe(0);
   });
 
-  it('blocks more than 300 selected items', () => {
-    const { m } = make();
-    m.method = 'paste';
-    m.pastedText = Array.from({ length: 301 }, (_, i) => 'https://a.com/p' + i).join('\n');
+  it('blocks more than 300 selected items on the Pages step', () => {
+    const { m, kb } = make();
+    kb.addSitemap.and.returnValue(of({ sites: Array.from({ length: 301 }, (_, i) => 'https://a.com/p' + i) }));
+    m.method = 'sitemap';
+    m.sitemapUrl = 'https://a.com/sitemap.xml';
     m.next();
     expect(m.overLimit()).toBe(true);
     expect(m.canContinue()).toBe(false);
