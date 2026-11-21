@@ -446,6 +446,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
     return this.USER_ROLE === 'agent' || !this.hasAnyHomePermission;
   }
 
+  /** VBC hides the vibe coder without permission to create a flow: same chat card as for agents. */
+  get showVbcGoToChat(): boolean {
+    return this.isVisibleVBC && !this.PERMISSION_TO_ADD_FLOWS;
+  }
+
   constructor(
     public auth: AuthService,
     private route: ActivatedRoute,

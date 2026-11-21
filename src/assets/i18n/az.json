@@ -2919,7 +2919,7 @@
         "AuthGoogle": "Google",
         "AuthManual": "OAuth (əl ilə)",
         "AuthOAuthHint": "Server MCP serverinin OAuth təminatçısını avtomatik tapır",
-        "Scopes": "Əhatə dairələri",
+        "Scopes": "Scopes",
         "ScopePlaceholder": "Əhatə dairəsi yazın və Enter basın",
         "ScopeAddHint": "Hər əhatə dairəsini əlavə etmək üçün Enter basın. Əlavə olunanlar etiket kimi görünür.",
         "RemoveScope": "Əhatə dairəsini sil",
@@ -4102,8 +4102,9 @@
     "VibeCoderCreateAriaReady": "Yarat",
     "VibeCoderCreateAriaDisabled": "Yaratmaq üçün təsvir daxil edin",
     "VibeCoderPromptRequired": "AI agentin nə etməli olduğunu yazın",
-    "VibeCoderUploadFilesTooltip": "Maksimum {{max}} fayl. Hər fayl {{file_size_limit}} MB-dan artıq olmamalıdır.",
+    "VibeCoderUploadFilesTooltip": "Maksimum {{max}} fayl. Hər fayl {{file_size_limit}} MB-dan artıq olmamalıdır. Ümumi ölçü {{total_size_limit}} MB-dan artıq olmamalıdır.",
     "VibeCoderMaxFilesReached": "Ən çox {{max}} fayl əlavə edə bilərsiniz",
+    "VibeCoderMaxTotalSize": "Əlavələr cəmi {{max}} MB-ı keçə bilməz",
     "VibeCoderUploading": "Yüklənir…",
     "VibeCoderUploadFailed": "Yükləmə uğursuz oldu",
     "VibeCoderRemoveAttachment": "Faylı sil",
@@ -4117,5 +4118,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Ödəniş üsulu",
-    "ContactUsToChangeYourPaymentMethod": "Ödəniş üsulunu dəyişmək üçün bizimlə əlaqə saxlayın"
+    "ContactUsToChangeYourPaymentMethod": "Ödəniş üsulunu dəyişmək üçün bizimlə əlaqə saxlayın",
+    "Executions": {
+        "NotConfigured": "İcralar bu mühit üçün qurulmayıb.",
+        "Executions": "İcralar",
+        "AllExecutions": "Bütün icralar",
+        "View": {
+            "Label": "Görünüş",
+            "list": "Siyahı",
+            "graph": "Qraf"
+        },
+        "AllAgents": "Bütün agentlər",
+        "SearchId": "İcra identifikatorunu axtar…",
+        "Trigger": "Trigger",
+        "Triggers": {
+            "all": "Bütün triggerlər",
+            "unattended": "Avtomatik triggerlər",
+            "scheduled": "planlaşdırılmış",
+            "webhook": "webhook",
+            "trigger": "konnektor triggeri",
+            "automation": "avtomatlaşdırma",
+            "widget": "widget",
+            "channel": "kanal"
+        },
+        "StatusLabel": "Status",
+        "AnyStatus": "İstənilən status",
+        "Status": {
+            "running": "icra olunur",
+            "waiting": "gözləyir",
+            "stopping": "fasilə verilir",
+            "stopped": "fasilədə",
+            "failed": "uğursuz",
+            "completed": "tamamlanıb",
+            "destroyed": "məhv edilib"
+        },
+        "WithFailureConditions": "Xəta şərtləri ilə",
+        "TestRuns": "Test icraları",
+        "RangeLabel": "Dövr",
+        "Range": {
+            "now": "İndi",
+            "1h": "Son saat",
+            "24h": "Son 24 saat",
+            "7d": "Son 7 gün",
+            "30d": "Son 30 gün"
+        },
+        "Refresh": "Yenilə",
+        "LoadError": "İcraları yükləmək mümkün olmadı.",
+        "Retry": "Yenidən cəhd et",
+        "TestBadge": "test",
+        "TraceIncomplete": "İz natamamdır",
+        "ErrorsMark": "xətalar",
+        "ErrorsMarkTooltip": "{{n}} əməliyyat emal olunmadı: axın pozuldu",
+        "EmptyFiltered": "Bu filtrlərə uyğun icra yoxdur",
+        "ClearFilters": "Filtrləri təmizlə",
+        "EmptyNow": "Hazırda heç nə icra olunmur və fasilədə deyil. Bitmiş icraları da görmək üçün daha uzun dövr seçin.",
+        "EmptyNone": "Bu agent üçün hələ icra yoxdur. İcra olunduqda burada görünəcək.",
+        "ShowAllTriggers": "Bütün triggerləri göstər",
+        "Loading": "Yüklənir…",
+        "LoadMore": "Daha çox yüklə",
+        "Columns": {
+            "Status": "Status",
+            "Agent": "Agent",
+            "Trigger": "Trigger",
+            "Started": "Başladılıb",
+            "Blocks": "Bloklar",
+            "FailureConditions": "Xəta şərti",
+            "VarsChanged": "Dəyişən atributlar",
+            "Duration": "Müddət"
+        },
+        "UpdatedSeconds": "{{n}} san əvvəl yeniləndi",
+        "UpdatedMinutes": "{{n}} dəq əvvəl yeniləndi",
+        "Cards": {
+        "running": "İcra olunur",
+        "waiting": "Gözləyir",
+        "stopped": "Fasilədə",
+        "failed": "Uğursuz",
+        "with_errors": "Xətalı",
+        "completed": "Tamamlanıb",
+        "destroyed": "Məhv edilib"
+        },
+        "OpenExecution": "İcraya bax {{id}}",
+        "Detail": {
+            "Execution": "İcra",
+            "ViewConversation": "Söhbətə bax"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Fəaliyyətləri aç"
+        }
+}
 }

@@ -24,7 +24,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
     .s-failed { color: var(--exec-bad); background: var(--exec-bad-bg); }
     .s-completed { color: var(--exec-ok); background: var(--exec-ok-bg); }
     .s-destroying { color: var(--exec-dead); background: var(--exec-dead-bg); }
-    .s-destroyed { color: var(--exec-dead); background: var(--exec-dead-bg); text-decoration: line-through; }
+    .s-destroyed { color: var(--exec-dead); background: var(--exec-dead-bg); }
     @media (prefers-reduced-motion: no-preference) {
       .s-running::before, .s-stopping::before, .s-destroying::before { animation: exec-pulse 1.2s ease-in-out infinite; }
     }

@@ -62,4 +62,9 @@ describe('ExecutionStatCardsComponent', () => {
     cards()[2].click();
     expect(picked).toHaveBeenCalledWith('stopped');
   });
+
+  it('Failed and With errors can be pressed together', () => {
+    setup({ counts: COUNTS, selectable: true, active: 'failed', errorsActive: true });
+    expect(cards().map(c => c.getAttribute('aria-pressed'))).toEqual(['false', 'false', 'false', 'true', 'true', 'false', 'false']);
+  });
 });

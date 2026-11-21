@@ -1,6 +1,14 @@
-<nav *ngIf="visible" class="monitor-tabs" [attr.aria-label]="'Monitor.Tabs.Label' | translate">
-  <a [routerLink]="conversationsLink" [class.active]="active === 'conversations'"
-    [attr.aria-current]="active === 'conversations' ? 'page' : null">{{ "Monitor.Tabs.Conversations" | translate }}</a>
-  <a [routerLink]="executionsLink" [class.active]="active === 'executions'"
-    [attr.aria-current]="active === 'executions' ? 'page' : null">{{ "Monitor.Tabs.Executions" | translate }}</a>
+<nav *ngIf="visible" [attr.aria-label]="'Monitor.Tabs.Label' | translate">
+  <ul class="monitor-tabs">
+    <li class="btn-with-border-effect" [class.li-active]="active === 'conversations'"
+      [class.border-from-center]="active !== 'conversations'">
+      <a [routerLink]="conversationsLink"
+        [attr.aria-current]="active === 'conversations' ? 'page' : null">{{ "Monitor.Tabs.Conversations" | translate }}</a>
+    </li>
+    <li class="btn-with-border-effect" [class.li-active]="active === 'executions'"
+      [class.border-from-center]="active !== 'executions'">
+      <a [routerLink]="executionsLink"
+        [attr.aria-current]="active === 'executions' ? 'page' : null">{{ "Monitor.Tabs.Executions" | translate }}</a>
+    </li>
+  </ul>
 </nav>

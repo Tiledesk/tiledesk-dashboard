@@ -12,6 +12,7 @@ import {
   VIBE_CODER_FILE_ACCEPT,
   VIBE_CODER_MAX_ATTACHMENTS,
   VIBE_CODER_MAX_FILE_BYTES,
+  VIBE_CODER_MAX_TOTAL_BYTES,
   VIBE_CODER_UPLOAD_RETENTION_SEC,
 } from 'app/utils/vibe-coder-attachments.util';
 import { TranslateService } from '@ngx-translate/core';
@@ -74,6 +75,7 @@ export class VibeCoderComponent implements OnDestroy {
   readonly fileAccept = VIBE_CODER_FILE_ACCEPT;
   readonly maxAttachments = VIBE_CODER_MAX_ATTACHMENTS;
   readonly maxFileMb = VIBE_CODER_MAX_FILE_BYTES / (1024 * 1024);
+  readonly maxTotalMb = VIBE_CODER_MAX_TOTAL_BYTES / (1024 * 1024);
   /** i18n params for white-label company name in `VibeCoderPlaceholder`. */
   brandParams: { BRAND_NAME: string } = { BRAND_NAME: 'Tiledesk' };
 
@@ -350,6 +352,15 @@ export class VibeCoderComponent implements OnDestroy {
     }
     if (file.size > VIBE_CODER_MAX_FILE_BYTES) {
       this.notify.presentModalAttachmentFileSizeTooLarge(this.maxFileMb + ' MB');
+      return false;
+    }
+    const currentTotal = this.attachments.reduce((sum, chip) => sum + (chip.size || 0), 0);
+    if (currentTotal + file.size > VIBE_CODER_MAX_TOTAL_BYTES) {
+      this.notify.showWidgetStyleUpdateNotification(
+        this.translate.instant('VibeCoderMaxTotalSize', { max: this.maxTotalMb }),
+        3,
+        'report_problem',
+      );
       return false;
     }
 

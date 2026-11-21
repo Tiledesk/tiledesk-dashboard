@@ -20,7 +20,7 @@ import { LoggerService } from '../../../services/logger/logger.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 // to suppress the Error  TypeError: Cannot read property 'length' of undefined  added in the method getEventsByLastNDays() wrapped  "for (let j = 0; j < eventsByDay.length; j++) {.." in  if (eventsByDay) { ...
 
 describe('EventsAnalyticsComponent', () => {

@@ -32,27 +32,33 @@ describe('NavbarComponent monitor title', () => {
       nav.applyMonitorTabsPermission({ role: 'owner', matchedPermissions: [] });
     });
 
-    it('no title on conversations', () => {
+    it('conversations keeps Requests (Conversazioni)', () => {
       go('/project/p1/wsrequests');
-      expect(nav.currentTitle).toBeNull();
+      expect(nav.currentTitle).toBe('Requests');
       go('/project/p1/wsrequests/120');
-      expect(nav.currentTitle).toBeNull();
+      expect(nav.currentTitle).toBe('Requests');
     });
 
-    it('no title on executions list, agent list, detail and graph', () => {
+    it('executions list, agent list and graph show Esecuzioni', () => {
       for (const url of ['/project/p1/monitor/executions', '/project/p1/monitor/b1/executions?status=failed',
-        '/project/p1/monitor/b1/executions/e1', '/project/p1/monitor/graph']) {
+        '/project/p1/monitor/graph']) {
         go(url);
-        expect(nav.currentTitle).toBeNull();
+        expect(nav.currentTitle).toBe('Executions.Executions');
         expect(nav.currentIcon).toBeNull();
       }
+    });
+
+    it('an execution detail shows Dettaglio esecuzione and the back arrow', () => {
+      go('/project/p1/monitor/b1/executions/e1');
+      expect(nav.currentTitle).toBe('Executions.Detail.PageTitle');
+      expect(nav.currentIcon).toBe('arrow-left');
     });
 
     it('coming from the agents page the title is not Flows', () => {
       go('/project/p1/bots/my-chatbots/all');
       expect(nav.currentTitle).toBe('Flows');
       go('/project/p1/monitor/b1/executions');
-      expect(nav.currentTitle).toBeNull();
+      expect(nav.currentTitle).toBe('Executions.Executions');
       expect(nav.currentIcon).toBeNull();
     });
 
@@ -74,7 +80,8 @@ describe('NavbarComponent monitor title', () => {
       go('/project/p1/monitor/executions');
       expect(nav.currentTitle).toBe('Executions.Executions');
       go('/project/p1/monitor/b1/executions/e1');
-      expect(nav.currentTitle).toBe('Executions.Executions');
+      expect(nav.currentTitle).toBe('Executions.Detail.PageTitle');
+      expect(nav.currentIcon).toBe('arrow-left');
       go('/project/p1/monitor/graph');
       expect(nav.currentTitle).toBe('Executions.Executions'); // it redirects to the executions page
     });
@@ -105,11 +112,33 @@ describe('NavbarComponent monitor title', () => {
     nav.applyMonitorTabsPermission({ role: '', matchedPermissions: [] });
     expect(nav.currentTitle).toBe('Requests');
     nav.applyMonitorTabsPermission({ role: 'supervisor', matchedPermissions: [] });
-    expect(nav.currentTitle).toBeNull();
+    expect(nav.currentTitle).toBe('Requests');
     nav.applyMonitorTabsPermission({ role: 'custom', matchedPermissions: [] });
     expect(nav.currentTitle).toBe('Requests');
     nav.applyMonitorTabsPermission({ role: 'custom', matchedPermissions: ['executions_read'] });
-    expect(nav.currentTitle).toBeNull();
+    expect(nav.currentTitle).toBe('Requests');
+  });
+
+  describe('activities opened from an execution', () => {
+    beforeEach(() => navbar('/project/p1/activities'));
+
+    it('shows the back arrow when activities starts with EXECUTION', () => {
+      go('/project/p1/activities?activities=EXECUTION_STOP_HARD');
+      expect(nav.currentTitle).toBe('Activities');
+      expect(nav.currentIcon).toBe('arrow-left');
+      go('/project/p1/activities?activities=EXECUTION_STOP_SOFT,EXECUTION_DATA_ACCESS');
+      expect(nav.currentIcon).toBe('arrow-left');
+    });
+
+    it('keeps Activities without the arrow for other filters', () => {
+      go('/project/p1/activities');
+      expect(nav.currentTitle).toBe('Activities');
+      expect(nav.currentIcon).toBeNull();
+      go('/project/p1/activities?activities=REQUEST_CREATE');
+      expect(nav.currentIcon).toBeNull();
+      go('/project/p1/activities?activities=REQUEST_CREATE,EXECUTION_STOP_HARD');
+      expect(nav.currentIcon).toBeNull();
+    });
   });
 
   describe('monitorNavbarTitle', () => {

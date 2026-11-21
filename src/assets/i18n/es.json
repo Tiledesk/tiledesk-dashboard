@@ -3949,8 +3949,9 @@
     "VibeCoderCreateAriaReady": "Crear",
     "VibeCoderCreateAriaDisabled": "Introduce una descripción para crear",
     "VibeCoderPromptRequired": "Escribe qué debe hacer el agente de IA",
-    "VibeCoderUploadFilesTooltip": "Máximo {{max}} archivos. Cada archivo no debe superar {{file_size_limit}} MB.",
+    "VibeCoderUploadFilesTooltip": "Máximo {{max}} archivos. Cada archivo no debe superar {{file_size_limit}} MB. El tamaño total no debe superar {{total_size_limit}} MB.",
     "VibeCoderMaxFilesReached": "Puedes adjuntar hasta {{max}} archivos",
+    "VibeCoderMaxTotalSize": "Los adjuntos no pueden superar {{max}} MB en total",
     "VibeCoderUploading": "Subiendo…",
     "VibeCoderUploadFailed": "Error al subir",
     "VibeCoderRemoveAttachment": "Quitar archivo",
@@ -3964,5 +3965,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Método de pago",
-    "ContactUsToChangeYourPaymentMethod": "Contáctanos para cambiar tu método de pago"
+    "ContactUsToChangeYourPaymentMethod": "Contáctanos para cambiar tu método de pago",
+    "Executions": {
+        "NotConfigured": "Las ejecuciones no están configuradas para este entorno.",
+        "Executions": "Ejecuciones",
+        "AllExecutions": "Todas las ejecuciones",
+        "View": {
+            "Label": "Vista",
+            "list": "Lista",
+            "graph": "Grafo"
+        },
+        "AllAgents": "Todos los agentes",
+        "SearchId": "Buscar id de ejecución…",
+        "Trigger": "Trigger",
+        "Triggers": {
+            "all": "Todos los triggers",
+            "unattended": "Triggers automáticos",
+            "scheduled": "programado",
+            "webhook": "webhook",
+            "trigger": "trigger de conector",
+            "automation": "automatización",
+            "widget": "widget",
+            "channel": "canal"
+        },
+        "StatusLabel": "Estado",
+        "AnyStatus": "Cualquier estado",
+        "Status": {
+            "running": "en ejecución",
+            "waiting": "en espera",
+            "stopping": "pausando",
+            "stopped": "en pausa",
+            "failed": "fallida",
+            "completed": "completada",
+            "destroyed": "destruida"
+        },
+        "WithFailureConditions": "Con condiciones de error",
+        "TestRuns": "Ejecuciones de prueba",
+        "RangeLabel": "Periodo",
+        "Range": {
+            "now": "Ahora",
+            "1h": "Última hora",
+            "24h": "Últimas 24 horas",
+            "7d": "Últimos 7 días",
+            "30d": "Últimos 30 días"
+        },
+        "Refresh": "Actualizar",
+        "LoadError": "No se pudieron cargar las ejecuciones.",
+        "Retry": "Reintentar",
+        "TestBadge": "test",
+        "TraceIncomplete": "Traza incompleta",
+        "ErrorsMark": "errores",
+        "ErrorsMarkTooltip": "{{n}} acciones no gestionadas: el flujo se vio comprometido",
+        "EmptyFiltered": "Ninguna ejecución coincide con estos filtros",
+        "ClearFilters": "Quitar filtros",
+        "EmptyNow": "Ahora mismo nada está en ejecución ni en pausa. Elige un periodo más largo para ver también las ejecuciones terminadas.",
+        "EmptyNone": "Aún no hay ejecuciones para este agente. Aparecerán aquí cuando se ejecute.",
+        "ShowAllTriggers": "Mostrar todos los triggers",
+        "Loading": "Cargando…",
+        "LoadMore": "Cargar más",
+        "Columns": {
+            "Status": "Estado",
+            "Agent": "Agente",
+            "Trigger": "Trigger",
+            "Started": "Iniciada",
+            "Blocks": "Bloques",
+            "FailureConditions": "Cond. error",
+            "VarsChanged": "Atributos modificados",
+            "Duration": "Duración"
+        },
+        "UpdatedSeconds": "Actualizado hace {{n}} s",
+        "UpdatedMinutes": "Actualizado hace {{n}} min",
+        "Cards": {
+        "running": "En ejecución",
+        "waiting": "En espera",
+        "stopped": "En pausa",
+        "failed": "Fallidas",
+        "with_errors": "Con errores",
+        "completed": "Completadas",
+        "destroyed": "Destruidas"
+        },
+        "OpenExecution": "Ver ejecución {{id}}",
+        "Detail": {
+            "Execution": "Ejecución",
+            "ViewConversation": "Ver conversación"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Abrir Actividades"
+        }
+}
 }

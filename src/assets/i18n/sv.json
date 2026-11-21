@@ -4102,8 +4102,9 @@
     "VibeCoderCreateAriaReady": "Skapa",
     "VibeCoderCreateAriaDisabled": "Ange en beskrivning för att skapa",
     "VibeCoderPromptRequired": "Skriv vad AI-agenten ska göra",
-    "VibeCoderUploadFilesTooltip": "Högst {{max}} filer. Varje fil får inte överstiga {{file_size_limit}} MB.",
+    "VibeCoderUploadFilesTooltip": "Högst {{max}} filer. Varje fil får inte överstiga {{file_size_limit}} MB. Den totala storleken får inte överstiga {{total_size_limit}} MB.",
     "VibeCoderMaxFilesReached": "Du kan bifoga högst {{max}} filer",
+    "VibeCoderMaxTotalSize": "Bilagorna får inte överstiga {{max}} MB totalt",
     "VibeCoderUploading": "Laddar upp…",
     "VibeCoderUploadFailed": "Uppladdningen misslyckades",
     "VibeCoderRemoveAttachment": "Ta bort fil",
@@ -4117,5 +4118,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Betalningsmetod",
-    "ContactUsToChangeYourPaymentMethod": "Kontakta oss för att ändra din betalningsmetod"
+    "ContactUsToChangeYourPaymentMethod": "Kontakta oss för att ändra din betalningsmetod",
+    "Executions": {
+        "NotConfigured": "Körningar är inte konfigurerade för den här miljön.",
+        "Executions": "Körningar",
+        "AllExecutions": "Alla körningar",
+        "View": {
+            "Label": "Vy",
+            "list": "Lista",
+            "graph": "Graf"
+        },
+        "AllAgents": "Alla agenter",
+        "SearchId": "Sök körnings-id…",
+        "Trigger": "Trigger",
+        "Triggers": {
+            "all": "Alla triggers",
+            "unattended": "Automatiska triggers",
+            "scheduled": "schemalagd",
+            "webhook": "webhook",
+            "trigger": "anslutningstrigger",
+            "automation": "automatisering",
+            "widget": "widget",
+            "channel": "kanal"
+        },
+        "StatusLabel": "Status",
+        "AnyStatus": "Valfri status",
+        "Status": {
+            "running": "körs",
+            "waiting": "väntar",
+            "stopping": "pausas",
+            "stopped": "pausad",
+            "failed": "misslyckades",
+            "completed": "slutförd",
+            "destroyed": "förstörd"
+        },
+        "WithFailureConditions": "Med felförhållanden",
+        "TestRuns": "Testkörningar",
+        "RangeLabel": "Period",
+        "Range": {
+            "now": "Nu",
+            "1h": "Senaste timmen",
+            "24h": "Senaste 24 timmarna",
+            "7d": "Senaste 7 dagarna",
+            "30d": "Senaste 30 dagarna"
+        },
+        "Refresh": "Uppdatera",
+        "LoadError": "Kunde inte läsa in körningarna.",
+        "Retry": "Försök igen",
+        "TestBadge": "test",
+        "TraceIncomplete": "Ofullständig spårning",
+        "ErrorsMark": "fel",
+        "ErrorsMarkTooltip": "{{n}} åtgärder hanterades inte: flödet påverkades",
+        "EmptyFiltered": "Inga körningar matchar dessa filter",
+        "ClearFilters": "Rensa filter",
+        "EmptyNow": "Inget körs eller är pausat just nu. Välj ett längre tidsintervall för att se även avslutade körningar.",
+        "EmptyNone": "Inga körningar ännu för den här agenten. De visas här när den körs.",
+        "ShowAllTriggers": "Visa alla triggers",
+        "Loading": "Läser in…",
+        "LoadMore": "Läs in fler",
+        "Columns": {
+            "Status": "Status",
+            "Agent": "Agent",
+            "Trigger": "Trigger",
+            "Started": "Startad",
+            "Blocks": "Block",
+            "FailureConditions": "Felförh.",
+            "VarsChanged": "Ändrade attribut",
+            "Duration": "Varaktighet"
+        },
+        "UpdatedSeconds": "Uppdaterad för {{n}} s sedan",
+        "UpdatedMinutes": "Uppdaterad för {{n}} min sedan",
+        "Cards": {
+        "running": "Körs",
+        "waiting": "Väntar",
+        "stopped": "Pausade",
+        "failed": "Misslyckade",
+        "with_errors": "Med fel",
+        "completed": "Slutförda",
+        "destroyed": "Förstörda"
+        },
+        "OpenExecution": "Visa körning {{id}}",
+        "Detail": {
+            "Execution": "Körning",
+            "ViewConversation": "Visa konversation"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Öppna aktiviteter"
+        }
+}
 }

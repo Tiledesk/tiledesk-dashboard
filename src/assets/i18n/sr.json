@@ -2919,7 +2919,7 @@
         "AuthGoogle": "Google",
         "AuthManual": "OAuth (ручно)",
         "AuthOAuthHint": "Сервер аутоматски проналази OAuth провајдера MCP сервера",
-        "Scopes": "Опсези",
+        "Scopes": "Scopes",
         "ScopePlaceholder": "Унесите опсег и притисните Enter",
         "ScopeAddHint": "Притисните Enter да додате сваки опсег. Већ додати остају видљиви као ознаке.",
         "RemoveScope": "Уклони опсег",
@@ -3969,8 +3969,9 @@
     "VibeCoderCreateAriaReady": "Креирај",
     "VibeCoderCreateAriaDisabled": "Унесите опис да бисте креирали",
     "VibeCoderPromptRequired": "Напишите шта AI агент треба да ради",
-    "VibeCoderUploadFilesTooltip": "Највише {{max}} датотека. Свака датотека не сме прећи {{file_size_limit}} MB.",
+    "VibeCoderUploadFilesTooltip": "Највише {{max}} датотека. Свака датотека не сме прећи {{file_size_limit}} MB. Укупна величина не сме прећи {{total_size_limit}} MB.",
     "VibeCoderMaxFilesReached": "Можете приложити највише {{max}} датотека",
+    "VibeCoderMaxTotalSize": "Прилози не могу прећи {{max}} MB укупно",
     "VibeCoderUploading": "Отпремање…",
     "VibeCoderUploadFailed": "Отпремање није успело",
     "VibeCoderRemoveAttachment": "Уклони датотеку",
@@ -3984,5 +3985,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Начин плаћања",
-    "ContactUsToChangeYourPaymentMethod": "Контактирајте нас да промените начин плаћања"
+    "ContactUsToChangeYourPaymentMethod": "Контактирајте нас да промените начин плаћања",
+    "Executions": {
+        "NotConfigured": "Извршавања нису подешена за ово окружење.",
+        "Executions": "Извршавања",
+        "AllExecutions": "Сва извршавања",
+        "View": {
+            "Label": "Приказ",
+            "list": "Листа",
+            "graph": "Граф"
+        },
+        "AllAgents": "Сви агенти",
+        "SearchId": "Претрага ид извршавања…",
+        "Trigger": "Окидач",
+        "Triggers": {
+            "all": "Сви окидачи",
+            "unattended": "Аутоматски окидачи",
+            "scheduled": "заказано",
+            "webhook": "webhook",
+            "trigger": "окидач конектора",
+            "automation": "аутоматизација",
+            "widget": "widget",
+            "channel": "канал"
+        },
+        "StatusLabel": "Статус",
+        "AnyStatus": "Било који статус",
+        "Status": {
+            "running": "у току",
+            "waiting": "на чекању",
+            "stopping": "паузирање",
+            "stopped": "паузирано",
+            "failed": "неуспело",
+            "completed": "завршено",
+            "destroyed": "уништено"
+        },
+        "WithFailureConditions": "Са условима грешке",
+        "TestRuns": "Тест извршавања",
+        "RangeLabel": "Период",
+        "Range": {
+            "now": "Сада",
+            "1h": "Последњи сат",
+            "24h": "Последња 24 сата",
+            "7d": "Последњих 7 дана",
+            "30d": "Последњих 30 дана"
+        },
+        "Refresh": "Освежи",
+        "LoadError": "Није могуће учитати извршавања.",
+        "Retry": "Покушај поново",
+        "TestBadge": "тест",
+        "TraceIncomplete": "Праћење непотпуно",
+        "ErrorsMark": "грешке",
+        "ErrorsMarkTooltip": "{{n}} радњи није обрађено: ток је угрожен",
+        "EmptyFiltered": "Ниједно извршавање не одговара овим филтерима",
+        "ClearFilters": "Уклони филтере",
+        "EmptyNow": "Тренутно ништа није у току нити на паузи. Изаберите дужи период да видите и завршена извршавања.",
+        "EmptyNone": "Још нема извршавања за овог агента. Појавиће се овде када буде покренут.",
+        "ShowAllTriggers": "Прикажи све окидаче",
+        "Loading": "Учитавање…",
+        "LoadMore": "Учитај још",
+        "Columns": {
+            "Status": "Статус",
+            "Agent": "Агент",
+            "Trigger": "Окидач",
+            "Started": "Покренуто",
+            "Blocks": "Блокови",
+            "FailureConditions": "Усл. грешке",
+            "VarsChanged": "Измењени атрибути",
+            "Duration": "Трајање"
+        },
+        "UpdatedSeconds": "Ажурирано пре {{n}} с",
+        "UpdatedMinutes": "Ажурирано пре {{n}} мин",
+        "Cards": {
+        "running": "У току",
+        "waiting": "На чекању",
+        "stopped": "Паузирана",
+        "failed": "Неуспела",
+        "with_errors": "Са грешкама",
+        "completed": "Завршена",
+        "destroyed": "Уништена"
+        },
+        "OpenExecution": "Прикажи извршавање {{id}}",
+        "Detail": {
+            "Execution": "Извршавање",
+            "ViewConversation": "Прикажи разговор"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Отвори активности"
+        }
+}
 }

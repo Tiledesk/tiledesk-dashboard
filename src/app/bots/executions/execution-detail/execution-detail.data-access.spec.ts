@@ -76,6 +76,7 @@ describe('ExecutionDetailComponent data access', () => {
       history: jasmine.createSpy('history').and.returnValue(of([])),
       revokeDataAccess: jasmine.createSpy('revokeDataAccess').and.returnValue(of(null)),
       triggerData: jasmine.createSpy('triggerData').and.returnValue(of({ value_state: 'not_stored' })),
+      audit: jasmine.createSpy('audit').and.returnValue(of({ entries: [], next_cursor: null })),
     };
     dialogResult = null;
     closed$ = null;

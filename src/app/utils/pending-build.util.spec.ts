@@ -24,9 +24,9 @@ describe('pending-build.util (prompt from the website for the Home)', () => {
     expect(readPendingBuild()?.prompt).toBe(text);
   });
 
-  it('caps the prompt like the other prompts (2000 characters)', () => {
-    savePendingBuild('x'.repeat(2500));
-    expect(readPendingBuild()?.prompt.length).toBe(2000);
+  it('caps the prompt like the other prompts (32000 characters)', () => {
+    savePendingBuild('x'.repeat(33000));
+    expect(readPendingBuild()?.prompt.length).toBe(32000);
   });
 
   it('is used once: consume returns it and removes it', () => {

@@ -2234,9 +2234,15 @@
                     <li class="execution-link" *ngIf="executionLink as link">
                       <div class="contact-row">
                         <span>
-                          <i class="material-icons" style="font-size: 22px; min-width: 22px; color: var(--icon-color);">timeline</i>
+                          <svg xmlns="http://www.w3.org/2000/svg" height="22px" viewBox="0 0 24 24" width="22px"
+                            style="min-width: 22px; min-height: 22px;"
+                            matTooltipClass="custom-mat-tooltip"
+                            matTooltip="{{ 'Executions.Detail.Execution' | translate }}"
+                            #tooltip="matTooltip" matTooltipPosition="right" matTooltipHideDelay="100">
+                            <path d="M3,10V4H5V6.35q1.28-1.6 3.11-2.47T12,3q3.75,0 6.38,2.63T21,12H19q0-2.93-2.04-4.96T12,5Q10.28,5 8.78,5.8T6.25,8H9v2H3Zm0.05,3H5.1q0.3,2.32 1.91,3.94t3.86,1.96l1.2,2.1q-3.45,0-6.05-2.29Q3.43,16.43 3.05,13Zm10.3,1.75L11,12.4V7h2v4.6L14.4,13l-1.05,1.75ZM17.98,24l-0.3-1.5q-0.3-0.13-0.56-0.26T16.58,21.9l-1.45,0.45l-1-1.7l1.15-1Q15.23,19.33 15.23,19t0.05-0.65l-1.15-1l1-1.7l1.45,0.45q0.28-0.2 0.54-0.34q0.26-0.14 0.56-0.26l0.3-1.5h2l0.3,1.5q0.3,0.13 0.57,0.29t0.52,0.36l1.45-0.5l1,1.75l-1.15,1q0.05,0.33 0.05,0.63q0,0.3-0.05,0.63l1.15,1l-1,1.7L21.38,21.9q-0.27,0.2-0.54,0.34T20.28,22.5L19.98,24h-2Zm2.41-3.59q0.59-0.59 0.59-1.41t-0.59-1.41T18.98,17t-1.41,0.59Q16.98,18.18 16.98,19t0.59,1.41T18.98,21t1.41-0.59Z"/>
+                          </svg>
                         </span>
-                        <a class="execution-link-a" style="margin-left: 8px; cursor: pointer;" [routerLink]="link.commands" [queryParams]="link.queryParams">{{ 'Executions.OpenExecution' | translate }}</a>
+                        <a class="execution-link-a" [routerLink]="link.commands" [queryParams]="link.queryParams">{{ 'Executions.OpenExecution' | translate:{ id: executionShortId } }}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-arrow-up-right-exit execution-link-exit" aria-hidden="true"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/><path d="m21 3-9 9"/><path d="M15 3h6v6"/></svg></a>
                       </div>
                     </li>
 

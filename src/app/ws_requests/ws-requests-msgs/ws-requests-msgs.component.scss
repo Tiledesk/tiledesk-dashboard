@@ -4657,6 +4657,27 @@ label {
   transition: fill 0.2s ease-in-out 0s;
 }
 
+.execution-link-a {
+  font-size: 14px;
+  color: var(--icon-hover-color);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.execution-link:hover .execution-link-a {
+  text-decoration: underline;
+}
+
+// Lucide "square-arrow-up-right-exit" after the text: stroke follows the link colour, sized to the 14px text
+.ul-wpr li .execution-link-a svg.execution-link-exit {
+  width: 14px;
+  height: 14px;
+  margin: 0 0 0 4px;
+  fill: none;
+  stroke: currentColor;
+  vertical-align: -2px;
+}
+
 .ul-wpr li input {
   flex: var(--list-item-input-flex);
   display: var(--list-item-input-display);

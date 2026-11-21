@@ -1,0 +1,101 @@
+// Agenti | Esecuzioni. Same look as the bottom-nav bar (demo.scss), with its rules copied here
+// under :host so nothing depends on, or overrides, the shared .bottom-nav / .li-active styles.
+:host {
+  display: block;
+
+  // the bar is floated: keep it in the flow without adding height of its own
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+
+  .agent-tabs {
+    background-color: #fff;
+    width: 100%;
+    position: relative;
+    top: -5px;
+    border-bottom: 1px solid #e5effe;
+    padding-bottom: 5px;
+    float: left;
+    height: 51px;
+    padding-left: 0;
+  }
+
+  // beside the agents-list actions: only as wide as the two tabs
+  .agent-tabs--inline {
+    width: auto;
+  }
+
+  .agent-tab {
+    float: left;
+    padding: 15px;
+    list-style: none;
+    position: relative;
+    display: block;
+    height: 52px;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 300;
+    vertical-align: middle;
+
+    &::before,
+    &::after {
+      box-sizing: inherit;
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none; // the link under it must receive the click
+    }
+
+    a {
+      position: relative;
+      z-index: 1;
+      padding: 18px 15px;
+      color: #797979 !important;
+      line-height: 20px;
+      text-decoration: none;
+      font-family: var(--header-font-family);
+      font-weight: 400;
+
+      &:hover { text-decoration: none; }
+    }
+  }
+
+  .agent-tab--active {
+    border-bottom: 3px solid var(--blue-20);
+    color: var(--blue-20);
+    cursor: default;
+
+    a { color: var(--blue-20) !important; }
+  }
+
+  // hover: the blue line grows from the centre of the tab
+  .agent-tab--hover {
+    &:hover { color: var(--blue-20); }
+
+    &::before,
+    &::after {
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      transform-origin: center;
+    }
+
+    &::before {
+      border-bottom: 3px solid var(--blue-20);
+      transform: scale3d(0, 1, 1);
+    }
+
+    &:hover::before,
+    &:hover::after {
+      transform: scale3d(1, 1, 1);
+      transition: transform 0.5s;
+    }
+  }
+}

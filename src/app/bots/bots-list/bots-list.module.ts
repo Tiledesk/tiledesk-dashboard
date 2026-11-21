@@ -22,6 +22,7 @@ import { CreateChatbotModalModule } from './create-chatbot-modal/create-chatbot-
 import { CreateAgentModalModule } from './create-agent-modal/create-agent-modal.module';
 import { CreateFlowsModalModule } from './create-flows-modal/create-flows-modal.module';
 import { MatRippleModule } from '@angular/material/core';
+import { AgentExecTabsModule } from '../executions/agent-exec-tabs/agent-exec-tabs.module';
 
 const routes: Routes = [
   { path: "", component: BotListComponent},
@@ -53,7 +54,8 @@ const routes: Routes = [
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatRippleModule
+    MatRippleModule,
+    AgentExecTabsModule
   ]
 })
 export class BotsListModule { }

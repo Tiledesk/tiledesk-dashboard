@@ -2918,7 +2918,7 @@
         "AuthGoogle": "Google",
         "AuthManual": "OAuth (يدوي)",
         "AuthOAuthHint": "يعثر الخادم تلقائيًا على مزوّد OAuth لخادم MCP",
-        "Scopes": "النطاقات",
+        "Scopes": "Scopes",
         "ScopePlaceholder": "اكتب نطاقًا واضغط Enter",
         "ScopeAddHint": "اضغط Enter لإضافة كل نطاق. النطاقات المضافة تبقى ظاهرة كوسوم.",
         "RemoveScope": "إزالة النطاق",
@@ -4065,8 +4065,9 @@
     "VibeCoderCreateAriaReady": "إنشاء",
     "VibeCoderCreateAriaDisabled": "أدخل وصفًا للإنشاء",
     "VibeCoderPromptRequired": "اكتب ما الذي يجب أن يفعله وكيل الذكاء الاصطناعي",
-    "VibeCoderUploadFilesTooltip": "بحد أقصى {{max}} ملفات. يجب ألا يتجاوز حجم كل ملف {{file_size_limit}} ميغابايت.",
+    "VibeCoderUploadFilesTooltip": "بحد أقصى {{max}} ملفات. يجب ألا يتجاوز حجم كل ملف {{file_size_limit}} ميغابايت. يجب ألا يتجاوز الحجم الإجمالي {{total_size_limit}} ميغابايت.",
     "VibeCoderMaxFilesReached": "يمكنك إرفاق حتى {{max}} ملفات",
+    "VibeCoderMaxTotalSize": "لا يمكن أن تتجاوز المرفقات {{max}} ميغابايت إجمالاً",
     "VibeCoderUploading": "جارٍ الرفع…",
     "VibeCoderUploadFailed": "فشل الرفع",
     "VibeCoderRemoveAttachment": "إزالة الملف",
@@ -4080,5 +4081,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "طريقة الدفع",
-    "ContactUsToChangeYourPaymentMethod": "تواصل معنا لتغيير طريقة الدفع"
+    "ContactUsToChangeYourPaymentMethod": "تواصل معنا لتغيير طريقة الدفع",
+    "Executions": {
+        "NotConfigured": "عمليات التنفيذ غير مهيأة لهذه البيئة.",
+        "Executions": "عمليات التنفيذ",
+        "AllExecutions": "كل عمليات التنفيذ",
+        "View": {
+            "Label": "عرض",
+            "list": "قائمة",
+            "graph": "رسم بياني"
+        },
+        "AllAgents": "كل الوكلاء",
+        "SearchId": "البحث عن معرّف التنفيذ…",
+        "Trigger": "المشغّل",
+        "Triggers": {
+            "all": "كل المشغّلات",
+            "unattended": "المشغّلات التلقائية",
+            "scheduled": "مجدول",
+            "webhook": "webhook",
+            "trigger": "مشغّل الموصل",
+            "automation": "أتمتة",
+            "widget": "widget",
+            "channel": "قناة"
+        },
+        "StatusLabel": "الحالة",
+        "AnyStatus": "أي حالة",
+        "Status": {
+            "running": "قيد التنفيذ",
+            "waiting": "قيد الانتظار",
+            "stopping": "جارٍ الإيقاف المؤقت",
+            "stopped": "متوقف مؤقتًا",
+            "failed": "فشلت",
+            "completed": "مكتملة",
+            "destroyed": "محذوفة"
+        },
+        "WithFailureConditions": "مع شروط الخطأ",
+        "TestRuns": "عمليات تنفيذ الاختبار",
+        "RangeLabel": "الفترة",
+        "Range": {
+            "now": "الآن",
+            "1h": "الساعة الأخيرة",
+            "24h": "آخر 24 ساعة",
+            "7d": "آخر 7 أيام",
+            "30d": "آخر 30 يومًا"
+        },
+        "Refresh": "تحديث",
+        "LoadError": "تعذر تحميل عمليات التنفيذ.",
+        "Retry": "إعادة المحاولة",
+        "TestBadge": "اختبار",
+        "TraceIncomplete": "التتبع غير مكتمل",
+        "ErrorsMark": "أخطاء",
+        "ErrorsMarkTooltip": "{{n}} إجراءات لم تُعالج: تعرّض التدفق للخطر",
+        "EmptyFiltered": "لا توجد عمليات تنفيذ تطابق عوامل التصفية هذه",
+        "ClearFilters": "مسح عوامل التصفية",
+        "EmptyNow": "لا شيء قيد التنفيذ أو الإيقاف المؤقت الآن. اختر فترة أطول لرؤية عمليات التنفيذ المنتهية أيضًا.",
+        "EmptyNone": "لا توجد عمليات تنفيذ لهذا الوكيل بعد. ستظهر هنا عند تشغيله.",
+        "ShowAllTriggers": "إظهار كل المشغّلات",
+        "Loading": "جارٍ التحميل…",
+        "LoadMore": "تحميل المزيد",
+        "Columns": {
+            "Status": "الحالة",
+            "Agent": "الوكيل",
+            "Trigger": "المشغّل",
+            "Started": "بدأت",
+            "Blocks": "الكتل",
+            "FailureConditions": "شرط خطأ",
+            "VarsChanged": "السمات المتغيرة",
+            "Duration": "المدة"
+        },
+        "UpdatedSeconds": "تم التحديث قبل {{n}} ث",
+        "UpdatedMinutes": "تم التحديث قبل {{n}} د",
+        "Cards": {
+        "running": "قيد التنفيذ",
+        "waiting": "قيد الانتظار",
+        "stopped": "متوقفة مؤقتًا",
+        "failed": "فاشلة",
+        "with_errors": "بها أخطاء",
+        "completed": "مكتملة",
+        "destroyed": "محذوفة"
+        },
+        "OpenExecution": "عرض التنفيذ {{id}}",
+        "Detail": {
+            "Execution": "التنفيذ",
+            "ViewConversation": "عرض المحادثة"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "فتح الأنشطة"
+        }
+}
 }

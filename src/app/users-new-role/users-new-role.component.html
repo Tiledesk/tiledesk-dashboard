@@ -63,7 +63,7 @@
 
 
                                         <mat-accordion multi>
-                                            <mat-expansion-panel *ngFor="let section of sections" [expanded]="section.expanded"
+                                            <mat-expansion-panel *ngFor="let section of visibleSections" [expanded]="section.expanded"
                                                 (opened)="panelOpenState = true" (closed)="panelOpenState = false" style="margin-top: 6px;border-radius: 4px;box-shadow: unset;border: 1px solid #ddd;">
                                                 <mat-expansion-panel-header>
                                                     <mat-panel-title style="margin-top: 3px;">{{ section.title }}</mat-panel-title>
@@ -88,10 +88,15 @@
                                                             <!-- Child Checkboxes -->
                                                             <div
                                                                 style="margin-left: 16px; margin-top: 8px; display: flex; flex-direction: column;">
-                                                                <mat-checkbox *ngFor="let child of section.children"
-                                                                    [formControl]="form.get(child.key)">
-                                                                    {{ child.label }}
-                                                                </mat-checkbox>
+                                                                <div class="permission-child-row" *ngFor="let child of section.children">
+                                                                    <mat-checkbox [formControl]="form.get(child.key)">
+                                                                        {{ child.label }}
+                                                                    </mat-checkbox>
+                                                                    <i *ngIf="child.info"
+                                                                        class="material-icons-outlined permission-info-icon"
+                                                                        [matTooltip]="child.info"
+                                                                        matTooltipPosition="right">help_outline</i>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </ng-container>

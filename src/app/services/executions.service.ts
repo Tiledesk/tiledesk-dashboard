@@ -8,7 +8,6 @@ import {
   AuditPage, ExecutionDetail, ExecutionGraph, GraphParams, RetentionSettings, StopNoticeBody, StopNoticeSettings, ExecutionListParams, ExecutionPage, ExecutionStats, GrantInfo, GrantScope, StartNewInput, StateView, StatsParams, Summary, ValueOrState,
   VarHistoryEntry
 } from 'app/bots/executions/executions.models';
-
 @Injectable({ providedIn: 'root' })
 export class ExecutionsService {
 

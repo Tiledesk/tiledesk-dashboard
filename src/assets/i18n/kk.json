@@ -2918,7 +2918,7 @@
         "AuthGoogle": "Google",
         "AuthManual": "OAuth (қолмен)",
         "AuthOAuthHint": "Сервер MCP серверінің OAuth провайдерін автоматты түрде табады",
-        "Scopes": "Қолжеткізу ауқымдары",
+        "Scopes": "Scopes",
         "ScopePlaceholder": "Ауқымды енгізіп, Enter басыңыз",
         "ScopeAddHint": "Әр ауқымды қосу үшін Enter басыңыз. Қосылғандары белгі ретінде көрінеді.",
         "RemoveScope": "Ауқымды жою",
@@ -4103,8 +4103,9 @@
     "VibeCoderCreateAriaReady": "Жасау",
     "VibeCoderCreateAriaDisabled": "Жасау үшін сипаттама енгізіңіз",
     "VibeCoderPromptRequired": "AI агент не істеуі керектігін жазыңыз",
-    "VibeCoderUploadFilesTooltip": "Ең көбі {{max}} файл. Әр файл {{file_size_limit}} МБ-тан аспауы керек.",
+    "VibeCoderUploadFilesTooltip": "Ең көбі {{max}} файл. Әр файл {{file_size_limit}} МБ-тан аспауы керек. Жалпы көлем {{total_size_limit}} МБ-тан аспауы керек.",
     "VibeCoderMaxFilesReached": "Ең көбі {{max}} файл тіркей аласыз",
+    "VibeCoderMaxTotalSize": "Тіркемелер жалпы {{max}} МБ-тан аспауы керек",
     "VibeCoderUploading": "Жүктелуде…",
     "VibeCoderUploadFailed": "Жүктеу сәтсіз аяқталды",
     "VibeCoderRemoveAttachment": "Файлды жою",
@@ -4118,5 +4119,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Төлем әдісі",
-    "ContactUsToChangeYourPaymentMethod": "Төлем әдісін өзгерту үшін бізбен хабарласыңыз"
+    "ContactUsToChangeYourPaymentMethod": "Төлем әдісін өзгерту үшін бізбен хабарласыңыз",
+    "Executions": {
+        "NotConfigured": "Орындаулар осы орта үшін бапталмаған.",
+        "Executions": "Орындаулар",
+        "AllExecutions": "Барлық орындаулар",
+        "View": {
+            "Label": "Көрініс",
+            "list": "Тізім",
+            "graph": "Граф"
+        },
+        "AllAgents": "Барлық агенттер",
+        "SearchId": "Орындау идентификаторын іздеу…",
+        "Trigger": "Триггер",
+        "Triggers": {
+            "all": "Барлық триггерлер",
+            "unattended": "Автоматты триггерлер",
+            "scheduled": "жоспарланған",
+            "webhook": "webhook",
+            "trigger": "коннектор триггері",
+            "automation": "автоматтандыру",
+            "widget": "widget",
+            "channel": "арна"
+        },
+        "StatusLabel": "Күй",
+        "AnyStatus": "Кез келген күй",
+        "Status": {
+            "running": "орындалуда",
+            "waiting": "күтуде",
+            "stopping": "кідіртілуде",
+            "stopped": "кідірісте",
+            "failed": "сәтсіз",
+            "completed": "аяқталды",
+            "destroyed": "жойылды"
+        },
+        "WithFailureConditions": "Қате шарттарымен",
+        "TestRuns": "Тест орындаулары",
+        "RangeLabel": "Кезең",
+        "Range": {
+            "now": "Қазір",
+            "1h": "Соңғы сағат",
+            "24h": "Соңғы 24 сағат",
+            "7d": "Соңғы 7 күн",
+            "30d": "Соңғы 30 күн"
+        },
+        "Refresh": "Жаңарту",
+        "LoadError": "Орындауларды жүктеу мүмкін болмады.",
+        "Retry": "Қайталау",
+        "TestBadge": "тест",
+        "TraceIncomplete": "Із толық емес",
+        "ErrorsMark": "қателер",
+        "ErrorsMarkTooltip": "{{n}} әрекет өңделмеді: ағын бұзылды",
+        "EmptyFiltered": "Бұл сүзгілерге сәйкес орындау жоқ",
+        "ClearFilters": "Сүзгілерді тазалау",
+        "EmptyNow": "Қазір ештеңе орындалмайды және кідірісте емес. Аяқталғандарын да көру үшін ұзағырақ кезеңді таңдаңыз.",
+        "EmptyNone": "Бұл агент үшін әлі орындау жоқ. Іске қосылғанда осында пайда болады.",
+        "ShowAllTriggers": "Барлық триггерлерді көрсету",
+        "Loading": "Жүктелуде…",
+        "LoadMore": "Тағы жүктеу",
+        "Columns": {
+            "Status": "Күй",
+            "Agent": "Агент",
+            "Trigger": "Триггер",
+            "Started": "Басталды",
+            "Blocks": "Блоктар",
+            "FailureConditions": "Қате шарты",
+            "VarsChanged": "Өзгерген атрибуттар",
+            "Duration": "Ұзақтығы"
+        },
+        "UpdatedSeconds": "{{n}} с бұрын жаңартылды",
+        "UpdatedMinutes": "{{n}} мин бұрын жаңартылды",
+        "Cards": {
+        "running": "Орындалуда",
+        "waiting": "Күтуде",
+        "stopped": "Кідірісте",
+        "failed": "Сәтсіз",
+        "with_errors": "Қатесі бар",
+        "completed": "Аяқталған",
+        "destroyed": "Жойылған"
+        },
+        "OpenExecution": "Орындауды көру {{id}}",
+        "Detail": {
+            "Execution": "Орындау",
+            "ViewConversation": "Сөйлесуді көру"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Іс-шараларды ашу"
+        }
+}
 }

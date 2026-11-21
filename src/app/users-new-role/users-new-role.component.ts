@@ -12,6 +12,7 @@ import { RolesService } from 'app/services/roles.service';
 import { TranslateService } from '@ngx-translate/core';
 import { PERMISSIONS, PERMISSION_DEPENDENCIES } from 'app/utils/permissions.constants';
 import { RoleService } from 'app/services/role.service';
+import { ExecutionsService } from 'app/services/executions.service';
 
 
 
@@ -34,7 +35,7 @@ interface PermissionSection {
   parentLabel: string;
   type: string;
   expanded: boolean,
-  children: { key: string; label: string }[];
+  children: { key: string; label: string; info?: string }[];
 }
 
 @Component({
@@ -153,7 +154,7 @@ export class UsersNewRoleComponent implements OnInit {
       children: [
         { key: PERMISSIONS.CONVERSATION_DETAIL_READ, label: 'Able to view' },
         { key: PERMISSIONS.TICKET_ID_READ, label: 'Able to view ticked id' },
-        { key: PERMISSIONS.RATING_READ, label: 'Able to view conversation rating' },
+        { key: PERMISSIONS.RATING_READ, label: 'Able to view conversation rating', info: 'This permission also controls the Rating column and the "Only rated conversations" filter in History.' },
         { key: PERMISSIONS.TAGS_READ_ALL, label: 'Able to view all conversation tags' },
       ]
     },
@@ -246,11 +247,11 @@ export class UsersNewRoleComponent implements OnInit {
       type: 'checkbox',
       expanded: false,
       children: [
-        { key: PERMISSIONS.EXECUTIONS_READ, label: 'Able to view executions' },
-        { key: PERMISSIONS.EXECUTIONS_CONTROL, label: 'Able to stop executions' },
-        { key: PERMISSIONS.EXECUTIONS_DESTROY, label: 'Able to destroy executions' },
-        { key: PERMISSIONS.EXECUTIONS_DATA_ACCESS, label: 'Able to view execution data' },
-        { key: PERMISSIONS.EXECUTIONS_AUDIT_READ, label: 'Able to view execution audit entries in Activities' },
+        { key: PERMISSIONS.EXECUTIONS_READ, label: 'Able to view executions', info: 'Also turns on Able to view in Flows, and keeps it selected while this permission is on.' },
+        { key: PERMISSIONS.EXECUTIONS_CONTROL, label: 'Able to stop executions', info: 'Also turns on Able to view executions and Able to view in Flows, and keeps them selected while this permission is on.' },
+        { key: PERMISSIONS.EXECUTIONS_DESTROY, label: 'Able to destroy executions', info: 'Also turns on Able to view executions and Able to view in Flows, and keeps them selected while this permission is on.' },
+        { key: PERMISSIONS.EXECUTIONS_DATA_ACCESS, label: 'Able to view execution data', info: 'Also turns on Able to view executions and Able to view in Flows, and keeps them selected while this permission is on.' },
+        { key: PERMISSIONS.EXECUTIONS_AUDIT_READ, label: 'Able to view execution audit entries in Activities', info: 'Also turns on Able to view in Flows and Able to view Activities, and keeps them selected while this permission is on.' },
       ]
     },
 
@@ -519,6 +520,12 @@ export class UsersNewRoleComponent implements OnInit {
     //   ]
     // }
   ];
+  /** Hidden when executions are not configured. The form controls stay, so a save keeps permissions already on the role. */
+  get visibleSections(): PermissionSection[] {
+    if (this.executionsService && this.executionsService.isConfigured()) return this.sections;
+    return this.sections.filter(section => section.key !== 'executionsManagement');
+  }
+
   reservedRoleNames = ['owner', 'admin', 'agent', 'user', 'guest', 'supervisor', 'teammate'];
   roles: any[] = [];
   reservedName: boolean = false;
@@ -541,6 +548,7 @@ export class UsersNewRoleComponent implements OnInit {
     private route: ActivatedRoute,
     private translate: TranslateService,
     private roleService: RoleService,
+    private executionsService: ExecutionsService,
   ) {
 
   }

@@ -1353,6 +1353,12 @@ updateTagContainerHeight() {
   }
   private executionLinkBots: any[];
 
+  /** Same tail as the execution detail: a uuid v7 starts with a timestamp, the last 8 hex digits tell runs apart. */
+  get executionShortId(): string {
+    const id = validExecutionId(this.request && this.request.attributes && this.request.attributes.execution_id);
+    return id ? id.replace(/-/g, '').slice(-8) : '';
+  }
+
   getBots() {
     this.faqKbService.getFaqKbByProjectId()
       .pipe(takeUntil(this.unsubscribe$))

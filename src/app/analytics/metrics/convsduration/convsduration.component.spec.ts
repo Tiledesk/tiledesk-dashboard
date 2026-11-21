@@ -25,7 +25,7 @@ import { BotLocalDbService } from '../../../services/bot-local-db.service'; // E
 import { DebugElement } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 
 describe('DurataconvComponent', () => {
   let component: ConvsDurationComponent;

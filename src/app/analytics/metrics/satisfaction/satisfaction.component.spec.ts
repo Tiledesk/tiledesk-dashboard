@@ -1,6 +1,5 @@
 import { async, ComponentFixture, getTestBed, TestBed, inject } from '@angular/core/testing';
 
-import { MockBackend, MockConnection } from '@angular/http/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 // import {
 //   it,
@@ -24,10 +23,9 @@ import { DepartmentService } from '../../../services/department.service';
 import { UsersService } from '../../../services/users.service';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { BotLocalDbService } from '../../../services/bot-local-db.service';
-import { Observable } from 'rxjs/Observable';
 
 import { Department } from '../../../models/department-model';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 let service;
 
 describe('SatisfactionComponent', () => {
@@ -65,13 +63,6 @@ describe('SatisfactionComponent', () => {
         UsersService,
         FaqKbService,
         BotLocalDbService,
-        {
-          provide: Http, useFactory: (backend: MockBackend, defaultOptions: BaseRequestOptions) => {
-            return new Http(backend, defaultOptions);
-          },
-          deps: [MockBackend],
-        },
-        MockBackend
       ],
     })
       .compileComponents();

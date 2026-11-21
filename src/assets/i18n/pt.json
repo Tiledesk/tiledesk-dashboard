@@ -3966,8 +3966,9 @@
     "VibeCoderCreateAriaReady": "Criar",
     "VibeCoderCreateAriaDisabled": "Introduza uma descrição para criar",
     "VibeCoderPromptRequired": "Escreva o que o agente de IA deve fazer",
-    "VibeCoderUploadFilesTooltip": "Máximo de {{max}} ficheiros. Cada ficheiro não deve exceder {{file_size_limit}} MB.",
+    "VibeCoderUploadFilesTooltip": "Máximo de {{max}} ficheiros. Cada ficheiro não deve exceder {{file_size_limit}} MB. O tamanho total não deve exceder {{total_size_limit}} MB.",
     "VibeCoderMaxFilesReached": "Pode anexar até {{max}} ficheiros",
+    "VibeCoderMaxTotalSize": "Os anexos não podem exceder {{max}} MB no total",
     "VibeCoderUploading": "A carregar…",
     "VibeCoderUploadFailed": "Falha no carregamento",
     "VibeCoderRemoveAttachment": "Remover ficheiro",
@@ -3981,5 +3982,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Método de pagamento",
-    "ContactUsToChangeYourPaymentMethod": "Contacte-nos para alterar o seu método de pagamento"
+    "ContactUsToChangeYourPaymentMethod": "Contacte-nos para alterar o seu método de pagamento",
+    "Executions": {
+        "NotConfigured": "As execuções não estão configuradas para este ambiente.",
+        "Executions": "Execuções",
+        "AllExecutions": "Todas as execuções",
+        "View": {
+            "Label": "Vista",
+            "list": "Lista",
+            "graph": "Grafo"
+        },
+        "AllAgents": "Todos os agentes",
+        "SearchId": "Pesquisar id da execução…",
+        "Trigger": "Trigger",
+        "Triggers": {
+            "all": "Todos os triggers",
+            "unattended": "Triggers automáticos",
+            "scheduled": "agendado",
+            "webhook": "webhook",
+            "trigger": "trigger de conector",
+            "automation": "automatização",
+            "widget": "widget",
+            "channel": "canal"
+        },
+        "StatusLabel": "Estado",
+        "AnyStatus": "Qualquer estado",
+        "Status": {
+            "running": "em execução",
+            "waiting": "em espera",
+            "stopping": "a pausar",
+            "stopped": "em pausa",
+            "failed": "falhada",
+            "completed": "concluída",
+            "destroyed": "destruída"
+        },
+        "WithFailureConditions": "Com condições de erro",
+        "TestRuns": "Execuções de teste",
+        "RangeLabel": "Período",
+        "Range": {
+            "now": "Agora",
+            "1h": "Última hora",
+            "24h": "Últimas 24 horas",
+            "7d": "Últimos 7 dias",
+            "30d": "Últimos 30 dias"
+        },
+        "Refresh": "Atualizar",
+        "LoadError": "Não foi possível carregar as execuções.",
+        "Retry": "Tentar novamente",
+        "TestBadge": "teste",
+        "TraceIncomplete": "Rastreio incompleto",
+        "ErrorsMark": "erros",
+        "ErrorsMarkTooltip": "{{n}} ações não tratadas: o fluxo foi comprometido",
+        "EmptyFiltered": "Nenhuma execução corresponde a estes filtros",
+        "ClearFilters": "Limpar filtros",
+        "EmptyNow": "De momento nada está em execução ou em pausa. Escolha um período mais longo para ver também as execuções concluídas.",
+        "EmptyNone": "Ainda não há execuções para este agente. Aparecerão aqui quando for executado.",
+        "ShowAllTriggers": "Mostrar todos os triggers",
+        "Loading": "A carregar…",
+        "LoadMore": "Carregar mais",
+        "Columns": {
+            "Status": "Estado",
+            "Agent": "Agente",
+            "Trigger": "Trigger",
+            "Started": "Iniciada",
+            "Blocks": "Blocos",
+            "FailureConditions": "Cond. erro",
+            "VarsChanged": "Atributos alterados",
+            "Duration": "Duração"
+        },
+        "UpdatedSeconds": "Atualizado há {{n}} s",
+        "UpdatedMinutes": "Atualizado há {{n}} min",
+        "Cards": {
+        "running": "Em execução",
+        "waiting": "Em espera",
+        "stopped": "Em pausa",
+        "failed": "Falhadas",
+        "with_errors": "Com erros",
+        "completed": "Concluídas",
+        "destroyed": "Destruídas"
+        },
+        "OpenExecution": "Ver execução {{id}}",
+        "Detail": {
+            "Execution": "Execução",
+            "ViewConversation": "Ver conversa"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Abrir Atividades"
+        }
+}
 }

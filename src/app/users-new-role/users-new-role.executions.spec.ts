@@ -6,18 +6,21 @@ import { UsersNewRoleComponent } from './users-new-role.component';
 describe('UsersNewRoleComponent executions permissions', () => {
   let component: UsersNewRoleComponent;
   let storedPermissions: string[];
+  let configured: boolean;
 
   const ctrl = (key: string) => component.form.get(key);
 
   beforeEach(() => {
     storedPermissions = [];
+    configured = true;
     const rolesService: any = {
       getRoleById: () => of({ name: 'custom', permissions: storedPermissions }),
     };
     const logger: any = { log: () => {}, error: () => {} };
+    const executionsService: any = { isConfigured: () => configured };
     component = new UsersNewRoleComponent(
       {} as any, {} as any, {} as any, logger, {} as any, {} as any,
-      new FormBuilder(), rolesService, {} as any, {} as any, {} as any
+      new FormBuilder(), rolesService, {} as any, {} as any, {} as any, executionsService
     );
     component.buildForm();
   });
@@ -83,5 +86,24 @@ describe('UsersNewRoleComponent executions permissions', () => {
     expect(ctrl('executions_read').value).toBe(true);
     expect(ctrl('flows_read').value).toBe(true);
     expect(ctrl('flows_read').disabled).toBe(true);
+  });
+
+  it('hides the Executions section when the service is not configured', () => {
+    configured = false;
+    expect(component.visibleSections.find(s => s.title === 'Executions')).toBeUndefined();
+  });
+
+  it('shows the Executions section when the service is configured', () => {
+    expect(component.visibleSections.find(s => s.title === 'Executions')).toBeDefined();
+  });
+
+  it('keeps stored executions permissions on save while the section is hidden', () => {
+    configured = false;
+    storedPermissions = ['executions_read', 'executions_control', 'flows_read'];
+    component.getRoleById('r1');
+    expect(component.visibleSections.find(s => s.title === 'Executions')).toBeUndefined();
+    expect(component.getSelectedPermissions()).toEqual(jasmine.arrayContaining([
+      'executions_read', 'executions_control', 'flows_read',
+    ]));
   });
 });

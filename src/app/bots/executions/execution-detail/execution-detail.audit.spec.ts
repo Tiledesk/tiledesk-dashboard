@@ -101,6 +101,7 @@ describe('ExecutionDetailComponent audit tab', () => {
 
   it('load more appends the next page', fakeAsync(() => {
     setup('owner');
+    expect(tabBtn().querySelector('.ex-tab-count').textContent).toBe('2+');
     tabBtn().click();
     fixture.detectChanges();
     expect(executions.audit).toHaveBeenCalledWith('p1', EXEC_ID, null);
@@ -115,9 +116,7 @@ describe('ExecutionDetailComponent audit tab', () => {
     expect(rows()[2]).toContain('rejected: destroyed');
     expect(rows()[2]).toContain('"again"');
     expect(el().querySelector('.au-more')).toBeNull();
-    const router = TestBed.inject(Router) as any;
-    (el().querySelector('.au-activities') as HTMLButtonElement).click();
-    expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'activities']);
+    expect(tabBtn().querySelector('.ex-tab-count').textContent).toBe('3');
     discardPeriodicTasks();
   }));
 

@@ -66,6 +66,7 @@ describe('ExecutionDetailComponent controls', () => {
       get: jasmine.createSpy('get').and.returnValue(of(d)),
       state: jasmine.createSpy('state').and.returnValue(of({ step_seq: 1, partial: false, vars: [] })),
       history: jasmine.createSpy('history').and.returnValue(of([])),
+      audit: jasmine.createSpy('audit').and.returnValue(of({ entries: [], next_cursor: null })),
       stop: jasmine.createSpy('stop').and.returnValue(of({ status: 'stopping' })),
       destroy: jasmine.createSpy('destroy').and.returnValue(of({ status: 'destroyed', close: 'skipped' })),
     };

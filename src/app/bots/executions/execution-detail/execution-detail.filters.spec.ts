@@ -69,6 +69,7 @@ describe('ExecutionDetailComponent timeline filters (feedback 2026-11-13 item 6)
       get: jasmine.createSpy('get').and.returnValue(of(d)),
       state: jasmine.createSpy('state').and.returnValue(of({ step_seq: 1, partial: false, vars: [] })),
       history: jasmine.createSpy('history').and.returnValue(of([])),
+      audit: jasmine.createSpy('audit').and.returnValue(of({ entries: [], next_cursor: null })),
     };
     const perms$ = new Subject<any>();
     TestBed.configureTestingModule({

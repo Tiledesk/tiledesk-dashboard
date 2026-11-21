@@ -66,10 +66,10 @@
           [disabled]="!canAttachMore"
           (click)="openFilePicker()"
           matTooltipClass="custom-mat-tooltip"
-          [matTooltip]="'VibeCoderUploadFilesTooltip' | translate:{ max: maxAttachments, file_size_limit: maxFileMb }"
+          [matTooltip]="'VibeCoderUploadFilesTooltip' | translate:{ max: maxAttachments, file_size_limit: maxFileMb, total_size_limit: maxTotalMb }"
           matTooltipPosition="above"
           matTooltipHideDelay="100"
-          [attr.aria-label]="'VibeCoderUploadFilesTooltip' | translate:{ max: maxAttachments, file_size_limit: maxFileMb }">
+          [attr.aria-label]="'VibeCoderUploadFilesTooltip' | translate:{ max: maxAttachments, file_size_limit: maxFileMb, total_size_limit: maxTotalMb }">
           <span class="material-icons" aria-hidden="true">add</span>
         </button>
       </ng-container>

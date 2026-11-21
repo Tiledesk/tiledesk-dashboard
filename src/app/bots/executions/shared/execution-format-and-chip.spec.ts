@@ -29,17 +29,13 @@ describe('ExecutionStatusChipComponent', () => {
     });
   });
 
-  it('destroyed is struck through, running is not', () => {
-    const style = (status: string) => {
-      const f = TestBed.createComponent(ExecutionStatusChipComponent);
-      f.componentInstance.status = status;
-      f.detectChanges();
-      document.body.appendChild(f.nativeElement);
-      const s = getComputedStyle(f.nativeElement.querySelector('.chip')).textDecorationLine;
-      f.nativeElement.remove();
-      return s;
-    };
-    expect(style('destroyed')).toContain('line-through');
-    expect(style('running')).not.toContain('line-through');
+  it('destroyed is not struck through', () => {
+    const f = TestBed.createComponent(ExecutionStatusChipComponent);
+    f.componentInstance.status = 'destroyed';
+    f.detectChanges();
+    document.body.appendChild(f.nativeElement);
+    const s = getComputedStyle(f.nativeElement.querySelector('.chip')).textDecorationLine;
+    f.nativeElement.remove();
+    expect(s).not.toContain('line-through');
   });
 });

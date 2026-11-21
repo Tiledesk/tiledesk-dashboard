@@ -2919,7 +2919,7 @@
         "AuthGoogle": "Google",
         "AuthManual": "OAuth (manuel)",
         "AuthOAuthHint": "Sunucu, MCP sunucusunun OAuth sağlayıcısını otomatik olarak bulur",
-        "Scopes": "Kapsamlar",
+        "Scopes": "Scopes",
         "ScopePlaceholder": "Bir kapsam yazın ve Enter'a basın",
         "ScopeAddHint": "Her kapsamı eklemek için Enter'a basın. Eklenenler etiket olarak görünür.",
         "RemoveScope": "Kapsamı kaldır",
@@ -3969,8 +3969,9 @@
     "VibeCoderCreateAriaReady": "Oluştur",
     "VibeCoderCreateAriaDisabled": "Oluşturmak için bir açıklama girin",
     "VibeCoderPromptRequired": "AI agent’ın ne yapması gerektiğini yazın",
-    "VibeCoderUploadFilesTooltip": "En fazla {{max}} dosya. Her dosya {{file_size_limit}} MB’yi aşmamalıdır.",
+    "VibeCoderUploadFilesTooltip": "En fazla {{max}} dosya. Her dosya {{file_size_limit}} MB’yi aşmamalıdır. Toplam boyut {{total_size_limit}} MB’yi aşmamalıdır.",
     "VibeCoderMaxFilesReached": "En fazla {{max}} dosya ekleyebilirsiniz",
+    "VibeCoderMaxTotalSize": "Ekler toplamda {{max}} MB’yi aşamaz",
     "VibeCoderUploading": "Yükleniyor…",
     "VibeCoderUploadFailed": "Yükleme başarısız",
     "VibeCoderRemoveAttachment": "Dosyayı kaldır",
@@ -3984,5 +3985,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Ödeme yöntemi",
-    "ContactUsToChangeYourPaymentMethod": "Ödeme yönteminizi değiştirmek için bizimle iletişime geçin"
+    "ContactUsToChangeYourPaymentMethod": "Ödeme yönteminizi değiştirmek için bizimle iletişime geçin",
+    "Executions": {
+        "NotConfigured": "Yürütmeler bu ortam için yapılandırılmamış.",
+        "Executions": "Yürütmeler",
+        "AllExecutions": "Tüm yürütmeler",
+        "View": {
+            "Label": "Görünüm",
+            "list": "Liste",
+            "graph": "Graf"
+        },
+        "AllAgents": "Tüm ajanlar",
+        "SearchId": "Yürütme kimliği ara…",
+        "Trigger": "Tetikleyici",
+        "Triggers": {
+            "all": "Tüm tetikleyiciler",
+            "unattended": "Otomatik tetikleyiciler",
+            "scheduled": "zamanlanmış",
+            "webhook": "webhook",
+            "trigger": "bağlayıcı tetikleyicisi",
+            "automation": "otomasyon",
+            "widget": "widget",
+            "channel": "kanal"
+        },
+        "StatusLabel": "Durum",
+        "AnyStatus": "Herhangi bir durum",
+        "Status": {
+            "running": "çalışıyor",
+            "waiting": "bekliyor",
+            "stopping": "duraklatılıyor",
+            "stopped": "duraklatıldı",
+            "failed": "başarısız",
+            "completed": "tamamlandı",
+            "destroyed": "yok edildi"
+        },
+        "WithFailureConditions": "Hata koşullarıyla",
+        "TestRuns": "Test yürütmeleri",
+        "RangeLabel": "Dönem",
+        "Range": {
+            "now": "Şimdi",
+            "1h": "Son saat",
+            "24h": "Son 24 saat",
+            "7d": "Son 7 gün",
+            "30d": "Son 30 gün"
+        },
+        "Refresh": "Yenile",
+        "LoadError": "Yürütmeler yüklenemedi.",
+        "Retry": "Yeniden dene",
+        "TestBadge": "test",
+        "TraceIncomplete": "İz eksik",
+        "ErrorsMark": "hatalar",
+        "ErrorsMarkTooltip": "{{n}} eylem işlenmedi: akış bozuldu",
+        "EmptyFiltered": "Bu filtrelere uyan yürütme yok",
+        "ClearFilters": "Filtreleri temizle",
+        "EmptyNow": "Şu anda çalışan veya duraklatılmış bir şey yok. Tamamlanan yürütmeleri de görmek için daha uzun bir dönem seçin.",
+        "EmptyNone": "Bu ajan için henüz yürütme yok. Çalıştığında burada görünür.",
+        "ShowAllTriggers": "Tüm tetikleyicileri göster",
+        "Loading": "Yükleniyor…",
+        "LoadMore": "Daha fazla yükle",
+        "Columns": {
+            "Status": "Durum",
+            "Agent": "Ajan",
+            "Trigger": "Tetikleyici",
+            "Started": "Başlatıldı",
+            "Blocks": "Bloklar",
+            "FailureConditions": "Hata koş.",
+            "VarsChanged": "Değişen öznitelikler",
+            "Duration": "Süre"
+        },
+        "UpdatedSeconds": "{{n}} sn önce güncellendi",
+        "UpdatedMinutes": "{{n}} dk önce güncellendi",
+        "Cards": {
+        "running": "Çalışan",
+        "waiting": "Bekleyen",
+        "stopped": "Duraklatılan",
+        "failed": "Başarısız",
+        "with_errors": "Hatalı",
+        "completed": "Tamamlanan",
+        "destroyed": "Yok edilen"
+        },
+        "OpenExecution": "Yürütmeyi görüntüle {{id}}",
+        "Detail": {
+            "Execution": "Yürütme",
+            "ViewConversation": "Görüşmeyi görüntüle"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Faaliyetleri aç"
+        }
+}
 }

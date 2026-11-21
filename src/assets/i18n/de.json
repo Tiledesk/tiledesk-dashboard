@@ -3758,8 +3758,9 @@
     "VibeCoderCreateAriaReady": "Erstellen",
     "VibeCoderCreateAriaDisabled": "Geben Sie eine Beschreibung ein, um zu erstellen",
     "VibeCoderPromptRequired": "Schreibe, was der AI-Agent tun soll",
-    "VibeCoderUploadFilesTooltip": "Maximal {{max}} Dateien. Jede Datei darf {{file_size_limit}} MB nicht überschreiten.",
+    "VibeCoderUploadFilesTooltip": "Maximal {{max}} Dateien. Jede Datei darf {{file_size_limit}} MB nicht überschreiten. Die Gesamtgröße darf {{total_size_limit}} MB nicht überschreiten.",
     "VibeCoderMaxFilesReached": "Sie können bis zu {{max}} Dateien anhängen",
+    "VibeCoderMaxTotalSize": "Anhänge dürfen insgesamt {{max}} MB nicht überschreiten",
     "VibeCoderUploading": "Wird hochgeladen…",
     "VibeCoderUploadFailed": "Upload fehlgeschlagen",
     "VibeCoderRemoveAttachment": "Datei entfernen",
@@ -3773,5 +3774,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Zahlungsmethode",
-    "ContactUsToChangeYourPaymentMethod": "Kontaktieren Sie uns, um Ihre Zahlungsmethode zu ändern"
+    "ContactUsToChangeYourPaymentMethod": "Kontaktieren Sie uns, um Ihre Zahlungsmethode zu ändern",
+    "Executions": {
+        "NotConfigured": "Ausführungen sind für diese Umgebung nicht konfiguriert.",
+        "Executions": "Ausführungen",
+        "AllExecutions": "Alle Ausführungen",
+        "View": {
+            "Label": "Ansicht",
+            "list": "Liste",
+            "graph": "Graph"
+        },
+        "AllAgents": "Alle Agenten",
+        "SearchId": "Ausführungs-ID suchen…",
+        "Trigger": "Trigger",
+        "Triggers": {
+            "all": "Alle Trigger",
+            "unattended": "Unbeaufsichtigte Trigger",
+            "scheduled": "geplant",
+            "webhook": "webhook",
+            "trigger": "Connector-Trigger",
+            "automation": "Automatisierung",
+            "widget": "widget",
+            "channel": "Kanal"
+        },
+        "StatusLabel": "Status",
+        "AnyStatus": "Beliebiger Status",
+        "Status": {
+            "running": "läuft",
+            "waiting": "wartet",
+            "stopping": "wird pausiert",
+            "stopped": "pausiert",
+            "failed": "fehlgeschlagen",
+            "completed": "abgeschlossen",
+            "destroyed": "zerstört"
+        },
+        "WithFailureConditions": "Mit Fehlerbedingungen",
+        "TestRuns": "Testausführungen",
+        "RangeLabel": "Zeitraum",
+        "Range": {
+            "now": "Jetzt",
+            "1h": "Letzte Stunde",
+            "24h": "Letzte 24 Stunden",
+            "7d": "Letzte 7 Tage",
+            "30d": "Letzte 30 Tage"
+        },
+        "Refresh": "Aktualisieren",
+        "LoadError": "Die Ausführungen konnten nicht geladen werden.",
+        "Retry": "Erneut versuchen",
+        "TestBadge": "test",
+        "TraceIncomplete": "Trace unvollständig",
+        "ErrorsMark": "Fehler",
+        "ErrorsMarkTooltip": "{{n}} Aktionen nicht verarbeitet: der Flow wurde beeinträchtigt",
+        "EmptyFiltered": "Keine Ausführungen entsprechen diesen Filtern",
+        "ClearFilters": "Filter zurücksetzen",
+        "EmptyNow": "Gerade läuft nichts und nichts ist pausiert. Wählen Sie einen längeren Zeitraum, um auch die abgeschlossenen Ausführungen zu sehen.",
+        "EmptyNone": "Noch keine Ausführungen für diesen Agenten. Sie erscheinen hier, wenn er ausgeführt wird.",
+        "ShowAllTriggers": "Alle Trigger anzeigen",
+        "Loading": "Wird geladen…",
+        "LoadMore": "Mehr laden",
+        "Columns": {
+            "Status": "Status",
+            "Agent": "Agent",
+            "Trigger": "Trigger",
+            "Started": "Gestartet",
+            "Blocks": "Blöcke",
+            "FailureConditions": "Fehlerbed.",
+            "VarsChanged": "Geänderte Attribute",
+            "Duration": "Dauer"
+        },
+        "UpdatedSeconds": "Vor {{n}} s aktualisiert",
+        "UpdatedMinutes": "Vor {{n}} Min. aktualisiert",
+        "Cards": {
+        "running": "Laufende",
+        "waiting": "Wartende",
+        "stopped": "Pausierte",
+        "failed": "Fehlgeschlagene",
+        "with_errors": "Mit Fehlern",
+        "completed": "Abgeschlossene",
+        "destroyed": "Zerstörte"
+        },
+        "OpenExecution": "Ausführung {{id}} anzeigen",
+        "Detail": {
+            "Execution": "Ausführung",
+            "ViewConversation": "Unterhaltung anzeigen"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Aktivitäten öffnen"
+        }
+}
 }

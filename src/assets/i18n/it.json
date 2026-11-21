@@ -2943,7 +2943,7 @@
         "AuthGoogle": "Google",
         "AuthManual": "OAuth (manuale)",
         "AuthOAuthHint": "Il server trova automaticamente il provider OAuth del server MCP",
-        "Scopes": "Scope",
+        "Scopes": "Scopes",
         "ScopePlaceholder": "Scrivi uno scope e premi Invio",
         "ScopeAddHint": "Premi Invio per aggiungere ogni scope. Quelli già aggiunti restano visibili come etichette.",
         "RemoveScope": "Rimuovi scope",
@@ -3785,8 +3785,9 @@
     "VibeCoderCreateAriaReady": "Crea",
     "VibeCoderCreateAriaDisabled": "Inserisci una descrizione per creare",
     "VibeCoderPromptRequired": "Scrivi cosa deve fare l’AI agent",
-    "VibeCoderUploadFilesTooltip": "Massimo {{max}} file. Ogni file non deve superare {{file_size_limit}} MB.",
+    "VibeCoderUploadFilesTooltip": "Massimo {{max}} file. Ogni file non deve superare {{file_size_limit}} MB. La dimensione totale non deve superare {{total_size_limit}} MB.",
     "VibeCoderMaxFilesReached": "Puoi allegare al massimo {{max}} file",
+    "VibeCoderMaxTotalSize": "Gli allegati non possono superare {{max}} MB in totale",
     "VibeCoderUploading": "Caricamento…",
     "VibeCoderUploadFailed": "Caricamento non riuscito",
     "VibeCoderRemoveAttachment": "Rimuovi file",
@@ -3843,7 +3844,7 @@
                 "gray": "Distrutte"
             }
         },
-        "OpenExecution": "Esecuzione ↗",
+        "OpenExecution": "Visualizza esecuzione {{id}}",
         "ViewExecutions": "Vedi esecuzioni",
         "Executions": "Esecuzioni",
         "AllExecutions": "Tutte le esecuzioni",
@@ -3905,6 +3906,7 @@
             "interrupted": "interrotto"
         },
         "Detail": {
+            "PageTitle": "Dettaglio esecuzione",
             "Breadcrumb": "Percorso",
             "InvalidId": "Questo id di esecuzione non è valido.",
             "LoadError": "Impossibile caricare questa esecuzione.",
@@ -3913,6 +3915,7 @@
             "Execution": "Esecuzione",
             "Started": "avviata",
             "Conversation": "conversazione",
+            "ViewConversation": "Visualizza conversazione",
             "NoConversation": "nessuna conversazione (automazione)",
             "Lineage": {
                 "parent": "padre",
@@ -3986,6 +3989,7 @@
             "Title": "Audit",
             "Hint": "Chi ha fatto cosa su questa esecuzione, dalla più recente",
             "OpenActivities": "Apri in Attività",
+            "OpenActivitiesPage": "Apri Attività",
             "Loading": "Caricamento…",
             "LoadError": "Impossibile caricare l'audit",
             "Empty": "Nessuna voce di audit per questa esecuzione",

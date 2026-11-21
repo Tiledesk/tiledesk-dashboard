@@ -19,7 +19,7 @@ import { DepartmentService } from '../../../services/department.service';
 import { UsersService } from '../../../services/users.service';
 import { FaqKbService } from '../../../services/faq-kb.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 
 describe('SentimentComponent', () => {
   let component: SentimentComponent;

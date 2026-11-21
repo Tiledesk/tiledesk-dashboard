@@ -32,7 +32,7 @@ import { LoadingSpinnerComponent } from 'app/ui/loading-spinner/loading-spinner.
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule, HttpTestingController, RequestMatch, TestRequest } from '@angular/common/http/testing';
-import { AnalyticsService } from './analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 import { ResponseTimesComponent } from './metrics/responsetimes/responsetimes.component';
 
 describe('AnalyticsComponent', () => {

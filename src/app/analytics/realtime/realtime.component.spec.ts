@@ -18,7 +18,7 @@ import { AppConfigService } from '../../services/app-config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DepartmentService } from '../../services/department.service';
 import { WsRequestsService } from '../../services/websocket/ws-requests.service';
-import { AnalyticsService } from '../analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 
 
 describe('RealtimeComponent', () => {

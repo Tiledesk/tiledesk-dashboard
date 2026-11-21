@@ -17,7 +17,7 @@ import { RouterTestingModule } from '@angular/router/testing'; // Error: StaticI
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AppConfigService } from '../../../services/app-config.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { AnalyticsService } from 'app/analytics/analytics-service/analytics.service';
+import { AnalyticsService } from 'app/services/analytics.service';
 
 describe('VisitorsAnalyticsComponent', () => {
   let component: VisitorsAnalyticsComponent;

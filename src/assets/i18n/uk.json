@@ -2918,7 +2918,7 @@
         "AuthGoogle": "Google",
         "AuthManual": "OAuth (вручну)",
         "AuthOAuthHint": "Сервер автоматично знаходить постачальника OAuth для сервера MCP",
-        "Scopes": "Області доступу",
+        "Scopes": "Scopes",
         "ScopePlaceholder": "Введіть область доступу і натисніть Enter",
         "ScopeAddHint": "Натисніть Enter, щоб додати кожну область доступу. Уже додані залишаються видимими як мітки.",
         "RemoveScope": "Видалити область доступу",
@@ -4102,8 +4102,9 @@
     "VibeCoderCreateAriaReady": "Створити",
     "VibeCoderCreateAriaDisabled": "Введіть опис, щоб створити",
     "VibeCoderPromptRequired": "Напишіть, що має робити AI‑агент",
-    "VibeCoderUploadFilesTooltip": "Не більше {{max}} файлів. Кожен файл не повинен перевищувати {{file_size_limit}} МБ.",
+    "VibeCoderUploadFilesTooltip": "Не більше {{max}} файлів. Кожен файл не повинен перевищувати {{file_size_limit}} МБ. Загальний розмір не повинен перевищувати {{total_size_limit}} МБ.",
     "VibeCoderMaxFilesReached": "Можна додати не більше {{max}} файлів",
+    "VibeCoderMaxTotalSize": "Вкладення не можуть перевищувати {{max}} МБ загалом",
     "VibeCoderUploading": "Завантаження…",
     "VibeCoderUploadFailed": "Помилка завантаження",
     "VibeCoderRemoveAttachment": "Видалити файл",
@@ -4117,5 +4118,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Спосіб оплати",
-    "ContactUsToChangeYourPaymentMethod": "Зв’яжіться з нами, щоб змінити спосіб оплати"
+    "ContactUsToChangeYourPaymentMethod": "Зв’яжіться з нами, щоб змінити спосіб оплати",
+    "Executions": {
+        "NotConfigured": "Виконання не налаштовані для цього середовища.",
+        "Executions": "Виконання",
+        "AllExecutions": "Усі виконання",
+        "View": {
+            "Label": "Вигляд",
+            "list": "Список",
+            "graph": "Граф"
+        },
+        "AllAgents": "Усі агенти",
+        "SearchId": "Пошук id виконання…",
+        "Trigger": "Тригер",
+        "Triggers": {
+            "all": "Усі тригери",
+            "unattended": "Автоматичні тригери",
+            "scheduled": "за розкладом",
+            "webhook": "webhook",
+            "trigger": "тригер конектора",
+            "automation": "автоматизація",
+            "widget": "widget",
+            "channel": "канал"
+        },
+        "StatusLabel": "Статус",
+        "AnyStatus": "Будь-який статус",
+        "Status": {
+            "running": "виконується",
+            "waiting": "очікування",
+            "stopping": "призупинення",
+            "stopped": "на паузі",
+            "failed": "помилка",
+            "completed": "завершено",
+            "destroyed": "знищено"
+        },
+        "WithFailureConditions": "З умовами помилки",
+        "TestRuns": "Тестові виконання",
+        "RangeLabel": "Період",
+        "Range": {
+            "now": "Зараз",
+            "1h": "Остання година",
+            "24h": "Останні 24 години",
+            "7d": "Останні 7 днів",
+            "30d": "Останні 30 днів"
+        },
+        "Refresh": "Оновити",
+        "LoadError": "Не вдалося завантажити виконання.",
+        "Retry": "Повторити",
+        "TestBadge": "тест",
+        "TraceIncomplete": "Трасування неповне",
+        "ErrorsMark": "помилки",
+        "ErrorsMarkTooltip": "{{n}} дій не оброблено: потік було порушено",
+        "EmptyFiltered": "Жодне виконання не відповідає цим фільтрам",
+        "ClearFilters": "Скинути фільтри",
+        "EmptyNow": "Зараз нічого не виконується і не на паузі. Оберіть довший період, щоб побачити й завершені виконання.",
+        "EmptyNone": "Для цього агента ще немає виконань. Вони з’являться тут, коли його буде запущено.",
+        "ShowAllTriggers": "Показати всі тригери",
+        "Loading": "Завантаження…",
+        "LoadMore": "Завантажити ще",
+        "Columns": {
+            "Status": "Статус",
+            "Agent": "Агент",
+            "Trigger": "Тригер",
+            "Started": "Запущено",
+            "Blocks": "Блоки",
+            "FailureConditions": "Ум. помилки",
+            "VarsChanged": "Змінені атрибути",
+            "Duration": "Тривалість"
+        },
+        "UpdatedSeconds": "Оновлено {{n}} с тому",
+        "UpdatedMinutes": "Оновлено {{n}} хв тому",
+        "Cards": {
+        "running": "Виконуються",
+        "waiting": "В очікуванні",
+        "stopped": "На паузі",
+        "failed": "З помилкою",
+        "with_errors": "З помилками",
+        "completed": "Завершені",
+        "destroyed": "Знищені"
+        },
+        "OpenExecution": "Переглянути виконання {{id}}",
+        "Detail": {
+            "Execution": "Виконання",
+            "ViewConversation": "Переглянути розмову"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Відкрити діяльності"
+        }
+}
 }

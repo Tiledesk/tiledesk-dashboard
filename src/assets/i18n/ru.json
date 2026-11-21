@@ -2918,7 +2918,7 @@
         "AuthGoogle": "Google",
         "AuthManual": "OAuth (вручную)",
         "AuthOAuthHint": "Сервер автоматически находит поставщика OAuth для сервера MCP",
-        "Scopes": "Области доступа",
+        "Scopes": "Scopes",
         "ScopePlaceholder": "Введите область доступа и нажмите Enter",
         "ScopeAddHint": "Нажмите Enter, чтобы добавить каждую область доступа. Уже добавленные видны как метки.",
         "RemoveScope": "Удалить область доступа",
@@ -3967,8 +3967,9 @@
     "VibeCoderCreateAriaReady": "Создать",
     "VibeCoderCreateAriaDisabled": "Введите описание, чтобы создать",
     "VibeCoderPromptRequired": "Напишите, что должен делать AI‑агент",
-    "VibeCoderUploadFilesTooltip": "Не более {{max}} файлов. Каждый файл не должен превышать {{file_size_limit}} МБ.",
+    "VibeCoderUploadFilesTooltip": "Не более {{max}} файлов. Каждый файл не должен превышать {{file_size_limit}} МБ. Общий размер не должен превышать {{total_size_limit}} МБ.",
     "VibeCoderMaxFilesReached": "Можно прикрепить не более {{max}} файлов",
+    "VibeCoderMaxTotalSize": "Вложения не могут превышать {{max}} МБ в сумме",
     "VibeCoderUploading": "Загрузка…",
     "VibeCoderUploadFailed": "Ошибка загрузки",
     "VibeCoderRemoveAttachment": "Удалить файл",
@@ -3982,5 +3983,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Способ оплаты",
-    "ContactUsToChangeYourPaymentMethod": "Свяжитесь с нами, чтобы изменить способ оплаты"
+    "ContactUsToChangeYourPaymentMethod": "Свяжитесь с нами, чтобы изменить способ оплаты",
+    "Executions": {
+        "NotConfigured": "Выполнения не настроены для этой среды.",
+        "Executions": "Выполнения",
+        "AllExecutions": "Все выполнения",
+        "View": {
+            "Label": "Вид",
+            "list": "Список",
+            "graph": "Граф"
+        },
+        "AllAgents": "Все агенты",
+        "SearchId": "Поиск id выполнения…",
+        "Trigger": "Триггер",
+        "Triggers": {
+            "all": "Все триггеры",
+            "unattended": "Автоматические триггеры",
+            "scheduled": "по расписанию",
+            "webhook": "webhook",
+            "trigger": "триггер коннектора",
+            "automation": "автоматизация",
+            "widget": "widget",
+            "channel": "канал"
+        },
+        "StatusLabel": "Статус",
+        "AnyStatus": "Любой статус",
+        "Status": {
+            "running": "выполняется",
+            "waiting": "ожидание",
+            "stopping": "приостановка",
+            "stopped": "на паузе",
+            "failed": "ошибка",
+            "completed": "завершено",
+            "destroyed": "уничтожено"
+        },
+        "WithFailureConditions": "С условиями ошибки",
+        "TestRuns": "Тестовые выполнения",
+        "RangeLabel": "Период",
+        "Range": {
+            "now": "Сейчас",
+            "1h": "Последний час",
+            "24h": "Последние 24 часа",
+            "7d": "Последние 7 дней",
+            "30d": "Последние 30 дней"
+        },
+        "Refresh": "Обновить",
+        "LoadError": "Не удалось загрузить выполнения.",
+        "Retry": "Повторить",
+        "TestBadge": "тест",
+        "TraceIncomplete": "Трассировка неполная",
+        "ErrorsMark": "ошибки",
+        "ErrorsMarkTooltip": "{{n}} действий не обработано: поток был нарушен",
+        "EmptyFiltered": "Нет выполнений, соответствующих этим фильтрам",
+        "ClearFilters": "Сбросить фильтры",
+        "EmptyNow": "Сейчас ничего не выполняется и не на паузе. Выберите более длинный период, чтобы увидеть и завершённые выполнения.",
+        "EmptyNone": "Для этого агента ещё нет выполнений. Они появятся здесь, когда он будет запущен.",
+        "ShowAllTriggers": "Показать все триггеры",
+        "Loading": "Загрузка…",
+        "LoadMore": "Загрузить ещё",
+        "Columns": {
+            "Status": "Статус",
+            "Agent": "Агент",
+            "Trigger": "Триггер",
+            "Started": "Запущено",
+            "Blocks": "Блоки",
+            "FailureConditions": "Усл. ошибки",
+            "VarsChanged": "Изменённые атрибуты",
+            "Duration": "Длительность"
+        },
+        "UpdatedSeconds": "Обновлено {{n}} с назад",
+        "UpdatedMinutes": "Обновлено {{n}} мин назад",
+        "Cards": {
+        "running": "Выполняются",
+        "waiting": "В ожидании",
+        "stopped": "На паузе",
+        "failed": "С ошибкой",
+        "with_errors": "С ошибками",
+        "completed": "Завершены",
+        "destroyed": "Уничтожены"
+        },
+        "OpenExecution": "Открыть выполнение {{id}}",
+        "Detail": {
+            "Execution": "Выполнение",
+            "ViewConversation": "Открыть диалог"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Открыть виды деятельности"
+        }
+}
 }

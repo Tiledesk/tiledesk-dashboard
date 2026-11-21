@@ -1418,3 +1418,11 @@ input[type="checkbox"]:disabled {
   background-color: #1a73e8;
   pointer-events: none;
 }
+
+// The tab bar lives in the content column, so the flows sidebar keeps its full height.
+agent-exec-tabs.bots-list-tabs {
+  float: left;
+  width: auto;
+  margin: 0;
+}
+

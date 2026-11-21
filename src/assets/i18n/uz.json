@@ -2917,7 +2917,7 @@
         "AuthGoogle": "Google",
         "AuthManual": "OAuth (qoʻlda)",
         "AuthOAuthHint": "Server MCP serverining OAuth provayderini avtomatik topadi",
-        "Scopes": "Ruxsat doiralari",
+        "Scopes": "Scopes",
         "ScopePlaceholder": "Doira yozing va Enter bosing",
         "ScopeAddHint": "Har bir doirani qoʻshish uchun Enter bosing. Qoʻshilganlari yorliq sifatida koʻrinadi.",
         "RemoveScope": "Doirani olib tashlash",
@@ -4101,8 +4101,9 @@
     "VibeCoderCreateAriaReady": "Yaratish",
     "VibeCoderCreateAriaDisabled": "Yaratish uchun tavsif kiriting",
     "VibeCoderPromptRequired": "AI agent nima qilishi kerakligini yozing",
-    "VibeCoderUploadFilesTooltip": "Maksimal {{max}} fayl. Har bir fayl {{file_size_limit}} MB dan oshmasligi kerak.",
+    "VibeCoderUploadFilesTooltip": "Maksimal {{max}} fayl. Har bir fayl {{file_size_limit}} MB dan oshmasligi kerak. Umumiy hajm {{total_size_limit}} MB dan oshmasligi kerak.",
     "VibeCoderMaxFilesReached": "Eng ko‘pi {{max}} fayl biriktira olasiz",
+    "VibeCoderMaxTotalSize": "Ilovalar jami {{max}} MB dan oshmasligi kerak",
     "VibeCoderUploading": "Yuklanmoqda…",
     "VibeCoderUploadFailed": "Yuklash muvaffaqiyatsiz",
     "VibeCoderRemoveAttachment": "Faylni olib tashlash",
@@ -4116,5 +4117,92 @@
     "AIAgentPromptHint": "Describe it and the AI builds the flow: you find it on the canvas, where you can refine it by chatting.",
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "To‘lov usuli",
-    "ContactUsToChangeYourPaymentMethod": "To‘lov usulini o‘zgartirish uchun biz bilan bog‘laning"
+    "ContactUsToChangeYourPaymentMethod": "To‘lov usulini o‘zgartirish uchun biz bilan bog‘laning",
+    "Executions": {
+        "NotConfigured": "Bajarilishlar bu muhit uchun sozlanmagan.",
+        "Executions": "Bajarilishlar",
+        "AllExecutions": "Barcha bajarilishlar",
+        "View": {
+            "Label": "Ko‘rinish",
+            "list": "Ro‘yxat",
+            "graph": "Graf"
+        },
+        "AllAgents": "Barcha agentlar",
+        "SearchId": "Bajarilish identifikatorini qidirish…",
+        "Trigger": "Trigger",
+        "Triggers": {
+            "all": "Barcha triggerlar",
+            "unattended": "Avtomatik triggerlar",
+            "scheduled": "rejalashtirilgan",
+            "webhook": "webhook",
+            "trigger": "konnektor triggeri",
+            "automation": "avtomatlashtirish",
+            "widget": "widget",
+            "channel": "kanal"
+        },
+        "StatusLabel": "Holat",
+        "AnyStatus": "Istalgan holat",
+        "Status": {
+            "running": "bajarilmoqda",
+            "waiting": "kutilmoqda",
+            "stopping": "pauza qilinmoqda",
+            "stopped": "pauzada",
+            "failed": "muvaffaqiyatsiz",
+            "completed": "tugallangan",
+            "destroyed": "yo‘q qilingan"
+        },
+        "WithFailureConditions": "Xato shartlari bilan",
+        "TestRuns": "Test bajarilishlari",
+        "RangeLabel": "Davr",
+        "Range": {
+            "now": "Hozir",
+            "1h": "So‘nggi soat",
+            "24h": "So‘nggi 24 soat",
+            "7d": "So‘nggi 7 kun",
+            "30d": "So‘nggi 30 kun"
+        },
+        "Refresh": "Yangilash",
+        "LoadError": "Bajarilishlarni yuklab bo‘lmadi.",
+        "Retry": "Qayta urinish",
+        "TestBadge": "test",
+        "TraceIncomplete": "Iz to‘liq emas",
+        "ErrorsMark": "xatolar",
+        "ErrorsMarkTooltip": "{{n}} amal bajarilmadi: oqim buzildi",
+        "EmptyFiltered": "Bu filtrlarga mos bajarilish yo‘q",
+        "ClearFilters": "Filtrlarni tozalash",
+        "EmptyNow": "Hozir hech narsa bajarilmayapti va pauzada emas. Tugallanganlarini ham ko‘rish uchun uzoqroq davrni tanlang.",
+        "EmptyNone": "Bu agent uchun hali bajarilish yo‘q. Ishga tushganda shu yerda paydo bo‘ladi.",
+        "ShowAllTriggers": "Barcha triggerlarni ko‘rsatish",
+        "Loading": "Yuklanmoqda…",
+        "LoadMore": "Yana yuklash",
+        "Columns": {
+            "Status": "Holat",
+            "Agent": "Agent",
+            "Trigger": "Trigger",
+            "Started": "Boshlangan",
+            "Blocks": "Bloklar",
+            "FailureConditions": "Xato sharti",
+            "VarsChanged": "O‘zgargan atributlar",
+            "Duration": "Davomiyligi"
+        },
+        "UpdatedSeconds": "{{n}} s oldin yangilandi",
+        "UpdatedMinutes": "{{n}} daq oldin yangilandi",
+        "Cards": {
+        "running": "Bajarilmoqda",
+        "waiting": "Kutilmoqda",
+        "stopped": "Pauzada",
+        "failed": "Muvaffaqiyatsiz",
+        "with_errors": "Xatolik bilan",
+        "completed": "Tugallangan",
+        "destroyed": "Yo‘q qilingan"
+        },
+        "OpenExecution": "Bajarilishni ko‘rish {{id}}",
+        "Detail": {
+            "Execution": "Bajarilish",
+            "ViewConversation": "Suhbatni ko‘rish"
+        },
+        "Audit": {
+            "OpenActivitiesPage": "Faoliyatlarni ochish"
+        }
+}
 }
