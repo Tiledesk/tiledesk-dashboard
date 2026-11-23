@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.10.2
+- Adjusts the visibility of some sections depending on the configuration of the installation
+
 ### 2.10.1
 - Adds Agents | Execution tabs on the agents list, the executions list and the execution detail, and removes the Conversations | Executions tabs from Monitor
 - Adds the navbar titles Conversations, Executions, and Execution detail with a back arrow when an execution is open
