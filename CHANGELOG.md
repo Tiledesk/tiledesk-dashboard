@@ -2,11 +2,10 @@
 
 ### 2.10.1
 - Adds Agents | Execution tabs on the agents list, the executions list and the execution detail, and removes the Conversations | Executions tabs from Monitor
-- Adds the navbar titles on the Monitor pages: Conversations, Executions, and Execution detail with a back arrow when an execution is open
-- Improves the Executions list: the time range is shown under the title
-- Improves the execution detail: smaller text and a tab bar aligned with the rest of the dashboard
+- Adds the navbar titles Conversations, Executions, and Execution detail with a back arrow when an execution is open
+- Improves the Execution UI: smaller text and a tab bar aligned with the rest of the dashboard
 - Improves the execution Audit tab: each row opens Activities already filtered on that action, and Activities shows a back arrow to return to the execution detail
-- Aligns the execution link in the conversation details with the rest of the conversation details sidebar
+- Aligns the execution link UI in the conversation details with the rest of the conversation details sidebar
 - Adds info icons in Roles next to the execution permissions, explaining which other permissions each one turns on (Flows, Activities), and next to the Rating permission
 - Fixes the bug: History shows the Rating column and the "Only rated conversations" filter only with the Rating permission and when the plan allows conversation ratings, as the conversation details already do
 - Limits the Vibe coder attachments to 5 MB per file and 15 MB in total (previously 10 MB per file), and the prompt to 32,000 characters (previously 2,000), aligned with the server
