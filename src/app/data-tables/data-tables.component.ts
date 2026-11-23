@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@an
 import { forkJoin, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { BrandService } from 'app/services/brand.service';
@@ -231,6 +231,7 @@ export class DataTablesComponent implements OnInit {
     private translate: TranslateService,
     private auth: AuthService,
     private route: ActivatedRoute,
+    private router: Router,
     private localDbService: LocalDbService,
     private cdr: ChangeDetectorRef,
     private roleService: RoleService,
@@ -240,7 +241,19 @@ export class DataTablesComponent implements OnInit {
     this.hideHelpLink = brand['DOCS'];
   }
 
+  /** Data Tables is available only when DTB is present in the public key and is not F */
+  private isDataTablesEnabled(): boolean {
+    const publicKey = this.appConfigService.getConfig()?.t2y12PruGU9wUtEGzBJfolMIgK;
+    const dtbKey = publicKey?.split('-').find(key => key.startsWith('DTB'));
+    return !!dtbKey && dtbKey.split(':')[1] !== 'F';
+  }
+
   ngOnInit(): void {
+    if (!this.isDataTablesEnabled()) {
+      const projectId = this.route.snapshot.paramMap.get('projectid');
+      this.router.navigate(['project/' + projectId + '/home'], { replaceUrl: true });
+      return;
+    }
     this.roleService.checkRoleForCurrentProject('datatables');
     this.dataTableMaxSizeLabel = resolveDataTableMaxSizeLabel(
       this.appConfigService.getConfig()?.defaultTableMaxSizeBytes,

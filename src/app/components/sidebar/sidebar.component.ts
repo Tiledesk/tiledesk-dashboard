@@ -267,6 +267,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
   isVisibleCNT: boolean;
   isVisibleINT: boolean;
   isVisibleAUT: boolean;
+  isVisibleDTB = false; // Data tables: shown only when DTB is present and not F
   storageBucket: string;
   baseUrl: string;
   default_dept_id: string;
@@ -1572,6 +1573,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         } else {
           this.isVisibleAUT = true;
         }
+      }
+
+      if (key.startsWith('DTB')) {
+        this.isVisibleDTB = key.split(':')[1] !== 'F';
       }
 
     });

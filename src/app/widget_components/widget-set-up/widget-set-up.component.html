@@ -3455,7 +3455,7 @@
 														<!-- ------------------------------------- -->
 														<!-- Enable / Disable Voice streaming mode -->
 														<!-- ------------------------------------- -->
-														<div class="form-group"
+														<div class="form-group" *ngIf="payIsVisible"
 															style="max-width: 640px; margin-left: -15px; margin-right: -15px; margin-top: 0px;">
 															<label
 																class="col-sm-12 control-label widget-settings-control-head-label" style="white-space: nowrap;">
@@ -3574,7 +3574,7 @@
 																</div>
 
 													
-																<div *ngIf="showVoiceStreamingButton"
+																<div *ngIf="payIsVisible && showVoiceStreamingButton"
 																	class="widget-footer-action-audio-stream"
 																	style="width: 26px;height: 26px;border-radius: 9999px;padding: 4px 3px 3px 4px;">
 																	<!-- <svg role="img" xmlns="http://www.w3.org/2000/svg" version="1.1" width="20" height="20" viewBox="0 0 30 30" fill="#fff" preserveAspectRatio="xMidYMid meet">

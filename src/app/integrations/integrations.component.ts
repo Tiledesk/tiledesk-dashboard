@@ -205,6 +205,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
     }
   }
 
+  /** Twilio Voice and ElevenLabs: the Voice integrations that depend on PAY (VXML Voice does not). */
+  isPaidVoiceIntegrationKey(key: string): boolean {
+    return key === INTEGRATIONS_KEYS.TWILIO_VOICE || key === INTEGRATIONS_KEYS.ELEVENLABS;
+  }
+
   getPayValue(): boolean {
     this.public_Key = this.appConfigService.getConfig().t2y12PruGU9wUtEGzBJfolMIgK;
     let keys = this.public_Key.split("-");
@@ -332,6 +337,12 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
       this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS: ", this.INTEGRATIONS);
 
       if (this.intName) {
+        // PAY off or missing: Twilio Voice and ElevenLabs opened from the address bar are blocked
+        if (this.isPaidVoiceIntegrationKey(this.intName) && !this.getPayValue()) {
+          this.intName = null;
+          this.router.navigate(['project/' + this.projectID + '/integrations/'], { replaceUrl: true });
+          return;
+        }
         this.onIntegrationSelect(this.INTEGRATIONS.find(i => i.key === this.intName));
         this.logger.log("[INTEGRATION-COMP] getIntegrations this.INTEGRATIONS find: ", this.INTEGRATIONS.find(i => i.key === this.intName));
       }
@@ -1187,6 +1198,11 @@ export class IntegrationsComponent implements OnInit, OnDestroy {
         if (twilio_voice_index != -1) { this.INTEGRATIONS.splice(twilio_voice_index, 1) };
         let elevenlabs_index = this.INTEGRATIONS.findIndex(i => i.key === this.INT_KEYS.ELEVENLABS);
         if (elevenlabs_index != -1) { this.INTEGRATIONS.splice(elevenlabs_index, 1) };
+      }
+
+      // No Voice integration left: the Voice section is hidden too
+      if (!this.INTEGRATIONS.some(i => i.category === INTEGRATIONS_CATEGORIES.VOICE)) {
+        this.CATEGORIES = this.CATEGORIES.filter(c => c.type !== INTEGRATIONS_CATEGORIES.VOICE);
       }
 
     }

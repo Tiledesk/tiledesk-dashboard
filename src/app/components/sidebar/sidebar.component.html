@@ -236,7 +236,7 @@
       <!-- Data tables  -->
       <!-- ----------------------------- -->
       <ng-container *ngIf="PERMISSION_TO_VIEW_DATATABLES">
-        <ng-container *ngIf="USER_ROLE !== 'agent'">
+        <ng-container *ngIf="USER_ROLE !== 'agent' && isVisibleDTB">
           <div id="data-tables-anchor-wpr" *ngIf="project"
             matTooltipClass="sb-mat-tooltip"
             matTooltip="{{ 'DataTables.DataTables' | translate }}"

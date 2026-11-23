@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnChanges, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { AppConfigService } from 'app/services/app-config.service';
 
 @Component({
   selector: 'appdashboard-widget-chat',
@@ -42,13 +43,26 @@ export class WidgetChatComponent implements OnInit, OnChanges {
   chatPreviewText1: string;
   chatPreviewText2: string;
   // IS_ONBOARDING_PAGE: boolean = false;
+  /** PAY off or missing: the voice streaming button is not rendered */
+  isVisiblePAY = false;
+
   constructor(
     private router: Router,
     private elementRef: ElementRef,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private appConfigService: AppConfigService
   ) { }
 
   ngOnInit() {
+    // Same reading as getPayValue() in integrations: PAY is off when missing or PAY:F
+    this.isVisiblePAY = false;
+    const publicKey = this.appConfigService.getConfig()?.t2y12PruGU9wUtEGzBJfolMIgK;
+    if (publicKey) {
+      const payKey = publicKey.split('-').find(key => key.startsWith('PAY'));
+      if (payKey) {
+        this.isVisiblePAY = payKey.split(':')[1] !== 'F';
+      }
+    }
     //console.log('[WIDGET-CHAT-COMP] primaryColor', this.primaryColor)
     const current_url = this.router.url
     if (current_url.indexOf('onboarding') > -1) {

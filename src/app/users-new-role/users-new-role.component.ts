@@ -89,6 +89,7 @@ export class UsersNewRoleComponent implements OnInit {
   EDIT_VIEW = false;
 
   isVisiblePay: boolean;
+  isVisibleDTB = false; // Data Tables permissions: shown only when DTB is present and not F
   public_Key: string;
 
   roleId: string;
@@ -520,10 +521,19 @@ export class UsersNewRoleComponent implements OnInit {
     //   ]
     // }
   ];
-  /** Hidden when executions are not configured. The form controls stay, so a save keeps permissions already on the role. */
+  /** Hidden sections stay in the form, so a save keeps permissions already on the role. */
   get visibleSections(): PermissionSection[] {
-    if (this.executionsService && this.executionsService.isConfigured()) return this.sections;
-    return this.sections.filter(section => section.key !== 'executionsManagement');
+    const executionsConfigured = this.executionsService && this.executionsService.isConfigured();
+    return this.sections.filter(section => {
+      if (section.key === 'executionsManagement' && !executionsConfigured) {
+        return false;
+      }
+      // DTB:F or missing: the Data Tables permission section is not shown
+      if (section.key === 'DataTablesManagement' && !this.isVisibleDTB) {
+        return false;
+      }
+      return true;
+    });
   }
 
   reservedRoleNames = ['owner', 'admin', 'agent', 'user', 'guest', 'supervisor', 'teammate'];
@@ -600,6 +610,10 @@ export class UsersNewRoleComponent implements OnInit {
         } else {
           this.isVisiblePay = true;
         }
+      }
+
+      if (key.startsWith('DTB')) {
+        this.isVisibleDTB = key.split(':')[1] !== 'F';
       }
     })
   }
