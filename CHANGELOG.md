@@ -1,5 +1,11 @@
 # tiledesk-dashboard
 
+### 2.10.3
+- Refines the conversation rating in the details: removes the "Rating" title and the User / AI labels.
+- Hides the user rating in the conversations history list when the customer has not left a rating. The details always show the user row.
+- Hides the Rating column and the "Only rated conversations" filter in History when the role cannot read ratings or the plan does not include them (inactive subscription).
+- In conversation details, "Upgrade plan" on a paid plan with an inactive subscription opens a warning dialog instead of the pricing page.
+
 ### 2.10.2
 - Adjusts the visibility of some sections depending on the configuration of the installation
 
