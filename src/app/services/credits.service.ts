@@ -6,7 +6,7 @@ import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
 
-export type CreditsBillingStatus = 'active' | 'payment_failed' | 'suspended' | 'canceled';
+export type CreditsBillingStatus = 'active' | 'payment_failed' | 'suspended' | 'canceled' | 'trial' | 'trial_ended';
 
 /** One model of GET /:projectid/credits/llm-prices, credits per 1000 tokens */
 export interface CreditsLlmPrice {
@@ -24,6 +24,8 @@ export interface CreditsSummary {
   period?: { start: string; end: string };
   balance?: { included: number; extra: number; extraFrozen: boolean; available: number };
   billing?: { status: CreditsBillingStatus; courtesyUntil?: string };
+  /** only with billing status trial or trial_ended */
+  trial?: { until: string; dailyLimit: number | null; spentToday?: number };
   creditsFrom?: string;
   extraCredits?: number;
   usageCosts?: { [resource: string]: number };

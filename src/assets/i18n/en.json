@@ -2867,6 +2867,10 @@
         "RefusedText": "The credits balance of the project is not enough for this operation. Buy extra credits or wait for the next period.",
         "UnpricedRefusedTitle": "Model not available",
         "UnpricedRefusedText": "This model is not available with the Tiledesk key: choose another model or set up your own key.",
+        "TrialEndedTitle": "Trial ended",
+        "TrialEndedText": "The free trial of this project has ended. Subscribe to keep using the paid features.",
+        "DailyLimitTitle": "Daily limit reached",
+        "DailyLimitText": "The daily limit of credits of the trial has been reached. Try again tomorrow.",
         "Available": "Available credits",
         "AvailableHint": "Included credits plus extra credits",
         "IncludedCredits": "Included credits",
@@ -2880,7 +2884,9 @@
             "active": "Active",
             "payment_failed": "Payment failed",
             "suspended": "Suspended",
-            "canceled": "Canceled"
+            "canceled": "Canceled",
+            "trial": "Trial",
+            "trial_ended": "Trial ended"
         },
         "ConsumedInPeriod": "Consumed in the period",
         "PeriodConsumption": "Consumption of the period",

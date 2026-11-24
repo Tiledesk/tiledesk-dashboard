@@ -2865,6 +2865,10 @@
         "RefusedText": "Il saldo crediti del progetto non basta per questa operazione. Acquista crediti extra o attendi l'inizio del periodo successivo.",
         "UnpricedRefusedTitle": "Modello non disponibile",
         "UnpricedRefusedText": "Questo modello non è disponibile con la chiave Tiledesk: scegli un altro modello o configura la tua chiave.",
+        "TrialEndedTitle": "Prova terminata",
+        "TrialEndedText": "La prova gratuita di questo progetto è terminata. Attiva un abbonamento per continuare a usare le funzioni a pagamento.",
+        "DailyLimitTitle": "Limite giornaliero raggiunto",
+        "DailyLimitText": "Hai raggiunto il limite giornaliero di crediti della prova. Riprova domani.",
         "Available": "Crediti disponibili",
         "AvailableHint": "Crediti inclusi più crediti extra",
         "IncludedCredits": "Crediti inclusi",
@@ -2878,7 +2882,9 @@
             "active": "Attiva",
             "payment_failed": "Pagamento non riuscito",
             "suspended": "Sospesa",
-            "canceled": "Cancellata"
+            "canceled": "Cancellata",
+            "trial": "Prova",
+            "trial_ended": "Prova terminata"
         },
         "ConsumedInPeriod": "Consumati nel periodo",
         "PeriodConsumption": "Consumo del periodo",
