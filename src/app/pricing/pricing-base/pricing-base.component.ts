@@ -68,6 +68,16 @@ export class PricingBaseComponent implements OnInit {
   public tprojectprofilemane: any;
   isAppSumo: boolean
 
+  /**
+   * Credits metering: the plan limits do not apply.
+   * Read from the metering service (current project), so it is right in every subclass, also in those that never
+   * call getProjectPlan(). Not valid on the routes ProjectPlanService skips (get-chatbot, install-template,
+   * create-project-itw): there use isCreditsMetering(project) from metering.util with the project of the component.
+   */
+  get isCreditsMetering(): boolean {
+    return this.prjctPlanService.meteringService.isCredits;
+  }
+
   constructor(
     public prjctPlanService: ProjectPlanService,
     public notify: NotifyService,
