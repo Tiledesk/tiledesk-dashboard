@@ -290,6 +290,21 @@ describe('ExecutionsListComponent', () => {
       expect(text()).toContain('Executions.NotConfigured');
     });
 
+    it('shows the Agents | Executions tabs when configured and permitted', () => {
+      setup();
+      expect(fixture.nativeElement.querySelector('agent-exec-tabs')).not.toBeNull();
+    });
+
+    it('hides the Agents | Executions tabs when not configured', () => {
+      setup({ configured: false });
+      expect(fixture.nativeElement.querySelector('agent-exec-tabs')).toBeNull();
+    });
+
+    it('hides the Agents | Executions tabs without the permission', () => {
+      setup({ role: 'agent' });
+      expect(fixture.nativeElement.querySelector('agent-exec-tabs')).toBeNull();
+    });
+
     it('shows a retryable error when the list fails', () => {
       setup();
       executions.list.and.returnValue(throwError(() => new Error('boom')));
@@ -352,6 +367,12 @@ describe('ExecutionsListComponent', () => {
       expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_errors: null });
     });
 
+    it('Failed and With errors stay pressed together', () => {
+      setup({ botid: 'a1', query: { status: 'failed', has_errors: 'true' } });
+      expect(cards()[3].getAttribute('aria-pressed')).toBe('true');
+      expect(cards()[4].getAttribute('aria-pressed')).toBe('true');
+    });
+
     it('"With failure conditions" alone does not press the With errors card', () => {
       setup({ botid: 'a1', query: { has_failures: 'true' } });
       expect(cards()[4].getAttribute('aria-pressed')).not.toBe('true');
@@ -388,9 +409,10 @@ describe('ExecutionsListComponent', () => {
       expect(executions.list.calls.mostRecent().args[1].status).toBe('stopped,stopping');
     });
 
-    it('the hint names the time range (the cards follow the filters, no "every trigger" any more)', () => {
+    it('the period caption under the title names the time range (the cards follow the filters)', () => {
       setup({ query: { range: '30d' } });
-      const hint = fixture.nativeElement.querySelector('.exec-cards-hint').textContent;
+      const hint = fixture.nativeElement.querySelector('.exec-period').textContent;
+      expect(hint).toContain('Executions.RangeLabel');
       expect(hint).toContain('Executions.Range.30d');
       expect(hint).not.toContain('Executions.Triggers.all');
     });

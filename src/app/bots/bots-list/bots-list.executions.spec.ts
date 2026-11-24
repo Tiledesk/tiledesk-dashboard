@@ -76,6 +76,20 @@ describe('BotListComponent executions entry', () => {
     component.applyExecutionsPermission(role, perms);
   }
 
+  it('shows Agenti and Esecuzioni tabs when executions are available', () => {
+    setup(true, 'owner');
+    fixture.detectChanges();
+    const tabs = fixture.nativeElement.querySelector('agent-exec-tabs');
+    expect(tabs).not.toBeNull();
+    expect(tabs.getAttribute('active')).toBe('agents');
+  });
+
+  it('hides the Agenti and Esecuzioni tabs when executions are not configured', () => {
+    setup(false, 'owner');
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('agent-exec-tabs')).toBeNull();
+  });
+
   it('button hidden when not configured', () => {
     setup(false, 'owner');
     fixture.detectChanges();
@@ -88,6 +102,7 @@ describe('BotListComponent executions entry', () => {
     setup(true, 'agent');
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('.executions-btn')).toBeNull();
+    expect(fixture.nativeElement.querySelector('agent-exec-tabs')).toBeNull();
     component.loadExecutionsSummary();
     expect(executions.summary).not.toHaveBeenCalled();
   });

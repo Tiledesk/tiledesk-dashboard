@@ -6,6 +6,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MonoTypeOperatorFunction, Observable, of, Subject, Subscription, timer } from 'rxjs';
 import { catchError, map, switchMap, take, takeUntil } from 'rxjs/operators';
 import { ExecutionsService } from 'app/services/executions.service';
+import { NavigationService } from 'app/services/navigation.service';
 import { RolesService } from 'app/services/roles.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import {
@@ -13,7 +14,7 @@ import {
   AuditView, GrantInfo, ResumeAction, StateView, Step, ValueOrState, VarHistoryEntry, VarSide, VarView
 } from '../executions.models';
 import { monitorExecutionsLink } from '../execution-links';
-import { auditResultKind, auditResultLabel, auditSentence } from '../execution-audit';
+import { auditActivityVerb, auditResultKind, auditResultLabel, auditSentence } from '../execution-audit';
 import { canViewExecutionsAudit } from 'app/activities-new/utils/activity-verbs.constants';
 import { actionLabel, formatDuration } from '../shared/execution-format';
 import { StopDialogComponent, StopDialogData, StopMode } from '../shared/stop-dialog.component';
@@ -274,7 +275,10 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
   auditNext: string | null = null;
   auditLoading = false;
   auditError = false;
+  /** First page arrived: the tab can show its count before it is opened. */
+  private auditReady = false;
   readonly auditSentence = auditSentence;
+  readonly auditActivityVerb = auditActivityVerb;
   readonly auditResultLabel = auditResultLabel;
   readonly auditResultKind = auditResultKind;
   failedOnly = false;
@@ -351,11 +355,13 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     private rolesService: RolesService,
     private logger: LoggerService,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private navSvc: NavigationService
   ) { }
 
   ngOnInit() {
     this.configured = this.executionsService.isConfigured();
+    this.navSvc.onBack().pipe(takeUntil(this.destroy$)).subscribe(() => this.backToList());
 
     this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
       const valid = (v: string | null) => (v && ID_RE.test(v) ? v : null);
@@ -365,6 +371,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       this.invalid = !this.projectId || !this.executionId;
       this.resetExecution();
       if (this.started && !this.invalid) this.load$.next();
+      this.prefetchAudit();
     });
 
     this.session.remaining$.pipe(takeUntil(this.destroy$)).subscribe(s => (this.grantRemaining = s));
@@ -381,6 +388,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
       this.canViewData = this.permitted && canViewExecutionData(status.role, status.matchedPermissions);
       this.canViewAudit = this.permitted && canViewExecutionsAudit(status.role, status.matchedPermissions);
       if (!this.canViewAudit && this.tab === 'audit') this.tab = 'timeline';
+      this.prefetchAudit();
       // the role lost data access while a grant is open: close it and drop the values
       if (!this.canViewData && (this.session.active || this.grantFor)) this.endGrant(true);
       if (this.permitted && this.configured && !this.started) this.start();
@@ -443,6 +451,7 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     this.auditNext = null;
     this.auditLoading = false;
     this.auditError = false;
+    this.auditReady = false;
     if (this.tab === 'audit') this.tab = 'timeline';
     this.closeHistory();
     this.clearTrigger();
@@ -851,6 +860,23 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
 
   // ---- Audit tab ----
 
+  /**
+   * Count on the Audit tab: the rows already loaded, with a "+" when another page exists
+   * (the first page is 50, so that reads "50+"). Null until the first page has arrived.
+   */
+  get auditCountLabel(): string | null {
+    if (!this.auditReady) return null;
+    const n = this.auditEntries.length;
+    if (!n) return null;
+    return this.auditNext ? n + '+' : String(n);
+  }
+
+  /** First page, as soon as the execution and the audit permission are both known. */
+  private prefetchAudit() {
+    if (!this.configured || !this.canViewAudit || this.invalid || !this.executionId || this.auditReady || this.auditLoading) return;
+    this.loadAudit(false);
+  }
+
   /** First page (more = false, replaces the list) or the next one by `next_cursor` (appends). */
   loadAudit(more: boolean) {
     if (!this.canViewAudit || this.auditLoading || !this.executionId) return;
@@ -859,11 +885,12 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     const id = this.executionId;
     this.auditLoading = true;
     this.auditError = false;
-    this.executionsService.audit(pid, id, more ? this.auditNext : null).pipe(takeUntil(this.destroy$)).subscribe({
+    this.executionsService.audit(pid, id, more ? this.auditNext : null).pipe(takeUntil(this.reset$), takeUntil(this.destroy$)).subscribe({
       next: page => {
         if (pid !== this.projectId || id !== this.executionId) return;
         this.auditEntries = more ? [...this.auditEntries, ...page.entries] : page.entries;
         this.auditNext = page.next_cursor || null;
+        this.auditReady = true;
         this.auditLoading = false;
       },
       error: err => {
@@ -887,8 +914,13 @@ export class ExecutionDetailComponent implements OnInit, OnDestroy {
     return step ? step.block_name || null : null;
   };
 
-  goToActivities() {
-    this.router.navigate(['/project', this.projectId, 'activities']);
+  goToActivities(verb?: string) {
+    const commands = ['/project', this.projectId, 'activities'];
+    if (!verb) {
+      this.router.navigate(commands);
+      return;
+    }
+    this.router.navigate(commands, { queryParams: { activities: verb } });
   }
 
   selectStateStep(value: string) {

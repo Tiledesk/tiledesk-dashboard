@@ -102,6 +102,7 @@ describe('ExecutionDetailComponent values under a grant', () => {
         return of(triggerAnswer);
       }),
       revokeDataAccess: jasmine.createSpy('revokeDataAccess').and.returnValue(of(null)),
+      audit: jasmine.createSpy('audit').and.returnValue(of({ entries: [], next_cursor: null })),
     };
     dialogResult = null;
     dialog = { open: jasmine.createSpy('open').and.callFake(() => ({ afterClosed: () => of(dialogResult) })) };

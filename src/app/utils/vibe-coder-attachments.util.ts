@@ -1,7 +1,8 @@
-/** Limits and MIME allow-list for Home vibe-coder attachments (aligned with CDS vibe coder). */
+/** Limits and MIME allow-list for Home vibe-coder attachments (aligned with the backend). */
 
 export const VIBE_CODER_MAX_ATTACHMENTS = 5;
-export const VIBE_CODER_MAX_FILE_BYTES = 10 * 1024 * 1024; // 10 MB per file
+export const VIBE_CODER_MAX_FILE_BYTES = 5 * 1024 * 1024; // 5 MB per file
+export const VIBE_CODER_MAX_TOTAL_BYTES = 15 * 1024 * 1024; // 15 MB for all files together
 export const VIBE_CODER_UPLOAD_RETENTION_SEC = 3600;
 
 /** MIME types the CDS vibe coder accepts. */

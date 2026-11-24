@@ -1,7 +1,8 @@
+import { Location } from '@angular/common';
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDateRangePicker } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import moment from 'moment';
 import { Subject, Subscription } from 'rxjs';
@@ -11,6 +12,7 @@ import { AuthService } from 'app/core/auth.service';
 import { NotifyService } from 'app/core/notify.service';
 import { AppConfigService } from 'app/services/app-config.service';
 import { LoggerService } from 'app/services/logger/logger.service';
+import { NavigationService } from 'app/services/navigation.service';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { UsersService } from 'app/services/users.service';
@@ -95,6 +97,10 @@ import {
 } from './utils/activity-message.util';
 import { executionLink } from 'app/bots/executions/execution-links';
 
+const EXECUTION_ACTIVITY_IDS = new Set(
+  ACTIVITY_FILTER_OPTION_DEFINITIONS.filter((option) => option.groupKey === 'Executions').map((option) => option.id)
+);
+
 @Component({
   selector: 'appdashboard-activities-new',
   templateUrl: './activities-new.component.html',
@@ -147,6 +153,10 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   PERMISSION_TO_READ_LEADS: boolean;
   PERMISSION_TO_READ_KB: boolean;
   PERMISSION_TO_READ_EXECUTIONS_AUDIT = false;
+  /** EXECUTION_* verbs from ?activities=. Applied only after the audit permission is known. */
+  private routeExecutionActivities: string[] = [];
+  /** The first load waits when the URL asks for an execution verb and the role is not in yet. */
+  private holdActivitiesForAudit = false;
   browserLang: string;
   teammateMenuParticipantId: string | null = null;
   teammateMenuActivityDate: Date | null = null;
@@ -160,6 +170,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     private faqKbService: FaqKbService,
     public auth: AuthService,
     private router: Router,
+    private route: ActivatedRoute,
     private botLocalDbService: BotLocalDbService,
     private logger: LoggerService,
     private activitiesService: ActivitiesService,
@@ -170,6 +181,8 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private translate: TranslateService,
     private teammateLookup: ActivitiesTeammateLookupService,
+    private navSvc: NavigationService,
+    private location: Location,
   ) { }
 
   ngOnInit() {
@@ -181,13 +194,26 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(() => this.buildActivityFilterOptions());
     this.selectedAgentId = '';
-    this.selectedActivities = [];
-    this.queryString = `start_date=&end_date=&agent_id=&activities=&direction=${this.direction}`;
+    const fromRoute = this.activitiesFromRoute();
+    this.routeExecutionActivities = fromRoute.filter((id) => EXECUTION_ACTIVITY_IDS.has(id));
+    // Keep execution verbs out of the request until the role is known.
+    this.selectedActivities = fromRoute.filter((id) => !EXECUTION_ACTIVITY_IDS.has(id));
+    this.arrayOfSelectedActivity = this.selectedActivities.join(',');
+    this.holdActivitiesForAudit = this.routeExecutionActivities.length > 0;
+    this.queryString = `start_date=&end_date=&agent_id=&activities=${this.arrayOfSelectedActivity}&direction=${this.direction}`;
     // Wait for project before loading activities (avoids empty list on first navigation).
     this.getCurrentProject();
     this.getCurrentUser();
     this.getAllProjectUsers();
     this.listenToProjectUser();
+    this.listenToGoBack();
+  }
+
+  /** Navbar back arrow, shown when the page was opened on an execution activity. */
+  private listenToGoBack() {
+    this.navSvc.onBack()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(() => this.location.back());
   }
 
   ngOnDestroy() {
@@ -299,6 +325,7 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
         // First ready project, or project switch: load activities once URL prerequisites exist.
         if (previousProjectId !== project._id) {
           this.pageNo = 0;
+          if (this.holdActivitiesForAudit) return;
           this.getActivities();
         }
       });
@@ -1724,11 +1751,47 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
   }
 
   applyExecutionsAuditPermission(status: { role: string; matchedPermissions?: string[] }): void {
+    // role '' is the reset between projects, not a decision about the audit.
+    if (!status?.role) return;
     const allowed = canViewExecutionsAudit(status.role, status.matchedPermissions);
     const changed = allowed !== this.PERMISSION_TO_READ_EXECUTIONS_AUDIT;
     this.PERMISSION_TO_READ_EXECUTIONS_AUDIT = allowed;
     if (changed) {
       this.buildActivityFilterOptions();
+    }
+    if (this.holdActivitiesForAudit) {
+      this.holdActivitiesForAudit = false;
+      if (allowed) {
+        const merged = [...(this.selectedActivities || [])];
+        this.routeExecutionActivities.forEach((id) => {
+          if (!merged.includes(id)) merged.push(id);
+        });
+        this.selectedActivities = merged;
+        this.writeActivitiesQuery(merged);
+      }
+      if (this.projectId) {
+        this.pageNo = 0;
+        this.getActivities();
+      }
+      return;
+    }
+    if (!allowed && changed) {
+      const kept = (this.selectedActivities || []).filter((id) => !EXECUTION_ACTIVITY_IDS.has(id));
+      if (kept.length !== (this.selectedActivities || []).length) {
+        this.selectedActivities = kept;
+        this.writeActivitiesQuery(kept);
+        if (this.projectId) {
+          this.pageNo = 0;
+          this.getActivities();
+        }
+      }
+    }
+  }
+
+  private writeActivitiesQuery(ids: string[]): void {
+    this.arrayOfSelectedActivity = ids.join(',');
+    if (this.queryString && this.queryString.indexOf('activities=') !== -1) {
+      this.queryString = this.queryString.replace(/activities=[^&]*/, 'activities=' + this.arrayOfSelectedActivity);
     }
   }
 
@@ -1744,6 +1807,22 @@ export class ActivitiesNewComponent implements OnInit, OnDestroy {
     if (commands) {
       this.router.navigate(commands);
     }
+  }
+
+  /** Verbs named in ?activities=, kept only when they are real filter ids. */
+  private activitiesFromRoute(): string[] {
+    const raw = this.route.snapshot.queryParamMap.get('activities') || '';
+    const known = new Set(ACTIVITY_FILTER_OPTION_DEFINITIONS.map((option) => option.id));
+    const seen = new Set<string>();
+    const ids: string[] = [];
+    raw.split(',').forEach((part) => {
+      const id = part.trim();
+      if (id && known.has(id) && !seen.has(id)) {
+        seen.add(id);
+        ids.push(id);
+      }
+    });
+    return ids;
   }
 
   private buildActivityFilterOptions(): void {

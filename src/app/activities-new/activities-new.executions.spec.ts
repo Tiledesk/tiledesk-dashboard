@@ -197,5 +197,33 @@ describe('Activities - Executions audit rows', () => {
       expect(build('custom', ['executions_audit_read'])).toContain('EXECUTION_DESTROY');
       expect(build('agent', [])).not.toContain('EXECUTION_DESTROY');
     });
+
+    function openFromExecution(role: string, matched: string[]) {
+      const c: any = Object.create(ActivitiesNewComponent.prototype);
+      c.projectId = 'pid';
+      c.pageNo = 0;
+      c.translate = { instant: (k: string) => k };
+      c.routeExecutionActivities = ['EXECUTION_STOP_SOFT'];
+      c.selectedActivities = [];
+      c.queryString = 'start_date=&end_date=&agent_id=&activities=&direction=-1';
+      c.holdActivitiesForAudit = true;
+      c.getActivities = jasmine.createSpy('getActivities');
+      c.applyExecutionsAuditPermission({ role, matchedPermissions: matched });
+      return c;
+    }
+
+    it('does not query an execution verb without executions_audit_read', () => {
+      const c = openFromExecution('custom', ['activities_read']);
+      expect(c.selectedActivities).not.toContain('EXECUTION_STOP_SOFT');
+      expect(c.queryString).not.toContain('EXECUTION_STOP_SOFT');
+      expect(c.getActivities).toHaveBeenCalled();
+    });
+
+    it('applies the execution verb once the audit permission is known', () => {
+      const c = openFromExecution('owner', []);
+      expect(c.selectedActivities).toContain('EXECUTION_STOP_SOFT');
+      expect(c.queryString).toContain('activities=EXECUTION_STOP_SOFT');
+      expect(c.getActivities).toHaveBeenCalled();
+    });
   });
 });

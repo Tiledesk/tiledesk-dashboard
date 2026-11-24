@@ -9,6 +9,9 @@
   --exec-warn: #a15c00;
   display: block;
   color: var(--exec-fg);
+
+  // The page padding is 30px 15px. Pull the tab bar up to the navbar. On the left it lines up with the content (title and cards), not with the edge.
+  agent-exec-tabs { display: block; margin: -30px 0 8px 15px; }
 }
 
 .exec-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 16px 0; }
@@ -29,6 +32,11 @@
   }
 }
 .exec-title { font-size: 22px; font-weight: 500; margin: 0; }
+.exec-period {
+  display: inline-flex; align-items: center; gap: 4px; margin: 4px 0 0;
+  color: var(--exec-muted); font-size: 13px; font-weight: 400; line-height: 16px;
+  .material-icons-outlined { font-size: 16px; width: 16px; height: 16px; line-height: 16px; }
+}
 
 .exec-input {
   height: 36px; border: 1px solid var(--exec-line-strong); border-radius: 8px; background: #fff;
@@ -42,7 +50,6 @@
 .exec-filter-status { width: 170px; }
 
 .exec-cards { margin-bottom: 14px; }
-.exec-cards-hint { display: block; margin-top: 6px; color: var(--exec-muted); font-size: 12px; }
 
 .exec-filters { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 12px; }
 .exec-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-size: 13px; }
@@ -81,7 +88,7 @@
 .exec-warn-icon { color: var(--exec-warn); font-size: 16px; width: 16px; height: 16px; margin-left: 4px; vertical-align: middle; }
 .exec-chevron { color: var(--exec-muted); text-align: right; }
 
-.exec-empty { padding: 40px 16px; text-align: center; color: var(--exec-muted); }
+.exec-empty { padding: 40px 16px; text-align: center; color: var(--exec-muted); font-size: 14px; }
 .exec-link { border: 0; background: none; color: var(--exec-accent); cursor: pointer; padding: 0 4px; }
 .exec-more { text-align: center; padding: 12px; }
 .exec-btn { border: 1px solid var(--exec-line-strong); background: #fff; border-radius: 8px; padding: 7px 14px; font-size: 13px; cursor: pointer; }

@@ -53,7 +53,7 @@ import { isRequestVisibleToAgent } from 'app/utils/request-visibility.util';
 import { CreditsService, CreditsSummary } from 'app/services/credits.service';
 import { ExecutionsService } from 'app/services/executions.service';
 import { canViewExecutions } from 'app/bots/executions/executions.models';
-import { monitorNavbarTitle } from 'app/bots/executions/monitor-tabs/monitor-title';
+import { isExecutionDetailPath, monitorNavbarTitle } from 'app/bots/executions/monitor-tabs/monitor-title';
 
 
 const Swal = require('sweetalert2')
@@ -276,7 +276,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
 
   IS_OPEN_SETTINGS_SIDEBAR: boolean;
 
-  // Same gate as the Monitor tab bar (monitor-tabs): when it is shown, the tabs are the page title.
+  // Same gate as the Monitor tab bar (monitor-tabs). The page title stays Conversazioni or Esecuzioni.
   private monitorTabsPermitted = false;
 
   constructor(
@@ -480,7 +480,7 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     const monitorTitle = monitorNavbarTitle(cleanUrl, this.monitorTabsShown());
     if (monitorTitle !== undefined) {
       this.currentTitle = monitorTitle;
-      this.currentIcon = null;
+      this.currentIcon = isExecutionDetailPath(cleanUrl) ? this.getSanitizedKeyboardArrowLeft() : null;
       this.logger.log('[NAVBAR] Title set to:', this.currentTitle);
       return;
     }
@@ -607,7 +607,9 @@ export class NavbarComponent extends PricingBaseComponent implements OnInit, Aft
     }
     else if (cleanUrl.indexOf('/activities') !== -1) {
       this.currentTitle = 'Activities';
-      this.currentIcon = null;
+      // Opened from an execution audit row: the filter is an EXECUTION_* verb, so the arrow returns there.
+      const activitiesFilter = params.get('activities') || '';
+      this.currentIcon = activitiesFilter.startsWith('EXECUTION') ? this.getSanitizedKeyboardArrowLeft() : null;
     } else if (cleanUrl.indexOf('/support') !== -1) {
       this.currentTitle = 'Support';
       this.currentIcon = null;  

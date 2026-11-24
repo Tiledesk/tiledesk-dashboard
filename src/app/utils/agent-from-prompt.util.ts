@@ -11,8 +11,8 @@
 /** Where the note is left. The Design Studio removes it as it reads it, so it is used once. */
 export const AGENT_FROM_PROMPT_KEY = 'cds-agent-from-prompt';
 
-/** Past this, it is not a description any more. Better noticed here than at the far end. */
-export const MAX_PROMPT_LENGTH = 2000;
+/** Backend cap on the prompt text saved with the agent. */
+export const MAX_PROMPT_LENGTH = 32000;
 
 /** A file attached to the prompt: only its link is kept, the file itself lives in the file storage. */
 export interface AgentPromptAttachment {

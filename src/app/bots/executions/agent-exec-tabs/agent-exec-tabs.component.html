@@ -1,0 +1,10 @@
+<ul *ngIf="projectId" class="agent-tabs" [class.agent-tabs--inline]="inline" [attr.aria-label]="'Agents' | translate">
+  <li class="agent-tab" [class.agent-tab--active]="active === 'agents'"
+    [class.agent-tab--hover]="active !== 'agents'">
+    <a [routerLink]="agentsLink" [attr.aria-current]="active === 'agents' ? 'page' : null">{{ 'Agents' | translate }}</a>
+  </li>
+  <li class="agent-tab" [class.agent-tab--active]="active === 'executions'"
+    [class.agent-tab--hover]="active !== 'executions'">
+    <a [routerLink]="executionsLink" [attr.aria-current]="active === 'executions' ? 'page' : null">{{ 'Executions.Executions' | translate }}</a>
+  </li>
+</ul>

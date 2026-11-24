@@ -4,12 +4,14 @@ import {
   vibeCoderFileTypeLabel,
   VIBE_CODER_MAX_ATTACHMENTS,
   VIBE_CODER_MAX_FILE_BYTES,
+  VIBE_CODER_MAX_TOTAL_BYTES,
 } from './vibe-coder-attachments.util';
 
 describe('vibe-coder-attachments.util', () => {
   it('exposes the agreed limits', () => {
     expect(VIBE_CODER_MAX_ATTACHMENTS).toBe(5);
-    expect(VIBE_CODER_MAX_FILE_BYTES).toBe(10 * 1024 * 1024);
+    expect(VIBE_CODER_MAX_FILE_BYTES).toBe(5 * 1024 * 1024);
+    expect(VIBE_CODER_MAX_TOTAL_BYTES).toBe(15 * 1024 * 1024);
   });
 
   it('resolves MIME from extension when the browser leaves type empty', () => {

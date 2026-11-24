@@ -17,6 +17,23 @@ const TRIED: { [action: string]: string } = {
 };
 /** After "<id> of <agent>": the soft pause waits for the current action, the hard one does not. */
 export const PAUSE_MODE: { [action: string]: string } = { stop_soft: 'after the current action', stop_hard: 'now' };
+
+/** Activities verb for an audit action. data_access_requested has no Activities filter. */
+const AUDIT_ACTIVITY_VERB: { [action: string]: string } = {
+  stop_soft: 'EXECUTION_STOP_SOFT',
+  stop_hard: 'EXECUTION_STOP_HARD',
+  destroy: 'EXECUTION_DESTROY',
+  resume: 'EXECUTION_RESUME',
+  start_new: 'EXECUTION_START_NEW',
+  data_viewed: 'EXECUTION_DATA_ACCESS',
+  data_access_denied: 'EXECUTION_DATA_ACCESS_DENIED',
+  retention_update: 'EXECUTION_RETENTION_UPDATE',
+  stop_notice_update: 'EXECUTION_STOP_NOTICE_UPDATE',
+};
+
+export function auditActivityVerb(action: string): string | null {
+  return Object.prototype.hasOwnProperty.call(AUDIT_ACTIVITY_VERB, action) ? AUDIT_ACTIVITY_VERB[action] : null;
+}
 /** A refusal's status as the page names it: stopped/stopping read paused/pausing. */
 const SHOWN_STATUS: { [status: string]: string } = { stopped: 'paused', stopping: 'pausing' };
 export function shownStatus(status: string): string {

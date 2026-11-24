@@ -1,5 +1,6 @@
-<monitor-tabs active="executions"></monitor-tabs>
 <div class="main-content executions-page">
+
+  <agent-exec-tabs *ngIf="projectId && configured && permitted === true" [inline]="true" [projectId]="projectId" active="executions"></agent-exec-tabs>
 
   <!-- no permission -->
   <div *ngIf="permitted === false" class="unauthorized-message-container-in-page">
@@ -17,6 +18,10 @@
     <div class="exec-head">
       <div>
         <h1 class="exec-title">{{ (agentId ? "Executions.Executions" : "Executions.AllExecutions") | translate }}</h1>
+        <p class="exec-period">
+          <span class="material-icons-outlined" aria-hidden="true">timer</span>
+          <span>{{ "Executions.RangeLabel" | translate }}: {{ "Executions.Range." + filters.range | translate }}</span>
+        </p>
       </div>
       <div class="exec-head-tools">
         <!-- List | Graph: the same header, cards and filters over both views -->
@@ -36,8 +41,7 @@
 
     <!-- the big numbers: every status over the time range and all the filters (the same set as the list and the graph) -->
     <div class="exec-cards">
-      <execution-stat-cards [counts]="counters" [withErrors]="withErrors" [selectable]="true" [active]="filters.has_errors ? 'with_errors' : filters.status" (pick)="pickCard($event)"></execution-stat-cards>
-      <span class="exec-cards-hint">{{ "Executions.Range." + filters.range | translate }}</span>
+      <execution-stat-cards [counts]="counters" [withErrors]="withErrors" [selectable]="true" [active]="filters.status" [errorsActive]="filters.has_errors" (pick)="pickCard($event)"></execution-stat-cards>
     </div>
 
     <div class="exec-filters">

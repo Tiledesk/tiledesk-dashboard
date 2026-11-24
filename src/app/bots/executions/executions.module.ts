@@ -24,8 +24,7 @@ import { DestroyDialogComponent } from './shared/destroy-dialog.component';
 import { ResumeDialogComponent } from './shared/resume-dialog.component';
 import { StartNewDialogComponent } from './shared/start-new-dialog.component';
 import { DataAccessDialogComponent } from './shared/data-access-dialog.component';
-import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
-
+import { AgentExecTabsModule } from './agent-exec-tabs/agent-exec-tabs.module';
 @NgModule({
   declarations: [
     ExecutionsListComponent,
@@ -58,7 +57,7 @@ import { MonitorTabsModule } from './monitor-tabs/monitor-tabs.module';
     // the executions page's Graph view
     ExecutionGraphModule,
     ExecutionsRoutingModule,
-    MonitorTabsModule,
+    AgentExecTabsModule,
   ]
 })
 export class ExecutionsModule { }

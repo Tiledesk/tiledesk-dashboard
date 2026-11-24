@@ -14,6 +14,7 @@ import { FlowStatePanelComponent, MaskedValueComponent } from '../shared/flow-st
 import { ValueCellComponent } from '../shared/value-cell.component';
 import { VarHistoryDrawerComponent } from '../shared/var-history-drawer.component';
 import { ExecutionsService } from '../../../services/executions.service';
+import { NavigationService } from '../../../services/navigation.service';
 import { RolesService } from '../../../services/roles.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { ExecutionDetail, StateView } from '../executions.models';
@@ -69,7 +70,7 @@ function stateView(seq: number, vars: any[] = [], partial = false): StateView {
 describe('ExecutionDetailComponent', () => {
   let fixture: ComponentFixture<ExecutionDetailComponent>;
   let component: ExecutionDetailComponent;
-  let executions: { isConfigured: jasmine.Spy; get: jasmine.Spy; state: jasmine.Spy; history: jasmine.Spy };
+  let executions: { isConfigured: jasmine.Spy; get: jasmine.Spy; state: jasmine.Spy; history: jasmine.Spy; audit: jasmine.Spy };
   let router: { navigate: jasmine.Spy };
   let params$: BehaviorSubject<any>;
   let perms$: Subject<any>;
@@ -82,6 +83,7 @@ describe('ExecutionDetailComponent', () => {
         { key: 'kept', reserved: false, before: { type: 'string', size: 4, hash: 'h' }, after: { type: 'string', size: 4, hash: 'h' }, changed: false, by: null },
       ]))),
       history: jasmine.createSpy('history').and.returnValue(of([])),
+      audit: jasmine.createSpy('audit').and.returnValue(of({ entries: [], next_cursor: null })),
     };
     router = { navigate: jasmine.createSpy('navigate') };
     params$ = new BehaviorSubject(convertToParamMap({ projectid: 'p1', botid: 'a1', executionid: opts.executionid || EXEC_ID }));
@@ -130,6 +132,12 @@ describe('ExecutionDetailComponent', () => {
       expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'wsrequest', 'support-group-p1-r1', 'messages']);
       (el().querySelector('.ex-lineage-link') as HTMLButtonElement).click();
       expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a1', 'executions', '0193b7aa-1111']);
+    });
+
+    it('the navbar back arrow returns to the executions list of this agent', () => {
+      setup();
+      TestBed.inject(NavigationService).emitBack();
+      expect(router.navigate).toHaveBeenCalledWith(['/project', 'p1', 'monitor', 'a1', 'executions']);
     });
 
     it('renders the control row from allowed_controls (empty in Phase 1: nothing shows)', () => {

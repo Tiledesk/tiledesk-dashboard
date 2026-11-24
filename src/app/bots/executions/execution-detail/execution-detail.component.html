@@ -1,5 +1,6 @@
-<monitor-tabs active="executions"></monitor-tabs>
 <div class="main-content execution-detail-page">
+
+  <agent-exec-tabs *ngIf="projectId && configured && permitted === true" [inline]="true" [projectId]="projectId" active="executions"></agent-exec-tabs>
 
   <!-- no permission -->
   <div *ngIf="permitted === false" class="unauthorized-message-container-in-page">
@@ -14,11 +15,13 @@
 
   <div *ngIf="permitted === true && configured" class="container-fluid">
 
+    <!-- Breadcrumb (Esecuzioni › id): commented out, the navbar back arrow and the ID card cover it
     <nav class="ex-crumb" [attr.aria-label]="'Executions.Detail.Breadcrumb' | translate">
       <button type="button" class="ex-link" (click)="backToList()">{{ "Executions.Executions" | translate }}</button>
       <span aria-hidden="true">›</span>
       <span class="ex-mono">{{ shortId(executionId) }}</span>
     </nav>
+    -->
 
     <div *ngIf="invalid" class="ex-empty">{{ "Executions.Detail.InvalidId" | translate }}</div>
 
@@ -81,7 +84,7 @@
               <button type="button" mat-menu-item class="ex-copy-link" (click)="copyExecutionLink()">
                 <mat-icon>link</mat-icon><span>{{ "Executions.Detail.CopyLink" | translate }}</span></button>
               <button *ngIf="canViewAudit" type="button" mat-menu-item class="ex-open-activities" (click)="goToActivities()">
-                <mat-icon>open_in_new</mat-icon><span>{{ "Executions.Audit.OpenActivities" | translate }}</span></button>
+                <mat-icon>open_in_new</mat-icon><span>{{ "Executions.Audit.OpenActivitiesPage" | translate }}</span></button>
               <ng-container *ngIf="destroyControl as c">
                 <mat-divider></mat-divider>
                 <button type="button" mat-menu-item class="ex-ctl-destroy ex-menu-danger"
@@ -129,7 +132,8 @@
             <dt>{{ "Executions.Detail.ConversationLabel" | translate }}</dt>
             <dd>
               <button *ngIf="d.execution.conversation_link" type="button" class="ex-link ex-conversation" (click)="openConversation()">
-                {{ "Executions.Detail.Conversation" | translate }} ↗
+                <span class="ex-conversation-label">{{ "Executions.Detail.ViewConversation" | translate }}</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-square-arrow-up-right-exit ex-conversation-exit" aria-hidden="true"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/><path d="m21 3-9 9"/><path d="M15 3h6v6"/></svg>
               </button>
               <span *ngIf="!d.execution.conversation_link" class="ex-muted">{{ "Executions.Detail.NoConversation" | translate }}</span>
             </dd>
@@ -222,7 +226,7 @@
             <button type="button" role="tab" class="ex-tab-state" [attr.aria-selected]="tab === 'state'" (click)="setTab('state')">
               {{ "Executions.FlowState.Title" | translate }}</button>
             <button *ngIf="canViewAudit" type="button" role="tab" class="ex-tab-audit" [attr.aria-selected]="tab === 'audit'" (click)="setTab('audit')">
-              {{ "Executions.Audit.Title" | translate }}</button>
+              {{ "Executions.Audit.Title" | translate }}<span *ngIf="auditCountLabel as count" class="ex-tag ex-tab-count">{{ count }}</span></button>
           </div>
           <div *ngIf="tab === 'timeline'" class="tl-filters">
             <ng-container *ngIf="d.steps.length">
@@ -361,7 +365,6 @@
         <div *ngIf="tab === 'audit' && canViewAudit" role="tabpanel" class="au">
           <div class="au-head">
             <span class="ex-muted">{{ "Executions.Audit.Hint" | translate }}</span>
-            <button type="button" class="ex-link au-activities" (click)="goToActivities()">{{ "Executions.Audit.OpenActivities" | translate }}</button>
           </div>
           <p *ngIf="auditLoading && !auditEntries.length" class="ex-muted au-loading">{{ "Executions.Audit.Loading" | translate }}</p>
           <p *ngIf="auditError" class="au-error">{{ "Executions.Audit.LoadError" | translate }}
@@ -371,6 +374,7 @@
             <li *ngFor="let e of auditEntries; trackBy: trackByAudit" class="au-row">
               <span class="au-time ex-muted">{{ e.at | date:'medium' }}</span>
               <span class="au-sentence">{{ auditText(e) }}</span>
+              <button *ngIf="auditActivityVerb(e.action) as verb" type="button" class="ex-link au-filter" (click)="goToActivities(verb)">{{ "Executions.Audit.OpenActivities" | translate }}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="lucide lucide-square-arrow-up-right-exit ex-conversation-exit"><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"></path><path d="m21 3-9 9"></path><path d="M15 3h6v6"></path></svg></button>
               <span *ngIf="auditResultLabel(e)" class="au-chip" [ngClass]="'au-chip-' + auditResultKind(e)">{{ auditResultLabel(e) }}</span>
               <span *ngIf="e.reason" class="au-reason ex-muted">"{{ e.reason }}"</span>
             </li>

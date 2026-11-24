@@ -26,7 +26,7 @@ const ACCENT: { [S in StatCard]: string } = {
     <div class="exec-stat-cards" role="group">
       <ng-container *ngFor="let s of cards">
         <button *ngIf="selectable; else plain" type="button" class="exec-stat-card selectable" [attr.data-status]="s"
-          [class.active]="active === s" [attr.aria-pressed]="active === s" [style.--accent]="accent[s]" (click)="pick.emit(s)">
+          [class.active]="pressed(s)" [attr.aria-pressed]="pressed(s)" [style.--accent]="accent[s]" (click)="pick.emit(s)">
           <ng-container *ngTemplateOutlet="body; context: { $implicit: s }"></ng-container>
         </button>
         <ng-template #plain>
@@ -68,10 +68,16 @@ export class ExecutionStatCardsComponent {
   @Input() selectable = false;
   /** The status filter in use (selectable cards only). */
   @Input() active: string | null = null;
+  /** With errors is not a status, so it can be pressed together with the status card. */
+  @Input() errorsActive = false;
   @Output() pick = new EventEmitter<StatCard>();
 
   readonly cards = STAT_CARDS;
   readonly accent = ACCENT;
+
+  pressed(s: StatCard): boolean {
+    return s === 'with_errors' ? this.errorsActive || this.active === 'with_errors' : this.active === s;
+  }
 
   value(s: StatCard): string {
     if (s === 'with_errors') return this.withErrors === null || this.withErrors === undefined ? '–' : String(this.withErrors);

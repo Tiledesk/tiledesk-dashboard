@@ -41,6 +41,7 @@
 
     {{ pageName | translate}}
   </div>
+
   <div class="container-fluid" style="padding-left: 5px;padding-right: 5px;">
 
     <div class="content-wpr" style="display: flex;">
@@ -69,6 +70,7 @@
 
         <div class="row">
           <div class="col-12">
+            <agent-exec-tabs *ngIf="executionsEnabled && project" class="bots-list-tabs" [inline]="true" [projectId]="project._id" active="agents"></agent-exec-tabs>
             <!-- createBlankTilebot() -->
             <button *ngIf="isChatbotRoute !== 'all'" class="btn btn-tdblu-no-boxshadow pull-right"
               [class.disabled]="!PERMISSION_TO_ADD_FLOWS"
