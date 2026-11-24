@@ -42,6 +42,7 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { NavigationService } from 'app/services/navigation.service';
+import { isCreditsRefusal } from 'app/utils/metering.util';
 
 @Component({
   selector: 'bot-create',
@@ -461,8 +462,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
       this.logger.log('FORM DATA ', formData)
 
       if (this.USER_ROLE !== 'agent') {
-        if (this.chatBotLimit || this.chatBotLimit === 0) {
-          if (this.chatBotCount < this.chatBotLimit) {
+        if (this.isCreditsMetering || this.chatBotLimit || this.chatBotLimit === 0) {
+          if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
             this.logger.log('[BOT-CREATE] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON')
             this.importChatbotFromJSON(formData)
           } else if (this.chatBotCount >= this.chatBotLimit) {
@@ -501,6 +502,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
     }, (error) => {
       this.showUploadingSpinner = false
       this.logger.error('[BOT-CREATE] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+      // Credits refusal (403 13010-13013): the interceptor already shows the alert
+      if (isCreditsRefusal(error)) { return; }
       this.manageUploadError(error)
       this.notify.showWidgetStyleUpdateNotification(this.translationMap.get('ThereHasBeenAnErrorProcessing'), 4, 'report_problem');
     }, () => {
@@ -824,8 +827,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
   createBlankTilebot() {
     this.logger.log('[BOTS-CREATE] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit)
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit || this.chatBotLimit === 0) {
-        if (this.chatBotCount < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit || this.chatBotLimit === 0) {
+        if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-CREATE] USECASE  chatBotCount < chatBotLimit: RUN CREATE FROM SCRATCH')
           this.createTilebotBotFromScratch()
         } else if (this.chatBotCount >= this.chatBotLimit) {
@@ -983,7 +986,11 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
 
       }, (error) => {
 
-         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorHasOccurred'), 4, 'report_problem');
+        // Credits refusal (403 13010-13013): the interceptor already shows the alert, so no second
+        // toast; the error state below is kept because it is what closes the creation modal
+        if (!isCreditsRefusal(error)) {
+          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorHasOccurred'), 4, 'report_problem');
+        }
         
         this.logger.error('[BOT-CREATE] CREATE FAQKB - POST REQUEST ERROR ', error);
 

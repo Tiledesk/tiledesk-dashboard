@@ -1713,8 +1713,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate USER_ROLE', this.USER_ROLE) 
     this.logger.log('[KNOWLEDGE-BASES-COMP] createChatbotfromKbOfficialResponderTemplate myChatbotOtherCount', this.myChatbotOtherCount) 
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
-        if (this.myChatbotOtherCount < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit) {
+        if (this.isCreditsMetering || this.myChatbotOtherCount < this.chatBotLimit) {
           this.logger.log('[KNOWLEDGE-BASES-COMP] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.findKbOfficialResponderAndThenExportToJSON()
         } else if (this.myChatbotOtherCount >= this.chatBotLimit) {

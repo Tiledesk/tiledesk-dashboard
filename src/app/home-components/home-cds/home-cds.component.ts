@@ -240,8 +240,8 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
         // goToCDSVersion(this.router, this.lastUpdatedChatbot, this.projectId, this.appConfigService.getConfig().cdsBaseUrl)
       } else if (this.chatbots?.length === 0) {
 
-        if (this.chatBotLimit) {
-          if (this.chatbotCount < this.chatBotLimit) {
+        if (this.isCreditsMetering || this.chatBotLimit) {
+          if (this.isCreditsMetering || this.chatbotCount < this.chatBotLimit) {
             this.logger.log('[COMMUNITY-TEMPLATE-DTLS] USECASE  chatBotCount < chatBotLimit: RUN FORK')
             this.goToCreateChatbot.emit()
           } else if (this.chatbotCount >= this.chatBotLimit) {
@@ -283,8 +283,8 @@ export class HomeCdsComponent extends PricingBaseComponent implements OnInit, On
 
   createChatbotfromKbOfficialResponderTemplate() {
     this.findKbOfficialResponderAndThenExportToJSON()
-    if (this.chatBotLimit) {
-      if (this.chatbotCount < this.chatBotLimit) {
+    if (this.isCreditsMetering || this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatbotCount < this.chatBotLimit) {
         this.logger.log('[HOME-CDS] USECASE  chatBotCount < chatBotLimit: RUN findKbOfficial')
         this.findKbOfficialResponderAndThenExportToJSON()
       } else if (this.chatbotCount >= this.chatBotLimit) {

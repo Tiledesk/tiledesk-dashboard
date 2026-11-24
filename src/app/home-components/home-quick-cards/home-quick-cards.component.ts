@@ -208,7 +208,8 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   get showFlowsLimit(): boolean {
-    return this.userRole !== 'agent' && this.showPlanLimits && (this.chatBotLimit || this.chatBotLimit === 0);
+    // Credits metering: no plan cap on flows (also hides the Upgrade / Increase CTA and the over-limit state)
+    return !this.isCreditsMetering && this.userRole !== 'agent' && this.showPlanLimits && (this.chatBotLimit || this.chatBotLimit === 0);
   }
 
   get flowsCountOverLimit(): boolean {
@@ -357,12 +358,12 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
       return;
     }
 
-    if (this.prjct_profile_type === 'free' && this.trial_expired) {
+    if (!this.isCreditsMetering && this.prjct_profile_type === 'free' && this.trial_expired) {
       this.openModalSeatsTrialExpired();
       return;
     }
 
-    if (this.prjct_profile_type === 'payment' && !this.subscription_is_active) {
+    if (!this.isCreditsMetering && this.prjct_profile_type === 'payment' && !this.subscription_is_active) {
       this.openModalSeatsSubsExpired();
       return;
     }
@@ -472,7 +473,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   private createChatbotFromKbOfficialResponderTemplate(): void {
-    if (this.chatBotLimit || this.chatBotLimit === 0) {
+    if (!this.isCreditsMetering && (this.chatBotLimit || this.chatBotLimit === 0)) {
       if (this.countOfChatbots < this.chatBotLimit) {
         this.findKbOfficialResponderAndThenExportToJSON();
         return;

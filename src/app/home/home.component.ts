@@ -60,6 +60,7 @@ import {
 } from 'app/utils/pending-website-prompt.util';
 import { consumePendingBuild, readPendingBuild, rememberLastOpenedProject } from 'app/utils/pending-build.util';
 import { AgentPromptSource, AgentPromptsService } from 'app/services/agent-prompts.service';
+import { isCreditsRefusal } from 'app/utils/metering.util';
 
 const Swal = require('sweetalert2')
 
@@ -3837,6 +3838,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         },
         error: (err) => {
           this.logger.error('[HOME] create agent from select error', err);
+          // Credits refusal (403 13010-13013): the interceptor already shows the alert
+          if (isCreditsRefusal(err)) { return; }
           this.vibeCoderError = this.translate.instant('CouldNotCreateAIAgent');
         },
       });
@@ -3847,6 +3850,11 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
    * if the plan has a chatbot cap and the project already reached it, open ChatbotModal.
    */
   private assertCanCreateChatbot(): boolean {
+    // Credits metering: the plan chatbot cap does not apply
+    if (this.planLimitsBridge?.isCreditsMetering) {
+      return true;
+    }
+
     const chatBotCount = Array.isArray(this.chatbots) ? this.chatbots.length : 0;
     const chatBotLimit = this.planLimitsBridge?.chatBotLimit;
     this.logger.log('[HOME] assertCanCreateChatbot chatBotCount', chatBotCount, 'chatBotLimit', chatBotLimit);
@@ -3956,6 +3964,8 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
         error: (error) => {
           this.logger.error('[HOME] Prompt box create agent error', error);
           this.vibeCoderBusy = false;
+          // Credits refusal (403 13010-13013): the interceptor already shows the alert
+          if (isCreditsRefusal(error)) { return; }
           this.vibeCoderError = this.translate.instant('SomethingWentWrongCreatingAIAgent');
         }
       });

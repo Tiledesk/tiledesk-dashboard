@@ -39,6 +39,7 @@ import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { ExecutionsService } from 'app/services/executions.service';
+import { isCreditsRefusal } from 'app/utils/metering.util';
 import { canViewExecutions } from './../executions/executions.models';
 import { monitorExecutionsLink } from '../executions/execution-links';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
@@ -785,8 +786,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     }
     this.logger.log('[BOTS-LIST] duplicateChatbot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
-        if (this.chatBotCount < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit) {
+        if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN GET PRJCTS')
           this.getProjects(bot_id, bot_name)
         } else if (this.chatBotCount >= this.chatBotLimit) {
@@ -1840,8 +1841,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   createBlankTilebot(botSubtype?: string, namespaceid?: string) {
     this.logger.log('[BOTS-LIST] createBlankTilebot chatBotCount ', this.chatBotCount, '- chatBotLimit:', this.chatBotLimit, '- botSubtype:', botSubtype, '- chatbotName:', this.chatbotName, '- botDefaultLangCode:', this.botDefaultLangCode, '- namespaceid: ', namespaceid)
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit || this.chatBotLimit === 0) {
-        if (this.chatBotCount < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit || this.chatBotLimit === 0) {
+        if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-LIST] USECASE  chatBotCount < chatBotLimit: RUN CREATE FROM SCRATCH')
           
           this.createTilebotBotFromScratch(botSubtype, namespaceid)
@@ -1977,8 +1978,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.logger.log('[BOT-LIST] ---> FORM DATA ', formData)
 
       if (this.USER_ROLE !== 'agent') {
-        if (this.chatBotLimit || this.chatBotLimit === 0) {
-          if (this.chatBotCount < this.chatBotLimit) {
+        if (this.isCreditsMetering || this.chatBotLimit || this.chatBotLimit === 0) {
+          if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
             this.logger.log('[BOT-LIST] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON chatbotToImportSubtype:', this.chatbotToImportSubtype, '- isChatbotRoute:', this.isChatbotRoute)
             // if (this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot')) {
             //   this.logger.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Automations list. Do you want to continue? `)
@@ -2048,6 +2049,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
     }, (error) => {
       // this.showUploadingSpinner = false
       this.logger.error('[BOT-CREATE] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+      // Credits refusal (403 13010-13013): the interceptor already shows the alert
+      if (isCreditsRefusal(error)) { return; }
       this.manageUploadError(error)
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('ThereHasBeenAnErrorProcessing'), 4, 'report_problem');
     }, () => {

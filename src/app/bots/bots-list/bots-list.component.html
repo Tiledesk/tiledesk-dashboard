@@ -65,7 +65,7 @@
         <!-- -------------------------------------------------------------------- -->
 
         <ng-container *ngIf="chatBotLimit || chatBotLimit === 0 ">
-          <appdashboard-chatbot-alert *ngIf="chatBotCount > chatBotLimit && isVisiblePAY"></appdashboard-chatbot-alert>
+          <appdashboard-chatbot-alert *ngIf="!isCreditsMetering && chatBotCount > chatBotLimit && isVisiblePAY"></appdashboard-chatbot-alert>
         </ng-container>
 
         <div class="row">
