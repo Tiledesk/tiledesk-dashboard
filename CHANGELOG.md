@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### 2.7.280-stage
+- Adds the email trigger to the executions filter (Monitor > Executions)
+
 ### 2.7.279-stage
 - Adds Agents | Execution tabs on the agents list, the executions list and the execution detail, and removes the Conversations | Executions tabs from Monitor
 - Adds the navbar titles Conversations, Executions, and Execution detail with a back arrow when an execution is open
