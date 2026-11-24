@@ -4241,7 +4241,8 @@
             "trigger": "trigger connettore",
             "automation": "automazione",
             "widget": "widget",
-            "channel": "canale"
+            "channel": "canale",
+            "email": "email"
         },
         "Columns": {
             "Status": "Stato",

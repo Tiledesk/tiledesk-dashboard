@@ -177,6 +177,12 @@ describe('ExecutionsListComponent', () => {
     expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ has_errors: null });
   });
 
+  it('offers email among the trigger filters and sends it to the API', () => {
+    setup({ query: { trigger: 'email' } });
+    expect(component.triggerOptions).toContain('email');
+    expect(executions.list.calls.mostRecent().args[1].trigger).toBe('email');
+  });
+
   it('without has_errors in the URL, the list sends no has_errors', () => {
     setup({ query: { has_failures: 'true' } });
     const p = executions.list.calls.mostRecent().args[1];

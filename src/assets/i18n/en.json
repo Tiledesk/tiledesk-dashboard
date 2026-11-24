@@ -4648,7 +4648,8 @@
             "trigger": "connector trigger",
             "automation": "automation",
             "widget": "widget",
-            "channel": "channel"
+            "channel": "channel",
+            "email": "email"
         },
         "Columns": {
             "Status": "Status",
