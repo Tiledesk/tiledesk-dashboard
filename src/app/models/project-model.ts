@@ -1,3 +1,5 @@
+import { ProjectMetering } from 'app/utils/metering.util';
+
 export interface Project {
     _id: string;
     updatedAt?: any;
@@ -40,5 +42,6 @@ export interface Project {
         facebookMessenger?: boolean;
         telegram?: boolean;
     }
+    metering?: ProjectMetering;
     __v?: any;
 }
