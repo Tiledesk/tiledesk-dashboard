@@ -5,6 +5,7 @@ import { tap } from 'rxjs/operators';
 import { AuthService } from 'app/core/auth.service';
 import { AppConfigService } from './app-config.service';
 import { LoggerService } from './logger/logger.service';
+import { getProjectMetering, ProjectMetering } from 'app/utils/metering.util';
 
 export type CreditsBillingStatus = 'active' | 'payment_failed' | 'suspended' | 'canceled' | 'trial' | 'trial_ended';
 
@@ -83,6 +84,10 @@ export class CreditsService implements OnDestroy {
   /** Credits of the current project, refreshed while it is metered in credits */
   credits$: Observable<ProjectCredits | null> = this.creditsSubject.asObservable();
 
+  private meteringSubject = new BehaviorSubject<{ projectId: string; metering: ProjectMetering } | null>(null);
+  /** metering of the current project as the credits API sees it, also 'quotes' */
+  metering$ = this.meteringSubject.asObservable();
+
   private projectId: string | null = null;
   private pollTimer: ReturnType<typeof setInterval> | null = null;
 
@@ -155,6 +160,7 @@ export class CreditsService implements OnDestroy {
     if (projectId !== this.projectId) {
       return;
     }
+    this.meteringSubject.next({ projectId, metering: getProjectMetering(summary) });
     const credits = summary && summary.metering === 'credits' ? summary : null;
     const current = this.creditsSubject.value?.summary;
     // POST /quotes returns the summary without the costs: keep the ones already loaded

@@ -11,6 +11,8 @@ import { LoggerService } from '../services/logger/logger.service';
 import { AppConfigService } from './app-config.service';
 import { AllProjectsCacheService } from './cache/all-projects-cache.service';
 import { UsersService } from './users.service';
+import { MeteringService } from './metering.service';
+import { getProjectMetering } from 'app/utils/metering.util';
 
 @Injectable()
 
@@ -34,6 +36,8 @@ export class ProjectPlanService {
     public appConfigService: AppConfigService,
     private cacheService: AllProjectsCacheService,
     private usersService: UsersService,
+    // public: used by PricingBaseComponent and by the components that do not extend it
+    public meteringService: MeteringService,
   ) {
     this.getOSCODE()
     this.getUserToken();
@@ -189,12 +193,14 @@ export class ProjectPlanService {
           extra4: current_prjct.id_project.profile['extra4'],
           customization: current_prjct.id_project.profile['customization'],
           user_role: current_prjct.role,
-          payActive: this.areActivePay
+          payActive: this.areActivePay,
+          metering: getProjectMetering(current_prjct.id_project)
         }
 
 
         this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
 
+        this.meteringService.setProject(projectPlanData._id, projectPlanData.metering);
         this.projectPlan$.next(projectPlanData);
       } else {
         this.logger.error('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - ERROR - PROJECT NOT FOUND') 
