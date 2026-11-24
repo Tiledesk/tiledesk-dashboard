@@ -1603,7 +1603,7 @@ export class ProjectService {
         overview: displayOverview,
         homeKbAnalytics: displayHomeKbAnalytics,
         quotaBanner: displayQuotaBanner,
-        // Keep legacy keys in sync for older clients / home_old
+        // Keep legacy keys in sync for older clients
         convsGraph: displayOverview,
         analyticsIndicators: displayOverview,
         connectWhatsApp: displayConnectWhatsApp,
