@@ -4011,7 +4011,8 @@
             "trigger": "bağlayıcı tetikleyicisi",
             "automation": "otomasyon",
             "widget": "widget",
-            "channel": "kanal"
+            "channel": "kanal",
+            "email": "email"
         },
         "StatusLabel": "Durum",
         "AnyStatus": "Herhangi bir durum",

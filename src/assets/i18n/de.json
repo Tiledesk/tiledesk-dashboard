@@ -3800,7 +3800,8 @@
             "trigger": "Connector-Trigger",
             "automation": "Automatisierung",
             "widget": "widget",
-            "channel": "Kanal"
+            "channel": "Kanal",
+            "email": "email"
         },
         "StatusLabel": "Status",
         "AnyStatus": "Beliebiger Status",

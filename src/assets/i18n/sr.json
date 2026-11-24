@@ -4011,7 +4011,8 @@
             "trigger": "окидач конектора",
             "automation": "аутоматизација",
             "widget": "widget",
-            "channel": "канал"
+            "channel": "канал",
+            "email": "email"
         },
         "StatusLabel": "Статус",
         "AnyStatus": "Било који статус",

@@ -4144,7 +4144,8 @@
             "trigger": "тригер конектора",
             "automation": "автоматизація",
             "widget": "widget",
-            "channel": "канал"
+            "channel": "канал",
+            "email": "email"
         },
         "StatusLabel": "Статус",
         "AnyStatus": "Будь-який статус",

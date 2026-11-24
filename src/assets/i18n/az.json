@@ -4144,7 +4144,8 @@
             "trigger": "konnektor triggeri",
             "automation": "avtomatlaşdırma",
             "widget": "widget",
-            "channel": "kanal"
+            "channel": "kanal",
+            "email": "email"
         },
         "StatusLabel": "Status",
         "AnyStatus": "İstənilən status",

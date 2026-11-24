@@ -4143,7 +4143,8 @@
             "trigger": "konnektor triggeri",
             "automation": "avtomatlashtirish",
             "widget": "widget",
-            "channel": "kanal"
+            "channel": "kanal",
+            "email": "email"
         },
         "StatusLabel": "Holat",
         "AnyStatus": "Istalgan holat",

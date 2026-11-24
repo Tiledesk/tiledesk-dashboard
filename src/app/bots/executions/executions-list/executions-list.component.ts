@@ -58,7 +58,7 @@ export interface ExecutionFilters {
 })
 export class ExecutionsListComponent implements OnInit, OnDestroy {
 
-  readonly triggerOptions = ['all', 'unattended', 'scheduled', 'webhook', 'trigger', 'automation', 'widget', 'channel'];
+  readonly triggerOptions = ['all', 'unattended', 'scheduled', 'webhook', 'trigger', 'automation', 'widget', 'channel', 'email'];
   readonly statusOptions = ['running', 'waiting', 'stopping', 'stopped', 'failed', 'completed', 'destroyed'];
   readonly rangeOptions: StatsRange[] = STATS_RANGES;
   readonly viewOptions: Array<{ id: ExecutionsView; icon: string }> = [{ id: 'list', icon: 'view_list' }, { id: 'graph', icon: 'hub' }];

@@ -4145,7 +4145,8 @@
             "trigger": "коннектор триггері",
             "automation": "автоматтандыру",
             "widget": "widget",
-            "channel": "арна"
+            "channel": "арна",
+            "email": "email"
         },
         "StatusLabel": "Күй",
         "AnyStatus": "Кез келген күй",

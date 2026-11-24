@@ -4009,7 +4009,8 @@
             "trigger": "триггер коннектора",
             "automation": "автоматизация",
             "widget": "widget",
-            "channel": "канал"
+            "channel": "канал",
+            "email": "email"
         },
         "StatusLabel": "Статус",
         "AnyStatus": "Любой статус",

@@ -3991,7 +3991,8 @@
             "trigger": "trigger de conector",
             "automation": "automatización",
             "widget": "widget",
-            "channel": "canal"
+            "channel": "canal",
+            "email": "email"
         },
         "StatusLabel": "Estado",
         "AnyStatus": "Cualquier estado",

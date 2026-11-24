@@ -4010,7 +4010,8 @@
             "trigger": "trigger connecteur",
             "automation": "automatisation",
             "widget": "widget",
-            "channel": "canal"
+            "channel": "canal",
+            "email": "email"
         },
         "StatusLabel": "Statut",
         "AnyStatus": "Tous les statuts",

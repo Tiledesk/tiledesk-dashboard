@@ -4107,7 +4107,8 @@
             "trigger": "مشغّل الموصل",
             "automation": "أتمتة",
             "widget": "widget",
-            "channel": "قناة"
+            "channel": "قناة",
+            "email": "email"
         },
         "StatusLabel": "الحالة",
         "AnyStatus": "أي حالة",
