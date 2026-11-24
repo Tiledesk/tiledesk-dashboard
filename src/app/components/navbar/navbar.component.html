@@ -164,14 +164,16 @@
           <li id="usage-stats">
 
             <!-- nav-link (not mat-button): same typography as project dropdown — MDC mat-button alters weight/rendering at 400 -->
-            <a class="nav-link quote-modal-btn" href="javascript:void(0)" role="button" aria-label="trend icon"
+            <a class="nav-link quote-modal-btn" href="javascript:void(0)" role="button"
+              [attr.aria-label]="credits ? ('CurrentUsage' | translate) : 'trend icon'"
+              [matTooltip]="credits ? ('CurrentUsage' | translate) : null" matTooltipPosition="below" matTooltipHideDelay="100"
               [matMenuTriggerFor]="menu" (menuClosed)="onQuotasMenuClosed()"
               [ngClass]="{'quote-modal-btn-no-left-padding': prjct_profile_type === 'free', 'quote-modal-btn-active': isOpenCurrentUsageMenu}"
               (click)="onOpenQuoteMenu()">
               <mat-icon class="data-usage-icon" [ngClass]="{'data-usage-icon-active': isOpenCurrentUsageMenu}">
-                donut_large
+                {{ credits ? 'auto_awesome' : 'donut_large' }}
               </mat-icon>
-              <span>{{ 'CurrentUsage' | translate }}</span>
+              <span *ngIf="!credits">{{ 'CurrentUsage' | translate }}</span>
               <span *ngIf="credits" class="credits-chip" [class.credits-chip--low]="credits.balance?.available <= 0"
                 [class.credits-chip--warning]="credits.billing?.status === 'payment_failed'">
                 {{ credits.balance?.available | credits }} {{ 'Credits.CreditsShort' | translate }}
