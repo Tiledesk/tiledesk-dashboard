@@ -33,6 +33,7 @@
 - [Task 2: Helper puri + tipi crediti](#task-2-helper-puri--tipi-crediti)
 - [Task 3: `MeteringService`, `ProjectPlanService` e interceptor](#task-3-meteringservice-projectplanservice-e-interceptor)
 - [Task 4: `PricingBaseComponent`](#task-4-pricingbasecomponent)
+- [Componenti che calcolano i limiti da soli](#componenti-che-calcolano-i-limiti-da-soli)
 - [Pattern per i Task 5–8](#pattern-per-i-task-58)
 - [Task 5: Chatbot](#task-5-chatbot)
 - [Task 6: Teammates](#task-6-teammates)
@@ -82,7 +83,7 @@ Cosa cambia in dashboard con `metering: "credits"`:
 - **Crediti finiti:** non blocca la dashboard in anticipo. Blocca il server con un 403 (codici 13010-13013) e la dashboard mostra un alert unico che porta alla pagina `/credits` (Task 3).
 - **Feature per piano:** su credits sono sbloccate su ogni piano. Restano solo Custom message retention, ruoli custom e Smart Assignment (tabella dei punti con gating, Task 11).
 - **Trial legacy scaduto:** su credits non si rimanda più alla pricing né si bloccano le route (G1-G4).
-- **Escluso, nessuna migrazione:** i progetti Plus e Business esistenti restano come sono. Business non è più selezionabile né creabile in pricing. `home_old` è escluso.
+- **Escluso, nessuna migrazione:** i progetti Plus e Business esistenti restano come sono. Business non è più selezionabile né creabile in pricing. `home_old` è eliminato (2026-11-24).
 - **Dati del progetto:** `metering` arriva dal server con `GET /projects/:id` e `GET /projects/`. Va riallineato in `localStorage` e `project_bs` (Task 9), perché i progetti appena creati non lo hanno.
 
 ## Legenda delle sigle
@@ -106,7 +107,7 @@ Cosa cambia in dashboard con `metering: "credits"`:
 - `metering === 'credits'` → logica a crediti. **Qualsiasi altro valore** (`'quotes'`, `undefined`, `null`, stringa sconosciuta) → logica legacy invariata.
 - Il flusso di salvataggio in `localStorage` e `AuthService.project_bs` resta lo stesso.
 - Nessun blocco preventivo a crediti nel frontend: il server rifiuta, la dashboard gestisce l'errore.
-- `src/app/home_old` è escluso (candidato all'eliminazione).
+- `src/app/home_old` è eliminato (2026-11-24): nessun import o rotta lo usava.
 - Nessuna modifica al contenuto dei blocchi legacy: solo wrapping condizionale.
 
 ---
@@ -119,7 +120,7 @@ Cosa cambia in dashboard con `metering: "credits"`:
 | 2 | UI progetti credits | Blocchi disattivati; contatore crediti portato da `features-2611/credits-plan` |
 | 3 | Blocco a crediti esauriti | Lo fa il server; il frontend gestisce l'errore (vedi riga D, nessun blocco preventivo) |
 | 4 | Fonte di `metering` | Project object; flusso `localStorage` / `AuthService` invariato, ma da sistemare cosa salviamo e cosa passiamo nel BehaviorSubject (Task 9) |
-| 5 | `home_old` | Escluso |
+| 5 | `home_old` | Eliminato (2026-11-24) |
 | A | Feature gating per piano | **Risolta** il 2026-11-24 da GL-6 (feature sbloccate su ogni piano) e GL-7 (retention, ruoli custom e Smart Assignment restano Custom). Casi limite AS-1…AS-4 risolti |
 | B | Commit LLM gestiti (`14d887695`, `7768b7900`) | **Portati** insieme al contatore, attenzione ai conflitti (Task 1) |
 | C | Cosa vuol dire "crediti finiti" | **Confermata:** saldo disponibile `<= 0`, oppure `billing.status` in `suspended`, `canceled`, `trial_ended` (trial scaduto). Serve solo per la UI (chip rosso in navbar, `areCreditsExhausted`): il blocco lo fa il server. `payment_failed` non conta come finito |
@@ -476,7 +477,7 @@ Repository server: `tiledesk-server`, branch `features-2611/credits-plan`. Non m
 - `getCreditsErrorCode(error: any): number | null`
 - `isCreditsRefusal(error: any): boolean`
 
-- [ ] **Step 1: test che falliscono**
+- [x] **Step 1: test che falliscono**
 
 ```ts
 import { areCreditsExhausted, CREDITS_ERROR_CODES, getCreditsErrorCode, getProjectMetering, isCreditsMetering, isCreditsRefusal } from './metering.util';
@@ -559,7 +560,7 @@ describe('metering.util', () => {
 });
 ```
 
-- [ ] **Step 2:** eseguire e verificare il fallimento:
+- [x] **Step 2:** eseguire e verificare il fallimento:
 
 ```bash
 npx ng test --watch=false --browsers=ChromeHeadless --include=src/app/utils/metering.util.spec.ts
@@ -567,7 +568,7 @@ npx ng test --watch=false --browsers=ChromeHeadless --include=src/app/utils/mete
 
 Atteso: FAIL, `Cannot find module './metering.util'`.
 
-- [ ] **Step 3: implementazione** `metering.util.ts`
+- [x] **Step 3: implementazione** `metering.util.ts`
 
 ```ts
 import { CreditsSummary } from 'app/services/credits.service';
@@ -617,7 +618,7 @@ export function isCreditsRefusal(error: any): boolean {
 }
 ```
 
-- [ ] **Step 4:** `project-model.ts`:
+- [x] **Step 4:** `project-model.ts`:
 
 ```ts
 import { ProjectMetering } from 'app/utils/metering.util';
@@ -625,7 +626,7 @@ import { ProjectMetering } from 'app/utils/metering.util';
   metering?: ProjectMetering;
 ```
 
-- [ ] **Step 5:** `credits.service.ts` (contratto server aggiornato):
+- [x] **Step 5:** `credits.service.ts` (contratto server aggiornato):
 
 ```ts
 export type CreditsBillingStatus = 'active' | 'payment_failed' | 'suspended' | 'canceled' | 'trial' | 'trial_ended';
@@ -637,9 +638,9 @@ export type CreditsBillingStatus = 'active' | 'payment_failed' | 'suspended' | '
 
 In `en.json` e `it.json`, dentro `Credits.Billing`, aggiungere `trial` e `trial_ended` (il pannello navbar usa `'Credits.Billing.' + status`). Aggiungere anche i testi dei nuovi rifiuti: `Credits.TrialEndedTitle`, `Credits.TrialEndedText`, `Credits.DailyLimitTitle`, `Credits.DailyLimitText`.
 
-- [ ] **Step 6:** rieseguire il test. Atteso: PASS.
+- [x] **Step 6:** rieseguire il test. Atteso: PASS.
 
-- [ ] **Step 7: commit**
+- [x] **Step 7: commit** — fatto: `b688308f1`, `feat(credits): project metering helpers and credits refusal codes` (6 file: `metering.util.ts`, `metering.util.spec.ts`, `project-model.ts`, `credits.service.ts`, `en.json`, `it.json`). Scostamenti dal piano: nello spec `toBe(true/false)` al posto di `toBeTrue/toBeFalse` (il progetto non ha `jasmine-matchers`); nel test di `areCreditsExhausted` cast `as any` sul summary.
 
 ```bash
 git add src/app/utils/metering.util.ts src/app/utils/metering.util.spec.ts src/app/models/project-model.ts src/app/services/credits.service.ts src/assets/i18n/en.json src/assets/i18n/it.json
@@ -667,7 +668,7 @@ git commit -m "feat(credits): project metering helpers and credits refusal codes
 
 Le due fonti di `metering`: il project object (`projectPlan$`, cache client di 5 minuti) e il summary crediti (`GET /credits`, letto a ogni cambio progetto). Vince l'ultimo valore arrivato per il progetto corrente: così un progetto appena creato, che diventa `credits` dopo l'avvio asincrono del trial, viene riconosciuto senza aspettare la cache.
 
-- [ ] **Step 1:** `CreditsService.metering$`**.** In `publish()`, prima del filtro `metering === 'credits'`:
+- [x] **Step 1:** `CreditsService.metering$`**.** In `publish()`, prima del filtro `metering === 'credits'`:
 
 ```ts
   private meteringSubject = new BehaviorSubject<{ projectId: string; metering: ProjectMetering } | null>(null);
@@ -678,7 +679,7 @@ Le due fonti di `metering`: il project object (`projectPlan$`, cache client di 5
     this.meteringSubject.next({ projectId, metering: getProjectMetering(summary) });
 ```
 
-- [ ] **Step 2: test che falliscono** `metering.service.spec.ts`
+- [x] **Step 2: test che falliscono** `metering.service.spec.ts`
 
 ```ts
 import { TestBed } from '@angular/core/testing';
@@ -731,13 +732,13 @@ describe('MeteringService', () => {
 });
 ```
 
-- [ ] **Step 3:** eseguire. Atteso: FAIL, modulo mancante.
+- [x] **Step 3:** eseguire. Atteso: FAIL, modulo mancante. Verificato: `Can't resolve './metering.service'`.
 
 ```bash
 npx ng test --watch=false --browsers=ChromeHeadless --include=src/app/services/metering.service.spec.ts
 ```
 
-- [ ] **Step 4: implementazione** `metering.service.ts`
+- [x] **Step 4: implementazione** `metering.service.ts`
 
 ```ts
 import { Injectable } from '@angular/core';
@@ -820,7 +821,7 @@ export class MeteringService {
 
 Aggiungere al spec un test per `presentCreditsRefused` (con `spyOn(Swal, 'fire').and.returnValue(Promise.resolve({ isConfirmed: false }) as any)`): con due chiamate consecutive `Swal.fire` viene chiamato una volta sola; con il codice 13012 il titolo è `Credits.TrialEndedTitle`.
 
-- [ ] **Step 5:** `ProjectPlanService`, in `findCurrentProjectAmongAll` (`project-plan.service.ts:167-198`):
+- [x] **Step 5:** `ProjectPlanService`, in `findCurrentProjectAmongAll` (`project-plan.service.ts:167-198`):
 
 ```ts
 // nel constructor (public: lo usano PricingBaseComponent e i componenti che non la estendono)
@@ -833,7 +834,7 @@ Aggiungere al spec un test per `presentCreditsRefused` (con `spyOn(Swal, 'fire')
         this.meteringService.setProject(projectPlanData._id, projectPlanData.metering);
 ```
 
-- [ ] **Step 6: interceptor.** Sostituire il controllo portato dal branch con tutti i codici crediti e la delega al servizio:
+- [x] **Step 6: interceptor.** Sostituire il controllo portato dal branch con tutti i codici crediti e la delega al servizio:
 
 ```ts
         const creditsCode = getCreditsErrorCode(error);
@@ -844,9 +845,9 @@ Aggiungere al spec un test per `presentCreditsRefused` (con `spyOn(Swal, 'fire')
 
 Rimuovere `CREDITS_INSUFFICIENT`, `CREDITS_UNPRICED_MODEL`, `creditsAlertOpen`, il metodo `presentCreditsRefused` locale e gli import di `Router`, `TranslateService` e `Swal` ormai inutilizzati. Resta `Injector` (lettura lazy: `MeteringService` dipende da `TranslateService`, che carica le traduzioni con `HttpClient`, che passa da questo interceptor).
 
-- [ ] **Step 7:** eseguire i test del Task 2 e del Task 3. Atteso: PASS. Build `npx ng build --output-path=.credits-build-tmp` senza errori.
+- [x] **Step 7:** eseguire i test del Task 2 e del Task 3. Atteso: PASS. Build `npx ng build --output-path=.credits-build-tmp` senza errori.
 
-- [ ] **Step 8: commit**
+- [x] **Step 8: commit** — fatto: `0b0eb1862`, `feat(credits): metering service and one alert for every credits refusal` (5 file: `metering.service.ts`, `metering.service.spec.ts`, `credits.service.ts`, `project-plan.service.ts`, `log-requests.interceptor.ts`). Scostamenti dal piano: (1) lo spec ha 7 test invece dei 4 previsti, anche per il caso "un alert alla volta" e per la coda; (2) `presentCreditsRefused` deduplica per codice e mette in coda i codici diversi (decisione dell'utente, dopo la prima versione che bloccava qualsiasi alert aperto); (3) l'interceptor ora gestisce 13010–13013 (prima solo 13010 e 13011); (4) lo spec `ProjectPlanService should be created` fallisce già prima del Task 3 (TestBed vuoto, il servizio non è fornito in root): non dipende dalle modifiche, da sistemare separatamente. Build e `tsc` senza errori. `environment.ts` escluso dal commit.
 
 ```bash
 git add src/app/services/metering.service.ts src/app/services/metering.service.spec.ts src/app/services/credits.service.ts src/app/services/project-plan.service.ts src/app/services/interceptor/log-requests.interceptor.ts
@@ -861,23 +862,43 @@ git commit -m "feat(credits): metering service and one alert for every credits r
 
 **Interfacce:**
 
-- Usa: `prjctPlanService.meteringService` (Task 3)
-- Produce, per tutte le sottoclassi e per `planLimitsBridge` della Home: `isCreditsMetering: boolean`
+- Usa: `prjctPlanService.meteringService.isCredits` (Task 3)
+- Produce, per tutte le sottoclassi e per `planLimitsBridge` della Home: `isCreditsMetering: boolean` (getter)
 
-- [ ] **Step 1:** aggiungere il membro:
+- [x] **Step 1:** aggiungere il getter (non un campo con subscription: tre sottoclassi, `home-cds`, `modal-preview-knowledge-base` e `bots-static`, non chiamano mai `getProjectPlan()` e con la subscription il flag sarebbe rimasto `false`; il getter legge il valore corrente del `BehaviorSubject` e non ha bisogno di unsubscribe):
 
 ```ts
-  // Credits metering: the plan limits do not apply
-  public isCreditsMetering = false;
+  get isCreditsMetering(): boolean {
+    return this.prjctPlanService.meteringService.isCredits;
+  }
 ```
 
-- [ ] **Step 2:** in `getProjectPlan()`, all'inizio della subscription a `projectPlan$`, aggiungere una subscription a `this.prjctPlanService.meteringService.isCredits$` che aggiorna `isCreditsMetering` (così segue anche il summary crediti, non solo il project object). I limiti (`seatsLimit`, `chatBotLimit`, `kbLimit`) restano calcolati come oggi: sono i punti d'uso a ignorarli.
+- [x] **Step 2:** `getProjectPlan()` non cambia. I limiti (`seatsLimit`, `chatBotLimit`, `kbLimit`) restano calcolati come oggi: sono i punti d'uso a ignorarli. Il getter vale solo per le rotte in cui `ProjectPlanService` aggiorna il progetto corrente: per le altre vedi la sezione "Componenti che calcolano i limiti da soli".
 
-- [ ] **Step 3:** build senza errori. Commit:
+- [x] **Step 3:** build senza errori (`tsc` e `ng build` OK). Commit fatto: `d031a0fac`, 1 file (`pricing-base.component.ts`, +10 righe). Scostamento dal piano: getter al posto di campo e subscription (vedi step 1). Commit:
 
 ```bash
 git commit -am "feat(credits): expose credits metering to the pricing base"
 ```
+
+---
+
+## Componenti che calcolano i limiti da soli
+
+`MeteringService.isCredits` e il getter `isCreditsMetering` valgono per i componenti che ricevono il progetto da `ProjectPlanService`. Il servizio però aggiorna `projectPlan$` e il metering solo se l'id progetto è in seconda posizione nell'URL e la rotta non è tra quelle escluse (`get-chatbot`, `activate-product`, `install-template`, `install-template-np`, `create-project-itw`, `/projects`). Controllo del 2026-11-24: i componenti seguenti calcolano i limiti per un'altra via e vanno gestiti a parte.
+
+**Regola:** se il componente ha un oggetto progetto proprio (da `getProjects()` o `GET projects/:id`) e la rotta è esclusa dal servizio, il flag si ricava da quell'oggetto con `isCreditsMetering(project)` di `metering.util`. Se la rotta passa da `ProjectPlanService`, si usa `MeteringService.isCredits` (o il getter della base).
+
+| Componente | Come calcola i limiti | Come si legge il flag | Dove |
+|---|---|---|---|
+| `get-start-chatbot-fork.component.ts` (non estende la base; rotta `get-chatbot/:botid`) | proprio `getProjectPlan(project)`: `chatBotLimit` da `project.profile`; progetto da `projectService.getProjects()` | `isCreditsMetering(this.project)`, non `MeteringService` | Task 5 step 6 |
+| `install-template.component.ts` (estende la base; rotte `install-template*`) | progetto da `getProjects()`; chiama il `getProjectPlan()` della base, ma su queste rotte `projectPlan$` non si aggiorna (valore precedente o `null`) | `isCreditsMetering(project)` con il progetto già in mano; salvare `metering` anche nel sottoinsieme passato a `auth.projectSelected(...)` | Task 5 step 5, Task 9 |
+| `project-edit-add.component.ts` (non estende la base) | subscription propria a `projectPlan$`: `seatsLimit` da `PLAN_SEATS` / `profile_agents` | `MeteringService` iniettato (`isCredits`): il progetto arriva da `ProjectPlanService` | Task 6 step 4 |
+| `home.component.ts` | `planLimitsBridge` (istanza di `PricingBaseComponent`) più un proprio `getProjectPlan()` | `planLimitsBridge.isCreditsMetering` (getter) | Task 5 step 3, Task 8 step 4 |
+| `QuotesService.getQuoteLimits(project)` e `computeAgentTokensUsage` (`quota-usage.util.ts`) | limiti di consumo da `PLANS_LIST` e `profile.quotes`, dopo `GET projects/:id`; non passano da `projectPlan$`. Usati da knowledge-bases, navbar, home-quick-cards e Home | il servizio non cambia: il chiamante salta la chiamata o i limiti con il proprio flag | Task 7 step 1–2, Task 8 |
+| `chatbot-modal.component.ts` | riceve `chatBotLimit` dal chiamante, nessuna logica propria | nulla da fare | — |
+
+**Non verificati:** i componenti delle rotte `create-project-itw` e `activate-product` (anche loro escluse dal servizio). Prima del Task 10 controllare se calcolano limiti. `home_old` è stata eliminata (nessun riferimento).
 
 ---
 
@@ -928,8 +949,8 @@ Se il gestore resetta anche uno stato della UI (spinner, bottone disabilitato), 
 - [ ] **Step 2:** `templates.component.ts` + `.html:67-69`; `template-detail.component.ts`; `community-template-dtls.component.ts`; `bot-create.component.ts`
 - [ ] **Step 3:** `home.component.ts` → `assertCanCreateChatbot()`: `if (this.planLimitsBridge.isCreditsMetering) { return true; }` prima del corpo legacy
 - [ ] **Step 4:** `home-quick-cards`: conteggio senza `/ chatBotLimit`, niente `LimitExceeded`, niente CTA Upgrade/Increase su credits (`showFlowsUpgradePlan` e `flowsCountOverLimit` a `false` se `isCreditsMetering`); pattern in `onAddFlowClick` e `createChatbotFromKbOfficialResponderTemplate`
-- [ ] **Step 5:** `home-create-chatbot`, `home-kb`, `home-cds`, `app-store.component.ts` (`createExternalBot`), `install-template.component.ts`
-- [ ] **Step 6:** `get-start-chatbot-fork.component.ts`: iniettare `MeteringService`, usare `isCredits`
+- [ ] **Step 5:** `home-create-chatbot`, `home-kb`, `home-cds`, `app-store.component.ts` (`createExternalBot`), `install-template.component.ts` (rotta esclusa da `ProjectPlanService`: flag da `isCreditsMetering(project)`, vedi "Componenti che calcolano i limiti da soli")
+- [ ] **Step 6:** `get-start-chatbot-fork.component.ts`: la rotta `get-chatbot` è esclusa da `ProjectPlanService`, quindi `MeteringService` non è affidabile; usare `isCreditsMetering(this.project)` (di `metering.util`) in `importTemplate` e nel ramo `chatBotLimit`
 - [ ] **Step 7:** errori del server: `isCreditsRefusal` nei gestori di create (`POST /faq_kb`), fork (`faq-kb.service.ts:180,199`) e import JSON con `create=true` (`faq.service.ts:297`) in tutti i componenti degli step 1–6
 - [ ] **Step 8: verifica manuale** su un progetto credits e uno legacy: sul credits si creano chatbot oltre il limite free e non compare il banner; sul legacy il blocco resta. Con trial a crediti scaduto (13012) la creazione mostra un solo alert e nessun errore generico
 - [ ] **Step 9:** commit `feat(credits): chatbot limits only on quotes projects`
@@ -1050,3 +1071,13 @@ Punti di attenzione:
 | 2026-11-24 | `X-credits` | Strategia `master-ar-roles` | Merge chirurgico: solo i 7 commit del contatore crediti e i commit dei Task 2-9 e 11, via `cherry-pick -x` su un branch di appoggio; nessun merge di `master`. Dei 27 file dei 7 commit, 16 non esistono su `master-ar-roles` e 9 hanno conflitti attesi |
 | 2026-11-24 | `X-credits` | Branch di destinazione | Aggiunta la sezione "Branch di destinazione": `master` (base di `X-credits`, stesso commit), `master-STAGE-NEW` (Angular 15, contatore già presente) e `master-ar-roles` (Angular 14.2.2, contatore assente). Aggiunto il vincolo di compatibilità Angular 14 |
 | 2026-11-24 | `X-credits` | Decisioni globali | Copilot su credits (GL-1); Business non selezionabile, nessuna migrazione (GL-2); Plus invariato (GL-3); trial legacy solo credits (GL-4); 13012 resta (GL-5); credits = tutto sbloccato tranne Custom per retention, ruoli custom, Smart Assignment (GL-6, GL-7). Le assunzioni AS-1…AS-4 sono state risolte nello stesso giorno |
+| 2026-11-24 | `X-credits` | Task 2 | Commit `b688308f1`: helper puri e tipi crediti (`metering.util.ts` + spec, `project-model.ts`, `credits.service.ts`, i18n `trial`/`trial_ended` e testi 13012/13013). 6 file. Test 11/11 |
+| 2026-11-24 | `X-credits` | Navbar | Commit `60ed92a7a`: icona `auto_awesome` e tooltip "Current usage" solo sui progetti a crediti; padding del chip `6px 8px`. Verifica visiva fatta dall'utente |
+| 2026-11-24 | `X-credits` | Piano (aggiornamento) | Commit `4a7996cba`: stato dello step 5 del Task 1, indice con link alle sezioni, sezione "Verifiche lato server" (S1–S5) |
+| 2026-11-24 | `X-credits` | Task 1, step 5 | Verifica manuale: progetto credits OK. Progetto a quote in attesa della verifica lato server (S1–S5) |
+| 2026-11-24 | `X-credits` | Task 3 | Commit `0b0eb1862`: `MeteringService`, `metering$`, `ProjectPlanService.setProject`, interceptor delegato al servizio. 5 file. Test 21/21 (Task 2 + 3); build e `tsc` OK |
+| 2026-11-24 | `X-credits` | Alert crediti (decisione) | Stesso codice di rifiuto mostrato una sola volta mentre l'alert è aperto o in coda; codici diversi in coda, uno alla volta; "Vedi costi" porta a `/credits` e svuota la coda; dopo la chiusura lo stesso codice può riapparire a un nuovo tentativo (scelta confermata dall'utente) |
+| 2026-11-24 | `X-credits` | Preview e creazione (verifica) | Controllati i chiamanti di `/kb/qa`, `/kb/namespace`, `/faq_kb` e inviti: partono da azioni dell'utente. Non controllate tutte le rotte della tabella dei rifiuti |
+| 2026-11-24 | `X-credits` | Task 4 | Commit `d031a0fac`: `PricingBaseComponent.isCreditsMetering` come getter su `meteringService.isCredits`. Prima versione con subscription dentro `getProjectPlan()` scartata: `home-cds`, `modal-preview-knowledge-base` e `bots-static` non lo chiamano mai e il flag sarebbe rimasto `false`. `tsc` e `ng build` OK, nessun test nuovo (il piano non lo prevede) |
+| 2026-11-24 | `X-credits` | Componenti con limiti propri | Aggiunta la sezione "Componenti che calcolano i limiti da soli": `ProjectPlanService` salta `get-chatbot`, `install-template*`, `create-project-itw`, `activate-product`, quindi su quelle rotte il flag va letto con `isCreditsMetering(project)`. Corretti Task 5 step 5 e 6 (`install-template`, `get-start-chatbot-fork`). `QuotesService.getQuoteLimits` non passa da `projectPlan$`: lo salta il chiamante (Task 7, 8). Da verificare: `create-project-itw`, `activate-product`. `home_old` eliminato (nessun riferimento; resta solo un commento in `project.service.ts`, tolto nello stesso commit) |
+| 2026-11-24 | `X-credits` | Aperto | Verifica lato server S1–S5 (backend); decisione S3 sui vendor non OpenAI nei progetti a quote; spec `ProjectPlanService` da sistemare (preesistente) |
