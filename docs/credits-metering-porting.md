@@ -16,6 +16,34 @@
 **Branch sorgente contatore crediti (dashboard):** `features-2611/credits-plan` (merge-base `d0738042`, 120 commit dietro `X-credits`)  
 **Riferimento server:** repo locale `tiledesk-server`, branch `features-2611/credits-plan` @ `10d3d126` (2026-11-23)
 
+**Indice**
+
+- [Branch di destinazione](#branch-di-destinazione)
+- [In breve](#in-breve)
+- [Legenda delle sigle](#legenda-delle-sigle)
+- [Vincoli globali](#vincoli-globali)
+- [Decisioni](#decisioni)
+- [Contratto server (da `tiledesk-server` locale)](#contratto-server-da-tiledesk-server-locale)
+- [Stato attuale dashboard (mappa dei blocchi)](#stato-attuale-dashboard-mappa-dei-blocchi)
+- [Decisioni globali (risposte del 2026-11-24)](#decisioni-globali-risposte-del-2026-11-24)
+- [Punti con gating per piano (codici G1…G23)](#punti-con-gating-per-piano-codici-g1g23)
+- [Struttura dei file](#struttura-dei-file)
+- [Task 1: Port completo di `features-2611/credits-plan`](#task-1-port-completo-di-features-2611credits-plan)
+- [Verifiche lato server (da fare con il backend)](#verifiche-lato-server-da-fare-con-il-backend)
+- [Task 2: Helper puri + tipi crediti](#task-2-helper-puri--tipi-crediti)
+- [Task 3: `MeteringService`, `ProjectPlanService` e interceptor](#task-3-meteringservice-projectplanservice-e-interceptor)
+- [Task 4: `PricingBaseComponent`](#task-4-pricingbasecomponent)
+- [Pattern per i Task 5–8](#pattern-per-i-task-58)
+- [Task 5: Chatbot](#task-5-chatbot)
+- [Task 6: Teammates](#task-6-teammates)
+- [Task 7: Knowledge base](#task-7-knowledge-base)
+- [Task 8: Quote di consumo (navbar + Home)](#task-8-quote-di-consumo-navbar--home)
+- [Task 9: `localStorage` e `project_bs`](#task-9-localstorage-e-project_bs)
+- [Task 10: Verifica finale](#task-10-verifica-finale)
+- [Task 11: Feature gating per piano](#task-11-feature-gating-per-piano)
+- [Porting su altri branch](#porting-su-altri-branch)
+- [Log di porting](#log-di-porting)
+
 ## Branch di destinazione
 
 Le modifiche si sviluppano su `X-credits` e poi si portano su due branch. Stato verificato con `git` il 2026-11-24:
@@ -392,6 +420,40 @@ npx ng test --watch=false --browsers=ChromeHeadless --include=src/app/components
 Atteso: PASS.
 
 - [ ] **Step 5:** verifica manuale: preview KB con un modello gestito (Tiledesk key) e con chiave propria; pagina `/project/:id/credits` aperta su un progetto credits e su uno a quote.
+  - [x] Progetto credits: verificato manualmente il 2026-11-24.
+  - [ ] Progetto a quote: in attesa della verifica lato server (backend), perché la lista dei modelli managed non torna completa (vedi `/llm/models` e `/llm/providers`).
+
+---
+
+## Verifiche lato server (da fare con il backend)
+
+Repository server: `tiledesk-server`, branch `features-2611/credits-plan`. Non modificare il server: solo verifica. Riferimenti: `pubmodules/credits/routes/llm.js`, `pubmodules/credits/llmPriceList.js`, `pubmodules/credits/catalog.js`, `pubmodules/credits/creditManager.js`.
+
+- [ ] **S1 — quote, lista managed (`GET /:pid/llm/models?managed=true`)**
+  - *Cosa verificare:* su un progetto a quote la risposta contiene solo modelli OpenAI, ciascuno con `tiledesk.managed: true` e senza `tiledesk.credits`.
+  - *Come:* chiamare l'endpoint con il token di un progetto a quote e contare i vendor nel campo `id`.
+  - *Perché:* la dashboard mostra solo i GPT se il server non restituisce altro. Nel codice la lista managed dei quote è `['openai']` solo se `GPTKEY` è impostata; senza `GPTKEY` la lista è vuota.
+  - *Esito atteso:* `GPTKEY` impostata su stage e lista OpenAI come descritta. Se `GPTKEY` manca, va impostata o la lista resta vuota.
+- [ ] **S2 — quote, chiavi per provider (`GET /:pid/llm/providers`)**
+  - *Cosa verificare:* solo `openai` ha `key: "tiledesk"`; gli altri provider (google, anthropic, deepseek, cohere, groq) hanno `key: null`.
+  - *Come:* chiamare l'endpoint per il progetto `6afbf72b74dddb00133ead0e` (già visto: risposta conforme) e per un secondo progetto a quote, per escludere casi particolari.
+  - *Perché:* la dashboard svuota le liste dei provider con `key: null`. Se un provider deve essere disponibile su quote, il valore sbagliato nasce qui.
+  - *Esito atteso:* stesso schema del progetto di esempio su tutti i progetti a quote.
+- [ ] **S3 — decisione di prodotto: vendor non OpenAI sui quote**
+  - *Cosa decidere:* i modelli Anthropic, Google, DeepSeek e Cohere devono essere usabili con la chiave Tiledesk anche su progetti a quote, oppure no?
+  - *Se no (comportamento attuale):* nessuna modifica; la dashboard mostra la lista OpenAI statica e liste vuote per gli altri provider finché non c'è una chiave propria.
+  - *Se sì:* il server deve gestire quei vendor anche per i quote (`managedVendors` e `hasTiledeskKey`), e la dashboard deve smettere di scartare i modelli senza `tiledesk.credits` in `groupManagedModels`.
+  - *Perché serve:* è la regola che decide cosa vede un progetto a quote; non si può decidere in dashboard da sola.
+- [ ] **S4 — progetto a crediti (`GET /:pid/llm/models?managed=true`)**
+  - *Cosa verificare:* per un progetto a crediti ogni modello managed ha `tiledesk.credits` (con `tiledeskKey` e `ownKey`) e `top_provider.max_completion_tokens` valorizzato.
+  - *Come:* chiamare l'endpoint con il token di un progetto a crediti; controllare un modello Google (es. `google/gemini-4-neon`) e un modello OpenAI.
+  - *Perché:* la dashboard usa `top_provider.max_completion_tokens` per il massimo dei token dello slider e `tiledesk.credits` per mostrare i prezzi. Senza questi campi il massimo resta al valore di fallback.
+  - *Esito atteso:* campi presenti su tutti i modelli managed.
+- [ ] **S5 — chiamata reale su quote con modello non OpenAI**
+  - *Cosa verificare:* con un progetto a quote, una richiesta che usa un modello non OpenAI (es. `anthropic/...`) e nessuna chiave propria: il server risponde 403 `13011` (`UNPRICED_MODEL`) oppure accetta la richiesta.
+  - *Come:* eseguire una chiamata di test (es. preview KB) con il modello scelto; registrare la risposta.
+  - *Perché:* se il server accetta, la lista vuota della dashboard è più restrittiva del necessario. Se risponde 13011, la lista vuota è coerente con il server. Il percorso `creditManager.managedModel` non è stato verificato.
+  - *Esito atteso:* uno dei due comportamenti, da riportare nel piano insieme alla decisione S3.
 
 ---
 
