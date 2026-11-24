@@ -52,4 +52,7 @@ Thumbs.db
 /src/environments/env-locali
 /src/environments/real_data
 
-docs
+# docs: si ignora tutto tranne il piano crediti, che va versionato.
+# Non si puo' rieseccettuare un file se la cartella intera e' ignorata, per questo docs/* e non docs
+docs/*
+!docs/credits-metering-porting.md
