@@ -86,7 +86,7 @@
         <!--  UPGRADE (PROFILE TYPE = FREE) -->
         <!-- ------------------------------------------------  -->
         <ng-container *ngIf="isVisiblePay">
-          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free'" class="nav-item dropdown ">
+          <li id="trial-days-indicator" *ngIf="project && prjct_profile_type === 'free' && !credits" class="nav-item dropdown ">
 
             <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="navbarTrialDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="padding:0px;">
               <div id="progress" class="progress" [attr.data-percentage]="prjc_trial_days_left_percentage">
