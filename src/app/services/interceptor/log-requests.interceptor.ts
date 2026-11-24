@@ -1,7 +1,4 @@
 import { Injectable, Injector } from '@angular/core';
-import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import Swal from 'sweetalert2';
 import {
   HttpRequest,
   HttpHandler,
@@ -13,6 +10,8 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { HttpStatsService } from '../http-stats.service';
+import { MeteringService } from '../metering.service';
+import { getCreditsErrorCode } from 'app/utils/metering.util';
 
 interface EndpointStats {
   count: number;
@@ -20,19 +19,14 @@ interface EndpointStats {
   avgTime: number;
 }
 
-/** error_code of the server when a credits project cannot pay for an operation */
-const CREDITS_INSUFFICIENT = 13010;
-const CREDITS_UNPRICED_MODEL = 13011;
-
 
 @Injectable()
 export class LogRequestsInterceptor implements HttpInterceptor {
 
   private stats: Record<string, EndpointStats> = {};
-  private creditsAlertOpen = false;
 
-  // TranslateService and Router are read lazily: the translations are loaded with HttpClient,
-  // which needs this interceptor
+  // MeteringService is read lazily: it depends on TranslateService, which loads the translations
+  // with HttpClient, which needs this interceptor
   constructor(
     private httpStats: HttpStatsService,
     private injector: Injector,
@@ -118,8 +112,9 @@ export class LogRequestsInterceptor implements HttpInterceptor {
           //   );
           // } 
 
-        if (error.status === 403 && error.error && [CREDITS_INSUFFICIENT, CREDITS_UNPRICED_MODEL].includes(error.error.error_code)) {
-          this.presentCreditsRefused(error.error);
+        const creditsCode = getCreditsErrorCode(error);
+        if (creditsCode) {
+          this.injector.get(MeteringService).presentCreditsRefused(creditsCode);
         }
         return throwError(error);
       })
@@ -127,31 +122,6 @@ export class LogRequestsInterceptor implements HttpInterceptor {
     
   }
 
-  /** The operation was refused for the credits: one alert at a time, with the way to the credits page */
-  private presentCreditsRefused(body: { error_code: number }) {
-    const router = this.injector.get(Router);
-    const match = router.url.match(/\/project\/([^\/?#]+)/);
-    if (this.creditsAlertOpen || !match) {
-      return;
-    }
-    const translate = this.injector.get(TranslateService);
-    const unpriced = body.error_code === CREDITS_UNPRICED_MODEL;
-    this.creditsAlertOpen = true;
-    Swal.fire({
-      title: translate.instant(unpriced ? 'Credits.UnpricedRefusedTitle' : 'Credits.RefusedTitle'),
-      text: translate.instant(unpriced ? 'Credits.UnpricedRefusedText' : 'Credits.RefusedText'),
-      icon: 'warning',
-      showCancelButton: true,
-      cancelButtonText: translate.instant('Cancel'),
-      confirmButtonText: translate.instant('Credits.SeeCosts'),
-      reverseButtons: true,
-    }).then((result) => {
-      this.creditsAlertOpen = false;
-      if (result.isConfirmed) {
-        router.navigate(['/project', match[1], 'credits']);
-      }
-    });
-  }
   /** Metodo per leggere le statistiche da un servizio o componente */
   getStats(): Record<string, EndpointStats> {
     return this.stats;
