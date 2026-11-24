@@ -274,8 +274,8 @@ export class TemplateDetailComponent extends PricingBaseComponent implements OnI
     // }
 
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit || this.chatBotLimit === 0) {
-        if (this.chatBotCount < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit || this.chatBotLimit === 0) {
+        if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.forkTemplate()
         } else if (this.chatBotCount >= this.chatBotLimit) {

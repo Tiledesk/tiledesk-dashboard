@@ -302,8 +302,8 @@ export class HomeCreateChatbotComponent extends PricingBaseComponent implements 
     this.logger.log('[HOME-CREATE-CHATBOT] createBlankTilebot chatBotCount ', this.countOfChatbots, ' chatBotLimit ', this.chatBotLimit, ' PROJECT PLAN ', this.profile_name)
 
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit || this.chatBotLimit === 0) {
-        if (this.countOfChatbots < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit || this.chatBotLimit === 0) {
+        if (this.isCreditsMetering || this.countOfChatbots < this.chatBotLimit) {
           this.logger.log('[HOME-CREATE-CHATBOT] USECASE  countOfChatbots < chatBotLimit: Go to crete chatbot')
   
           this.router.navigate(['project/' + this.projectId + '/bots/my-chatbots/all']);

@@ -22,6 +22,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
 import { NotifyService } from 'app/core/notify.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { isCreditsMetering as isCreditsProject } from 'app/utils/metering.util';
 @Component({
   selector: 'appdashboard-install-template',
   templateUrl: './install-template.component.html',
@@ -57,6 +58,14 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
   public templateTags: any;
   public templatesCertifiedTags: any;
   project: Project;
+
+  /**
+   * ProjectPlanService skips this route (install-template/:botid/:projectid), so the metering service is not
+   * reliable here: the flag comes from the project of this component.
+   */
+  get isCreditsMetering(): boolean {
+    return isCreditsProject(this.project);
+  }
   public TESTSITE_BASE_URL: string;
   public prjct_profile_name: string;
   public chatBotCount: number;
@@ -423,7 +432,7 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
   // }
   goBack() {
     // this.router.navigate([`/get-chatbot/${this.botId}`]);
-    if (!this.chatBotLimit) {
+    if (this.isCreditsMetering || !this.chatBotLimit) {
       this.location.back();
     } else if (this.chatBotLimit) {
       if (this.chatBotCount < this.chatBotLimit) {
@@ -438,8 +447,8 @@ export class InstallTemplateComponent extends PricingBaseComponent implements On
   importTemplate() {
     this.logger.log('[INSTALL-TEMPLATE] importTemplate chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE, ' profile_name ', this.profile_name)
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
-        if (this.chatBotCount < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit) {
+        if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[INSTALL-TEMPLATE] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.forkTemplate()
         } else if (this.chatBotCount >= this.chatBotLimit) {

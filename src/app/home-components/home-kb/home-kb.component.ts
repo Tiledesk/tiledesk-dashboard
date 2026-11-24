@@ -208,8 +208,8 @@ export class HomeKbComponent extends PricingBaseComponent implements OnInit {
 
   createChatbotfromKbOfficialResponderTemplate() {
     this.findKbOfficialResponderAndThenExportToJSON()
-    if (this.chatBotLimit) {
-      if (this.chatbotCount < this.chatBotLimit) {
+    if (this.isCreditsMetering || this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatbotCount < this.chatBotLimit) {
         this.logger.log('[HOME-KB] USECASE  chatBotCount < chatBotLimit: RUN findKbOfficial')
         this.findKbOfficialResponderAndThenExportToJSON()
       } else if (this.chatbotCount >= this.chatBotLimit) {

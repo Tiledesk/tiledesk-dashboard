@@ -15,6 +15,7 @@ import { ProjectPlanService } from 'app/services/project-plan.service';
 import { NotifyService } from 'app/core/notify.service';
 import { UsersService } from 'app/services/users.service';
 import { ChatbotModalComponent } from 'app/bots/bots-list/chatbot-modal/chatbot-modal.component';
+import { isCreditsMetering as isCreditsProject } from 'app/utils/metering.util';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { AllProjectsCacheService } from 'app/services/cache/all-projects-cache.service';
@@ -50,6 +51,14 @@ export class GetStartChatbotForkComponent implements OnInit {
   public user: any;
   public projectId: string;
   public project: Project;
+
+  /**
+   * ProjectPlanService skips this route (get-chatbot/:botid), so the metering service is not reliable here:
+   * the flag comes from the project of this component.
+   */
+  get isCreditsMetering(): boolean {
+    return isCreditsProject(this.project);
+  }
   public projectName: string;
   public projectPlan: string;
   public prjct_profile_name: string;
@@ -319,8 +328,8 @@ export class GetStartChatbotForkComponent implements OnInit {
     // this.router.navigate([`install-template/${this.botid}/${this.selectedProjectId}`]); // old
     // this.forkTemplate()
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
-        if (this.chatBotCount < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit) {
+        if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[GET START CHATBOT FORK] USECASE  chatBotCount < chatBotLimit: RUN FORK')
           this.forkTemplate()
         } else if (this.chatBotCount >= this.chatBotLimit) {

@@ -25,6 +25,7 @@ import { ProjectService } from 'app/services/project.service';
 import { RoleService } from 'app/services/role.service';
 import { RolesService } from 'app/services/roles.service';
 import { PERMISSIONS } from 'app/utils/permissions.constants';
+import { isCreditsRefusal } from 'app/utils/metering.util';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 const Swal = require('sweetalert2')
 
@@ -797,8 +798,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
   
     this.logger.log('[BOTS-TEMPLATES] createBlankTilebot chatBotCount ', this.chatBotCount, ' chatBotLimit ', this.chatBotLimit, ' USER_ROLE ', this.USER_ROLE)
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit || this.chatBotLimit === 0) {
-        if (this.chatBotCount < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit || this.chatBotLimit === 0) {
+        if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[BOTS-TEMPLATES] USECASE  chatBotCount < chatBotLimit: RUN NAVIGATE')
 
           this.createTilebotBotFromScratch(botSubtype)
@@ -890,8 +891,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
       this.logger.log('[BOT-LIST] ---> FORM DATA ', formData)
 
       if (this.USER_ROLE !== 'agent') {
-        if (this.chatBotLimit || this.chatBotLimit === 0) {
-          if (this.chatBotCount < this.chatBotLimit) {
+        if (this.isCreditsMetering || this.chatBotLimit || this.chatBotLimit === 0) {
+          if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
             // this.logger.log('[BOT-LIST] USECASE  chatBotCount < chatBotLimit: RUN IMPORT CHATBOT FROM JSON chatbotToImportSubtype:', this.chatbotToImportSubtype, '- isChatbotRoute:', this.isChatbotRoute)
             // if (this.isChatbotRoute && (this.chatbotToImportSubtype === 'webhook' || this.chatbotToImportSubtype === 'copilot')) {
             //   this.logger.log(`[BOT-LIST] You are importing a ${this.chatbotToImportSubtype} flow and it will be added to the Automations list. Do you want to continue? `)
@@ -960,6 +961,8 @@ export class TemplatesComponent extends PricingBaseComponent implements OnInit {
     }, (error) => {
       // this.showUploadingSpinner = false
       this.logger.error('[BOT-CREATE] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+      // Credits refusal (403 13010-13013): the interceptor already shows the alert
+      if (isCreditsRefusal(error)) { return; }
       this.manageUploadError(error)
       this.notify.showWidgetStyleUpdateNotification(this.translate.instant('ThereHasBeenAnErrorProcessing'), 4, 'report_problem');
     }, () => {

@@ -13,6 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { AppConfigService } from 'app/services/app-config.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { openChatbotEditor } from 'app/utils/util';
+import { isCreditsRefusal } from 'app/utils/metering.util';
 @Component({
   selector: 'appdashboard-create-chatbot',
   templateUrl: './create-chatbot.component.html',
@@ -267,6 +268,8 @@ export class CreateChatbotComponent implements OnInit {
 
     }, (error) => {
       this.logger.error('[TILEBOT] -  IMPORT CHATBOT FROM JSON- ERROR', error);
+      // Credits refusal (403 13010-13013): the interceptor already shows the alert
+      if (isCreditsRefusal(error)) { return; }
 
       this.notify.showWidgetStyleUpdateNotification(this.thereHasBeenAnErrorProcessing, 4, 'report_problem');
     }, () => {

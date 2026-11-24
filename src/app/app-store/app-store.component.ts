@@ -856,8 +856,8 @@ export class AppStoreComponent extends PricingBaseComponent implements OnInit, O
 
     this.logger.log('[APP-STORE] createExternalBot ', type)
     if (this.USER_ROLE !== 'agent') {
-      if (this.chatBotLimit) {
-        if (this.chatBotCount < this.chatBotLimit) {
+      if (this.isCreditsMetering || this.chatBotLimit) {
+        if (this.isCreditsMetering || this.chatBotCount < this.chatBotLimit) {
           this.logger.log('[APP-STORE] USECASE  chatBotCount < chatBotLimit')
           this.goToCreateBot(type)
         } else if (this.chatBotCount >= this.chatBotLimit) {
