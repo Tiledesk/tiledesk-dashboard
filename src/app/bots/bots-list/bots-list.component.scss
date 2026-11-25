@@ -1426,3 +1426,8 @@ agent-exec-tabs.bots-list-tabs {
   margin: 0;
 }
 
+
+// Run controls (Webhook / Scheduled agents)
+.agent-schedule-btn.agent-schedule-running mat-icon {
+  color: #d93025;
+}

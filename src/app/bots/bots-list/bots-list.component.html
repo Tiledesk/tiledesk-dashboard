@@ -830,6 +830,37 @@
                               <span *ngIf="executionsBadge[executionsAgentId(faqkb)]?.running" class="executions-running-dot"></span>
                             </div>
 
+                            <!-- Run controls: run a Webhook agent once, start/stop the published schedule of a Scheduled agent -->
+                            <ng-container *ngIf="PERMISSION_TO_RUN_AGENTS">
+                              <div *ngIf="agentRun(faqkb).webhookId" class="cl-card-action-btn-wpr agent-run-btn-wpr" (click)="$event.stopPropagation()">
+                                <button id="run-agent-btn-{{faqkb._id}}" class="agent-run-btn"
+                                  mat-icon-button
+                                  [disabled]="agentRunBusy[faqkb._id]"
+                                  (click)="runWebhookAgent(faqkb)"
+                                  [attr.aria-label]="'AgentRun.Run' | translate"
+                                  matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'AgentRun.RunTooltip' | translate }}"
+                                  matTooltipPosition='below'
+                                  matTooltipHideDelay="100">
+                                  <mat-icon>play_arrow</mat-icon>
+                                </button>
+                              </div>
+                              <div *ngIf="agentRun(faqkb).schedule !== 'none'" class="cl-card-action-btn-wpr agent-schedule-btn-wpr" (click)="$event.stopPropagation()">
+                                <button id="schedule-agent-btn-{{faqkb._id}}" class="agent-schedule-btn"
+                                  [class.agent-schedule-running]="agentRun(faqkb).schedule === 'running'"
+                                  mat-icon-button
+                                  [disabled]="agentRunBusy[faqkb._id] || agentRun(faqkb).schedule === 'unpublished'"
+                                  (click)="toggleAgentSchedule(faqkb)"
+                                  [attr.aria-label]="'AgentRun.Schedule.' + agentRun(faqkb).schedule | translate"
+                                  matTooltipClass="custom-mat-tooltip"
+                                  matTooltip="{{ 'AgentRun.Schedule.' + agentRun(faqkb).schedule | translate }}"
+                                  matTooltipPosition='below'
+                                  matTooltipHideDelay="100">
+                                  <mat-icon>{{ agentRun(faqkb).schedule === 'running' ? 'stop_circle' : 'schedule' }}</mat-icon>
+                                </button>
+                              </div>
+                            </ng-container>
+
                             <div class="cl-card-action-btn-wpr" (click)="$event.stopPropagation()">
                               <button id="share-btn-{{faqkb._id}}" 
                                 mat-icon-button 
@@ -883,6 +914,18 @@
                                   <mat-icon>edit</mat-icon>
                                   <span>Rename</span>
                                 </button> -->
+
+                                <button *ngIf="PERMISSION_TO_RUN_AGENTS && agentRun(faqkb).webhookId" class="mat-menu-btn" mat-menu-item
+                                  [disabled]="agentRunBusy[faqkb._id]" (click)="runWebhookAgent(faqkb)">
+                                  <mat-icon>play_arrow</mat-icon>
+                                  <span>{{ 'AgentRun.Run' | translate }}</span>
+                                </button>
+
+                                <button *ngIf="PERMISSION_TO_RUN_AGENTS && agentRun(faqkb).schedule !== 'none'" class="mat-menu-btn" mat-menu-item
+                                  [disabled]="agentRunBusy[faqkb._id] || agentRun(faqkb).schedule === 'unpublished'" (click)="toggleAgentSchedule(faqkb)">
+                                  <mat-icon>{{ agentRun(faqkb).schedule === 'running' ? 'stop_circle' : 'schedule' }}</mat-icon>
+                                  <span>{{ 'AgentRun.ScheduleMenu.' + agentRun(faqkb).schedule | translate }}</span>
+                                </button>
 
                                 <button *ngIf="executionsEnabled" class="mat-menu-btn" mat-menu-item
                                   (click)="goToExecutions(faqkb)">

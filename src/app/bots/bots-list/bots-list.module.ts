@@ -23,6 +23,7 @@ import { CreateAgentModalModule } from './create-agent-modal/create-agent-modal.
 import { CreateFlowsModalModule } from './create-flows-modal/create-flows-modal.module';
 import { MatRippleModule } from '@angular/material/core';
 import { AgentExecTabsModule } from '../executions/agent-exec-tabs/agent-exec-tabs.module';
+import { RunAgentDialogComponent } from './agent-run/run-agent-dialog.component';
 
 const routes: Routes = [
   { path: "", component: BotListComponent},
@@ -31,6 +32,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     BotListComponent,
+    RunAgentDialogComponent,
     // CreateFlowsModalComponent,
     // CreateChatbotModalComponent
   ],

@@ -75,10 +75,10 @@ export const ACTIVITY_ICON_BY_VERB: Record<string, string> = {
   EXECUTION_STOP_NOTICE_UPDATE: 'assets/img/activities/execution-stop-notice.svg',
 };
 
-/** Executions audit rows are visible to the owner and to custom roles with executions_audit_read. */
+/** Executions audit rows are visible to the owner and admins (the owner's executions grants) and to custom roles with executions_audit_read. */
 export function canViewExecutionsAudit(role: string, matchedPermissions: string[] | undefined): boolean {
-  if (role === 'owner') return true;
-  if (role === 'admin' || role === 'supervisor' || role === 'agent') return false;
+  if (role === 'owner' || role === 'admin') return true;
+  if (role === 'supervisor' || role === 'agent') return false;
   return !!matchedPermissions && matchedPermissions.includes(PERMISSIONS.EXECUTIONS_AUDIT_READ);
 }
 

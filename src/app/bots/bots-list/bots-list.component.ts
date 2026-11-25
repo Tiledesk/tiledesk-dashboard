@@ -42,6 +42,8 @@ import { PERMISSIONS } from 'app/utils/permissions.constants';
 import { ExecutionsService } from 'app/services/executions.service';
 import { canViewExecutions } from './../executions/executions.models';
 import { monitorExecutionsLink } from '../executions/execution-links';
+import { agentRunInfo, AgentRunInfo, webhooksByAgent } from './agent-run/agent-run';
+import { RunAgentDialogComponent } from './agent-run/run-agent-dialog.component';
 // import { KnowledgeBaseService } from 'app/services/knowledge-base.service';
 
 
@@ -119,6 +121,10 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   increaseSalesTemplatesCount: number;
   customerSatisfactionBotsCount: number;
   flowWebhooksCount: number;
+  /** Webhook records by agent (draft id): the run controls of Webhook and Scheduled agents. */
+  agentWebhooks: { [chatbotId: string]: any } = {};
+  /** A run or a schedule start/stop in flight, by agent id (its button is disabled). */
+  agentRunBusy: { [chatbotId: string]: boolean } = {};
 
   increaseSalesBotsCount: number;
   kbCount: number;
@@ -224,6 +230,8 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   PERMISSION_TO_VIEW_FLOW_MESSAGES_COUNT_GRAPH: boolean;
   PERMISSION_TO_VIEW_ANALYTICS: boolean;
   PERMISSION_TO_VIEW_EXECUTIONS: boolean;
+  /** Owner and admin: the webhooks API (run, schedule start/stop) needs the admin role. */
+  PERMISSION_TO_RUN_AGENTS: boolean = false;
   // agentId (root id) -> failed+stopped count and running flag, from one summary call per visible page
   executionsBadge: { [agentId: string]: { attention: number; running: boolean } } = {};
   private executionsSummaryKey: string;
@@ -531,6 +539,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   }
 
   applyExecutionsPermission(role: string, matchedPermissions: string[]) {
+    this.PERMISSION_TO_RUN_AGENTS = role === 'owner' || role === 'admin';
     this.PERMISSION_TO_VIEW_EXECUTIONS = canViewExecutions(role, matchedPermissions);
     this.loadExecutionsSummary();
   }
@@ -582,6 +591,62 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
   /** The badge counts the last 24 hours (summary): open the agent's executions on that range, not on Now (the page's default). */
   goToExecutions(bot: any) {
     this.router.navigate(monitorExecutionsLink(this.project._id, this.executionsAgentId(bot)), { queryParams: { range: '24h' } });
+  }
+
+  // ---- run controls: run a Webhook agent, start/stop a Scheduled agent ----
+
+  agentRun(bot: any): AgentRunInfo {
+    return agentRunInfo(bot, bot && this.agentWebhooks[bot._id]);
+  }
+
+  /** Run a Webhook agent once with the payload typed in the dialog (the published version). */
+  runWebhookAgent(bot: any) {
+    const info = this.agentRun(bot);
+    if (!this.PERMISSION_TO_RUN_AGENTS || !info.webhookId || this.agentRunBusy[bot._id]) return;
+    this.dialog.open(RunAgentDialogComponent, { data: { agentName: bot.name }, width: '560px' })
+      .afterClosed()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(payload => {
+        if (!payload) return;
+        this.agentRunBusy[bot._id] = true;
+        this.webhookService.runFlowWebhook(info.webhookId, payload).pipe(takeUntil(this.unsubscribe$)).subscribe({
+          next: () => {
+            this.agentRunBusy[bot._id] = false;
+            this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AgentRun.RunStarted', { name: bot.name }), 2, 'done');
+          },
+          error: (err) => {
+            this.agentRunBusy[bot._id] = false;
+            this.logger.error('[BOTS-LIST] run webhook agent error', err);
+            this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AgentRun.RunFailed', { name: bot.name }), 4, 'report_problem');
+          }
+        });
+      });
+  }
+
+  /** Start a stopped schedule, or stop a running one (published snapshot, no publish). */
+  toggleAgentSchedule(bot: any) {
+    const info = this.agentRun(bot);
+    if (!this.PERMISSION_TO_RUN_AGENTS || this.agentRunBusy[bot._id]) return;
+    if (info.schedule !== 'running' && info.schedule !== 'stopped' && info.schedule !== 'error') return;
+    const running = info.schedule !== 'running';
+    this.agentRunBusy[bot._id] = true;
+    this.webhookService.setScheduledRunning(bot._id, running).pipe(takeUntil(this.unsubscribe$)).subscribe({
+      next: (res: any) => {
+        this.agentRunBusy[bot._id] = false;
+        const webhook = this.agentWebhooks[bot._id];
+        if (webhook && res && res.scheduled_live) {
+          this.agentWebhooks = { ...this.agentWebhooks, [bot._id]: { ...webhook, scheduled_live: res.scheduled_live } };
+        }
+        this.notify.showWidgetStyleUpdateNotification(
+          this.translate.instant(running ? 'AgentRun.ScheduleStarted' : 'AgentRun.ScheduleStopped', { name: bot.name }), 2, 'done');
+      },
+      error: (err) => {
+        this.agentRunBusy[bot._id] = false;
+        this.logger.error('[BOTS-LIST] schedule start/stop error', err);
+        const key = err && err.status === 409 ? 'AgentRun.ScheduleNotPublished' : (running ? 'AgentRun.ScheduleStartFailed' : 'AgentRun.ScheduleStopFailed');
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant(key, { name: bot.name }), 4, 'report_problem');
+      }
+    });
   }
 
   checkChromeVersion(): boolean {
@@ -642,6 +707,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       this.logger.log('[BOTS-LIST] GET WH RES  ', res);
       if (res) {
         this.flowWebhooksCount = res.length
+        this.agentWebhooks = webhooksByAgent(res);
       }
 
     }, (error) => {

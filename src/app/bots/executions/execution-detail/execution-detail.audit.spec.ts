@@ -81,12 +81,16 @@ describe('ExecutionDetailComponent audit tab', () => {
 
   afterEach(() => { if (fixture) fixture.destroy(); });
 
-  it('audit tab only for owner or audit permission', fakeAsync(() => {
+  it('audit tab only for owner, admin or audit permission', fakeAsync(() => {
     setup('owner');
     expect(tabBtn()).not.toBeNull();
     fixture.destroy();
     TestBed.resetTestingModule();
     setup('admin');
+    expect(tabBtn()).not.toBeNull();
+    fixture.destroy();
+    TestBed.resetTestingModule();
+    setup('supervisor');
     expect(tabBtn()).toBeNull();
     fixture.destroy();
     TestBed.resetTestingModule();

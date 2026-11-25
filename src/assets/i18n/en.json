@@ -4570,6 +4570,35 @@
             "Executions": "Executions"
         }
     },
+    "AgentRun": {
+        "Run": "Run",
+        "RunTooltip": "Run the agent now",
+        "RunTitle": "Run {{name}}",
+        "RunText": "Runs the published version of the agent once, as a call to its webhook would. Enter the data to send.",
+        "Payload": "Data (JSON)",
+        "InvalidJson": "The data is not valid JSON",
+        "NotObject": "The data must be a JSON object",
+        "Cancel": "Cancel",
+        "RunStarted": "{{name}} was run",
+        "RunFailed": "{{name}} could not be run",
+        "Schedule": {
+            "running": "The schedule is running: stop it",
+            "stopped": "The schedule is stopped: start it",
+            "error": "The schedule could not be updated: start it again",
+            "unpublished": "Publish the agent to start its schedule"
+        },
+        "ScheduleMenu": {
+            "running": "Stop schedule",
+            "stopped": "Start schedule",
+            "error": "Start schedule",
+            "unpublished": "Start schedule (publish first)"
+        },
+        "ScheduleStarted": "The schedule of {{name}} is running",
+        "ScheduleStopped": "The schedule of {{name}} is stopped",
+        "ScheduleStartFailed": "The schedule of {{name}} could not be started",
+        "ScheduleStopFailed": "The schedule of {{name}} could not be stopped",
+        "ScheduleNotPublished": "Publish {{name}} first: its scheduled start was never published"
+    },
     "Executions": {
         "Graph": {
             "Controls": {
@@ -4803,7 +4832,7 @@
             "stop_hard_now": "Pause now",
             "destroy": "Destroy",
             "NoPermissionStop": "You don't have permission to pause executions",
-            "NoPermissionDestroy": "Only the project owner can destroy executions",
+            "NoPermissionDestroy": "Only the project owner or an admin can destroy executions",
             "Pending": {
                 "stopping": "pausing…",
                 "destroying": "destroying…",
@@ -4908,7 +4937,7 @@
             "OutOfRange": "Enter a number from {{min}} to {{max}} (sealed data cannot exceed the trace)",
             "AuditFixed": "Audit log: 1 year (fixed)",
             "TestFixed": "Test runs: {{days}} days (fixed)",
-            "ReadOnly": "Only the project owner, or a role allowed to read the executions audit, can change these settings.",
+            "ReadOnly": "Only the project owner or an admin, or a role allowed to read the executions audit, can change these settings.",
             "Save": "Save",
             "Saved": "Saved",
             "SaveFailed": "The settings could not be saved. Try again.",
