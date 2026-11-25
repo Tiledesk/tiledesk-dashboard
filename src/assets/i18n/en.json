@@ -2923,7 +2923,8 @@
         "LlmPrices": "AI models (credits per 1000 tokens)",
         "NoModelUsed": "No AI model used in this period: search a model to see its costs.",
         "NoModelFound": "No model found.",
-        "LlmPricesHint": "Prices from OpenRouter, updated every hour. With your own key the provider bills the tokens and Tiledesk charges a fixed fee per token.",
+        "LlmPricesHint": "Prices from OpenRouter, updated every hour.",
+        "OwnKeyPerCallHint": "With your own key the provider bills the tokens and every call costs {{credits}} credits, whatever the model.",
         "FilterModels": "Search a model (e.g. gpt-4.1)",
         "Cost": "AI cost",
         "BuyExtra": "Buy extra credits",
@@ -2975,7 +2976,7 @@
             "Detail": "Detail by model, resource and key",
             "PerThousand": "Credits / 1000 token",
             "NoModel": "Model not specified",
-            "Hint": "With the Tiledesk key the credits are the cost of the tokens of the model; with your own key a fixed fee per token."
+            "Hint": "With the Tiledesk key the credits are the cost of the tokens of the model; with your own key a fixed fee per call."
         },
         "HistoryPage": {
             "Empty": "No period yet.",
