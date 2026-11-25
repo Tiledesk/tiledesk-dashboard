@@ -5,19 +5,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { distinctUntilChanged, map } from 'rxjs/operators';
 import Swal from 'sweetalert2';
 import { CreditsService } from './credits.service';
-import { CREDITS_ERROR_CODES, ProjectMetering } from 'app/utils/metering.util';
+import { CREDITS_ERROR_CODES, CREDITS_REFUSAL_TEXTS, ProjectMetering } from 'app/utils/metering.util';
 
 interface CurrentMetering {
   projectId: string | null;
   metering: ProjectMetering;
 }
-
-const REFUSAL_TEXTS: { [code: number]: { title: string; text: string } } = {
-  [CREDITS_ERROR_CODES.INSUFFICIENT_CREDITS]: { title: 'Credits.RefusedTitle', text: 'Credits.RefusedText' },
-  [CREDITS_ERROR_CODES.UNPRICED_MODEL]: { title: 'Credits.UnpricedRefusedTitle', text: 'Credits.UnpricedRefusedText' },
-  [CREDITS_ERROR_CODES.TRIAL_ENDED]: { title: 'Credits.TrialEndedTitle', text: 'Credits.TrialEndedText' },
-  [CREDITS_ERROR_CODES.DAILY_LIMIT]: { title: 'Credits.DailyLimitTitle', text: 'Credits.DailyLimitText' },
-};
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +66,7 @@ export class MeteringService {
     if (this.alertOpen || !this.pendingRefusals.length) {
       return;
     }
-    const texts = REFUSAL_TEXTS[this.pendingRefusals[0]] || REFUSAL_TEXTS[CREDITS_ERROR_CODES.INSUFFICIENT_CREDITS];
+    const texts = CREDITS_REFUSAL_TEXTS[this.pendingRefusals[0]] || CREDITS_REFUSAL_TEXTS[CREDITS_ERROR_CODES.INSUFFICIENT_CREDITS];
     this.alertOpen = true;
     Swal.fire({
       title: this.translate.instant(texts.title),

@@ -15,6 +15,14 @@ export const CREDITS_ERROR_CODES = {
 
 const CREDITS_CODES: number[] = Object.values(CREDITS_ERROR_CODES);
 
+/** i18n keys of the title and of the text for each refusal code (alert of the interceptor, preview areas) */
+export const CREDITS_REFUSAL_TEXTS: { [code: number]: { title: string; text: string } } = {
+  [CREDITS_ERROR_CODES.INSUFFICIENT_CREDITS]: { title: 'Credits.RefusedTitle', text: 'Credits.RefusedText' },
+  [CREDITS_ERROR_CODES.UNPRICED_MODEL]: { title: 'Credits.UnpricedRefusedTitle', text: 'Credits.UnpricedRefusedText' },
+  [CREDITS_ERROR_CODES.TRIAL_ENDED]: { title: 'Credits.TrialEndedTitle', text: 'Credits.TrialEndedText' },
+  [CREDITS_ERROR_CODES.DAILY_LIMIT]: { title: 'Credits.DailyLimitTitle', text: 'Credits.DailyLimitText' },
+};
+
 /** Anything but 'credits' (also the projects stored before the key existed) keeps the plan quotas */
 export function getProjectMetering(project: any): ProjectMetering {
   return project?.metering === 'credits' ? 'credits' : 'quotes';

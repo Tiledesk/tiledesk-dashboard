@@ -1,4 +1,4 @@
-import { areCreditsExhausted, CREDITS_ERROR_CODES, getCreditsErrorCode, getProjectMetering, isCreditsMetering, isCreditsRefusal } from './metering.util';
+import { areCreditsExhausted, CREDITS_ERROR_CODES, CREDITS_REFUSAL_TEXTS, getCreditsErrorCode, getProjectMetering, isCreditsMetering, isCreditsRefusal } from './metering.util';
 
 describe('metering.util', () => {
   describe('areCreditsExhausted', () => {
@@ -73,6 +73,20 @@ describe('metering.util', () => {
 
     it('is false for the legacy plan limit errors', () => {
       expect(isCreditsRefusal({ status: 403, error: { error: 'Maximum number of resources reached for the current plan', plan_limit: 3 } })).toBe(false);
+    });
+
+    it('is false for the raw body of a stream error (no status): the stream wraps the credits ones', () => {
+      expect(isCreditsRefusal({ success: false, message: 'Credits balance not sufficient', error_code: 13010 })).toBe(false);
+    });
+  });
+
+  describe('CREDITS_REFUSAL_TEXTS', () => {
+    it('has a title and a text for every credits code', () => {
+      Object.values(CREDITS_ERROR_CODES).forEach((code) => {
+        expect(CREDITS_REFUSAL_TEXTS[code]).toBeDefined();
+        expect(CREDITS_REFUSAL_TEXTS[code].title).toMatch(/^Credits\./);
+        expect(CREDITS_REFUSAL_TEXTS[code].text).toMatch(/^Credits\./);
+      });
     });
   });
 });
