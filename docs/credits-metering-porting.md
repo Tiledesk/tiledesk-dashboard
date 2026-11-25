@@ -1102,7 +1102,8 @@ Se il gestore resetta anche uno stato della UI (spinner, bottone disabilitato), 
 - [x] **Step 2:** (fatto 2026-11-25, non committato) `user-edit-add.component.`*: stessi `[disabled]` (righe 151, 167, 189, 207), banner 45-125, `invite()` senza controllo seats su credits; `isCreditsRefusal` nel gestore errore di `POST /project_users/invite`
 - [x] **Step 3:** (fatto 2026-11-25, non committato) `home-quick-cards` (seats: 226-236, 309-324, 720-734, 916-989; `.html:247-285`), `home-create-teammate`
 - [x] **Step 4:** (fatto 2026-11-25, non committato) `project-edit-add` (2318-2463; `.html:278,310,662`): non estende `PricingBaseComponent`, quindi iniettare `MeteringService` e usare `isCredits$`; su credits (decisione 2026-11-25): se `profile.type` è `free`, "Your current plan" mostra `Credits.Billing.trial` ("Trial" / "Prova") senza "( N seats x € 0.00 )" e senza il click verso pricing; la riga "Seats redeemed" è nascosta per tutti i piani a crediti
-- [ ] **Step 5:** verifica manuale (inviti oltre `PLAN_SEATS` su credits; legacy invariato) + commit `feat(credits): seats limits only on quotes projects`
+- [x] **Step 5 (commit):** commit `feat(credits): seats limits only on quotes projects` fatto come `a9fa9df0e` (2026-11-25).
+- [ ] **Step 5 (verifica manuale, da fare):** inviti oltre `PLAN_SEATS` su credits; progetto legacy invariato
 
 ---
 
