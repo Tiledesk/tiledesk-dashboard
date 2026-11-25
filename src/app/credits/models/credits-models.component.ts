@@ -14,7 +14,7 @@ export interface CreditsModelRow extends CreditsLlmUsage {
   label: string | undefined;
   /** share of the credits of the rows shown, 0-100 */
   perc: number;
-  /** average credits per 1000 tokens */
+  /** average credits per 1000 tokens, null with the own key (a fee per call) */
   perThousand: number | null;
 }
 
@@ -123,7 +123,7 @@ export class CreditsModelsComponent implements OnInit, OnDestroy {
       .map((usage) => Object.assign({}, usage, {
         label: modelLabel(usage),
         perc: 0,
-        perThousand: usage.tokens ? (usage.credits / usage.tokens) * 1000 : null
+        perThousand: usage.tokens && !usage.ownKey ? (usage.credits / usage.tokens) * 1000 : null
       }))
       .filter((row) => !search || (row.label || '').toLowerCase().includes(search));
     const total = rows.reduce((sum, row) => sum + row.credits, 0);

@@ -2726,7 +2726,8 @@
         "LlmPrices": "Modelli AI (crediti ogni 1000 token)",
         "NoModelUsed": "Nessun modello AI usato in questo periodo: cerca un modello per vederne i costi.",
         "NoModelFound": "Nessun modello trovato.",
-        "LlmPricesHint": "Prezzi da OpenRouter, aggiornati ogni ora. Con la chiave propria i token li fattura il provider e Tiledesk addebita un costo fisso per token.",
+        "LlmPricesHint": "Prezzi da OpenRouter, aggiornati ogni ora.",
+        "OwnKeyPerCallHint": "Con la chiave propria i token li fattura il provider e ogni chiamata costa {{credits}} crediti, qualunque sia il modello.",
         "FilterModels": "Cerca un modello (es. gpt-4.1)",
         "Cost": "Costo AI",
         "BuyExtra": "Acquista crediti extra",
@@ -2778,7 +2779,7 @@
             "Detail": "Dettaglio per modello, risorsa e chiave",
             "PerThousand": "Crediti / 1000 token",
             "NoModel": "Modello non indicato",
-            "Hint": "Con la chiave Tiledesk i crediti sono il costo dei token del modello; con la chiave propria un costo fisso per token."
+            "Hint": "Con la chiave Tiledesk i crediti sono il costo dei token del modello; con la chiave propria un costo fisso per chiamata."
         },
         "HistoryPage": {
             "Empty": "Nessun periodo.",

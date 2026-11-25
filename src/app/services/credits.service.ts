@@ -15,7 +15,8 @@ export interface CreditsLlmPrice {
   /** available with the Tiledesk key */
   managed: boolean;
   tiledeskKey?: { input: number; output: number };
-  ownKey: { input: number; output: number };
+  /** credits of a call with the project's own key, whatever the model and the tokens */
+  ownKeyPerCall: number;
 }
 
 /** GET /:projectid/credits (and `credits` of POST /:projectid/quotes, without the costs) */

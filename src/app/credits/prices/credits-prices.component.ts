@@ -30,6 +30,12 @@ export class CreditsPricesComponent {
     return prices.filter((price) => used.has(price.id) || used.has(price.id.split('/').pop()));
   }
 
+  /** The same for every model, null until the price list is loaded */
+  get ownKeyPerCall(): number | null {
+    const price = this.store.llmPrices[0];
+    return price && typeof price.ownKeyPerCall === 'number' ? price.ownKeyPerCall : null;
+  }
+
   objectKeys(value: object): string[] {
     return value ? Object.keys(value) : [];
   }
