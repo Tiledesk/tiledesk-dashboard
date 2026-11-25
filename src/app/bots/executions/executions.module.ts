@@ -21,6 +21,7 @@ import { ValueCellComponent } from './shared/value-cell.component';
 import { VarHistoryDrawerComponent } from './shared/var-history-drawer.component';
 import { StopDialogComponent } from './shared/stop-dialog.component';
 import { DestroyDialogComponent } from './shared/destroy-dialog.component';
+import { BulkDestroyDialogComponent } from './shared/bulk-destroy-dialog.component';
 import { ResumeDialogComponent } from './shared/resume-dialog.component';
 import { StartNewDialogComponent } from './shared/start-new-dialog.component';
 import { DataAccessDialogComponent } from './shared/data-access-dialog.component';
@@ -36,6 +37,7 @@ import { AgentExecTabsModule } from './agent-exec-tabs/agent-exec-tabs.module';
     VarHistoryDrawerComponent,
     StopDialogComponent,
     DestroyDialogComponent,
+    BulkDestroyDialogComponent,
     ResumeDialogComponent,
     StartNewDialogComponent,
     DataAccessDialogComponent,

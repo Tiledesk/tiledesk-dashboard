@@ -16,6 +16,7 @@ import { FaqKbService } from '../../../services/faq-kb.service';
 import { RolesService } from '../../../services/roles.service';
 import { LoggerService } from '../../../services/logger/logger.service';
 import { AuthService } from '../../../core/auth.service';
+import { MatDialog } from '@angular/material/dialog';
 
 /** The embedded graph: its inputs, its outputs, and refresh(). */
 @Component({ selector: 'execution-graph', template: '<div class="graph-stub"></div>' })
@@ -79,6 +80,7 @@ describe('ExecutionsListComponent', () => {
         { provide: RolesService, useValue: { listenToProjectUserPermissions() {}, getUpdateRequestPermission: () => perms$ } },
         { provide: LoggerService, useValue: { log() {}, debug() {}, warn() {}, error() {} } },
         { provide: AuthService, useValue: { project_bs: new BehaviorSubject({ _id: 'p1', name: 'Acme' }) } },
+        { provide: MatDialog, useValue: { open: () => ({ afterClosed: () => of(null) }) } },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });

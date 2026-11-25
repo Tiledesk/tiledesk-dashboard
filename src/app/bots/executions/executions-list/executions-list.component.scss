@@ -106,3 +106,34 @@
   display: inline-block; margin-left: 6px; padding: 0 6px; border-radius: 8px;
   font-size: 11px; line-height: 18px; color: #fff; background: var(--exec-bad); vertical-align: middle;
 }
+
+/* selection (checkbox column), actions column and the bar of actions on the selected rows */
+.exec-select-cell { width: 36px; padding-right: 0 !important; input { cursor: pointer; width: 16px; height: 16px; vertical-align: middle; } input:disabled { cursor: default; } }
+.exec-row-selected { background: var(--exec-accent-weak); &:hover, &:focus { background: var(--exec-accent-weak); } }
+.exec-actions-head { text-align: right !important; }
+.exec-actions-cell { white-space: nowrap; text-align: right; }
+.exec-icon-btn {
+  display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; margin-left: 2px;
+  border: 0; border-radius: 6px; background: transparent; color: var(--exec-muted); cursor: pointer;
+  mat-icon { font-size: 20px; width: 20px; height: 20px; }
+  &:hover:not(:disabled) { background: #eef1f6; color: var(--exec-fg); }
+  &:focus-visible { outline: 2px solid var(--exec-accent); outline-offset: 1px; }
+  &:disabled { cursor: default; opacity: .45; }
+}
+.exec-icon-danger:hover:not(:disabled) { color: var(--exec-bad); background: #fdecec; }
+.exec-bulk-bar {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin: 0 0 10px; padding: 8px 12px;
+  background: var(--exec-accent-weak); border: 1px solid #c6d8fb; border-radius: 10px; font-size: 13px;
+  .exec-btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; font-weight: 500; color: #3b4250;
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+    &:disabled { cursor: default; color: #9aa4b2; } }
+  .exec-btn-danger:not(:disabled) { color: var(--exec-bad); border-color: #f0b8b8; }
+}
+.exec-bulk-count { font-weight: 500; margin-right: 6px; }
+.exec-bulk-clear { margin-left: auto; }
+.exec-action-message {
+  display: flex; align-items: center; gap: 4px; margin: 0 0 10px; padding: 8px 12px; border-radius: 10px; font-size: 13px;
+  background: #e8f5e9; color: #1e5e24; border: 1px solid #bfe0c2;
+  &.exec-action-error { background: #fff4e5; color: #7a4100; border-color: #f3d2a2; }
+  .exec-action-dismiss { margin-left: auto; color: inherit; mat-icon { font-size: 18px; width: 18px; height: 18px; } }
+}
