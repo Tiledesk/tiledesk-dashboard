@@ -4496,6 +4496,7 @@
             "Destroy": "Distruggi ({{n}})",
             "Clear": "Deseleziona",
             "Dismiss": "Chiudi",
+            "DestroyTitleOne": "Distruggi 1 esecuzione",
             "DestroyTitle": "Distruggi {{n}} esecuzioni",
             "DestroyText": "Le termina, chiude le loro conversazioni e ne rimuove lo stato attivo. Non potranno essere riprese. Tracce e audit restano.",
             "DestroyType": "Scrivi {{n}} per confermare",

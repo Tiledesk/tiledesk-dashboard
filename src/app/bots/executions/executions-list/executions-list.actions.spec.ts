@@ -176,6 +176,18 @@ describe('ExecutionsListComponent actions', () => {
     expect(component.selected.has('e-wait-00004')).toBe(true);
   });
 
+  it('row resume of a calling action asks the confirm, then resumes with confirm=true', () => {
+    setup('owner');
+    const seen: any[] = [];
+    dialog.open.and.callFake((c: any, cfg: any) => { seen.push(cfg.data); return { afterClosed: () => of(c === ResumeDialogComponent ? true : null) }; });
+    executions.resume.and.callFake((_p: string, _id: string, confirm: boolean) =>
+      confirm ? of({ status: 'running' }) : throwError({ status: 409, error: { error: 'confirm_required', action: {} } }));
+    component.rowAction(ROWS[1] as any, 'resume');
+    expect(executions.resume.calls.allArgs()).toEqual([['p1', 'e-stp-000002', false], ['p1', 'e-stp-000002', true]]);
+    expect(seen[1].calling).toBe(true);
+    expect(component.actionMessage.params).toEqual({ done: 1, failed: 0, confirm: 0 });
+  });
+
   it('bulk resume counts confirm_required apart', () => {
     setup('owner');
     component.toggleAll(true);

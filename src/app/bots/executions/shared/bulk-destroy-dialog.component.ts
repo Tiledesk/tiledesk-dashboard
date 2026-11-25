@@ -9,7 +9,7 @@ export interface BulkDestroyDialogData {
 @Component({
   selector: 'execution-bulk-destroy-dialog',
   template: `
-    <h2 mat-dialog-title>{{ "Executions.Bulk.DestroyTitle" | translate: { n: data.count } }}</h2>
+    <h2 mat-dialog-title>{{ (data.count === 1 ? "Executions.Bulk.DestroyTitleOne" : "Executions.Bulk.DestroyTitle") | translate: { n: data.count } }}</h2>
     <mat-dialog-content class="bd">
       <p class="bd-p">{{ "Executions.Bulk.DestroyText" | translate }}</p>
       <label class="bd-label" for="bd-confirm-input">{{ "Executions.Bulk.DestroyType" | translate: { n: data.count } }}</label>
