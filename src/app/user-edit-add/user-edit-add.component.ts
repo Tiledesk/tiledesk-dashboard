@@ -13,6 +13,7 @@ import { AppConfigService } from '../services/app-config.service';
 import { Location } from '@angular/common';
 import { BrandService } from '../services/brand.service';
 import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, PLAN_NAME, PLAN_SEATS, URL_understanding_default_roles } from '../utils/util';
+import { isCreditsRefusal } from '../utils/metering.util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { LoggerService } from '../services/logger/logger.service';
@@ -1024,6 +1025,16 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
 
 
+    // Credits projects: no seats limit client-side, the server refuses the invite when the credits are not enough
+    if (this.isCreditsMetering) {
+      if (this.CURRENT_USER_ROLE !== 'agent') {
+        this.doInviteUser();
+      } else {
+        this.presentModalAgentCannotInviteTeammates()
+      }
+      return;
+    }
+
     if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
       if (this.CURRENT_USER_ROLE !== 'agent') {
         this.doInviteUser();
@@ -1093,6 +1104,16 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
     }, (error) => {
       this.logger.error('[USER-EDIT-ADD] - INVITE USER  ERROR ', error);
+
+      // Credits refusal (13010-13013): the interceptor shows the alert, no generic error here
+      if (isCreditsRefusal(error)) {
+        this.INVITE_YOURSELF_ERROR = false;
+        this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
+        this.INVITE_USER_NOT_FOUND = false;
+        this.INVITE_OTHER_ERROR = false;
+        this.PENDING_INVITATION_ALREADY_EXIST = false;
+        return;
+      }
 
       const invite_error = error['error']
       // console.error('[USER-EDIT-ADD] - INVITE USER  ERROR BODY ', invite_error);

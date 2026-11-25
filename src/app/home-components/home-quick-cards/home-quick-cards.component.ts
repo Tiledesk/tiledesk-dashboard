@@ -34,6 +34,7 @@ import { LocalDbService } from 'app/services/users-local-db.service';
 import { UsersService } from 'app/services/users.service';
 import { getLastUpdatedChatbot, sortChatbotsByLastUpdated } from 'app/utils/chatbot-sort.util';
 import { openChatbotEditor } from 'app/utils/util';
+import { isCreditsRefusal } from 'app/utils/metering.util';
 import { Subject, forkJoin, of } from 'rxjs';
 import { catchError, takeUntil } from 'rxjs/operators';
 
@@ -225,7 +226,8 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   get showTeammatesLimit(): boolean {
-    return this.userRole !== 'agent' && this.showPlanLimits && (this.seatsLimit || this.seatsLimit === 0);
+    // Credits metering: no seats cap client-side (the invite is refused by the server when the credits are not enough)
+    return !this.isCreditsMetering && this.userRole !== 'agent' && this.showPlanLimits && (this.seatsLimit || this.seatsLimit === 0);
   }
 
   get redeemedSeatsCount(): number {
@@ -728,7 +730,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
       return;
     }
 
-    if (this.redeemedSeatsCount < this.seatsLimit) {
+    if (this.isCreditsMetering || this.redeemedSeatsCount < this.seatsLimit) {
       this.presentModalInviteTeammate();
       return;
     }
@@ -925,6 +927,11 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   openModalSeatsOverLimit(): void {
+    // Credits metering: no seats paywall client-side
+    if (this.isCreditsMetering) {
+      return;
+    }
+
     if (this.prjct_profile_type === 'free' && this.trial_expired) {
       this.openModalSeatsTrialExpired();
       return;
@@ -981,7 +988,7 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
           return;
         }
 
-        if (this.redeemedSeatsCount < this.seatsLimit) {
+        if (this.isCreditsMetering || this.redeemedSeatsCount < this.seatsLimit) {
           this.doInviteUser(result.email, result.role);
           return;
         }
@@ -1006,6 +1013,11 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
           }
         },
         error: (error) => {
+          // Credits refusal: the interceptor shows the alert, no generic dialog here
+          if (isCreditsRefusal(error)) {
+            return;
+          }
+
           const inviteError = error?.error;
 
           if (inviteError?.success === false && inviteError?.code === 4000) {

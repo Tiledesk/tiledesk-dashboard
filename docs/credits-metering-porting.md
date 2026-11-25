@@ -446,7 +446,7 @@ Repository server: `tiledesk-server`, branch `features-2611/credits-plan`. Non m
 - [ ] **S1 — quote, lista managed (`GET /:pid/llm/models?managed=true`)**
   - *Cosa verificare:* su un progetto a quote la risposta contiene solo modelli OpenAI, ciascuno con `tiledesk.managed: true` e senza `tiledesk.credits`.
   - *Come:* chiamare l'endpoint con il token di un progetto a quote e contare i vendor nel campo `id`.
-  - *Perché:* la dashboard mostra solo i GPT se il server non restituisce altro. Nel codice la lista managed dei quote è `['openai']` solo se `GPTKEY` è impostata; senza `GPTKEY` la lista è vuota.
+  - *Perché:* la dashboard mostra solo i GPT se il server non restituisce altro. **Correzione 2026-11-25:** la frase precedente era errata per il codice attuale. Nel ramo quote di `llmModels.js` (`features-2611/credits-plan`, commit `0f060d31`) `managed` non dipende da `GPTKEY`: dipende solo dal provider gestito e dalla chiave di chat di OpenAI. `GPTKEY` decide soltanto `key: "tiledesk"` e il `multiplier`. Senza `GPTKEY` i modelli OpenAI restano `managed: true` con `key: "own"`. La vecchia regola (`['openai']` solo con `GPTKEY`) era nella route `/llm/models` prima dei commit del 24-25/11.
   - *Esito atteso:* `GPTKEY` impostata su stage e lista OpenAI come descritta. Se `GPTKEY` manca, va impostata o la lista resta vuota.
 - [ ] **S2 — quote, chiavi per provider (`GET /:pid/llm/providers`)**
   - *Cosa verificare:* solo `openai` ha `key: "tiledesk"`; gli altri provider (google, anthropic, deepseek, cohere, groq) hanno `key: null`.
@@ -454,7 +454,9 @@ Repository server: `tiledesk-server`, branch `features-2611/credits-plan`. Non m
   - *Perché:* la dashboard svuota le liste dei provider con `key: null`. Se un provider deve essere disponibile su quote, il valore sbagliato nasce qui.
   - *Esito atteso:* stesso schema del progetto di esempio su tutti i progetti a quote.
 - [ ] **S3 — decisione di prodotto: vendor non OpenAI sui quote**
-  - *Cosa decidere:* i modelli Anthropic, Google, DeepSeek e Cohere devono essere usabili con la chiave Tiledesk anche su progetti a quote, oppure no?
+  - *Decisione 2026-11-25 (quote):* i progetti a quote devono funzionare come prima di `ddc7e4180`. Quindi i vendor non OpenAI senza integrazione del progetto non devono risultare usabili. Il server deve marcare `managed: false` per quei provider nel ramo quote di `llmModels.js` (la regola deve tener conto delle integrazioni del progetto: con integrazione propria il modello resta `managed: true`, `key: "own"`). Il client non può farlo da solo, perché `key: "own"` non dice se l'integrazione esiste. Da portare a Giovanni.
+  - *Aperto sui crediti (2026-11-25):* quali modelli mostrare nella select. Opzione A: tutti i modelli con prezzo, anche di vendor fuori dall'elenco (codice attuale del collega). Opzione B (raccomandata): solo i vendor dell'elenco gestito, come prima di `ddc7e4180`, più i modelli OpenRouter già nell'integrazione del progetto. Prima il server marcava `managed` solo per `managedVendors`; il nuovo codice marca tutti i modelli con prezzo. Da discutere con Giovanni.
+  - *Cosa decidere (storico):* i modelli Anthropic, Google, DeepSeek e Cohere devono essere usabili con la chiave Tiledesk anche su progetti a quote, oppure no? Risposta: no, vedi sopra.
   - *Se no (comportamento attuale):* nessuna modifica; la dashboard mostra la lista OpenAI statica e liste vuote per gli altri provider finché non c'è una chiave propria.
   - *Se sì:* il server deve gestire quei vendor anche per i quote (`managedVendors` e `hasTiledeskKey`), e la dashboard deve smettere di scartare i modelli senza `tiledesk.credits` in `groupManagedModels`.
   - *Perché serve:* è la regola che decide cosa vede un progetto a quote; non si può decidere in dashboard da sola.
@@ -472,6 +474,42 @@ Repository server: `tiledesk-server`, branch `features-2611/credits-plan`. Non m
   - *Come:* eseguire una chiamata di test (es. preview KB) con il modello scelto; registrare la risposta.
   - *Perché:* se il server accetta, la lista vuota della dashboard è più restrittiva del necessario. Se risponde 13011, la lista vuota è coerente con il server. Il percorso `creditManager.managedModel` non è stato verificato.
   - *Esito atteso:* uno dei due comportamenti, da riportare nel piano insieme alla decisione S3.
+
+## Domande per Giovanni (2026-11-25)
+
+Da portare a Giovanni sul branch `features-2611/credits-plan` (commit del 24-25/11: `ee47e4d3`, `7e91242a`, `5f8b17d8`). Le risposte sbloccano S3, S5 e lo Step 5 del Task 1.
+
+**Progetti a quote**
+1. Su quote, `/llm/models?managed=true` marca `managed: true` DeepSeek, Anthropic, Google e Cohere anche senza integrazione del progetto (`key: "own"`). Una chiamata senza integrazione risponde `404 Integration deepseek not found for project ...`. Può limitare `managed: true` ai provider per cui il progetto ha un'integrazione propria, e a OpenAI?
+2. Il 404 è il rifiuto che vogliamo, o deve essere un codice crediti (es. `13011`), così l'alert dell'interceptor mostra il testo giusto?
+3. Senza `GPTKEY`, i modelli OpenAI devono restare in lista con `key: "own"`, come nel codice attuale? (Correzione: la frase precedente sul fatto che la lista sarebbe vuota senza `GPTKEY` era errata, vedi S1.)
+4. È voluto aver tolto `GET /llm/providers` e `GET /llm/providers/:provider/models`? Il client non li usa più.
+
+**Progetti a crediti: lista modelli**
+5. Quali modelli devono comparire nella select: tutti quelli con prezzo, anche di vendor fuori dall'elenco (come ora), oppure solo i vendor dell'elenco gestito come prima di `ddc7e4180`, più i modelli OpenRouter già nell'integrazione del progetto? (Opzione B raccomandata.)
+6. Il server non manda `tiledesk.credits` nella select, quindi nessun prezzo è visibile. È voluto?
+7. Sui crediti non c'è `multiplier` (nessuna etichetta "Nx tokens"). Confermi?
+8. Confermi che i modelli managed hanno `tiledesk.credits` (con `tiledeskKey` e `ownKey`) e `top_provider.max_completion_tokens`? Chiude S4.
+9. Groq: `managed: true` solo con integrazione Groq del progetto, su quote e su crediti. Va bene?
+
+**Progetti a crediti: regole lato server (Q1–Q8 più sotto)**
+10. Q1: su conto sospeso o annullato il server risponde `13010`? Il testo del popup sarebbe sbagliato.
+11. Q2: `request.js`, `user-request.js`, `department.js`, `widget.js` e `operatingHoursService.js` usano ancora `trialExpired` e `isActiveSubscription`? Attenzione alla precedenza `A && B && (C) || (D)`.
+12. Q3: quale orologio blocca i crediti: `billing.status` o `subEnd + 3 giorni`?
+13. Q4: chi aggiorna `profile.subEnd` dopo un rinnovo? I webhook Stripe non lo toccano.
+14. Q5: `courtesyDays` in produzione è 7 (default in `pricing.json`) o 3?
+15. Q6: sui progetti a crediti `profile.type` resta `free`? Oggi il client lo legge come trial legacy.
+16. Q7: i price ID Stripe in produzione sono tutti in `plans`?
+17. Q8: al cambio piano `metering` resta `credits`?
+
+**Lavoro condiviso**
+18. Il suo branch `features-2611/credits-plan-tmp` e il nostro `X-credits` hanno divergenze? Quale branch aggiorniamo da ora, o portiamo solo i suoi commit?
+19. Confermiamo che il server non deve dare `13010` sui progetti non a crediti (`metering` assente o `quotes`)?
+
+**Nuovi progetti: trial a 3 seats (solo lato client, da sapere)**
+20. Il progetto appena creato riceve profilo `Sandbox` con trial attivo, e il client lo mostra come "Pro (trial)" con 3 seats (`PLAN_SEATS.Pro`, costante in `util.ts`). È un comportamento che il server dovrebbe dichiarare, o basta la costante del client?
+
+---
 
 ## Domande per il server sui progetti a crediti (da chiarire)
 
@@ -1047,13 +1085,13 @@ Se il gestore resetta anche uno stato della UI (spinner, bottone disabilitato), 
     - **G1 e G3 disattivati su credits (2026-11-25, commit `328dd3673`):** `app.component.ts` (`redirectToPricing`) non rimanda più a `/pricing/te` o `/unauthorized-to-upgrade` se `isCreditsMetering(project)`; `project-profile.guard.ts` ritorna `true` subito per i progetti credits, quindi non scattano né i controlli trial/abbonamento né quelli per piano (GL-6), né il redirect a `-demo`.
     - **G2 (sidebar) non è un redirect attivo:** `redirectToPricing` in `sidebar.component.ts` (riga ~3165) non è chiamato da nessuno. `openChat()` non lo usa e il template non lo usa. La voce precedente del piano ("redirect all'apertura della chat") era sbagliata. Nessuna modifica necessaria per i crediti; resta solo da decidere se rimuovere il metodo morto.
 - [ ] **Step 8: verifica manuale** su un progetto credits e uno legacy: sul credits si creano chatbot oltre il limite free e non compare il banner; sul legacy il blocco resta. Con trial a crediti scaduto (13012) la creazione mostra un solo alert e nessun errore generico
-- [ ] **Step 9:** commit `feat(credits): chatbot limits only on quotes projects`
+- [x] **Step 9:** commit `feat(credits): chatbot limits only on quotes projects` (fatto: `f3d47d4c9`, 2026-11-24)
 
 ---
 
 ## Task 6: Teammates
 
-- [ ] **Step 1:** `users.component.`*: banner seats con `*ngIf="!isCreditsMetering && …"`; bottone Invite:
+- [x] **Step 1:** (fatto 2026-11-25, non committato) `users.component.`*: banner seats con `*ngIf="!isCreditsMetering && …"`; bottone Invite:
 
 ```html
 [disabled]="(!isCreditsMetering && projectUsersLength + countOfPendingInvites >= seatsLimit) || !PERMISSION_TO_INVITE"
@@ -1061,9 +1099,9 @@ Se il gestore resetta anche uno stato della UI (spinner, bottone disabilitato), 
 
 `goToAddUser()`: su credits navigazione diretta; ramo legacy invariato.
 
-- [ ] **Step 2:** `user-edit-add.component.`*: stessi `[disabled]` (righe 151, 167, 189, 207), banner 45-125, `invite()` senza controllo seats su credits; `isCreditsRefusal` nel gestore errore di `POST /project_users/invite`
-- [ ] **Step 3:** `home-quick-cards` (seats: 226-236, 309-324, 720-734, 916-989; `.html:247-285`), `home-create-teammate`
-- [ ] **Step 4:** `project-edit-add` (2318-2463; `.html:278,310,662`): non estende `PricingBaseComponent`, quindi iniettare `MeteringService` e usare `isCredits$`; su credits mostrare solo il numero di utenti, senza `/ seatsLimit` e senza il rosso
+- [x] **Step 2:** (fatto 2026-11-25, non committato) `user-edit-add.component.`*: stessi `[disabled]` (righe 151, 167, 189, 207), banner 45-125, `invite()` senza controllo seats su credits; `isCreditsRefusal` nel gestore errore di `POST /project_users/invite`
+- [x] **Step 3:** (fatto 2026-11-25, non committato) `home-quick-cards` (seats: 226-236, 309-324, 720-734, 916-989; `.html:247-285`), `home-create-teammate`
+- [x] **Step 4:** (fatto 2026-11-25, non committato) `project-edit-add` (2318-2463; `.html:278,310,662`): non estende `PricingBaseComponent`, quindi iniettare `MeteringService` e usare `isCredits$`; su credits (decisione 2026-11-25): se `profile.type` è `free`, "Your current plan" mostra `Credits.Billing.trial` ("Trial" / "Prova") senza "( N seats x € 0.00 )" e senza il click verso pricing; la riga "Seats redeemed" è nascosta per tutti i piani a crediti
 - [ ] **Step 5:** verifica manuale (inviti oltre `PLAN_SEATS` su credits; legacy invariato) + commit `feat(credits): seats limits only on quotes projects`
 
 ---
@@ -1178,5 +1216,7 @@ Punti di attenzione:
 | 2026-11-24 | `X-credits` | Aperto | Verifica lato server S1–S5 (backend); decisione S3 sui vendor non OpenAI nei progetti a quote; spec `ProjectPlanService` da sistemare (preesistente) |
 | 2026-11-25 | `X-credits` | Paywall crediti (regola) | Regola: sui progetti `metering: "credits"` nessun paywall client-side e nessun redirect a pricing o `-demo`; il blocco lo decide il server. Commit `328dd3673`: `app.component.ts` (G1), `project-profile.guard.ts` (G3, ritorno `true` per i crediti), `home-quick-cards.component.ts` (gate abbonamento in `onAddFlowClick` disattivato su crediti). G2 in `sidebar.component.ts` verificato: codice morto, nessun redirect attivo (il piano lo dava per attivo, errore corretto). Build Angular 15 (`ng build`) OK il 2026-11-25, nessun errore; warning SASS e chart.js preesistenti |
 | 2026-11-25 | `X-credits` | Domande al server | Sezione "Domande per il server sui progetti a crediti" (Q1–Q8): codice 13010 su conto sospeso o annullato, controlli server legacy su `trialExpired` e `isActiveSubscription`, orologio di blocco (`billing.status` contro `subEnd + 3 giorni`), chi aggiorna `subEnd`, `courtesyDays` in produzione, profilo legacy dei crediti, price fuori da `plans`, `metering` al cambio di piano |
+| 2026-11-25 | `X-credits` | Task 6 step 1-4 (seats) | Credits: nessun limite seats client-side. `users` e `user-edit-add`: banner nascosto, pulsanti non disabilitati, invito diretto, `isCreditsRefusal` nel gestore errore. `home-quick-cards`: `showTeammatesLimit` false su credits, bottone Invita sempre visibile, `openModalSeatsOverLimit` non apre paywall. `home-create-teammate`: riga seats nascosta, pulsante e invito senza controllo. `project-edit-add`: `MeteringService.isCredits$`; piano free mostrato come "Trial" senza i seats, riga "Seats redeemed" nascosta su tutti i piani a crediti. Build Angular 15 OK. Test: 4 spec "should create" falliscono con `NullInjectorError` su servizi non forniti dalla spec (`UsersService`, `ProjectService`, `AuthService`); non legato a questo lavoro, da verificare su `master` |
+| 2026-11-25 | `X-credits` | Decisioni S3 | Quote: come prima di `ddc7e4180` (vendor non OpenAI senza integrazione non usabili), correzione lato server da portare a Giovanni. Crediti: scelta tra tutti i modelli con prezzo e solo vendor dell'elenco, ancora aperta con Giovanni |
 | 2026-11-25 | `X-credits` | Task 1, commit del collega `ddc7e4180` | Cherry-pick `-x` da `features-2611/credits-plan-tmp`, committato dopo revisione del diff: `getLlmModels()` unico, rimossi `getLlmProviders`/`getProviderModels` e la logica per chiave propria nel modal preview settings; gruppi per vendor su OpenRouter. Dipende dai campi `tiledesk.provider/model/key/multiplier` del server (`credits-plan`, commit `5f8b17d8`). Build Angular 15 OK, 45/45 test PASS (`TZ=UTC`) |
 | 2026-11-25 | `X-credits` | Popup trial terminato (regola) | Sui progetti credits il popup "trial terminato" (`displayTrialHasExpiredModal`) non si apre più: `return` anticipato con `isCreditsMetering` in `openModalSeatsTrialExpired` (`home-quick-cards`, copre anche i gestori over-limit), `openModalTrialExpired` in `home-create-teammate` e `home-create-chatbot`. `home-kb`: `openModalTrialExpired` è commentato, il tooltip non fa nulla, nessuna modifica. Commit `328dd3673`. Build Angular 15 OK il 2026-11-25 (incluso) |

@@ -244,9 +244,9 @@
       </div>
       <div class="home-quick-card__body">
         <div class="home-quick-card__title">{{ 'TeammatesCapitalized' | translate }}</div>
-        <div class="home-quick-card__remaining" *ngIf="showTeammatesLimit">
+        <div class="home-quick-card__remaining" *ngIf="showTeammatesLimit || isCreditsMetering">
           <button
-            *ngIf="seatsRemainingCount > 0 && !seatsCountOverLimit && canInviteTeammates && displayInviteTeammateBtn"
+            *ngIf="canInviteTeammates && displayInviteTeammateBtn && (isCreditsMetering || (seatsRemainingCount > 0 && !seatsCountOverLimit))"
             type="button"
             class="home-quick-card__invite-btn"
             (click)="onInviteTeammateClick($event)">
