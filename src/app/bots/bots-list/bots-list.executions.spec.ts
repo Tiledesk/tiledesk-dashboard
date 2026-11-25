@@ -224,6 +224,13 @@ describe('BotListComponent executions entry', () => {
       expect(fixture.nativeElement.querySelector('#schedule-agent-btn-b2')).toBeNull();
     });
 
+    it('Run sends the dialog payload to the agent (by chatbot id, the authenticated route)', () => {
+      withWebhooks('owner', { v1: { chatbot_id: 'v1', webhook_id: 'w1', start_points: [{ type: 'webhook' }] } });
+      (component as any).dialog = { open: () => ({ afterClosed: () => of({ x: 1 }) }) };
+      component.runWebhookAgent(bots[0]);
+      expect((component as any).webhookService.runFlowWebhook).toHaveBeenCalledWith('v1', { x: 1 });
+    });
+
     it('the schedule button of a never published scheduled start is disabled', () => {
       withWebhooks('admin', { b2: { chatbot_id: 'b2', webhook_id: 'w2', start_points: [{ type: 'scheduled' }] } });
       expect(fixture.nativeElement.querySelector('#schedule-agent-btn-b2').disabled).toBe(true);
