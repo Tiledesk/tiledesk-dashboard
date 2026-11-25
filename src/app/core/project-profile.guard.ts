@@ -6,6 +6,7 @@ import { LoggerService } from '../services/logger/logger.service';
 import { PLAN_NAME } from 'app/utils/util';
 import { UsersService } from 'app/services/users.service';
 import { AuthService } from './auth.service';
+import { isCreditsMetering } from 'app/utils/metering.util';
 
 @Injectable()
 export class ProjectProfileGuard implements CanActivate {
@@ -63,6 +64,13 @@ export class ProjectProfileGuard implements CanActivate {
     this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * planName * ', planName);
     this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * isActiveSubscription * ', isActiveSubscription);
     this.logger.log('[PROJECT-PROFILE-GUARD] (NEW WF) Plan * trialExpired * ', trialExpired);
+
+    // Credits projects: no paywall client-side (trial, subscription and plan gates are skipped).
+    // The server refuses the operations when the credits are not enough
+    if (isCreditsMetering(project)) {
+      this.userIsAuthorized = true;
+      return true;
+    }
 
 
     if (type === 'free') {

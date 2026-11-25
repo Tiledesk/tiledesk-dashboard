@@ -358,11 +358,13 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
       return;
     }
 
+    // Skipped on credits: the legacy trial modal sends to /pricing (GL-4, GL-5)
     if (!this.isCreditsMetering && this.prjct_profile_type === 'free' && this.trial_expired) {
       this.openModalSeatsTrialExpired();
       return;
     }
 
+    // Skipped on credits: no paywall client-side, the server refuses the operations when the credits are not enough
     if (!this.isCreditsMetering && this.prjct_profile_type === 'payment' && !this.subscription_is_active) {
       this.openModalSeatsSubsExpired();
       return;
@@ -803,6 +805,10 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   openModalSeatsTrialExpired(): void {
+    // Credits: no paywall client-side for the trial, the server refuses the operations
+    if (this.isCreditsMetering) {
+      return;
+    }
     if (this.userRole === 'owner') {
       this.notify.displayTrialHasExpiredModal(
         this.projectId,
