@@ -20,6 +20,7 @@ import {
   getLlmModelTokenBounds,
   LLM_MAX_TOKENS_SLIDER_UI_CAP,
 } from 'app/utils/util';
+import { CREDITS_ERROR_CODES, CREDITS_REFUSAL_TEXTS, getCreditsErrorCode, isCreditsRefusal } from 'app/utils/metering.util';
 
 
 
@@ -741,8 +742,11 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     }, (err) => {
       this.logger.log("ask gpt preview response error: ", err);
       
+      // Credits refusal (403 13010-13013): the interceptor already shows the alert, the area shows the text
+      if (isCreditsRefusal(err)) {
+        this.showCreditsRefusal(err, true);
       // Gestione errori con error_message che contiene JSON (es. errori Anthropic API)
-      if (err && err.error && err.error.error_message) {
+      } else if (err && err.error && err.error.error_message) {
         try {
           const errorMessage = err.error.error_message;
           this.logger.log("ask gpt preview error_message: ", errorMessage);
@@ -905,9 +909,27 @@ export class ModalPreviewKnowledgeBaseComponent extends PricingBaseComponent imp
     this.logger.log('[MODAL-PREVIEW-KB] askAIStream completed', { qa: this.qa, answerLength: this.answer?.length });
   }
 
+  /**
+   * Credits refusal: the answer area shows the text of the refusal (not the raw server message) and time and prompt
+   * size are hidden, like with the quota refusal. `viaInterceptor`: the HttpClient requests already got the alert
+   * from the interceptor; the stream uses fetch, so there the alert is shown here.
+   */
+  private showCreditsRefusal(err: any, viaInterceptor: boolean): void {
+    const code = getCreditsErrorCode(err);
+    const texts = CREDITS_REFUSAL_TEXTS[code] || CREDITS_REFUSAL_TEXTS[CREDITS_ERROR_CODES.INSUFFICIENT_CREDITS];
+    this.answer = this.translate.instant(texts.text);
+    this.aiQuotaExceeded = true;
+    if (!viaInterceptor) {
+      this.prjctPlanService.meteringService.presentCreditsRefused(code);
+    }
+  }
+
   private handleAskAIError(err: any, startTime?: number) {
     this.logger.log('ask gpt preview response error: ', err);
-    if (err?.error && typeof err.error === 'string') {
+    if (isCreditsRefusal(err)) {
+      // The stream uses fetch: the interceptor does not see it, so the alert is shown here too
+      this.showCreditsRefusal(err, false);
+    } else if (err?.error && typeof err.error === 'string') {
       this.answer = err.error;
     } else if (err && err.error && err.error.error_message) {
       try {

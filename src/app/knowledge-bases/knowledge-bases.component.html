@@ -128,7 +128,7 @@
 
 
           <div  *ngIf="!isLoadingNamespaces" class="sidebar-title" style="text-transform: none; font-weight: 400; font-size: 13px; margin-top: 30px;">
-            {{'KbPage.TotalContents' | translate }}: {{totalCount}}/{{quotas?.kbs}}
+            {{'KbPage.TotalContents' | translate }}: {{totalCount}}<ng-container *ngIf="!isCreditsMetering">/{{quotas?.kbs}}</ng-container>
           </div>
           
         </div>

@@ -27,6 +27,7 @@ import { FaqKbService } from 'app/services/faq-kb.service';
 import { KB_DEFAULT_PARAMS, PLAN_NAME, URL_kb, containsXSS, goToCDSSettings, expandKbListTypeFilter, kbListParamsWithType, parseKbListQueryParam, openChatbotEditor, isV3Chatbot, v3AgentOrStub } from 'app/utils/util';
 import { AppConfigService } from 'app/services/app-config.service';
 import { isNewAnalyticsConfigured } from 'app/utils/analytics-config.util';
+import { isCreditsRefusal } from 'app/utils/metering.util';
 import { PricingBaseComponent } from 'app/pricing/pricing-base/pricing-base.component';
 import { ProjectPlanService } from 'app/services/project-plan.service';
 import { UsersService } from 'app/services/users.service';
@@ -903,6 +904,10 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
   }
 
   async getQuotas() {
+    // Credits metering: no KB cap, the quotes are only used for the "total / cap" label
+    if (this.isCreditsMetering) {
+      return;
+    }
     this.quotas = await this.quotasService.getProjectQuotes(this.id_project).catch((err) => {
       
       this.logger.error("[KNOWLEDGE-BASES-COMP] - Error getting project quotas: ", err);
@@ -1354,6 +1359,8 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
       }
     }, (error) => {
       this.logger.error('[KNOWLEDGE-BASES-COMP] - CREATE NEW NAMESPACE ERROR', error);
+      // Credits refusal (403 13010-13013): the interceptor already shows the alert
+      if (isCreditsRefusal(error)) { return; }
       this.logger.log("[KNOWLEDGE-BASES-COMP] error.error.error", error.error.error)
       this.logger.log("[KNOWLEDGE-BASES-COMP] error.error.plan_limit", error.error.plan_limit)
       this.logger.log("[KNOWLEDGE-BASES-COMP] prjct_profile_name ", this.prjct_profile_name)
@@ -2075,6 +2082,13 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
               this.logger.log('[KB IMPORT] Response:', res);
             },
             error: (error) => {
+              // Credits refusal (403 13010-13013): the interceptor shows its alert in place of the loading one.
+              // Close the loading modal only if it is still in view (the refusal alert was skipped as a duplicate).
+              if (isCreditsRefusal(error)) {
+                if (Swal.isLoading()) { Swal.close(); }
+                this.logger.error('[KB IMPORT ERROR]', error);
+                return;
+              }
               let errorMessage = ""
               if (error && error.error && error.error.error === 'Cannot exceed the number of resources in the current plan') {
                 // this.logger.log('[KB IMPORT] error.error.error :', error.error.error);
@@ -2190,13 +2204,15 @@ _presentDialogImportContents() {
               this.logger.log('[KB IMPORT] Response:', res);
             },
             error: (error) => {
+              this.logger.error('[KB IMPORT ERROR]', error);
+              // Credits refusal (403 13010-13013): the interceptor already shows the alert
+              if (isCreditsRefusal(error)) { return; }
               Swal.fire({
                 title: this.translate.instant('Oops') + '!',
                 text: this.translate.instant('HoursPage.ErrorOccurred'),
                 icon: "error",
                 confirmButtonText: this.translate.instant('Ok')
               });
-              this.logger.error('[KB IMPORT ERROR]', error);
             },
             complete: () => {
               this.logger.log('[KB IMPORT] * COMPLETE *');
@@ -2307,6 +2323,9 @@ _presentDialogImportContents() {
           this.kbService.importContents(formData, this.selectedNamespace.id).subscribe((res: any) => {
             this.logger.log('[KNOWLEDGE-BASES-COMP] IMPORT  - RES', res);
           }, (error) => {
+            this.logger.error('[KNOWLEDGE-BASES-COMP] IMPORT  ERROR ', error);
+            // Credits refusal (403 13010-13013): the interceptor already shows the alert
+            if (isCreditsRefusal(error)) { return; }
             Swal.fire({
               title: this.translate.instant('Oops') + '!',
               text: this.translate.instant('HoursPage.ErrorOccurred'),
@@ -2316,7 +2335,6 @@ _presentDialogImportContents() {
               confirmButtonText: this.translate.instant('Ok'),
               // confirmButtonColor: "var(--primary-btn-background)",
             });
-            this.logger.error('[KNOWLEDGE-BASES-COMP] IMPORT  ERROR ', error);
           }, () => {
             this.logger.log('[KNOWLEDGE-BASES-COMP]  * COMPLETE *');
             this.afterKbContentsImportSuccess();
@@ -3914,6 +3932,12 @@ _presentDialogImportContents() {
       if (doneCb) doneCb(true);
     }, (err) => {
       this.logger.error("[KNOWLEDGE-BASES-COMP] ERROR add new kb: ", err);
+      // Credits refusal (403 13010-13013): the interceptor already shows the alert. `POST /kb` answers without
+      // `plan_limit`, so without this check the error would fall in the legacy upgrade / contact-us dialogs below
+      if (isCreditsRefusal(err)) {
+        if (doneCb) doneCb(false);
+        return;
+      }
       // this.onOpenErrorModal(error);
       if (err.error && err.error.plan_limit) {
         // this.logger.log('here 1 ')
@@ -4030,6 +4054,8 @@ _presentDialogImportContents() {
 
     }, (err) => { 
       this.logger.error("[KNOWLEDGE-BASES-COMP] importSitemap ERROR: ", err);
+      // Credits refusal (403 13010-13013): the interceptor already shows the alert
+      if (isCreditsRefusal(err)) { return; }
       if (err.error && err.error.plan_limit) {
         this.getTranslatedStringKbLimitReached(err.error.plan_limit);
         error = this.msgErrorAddUpdateKbLimit
@@ -4182,6 +4208,9 @@ _presentDialogImportContents() {
   /** Plan limit and generic add errors: the upgrade / contact-us dialogs of the Add flows. */
   private showAddKbError(err) {
       let error = this.msgErrorAddUpdateKb;
+
+      // Credits refusal (403 13010-13013): the interceptor already shows the alert
+      if (isCreditsRefusal(err)) { return; }
 
       //this.onOpenErrorModal(error);
       if (err.error && err.error.plan_limit) {
@@ -4487,6 +4516,9 @@ _presentDialogImportContents() {
           // }, 2000);
         }, (err) => {
           this.logger.error("[KNOWLEDGE BASES COMP] ERROR add new kb: ", err);
+
+          // Credits refusal (403 13010-13013): the interceptor already shows the alert
+          if (isCreditsRefusal(err)) { return; }
 
           //this.onOpenErrorModal(error);
           Swal.fire({

@@ -4,6 +4,7 @@ import { LoggerService } from './logger/logger.service';
 import { AppConfigService } from './app-config.service';
 import { AuthService } from 'app/core/auth.service';
 import { Observable } from 'rxjs';
+import { getCreditsErrorCode } from 'app/utils/metering.util';
 
 @Injectable({
   providedIn: 'root'
@@ -151,7 +152,13 @@ export class OpenaiService {
           res.text().then((errText) => {
             try {
               const err = JSON.parse(errText);
-              observer.error(err);
+              // Credits refusal (403 13010-13013): same shape as the HttpErrorResponse, so the callers read it with
+              // isCreditsRefusal like the HttpClient ones. The other errors keep the raw body, as before.
+              if (getCreditsErrorCode({ status: res.status, error: err }) !== null) {
+                observer.error({ status: res.status, error: err });
+              } else {
+                observer.error(err);
+              }
             } catch {
               observer.error({ error: errText, status: res.status });
             }

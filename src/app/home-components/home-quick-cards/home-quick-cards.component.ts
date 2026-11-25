@@ -218,7 +218,8 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   get showKbLimit(): boolean {
-    return this.userRole !== 'agent' && this.showPlanLimits && this.kbNamespaceLimit !== null && this.kbNamespaceLimit !== undefined;
+    // Credits metering: no plan cap on KB namespaces (also hides the over-limit state and the Upgrade CTA)
+    return !this.isCreditsMetering && this.userRole !== 'agent' && this.showPlanLimits && this.kbNamespaceLimit !== null && this.kbNamespaceLimit !== undefined;
   }
 
   get kbCountOverLimit(): boolean {
@@ -252,7 +253,8 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   get showKbContentsLimit(): boolean {
-    return this.userRole !== 'agent' && this.showPlanLimits && (this.kbLimit || this.kbLimit === 0);
+    // Credits metering: no plan cap on KB contents
+    return !this.isCreditsMetering && this.userRole !== 'agent' && this.showPlanLimits && (this.kbLimit || this.kbLimit === 0);
   }
 
   get kbContentsOverLimit(): boolean {
@@ -270,6 +272,9 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   get showKbUpgradePlan(): boolean {
+    // Credits metering: no KB upgrade CTA (the server refuses the operations when the credits are not enough)
+    if (this.isCreditsMetering) { return false; }
+
     // PAY:F → never show Upgrade, even at double limit.
     if (!this.areActivePay) { return false; }
 
@@ -860,6 +865,11 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
   }
 
   openModalKbOverLimit(): void {
+    // Credits metering: no KB paywall client-side
+    if (this.isCreditsMetering) {
+      return;
+    }
+
     if (this.prjct_profile_type === 'free' && this.trial_expired) {
       this.openModalSeatsTrialExpired();
       return;
@@ -1147,6 +1157,12 @@ export class HomeQuickCardsComponent extends PricingBaseComponent implements OnI
           this.kbReady = true;
         },
       });
+
+    // Credits metering: no namespace cap, the quotes are not needed here
+    if (this.isCreditsMetering) {
+      this.kbNamespaceLimit = null;
+      return;
+    }
 
     this.quotesService.getProjectQuotes(this.projectId)
       .then((quotas: any) => {
