@@ -4281,7 +4281,8 @@
             "Blocks": "Blocchi",
             "FailureConditions": "Cond. errore",
             "VarsChanged": "Attributi modificati",
-            "Duration": "Durata"
+            "Duration": "Durata",
+            "Actions": "Azioni"
         },
         "Outcomes": {
             "success": "riuscito",
@@ -4485,6 +4486,31 @@
             "Starting": "Avvio di una nuova esecuzione…",
             "StartedNew": "Nuova esecuzione avviata:",
             "StartedNotYet": "La nuova esecuzione non è ancora comparsa. Controlla l'elenco delle esecuzioni tra poco."
+        },
+        "Bulk": {
+            "Selected": "{{n}} selezionate",
+            "SelectAll": "Seleziona tutte le esecuzioni della pagina",
+            "SelectRow": "Seleziona l'esecuzione {{id}}",
+            "Pause": "Metti in pausa ({{n}})",
+            "Resume": "Riprendi ({{n}})",
+            "Destroy": "Distruggi ({{n}})",
+            "Clear": "Deseleziona",
+            "Dismiss": "Chiudi",
+            "DestroyTitle": "Distruggi {{n}} esecuzioni",
+            "DestroyText": "Le termina, chiude le loro conversazioni e ne rimuove lo stato attivo. Non potranno essere riprese. Tracce e audit restano.",
+            "DestroyType": "Scrivi {{n}} per confermare",
+            "Result": {
+                "pause": "In pausa: {{done}}",
+                "resume": "Riprese: {{done}}",
+                "destroy": "Distrutte: {{done}}"
+            },
+            "Failed": "non eseguite: {{failed}} (il loro stato non lo consente più, o il servizio ha rifiutato)",
+            "NeedConfirm": "da confermare una alla volta: {{confirm}} (chiamano un sistema esterno: aprile per riprenderle)"
+        },
+        "RowActions": {
+            "Pause": "Metti in pausa",
+            "Resume": "Riprendi",
+            "Destroy": "Distruggi"
         },
         "Dialogs": {
             "StopTitle": "Metti in pausa l'esecuzione",

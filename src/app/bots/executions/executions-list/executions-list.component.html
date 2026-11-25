@@ -92,10 +92,43 @@
       <button type="button" class="exec-link" (click)="loadFirstPage()">{{ "Executions.Retry" | translate }}</button>
     </div>
 
+    <!-- the result of the last action on rows -->
+    <div *ngIf="actionMessage" class="exec-action-message" [class.exec-action-error]="actionMessage.kind === 'error'" role="status">
+      <span>{{ actionMessage.key | translate: actionMessage.params }}</span>
+      <span *ngIf="actionMessage.params.failed > 0"> · {{ "Executions.Bulk.Failed" | translate: actionMessage.params }}</span>
+      <span *ngIf="actionMessage.params.confirm > 0"> · {{ "Executions.Bulk.NeedConfirm" | translate: actionMessage.params }}</span>
+      <button type="button" class="exec-link exec-action-dismiss" (click)="dismissActionMessage()" [attr.aria-label]="'Executions.Bulk.Dismiss' | translate">
+        <mat-icon aria-hidden="true">close</mat-icon>
+      </button>
+    </div>
+
+    <!-- actions on the selected rows -->
+    <div *ngIf="hasActionColumns && selected.size > 0" class="exec-bulk-bar">
+      <span class="exec-bulk-count">{{ "Executions.Bulk.Selected" | translate: { n: selected.size } }}</span>
+      <button type="button" class="exec-btn exec-bulk-pause" *ngIf="grants.control" [disabled]="actionBusy || !selectedFor('pause')" (click)="bulkAction('pause')">
+        <mat-icon aria-hidden="true">pause</mat-icon>
+        <span>{{ "Executions.Bulk.Pause" | translate: { n: selectedFor('pause') } }}</span>
+      </button>
+      <button type="button" class="exec-btn exec-bulk-resume" *ngIf="grants.control" [disabled]="actionBusy || !selectedFor('resume')" (click)="bulkAction('resume')">
+        <mat-icon aria-hidden="true">play_arrow</mat-icon>
+        <span>{{ "Executions.Bulk.Resume" | translate: { n: selectedFor('resume') } }}</span>
+      </button>
+      <button type="button" class="exec-btn exec-btn-danger exec-bulk-destroy" *ngIf="grants.destroy" [disabled]="actionBusy || !selectedFor('destroy')" (click)="bulkAction('destroy')">
+        <mat-icon aria-hidden="true">delete_forever</mat-icon>
+        <span>{{ "Executions.Bulk.Destroy" | translate: { n: selectedFor('destroy') } }}</span>
+      </button>
+      <button type="button" class="exec-link exec-bulk-clear" (click)="clearSelection()">{{ "Executions.Bulk.Clear" | translate }}</button>
+    </div>
+
     <div class="exec-card" *ngIf="!error">
       <table class="exec-table" *ngIf="rows.length">
         <thead>
           <tr>
+            <th *ngIf="hasActionColumns" scope="col" class="exec-select-cell">
+              <input type="checkbox" class="exec-select-all" [checked]="allSelected" [indeterminate]="someSelected"
+                [disabled]="!selectableRows.length" [attr.aria-label]="'Executions.Bulk.SelectAll' | translate"
+                (change)="toggleAll($any($event.target).checked)">
+            </th>
             <ng-container *ngFor="let col of sortColumns">
               <th *ngIf="col.field !== 'agent_name' || !agentId" scope="col" [attr.aria-sort]="ariaSort(col.field)">
                 <button type="button" class="exec-sort" [attr.data-sort]="col.field" [class.exec-sort-active]="sort.field === col.field"
@@ -105,12 +138,19 @@
                 </button>
               </th>
             </ng-container>
+            <th *ngIf="hasActionColumns" scope="col" class="exec-actions-head">{{ "Executions.Columns.Actions" | translate }}</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let row of rows; trackBy: trackById" class="exec-row" tabindex="0"
+            [class.exec-row-selected]="isSelected(row)"
             (click)="openExecution(row)" (keyup.enter)="openExecution(row)">
+            <td *ngIf="hasActionColumns" class="exec-select-cell" (click)="$event.stopPropagation()" (keyup.enter)="$event.stopPropagation()">
+              <input type="checkbox" class="exec-select-row" [checked]="isSelected(row)" [disabled]="!isSelectable(row)"
+                [attr.aria-label]="'Executions.Bulk.SelectRow' | translate: { id: row._id }"
+                (change)="toggleRow(row, $any($event.target).checked)">
+            </td>
             <td>
               <execution-status-chip [status]="row.status"></execution-status-chip>
               <span *ngIf="row.test" class="exec-test-badge">{{ "Executions.TestBadge" | translate }}</span>
@@ -125,6 +165,17 @@
             </td>
             <td class="exec-muted">{{ row.vars_changed }}</td>
             <td class="exec-muted">{{ formatDuration(row.duration_ms) }}</td>
+            <td *ngIf="hasActionColumns" class="exec-actions-cell" (click)="$event.stopPropagation()" (keyup.enter)="$event.stopPropagation()">
+              <button *ngIf="offers(row, 'pause')" type="button" class="exec-icon-btn exec-row-pause" [disabled]="actionBusy"
+                [attr.aria-label]="'Executions.RowActions.Pause' | translate" [matTooltip]="'Executions.RowActions.Pause' | translate"
+                (click)="rowAction(row, 'pause', $event)"><mat-icon>pause</mat-icon></button>
+              <button *ngIf="offers(row, 'resume')" type="button" class="exec-icon-btn exec-row-resume" [disabled]="actionBusy"
+                [attr.aria-label]="'Executions.RowActions.Resume' | translate" [matTooltip]="'Executions.RowActions.Resume' | translate"
+                (click)="rowAction(row, 'resume', $event)"><mat-icon>play_arrow</mat-icon></button>
+              <button *ngIf="offers(row, 'destroy')" type="button" class="exec-icon-btn exec-icon-danger exec-row-destroy" [disabled]="actionBusy"
+                [attr.aria-label]="'Executions.RowActions.Destroy' | translate" [matTooltip]="'Executions.RowActions.Destroy' | translate"
+                (click)="rowAction(row, 'destroy', $event)"><mat-icon>delete_forever</mat-icon></button>
+            </td>
             <td class="exec-chevron"><mat-icon>chevron_right</mat-icon></td>
           </tr>
         </tbody>

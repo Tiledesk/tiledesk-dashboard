@@ -138,7 +138,7 @@ describe('ExecutionDetailComponent controls', () => {
     const tips = fixture.debugElement.queryAll(By.directive(MatTooltip)).map(d => d.injector.get(MatTooltip))
       .filter(t => t.message && t.message.indexOf('executions') >= 0).map(t => t.message);
     expect(tips).toEqual(["You don't have permission to pause executions"]);
-    expect(btn('destroy').querySelector('.ex-ctl-reason').textContent.trim()).toBe('Only the project owner can destroy executions');
+    expect(btn('destroy').querySelector('.ex-ctl-reason').textContent.trim()).toBe('Only the project owner or an admin can destroy executions');
     fixture.destroy();
 
     TestBed.resetTestingModule();

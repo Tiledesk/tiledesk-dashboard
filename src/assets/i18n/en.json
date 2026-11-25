@@ -4688,7 +4688,8 @@
             "Blocks": "Blocks",
             "FailureConditions": "Failure cond.",
             "VarsChanged": "Attributes changed",
-            "Duration": "Duration"
+            "Duration": "Duration",
+            "Actions": "Actions"
         },
         "Outcomes": {
             "success": "success",
@@ -4892,6 +4893,31 @@
             "Starting": "Starting a new execution…",
             "StartedNew": "New execution started:",
             "StartedNotYet": "The new execution has not appeared yet. Check the executions list in a moment."
+        },
+        "Bulk": {
+            "Selected": "{{n}} selected",
+            "SelectAll": "Select all executions on the page",
+            "SelectRow": "Select execution {{id}}",
+            "Pause": "Pause ({{n}})",
+            "Resume": "Resume ({{n}})",
+            "Destroy": "Destroy ({{n}})",
+            "Clear": "Clear selection",
+            "Dismiss": "Dismiss",
+            "DestroyTitle": "Destroy {{n}} executions",
+            "DestroyText": "This ends them, closes their conversations and removes their live state. They cannot be resumed. Traces and audit are kept.",
+            "DestroyType": "Type {{n}} to confirm",
+            "Result": {
+                "pause": "Paused: {{done}}",
+                "resume": "Resumed: {{done}}",
+                "destroy": "Destroyed: {{done}}"
+            },
+            "Failed": "not done: {{failed}} (their status no longer allows it, or the service refused)",
+            "NeedConfirm": "to confirm one by one: {{confirm}} (they call an external system: open them to resume)"
+        },
+        "RowActions": {
+            "Pause": "Pause",
+            "Resume": "Resume",
+            "Destroy": "Destroy"
         },
         "Dialogs": {
             "StopTitle": "Pause execution",
