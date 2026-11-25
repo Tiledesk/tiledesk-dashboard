@@ -643,7 +643,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       });
     } else if (action === 'resume') {
       this.askResume([row]).subscribe(ok => {
-        if (ok) this.runOn([row], action, r => this.resumeOne(r));
+        if (ok) this.runOn([row], action, r => this.resumeOne(r), () => this.confirmCallingResume(row));
       });
     } else {
       const data: DestroyDialogData = { executionId: row._id };
@@ -706,8 +706,24 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       }));
   }
 
-  /** Sends the action on each row (at most BULK_CONCURRENCY at once), then reports and refreshes the list. */
-  private runOn(rows: ExecutionRow[], action: RowAction, call: (r: ExecutionRow) => Observable<'done' | 'confirm'>) {
+  /**
+   * One row's resume answered confirm_required: its action calls an external system. As on the execution page,
+   * the user confirms it knowing that, and the resume is sent again with the confirm.
+   */
+  private confirmCallingResume(row: ExecutionRow) {
+    const data: ResumeDialogData = { action: null, calling: true, automation: !!row.trigger && row.trigger.type === 'automation' };
+    this.dialog.open(ResumeDialogComponent, { data, width: '480px' }).afterClosed().pipe(takeUntil(this.destroy$))
+      .subscribe((ok: true | null) => {
+        if (ok !== true) return;
+        this.runOn([row], 'resume', r => this.executionsService.resume(this.projectId, r._id, true).pipe(map(() => 'done' as const)));
+      });
+  }
+
+  /**
+   * Sends the action on each row (at most BULK_CONCURRENCY at once), then reports and refreshes the list.
+   * onConfirm: a single row that needs a confirm (resume of a calling action) asks for it instead of reporting.
+   */
+  private runOn(rows: ExecutionRow[], action: RowAction, call: (r: ExecutionRow) => Observable<'done' | 'confirm'>, onConfirm?: () => void) {
     this.actionBusy = true;
     this.actionMessage = null;
     from(rows).pipe(
@@ -723,6 +739,10 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       this.actionBusy = false;
       const outcome: BulkOutcome = { done: 0, failed: 0, confirm: 0 };
       results.forEach(x => { outcome[x.result] += 1; });
+      if (onConfirm && rows.length === 1 && outcome.confirm === 1) {
+        onConfirm();
+        return;
+      }
       // the rows done leave the selection; the others stay checked for another try
       const done = new Set(results.filter(x => x.result === 'done').map(x => x.id));
       this.selected = new Set(Array.from(this.selected).filter(id => !done.has(id)));

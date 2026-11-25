@@ -4553,6 +4553,7 @@
             "Destroy": "Destroy ({{n}})",
             "Clear": "Clear selection",
             "Dismiss": "Dismiss",
+            "DestroyTitleOne": "Destroy 1 execution",
             "DestroyTitle": "Destroy {{n}} executions",
             "DestroyText": "This ends them, closes their conversations and removes their live state. They cannot be resumed. Traces and audit are kept.",
             "DestroyType": "Type {{n}} to confirm",
