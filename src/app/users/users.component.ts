@@ -1447,6 +1447,16 @@ searchalsoforemaildoamin_filterUsers(users: any[], searchTerm: string): any[] {
     // this.router.navigate(['project/' + this.id_project + '/user/add']);
     // if (this.prjct_profile_type === 'payment') {
 
+    // Credits projects: no seats limit client-side, the server refuses the invite when the credits are not enough
+    if (this.isCreditsMetering) {
+      if (this.USER_ROLE !== 'agent') {
+        this.router.navigate(['project/' + this.id_project + '/user/add'])
+      } else {
+        this.presentModalAgentCannotInviteTeammates()
+      }
+      return;
+    }
+
     if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
       if (this.USER_ROLE !== 'agent') {
         this.router.navigate(['project/' + this.id_project + '/user/add'])

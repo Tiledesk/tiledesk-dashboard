@@ -302,12 +302,16 @@
                                 <!-- {{ 'YourCurrentPlan' | translate }}: -->
 
                                 <span style="font-weight: 400">
-                                  <span style="text-transform: capitalize" (click)="goToPricing()">{{ prjct_profile_name
-                                    }}
-                                  </span>
-
-                                  <!-- - {{ projectUsersLength }} -->
-                                  - ( {{ seatsLimit }} {{ "AgentSeats" | translate }} x € 0.00 )
+                                  <!-- Credits: the legacy plan name and the seats price do not apply -->
+                                  <ng-container *ngIf="isCredits; else quotesFreePlan">
+                                    {{ 'Credits.Billing.trial' | translate }}
+                                  </ng-container>
+                                  <ng-template #quotesFreePlan>
+                                    <span style="text-transform: capitalize" (click)="goToPricing()">{{ prjct_profile_name
+                                      }}
+                                    </span>
+                                    - ( {{ seatsLimit }} {{ "AgentSeats" | translate }} x € 0.00 )
+                                  </ng-template>
                                   <!-- <span *ngIf="projectUsersLength === 1">
                                 {{ "Agent" | translate }}
                               </span>
@@ -650,7 +654,7 @@
                         <!-- -------------------------------------------------------------------------------------  -->
                         <!-- SUBSCRIPTION STATUS - PROFILE TYPE: PAYMENT - NUMBER OF AGENTS SEATS -->
                         <!-- -------------------------------------------------------------------------------------  -->
-                        <ng-container *ngIf="!appSumoProfile">
+                        <ng-container *ngIf="!appSumoProfile && !isCredits">
                           <div class="row flex--row" style="margin-top: 16px;">
                             <label class="col-sm-3 custom-label">
                               <!-- {{ "NumberOfAgentSeats" | translate }} -->
@@ -659,7 +663,7 @@
                             <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                               <span class="subscription-info">
                                 <i class="material-icons"
-                                  [ngStyle]="{'color': countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#697386'}"
+                                  [ngStyle]="{'color': !isCredits && countOfPendingInvites + projectUsersLength > seatsLimit ? '#f44336' : '#697386'}"
                                   style="vertical-align: middle;">
                                   people_alt
                                 </i>

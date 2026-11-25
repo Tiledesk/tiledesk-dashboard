@@ -40,7 +40,7 @@
             <!-- -------------------------------------------------- -->
             <div class="row">
 
-              <div class="col-md-12" *ngIf="areActivePay">
+                    <div class="col-md-12" *ngIf="areActivePay && !isCreditsMetering">
                 <div class="card card card--no-border" style="margin-top: 0px; margin-bottom: 0px;">
                     <div class="card-content" *ngIf="(((prjct_profile_type === 'payment' && subscription_is_active === true) || 
                     (prjct_profile_type === 'free' && trial_expired === false) || 
@@ -148,7 +148,7 @@
                           autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                           placeholder='{{ "UserEditAddPage.EmailAddress" | translate }}'
                           [ngClass]="{'invalid-email' : !EMAIL_IS_VALID}"
-                          [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
+                          [disabled]="!isCreditsMetering && projectUsersLength + countOfPendingInvites >= seatsLimit">
 
                         <span *ngIf="!EMAIL_IS_VALID" style="color: #f44336">
                           {{ "EnterValidEmail" | translate }}
@@ -164,7 +164,7 @@
                         <select #selectElem (change)="setSelected(selectElem.value)" 
                           [(ngModel)]="selectedRole"
                           style="width: 100%;border-radius: 5px; color: #333;font-weight: 300;"
-                          [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
+                          [disabled]="!isCreditsMetering && projectUsersLength + countOfPendingInvites >= seatsLimit">
                           <option class="not_selected" value="ROLE_NOT_SELECTED" 
                           [selected]="selected == true">
                             {{ "UserEditAddPage.SelectRole" | translate }}
@@ -186,7 +186,7 @@
                       <!-- <div class="col-12 col-sm-6 col-md-6 col-lg-6">
                     <select #selectElem (change)="setSelected(selectElem.value)" [(ngModel)]="selectedRole" class=""
                       style="width: 100%;border-radius: 5px;"
-                      [disabled]="projectUsersLength + countOfPendingInvites >= seatsLimit">
+                      [disabled]="!isCreditsMetering && projectUsersLength + countOfPendingInvites >= seatsLimit">
                       <option class="not_selected" value="ROLE_NOT_SELECTED" [selected]="selected == true">
                         {{ "UserEditAddPage.SelectRole" | translate }}
                       </option>
@@ -204,7 +204,7 @@
                         <!-- email length {{ user_email?.length }}  -->
                         <!-- btn-primary  -->
                         <button class="btn btn-tdblu-no-boxshadow invite-button"
-                          [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1 || projectUsersLength + countOfPendingInvites >= seatsLimit"
+                          [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1 || !isCreditsMetering && projectUsersLength + countOfPendingInvites >= seatsLimit"
                           (click)="invite()">
                           {{ "UserEditAddPage.Invites" | translate }}
                         </button>

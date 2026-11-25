@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
 import { AuthService } from '../core/auth.service';
 import { Project } from '../models/project-model';
 import { ProjectPlanService } from '../services/project-plan.service';
+import { MeteringService } from '../services/metering.service';
 import { NotifyService } from '../core/notify.service';
 import { Subscription } from 'rxjs'
 import { TranslateService } from '@ngx-translate/core';
@@ -119,6 +120,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
 
   displayContactUsModal = 'none';
   subscription: Subscription;
+  // Credits metering: the seats count is shown without the plan limit (the server refuses the invite when needed)
+  isCredits = false;
+  creditsSubscription: Subscription;
 
   subscriptionCanceledSuccessfully: string;
   subscriptionCanceledError: string;
@@ -369,6 +373,7 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     private _location: Location,
     private auth: AuthService,
     private prjctPlanService: ProjectPlanService,
+    private meteringService: MeteringService,
     private notify: NotifyService,
     private usersService: UsersService,
     private translate: TranslateService,
@@ -409,6 +414,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
     this.getBrowserVersion()
     this.getCurrentUrlAndSwitchView();
     this.getProjectPlan();
+    this.creditsSubscription = this.meteringService.isCredits$.subscribe((isCredits: boolean) => {
+      this.isCredits = isCredits;
+    });
     this.listenCancelSubscription();
     this.translateStrings()
     this.getProjectId();
@@ -911,6 +919,9 @@ export class ProjectEditAddComponent implements OnInit, OnDestroy, AfterViewInit
 
     if (this.subscription) {
       this.subscription.unsubscribe();
+    }
+    if (this.creditsSubscription) {
+      this.creditsSubscription.unsubscribe();
     }
 
     if (this.routerSubscription) {

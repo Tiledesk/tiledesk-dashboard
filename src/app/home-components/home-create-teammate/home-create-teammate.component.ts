@@ -6,6 +6,7 @@ import { GroupService } from 'app/services/group.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { UsersService } from 'app/services/users.service';
 import { APPSUMO_PLAN_SEATS, APP_SUMO_PLAN_NAME, PLAN_NAME, PLAN_SEATS, avatarPlaceholder, getColorBck } from 'app/utils/util';
+import { isCreditsRefusal } from 'app/utils/metering.util';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators'
 import { HomeInviteTeammateModalComponent } from './home-invite-teammate-modal/home-invite-teammate-modal.component';
@@ -356,6 +357,12 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   }
 
   inviteTeammate() {
+    // Credits metering: no seats limit client-side, the server refuses the invite when the credits are not enough
+    if (this.isCreditsMetering) {
+      this.presentModalInviteTeammate()
+      return;
+    }
+
     if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
       this.presentModalInviteTeammate()
     } else if (this.projectUsersLength + this.countOfPendingInvites > this.seatsLimit) {
@@ -392,7 +399,7 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
         if (result.email && result.role) {
           this.logger.log(`[HOME-CREATE-TEAMMATE] email:`, result.email, ' role ', result.role);
 
-          if (this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
+          if (this.isCreditsMetering || this.projectUsersLength + this.countOfPendingInvites < this.seatsLimit) {
             this.doInviteUser(result.email, result.role);
           } else if ((this.projectUsersLength + this.countOfPendingInvites) >= this.seatsLimit) {
             if (this.USER_ROLE === 'owner') {
@@ -436,6 +443,11 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
 
     }, (error) => {
       this.logger.error('[HOME-CREATE-TEAMMATE] - INVITE USER  ERROR ', error);
+
+      // Credits refusal (13010-13013): the interceptor shows the alert, no generic dialog here
+      if (isCreditsRefusal(error)) {
+        return;
+      }
 
       const invite_error = error['error']
       // this.logger.error('[HOME-CREATE-TEAMMATE] - INVITE USER  ERROR BODY ', invite_error);
