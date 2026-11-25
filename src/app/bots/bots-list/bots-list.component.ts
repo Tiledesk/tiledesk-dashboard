@@ -602,7 +602,7 @@ export class BotListComponent extends PricingBaseComponent implements OnInit, On
       .subscribe(payload => {
         if (!payload) return;
         this.agentRunBusy[bot._id] = true;
-        this.webhookService.runFlowWebhook(info.webhookId, payload).pipe(takeUntil(this.unsubscribe$)).subscribe({
+        this.webhookService.runFlowWebhook(bot._id, payload).pipe(takeUntil(this.unsubscribe$)).subscribe({
           next: () => {
             this.agentRunBusy[bot._id] = false;
             this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AgentRun.RunStarted', { name: bot.name }), 2, 'done');

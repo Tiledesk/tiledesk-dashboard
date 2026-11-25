@@ -233,12 +233,14 @@ export class WebhookService {
   }
 
   /**
-   * Runs a Webhook agent once, as an external caller would: POST /webhook/:webhook_id with the payload
-   * (the published version). Answers as the webhook does (sync conversation: the result).
+   * Runs a Webhook agent once, as an external caller would (the published version): POST
+   * /:projectid/webhooks/:chatbot_id/run, which hands the payload to the agent's webhook. Authenticated and
+   * CORS-enabled, unlike the public /webhook/:webhook_id (mounted before the server's cors()). Answers as the
+   * webhook does (sync conversation: the result).
    */
-  runFlowWebhook(webhookId: string, payload: { [k: string]: any }): Observable<any> {
-    const url = this.SERVER_BASE_PATH + 'webhook/' + encodeURIComponent(webhookId);
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  runFlowWebhook(chatbotId: string, payload: { [k: string]: any }): Observable<any> {
+    const url = this.SERVER_BASE_PATH + this.projectID + '/webhooks/' + encodeURIComponent(chatbotId) + '/run';
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.TOKEN });
     return this.http.post<any>(url, payload || {}, { headers });
   }
 
