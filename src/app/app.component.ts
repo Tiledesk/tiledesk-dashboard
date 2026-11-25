@@ -32,6 +32,7 @@ import { LoggerService } from './services/logger/logger.service';
 import { NotifyService } from './core/notify.service';
 import { MaterialDesignInitService } from './core/material-design-init.service';
 import { avatarPlaceholder, freePlanLimitDate, getColorBck } from './utils/util';
+import { isCreditsMetering } from './utils/metering.util';
 import { LocalDbService } from './services/users-local-db.service';
 import { ProjectService } from './services/project.service';
 import { HttpClient } from '@angular/common/http';
@@ -667,7 +668,8 @@ export class AppComponent implements OnInit, AfterViewInit, OnDestroy {
             this.logger.log('[APP-COMPONENT] REDIRECT TO PRICING - projectCreationDate > dateLimit ')
 
 
-            if (project.profile.type === 'free' && project.trialExpired === true) {
+            // Credits projects: no redirect to pricing on trial expired (the server refuses the operations)
+            if (!isCreditsMetering(project) && project.profile.type === 'free' && project.trialExpired === true) {
                 if (role === 'owner') {
 
                     this.router.navigate(['project/' + project._id + '/pricing/te']);

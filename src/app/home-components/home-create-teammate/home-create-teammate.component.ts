@@ -576,6 +576,10 @@ export class HomeCreateTeammateComponent extends PricingBaseComponent implements
   }
 
   openModalTrialExpired() {
+    // Credits: no paywall client-side for the trial, the server refuses the operations
+    if (this.isCreditsMetering) {
+      return;
+    }
     if (this.USER_ROLE === 'owner') {
       this.notify.displayTrialHasExpiredModal(this.projectId, this.yourTrialHasEnded, this.upgradeNowToKeepOurAmazingFeatures, this.upgrade);
     } else {
