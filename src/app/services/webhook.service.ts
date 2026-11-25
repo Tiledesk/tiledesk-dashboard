@@ -232,6 +232,26 @@ export class WebhookService {
       .delete<[any]>(url, { headers: headers });
   }
 
+  /**
+   * Runs a Webhook agent once, as an external caller would: POST /webhook/:webhook_id with the payload
+   * (the published version). Answers as the webhook does (sync conversation: the result).
+   */
+  runFlowWebhook(webhookId: string, payload: { [k: string]: any }): Observable<any> {
+    const url = this.SERVER_BASE_PATH + 'webhook/' + encodeURIComponent(webhookId);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<any>(url, payload || {}, { headers });
+  }
+
+  /**
+   * Starts or stops the published schedule of a Scheduled agent (no publish): 200 {scheduled_live, next_runs?};
+   * 409 never published; 503 scheduled starts not available; 502 scheduler failure.
+   */
+  setScheduledRunning(chatbotId: string, running: boolean): Observable<any> {
+    const url = this.SERVER_BASE_PATH + this.projectID + '/webhooks/' + encodeURIComponent(chatbotId) + '/start_points/scheduled/running';
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.TOKEN });
+    return this.http.put<any>(url, { running }, { headers });
+  }
+
   updateFlowWebhook(status, webhookid): Observable<[any]> {
     this.logger.log('[WEBHOOK-SERV] - UPDATE FLOW WEBHOOK WITH ID: ', webhookid, ' FOR PROJECT ID: ', this.projectID);
 
