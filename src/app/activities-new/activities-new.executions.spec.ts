@@ -186,9 +186,10 @@ describe('Activities - Executions audit rows', () => {
       return c.activityFilterOptions.map((o: any) => o.id);
     }
 
-    it('Executions group hidden for admin, shown for owner', () => {
-      expect(build('admin', [])).not.toContain('EXECUTION_STOP_SOFT');
-      expect(build('admin', [])).not.toContain('EXECUTION_RESUME');
+    it('Executions group shown for owner and admin, hidden for supervisor', () => {
+      expect(build('supervisor', [])).not.toContain('EXECUTION_STOP_SOFT');
+      expect(build('supervisor', [])).not.toContain('EXECUTION_RESUME');
+      expect(build('admin', [])).toEqual(jasmine.arrayContaining(['EXECUTION_STOP_SOFT', 'EXECUTION_DESTROY', 'EXECUTION_RESUME']));
       expect(build('owner', [])).toEqual(jasmine.arrayContaining(['EXECUTION_STOP_SOFT', 'EXECUTION_STOP_HARD', 'EXECUTION_DESTROY', 'EXECUTION_RESUME', 'EXECUTION_START_NEW', 'EXECUTION_DATA_ACCESS', 'EXECUTION_DATA_ACCESS_DENIED', 'EXECUTION_RETENTION_UPDATE', 'EXECUTION_STOP_NOTICE_UPDATE']));
     });
 

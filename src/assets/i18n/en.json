@@ -4221,6 +4221,35 @@
             "Executions": "Executions"
         }
     },
+    "AgentRun": {
+        "Run": "Run",
+        "RunTooltip": "Run the agent now",
+        "RunTitle": "Run {{name}}",
+        "RunText": "Runs the published version of the agent once, as a call to its webhook would. Enter the data to send.",
+        "Payload": "Data (JSON)",
+        "InvalidJson": "The data is not valid JSON",
+        "NotObject": "The data must be a JSON object",
+        "Cancel": "Cancel",
+        "RunStarted": "{{name}} was run",
+        "RunFailed": "{{name}} could not be run",
+        "Schedule": {
+            "running": "The schedule is running: stop it",
+            "stopped": "The schedule is stopped: start it",
+            "error": "The schedule could not be updated: start it again",
+            "unpublished": "Publish the agent to start its schedule"
+        },
+        "ScheduleMenu": {
+            "running": "Stop schedule",
+            "stopped": "Start schedule",
+            "error": "Start schedule",
+            "unpublished": "Start schedule (publish first)"
+        },
+        "ScheduleStarted": "The schedule of {{name}} is running",
+        "ScheduleStopped": "The schedule of {{name}} is stopped",
+        "ScheduleStartFailed": "The schedule of {{name}} could not be started",
+        "ScheduleStopFailed": "The schedule of {{name}} could not be stopped",
+        "ScheduleNotPublished": "Publish {{name}} first: its scheduled start was never published"
+    },
     "Executions": {
         "Graph": {
             "Controls": {
@@ -4309,7 +4338,8 @@
             "Blocks": "Blocks",
             "FailureConditions": "Failure cond.",
             "VarsChanged": "Attributes changed",
-            "Duration": "Duration"
+            "Duration": "Duration",
+            "Actions": "Actions"
         },
         "Outcomes": {
             "success": "success",
@@ -4453,7 +4483,7 @@
             "stop_hard_now": "Pause now",
             "destroy": "Destroy",
             "NoPermissionStop": "You don't have permission to pause executions",
-            "NoPermissionDestroy": "Only the project owner can destroy executions",
+            "NoPermissionDestroy": "Only the project owner or an admin can destroy executions",
             "Pending": {
                 "stopping": "pausing…",
                 "destroying": "destroying…",
@@ -4514,6 +4544,32 @@
             "StartedNew": "New execution started:",
             "StartedNotYet": "The new execution has not appeared yet. Check the executions list in a moment."
         },
+        "Bulk": {
+            "Selected": "{{n}} selected",
+            "SelectAll": "Select all executions on the page",
+            "SelectRow": "Select execution {{id}}",
+            "Pause": "Pause ({{n}})",
+            "Resume": "Resume ({{n}})",
+            "Destroy": "Destroy ({{n}})",
+            "Clear": "Clear selection",
+            "Dismiss": "Dismiss",
+            "DestroyTitleOne": "Destroy 1 execution",
+            "DestroyTitle": "Destroy {{n}} executions",
+            "DestroyText": "This ends them, closes their conversations and removes their live state. They cannot be resumed. Traces and audit are kept.",
+            "DestroyType": "Type {{n}} to confirm",
+            "Result": {
+                "pause": "Paused: {{done}}",
+                "resume": "Resumed: {{done}}",
+                "destroy": "Destroyed: {{done}}"
+            },
+            "Failed": "not done: {{failed}} (their status no longer allows it, or the service refused)",
+            "NeedConfirm": "to confirm one by one: {{confirm}} (they call an external system: open them to resume)"
+        },
+        "RowActions": {
+            "Pause": "Pause",
+            "Resume": "Resume",
+            "Destroy": "Destroy"
+        },
         "Dialogs": {
             "StopTitle": "Pause execution",
             "StopNowTitle": "Pause now",
@@ -4558,7 +4614,7 @@
             "OutOfRange": "Enter a number from {{min}} to {{max}} (sealed data cannot exceed the trace)",
             "AuditFixed": "Audit log: 1 year (fixed)",
             "TestFixed": "Test runs: {{days}} days (fixed)",
-            "ReadOnly": "Only the project owner, or a role allowed to read the executions audit, can change these settings.",
+            "ReadOnly": "Only the project owner or an admin, or a role allowed to read the executions audit, can change these settings.",
             "Save": "Save",
             "Saved": "Saved",
             "SaveFailed": "The settings could not be saved. Try again.",

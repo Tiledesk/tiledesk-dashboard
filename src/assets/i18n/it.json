@@ -3814,6 +3814,35 @@
             "Executions": "Esecuzioni"
         }
     },
+    "AgentRun": {
+        "Run": "Esegui",
+        "RunTooltip": "Esegui l'agent ora",
+        "RunTitle": "Esegui {{name}}",
+        "RunText": "Esegue una volta la versione pubblicata dell'agent, come farebbe una chiamata al suo webhook. Inserisci i dati da inviare.",
+        "Payload": "Dati (JSON)",
+        "InvalidJson": "I dati non sono un JSON valido",
+        "NotObject": "I dati devono essere un oggetto JSON",
+        "Cancel": "Annulla",
+        "RunStarted": "{{name}} è stato eseguito",
+        "RunFailed": "Impossibile eseguire {{name}}",
+        "Schedule": {
+            "running": "La pianificazione è attiva: fermala",
+            "stopped": "La pianificazione è ferma: avviala",
+            "error": "La pianificazione non è stata aggiornata: avviala di nuovo",
+            "unpublished": "Pubblica l'agent per avviarne la pianificazione"
+        },
+        "ScheduleMenu": {
+            "running": "Ferma pianificazione",
+            "stopped": "Avvia pianificazione",
+            "error": "Avvia pianificazione",
+            "unpublished": "Avvia pianificazione (prima pubblica)"
+        },
+        "ScheduleStarted": "La pianificazione di {{name}} è attiva",
+        "ScheduleStopped": "La pianificazione di {{name}} è ferma",
+        "ScheduleStartFailed": "Impossibile avviare la pianificazione di {{name}}",
+        "ScheduleStopFailed": "Impossibile fermare la pianificazione di {{name}}",
+        "ScheduleNotPublished": "Pubblica prima {{name}}: il suo avvio pianificato non è mai stato pubblicato"
+    },
     "Executions": {
         "Graph": {
             "Controls": {
@@ -3902,7 +3931,8 @@
             "Blocks": "Blocchi",
             "FailureConditions": "Cond. errore",
             "VarsChanged": "Attributi modificati",
-            "Duration": "Durata"
+            "Duration": "Durata",
+            "Actions": "Azioni"
         },
         "Outcomes": {
             "success": "riuscito",
@@ -4046,7 +4076,7 @@
             "stop_hard_now": "Metti in pausa subito",
             "destroy": "Distruggi",
             "NoPermissionStop": "Non hai il permesso di mettere in pausa le esecuzioni",
-            "NoPermissionDestroy": "Solo il proprietario del progetto può distruggere le esecuzioni",
+            "NoPermissionDestroy": "Solo il proprietario o un amministratore del progetto può distruggere le esecuzioni",
             "Pending": {
                 "stopping": "messa in pausa…",
                 "destroying": "in distruzione…",
@@ -4107,6 +4137,32 @@
             "StartedNew": "Nuova esecuzione avviata:",
             "StartedNotYet": "La nuova esecuzione non è ancora comparsa. Controlla l'elenco delle esecuzioni tra poco."
         },
+        "Bulk": {
+            "Selected": "{{n}} selezionate",
+            "SelectAll": "Seleziona tutte le esecuzioni della pagina",
+            "SelectRow": "Seleziona l'esecuzione {{id}}",
+            "Pause": "Metti in pausa ({{n}})",
+            "Resume": "Riprendi ({{n}})",
+            "Destroy": "Distruggi ({{n}})",
+            "Clear": "Deseleziona",
+            "Dismiss": "Chiudi",
+            "DestroyTitleOne": "Distruggi 1 esecuzione",
+            "DestroyTitle": "Distruggi {{n}} esecuzioni",
+            "DestroyText": "Le termina, chiude le loro conversazioni e ne rimuove lo stato attivo. Non potranno essere riprese. Tracce e audit restano.",
+            "DestroyType": "Scrivi {{n}} per confermare",
+            "Result": {
+                "pause": "In pausa: {{done}}",
+                "resume": "Riprese: {{done}}",
+                "destroy": "Distrutte: {{done}}"
+            },
+            "Failed": "non eseguite: {{failed}} (il loro stato non lo consente più, o il servizio ha rifiutato)",
+            "NeedConfirm": "da confermare una alla volta: {{confirm}} (chiamano un sistema esterno: aprile per riprenderle)"
+        },
+        "RowActions": {
+            "Pause": "Metti in pausa",
+            "Resume": "Riprendi",
+            "Destroy": "Distruggi"
+        },
         "Dialogs": {
             "StopTitle": "Metti in pausa l'esecuzione",
             "StopNowTitle": "Metti in pausa subito",
@@ -4151,7 +4207,7 @@
             "OutOfRange": "Inserisci un numero da {{min}} a {{max}} (i dati protetti non possono superare la traccia)",
             "AuditFixed": "Registro di audit: 1 anno (fisso)",
             "TestFixed": "Esecuzioni di test: {{days}} giorni (fisso)",
-            "ReadOnly": "Solo il proprietario del progetto, o un ruolo autorizzato a leggere l'audit delle esecuzioni, può modificare queste impostazioni.",
+            "ReadOnly": "Solo il proprietario o un amministratore del progetto, o un ruolo autorizzato a leggere l'audit delle esecuzioni, può modificare queste impostazioni.",
             "Save": "Salva",
             "Saved": "Salvato",
             "SaveFailed": "Impossibile salvare le impostazioni. Riprova.",

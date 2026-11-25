@@ -1,8 +1,9 @@
 import { Component, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { fromEvent, of, Subject, Subscription, timer } from 'rxjs';
-import { catchError, switchMap, takeUntil } from 'rxjs/operators';
+import { from, fromEvent, Observable, of, Subject, Subscription, timer } from 'rxjs';
+import { catchError, map, mergeMap, switchMap, takeUntil, toArray } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'app/core/auth.service';
 import { ExecutionsService } from 'app/services/executions.service';
 import { FaqKbService } from 'app/services/faq-kb.service';
@@ -15,6 +16,14 @@ import {
 import { monitorExecutionsLink } from '../execution-links';
 import { formatDuration } from '../shared/execution-format';
 import { GraphAgent } from '../graph/execution-graph.model';
+import { BulkOutcome, executionGrants, ExecutionGrants, RowAction, rowOffers, rowsFor, selectable } from './row-actions';
+import { StopDialogComponent, StopDialogData, StopMode } from '../shared/stop-dialog.component';
+import { destroyConfirmCode, DestroyDialogComponent, DestroyDialogData } from '../shared/destroy-dialog.component';
+import { ResumeDialogComponent, ResumeDialogData } from '../shared/resume-dialog.component';
+import { BulkDestroyDialogComponent, BulkDestroyDialogData } from '../shared/bulk-destroy-dialog.component';
+
+/** Calls in flight at once for an action on the selected rows. */
+export const BULK_CONCURRENCY = 4;
 
 /** Every run by default: the widget runs (most of them, and every waiting one) and the unattended ones. */
 export const DEFAULT_TRIGGER = 'all';
@@ -85,6 +94,14 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   configured = false;
   /** null until the role is known */
   permitted: boolean | null = null;
+  /** What the role may do on the rows (pause/resume, destroy): owner and admin everything. */
+  grants: ExecutionGrants = { control: false, destroy: false };
+  /** The checked rows, by id (only rows of the list: a reload drops the ones no longer shown). */
+  selected = new Set<string>();
+  /** An action is running on rows: the action buttons are disabled. */
+  actionBusy = false;
+  /** The result of the last row/bulk action, shown above the table. */
+  actionMessage: { kind: 'ok' | 'error'; key: string; params: any } | null = null;
 
   filters: ExecutionFilters = this.defaultFilters();
   /** The list's column sort (URL sort, dir); server-side, the graph ignores it. */
@@ -135,6 +152,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     private auth: AuthService,
     private translate: TranslateService,
     private zone: NgZone,
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit() {
@@ -200,6 +218,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       // '' is the service's initial value: the role is not known yet (no "unauthorized" flash)
       if (!status || !status.role) { this.permitted = null; return; }
       this.permitted = canViewExecutions(status.role, status.matchedPermissions);
+      this.grants = executionGrants(status.role, status.matchedPermissions);
       if (this.permitted && this.configured && !this.started) this.start();
     });
   }
@@ -324,6 +343,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     this.rows = page.items;
     this.nextCursor = page.next_cursor;
     this.pagedPastFirst = false;
+    this.pruneSelection();
     this.updatePolling();
   }
 
@@ -429,6 +449,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
           const fresh = new Set(page.items.map(r => r._id));
           this.rows = page.items.concat(this.rows.filter(r => !fresh.has(r._id)));
         }
+        this.pruneSelection();
         this.updatePolling();
       },
       error: err => {
@@ -547,5 +568,194 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
   trackById(_: number, row: ExecutionRow) {
     return row._id;
+  }
+
+  // ---- selection (checkbox column) ----
+
+  get hasActionColumns(): boolean {
+    return this.grants.control || this.grants.destroy;
+  }
+
+  isSelectable(row: ExecutionRow): boolean {
+    return selectable(row, this.grants);
+  }
+
+  isSelected(row: ExecutionRow): boolean {
+    return this.selected.has(row._id);
+  }
+
+  toggleRow(row: ExecutionRow, checked: boolean) {
+    if (!this.isSelectable(row)) return;
+    const next = new Set(this.selected);
+    if (checked) next.add(row._id); else next.delete(row._id);
+    this.selected = next;
+  }
+
+  get selectableRows(): ExecutionRow[] {
+    return this.rows.filter(r => this.isSelectable(r));
+  }
+
+  get allSelected(): boolean {
+    const rows = this.selectableRows;
+    return rows.length > 0 && rows.every(r => this.selected.has(r._id));
+  }
+
+  get someSelected(): boolean {
+    return this.selected.size > 0 && !this.allSelected;
+  }
+
+  toggleAll(checked: boolean) {
+    this.selected = checked ? new Set(this.selectableRows.map(r => r._id)) : new Set();
+  }
+
+  clearSelection() {
+    this.selected = new Set();
+  }
+
+  get selectedRows(): ExecutionRow[] {
+    return this.rows.filter(r => this.selected.has(r._id));
+  }
+
+  /** How many selected rows an action applies to (its button shows the number, 0 disables it). */
+  selectedFor(action: RowAction): number {
+    return rowsFor(this.selectedRows, action, this.grants).length;
+  }
+
+  /** Rows that left the list, or can no longer be acted on, leave the selection. */
+  private pruneSelection() {
+    if (!this.selected.size) return;
+    const keep = new Set(this.rows.filter(r => this.selected.has(r._id) && this.isSelectable(r)).map(r => r._id));
+    if (keep.size !== this.selected.size) this.selected = keep;
+  }
+
+  // ---- row actions (actions column) ----
+
+  offers(row: ExecutionRow, action: RowAction): boolean {
+    return rowOffers(row, action, this.grants);
+  }
+
+  rowAction(row: ExecutionRow, action: RowAction, event?: Event) {
+    if (event) event.stopPropagation();
+    if (this.actionBusy || !this.offers(row, action)) return;
+    if (action === 'pause') {
+      this.askStopMode().subscribe(mode => {
+        if (mode) this.runOn([row], action, r => this.executionsService.stop(this.projectId, r._id, mode).pipe(map(() => 'done' as const)));
+      });
+    } else if (action === 'resume') {
+      this.askResume([row]).subscribe(ok => {
+        if (ok) this.runOn([row], action, r => this.resumeOne(r), () => this.confirmCallingResume(row));
+      });
+    } else {
+      const data: DestroyDialogData = { executionId: row._id };
+      this.dialog.open(DestroyDialogComponent, { data, width: '480px' }).afterClosed().pipe(takeUntil(this.destroy$))
+        .subscribe((code: string | null) => {
+          if (code) this.runOn([row], action, r => this.executionsService.destroy(this.projectId, r._id, code).pipe(map(() => 'done' as const)));
+        });
+    }
+  }
+
+  // ---- bulk actions (on the selected rows) ----
+
+  bulkAction(action: RowAction) {
+    if (this.actionBusy) return;
+    const rows = rowsFor(this.selectedRows, action, this.grants);
+    if (!rows.length) return;
+    if (action === 'pause') {
+      this.askStopMode().subscribe(mode => {
+        if (mode) this.runOn(rows, action, r => this.executionsService.stop(this.projectId, r._id, mode).pipe(map(() => 'done' as const)));
+      });
+    } else if (action === 'resume') {
+      this.askResume(rows).subscribe(ok => {
+        if (ok) this.runOn(rows, action, r => this.resumeOne(r));
+      });
+    } else {
+      const data: BulkDestroyDialogData = { count: rows.length };
+      this.dialog.open(BulkDestroyDialogComponent, { data, width: '480px' }).afterClosed().pipe(takeUntil(this.destroy$))
+        .subscribe((ok: true | null) => {
+          if (ok === true) {
+            this.runOn(rows, action, r => this.executionsService.destroy(this.projectId, r._id, destroyConfirmCode(r._id)).pipe(map(() => 'done' as const)));
+          }
+        });
+    }
+  }
+
+  private askStopMode(): Observable<StopMode | null> {
+    const data: StopDialogData = { action: null, hardOnly: false };
+    return this.dialog.open(StopDialogComponent, { data, width: '480px' }).afterClosed().pipe(
+      map((mode: StopMode | null) => (mode === 'soft' || mode === 'hard' ? mode : null)),
+      takeUntil(this.destroy$));
+  }
+
+  private askResume(rows: ExecutionRow[]): Observable<boolean> {
+    const data: ResumeDialogData = { action: null, calling: false, automation: rows.some(r => r.trigger && r.trigger.type === 'automation') };
+    return this.dialog.open(ResumeDialogComponent, { data, width: '480px' }).afterClosed().pipe(
+      map((ok: true | null) => ok === true),
+      takeUntil(this.destroy$));
+  }
+
+  /**
+   * Resume without the confirm: an action that calls an external system answers 409 confirm_required and is
+   * counted apart (it is resumed one at a time from its page, where the user sees the action).
+   */
+  private resumeOne(row: ExecutionRow): Observable<'done' | 'confirm'> {
+    return this.executionsService.resume(this.projectId, row._id, false).pipe(
+      map(() => 'done' as const),
+      catchError(err => {
+        if (err && err.status === 409 && err.error && err.error.error === 'confirm_required') return of('confirm' as const);
+        throw err;
+      }));
+  }
+
+  /**
+   * One row's resume answered confirm_required: its action calls an external system. As on the execution page,
+   * the user confirms it knowing that, and the resume is sent again with the confirm.
+   */
+  private confirmCallingResume(row: ExecutionRow) {
+    const data: ResumeDialogData = { action: null, calling: true, automation: !!row.trigger && row.trigger.type === 'automation' };
+    this.dialog.open(ResumeDialogComponent, { data, width: '480px' }).afterClosed().pipe(takeUntil(this.destroy$))
+      .subscribe((ok: true | null) => {
+        if (ok !== true) return;
+        this.runOn([row], 'resume', r => this.executionsService.resume(this.projectId, r._id, true).pipe(map(() => 'done' as const)));
+      });
+  }
+
+  /**
+   * Sends the action on each row (at most BULK_CONCURRENCY at once), then reports and refreshes the list.
+   * onConfirm: a single row that needs a confirm (resume of a calling action) asks for it instead of reporting.
+   */
+  private runOn(rows: ExecutionRow[], action: RowAction, call: (r: ExecutionRow) => Observable<'done' | 'confirm'>, onConfirm?: () => void) {
+    this.actionBusy = true;
+    this.actionMessage = null;
+    from(rows).pipe(
+      mergeMap(r => call(r).pipe(
+        map(result => ({ id: r._id, result })),
+        catchError(err => {
+          this.logger.error('[EXECUTIONS-LIST] ' + action + ' error ', r._id, err && err.status);
+          return of({ id: r._id, result: 'failed' as const });
+        })), BULK_CONCURRENCY),
+      toArray(),
+      takeUntil(this.destroy$)
+    ).subscribe(results => {
+      this.actionBusy = false;
+      const outcome: BulkOutcome = { done: 0, failed: 0, confirm: 0 };
+      results.forEach(x => { outcome[x.result] += 1; });
+      if (onConfirm && rows.length === 1 && outcome.confirm === 1) {
+        onConfirm();
+        return;
+      }
+      // the rows done leave the selection; the others stay checked for another try
+      const done = new Set(results.filter(x => x.result === 'done').map(x => x.id));
+      this.selected = new Set(Array.from(this.selected).filter(id => !done.has(id)));
+      this.actionMessage = {
+        kind: outcome.failed || outcome.confirm ? 'error' : 'ok',
+        key: 'Executions.Bulk.Result.' + action,
+        params: outcome,
+      };
+      this.refreshNow();
+    });
+  }
+
+  dismissActionMessage() {
+    this.actionMessage = null;
   }
 }

@@ -189,4 +189,56 @@ describe('BotListComponent executions entry', () => {
     expect(btns.length).toBe(2);
     btns.forEach((b: HTMLElement) => expect(b.getAttribute('aria-label')).toBe('Executions.Executions'));
   });
+
+  describe('run controls', () => {
+    const LIVE = { enabled: true, schedule: { frequency: 'daily' }, published_bot_id: 'pub', block_id: 'b' };
+
+    function withWebhooks(role: string, webhooks: any) {
+      setup(true, role);
+      component.agentWebhooks = webhooks;
+      (component as any).webhookService = {
+        setScheduledRunning: jasmine.createSpy('setScheduledRunning').and.returnValue(of({ success: true, scheduled_live: { ...LIVE, enabled: false, stopped: true } })),
+        runFlowWebhook: jasmine.createSpy('runFlowWebhook').and.returnValue(of({})),
+      };
+      (component as any).notify = { showWidgetStyleUpdateNotification: jasmine.createSpy('notify') };
+      (component as any).translate = { instant: (k: string) => k };
+      fixture.detectChanges();
+    }
+
+    it('owner sees Run on a Webhook agent and the schedule button on a Scheduled agent', () => {
+      withWebhooks('owner', {
+        v1: { chatbot_id: 'v1', webhook_id: 'w1', start_points: [{ type: 'webhook' }] },
+        b2: { chatbot_id: 'b2', webhook_id: 'w2', start_points: [{ type: 'scheduled' }], scheduled_live: LIVE },
+      });
+      const el: HTMLElement = fixture.nativeElement;
+      expect(el.querySelector('#run-agent-btn-v1')).not.toBeNull();
+      expect(el.querySelector('#run-agent-btn-b2')).toBeNull();
+      expect(el.querySelector('#schedule-agent-btn-b2')).not.toBeNull();
+      expect(el.querySelector('#schedule-agent-btn-v1')).toBeNull();
+    });
+
+    it('supervisor sees no run controls (the webhooks API needs the admin role)', () => {
+      withWebhooks('supervisor', { b2: { chatbot_id: 'b2', webhook_id: 'w2', start_points: [{ type: 'scheduled' }], scheduled_live: LIVE } });
+      expect(fixture.nativeElement.querySelector('#schedule-agent-btn-b2')).toBeNull();
+    });
+
+    it('Run sends the dialog payload to the agent (by chatbot id, the authenticated route)', () => {
+      withWebhooks('owner', { v1: { chatbot_id: 'v1', webhook_id: 'w1', start_points: [{ type: 'webhook' }] } });
+      (component as any).dialog = { open: () => ({ afterClosed: () => of({ x: 1 }) }) };
+      component.runWebhookAgent(bots[0]);
+      expect((component as any).webhookService.runFlowWebhook).toHaveBeenCalledWith('v1', { x: 1 });
+    });
+
+    it('the schedule button of a never published scheduled start is disabled', () => {
+      withWebhooks('admin', { b2: { chatbot_id: 'b2', webhook_id: 'w2', start_points: [{ type: 'scheduled' }] } });
+      expect(fixture.nativeElement.querySelector('#schedule-agent-btn-b2').disabled).toBe(true);
+    });
+
+    it('stopping a running schedule calls the server and updates the button state', () => {
+      withWebhooks('admin', { b2: { chatbot_id: 'b2', webhook_id: 'w2', start_points: [{ type: 'scheduled' }], scheduled_live: LIVE } });
+      component.toggleAgentSchedule(bots[1]);
+      expect((component as any).webhookService.setScheduledRunning).toHaveBeenCalledWith('b2', false);
+      expect(component.agentRun(bots[1]).schedule).toBe('stopped');
+    });
+  });
 });
