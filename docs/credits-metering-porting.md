@@ -422,11 +422,24 @@ Atteso: PASS.
 
 - [ ] **Step 5:** verifica manuale: preview KB con un modello gestito (Tiledesk key) e con chiave propria; pagina `/project/:id/credits` aperta su un progetto credits e su uno a quote.
   - [x] Progetto credits: verificato manualmente il 2026-11-24.
-  - [ ] Progetto a quote: in attesa della verifica lato server (backend), perché la lista dei modelli managed non torna completa (vedi `/llm/models` e `/llm/providers`).
+  - [x] Progetto a quote: verificato manualmente il 2026-11-25 dopo lo Step 6. Etichetta "Nx tokens" solo sui modelli GPT, come atteso. Non verificata la chiamata con un modello non OpenAI senza chiave propria: resta S5 (sotto).
+  - Progetto credits, 2026-11-25: nessuna etichetta "Nx tokens" su nessun modello, come atteso (il moltiplicatore esiste solo sui quote).
+
+- [x] **Step 6 (2026-11-25): commit del collega `ddc7e4180`** ("Refactor LLM model handling in modal preview settings and integration service", Giovanni Troisi, branch `features-2611/credits-plan-tmp`). È l'unico commit di `-tmp` non presente in `X-credits`; il resto di `-tmp` (merge di `master`, executions, MCP) è già nel nostro branch.
+  - Applicato con `git cherry-pick -x` (nessun conflitto, auto-merge su 2 file), committato su `X-credits` dopo la revisione del diff (vedi log 2026-11-25).
+  - `integration.service.ts`: `getManagedLlmModels()` diventa `getLlmModels()` (stessa URL `GET /:pid/llm/models?managed=true&output_modalities=text`); rimossi `getLlmProviders()` e `getProviderModels()` (nessun altro chiamante).
+  - `modal-preview-settings.component.ts`: una sola chiamata a `/llm/models` al posto di `forkJoin(providers, managed)` e delle chiamate per provider con chiave propria; rimossi `getKeyedModels`, `getOwnKeyModels`, `ownKeyModelOption`, `groupManagedModels`, `applyManagedModels`, `KEYED_STATIC_MODELS`. Modelli raggruppati per `tiledesk.provider` e salvati con `tiledesk.model`; i vendor senza provider proprio (Meta, Mistral, ...) diventano gruppi separati (`openRouterVendorGroups`) che chiamano OpenRouter; moltiplicatore "Nx tokens" dal server quando c'è la lista, altrimenti da `ai_models`; senza `tiledesk.provider` nella risposta, liste statiche (Groq compreso).
+  - Nostre aggiunte preservate: `gpt-6` (6 occorrenze), `resolveDefaultActiveModelRow`.
+  - **Server** (`features-2611/credits-plan`, commit `ee47e4d3`, `7e91242a`, `5f8b17d8` di Giovanni, 24-25/11): nuovo `pubmodules/credits/llmModels.js`; `/llm/models` restituisce `tiledesk: { managed, provider, model, key }`, più `credits` (crediti) e `multiplier` (quote, solo modelli con chiave Tiledesk). Crediti: managed = modelli con prezzo non variant, vendor senza provider come `openrouter`. Quote: managed = openai, google, anthropic, deepseek, cohere, groq; solo OpenAI ha la chiave Tiledesk (`GPTKEY`). Gli endpoint `/llm/providers` restano ma il client non li usa più.
+  - Effetto sulle verifiche S1–S5 (sotto): S4 (campi dei modelli a crediti) ora coperto dal server; S1, S2, S3, S5 vanno riletti con il nuovo contratto (la dashboard non scarta più i modelli non OpenAI sui quote, e `/llm/providers` non è più usato).
+  - Build Angular 15 OK (`npx ng build --output-path=.credits-build-tmp`, exit 0). Test: 45 su 45 PASS con `TZ=UTC` e Chrome (navbar, `util`, `metering.util`, `metering.service`).
+  - Verifica manuale (preview KB) fatta il 2026-11-25 su progetto a crediti e a quote, vedi Step 5.
 
 ---
 
 ## Verifiche lato server (da fare con il backend)
+
+> Nota 2026-11-25: dopo `ddc7e4180` e i commit server `ee47e4d3`, `7e91242a`, `5f8b17d8` il contratto di `/llm/models` è cambiato (campi `tiledesk.provider/model/key/multiplier`, `/llm/providers` non più usato dal client). S1–S5 sotto descrivono il contratto precedente: da riverificare, non da prendere alla lettera.
 
 Repository server: `tiledesk-server`, branch `features-2611/credits-plan`. Non modificare il server: solo verifica. Riferimenti: `pubmodules/credits/routes/llm.js`, `pubmodules/credits/llmPriceList.js`, `pubmodules/credits/catalog.js`, `pubmodules/credits/creditManager.js`.
 
@@ -1161,4 +1174,5 @@ Punti di attenzione:
 | 2026-11-24 | `X-credits` | Aperto | Verifica lato server S1–S5 (backend); decisione S3 sui vendor non OpenAI nei progetti a quote; spec `ProjectPlanService` da sistemare (preesistente) |
 | 2026-11-25 | `X-credits` | Paywall crediti (regola) | Regola: sui progetti `metering: "credits"` nessun paywall client-side e nessun redirect a pricing o `-demo`; il blocco lo decide il server. Commit `328dd3673`: `app.component.ts` (G1), `project-profile.guard.ts` (G3, ritorno `true` per i crediti), `home-quick-cards.component.ts` (gate abbonamento in `onAddFlowClick` disattivato su crediti). G2 in `sidebar.component.ts` verificato: codice morto, nessun redirect attivo (il piano lo dava per attivo, errore corretto). Build Angular 15 (`ng build`) OK il 2026-11-25, nessun errore; warning SASS e chart.js preesistenti |
 | 2026-11-25 | `X-credits` | Domande al server | Sezione "Domande per il server sui progetti a crediti" (Q1–Q8): codice 13010 su conto sospeso o annullato, controlli server legacy su `trialExpired` e `isActiveSubscription`, orologio di blocco (`billing.status` contro `subEnd + 3 giorni`), chi aggiorna `subEnd`, `courtesyDays` in produzione, profilo legacy dei crediti, price fuori da `plans`, `metering` al cambio di piano |
+| 2026-11-25 | `X-credits` | Task 1, commit del collega `ddc7e4180` | Cherry-pick `-x` da `features-2611/credits-plan-tmp`, committato dopo revisione del diff: `getLlmModels()` unico, rimossi `getLlmProviders`/`getProviderModels` e la logica per chiave propria nel modal preview settings; gruppi per vendor su OpenRouter. Dipende dai campi `tiledesk.provider/model/key/multiplier` del server (`credits-plan`, commit `5f8b17d8`). Build Angular 15 OK, 45/45 test PASS (`TZ=UTC`) |
 | 2026-11-25 | `X-credits` | Popup trial terminato (regola) | Sui progetti credits il popup "trial terminato" (`displayTrialHasExpiredModal`) non si apre più: `return` anticipato con `isCreditsMetering` in `openModalSeatsTrialExpired` (`home-quick-cards`, copre anche i gestori over-limit), `openModalTrialExpired` in `home-create-teammate` e `home-create-chatbot`. `home-kb`: `openModalTrialExpired` è commentato, il tooltip non fa nulla, nessuna modifica. Commit `328dd3673`. Build Angular 15 OK il 2026-11-25 (incluso) |
