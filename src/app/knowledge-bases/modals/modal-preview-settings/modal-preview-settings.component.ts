@@ -31,21 +31,13 @@ import { BrandService } from 'app/services/brand.service';
 import { LoggerService } from 'app/services/logger/logger.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { IntegrationService } from 'app/services/integration.service';
-import { forkJoin, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
-/** Providers served with the Tiledesk key through OpenRouter (OpenRouter vendor = LLM_MODEL value), with their static lists */
+/** Providers handled by Tiledesk, with their static lists for a server without the list of the models */
 const MANAGED_STATIC_MODELS: { [provider: string]: Array<any> } = {
   openai: OPENAI_MODEL,
   anthropic: ANTHROPIC_MODEL,
   google: GOOGLE_MODEL,
   deepseek: DEEPSEEK_MODEL,
-  cohere: COHERE_MODEL
-};
-
-/** Providers whose models the server reads with the project's own key, with their static lists */
-const KEYED_STATIC_MODELS: { [provider: string]: Array<any> } = {
-  ...MANAGED_STATIC_MODELS,
+  cohere: COHERE_MODEL,
   groq: GROQ_MODEL
 };
 
@@ -155,6 +147,8 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   temperature_slider_disabled: boolean;
   modelGroups: any[] = [];
   flattenedModels: any[] = [];
+  private llmModelsByProvider: { [provider: string]: Array<any> } | null = null;
+  private openRouterIntegrationModels: Array<any> = [];
 
 
   aiSettingsObject = [{
@@ -385,7 +379,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     this.getAgentPlatformModels()
     this.getOllamaModels()
     this.getOpenRouterModels()
-    this.getKeyedModels()
+    this.getLlmModels()
     this.loadModelGroups();
   }
 
@@ -547,16 +541,12 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       next: (res: any) => {
         this.logger.log('[MODAL PREVIEW SETTINGS] - OPENROUTER MODELS:', res);
 
-        const openRouterProvider = LLM_MODEL.find(p => p.value === 'openrouter');
-        const models = this.extractOpenRouterModels(res);
-
-        if (openRouterProvider && models.length) {
-          openRouterProvider.models = models;
-          this.logger.log('[MODAL PREVIEW SETTINGS] - MODELS AGGIORNATI openrouter:', models);
-        } else {
+        this.openRouterIntegrationModels = this.extractOpenRouterModels(res);
+        if (!this.openRouterIntegrationModels.length) {
           this.logger.warn('[MODAL PREVIEW SETTINGS] - Nessun modello trovato per OpenRouter');
         }
 
+        this.setOpenRouterModels();
         this.loadModelGroups();
       },
       error: (err) => {
@@ -598,77 +588,37 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
   }
 
   /**
-   * The models of the providers that depend on the key, with the key the server uses (the project's own one wins):
-   * - own key: the models the provider lists for that key;
-   * - Tiledesk key: on credits projects the managed models of OpenRouter, through the server, whose value is the
-   *   provider's own name (gpt-4.1, claude-sonnet-4-5) that the server maps back to OpenRouter; on quotas the
-   *   static OpenAI list;
-   * - no key: no models.
-   * A server without /llm/providers keeps the managed models of the credits projects and the static lists.
+   * The models the plan of the project lets choose, from the server (GET /llm/models?managed=true), also without an
+   * integration of the project: the server saves the provider and the model of each one (tiledesk.provider and
+   * tiledesk.model) and the key it uses. The vendors without a provider of their own go in OpenRouter, next to the
+   * models of the project's OpenRouter integration. Without the list of the server, the static lists.
    */
-  getKeyedModels() {
-    forkJoin({
-      providers: this.integrationService.getLlmProviders().pipe(catchError((err) => {
-        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getLlmProviders:', err);
-        return of(null);
-      })),
-      managed: this.integrationService.getManagedLlmModels().pipe(catchError((err) => {
-        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getManagedLlmModels:', err);
-        return of(null);
-      }))
-    }).subscribe(({ providers, managed }: any) => {
-      const managedByProvider = this.groupManagedModels(managed?.data);
-      if (!Array.isArray(providers?.data)) {
-        this.applyManagedModels(managedByProvider);
-        return;
-      }
-      providers.data
-        .filter((row: any) => KEYED_STATIC_MODELS[row.provider])
-        .forEach((row: any) => {
-          if (row.key === 'own') {
-            this.getOwnKeyModels(row.provider);
-          } else if (row.key === 'tiledesk') {
-            const models = managedByProvider[row.provider];
-            this.setProviderModels(row.provider, models && models.length ? models : KEYED_STATIC_MODELS[row.provider]);
-          } else {
-            this.setProviderModels(row.provider, []);
-          }
-        });
-      this.loadModelGroups();
-    });
-  }
-
-  private getOwnKeyModels(providerValue: string) {
-    this.integrationService.getProviderModels(providerValue).subscribe({
+  getLlmModels() {
+    this.integrationService.getLlmModels().subscribe({
       next: (res: any) => {
-        this.logger.log('[MODAL PREVIEW SETTINGS] - OWN KEY MODELS ' + providerValue + ':', res?.total_count);
-        const models = Array.isArray(res?.data) ? res.data.map((model: any) => this.ownKeyModelOption(providerValue, model)) : [];
-        this.setProviderModels(providerValue, models.length ? models : KEYED_STATIC_MODELS[providerValue]);
-        this.loadModelGroups();
+        this.logger.log('[MODAL PREVIEW SETTINGS] - LLM MODELS:', res?.total_count);
+        this.llmModelsByProvider = this.groupLlmModels(res?.data);
+        this.applyLlmModels();
       },
       error: (err) => {
-        // a rejected or unreachable key: the static list, the call will show the error of the provider
-        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getProviderModels ' + providerValue + ':', err);
-        this.setProviderModels(providerValue, KEYED_STATIC_MODELS[providerValue]);
-        this.loadModelGroups();
+        this.logger.error('[MODAL PREVIEW SETTINGS] - ERROR getLlmModels:', err);
+        this.llmModelsByProvider = null;
+        this.applyLlmModels();
       }
     });
   }
 
-  private ownKeyModelOption(providerValue: string, model: any) {
-    const known = KEYED_STATIC_MODELS[providerValue].find((m) => m.value === model.id);
-    return {
-      name: model.name || known?.name || model.id,
-      value: model.id,
-      description: '',
-      status: 'active',
-      min_tokens: 1,
-      max_output_tokens: model.max_output_tokens || known?.max_output_tokens || LLM_DEFAULT_MAX_TOKENS_CAP,
-      reasoning: known?.reasoning ?? false
-    };
+  /** LLM_MODEL is shared by the projects: every load sets the models of the providers */
+  private applyLlmModels() {
+    Object.keys(MANAGED_STATIC_MODELS).forEach((providerValue) => {
+      this.setProviderModels(providerValue, this.llmModelsByProvider
+        ? (this.llmModelsByProvider[providerValue] || [])
+        : MANAGED_STATIC_MODELS[providerValue]);
+    });
+    this.setOpenRouterModels();
+    this.loadModelGroups();
   }
 
-  /** LLM_MODEL is shared by the projects: every load sets the models of the provider */
   private setProviderModels(providerValue: string, models: Array<any>) {
     const provider = LLM_MODEL.find(p => p.value === providerValue);
     if (provider) {
@@ -676,52 +626,70 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     }
   }
 
-  private groupManagedModels(models: any): { [provider: string]: Array<any> } {
-    const byProvider: { [provider: string]: Array<any> } = {};
-    if (!Array.isArray(models)) {
-      return byProvider;
+  /** OpenRouter has the models of the project's integration, the other OpenRouter models go in their vendor's group */
+  private setOpenRouterModels() {
+    const provider = LLM_MODEL.find(p => p.value === 'openrouter');
+    if (provider) {
+      provider.models = this.openRouterIntegrationModels;
     }
+  }
+
+  /**
+   * The groups of the vendors without a provider of their own (Meta, Mistral, ...), called through OpenRouter. The
+   * models of the project's integration stay in OpenRouter: they carry the provider routing.
+   */
+  private openRouterVendorGroups(): Array<{ providerName: string, llmValue: string, llmSrc: string, models: Array<any> }> {
+    const openRouter = LLM_MODEL.find(p => p.value === 'openrouter');
+    const own = new Set(this.openRouterIntegrationModels.map((m) => m.value));
+    const providerNames = new Set(LLM_MODEL.map((p) => p.name.toLowerCase()));
+    const groups: { [vendor: string]: Array<any> } = {};
+    (this.llmModelsByProvider?.openrouter || [])
+      .filter((model) => !own.has(model.value))
+      .forEach((model) => {
+        (groups[model.vendor] = groups[model.vendor] || []).push(model);
+      });
+    return Object.keys(groups)
+      .sort((a, b) => a.localeCompare(b))
+      .map((vendor) => ({
+        // the select groups by name: a vendor named as a provider would merge into it
+        providerName: providerNames.has(vendor.toLowerCase()) ? vendor + ' (OpenRouter)' : vendor,
+        llmValue: 'openrouter',
+        llmSrc: openRouter?.src || null,
+        models: groups[vendor]
+      }));
+  }
+
+  /** null for a server that does not give the provider of the models: the static lists */
+  private groupLlmModels(models: any): { [provider: string]: Array<any> } | null {
+    if (!Array.isArray(models) || !models.some((model) => model?.tiledesk?.provider)) {
+      return null;
+    }
+    const byProvider: { [provider: string]: Array<any> } = {};
     models.forEach((model: any) => {
-      // tiledesk.credits is returned only to credits projects: the projects on quotas keep the static lists
-      if (!model?.tiledesk?.managed || !model.tiledesk.credits) {
+      const tiledesk = model?.tiledesk;
+      if (!tiledesk?.managed || !tiledesk.provider || !tiledesk.model) {
         return;
       }
-      const id = String(model.id || '');
-      const slash = id.indexOf('/');
-      const provider = id.slice(0, slash);
-      if (slash < 0 || !MANAGED_STATIC_MODELS[provider]) {
+      const list = byProvider[tiledesk.provider] = byProvider[tiledesk.provider] || [];
+      if (list.some((m) => m.value === tiledesk.model)) {
         return;
       }
-      let value = id.slice(slash + 1);
-      if (provider === 'anthropic') {
-        // OpenRouter claude-sonnet-4.5, Anthropic claude-sonnet-4-5
-        value = value.replace(/(\d)\.(\d)/g, '$1-$2');
-      }
-      const list = byProvider[provider] = byProvider[provider] || [];
-      if (list.some((m) => m.value === value)) {
-        return;
-      }
+      // OpenRouter names are "Vendor: Model": the vendor is the group
+      const name = String(model.name || tiledesk.model);
+      const colon = name.indexOf(':');
       list.push({
-        // OpenRouter names are "Vendor: Model", the select already groups by provider
-        name: String(model.name || value).replace(/^[^:]+:\s*/, ''),
-        value,
+        name: colon > 0 ? name.slice(colon + 1).trim() : name,
+        vendor: colon > 0 ? name.slice(0, colon).trim() : String(model.id || '').split('/')[0],
+        value: tiledesk.model,
         description: '',
         status: 'active',
         min_tokens: 1,
         max_output_tokens: model.top_provider?.max_completion_tokens || model.context_length || LLM_DEFAULT_MAX_TOKENS_CAP,
-        reasoning: Array.isArray(model.supported_parameters) && model.supported_parameters.includes('reasoning')
+        reasoning: Array.isArray(model.supported_parameters) && model.supported_parameters.includes('reasoning'),
+        multiplier: tiledesk.multiplier
       });
     });
     return byProvider;
-  }
-
-  /** Without /llm/providers: the managed models where there are, the static lists elsewhere */
-  private applyManagedModels(byProvider: { [provider: string]: Array<any> }) {
-    Object.keys(KEYED_STATIC_MODELS).forEach((providerValue) => {
-      const managed = byProvider[providerValue];
-      this.setProviderModels(providerValue, managed && managed.length ? managed : KEYED_STATIC_MODELS[providerValue]);
-    });
-    this.loadModelGroups();
   }
 
   /** Keeps selectable the model saved in the namespace when the list does not have it (e.g. claude-3-7-sonnet-latest) */
@@ -731,7 +699,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
     if (!settings?.model || savedProvider !== providerValue || models.some((m) => m.value === settings.model)) {
       return models;
     }
-    const known = KEYED_STATIC_MODELS[providerValue].find((m) => m.value === settings.model);
+    const known = MANAGED_STATIC_MODELS[providerValue].find((m) => m.value === settings.model);
     const saved = known
       ? { ...known, status: 'active' }
       : { name: settings.model, value: settings.model, description: '', status: 'active' };
@@ -777,26 +745,34 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       ...LLM_MODEL.filter(p => p.value !== 'openai')
     ];
 
+    const groups = [
+      ...orderedProviders.map(provider => ({
+        providerName: provider.name,
+        llmValue: provider.value,
+        llmSrc: provider.src,
+        models: provider.models || []  // fallback se models è undefined
+      })),
+      ...this.openRouterVendorGroups()
+    ];
+
     // crea l’array dei gruppi di modelli per la select
-    this.modelGroups = orderedProviders.map(provider => ({
-      providerName: provider.name,
-      models: (provider.models || [])  // fallback se models è undefined
+    this.modelGroups = groups.map(group => ({
+      ...group,
+      models: group.models
         .filter(m => m.status === 'active')  // solo modelli attivi
         .sort((a, b) => a.name.localeCompare(b.name))  // ordine alfabetico
-        .map(model => ({
-          ...model,
-          multiplier: ai_models[model.value] ? `${ai_models[model.value]}x tokens` : null
-        }))
+        .map(model => {
+          // the server gives the multiplier only to the models that count against the tokens quota
+          const multiplier = this.llmModelsByProvider ? (model as any).multiplier : ai_models[model.value];
+          return { ...model, multiplier: multiplier ? `${multiplier}x tokens` : null };
+        })
     }));
 
     this.logger.log('[MODAL PREVIEW SETTINGS]  modelGroups', this.modelGroups)
 
     this.flattenedModels = this.modelGroups.flatMap(group => {
-      // trova il provider corrispondente in LLM_MODEL
-      const provider = LLM_MODEL.find(p => p.name.toLowerCase() === group.providerName.toLowerCase());
-
       return group.models.map(model => {
-        const llmValue = provider ? provider.value : null;
+        const llmValue = group.llmValue;
         const vllmServer = (model as any).vllmServer;
         const agentplatformServer = (model as any).agentplatformServer;
         const serverName = vllmServer || agentplatformServer;
@@ -804,7 +780,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
           ...model,
           providerName: group.providerName,
           llmValue,
-          llmSrc: provider ? provider.src : null,
+          llmSrc: group.llmSrc,
           vllmServer,
           agentplatformServer,
           selectValue: this.buildModelSelectValue(model.value, llmValue, serverName),
