@@ -463,7 +463,11 @@ Repository server: `tiledesk-server`, branch `features-2611/credits-plan`. Non m
   - *Come:* chiamare l'endpoint con il token di un progetto a crediti; controllare un modello Google (es. `google/gemini-4-neon`) e un modello OpenAI.
   - *Perché:* la dashboard usa `top_provider.max_completion_tokens` per il massimo dei token dello slider e `tiledesk.credits` per mostrare i prezzi. Senza questi campi il massimo resta al valore di fallback.
   - *Esito atteso:* campi presenti su tutti i modelli managed.
-- [ ] **S5 — chiamata reale su quote con modello non OpenAI**
+  - *Nota 2026-11-25:* su un progetto a crediti una chiamata con un modello Gemini (Gemini 3.8 Flash) con la chiave Tiledesk è andata a buon fine. Non verifica i campi di risposta della lista (S4 resta aperto finché non si controllano i campi).
+- [ ] **S5 — chiamata reale su quote con modello non OpenAI** (esito 2026-11-25: 404, non 13011; aperta in attesa della correzione lato server, da rifare dopo la decisione con Giovanni)
+  - *Risultato:* su un progetto a quote, chiamata con DeepSeek senza chiave propria: `404 Integration deepseek not found for project 6afbf72b74dddb00133ead0e`. Il ramo è in `routes/kb.js` (~riga 500–505): sui quote i provider gestiti (`isManagedProvider`) senza integrazione del progetto danno 404. Il server non accetta la chiamata.
+  - *Conseguenza:* la lista `/llm/models?managed=true` su quote marca come `managed: true` anche DeepSeek, Anthropic, Google e Cohere (con `key: "own"`), quindi la select li mostra come usabili, ma la chiamata fallisce. Lista e chiamata non coincidono. Causa in `llmModels.js` (ramo quote): `managed` non controlla se il progetto ha l'integrazione del provider; solo Groq è condizionato alla chiave del progetto.
+  - *Da decidere (S3):* oppure il server marca `managed: false` per i provider non OpenAI sui quote senza integrazione (e la select li nasconde), oppure il server gestisce quei vendor con la chiave Tiledesk anche sui quote.
   - *Cosa verificare:* con un progetto a quote, una richiesta che usa un modello non OpenAI (es. `anthropic/...`) e nessuna chiave propria: il server risponde 403 `13011` (`UNPRICED_MODEL`) oppure accetta la richiesta.
   - *Come:* eseguire una chiamata di test (es. preview KB) con il modello scelto; registrare la risposta.
   - *Perché:* se il server accetta, la lista vuota della dashboard è più restrittiva del necessario. Se risponde 13011, la lista vuota è coerente con il server. Il percorso `creditManager.managedModel` non è stato verificato.
