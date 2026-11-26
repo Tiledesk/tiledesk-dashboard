@@ -32,6 +32,41 @@ export function isCreditsMetering(project: any): boolean {
   return getProjectMetering(project) === 'credits';
 }
 
+/**
+ * Keeps the `metering` of the project stored in localStorage (key = project id) aligned with the fresh one of the
+ * server. It covers the projects stored before the key existed and the ones stored after POST /projects/, which has
+ * no `metering`. Only that key of that project is written, and only when the value changed; nothing is stored for a
+ * project that is not stored yet. Returns true when the stored project was updated.
+ * UI code must not read the metering from here (nor from project_bs): it uses MeteringService or isCreditsMetering
+ * with a project of the server.
+ */
+export function syncStoredProjectMetering(
+  projectId: string,
+  metering: string | undefined,
+  storage: Pick<Storage, 'getItem' | 'setItem'> = localStorage
+): boolean {
+  const storedJson = storage.getItem(projectId);
+  console.log('[METERING-DEBUG] sync stored project', projectId, 'stored present:', !!storedJson, 'fresh metering:', metering);
+  if (!storedJson) {
+    return false;
+  }
+  let stored: any;
+  try {
+    stored = JSON.parse(storedJson);
+  } catch (e) {
+    console.log('[METERING-DEBUG] sync invalid JSON in storage', projectId);
+    return false;
+  }
+  if (!stored || typeof stored !== 'object' || stored.metering === metering) {
+    console.log('[METERING-DEBUG] sync no write', projectId, 'stored metering:', stored && stored.metering);
+    return false;
+  }
+  console.log('[METERING-DEBUG] sync write', projectId, 'stored metering:', stored.metering, '->', metering);
+  stored.metering = metering;
+  storage.setItem(projectId, JSON.stringify(stored));
+  return true;
+}
+
 /** Credits finished (decision C). Unknown while the summary is loading. UI only: the server refuses the operations */
 export function areCreditsExhausted(summary: CreditsSummary | null): boolean {
   if (!summary) {

@@ -158,6 +158,7 @@ export class CreditsService implements OnDestroy {
 
   /** Summary from any source (GET /credits, POST /quotes); null or 'quotes' metering for quota projects */
   publish(projectId: string, summary: CreditsSummary | null) {
+    console.log('[METERING-DEBUG] CreditsService.publish', projectId, 'current:', this.projectId, 'summary metering:', summary && summary.metering);
     if (projectId !== this.projectId) {
       return;
     }
