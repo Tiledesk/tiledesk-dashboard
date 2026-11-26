@@ -3991,6 +3991,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Ödeme yöntemi",
     "ContactUsToChangeYourPaymentMethod": "Ödeme yönteminizi değiştirmek için bizimle iletişime geçin",
+    "AgentRun": {
+        "Run": "Çalıştır",
+        "RunTooltip": "Ajanı şimdi çalıştır",
+        "RunTitle": "{{name}} çalıştır",
+        "RunText": "Ajanın yayınlanmış sürümünü, webhook çağrısı gibi bir kez çalıştırır. Gönderilecek veriyi girin.",
+        "Payload": "Veri (JSON)",
+        "InvalidJson": "Veri geçerli bir JSON değil",
+        "NotObject": "Veri bir JSON nesnesi olmalıdır",
+        "Cancel": "İptal",
+        "RunStarted": "{{name}} çalıştırıldı",
+        "RunFailed": "{{name}} çalıştırılamadı",
+        "Schedule": {
+            "running": "Zamanlama çalışıyor: durdur",
+            "stopped": "Zamanlama durmuş: başlat",
+            "error": "Zamanlama güncellenemedi: yeniden başlat",
+            "unpublished": "Zamanlamasını başlatmak için ajanı yayınla"
+        },
+        "ScheduleMenu": {
+            "running": "Zamanlamayı durdur",
+            "stopped": "Zamanlamayı başlat",
+            "error": "Zamanlamayı başlat",
+            "unpublished": "Zamanlamayı başlat (önce yayınla)"
+        },
+        "ScheduleStarted": "{{name}} zamanlaması çalışıyor",
+        "ScheduleStopped": "{{name}} zamanlaması durdu",
+        "ScheduleStartFailed": "{{name}} zamanlaması başlatılamadı",
+        "ScheduleStopFailed": "{{name}} zamanlaması durdurulamadı",
+        "ScheduleNotPublished": "Önce {{name}} yayınla: zamanlanmış başlangıcı hiç yayınlanmadı"
+    },
     "Executions": {
         "NotConfigured": "Yürütmeler bu ortam için yapılandırılmamış.",
         "Executions": "Yürütmeler",
@@ -4056,7 +4085,8 @@
             "Blocks": "Bloklar",
             "FailureConditions": "Hata koş.",
             "VarsChanged": "Değişen öznitelikler",
-            "Duration": "Süre"
+            "Duration": "Süre",
+            "Actions": "İşlemler"
         },
         "UpdatedSeconds": "{{n}} sn önce güncellendi",
         "UpdatedMinutes": "{{n}} dk önce güncellendi",
@@ -4076,6 +4106,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "Faaliyetleri aç"
+        },
+        "Bulk": {
+            "Selected": "{{n}} seçili",
+            "SelectAll": "Sayfadaki tüm yürütmeleri seç",
+            "SelectRow": "{{id}} yürütmesini seç",
+            "Pause": "Duraklat ({{n}})",
+            "Resume": "Sürdür ({{n}})",
+            "Destroy": "Yok et ({{n}})",
+            "Clear": "Seçimi temizle",
+            "Dismiss": "Kapat",
+            "DestroyTitleOne": "1 yürütmeyi yok et",
+            "DestroyTitle": "{{n}} yürütmeyi yok et",
+            "DestroyText": "Bunları sonlandırır, konuşmalarını kapatır ve canlı durumlarını kaldırır. Sürdürülemezler. İzler ve denetim saklanır.",
+            "DestroyType": "Onaylamak için {{n}} yazın",
+            "Result": {
+                "pause": "Duraklatıldı: {{done}}",
+                "resume": "Sürdürüldü: {{done}}",
+                "destroy": "Yok edildi: {{done}}"
+            },
+            "Failed": "yapılmadı: {{failed}} (durumları artık buna izin vermiyor veya hizmet reddetti)",
+            "NeedConfirm": "tek tek onaylanacak: {{confirm}} (dış bir sistemi çağırıyorlar: sürdürmek için açın)"
+        },
+        "RowActions": {
+            "Pause": "Duraklat",
+            "Resume": "Sürdür",
+            "Destroy": "Yok et"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "Yürütmeleri yalnızca proje sahibi veya bir yönetici yok edebilir"
+        },
+        "Retention": {
+            "ReadOnly": "Bu ayarları yalnızca proje sahibi veya bir yönetici ya da yürütme denetimini okuma yetkisi olan bir rol değiştirebilir."
         }
-}
+        }
 }

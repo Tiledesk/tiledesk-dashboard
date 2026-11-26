@@ -4125,6 +4125,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Төлем әдісі",
     "ContactUsToChangeYourPaymentMethod": "Төлем әдісін өзгерту үшін бізбен хабарласыңыз",
+    "AgentRun": {
+        "Run": "Іске қосу",
+        "RunTooltip": "Агентті қазір іске қосу",
+        "RunTitle": "{{name}} іске қосу",
+        "RunText": "Агенттің жарияланған нұсқасын webhook шақыруы сияқты бір рет іске қосады. Жіберілетін деректерді енгізіңіз.",
+        "Payload": "Деректер (JSON)",
+        "InvalidJson": "Деректер жарамды JSON емес",
+        "NotObject": "Деректер JSON нысаны болуы керек",
+        "Cancel": "Бас тарту",
+        "RunStarted": "{{name}} іске қосылды",
+        "RunFailed": "{{name}} іске қосылмады",
+        "Schedule": {
+            "running": "Кесте жұмыс істеп тұр: тоқтату",
+            "stopped": "Кесте тоқтатылған: бастау",
+            "error": "Кесте жаңартылмады: қайта бастаңыз",
+            "unpublished": "Кестесін бастау үшін агентті жариялаңыз"
+        },
+        "ScheduleMenu": {
+            "running": "Кестені тоқтату",
+            "stopped": "Кестені бастау",
+            "error": "Кестені бастау",
+            "unpublished": "Кестені бастау (алдымен жариялаңыз)"
+        },
+        "ScheduleStarted": "{{name}} кестесі жұмыс істеп тұр",
+        "ScheduleStopped": "{{name}} кестесі тоқтатылды",
+        "ScheduleStartFailed": "{{name}} кестесі басталмады",
+        "ScheduleStopFailed": "{{name}} кестесі тоқтатылмады",
+        "ScheduleNotPublished": "Алдымен {{name}} жариялаңыз: оның жоспарланған басталуы ешқашан жарияланбаған"
+    },
     "Executions": {
         "NotConfigured": "Орындаулар осы орта үшін бапталмаған.",
         "Executions": "Орындаулар",
@@ -4190,7 +4219,8 @@
             "Blocks": "Блоктар",
             "FailureConditions": "Қате шарты",
             "VarsChanged": "Өзгерген атрибуттар",
-            "Duration": "Ұзақтығы"
+            "Duration": "Ұзақтығы",
+            "Actions": "Әрекеттер"
         },
         "UpdatedSeconds": "{{n}} с бұрын жаңартылды",
         "UpdatedMinutes": "{{n}} мин бұрын жаңартылды",
@@ -4210,6 +4240,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "Іс-шараларды ашу"
+        },
+        "Bulk": {
+            "Selected": "Таңдалды: {{n}}",
+            "SelectAll": "Беттегі барлық орындауларды таңдау",
+            "SelectRow": "{{id}} орындауын таңдау",
+            "Pause": "Кідірту ({{n}})",
+            "Resume": "Жалғастыру ({{n}})",
+            "Destroy": "Жою ({{n}})",
+            "Clear": "Таңдауды тазалау",
+            "Dismiss": "Жабу",
+            "DestroyTitleOne": "1 орындауды жою",
+            "DestroyTitle": "{{n}} орындауды жою",
+            "DestroyText": "Бұл оларды аяқтайды, сөйлесулерін жабады және тікелей күйін жояды. Оларды жалғастыру мүмкін емес. Іздер мен аудит сақталады.",
+            "DestroyType": "Растау үшін {{n}} енгізіңіз",
+            "Result": {
+                "pause": "Кідіртілді: {{done}}",
+                "resume": "Жалғастырылды: {{done}}",
+                "destroy": "Жойылды: {{done}}"
+            },
+            "Failed": "орындалмады: {{failed}} (күйі бұған енді рұқсат етпейді немесе қызмет бас тартты)",
+            "NeedConfirm": "біреуден растау: {{confirm}} (олар сыртқы жүйені шақырады: жалғастыру үшін ашыңыз)"
+        },
+        "RowActions": {
+            "Pause": "Кідірту",
+            "Resume": "Жалғастыру",
+            "Destroy": "Жою"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "Орындауларды тек жоба иесі немесе әкімші жоя алады"
+        },
+        "Retention": {
+            "ReadOnly": "Бұл параметрлерді тек жоба иесі немесе әкімші, не орындаулар аудитін оқуға рұқсаты бар рөл өзгерте алады."
         }
-}
+        }
 }

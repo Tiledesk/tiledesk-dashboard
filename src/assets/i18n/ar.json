@@ -4087,6 +4087,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "طريقة الدفع",
     "ContactUsToChangeYourPaymentMethod": "تواصل معنا لتغيير طريقة الدفع",
+    "AgentRun": {
+        "Run": "تشغيل",
+        "RunTooltip": "تشغيل الوكيل الآن",
+        "RunTitle": "تشغيل {{name}}",
+        "RunText": "يشغّل النسخة المنشورة من الوكيل مرة واحدة، كما تفعل الاستدعاءات إلى الـ webhook الخاص به. أدخل البيانات المراد إرسالها.",
+        "Payload": "البيانات (JSON)",
+        "InvalidJson": "البيانات ليست JSON صالحًا",
+        "NotObject": "يجب أن تكون البيانات كائن JSON",
+        "Cancel": "إلغاء",
+        "RunStarted": "تم تشغيل {{name}}",
+        "RunFailed": "تعذر تشغيل {{name}}",
+        "Schedule": {
+            "running": "الجدولة تعمل: أوقفها",
+            "stopped": "الجدولة متوقفة: ابدأها",
+            "error": "تعذر تحديث الجدولة: ابدأها من جديد",
+            "unpublished": "انشر الوكيل لبدء جدولته"
+        },
+        "ScheduleMenu": {
+            "running": "إيقاف الجدولة",
+            "stopped": "بدء الجدولة",
+            "error": "بدء الجدولة",
+            "unpublished": "بدء الجدولة (انشر أولًا)"
+        },
+        "ScheduleStarted": "جدولة {{name}} تعمل",
+        "ScheduleStopped": "جدولة {{name}} متوقفة",
+        "ScheduleStartFailed": "تعذر بدء جدولة {{name}}",
+        "ScheduleStopFailed": "تعذر إيقاف جدولة {{name}}",
+        "ScheduleNotPublished": "انشر {{name}} أولًا: لم يُنشر بدؤه المجدول أبدًا"
+    },
     "Executions": {
         "NotConfigured": "عمليات التنفيذ غير مهيأة لهذه البيئة.",
         "Executions": "عمليات التنفيذ",
@@ -4152,7 +4181,8 @@
             "Blocks": "الكتل",
             "FailureConditions": "شرط خطأ",
             "VarsChanged": "السمات المتغيرة",
-            "Duration": "المدة"
+            "Duration": "المدة",
+            "Actions": "إجراءات"
         },
         "UpdatedSeconds": "تم التحديث قبل {{n}} ث",
         "UpdatedMinutes": "تم التحديث قبل {{n}} د",
@@ -4172,6 +4202,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "فتح الأنشطة"
+        },
+        "Bulk": {
+            "Selected": "تم تحديد {{n}}",
+            "SelectAll": "تحديد كل عمليات التنفيذ في الصفحة",
+            "SelectRow": "تحديد عملية التنفيذ {{id}}",
+            "Pause": "إيقاف مؤقت ({{n}})",
+            "Resume": "استئناف ({{n}})",
+            "Destroy": "إتلاف ({{n}})",
+            "Clear": "مسح التحديد",
+            "Dismiss": "إغلاق",
+            "DestroyTitleOne": "إتلاف عملية تنفيذ واحدة",
+            "DestroyTitle": "إتلاف {{n}} من عمليات التنفيذ",
+            "DestroyText": "ينهيها هذا ويغلق محادثاتها ويزيل حالتها المباشرة. لا يمكن استئنافها. تُحفظ التتبعات والتدقيق.",
+            "DestroyType": "اكتب {{n}} للتأكيد",
+            "Result": {
+                "pause": "أُوقفت مؤقتًا: {{done}}",
+                "resume": "استُؤنفت: {{done}}",
+                "destroy": "أُتلفت: {{done}}"
+            },
+            "Failed": "لم تُنفذ: {{failed}} (لم تعد حالتها تسمح بذلك، أو رفضت الخدمة)",
+            "NeedConfirm": "للتأكيد واحدة تلو الأخرى: {{confirm}} (تستدعي نظامًا خارجيًا: افتحها للاستئناف)"
+        },
+        "RowActions": {
+            "Pause": "إيقاف مؤقت",
+            "Resume": "استئناف",
+            "Destroy": "إتلاف"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "فقط مالك المشروع أو المسؤول يمكنه إتلاف عمليات التنفيذ"
+        },
+        "Retention": {
+            "ReadOnly": "فقط مالك المشروع أو المسؤول، أو دور مسموح له بقراءة تدقيق عمليات التنفيذ، يمكنه تغيير هذه الإعدادات."
         }
-}
+        }
 }

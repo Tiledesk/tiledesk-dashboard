@@ -3971,6 +3971,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Método de pago",
     "ContactUsToChangeYourPaymentMethod": "Contáctanos para cambiar tu método de pago",
+    "AgentRun": {
+        "Run": "Ejecutar",
+        "RunTooltip": "Ejecutar el agente ahora",
+        "RunTitle": "Ejecutar {{name}}",
+        "RunText": "Ejecuta una vez la versión publicada del agente, como lo haría una llamada a su webhook. Introduce los datos que se enviarán.",
+        "Payload": "Datos (JSON)",
+        "InvalidJson": "Los datos no son un JSON válido",
+        "NotObject": "Los datos deben ser un objeto JSON",
+        "Cancel": "Cancelar",
+        "RunStarted": "{{name}} se ha ejecutado",
+        "RunFailed": "No se ha podido ejecutar {{name}}",
+        "Schedule": {
+            "running": "La programación está activa: detenerla",
+            "stopped": "La programación está detenida: iniciarla",
+            "error": "No se ha podido actualizar la programación: iníciala de nuevo",
+            "unpublished": "Publica el agente para iniciar su programación"
+        },
+        "ScheduleMenu": {
+            "running": "Detener programación",
+            "stopped": "Iniciar programación",
+            "error": "Iniciar programación",
+            "unpublished": "Iniciar programación (publica primero)"
+        },
+        "ScheduleStarted": "La programación de {{name}} está activa",
+        "ScheduleStopped": "La programación de {{name}} está detenida",
+        "ScheduleStartFailed": "No se ha podido iniciar la programación de {{name}}",
+        "ScheduleStopFailed": "No se ha podido detener la programación de {{name}}",
+        "ScheduleNotPublished": "Publica primero {{name}}: su inicio programado nunca se publicó"
+    },
     "Executions": {
         "NotConfigured": "Las ejecuciones no están configuradas para este entorno.",
         "Executions": "Ejecuciones",
@@ -4036,7 +4065,8 @@
             "Blocks": "Bloques",
             "FailureConditions": "Cond. error",
             "VarsChanged": "Atributos modificados",
-            "Duration": "Duración"
+            "Duration": "Duración",
+            "Actions": "Acciones"
         },
         "UpdatedSeconds": "Actualizado hace {{n}} s",
         "UpdatedMinutes": "Actualizado hace {{n}} min",
@@ -4056,6 +4086,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "Abrir Actividades"
+        },
+        "Bulk": {
+            "Selected": "{{n}} seleccionadas",
+            "SelectAll": "Seleccionar todas las ejecuciones de la página",
+            "SelectRow": "Seleccionar la ejecución {{id}}",
+            "Pause": "Pausar ({{n}})",
+            "Resume": "Reanudar ({{n}})",
+            "Destroy": "Destruir ({{n}})",
+            "Clear": "Borrar selección",
+            "Dismiss": "Cerrar",
+            "DestroyTitleOne": "Destruir 1 ejecución",
+            "DestroyTitle": "Destruir {{n}} ejecuciones",
+            "DestroyText": "Esto las finaliza, cierra sus conversaciones y elimina su estado en vivo. No se pueden reanudar. Las trazas y la auditoría se conservan.",
+            "DestroyType": "Escribe {{n}} para confirmar",
+            "Result": {
+                "pause": "Pausadas: {{done}}",
+                "resume": "Reanudadas: {{done}}",
+                "destroy": "Destruidas: {{done}}"
+            },
+            "Failed": "no realizadas: {{failed}} (su estado ya no lo permite, o el servicio lo ha rechazado)",
+            "NeedConfirm": "para confirmar una por una: {{confirm}} (llaman a un sistema externo: ábrelas para reanudar)"
+        },
+        "RowActions": {
+            "Pause": "Pausar",
+            "Resume": "Reanudar",
+            "Destroy": "Destruir"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "Solo el propietario del proyecto o un administrador puede destruir ejecuciones"
+        },
+        "Retention": {
+            "ReadOnly": "Solo el propietario del proyecto o un administrador, o un rol autorizado a leer la auditoría de ejecuciones, puede cambiar estos ajustes."
         }
-}
+        }
 }

@@ -4124,6 +4124,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Ödəniş üsulu",
     "ContactUsToChangeYourPaymentMethod": "Ödəniş üsulunu dəyişmək üçün bizimlə əlaqə saxlayın",
+    "AgentRun": {
+        "Run": "İşə sal",
+        "RunTooltip": "Agenti indi işə sal",
+        "RunTitle": "{{name}} işə sal",
+        "RunText": "Agentin dərc olunmuş versiyasını webhook çağırışı kimi bir dəfə işə salır. Göndəriləcək məlumatı daxil edin.",
+        "Payload": "Məlumat (JSON)",
+        "InvalidJson": "Məlumat etibarlı JSON deyil",
+        "NotObject": "Məlumat JSON obyekti olmalıdır",
+        "Cancel": "Ləğv et",
+        "RunStarted": "{{name}} işə salındı",
+        "RunFailed": "{{name}} işə salınmadı",
+        "Schedule": {
+            "running": "Cədvəl işləyir: dayandır",
+            "stopped": "Cədvəl dayandırılıb: başlat",
+            "error": "Cədvəl yenilənmədi: yenidən başladın",
+            "unpublished": "Cədvəlini başlatmaq üçün agenti dərc edin"
+        },
+        "ScheduleMenu": {
+            "running": "Cədvəli dayandır",
+            "stopped": "Cədvəli başlat",
+            "error": "Cədvəli başlat",
+            "unpublished": "Cədvəli başlat (əvvəl dərc edin)"
+        },
+        "ScheduleStarted": "{{name}} cədvəli işləyir",
+        "ScheduleStopped": "{{name}} cədvəli dayandırılıb",
+        "ScheduleStartFailed": "{{name}} cədvəli başladıla bilmədi",
+        "ScheduleStopFailed": "{{name}} cədvəli dayandırıla bilmədi",
+        "ScheduleNotPublished": "Əvvəl {{name}} dərc edin: onun planlaşdırılmış başlanğıcı heç vaxt dərc olunmayıb"
+    },
     "Executions": {
         "NotConfigured": "İcralar bu mühit üçün qurulmayıb.",
         "Executions": "İcralar",
@@ -4189,7 +4218,8 @@
             "Blocks": "Bloklar",
             "FailureConditions": "Xəta şərti",
             "VarsChanged": "Dəyişən atributlar",
-            "Duration": "Müddət"
+            "Duration": "Müddət",
+            "Actions": "Əməliyyatlar"
         },
         "UpdatedSeconds": "{{n}} san əvvəl yeniləndi",
         "UpdatedMinutes": "{{n}} dəq əvvəl yeniləndi",
@@ -4209,6 +4239,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "Fəaliyyətləri aç"
+        },
+        "Bulk": {
+            "Selected": "{{n}} seçildi",
+            "SelectAll": "Səhifədəki bütün icraları seç",
+            "SelectRow": "{{id}} icrasını seç",
+            "Pause": "Fasilə ({{n}})",
+            "Resume": "Davam et ({{n}})",
+            "Destroy": "Məhv et ({{n}})",
+            "Clear": "Seçimi təmizlə",
+            "Dismiss": "Bağla",
+            "DestroyTitleOne": "1 icranı məhv et",
+            "DestroyTitle": "{{n}} icranı məhv et",
+            "DestroyText": "Bu, onları bitirir, söhbətlərini bağlayır və canlı vəziyyətini silir. Onları davam etdirmək olmaz. İzlər və audit saxlanılır.",
+            "DestroyType": "Təsdiq üçün {{n}} yazın",
+            "Result": {
+                "pause": "Fasilə verildi: {{done}}",
+                "resume": "Davam etdirildi: {{done}}",
+                "destroy": "Məhv edildi: {{done}}"
+            },
+            "Failed": "edilmədi: {{failed}} (vəziyyəti buna artıq icazə vermir və ya xidmət rədd etdi)",
+            "NeedConfirm": "tək-tək təsdiq: {{confirm}} (xarici sistem çağırırlar: davam etdirmək üçün açın)"
+        },
+        "RowActions": {
+            "Pause": "Fasilə",
+            "Resume": "Davam et",
+            "Destroy": "Məhv et"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "İcraları yalnız layihə sahibi və ya administrator məhv edə bilər"
+        },
+        "Retention": {
+            "ReadOnly": "Bu ayarları yalnız layihə sahibi və ya administrator, yaxud icra auditini oxumağa icazəsi olan rol dəyişə bilər."
         }
-}
+        }
 }

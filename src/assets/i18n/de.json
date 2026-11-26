@@ -3780,6 +3780,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Zahlungsmethode",
     "ContactUsToChangeYourPaymentMethod": "Kontaktieren Sie uns, um Ihre Zahlungsmethode zu ändern",
+    "AgentRun": {
+        "Run": "Ausführen",
+        "RunTooltip": "Agent jetzt ausführen",
+        "RunTitle": "{{name}} ausführen",
+        "RunText": "Führt die veröffentlichte Version des Agents einmal aus, wie ein Aufruf seines Webhooks. Geben Sie die zu sendenden Daten ein.",
+        "Payload": "Daten (JSON)",
+        "InvalidJson": "Die Daten sind kein gültiges JSON",
+        "NotObject": "Die Daten müssen ein JSON-Objekt sein",
+        "Cancel": "Abbrechen",
+        "RunStarted": "{{name}} wurde ausgeführt",
+        "RunFailed": "{{name}} konnte nicht ausgeführt werden",
+        "Schedule": {
+            "running": "Die Planung läuft: anhalten",
+            "stopped": "Die Planung ist angehalten: starten",
+            "error": "Die Planung konnte nicht aktualisiert werden: erneut starten",
+            "unpublished": "Veröffentlichen Sie den Agent, um seine Planung zu starten"
+        },
+        "ScheduleMenu": {
+            "running": "Planung anhalten",
+            "stopped": "Planung starten",
+            "error": "Planung starten",
+            "unpublished": "Planung starten (zuerst veröffentlichen)"
+        },
+        "ScheduleStarted": "Die Planung von {{name}} läuft",
+        "ScheduleStopped": "Die Planung von {{name}} ist angehalten",
+        "ScheduleStartFailed": "Die Planung von {{name}} konnte nicht gestartet werden",
+        "ScheduleStopFailed": "Die Planung von {{name}} konnte nicht angehalten werden",
+        "ScheduleNotPublished": "Veröffentlichen Sie zuerst {{name}}: der geplante Start wurde nie veröffentlicht"
+    },
     "Executions": {
         "NotConfigured": "Ausführungen sind für diese Umgebung nicht konfiguriert.",
         "Executions": "Ausführungen",
@@ -3845,7 +3874,8 @@
             "Blocks": "Blöcke",
             "FailureConditions": "Fehlerbed.",
             "VarsChanged": "Geänderte Attribute",
-            "Duration": "Dauer"
+            "Duration": "Dauer",
+            "Actions": "Aktionen"
         },
         "UpdatedSeconds": "Vor {{n}} s aktualisiert",
         "UpdatedMinutes": "Vor {{n}} Min. aktualisiert",
@@ -3865,6 +3895,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "Aktivitäten öffnen"
+        },
+        "Bulk": {
+            "Selected": "{{n}} ausgewählt",
+            "SelectAll": "Alle Ausführungen auf der Seite auswählen",
+            "SelectRow": "Ausführung {{id}} auswählen",
+            "Pause": "Pausieren ({{n}})",
+            "Resume": "Fortsetzen ({{n}})",
+            "Destroy": "Zerstören ({{n}})",
+            "Clear": "Auswahl aufheben",
+            "Dismiss": "Schließen",
+            "DestroyTitleOne": "1 Ausführung zerstören",
+            "DestroyTitle": "{{n}} Ausführungen zerstören",
+            "DestroyText": "Dadurch werden sie beendet, ihre Unterhaltungen geschlossen und ihr Live-Status entfernt. Sie können nicht fortgesetzt werden. Traces und Audit bleiben erhalten.",
+            "DestroyType": "Geben Sie {{n}} zur Bestätigung ein",
+            "Result": {
+                "pause": "Pausiert: {{done}}",
+                "resume": "Fortgesetzt: {{done}}",
+                "destroy": "Zerstört: {{done}}"
+            },
+            "Failed": "nicht ausgeführt: {{failed}} (ihr Status lässt es nicht mehr zu, oder der Dienst hat abgelehnt)",
+            "NeedConfirm": "einzeln zu bestätigen: {{confirm}} (sie rufen ein externes System auf: öffnen Sie sie, um fortzusetzen)"
+        },
+        "RowActions": {
+            "Pause": "Pausieren",
+            "Resume": "Fortsetzen",
+            "Destroy": "Zerstören"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "Nur der Projektinhaber oder ein Administrator kann Ausführungen zerstören"
+        },
+        "Retention": {
+            "ReadOnly": "Nur der Projektinhaber oder ein Administrator, oder eine Rolle mit Leserecht für das Ausführungs-Audit, kann diese Einstellungen ändern."
         }
-}
+        }
 }

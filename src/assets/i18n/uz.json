@@ -4123,6 +4123,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "To‘lov usuli",
     "ContactUsToChangeYourPaymentMethod": "To‘lov usulini o‘zgartirish uchun biz bilan bog‘laning",
+    "AgentRun": {
+        "Run": "Ishga tushirish",
+        "RunTooltip": "Agentni hozir ishga tushirish",
+        "RunTitle": "{{name}} ni ishga tushirish",
+        "RunText": "Agentning nashr qilingan versiyasini webhook chaqiruvi kabi bir marta ishga tushiradi. Yuboriladigan ma’lumotni kiriting.",
+        "Payload": "Ma’lumot (JSON)",
+        "InvalidJson": "Ma’lumot yaroqli JSON emas",
+        "NotObject": "Ma’lumot JSON obyekti bo‘lishi kerak",
+        "Cancel": "Bekor qilish",
+        "RunStarted": "{{name}} ishga tushirildi",
+        "RunFailed": "{{name}} ishga tushirilmadi",
+        "Schedule": {
+            "running": "Jadval ishlayapti: to‘xtating",
+            "stopped": "Jadval to‘xtagan: boshlang",
+            "error": "Jadval yangilanmadi: qayta boshlang",
+            "unpublished": "Jadvalini boshlash uchun agentni nashr qiling"
+        },
+        "ScheduleMenu": {
+            "running": "Jadvalni to‘xtatish",
+            "stopped": "Jadvalni boshlash",
+            "error": "Jadvalni boshlash",
+            "unpublished": "Jadvalni boshlash (avval nashr qiling)"
+        },
+        "ScheduleStarted": "{{name}} jadvali ishlayapti",
+        "ScheduleStopped": "{{name}} jadvali to‘xtatildi",
+        "ScheduleStartFailed": "{{name}} jadvali boshlanmadi",
+        "ScheduleStopFailed": "{{name}} jadvali to‘xtatilmadi",
+        "ScheduleNotPublished": "Avval {{name}} ni nashr qiling: uning rejalashtirilgan boshlanishi hech qachon nashr qilinmagan"
+    },
     "Executions": {
         "NotConfigured": "Bajarilishlar bu muhit uchun sozlanmagan.",
         "Executions": "Bajarilishlar",
@@ -4188,7 +4217,8 @@
             "Blocks": "Bloklar",
             "FailureConditions": "Xato sharti",
             "VarsChanged": "O‘zgargan atributlar",
-            "Duration": "Davomiyligi"
+            "Duration": "Davomiyligi",
+            "Actions": "Amallar"
         },
         "UpdatedSeconds": "{{n}} s oldin yangilandi",
         "UpdatedMinutes": "{{n}} daq oldin yangilandi",
@@ -4208,6 +4238,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "Faoliyatlarni ochish"
+        },
+        "Bulk": {
+            "Selected": "{{n}} tanlandi",
+            "SelectAll": "Sahifadagi barcha bajarilishlarni tanlash",
+            "SelectRow": "{{id}} bajarilishini tanlash",
+            "Pause": "Pauza ({{n}})",
+            "Resume": "Davom ettirish ({{n}})",
+            "Destroy": "Yo‘q qilish ({{n}})",
+            "Clear": "Tanlovni tozalash",
+            "Dismiss": "Yopish",
+            "DestroyTitleOne": "1 ta bajarilishni yo‘q qilish",
+            "DestroyTitle": "{{n}} ta bajarilishni yo‘q qilish",
+            "DestroyText": "Bu ularni tugatadi, suhbatlarini yopadi va jonli holatini olib tashlaydi. Ularni davom ettirib bo‘lmaydi. Izlar va audit saqlanadi.",
+            "DestroyType": "Tasdiqlash uchun {{n}} kiriting",
+            "Result": {
+                "pause": "Pauza qilindi: {{done}}",
+                "resume": "Davom ettirildi: {{done}}",
+                "destroy": "Yo‘q qilindi: {{done}}"
+            },
+            "Failed": "bajarilmadi: {{failed}} (holati bunga endi ruxsat bermaydi yoki xizmat rad etdi)",
+            "NeedConfirm": "bittadan tasdiqlash: {{confirm}} (tashqi tizimni chaqiradi: davom ettirish uchun oching)"
+        },
+        "RowActions": {
+            "Pause": "Pauza",
+            "Resume": "Davom ettirish",
+            "Destroy": "Yo‘q qilish"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "Bajarilishlarni faqat loyiha egasi yoki administrator yo‘q qila oladi"
+        },
+        "Retention": {
+            "ReadOnly": "Bu sozlamalarni faqat loyiha egasi yoki administrator, yoxud bajarilishlar auditini o‘qish huquqi bor rol o‘zgartira oladi."
         }
-}
+        }
 }

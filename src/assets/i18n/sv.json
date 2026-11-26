@@ -4124,6 +4124,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Betalningsmetod",
     "ContactUsToChangeYourPaymentMethod": "Kontakta oss för att ändra din betalningsmetod",
+    "AgentRun": {
+        "Run": "Kör",
+        "RunTooltip": "Kör agenten nu",
+        "RunTitle": "Kör {{name}}",
+        "RunText": "Kör den publicerade versionen av agenten en gång, som ett anrop till dess webhook. Ange data som ska skickas.",
+        "Payload": "Uppgifter (JSON)",
+        "InvalidJson": "Data är inte giltig JSON",
+        "NotObject": "Data måste vara ett JSON-objekt",
+        "Cancel": "Avbryt",
+        "RunStarted": "{{name}} kördes",
+        "RunFailed": "{{name}} kunde inte köras",
+        "Schedule": {
+            "running": "Schemat körs: stoppa det",
+            "stopped": "Schemat är stoppat: starta det",
+            "error": "Schemat kunde inte uppdateras: starta det igen",
+            "unpublished": "Publicera agenten för att starta dess schema"
+        },
+        "ScheduleMenu": {
+            "running": "Stoppa schema",
+            "stopped": "Starta schema",
+            "error": "Starta schema",
+            "unpublished": "Starta schema (publicera först)"
+        },
+        "ScheduleStarted": "Schemat för {{name}} körs",
+        "ScheduleStopped": "Schemat för {{name}} är stoppat",
+        "ScheduleStartFailed": "Schemat för {{name}} kunde inte startas",
+        "ScheduleStopFailed": "Schemat för {{name}} kunde inte stoppas",
+        "ScheduleNotPublished": "Publicera {{name}} först: dess schemalagda start har aldrig publicerats"
+    },
     "Executions": {
         "NotConfigured": "Körningar är inte konfigurerade för den här miljön.",
         "Executions": "Körningar",
@@ -4189,7 +4218,8 @@
             "Blocks": "Block",
             "FailureConditions": "Felförh.",
             "VarsChanged": "Ändrade attribut",
-            "Duration": "Varaktighet"
+            "Duration": "Varaktighet",
+            "Actions": "Åtgärder"
         },
         "UpdatedSeconds": "Uppdaterad för {{n}} s sedan",
         "UpdatedMinutes": "Uppdaterad för {{n}} min sedan",
@@ -4209,6 +4239,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "Öppna aktiviteter"
+        },
+        "Bulk": {
+            "Selected": "{{n}} valda",
+            "SelectAll": "Välj alla körningar på sidan",
+            "SelectRow": "Välj körning {{id}}",
+            "Pause": "Pausa ({{n}})",
+            "Resume": "Återuppta ({{n}})",
+            "Destroy": "Förstör ({{n}})",
+            "Clear": "Rensa val",
+            "Dismiss": "Stäng",
+            "DestroyTitleOne": "Förstör 1 körning",
+            "DestroyTitle": "Förstör {{n}} körningar",
+            "DestroyText": "Det avslutar dem, stänger deras konversationer och tar bort deras livestatus. De kan inte återupptas. Spår och granskning behålls.",
+            "DestroyType": "Skriv {{n}} för att bekräfta",
+            "Result": {
+                "pause": "Pausade: {{done}}",
+                "resume": "Återupptagna: {{done}}",
+                "destroy": "Förstörda: {{done}}"
+            },
+            "Failed": "inte utförda: {{failed}} (deras status tillåter det inte längre, eller tjänsten avvisade)",
+            "NeedConfirm": "att bekräfta en i taget: {{confirm}} (de anropar ett externt system: öppna dem för att återuppta)"
+        },
+        "RowActions": {
+            "Pause": "Pausa",
+            "Resume": "Återuppta",
+            "Destroy": "Förstör"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "Bara projektägaren eller en administratör kan förstöra körningar"
+        },
+        "Retention": {
+            "ReadOnly": "Bara projektägaren eller en administratör, eller en roll som får läsa körningsgranskningen, kan ändra de här inställningarna."
         }
-}
+        }
 }

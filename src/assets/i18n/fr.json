@@ -3990,6 +3990,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Moyen de paiement",
     "ContactUsToChangeYourPaymentMethod": "Contactez-nous pour modifier votre moyen de paiement",
+    "AgentRun": {
+        "Run": "Exécuter",
+        "RunTooltip": "Exécuter l'agent maintenant",
+        "RunTitle": "Exécuter {{name}}",
+        "RunText": "Exécute une fois la version publiée de l'agent, comme le ferait un appel à son webhook. Saisissez les données à envoyer.",
+        "Payload": "Données (JSON)",
+        "InvalidJson": "Les données ne sont pas un JSON valide",
+        "NotObject": "Les données doivent être un objet JSON",
+        "Cancel": "Annuler",
+        "RunStarted": "{{name}} a été exécuté",
+        "RunFailed": "Impossible d'exécuter {{name}}",
+        "Schedule": {
+            "running": "La planification est active : l'arrêter",
+            "stopped": "La planification est arrêtée : la démarrer",
+            "error": "La planification n'a pas pu être mise à jour : redémarrez-la",
+            "unpublished": "Publiez l'agent pour démarrer sa planification"
+        },
+        "ScheduleMenu": {
+            "running": "Arrêter la planification",
+            "stopped": "Démarrer la planification",
+            "error": "Démarrer la planification",
+            "unpublished": "Démarrer la planification (publier d'abord)"
+        },
+        "ScheduleStarted": "La planification de {{name}} est active",
+        "ScheduleStopped": "La planification de {{name}} est arrêtée",
+        "ScheduleStartFailed": "Impossible de démarrer la planification de {{name}}",
+        "ScheduleStopFailed": "Impossible d'arrêter la planification de {{name}}",
+        "ScheduleNotPublished": "Publiez d'abord {{name}} : son démarrage planifié n'a jamais été publié"
+    },
     "Executions": {
         "NotConfigured": "Les exécutions ne sont pas configurées pour cet environnement.",
         "Executions": "Exécutions",
@@ -4055,7 +4084,8 @@
             "Blocks": "Blocs",
             "FailureConditions": "Cond. erreur",
             "VarsChanged": "Attributs modifiés",
-            "Duration": "Durée"
+            "Duration": "Durée",
+            "Actions": "Actions"
         },
         "UpdatedSeconds": "Mis à jour il y a {{n}} s",
         "UpdatedMinutes": "Mis à jour il y a {{n}} min",
@@ -4075,6 +4105,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "Ouvrir Activités"
+        },
+        "Bulk": {
+            "Selected": "{{n}} sélectionnées",
+            "SelectAll": "Sélectionner toutes les exécutions de la page",
+            "SelectRow": "Sélectionner l'exécution {{id}}",
+            "Pause": "Mettre en pause ({{n}})",
+            "Resume": "Reprendre ({{n}})",
+            "Destroy": "Détruire ({{n}})",
+            "Clear": "Effacer la sélection",
+            "Dismiss": "Fermer",
+            "DestroyTitleOne": "Détruire 1 exécution",
+            "DestroyTitle": "Détruire {{n}} exécutions",
+            "DestroyText": "Cela les termine, ferme leurs conversations et supprime leur état en direct. Elles ne peuvent pas être reprises. Les traces et l'audit sont conservés.",
+            "DestroyType": "Saisissez {{n}} pour confirmer",
+            "Result": {
+                "pause": "En pause : {{done}}",
+                "resume": "Reprises : {{done}}",
+                "destroy": "Détruites : {{done}}"
+            },
+            "Failed": "non effectuées : {{failed}} (leur état ne le permet plus, ou le service a refusé)",
+            "NeedConfirm": "à confirmer une par une : {{confirm}} (elles appellent un système externe : ouvrez-les pour reprendre)"
+        },
+        "RowActions": {
+            "Pause": "Mettre en pause",
+            "Resume": "Reprendre",
+            "Destroy": "Détruire"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "Seul le propriétaire du projet ou un administrateur peut détruire des exécutions"
+        },
+        "Retention": {
+            "ReadOnly": "Seul le propriétaire du projet ou un administrateur, ou un rôle autorisé à lire l'audit des exécutions, peut modifier ces paramètres."
         }
-}
+        }
 }

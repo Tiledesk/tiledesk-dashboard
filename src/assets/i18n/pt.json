@@ -3988,6 +3988,35 @@
     "AIAgentNameOptionalHint": "Optional with a description: the AI names the agent after it.",
     "PaymentMethod": "Método de pagamento",
     "ContactUsToChangeYourPaymentMethod": "Contacte-nos para alterar o seu método de pagamento",
+    "AgentRun": {
+        "Run": "Executar",
+        "RunTooltip": "Executar o agente agora",
+        "RunTitle": "Executar {{name}}",
+        "RunText": "Executa uma vez a versão publicada do agente, como faria uma chamada ao seu webhook. Introduza os dados a enviar.",
+        "Payload": "Dados (JSON)",
+        "InvalidJson": "Os dados não são um JSON válido",
+        "NotObject": "Os dados têm de ser um objeto JSON",
+        "Cancel": "Cancelar",
+        "RunStarted": "{{name}} foi executado",
+        "RunFailed": "Não foi possível executar {{name}}",
+        "Schedule": {
+            "running": "O agendamento está ativo: pará-lo",
+            "stopped": "O agendamento está parado: iniciá-lo",
+            "error": "Não foi possível atualizar o agendamento: inicie-o novamente",
+            "unpublished": "Publique o agente para iniciar o seu agendamento"
+        },
+        "ScheduleMenu": {
+            "running": "Parar agendamento",
+            "stopped": "Iniciar agendamento",
+            "error": "Iniciar agendamento",
+            "unpublished": "Iniciar agendamento (publique primeiro)"
+        },
+        "ScheduleStarted": "O agendamento de {{name}} está ativo",
+        "ScheduleStopped": "O agendamento de {{name}} está parado",
+        "ScheduleStartFailed": "Não foi possível iniciar o agendamento de {{name}}",
+        "ScheduleStopFailed": "Não foi possível parar o agendamento de {{name}}",
+        "ScheduleNotPublished": "Publique primeiro {{name}}: o seu início agendado nunca foi publicado"
+    },
     "Executions": {
         "NotConfigured": "As execuções não estão configuradas para este ambiente.",
         "Executions": "Execuções",
@@ -4053,7 +4082,8 @@
             "Blocks": "Blocos",
             "FailureConditions": "Cond. erro",
             "VarsChanged": "Atributos alterados",
-            "Duration": "Duração"
+            "Duration": "Duração",
+            "Actions": "Ações"
         },
         "UpdatedSeconds": "Atualizado há {{n}} s",
         "UpdatedMinutes": "Atualizado há {{n}} min",
@@ -4073,6 +4103,38 @@
         },
         "Audit": {
             "OpenActivitiesPage": "Abrir Atividades"
+        },
+        "Bulk": {
+            "Selected": "{{n}} selecionadas",
+            "SelectAll": "Selecionar todas as execuções da página",
+            "SelectRow": "Selecionar a execução {{id}}",
+            "Pause": "Pausar ({{n}})",
+            "Resume": "Retomar ({{n}})",
+            "Destroy": "Destruir ({{n}})",
+            "Clear": "Limpar seleção",
+            "Dismiss": "Fechar",
+            "DestroyTitleOne": "Destruir 1 execução",
+            "DestroyTitle": "Destruir {{n}} execuções",
+            "DestroyText": "Isto termina-as, fecha as suas conversas e remove o seu estado em direto. Não podem ser retomadas. Os registos e a auditoria são mantidos.",
+            "DestroyType": "Escreva {{n}} para confirmar",
+            "Result": {
+                "pause": "Pausadas: {{done}}",
+                "resume": "Retomadas: {{done}}",
+                "destroy": "Destruídas: {{done}}"
+            },
+            "Failed": "não efetuadas: {{failed}} (o estado já não o permite, ou o serviço recusou)",
+            "NeedConfirm": "para confirmar uma a uma: {{confirm}} (chamam um sistema externo: abra-as para retomar)"
+        },
+        "RowActions": {
+            "Pause": "Pausar",
+            "Resume": "Retomar",
+            "Destroy": "Destruir"
+        },
+        "Controls": {
+            "NoPermissionDestroy": "Só o proprietário do projeto ou um administrador pode destruir execuções"
+        },
+        "Retention": {
+            "ReadOnly": "Só o proprietário do projeto ou um administrador, ou um papel autorizado a ler a auditoria das execuções, pode alterar estas definições."
         }
-}
+        }
 }
