@@ -1,9 +1,10 @@
 # tiledesk-dashboard
 
 ### 2.10.4
-- Agents list: Webhook agents have a **Run** button that runs the published agent once with a JSON payload; Scheduled agents have **Start** / **Stop** for the published schedule (owner and admin)
-- Executions list: a checkbox column with bulk pause, resume and destroy (destroy asks to type the count), and an Actions column with pause/resume and destroy per row; resuming an execution stopped on a calling action asks for confirmation
-- Admins have the same executions grants as the owner (actions, audit, retention settings)
+- Adds a Run button to the Agents list for Webhook agents, allowing users to run the published agent once with a JSON payload, and Start / Stop buttons for Scheduled agents to control the published schedule (Owner and Admin only).
+- Adds a checkbox column to the Executions list with bulk pause, resume, and destroy actions. Bulk destroy requires typing the count.
+- Adds an Actions column to the Executions list with per-row pause, resume, and destroy actions. Resuming an execution stopped on a calling action requires confirmation.
+- Grants Admins the same execution permissions as Owners, including execution actions, audit, and retention settings.
 
 ### 2.10.3
 - Adds the AI rating and its sentiment to the conversations history list and details, and redesigns the rating display as segmented bars.
