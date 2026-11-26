@@ -12,7 +12,7 @@ import { AppConfigService } from './app-config.service';
 import { AllProjectsCacheService } from './cache/all-projects-cache.service';
 import { UsersService } from './users.service';
 import { MeteringService } from './metering.service';
-import { getProjectMetering } from 'app/utils/metering.util';
+import { getProjectMetering, syncStoredProjectMetering } from 'app/utils/metering.util';
 
 @Injectable()
 
@@ -200,7 +200,10 @@ export class ProjectPlanService {
 
         this.logger.log('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - projectPlanData ', projectPlanData) 
 
+        console.log('[METERING-DEBUG] findCurrentProjectAmongAll', projectPlanData._id, 'server metering:', current_prjct.id_project.metering, 'computed:', projectPlanData.metering);
         this.meteringService.setProject(projectPlanData._id, projectPlanData.metering);
+        // the project stored in localStorage may predate the metering (or come from POST /projects/): align it
+        syncStoredProjectMetering(projectPlanData._id, current_prjct.id_project.metering);
         this.projectPlan$.next(projectPlanData);
       } else {
         this.logger.error('[PROJECT-PLAN-SERV] - FIND CURRENT PROJECT AMONG ALL - ERROR - PROJECT NOT FOUND') 

@@ -1155,8 +1155,8 @@ Se il gestore resetta anche uno stato della UI (spinner, bottone disabilitato), 
 
 ## Task 9: `localStorage` e `project_bs`
 
-- [ ] **Step 1:** `activate-appsumo-product.component.ts:375-382`: aggiungere `metering: project.metering` al subset salvato
-- [ ] **Step 2:** in `ProjectPlanService.findCurrentProjectAmongAll`, se `localStorage[<projectId>]` esiste e il suo `metering` differisce da quello fresco, aggiornare solo quella chiave (stesso flusso di salvataggio, nessuna nuova chiave). Copre anche i progetti salvati dopo `POST /projects/`, che non ha `metering`:
+- [x] **Step 1:** `activate-appsumo-product.component.ts:375-382`: aggiungere `metering` al subset salvato (la sorgente è `project.id_project.metering`: l'elemento della lista è il project-user, non il progetto)
+- [x] **Step 2:** (implementato come `syncStoredProjectMetering` in `metering.util.ts`, testato in `metering.util.spec.ts`, chiamato da `findCurrentProjectAmongAll`) in `ProjectPlanService.findCurrentProjectAmongAll`, se `localStorage[<projectId>]` esiste e il suo `metering` differisce da quello fresco, aggiornare solo quella chiave (stesso flusso di salvataggio, nessuna nuova chiave). Copre anche i progetti salvati dopo `POST /projects/`, che non ha `metering`:
 
 ```ts
 const storedJson = localStorage.getItem(projectPlanData._id);
@@ -1169,7 +1169,7 @@ if (storedJson) {
 }
 ```
 
-- [ ] **Step 3:** regola per i componenti: leggere `metering` da `MeteringService` o da `PricingBaseComponent.isCreditsMetering`, **mai** da `project_bs` o da `localStorage`
+- [x] **Step 3:** regola per i componenti: leggere `metering` da `MeteringService` o da `PricingBaseComponent.isCreditsMetering`, **mai** da `project_bs` o da `localStorage` (verificato: nessun componente lo legge da lì; la regola è anche nel doc-comment di `syncStoredProjectMetering`)
 - [ ] **Step 4:** commit `fix(credits): keep the stored project metering in sync`
 
 ---
@@ -1202,6 +1202,23 @@ Verifiche su un progetto **non a crediti**, in base alle modifiche dei Task 1–
 - [ ] **KB (Task 7):** Home con `/N` sui contenuti KB e sul conteggio namespace; pagina KB con "Total contents: N/N"; oltre il limite dei contenuti compaiono l'avviso e il CTA di upgrade e il paywall si apre; namespace e import oltre il limite mostrano il messaggio di limite
 - [ ] **Trial e redirect:** il popup "trial terminato" si apre nei casi in cui si apriva; redirect a pricing e `-demo` (`app.component`, `project-profile.guard`) invariati; il gate abbonamento in `onAddFlowClick` è attivo
 - [ ] **Errori del server:** su quote non compaiono 13010–13013; gli errori di quota mantengono il messaggio di prima
+- [ ] **`localStorage` del progetto (Task 9):** procedura sotto (T9-1 … T9-5)
+
+  Nella console del browser (DevTools → Console), con `<QUOTE_ID>` l'id di un progetto a quote e `<CREDITS_ID>` quello di un progetto a crediti (`6b044d918e0cc80013fbb76c` su stage):
+
+  ```js
+  const show = (id) => console.log(JSON.parse(localStorage.getItem(id)));
+  ```
+
+  | # | Passi | Esito atteso |
+  |---|-------|--------------|
+  | T9-1 | Apri `/project/<QUOTE_ID>/home`, aspetta che la pagina carichi, poi `show('<QUOTE_ID>')` | `_id`, `name`, `role`, `operatingHours` (e gli altri campi di prima) presenti; `metering` assente oppure `"quotes"`, **mai** `"credits"` |
+  | T9-2 | Stesso progetto: `const p = JSON.parse(localStorage.getItem('<QUOTE_ID>')); delete p.metering; localStorage.setItem('<QUOTE_ID>', JSON.stringify(p));` poi ricarica la pagina e digita di nuovo nella console `show('<QUOTE_ID>')` (stesso comando di T9-1) | gli altri campi sono invariati; `metering` è tornato `"quotes"` (se il server lo manda) o resta assente. Mai `"credits"` |
+  | T9-3 | Su quel progetto vai in Home, chatbot, teammate, KB | limiti `x / N`, banner, paywall e redirect come prima (checklist sopra). Nessun errore rosso in console |
+  | T9-4 | Apri `/project/<CREDITS_ID>/home`, `show('<CREDITS_ID>')`, poi `show('<QUOTE_ID>')` | il progetto a crediti ha `metering: "credits"`; quello a quote è rimasto com'era in T9-1 (non si mescolano) |
+  | T9-5 | Dalla lista progetti passa da quote a crediti e di nuovo a quote, senza logout | niente alert di rifiuto, niente redirect a pricing sul progetto a crediti; il progetto a quote si comporta come in T9-3 |
+
+  Se vuoi simulare un progetto salvato prima dell'esistenza della chiave su uno a crediti: ripeti T9-2 su `<CREDITS_ID>` e dopo il reload `metering` deve tornare `"credits"`.
 
 ---
 

@@ -1,4 +1,4 @@
-import { areCreditsExhausted, CREDITS_ERROR_CODES, CREDITS_REFUSAL_TEXTS, getCreditsErrorCode, getProjectMetering, isCreditsMetering, isCreditsRefusal } from './metering.util';
+import { areCreditsExhausted, CREDITS_ERROR_CODES, CREDITS_REFUSAL_TEXTS, getCreditsErrorCode, getProjectMetering, isCreditsMetering, isCreditsRefusal, syncStoredProjectMetering } from './metering.util';
 
 describe('metering.util', () => {
   describe('areCreditsExhausted', () => {
@@ -45,6 +45,68 @@ describe('metering.util', () => {
       expect(isCreditsMetering({ metering: 'credits' })).toBe(true);
       expect(isCreditsMetering({ metering: 'quotes' })).toBe(false);
       expect(isCreditsMetering({})).toBe(false);
+    });
+  });
+
+  describe('syncStoredProjectMetering', () => {
+    function fakeStorage(initial: { [key: string]: string } = {}) {
+      const data = { ...initial };
+      return {
+        data,
+        getItem: (key: string) => (key in data ? data[key] : null),
+        setItem: jasmine.createSpy('setItem').and.callFake((key: string, value: string) => { data[key] = value; }),
+      };
+    }
+
+    it('does nothing when the project is not stored', () => {
+      const storage = fakeStorage();
+      expect(syncStoredProjectMetering('p1', 'credits', storage)).toBe(false);
+      expect(storage.setItem).not.toHaveBeenCalled();
+    });
+
+    it('adds the metering to a project stored before the key existed, keeping the other fields', () => {
+      const storage = fakeStorage({ p1: JSON.stringify({ _id: 'p1', name: 'Test', role: 'owner' }) });
+      expect(syncStoredProjectMetering('p1', 'credits', storage)).toBe(true);
+      expect(JSON.parse(storage.data['p1'])).toEqual({ _id: 'p1', name: 'Test', role: 'owner', metering: 'credits' });
+    });
+
+    it('updates a stale metering', () => {
+      const storage = fakeStorage({ p1: JSON.stringify({ _id: 'p1', metering: 'quotes' }) });
+      expect(syncStoredProjectMetering('p1', 'credits', storage)).toBe(true);
+      expect(JSON.parse(storage.data['p1']).metering).toBe('credits');
+    });
+
+    it('does not write when the metering is the same', () => {
+      const storage = fakeStorage({ p1: JSON.stringify({ _id: 'p1', metering: 'credits' }) });
+      expect(syncStoredProjectMetering('p1', 'credits', storage)).toBe(false);
+      expect(storage.setItem).not.toHaveBeenCalled();
+    });
+
+    it('does not write when neither the stored nor the fresh project has the key (quotes projects)', () => {
+      const storage = fakeStorage({ p1: JSON.stringify({ _id: 'p1' }) });
+      expect(syncStoredProjectMetering('p1', undefined, storage)).toBe(false);
+      expect(storage.setItem).not.toHaveBeenCalled();
+    });
+
+    it('drops the key when the fresh project has no metering any more', () => {
+      const storage = fakeStorage({ p1: JSON.stringify({ _id: 'p1', metering: 'credits' }) });
+      expect(syncStoredProjectMetering('p1', undefined, storage)).toBe(true);
+      expect(JSON.parse(storage.data['p1'])).toEqual({ _id: 'p1' });
+    });
+
+    it('touches only the key of that project', () => {
+      const storage = fakeStorage({
+        p1: JSON.stringify({ _id: 'p1' }),
+        p2: JSON.stringify({ _id: 'p2', metering: 'quotes' }),
+      });
+      syncStoredProjectMetering('p1', 'credits', storage);
+      expect(JSON.parse(storage.data['p2']).metering).toBe('quotes');
+    });
+
+    it('ignores a stored value that is not valid JSON', () => {
+      const storage = fakeStorage({ p1: 'not json' });
+      expect(syncStoredProjectMetering('p1', 'credits', storage)).toBe(false);
+      expect(storage.setItem).not.toHaveBeenCalled();
     });
   });
 

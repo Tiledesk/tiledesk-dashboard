@@ -376,7 +376,8 @@ export class ActivateAppsumoProductComponent extends WidgetSetUpBaseComponent im
               _id: project.id_project._id,
               name: project.id_project.name,
               role: project.role,
-              operatingHours: project.id_project.activeOperatingHours
+              operatingHours: project.id_project.activeOperatingHours,
+              metering: project.id_project.metering
             }
 
             localStorage.setItem(project.id_project._id, JSON.stringify(prjct));

@@ -38,6 +38,7 @@ export class MeteringService {
 
   /** Called by ProjectPlanService with the fresh project object */
   setProject(projectId: string, metering: ProjectMetering) {
+    console.log('[METERING-DEBUG] MeteringService.setProject', projectId, metering);
     this.current.next({ projectId, metering });
   }
 
