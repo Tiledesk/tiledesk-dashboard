@@ -1143,6 +1143,8 @@ Se il gestore resetta anche uno stato della UI (spinner, bottone disabilitato), 
 
 ## Task 8: Quote di consumo (navbar + Home)
 
+> **Nota 2026-11-25:** il pannello crediti della navbar e la pagina `/project/:id/credits` ("Credits and costs") sono opera di Giovanni e se ne occupa lui. Non vanno toccati da questo branch. Restano da chiarire con lui: i due pulsanti "Upgrade Plan" sui progetti a crediti (navbar e pannello), il trial senza data di fine (il pannello mostra solo "Trial"), la data "Included credits renewal" che viene da `period.end` (fine periodo, non fine trial) e la stima di fine periodo che non tiene conto della scadenza del trial.
+
 - [ ] **Step 1:** navbar: il pannello crediti è visibile se `meteringService.isCredits$`; se il summary non è ancora caricato mostrare il pannello crediti vuoto, **non** le quote
 - [ ] **Step 2:** navbar: su credits non calcolare `conversationsRunnedOut`, `emailsRunnedOut`, `tokensRunnedOut`, `voiceRunnedOut` (la `POST /quotes` serve ancora per `resp.credits`)
 - [ ] **Step 3:** navbar: nel pannello crediti mostrare i dati del trial quando c'è `credits.trial` (scadenza `until`, `spentToday` / `dailyLimit`) e lo stato `trial_ended`. Il chip rosso (`credits-chip--low` e la riga "Available" in `credits-usage-value--low`) usa `areCreditsExhausted(credits)` invece di `credits.balance?.available <= 0`; l'avviso `payment_failed` resta com'è
@@ -1189,6 +1191,17 @@ if (storedJson) {
 | 403 13011 (preview con modello non gestito) | alert + testo nella preview | n/a |
 | Progetto appena creato | passa a credits senza logout | n/a |
 | Route con `ProjectProfileGuard` e redirect trial | secondo la tabella "Feature gating per piano" | invariate |
+
+### Regressione su progetto a quote (checklist, 2026-11-25)
+
+Verifiche su un progetto **non a crediti**, in base alle modifiche dei Task 1–7: il comportamento deve restare quello di prima. Esito da annotare nel log.
+
+- [ ] **Preview LLM e KB (Task 1, 7):** le impostazioni della preview mostrano i modelli come prima, con l'etichetta "Nx tokens" sui GPT; una domanda in preview KB mostra `prompt size` moltiplicato per il moltiplicatore (valore come prima); con token esauriti l'errore 13001 appare come prima
+- [ ] **Chatbot (Task 5):** oltre il limite del piano la creazione è bloccata con la modale di limite; il banner chatbot in `bots-list` e `templates` compare; da `get-start-chatbot-fork` il limite è lo stesso; il conteggio nella Home è invariato
+- [ ] **Teammate (Task 6):** oltre `PLAN_SEATS` il banner e l'invito bloccato compaiono; il pulsante di invito della Home mostra il limite seat (`showTeammatesLimit`) e apre il paywall quando serve; in `project-edit-add` la riga "Seats redeemed" è visibile
+- [ ] **KB (Task 7):** Home con `/N` sui contenuti KB e sul conteggio namespace; pagina KB con "Total contents: N/N"; oltre il limite dei contenuti compaiono l'avviso e il CTA di upgrade e il paywall si apre; namespace e import oltre il limite mostrano il messaggio di limite
+- [ ] **Trial e redirect:** il popup "trial terminato" si apre nei casi in cui si apriva; redirect a pricing e `-demo` (`app.component`, `project-profile.guard`) invariati; il gate abbonamento in `onAddFlowClick` è attivo
+- [ ] **Errori del server:** su quote non compaiono 13010–13013; gli errori di quota mantengono il messaggio di prima
 
 ---
 
@@ -1247,3 +1260,5 @@ Punti di attenzione:
 | 2026-11-25 | `X-credits` | Task 7 steps 1-5 (KB, non committato) | Credits: niente `/N` su Home e pagina KB, niente CTA/modale di upgrade KB, niente chiamate `getProjectQuotes` per i limiti KB; `isCreditsRefusal` con `return` anticipato nei gestori di errore di namespace, import, sitemap, aggiunta singola e multipla; preview KB mostra il testo crediti (streaming e non). Correzione al piano: lo streaming usa `fetch`, l'interceptor non lo vede e l'errore ha forma diversa: `askGptStream` ora emette i rifiuti crediti come `HttpErrorResponse` e l'anteprima presenta l'alert. `CREDITS_REFUSAL_TEXTS` in `metering.util`. Step 5 senza modifiche (nessuna chiamata LLM in `modal-preview-settings`). Build Angular 15 OK, 1028 test eseguiti con 279 falliti preesistenti (provider mancanti). Manca la verifica manuale (Step 6) |
 | 2026-11-25 | `X-credits` | Popup trial terminato (regola) | Sui progetti credits il popup "trial terminato" (`displayTrialHasExpiredModal`) non si apre più: `return` anticipato con `isCreditsMetering` in `openModalSeatsTrialExpired` (`home-quick-cards`, copre anche i gestori over-limit), `openModalTrialExpired` in `home-create-teammate` e `home-create-chatbot`. `home-kb`: `openModalTrialExpired` è commentato, il tooltip non fa nulla, nessuna modifica. Commit `328dd3673`. Build Angular 15 OK il 2026-11-25 (incluso) |
 | 2026-11-25 | `X-credits` | Test manuale su progetto a crediti in trial (utente) | (1) Invito di 2 teammate con email nuove (3 membri: Owner e 2 Administrator) e aggiunta di contenuti KB: i crediti non cambiano. Spiegazione dal codice server: in trial `syncMonthlyFees` non addebita seat e contenuti; l'addebito parte all'attivazione (`markPaymentSucceeded`) o dal task periodico per i pending invite dopo la registrazione. Domande 21–23 per Giovanni. (2) Creazione di dipartimenti: nessun addebito, `routes/department.js` non ha controlli crediti. (3) Preview KB con `gpt-4o`, chiave Tiledesk: risposta visualizzata, `prompt size` 1.988 token, saldo 4.990,89 → 4.990,68 (0,21 crediti). Coerente con l'addebito sui token reali (circa 500–660 di input), perché il server mostra `prompt_token_size` moltiplicato per il moltiplicatore quote (`legacy_prompt_token_size` è il valore reale). Domanda 24 per Giovanni. Percorso di rifiuto (13010–13013) in preview ancora da provare |
+| 2026-11-25 | `X-credits` | Task 7 step 6, pagina KB (utente) | Progetto a crediti: "Total contents: 3" senza `/N`, come atteso. Progetto a quote: `/N` presente, invariato. Restano da provare il percorso di rifiuto in preview (13010–13013) e il comportamento con contenuti oltre il limite |
+| 2026-11-25 | `X-credits` | Regressione progetto a quote (utente) | Progetto non a crediti: test di creazione chatbot, KB/namespace e teammate. Esito da confermare: il comportamento deve restare quello di prima |
