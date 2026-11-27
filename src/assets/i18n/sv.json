@@ -3854,8 +3854,7 @@
         "EngagedConversations": "Engagerade konversationer",
         "EngagedConversationsTooltip": "Antal konversationer där detta Flow var engagerat under den valda perioden. En konversation kan räknas mer än en gång om Flowet var engagerat på olika dagar.",
         "MostEngagedFlow": "Mest engagerade Flow",
-"KbUsed": "Använda KB",
-        "PickUpWhereYouLeftOff": "Fortsätt där du slutade"
+"KbUsed": "Använda KB"
     },
     "HomeAnalytics": {
         "Overview": "Analyticsöversikt"

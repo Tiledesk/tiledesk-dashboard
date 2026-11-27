@@ -3854,8 +3854,7 @@
         "EngagedConversations": "المحادثات التفاعلية",
         "EngagedConversationsTooltip": "عدد المحادثات التي شارك فيها هذا الـ Flow خلال الفترة المحددة. قد تُحسب المحادثة أكثر من مرة إذا شارك الـ Flow في أيام مختلفة.",
         "MostEngagedFlow": "Flow الأكثر تفاعلاً",
-"KbUsed": "قواعد المعرفة المستخدمة",
-        "PickUpWhereYouLeftOff": "تابع من حيث توقفت"
+"KbUsed": "قواعد المعرفة المستخدمة"
     },
     "HomeAnalytics": {
         "Overview": "نظرة عامة على التحليلات"

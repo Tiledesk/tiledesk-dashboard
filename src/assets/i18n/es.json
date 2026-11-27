@@ -3837,8 +3837,7 @@
         "EngagedConversations": "Conversaciones con engagement",
         "EngagedConversationsTooltip": "Número de conversaciones en las que este Flow participó durante el período seleccionado. Una conversación puede contarse más de una vez si el Flow participó en días diferentes.",
         "MostEngagedFlow": "Flow con más engagement",
-"KbUsed": "KBs utilizadas",
-        "PickUpWhereYouLeftOff": "Retoma donde lo dejaste"
+"KbUsed": "KBs utilizadas"
     },
     "HomeAnalytics": {
         "Overview": "Resumen de analytics"

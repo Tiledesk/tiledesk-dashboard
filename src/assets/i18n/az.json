@@ -3854,8 +3854,7 @@
         "EngagedConversations": "Əlaqəli söhbətlər",
         "EngagedConversationsTooltip": "Seçilmiş dövrdə bu Flow-un iştirak etdiyi söhbətlərin sayı. Flow müxtəlif günlərdə iştirak edibsə söhbət bir neçə dəfə sayıla bilər.",
         "MostEngagedFlow": "Ən çox əlaqəli Flow",
-"KbUsed": "İstifadə olunan KB",
-        "PickUpWhereYouLeftOff": "Dayandığınız yerdən davam edin"
+"KbUsed": "İstifadə olunan KB"
     },
     "HomeAnalytics": {
         "Overview": "Analitika icmalı"

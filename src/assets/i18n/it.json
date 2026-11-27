@@ -4049,8 +4049,7 @@
         "EngagedConversations": "Conversazioni ingaggiate",
         "EngagedConversationsTooltip": "Numero di conversazioni in cui questo Flow è stato coinvolto nel periodo selezionato. Una conversazione può essere contata più di una volta se il Flow è stato coinvolto in giorni diversi.",
         "MostEngagedFlow": "Flow più ingaggiato",
-        "KbUsed": "KB utilizzate",
-        "PickUpWhereYouLeftOff": "Riprendi da dove hai lasciato"
+        "KbUsed": "KB utilizzate"
     },
     "HomeAnalytics": {
         "Overview": "Panoramica analytics"

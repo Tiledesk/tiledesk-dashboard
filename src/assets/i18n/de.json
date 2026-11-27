@@ -3852,8 +3852,7 @@
         "EngagedConversations": "Engagierte Gespräche",
         "EngagedConversationsTooltip": "Anzahl der Gespräche, in denen dieser Flow im ausgewählten Zeitraum engagiert war. Ein Gespräch kann mehrfach gezählt werden, wenn der Flow an verschiedenen Tagen engagiert war.",
         "MostEngagedFlow": "Meist engagierter Flow",
-"KbUsed": "Verwendete KBs",
-        "PickUpWhereYouLeftOff": "Dort weitermachen, wo Sie aufgehört haben"
+"KbUsed": "Verwendete KBs"
     },
     "HomeAnalytics": {
         "Overview": "Analytics-Übersicht"

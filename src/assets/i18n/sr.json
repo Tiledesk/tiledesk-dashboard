@@ -3854,8 +3854,7 @@
         "EngagedConversations": "Ангажовани разговори",
         "EngagedConversationsTooltip": "Број разговора у којима је овај Flow био ангажован током изабраног периода. Разговор може бити пребројан више пута ако је Flow био ангажован у различитим данима.",
         "MostEngagedFlow": "Најангажованији Flow",
-"KbUsed": "Коришћене KB",
-        "PickUpWhereYouLeftOff": "Наставите тамо где сте стали"
+"KbUsed": "Коришћене KB"
     },
     "HomeAnalytics": {
         "Overview": "Преглед аналитике"

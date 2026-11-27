@@ -3853,8 +3853,7 @@
         "EngagedConversations": "Залучені розмови",
         "EngagedConversationsTooltip": "Кількість розмов, у яких цей Flow був залучений протягом вибраного періоду. Розмова може бути порахована кілька разів, якщо Flow був залучений у різні дні.",
         "MostEngagedFlow": "Найбільш залучений Flow",
-"KbUsed": "Використовувані KB",
-        "PickUpWhereYouLeftOff": "Продовжити з місця, де зупинилися"
+"KbUsed": "Використовувані KB"
     },
     "HomeAnalytics": {
         "Overview": "Огляд аналітики"

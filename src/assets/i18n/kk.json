@@ -3854,8 +3854,7 @@
         "EngagedConversations": "Белсенді әңгімелер",
         "EngagedConversationsTooltip": "Таңдалған кезеңде осы Flow қатысқан әңгімелер саны. Flow әр түрлі күндері қатысса, әңгіме бірнеше рет есептелуі мүмкін.",
         "MostEngagedFlow": "Ең белсенді Flow",
-"KbUsed": "Қолданылған KB",
-        "PickUpWhereYouLeftOff": "Тоқтаған жерден жалғастырыңыз"
+"KbUsed": "Қолданылған KB"
     },
     "HomeAnalytics": {
         "Overview": "Аналитика шолуы"
