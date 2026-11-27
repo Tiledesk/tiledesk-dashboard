@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### Unreleased
+- Executions: the status boxes and the With errors box still filter the rows, but their numbers no longer follow their own filter: with a box selected they count the same view without the status and With errors filters (the other filters still apply), so every box keeps its number
+
 ### 2.10.4
 - Adds a Run button to the Agents list for Webhook agents, allowing users to run the published agent once with a JSON payload, and Start / Stop buttons for Scheduled agents to control the published schedule (Owner and Admin only).
 - Adds a checkbox column to the Executions list with bulk pause, resume, and destroy actions. Bulk destroy requires typing the count.
