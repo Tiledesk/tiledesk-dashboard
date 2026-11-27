@@ -1,7 +1,10 @@
 # tiledesk-dashboard
 
+### 2.7.281-stage
+- Manage metering (in progress): projects metered in credits no longer get client-side quota blocks or redirects to the pricing page, and the server decides on refusals. Quota projects keep their current behavior.
+
 ### 2.7.280-stage
-- Adds the email trigger to the executions filter (Monitor > Executions)
+- Adds the email trigger to the executions filter (Agents list > Executions)
 
 ### 2.7.279-stage
 - Adds Agents | Execution tabs on the agents list, the executions list and the execution detail, and removes the Conversations | Executions tabs from Monitor
