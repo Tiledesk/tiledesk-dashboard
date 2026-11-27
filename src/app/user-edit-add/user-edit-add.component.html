@@ -204,8 +204,9 @@
                         <!-- email length {{ user_email?.length }}  -->
                         <!-- btn-primary  -->
                         <button class="btn btn-tdblu-no-boxshadow invite-button"
-                          [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1 || !isCreditsMetering && projectUsersLength + countOfPendingInvites >= seatsLimit"
+                          [disabled]="ROLE_NOT_SELECTED === true || !EMAIL_IS_VALID || user_email?.length < 1 || role?.length < 1 || !isCreditsMetering && projectUsersLength + countOfPendingInvites >= seatsLimit || isInviting"
                           (click)="invite()">
+                          <span *ngIf="isInviting" class="invite-button-spinner" aria-hidden="true"></span>
                           {{ "UserEditAddPage.Invites" | translate }}
                         </button>
                       </div>
