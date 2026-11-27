@@ -635,6 +635,25 @@ input:checked+.slider:before {
   padding-left: 25px !important;
 }
 
+// spinner shown on the invite button while the request is in progress (credits projects)
+.invite-button-spinner {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-right: 8px;
+  vertical-align: -2px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: invite-button-spin 0.7s linear infinite;
+}
+
+@keyframes invite-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .link-string {
   color: var(--blue-light); // #039be5; 
   cursor: pointer

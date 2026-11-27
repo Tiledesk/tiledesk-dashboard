@@ -60,6 +60,8 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
   display = 'none';
   SHOW_CIRCULAR_SPINNER = false;
+  /** Credits projects: invite request in progress (the result modal opens only with the response) */
+  isInviting = false;
   INVITE_YOURSELF_ERROR: boolean;
   INVITE_OTHER_ERROR: boolean;
   INVITE_USER_ALREADY_MEMBER_ERROR: boolean;
@@ -1068,13 +1070,20 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
   }
 
   doInviteUser() {
-    this.display = 'block';
+    if (this.isCreditsMetering) {
+      // Credits projects: the server can refuse the invite (credits not enough) and the interceptor shows its
+      // alert. The result modal opens only with the response (no modal and spinner that then disappear):
+      // meanwhile the invite button is disabled
+      this.isInviting = true;
+    } else {
+      this.display = 'block';
 
-    this.SHOW_CIRCULAR_SPINNER = true
+      this.SHOW_CIRCULAR_SPINNER = true
 
-    setTimeout(() => {
-      this.SHOW_CIRCULAR_SPINNER = false
-    }, 1000);
+      setTimeout(() => {
+        this.SHOW_CIRCULAR_SPINNER = false
+      }, 1000);
+    }
 
     this.logger.log('[USER-EDIT-ADD] - INVITE THE USER EMAIL ', this.user_email)
     this.logger.log('[USER-EDIT-ADD] - INVITE THE USER ROLE ', this.role)
@@ -1087,6 +1096,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
       this.logger.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user)', project_user);
       this.logger.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.id_project', project_user.id_project);
       this.logger.log('[USER-EDIT-ADD] - INVITE USER - POST SUBSCRIPTION PROJECT-USER - RES project_user.role', project_user.role);
+
+      this.isInviting = false;
+      this.display = 'block';
 
       if (project_user) {
         this.invitedProjectUser = project_user
@@ -1104,6 +1116,7 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
 
     }, (error) => {
       this.logger.error('[USER-EDIT-ADD] - INVITE USER  ERROR ', error);
+      this.isInviting = false;
 
       // Credits refusal (13010-13013): the interceptor shows the alert, no generic error here
       if (isCreditsRefusal(error)) {
@@ -1112,10 +1125,18 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.INVITE_USER_NOT_FOUND = false;
         this.INVITE_OTHER_ERROR = false;
         this.PENDING_INVITATION_ALREADY_EXIST = false;
+        // The invite did not happen: close the "invite" modal, otherwise its default "Completed" message
+        // (no error flag set) stays under the credits alert
+        this.SHOW_CIRCULAR_SPINNER = false;
+        this.display = 'none';
         return;
       }
 
-      const invite_error = error['error']
+      // the error modal is shown (on credits projects it was not opened yet)
+      this.display = 'block';
+
+      // empty or non JSON body (e.g. 500, network error): no property to read, it ends in the "other error" branch
+      const invite_error = error['error'] || {}
       // console.error('[USER-EDIT-ADD] - INVITE USER  ERROR BODY ', invite_error);
 
       if ((invite_error['success'] === false) && (invite_error['code'] === 4000)) {
@@ -1141,7 +1162,9 @@ export class UserEditAddComponent extends PricingBaseComponent implements OnInit
         this.INVITE_USER_NOT_FOUND = true;
         this.PENDING_INVITATION_ALREADY_EXIST = false;
 
-      } else if (invite_error['success'] === false) {
+      } else {
+        // any other error (success === false without a known code, 5xx, network): never leave the
+        // "Completed" message, which is the default when no error flag is set
 
         this.INVITE_YOURSELF_ERROR = false;
         this.INVITE_USER_ALREADY_MEMBER_ERROR = false;
