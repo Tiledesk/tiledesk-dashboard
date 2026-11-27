@@ -149,6 +149,11 @@ export class PricingComponent implements OnInit, OnDestroy {
   info_modal_has_been_displayed = false;
   subscription_id: string;
   subscription: Subscription;
+  /** The project is metered in credits: the pricing page shows Pro and Custom, not Business */
+  isCreditsMetering = false;
+  /** Custom card on credits projects: what Custom adds on top of Pro (GL-7) */
+  planCreditsCustomFeatures: Array<string> = ['Smart Assignment', 'Custom roles', 'Retention Policy'];
+  private creditsMeteringSubscription: Subscription;
 
   STRIPE_LIVE_PK: string;
 
@@ -181,6 +186,10 @@ export class PricingComponent implements OnInit, OnDestroy {
   PAYMENT_LINK_MONTLY_PLAN_EE: string;
   PAYMENT_LINK_ANNUALLY_PLAN_EE: string;
   PAYMENT_LINK_ANNUALLY_PLAN_E: string;
+
+  // Credits plan link (projects with metering 'credits': Pro is bought as credits, Custom goes through Contact Sales)
+  PAYMENT_LINK_CREDITS_MONTLY_PLAN_E: string;
+  PAYMENT_LINK_CREDITS_ANNUALLY_PLAN_E: string;
 
   user: any;
   USER_ROLE: any;
@@ -239,6 +248,10 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     // this.auth.checkRoleForCurrentProjectAndRedirectAdminAndAgent(); // redirect admin and agent -- only owner has access to payment
+    // Credits projects: Business is not offered, Custom takes its place
+    this.creditsMeteringSubscription = this.prjctPlanService.meteringService.isCredits$.subscribe((isCredits: boolean) => {
+      this.isCreditsMetering = isCredits;
+    });
     this.getCurrentProject();
     this.selectedPlanName = 'pro'
     this.getBaseUrl()
@@ -394,6 +407,9 @@ export class PricingComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    if (this.creditsMeteringSubscription) {
+      this.creditsMeteringSubscription.unsubscribe();
+    }
     this.manageWidget("hide")
     this.removelaunchJsScript()
   }
@@ -607,6 +623,25 @@ export class PricingComponent implements OnInit, OnDestroy {
       this.PAYMENT_LINK_ANNUALLY_PLAN_E = "https://buy.stripe.com/6oE14cb4qbNgcCs00U"; // Pro Annually - "https://buy.stripe.com/3cs9AI6Oa9F8gSI3cx"; // "https://buy.stripe.com/3cs6owfkGeZseKAaEU"; // Premium Annually
       this.PAYMENT_LINK_MONTLY_PLAN_EE =  "https://buy.stripe.com/eVaaEMfkG8B4eKAbJD"; // Business Montly - // 'https://buy.stripe.com/14kfZ6a0mcRk31S3cK';
       this.PAYMENT_LINK_ANNUALLY_PLAN_EE = "https://buy.stripe.com/aEU7sA5K6bNg1XO6pk" // Business Annually 'https://buy.stripe.com/9AQ28gfkG7x0eKA3cL'; 
+    }
+
+    this.setCreditsPaymentLinks();
+  }
+
+  /**
+   * Payment links of the credits plans (projects with metering 'credits'),
+   * separated from the quota plan links above. Test or live depending on TEST_PAYMENT_LINKS.
+   * TODO: fill in the Stripe payment links of the credits plans (empty until then)
+   */
+  setCreditsPaymentLinks() {
+    if (this.TEST_PAYMENT_LINKS === true) {
+      // Credits plans - TEST
+      this.PAYMENT_LINK_CREDITS_MONTLY_PLAN_E = "";    // PRO credits Montly - TEST
+      this.PAYMENT_LINK_CREDITS_ANNUALLY_PLAN_E = "";  // PRO credits Annually - TEST
+    } else {
+      // Credits plans - LIVE
+      this.PAYMENT_LINK_CREDITS_MONTLY_PLAN_E = "";    // PRO credits Montly - LIVE
+      this.PAYMENT_LINK_CREDITS_ANNUALLY_PLAN_E = "";  // PRO credits Annually - LIVE
     }
   }
 
