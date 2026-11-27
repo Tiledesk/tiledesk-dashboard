@@ -215,7 +215,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.max_tokens = this.selectedNamespace.preview_settings.max_tokens;
       this.logger.log("[MODAL PREVIEW SETTINGS] max_tokens ", this.max_tokens)
 
-      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5')) {
+      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5') || this.selectedNamespace.preview_settings.model.startsWith('gpt-6')) {
 
         // this.temperature = 1
         // this.aiSettingsObject[0].temperature = 1
@@ -233,7 +233,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       }
 
 
-      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5'))  {
+      if (this.selectedNamespace.preview_settings.model.startsWith('gpt-5') || this.selectedNamespace.preview_settings.model.startsWith('gpt-6'))  {
         this.temperature_slider_disabled = true;
         this.logger.log("[MODAL PREVIEW SETTINGS] selectedNamespace is gpt-5 family", this.selectedNamespace.preview_settings.model)
       } else { 
@@ -1010,7 +1010,7 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       this.applyPreviewSettingsLlmFromModel(selected);
     }
 
-    if (modelValue.startsWith('gpt-5')) {
+    if (modelValue.startsWith('gpt-5') || modelValue.startsWith('gpt-6')) {
       this.temperature = 1;
       this.aiSettingsObject[0].temperature = 1;
       this.selectedNamespace.preview_settings.temperature = 1;
@@ -1074,11 +1074,11 @@ export class ModalPreviewSettingsComponent implements OnInit, OnChanges, OnDestr
       }
     }
 
-    // temperature: with a model change, ignore the auto value (1 for gpt-5, else default)
+    // temperature: with a model change, ignore the auto value (1 for gpt-5 and gpt-6, else default)
     const temperatureDiffersFromBaseline = Number(this.temperature) !== Number(baseline.temperature);
     if (temperatureDiffersFromBaseline) {
       if (modelChanged) {
-        const autoTemperature = currentModel?.startsWith('gpt-5') ? 1 : this.temperatureDefaultValue;
+        const autoTemperature = (currentModel?.startsWith('gpt-5') || currentModel?.startsWith('gpt-6')) ? 1 : this.temperatureDefaultValue;
         if (Number(this.temperature) !== Number(autoTemperature)) {
           count++;
         }
@@ -1410,7 +1410,7 @@ private restoreDialogScrollPosition(): void {
       cloneSettings.vllmServer || cloneSettings.agentplatformServer,
     );
     this.max_tokens = cloneSettings.max_tokens;
-    if (resetModelValue?.startsWith('gpt-5')) {
+    if (resetModelValue?.startsWith('gpt-5') || resetModelValue?.startsWith('gpt-6')) {
       this.temperature = 1;
       this.temperature_slider_disabled = true;
     } else {
