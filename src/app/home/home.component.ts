@@ -414,8 +414,13 @@ export class HomeComponent implements OnInit, OnDestroy, AfterViewInit {
       && !!this.isVisibleKNB;
   }
 
+  /** Credits projects have no consumption quotas (the server refuses, see MeteringService): no quota banner */
+  get isCreditsProject(): boolean {
+    return !!this.planLimitsBridge?.isCreditsMetering;
+  }
+
   get showQuotaBannerDashletToggle(): boolean {
-    return !!this.isVisibleQuoteSection && !!this.PERMISSION_TO_VIEW_QUOTA_USAGE;
+    return !this.isCreditsProject && !!this.isVisibleQuoteSection && !!this.PERMISSION_TO_VIEW_QUOTA_USAGE;
   }
 
   get hasAnyDashletToggle(): boolean {

@@ -233,7 +233,7 @@
           </home-quick-cards>
 
         <!-- QUOTA Banner (toggle via dashlet filter → Current usage) -->
-        <ng-container *ngIf="!isVisibleVBC && displayQuotaBanner && isVisibleQuoteSection && PERMISSION_TO_VIEW_QUOTA_USAGE">
+        <ng-container *ngIf="!isVisibleVBC && displayQuotaBanner && isVisibleQuoteSection && PERMISSION_TO_VIEW_QUOTA_USAGE && !isCreditsProject">
           <!-- [ngClass]="{'home-quota-banner-alert': conversationsRunnedOut || emailsRunnedOut || tokensRunnedOut}" -->
           <div *ngIf="!displayQuotaSkeleton" class="home-quota-banner">
 
