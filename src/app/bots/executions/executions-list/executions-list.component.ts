@@ -132,6 +132,8 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
   private reload$ = new Subject<void>();
+  /** a box filter is on: the box numbers come from their own call (the latest one wins) */
+  private countersReq$ = new Subject<void>();
   /** The graph view took over: the list's in-flight calls end without landing. */
   private toGraph$ = new Subject<void>();
   private pollSub: Subscription | null = null;
@@ -288,6 +290,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       }),
       takeUntil(this.destroy$)
     ).subscribe(page => { if (page) this.onFirstPage(page); });
+    this.startCounters();
     this.loadAgents();
     this.loadView();
   }
@@ -310,9 +313,12 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
     return params;
   }
 
-  /** A first page or a poll also brings the cards (one call, not list + stats), over the same range and filters as the rows. */
+  /**
+   * A first page or a poll also brings the cards (one call, not list + stats), over the same range and filters as the
+   * rows; while a box filter is on the cards have their own call (countersParams), so the rows' call skips the stats.
+   */
   private withStats(params: ExecutionListParams): ExecutionListParams {
-    return { ...params, with_stats: true };
+    return this.boxFilterActive() ? params : { ...params, with_stats: true };
   }
 
   private markUpdated() {
@@ -328,8 +334,46 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
       : this.translate.instant('Executions.UpdatedMinutes', { n: Math.floor(secs / 60) });
   }
 
+  /** A status box or the With errors box filters the rows: the box numbers must not follow their own filter. */
+  boxFilterActive(): boolean {
+    return !!this.filters.status || !!this.filters.has_errors;
+  }
+
+  /**
+   * The box numbers' call while a box filter is on: the same range and filters as the rows, without the boxes' own
+   * (status, has_errors), so the numbers say what each box would show. One row, the stats are the point.
+   */
+  countersParams(): ExecutionListParams {
+    const { status, has_errors, ...rest } = this.viewFilters();
+    return { limit: 1, range: this.filters.range, ...rest, with_stats: true };
+  }
+
+  private loadCounters() {
+    this.countersReq$.next();
+  }
+
+  private startCounters() {
+    this.countersReq$.pipe(
+      switchMap(() => this.executionsService.list(this.projectId, this.countersParams()).pipe(
+        catchError(err => { this.logger.error('[EXECUTIONS-LIST] counters error ', err); return of(null); })
+      )),
+      takeUntil(this.destroy$)
+    ).subscribe(page => { if (page) this.applyCounters(page.stats); });
+  }
+
   /** The old numbers stay until new ones arrive (no flicker on every poll, none on an error). */
+  private applyCounters(s: { statuses?: StatusCounts; with_errors?: number } | null | undefined) {
+    if (!s) return;
+    this.counters = s.statuses || null;
+    this.withErrors = typeof s.with_errors === 'number' ? s.with_errors : null;
+  }
+
+  /** The rows' answer brings the box numbers only when no box filter is on; else they are asked without it. */
   private takeCounters(page: ExecutionPage) {
+    if (this.boxFilterActive()) {
+      this.loadCounters();
+      return;
+    }
     const s = page && page.stats;
     if (!s) return;
     this.counters = s.statuses || null;
@@ -482,8 +526,8 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   onGraphUpdated(update: { graph: ExecutionGraph | null; fetchedAt: number }) {
     const g = update && update.graph;
     if (g) {
-      this.counters = g.statuses || null;
-      this.withErrors = typeof g.with_errors === 'number' ? g.with_errors : null;
+      if (this.boxFilterActive()) this.loadCounters();
+      else this.applyCounters(g);
     }
     this.updatedAt = update.fetchedAt;
     this.updateNote();
@@ -533,7 +577,7 @@ export class ExecutionsListComponent implements OnInit, OnDestroy {
   }
 
   toggleStatus(status: string) {
-    // the cards follow every filter (spec addendum 3): the trigger filter stays
+    // the cards follow every filter but their own (status, With errors): the trigger filter stays
     this.setFilter('status', this.filters.status === status ? '' : status);
   }
 

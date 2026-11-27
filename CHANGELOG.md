@@ -1,5 +1,8 @@
 # tiledesk-dashboard
 
+### Unreleased
+- Executions: the status boxes and the With errors box still filter the rows, but their numbers no longer follow their own filter: with a box selected they count the same view without the status and With errors filters (the other filters still apply), so every box keeps its number
+
 ### 2.7.281-stage
 - Manage metering (in progress): projects metered in credits no longer get client-side quota blocks or redirects to the pricing page, and the server decides on refusals. Quota projects keep their current behavior.
 

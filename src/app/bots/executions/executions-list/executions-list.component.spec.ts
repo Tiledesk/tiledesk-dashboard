@@ -48,6 +48,8 @@ describe('ExecutionsListComponent', () => {
   let fixture: ComponentFixture<ExecutionsListComponent>;
   let component: ExecutionsListComponent;
   let executions: { isConfigured: jasmine.Spy; list: jasmine.Spy; summary: jasmine.Spy; stats: jasmine.Spy };
+  /** The latest rows call: a box filter adds a numbers-only call (limit 1, with_stats), which is not it. */
+  const rowsParams = () => executions.list.calls.all().map(c => c.args[1]).filter(p => !(p.limit === 1 && p.with_stats)).pop();
   let router: { navigate: jasmine.Spy };
   let query$: BehaviorSubject<any>;
   let perms$: Subject<any>;
@@ -97,7 +99,7 @@ describe('ExecutionsListComponent', () => {
 
   it('default filter: every trigger, test runs included, range Now (no from/to)', () => {
     setup({ botid: 'a1' });
-    const params = executions.list.calls.mostRecent().args[1];
+    const params = rowsParams();
     expect(executions.list.calls.mostRecent().args[0]).toBe('p1');
     expect(params.trigger).toBeUndefined();
     expect(params.test).toBe('all');
@@ -110,7 +112,7 @@ describe('ExecutionsListComponent', () => {
 
   it('filters come from the URL and map to API params', () => {
     setup({ query: { trigger: 'all', status: 'failed', has_failures: 'true', has_errors: 'true', range: '24h', q: ' abc ' } });
-    const p = executions.list.calls.mostRecent().args[1];
+    const p = rowsParams();
     expect(p.trigger).toBeUndefined();
     expect(p.status).toBe('failed');
     expect(p.has_failures).toBe(true);
@@ -135,17 +137,17 @@ describe('ExecutionsListComponent', () => {
     it('the old period param (24h, 7d, 30d) is read as range; range wins over it', () => {
       setup({ query: { period: '30d' } });
       expect(component.filters.range).toBe('30d');
-      expect(executions.list.calls.mostRecent().args[1].range).toBe('30d');
+      expect(rowsParams().range).toBe('30d');
       query$.next(convertToParamMap({ period: '24h', range: '7d' }));
-      expect(executions.list.calls.mostRecent().args[1].range).toBe('7d');
+      expect(rowsParams().range).toBe('7d');
       query$.next(convertToParamMap({ period: 'bogus' }));
-      expect(executions.list.calls.mostRecent().args[1].range).toBe('now');
+      expect(rowsParams().range).toBe('now');
     });
 
     it('one call asks the page and its cards: range + with_stats, no from and no stats_range', () => {
       setup({ query: { range: '7d' } });
       expect(executions.list).toHaveBeenCalledTimes(1);
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.range).toBe('7d');
       expect(p.with_stats).toBe(true);
       expect(p.stats_range).toBeUndefined();
@@ -187,7 +189,7 @@ describe('ExecutionsListComponent', () => {
 
   it('without has_errors in the URL, the list sends no has_errors', () => {
     setup({ query: { has_failures: 'true' } });
-    const p = executions.list.calls.mostRecent().args[1];
+    const p = rowsParams();
     expect(p.has_errors).toBeUndefined();
     expect(p.has_failures).toBe(true);
   });
@@ -196,8 +198,9 @@ describe('ExecutionsListComponent', () => {
     setup();
     const calls = executions.list.calls.count();
     query$.next(convertToParamMap({ status: 'failed' }));
-    expect(executions.list.calls.count()).toBe(calls + 1);
-    expect(executions.list.calls.mostRecent().args[1].status).toBe('failed');
+    // the rows, plus the box numbers' own call (a status box filter is on)
+    expect(executions.list.calls.count()).toBe(calls + 2);
+    expect(rowsParams().status).toBe('failed');
   });
 
   it('load more appends with next_cursor', () => {
@@ -205,7 +208,7 @@ describe('ExecutionsListComponent', () => {
     expect(component.rows.length).toBe(2);
     executions.list.and.returnValue(of({ items: [row('e3')], next_cursor: null }));
     component.loadMore();
-    expect(executions.list.calls.mostRecent().args[1].cursor).toBe('c1');
+    expect(rowsParams().cursor).toBe('c1');
     expect(component.rows.map(r => r._id)).toEqual(['e1', 'e2', 'e3']);
     expect(component.nextCursor).toBeNull();
   });
@@ -329,7 +332,7 @@ describe('ExecutionsListComponent', () => {
     it('one-agent view: one list call with the stats of the list range, agent and test runs; no stats or summary call', () => {
       setup({ botid: 'a1' });
       expect(executions.list).toHaveBeenCalledTimes(1);
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.with_stats).toBe(true);
       expect(p.range).toBe('now');
       expect(p.agent_id).toBe('a1');
@@ -343,15 +346,15 @@ describe('ExecutionsListComponent', () => {
       setup({ page: { items: [row('e1')], next_cursor: 'c1' } });
       executions.list.calls.reset();
       executions.list.and.returnValue(of({ items: [row('e1')], next_cursor: 'c1', stats: STATS({ ...STATUSES, failed: 7 }) }));
-      query$.next(convertToParamMap({ status: 'failed' }));
+      query$.next(convertToParamMap({ trigger: 'unattended' }));
       fixture.detectChanges();
       expect(executions.list).toHaveBeenCalledTimes(1);
-      expect(executions.list.calls.mostRecent().args[1].with_stats).toBe(true);
+      expect(rowsParams().with_stats).toBe(true);
       expect(values()[3]).toBe('7');
       executions.list.and.returnValue(of({ items: [row('e2')], next_cursor: null }));
       component.loadMore();
       expect(executions.list).toHaveBeenCalledTimes(2);
-      const more = executions.list.calls.mostRecent().args[1];
+      const more = rowsParams();
       expect(more.cursor).toBe('c1');
       expect(more.with_stats).toBeUndefined();
       expect(more.range).toBe('now');
@@ -367,7 +370,7 @@ describe('ExecutionsListComponent', () => {
       fixture.detectChanges();
       expect(cards()[4].getAttribute('aria-pressed')).toBe('true');
       expect(component.hasActiveFilters).toBe(true);
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.has_errors).toBe(true);
       expect(p.has_failures).toBeUndefined();
       expect((fixture.nativeElement.querySelector('.exec-filter-failures') as HTMLInputElement).checked).toBe(false);
@@ -387,14 +390,58 @@ describe('ExecutionsListComponent', () => {
       expect((fixture.nativeElement.querySelector('.exec-filter-failures') as HTMLInputElement).checked).toBe(true);
     });
 
-    it('cards follow every filter: the stats come with the list call that carries them', () => {
-      setup({ botid: 'a1', query: { range: '24h', trigger: 'unattended', status: 'failed', has_failures: 'true', q: 'r1', tests: 'false' } });
-      const p = executions.list.calls.mostRecent().args[1];
+    it('cards follow every filter but their own: without a box filter the stats come with the rows call', () => {
+      setup({ botid: 'a1', query: { range: '24h', trigger: 'unattended', has_failures: 'true', q: 'r1', tests: 'false' } });
+      const p = rowsParams();
       expect(p).toEqual(jasmine.objectContaining({
-        with_stats: true, range: '24h', agent_id: 'a1', trigger: 'unattended', status: 'failed', has_failures: true, q: 'r1', test: false,
+        with_stats: true, range: '24h', agent_id: 'a1', trigger: 'unattended', has_failures: true, q: 'r1', test: false,
       }));
       query$.next(convertToParamMap({ range: '30d' }));
-      expect(executions.list.calls.mostRecent().args[1].range).toBe('30d');
+      expect(rowsParams().range).toBe('30d');
+    });
+
+    it('a status box filters the rows, not the numbers: they come from a call without status and has_errors', () => {
+      const all = STATS({ ...STATUSES, failed: 7, completed: 30 });
+      const onlyFailed = STATS({ ...STATUSES, failed: 7, completed: 0, running: 0, waiting: 0 });
+      setup({ botid: 'a1', query: { trigger: 'unattended', q: 'r1' } });
+      executions.list.calls.reset();
+      executions.list.and.callFake((_pid: string, p: any) =>
+        of(p.status || p.has_errors ? { items: [row('f1')], next_cursor: null, stats: onlyFailed } : { items: [row('x')], next_cursor: null, stats: all }));
+      query$.next(convertToParamMap({ trigger: 'unattended', q: 'r1', status: 'failed', has_errors: 'true' }));
+      fixture.detectChanges();
+      const calls = executions.list.calls.all().map(c => c.args[1]);
+      const rowsCall = calls.find(p => p.status);
+      const numbersCall = calls.find(p => !p.status);
+      // the rows: every filter, the box ones included, and no stats
+      expect(rowsCall).toEqual(jasmine.objectContaining({ status: 'failed', has_errors: true, trigger: 'unattended', q: 'r1', agent_id: 'a1' }));
+      expect(rowsCall.with_stats).toBeUndefined();
+      // the numbers: the same view without the box filters
+      expect(numbersCall).toEqual(jasmine.objectContaining({ with_stats: true, limit: 1, trigger: 'unattended', q: 'r1', agent_id: 'a1', range: 'now' }));
+      expect(numbersCall.has_errors).toBeUndefined();
+      expect(component.counters.completed).toBe(30);
+      expect(component.rows.map(r => r._id)).toEqual(['f1']);
+      // a poll keeps them unfiltered too
+      executions.list.calls.reset();
+      (component as any).refresh();
+      const again = executions.list.calls.all().map(c => c.args[1]);
+      expect(again.some(p => !p.status && p.with_stats && p.limit === 1)).toBe(true);
+      expect(component.counters.completed).toBe(30);
+    });
+
+    it('in the graph view a box filter also keeps the numbers unfiltered', () => {
+      setup({ botid: 'a1', query: { status: 'failed' } });
+      executions.list.calls.reset();
+      executions.list.and.returnValue(of({ items: [], next_cursor: null, stats: STATS({ ...STATUSES, completed: 42 }) }));
+      component.onGraphUpdated({ graph: { statuses: { ...STATUSES, completed: 0 }, with_errors: 0 } as any, fetchedAt: 1 });
+      expect(executions.list).toHaveBeenCalledTimes(1);
+      expect(executions.list.calls.mostRecent().args[1].status).toBeUndefined();
+      expect(component.counters.completed).toBe(42);
+      // without a box filter the graph's own numbers are taken
+      query$.next(convertToParamMap({}));
+      executions.list.calls.reset();
+      component.onGraphUpdated({ graph: { statuses: { ...STATUSES, completed: 5 }, with_errors: 1 } as any, fetchedAt: 2 });
+      expect(component.counters.completed).toBe(5);
+      expect(component.withErrors).toBe(1);
     });
 
     it('clicking a card sets the status filter; Stopped lists stopped and stopping', () => {
@@ -407,14 +454,14 @@ describe('ExecutionsListComponent', () => {
       query$.next(convertToParamMap({ status: 'waiting', trigger: 'all' }));
       fixture.detectChanges();
       expect(cards()[1].getAttribute('aria-pressed')).toBe('true');
-      expect(executions.list.calls.mostRecent().args[1].trigger).toBeUndefined();
-      expect(executions.list.calls.mostRecent().args[1].status).toBe('waiting');
+      expect(rowsParams().trigger).toBeUndefined();
+      expect(rowsParams().status).toBe('waiting');
       cards()[1].click();
       expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: null });
       cards()[2].click();
       expect(router.navigate.calls.mostRecent().args[1].queryParams).toEqual({ status: 'stopped' });
       query$.next(convertToParamMap({ status: 'stopped', trigger: 'all' }));
-      expect(executions.list.calls.mostRecent().args[1].status).toBe('stopped,stopping');
+      expect(rowsParams().status).toBe('stopped,stopping');
     });
 
     it('the period caption under the title names the time range (the cards follow the filters)', () => {
@@ -428,15 +475,15 @@ describe('ExecutionsListComponent', () => {
     it('test runs off: list and cards leave them out, and the toggle counts as a filter', () => {
       setup({ botid: 'a1', query: { tests: 'false' } });
       expect(component.filters.tests).toBe(false);
-      expect(executions.list.calls.mostRecent().args[1].test).toBe(false);
+      expect(rowsParams().test).toBe(false);
       // test=false: the list and its stats both take real runs only
-      expect(executions.list.calls.mostRecent().args[1].with_stats).toBe(true);
+      expect(rowsParams().with_stats).toBe(true);
       expect(component.hasActiveFilters).toBe(true);
     });
 
     it('all-agents view: cards for every agent (no agent_id), Agent column from agent_name', () => {
       setup({ page: { items: [row('e1', 'failed', { agent_name: 'Nightly' })], next_cursor: null } });
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.agent_id).toBeUndefined();
       expect(p.with_stats).toBe(true);
       expect(p.range).toBe('now');
@@ -526,7 +573,7 @@ describe('ExecutionsListComponent', () => {
       const n = executions.list.calls.count();
       tick(10000);
       expect(executions.list.calls.count()).toBe(n + 1);
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.with_stats).toBe(true);
       expect(p.range).toBe('now');
       expect(component.counters.running).toBe(5);
@@ -563,7 +610,7 @@ describe('ExecutionsListComponent', () => {
       setup({ query: { range: 'constructor', period: 'toString', trigger: 'bogus', status: 'toString', has_failures: 'yes', view: 'bogus' } });
       expect(component.filters).toEqual({ trigger: 'all', status: '', has_failures: false, has_errors: false, range: 'now', q: '', tests: true });
       expect(component.view).toBe('list');
-      expect(executions.list.calls.mostRecent().args[1].range).toBe('now');
+      expect(rowsParams().range).toBe('now');
     });
 
     it('trigger column uses the Triggers translation', () => {
@@ -580,7 +627,7 @@ describe('ExecutionsListComponent', () => {
       params$.next(convertToParamMap({ projectid: 'p1', botid: 'b2' }));
       expect(component.agentId).toBe('b2');
       expect(executions.list.calls.count()).toBe(lists + 1);
-      expect(executions.list.calls.mostRecent().args[1].agent_id).toBe('b2');
+      expect(rowsParams().agent_id).toBe('b2');
       expect(component.counters.waiting).toBe(4);
       const pending = new Subject<any>();
       executions.list.and.returnValue(pending);
@@ -588,7 +635,7 @@ describe('ExecutionsListComponent', () => {
       expect(component.agentId).toBeNull();
       // B's numbers are not shown for all agents while theirs load
       expect(component.counters).toBeNull();
-      expect(executions.list.calls.mostRecent().args[1].agent_id).toBeUndefined();
+      expect(rowsParams().agent_id).toBeUndefined();
     });
 
     it('a refresh slower than the poll interval still lands, and the next poll follows it (D2)', fakeAsync(() => {
@@ -750,7 +797,7 @@ describe('ExecutionsListComponent', () => {
       query$.next(convertToParamMap({ view: null }));
       fixture.detectChanges();
       expect(executions.list).toHaveBeenCalledTimes(1);
-      expect(executions.list.calls.mostRecent().args[1].with_stats).toBe(true);
+      expect(rowsParams().with_stats).toBe(true);
       expect(graph()).toBeNull();
     });
   });
@@ -768,7 +815,7 @@ describe('ExecutionsListComponent', () => {
       refreshButton().click();
       fixture.detectChanges();
       expect(executions.list.calls.count()).toBe(n + 1);
-      expect(executions.list.calls.mostRecent().args[1].with_stats).toBe(true);
+      expect(rowsParams().with_stats).toBe(true);
       expect(refreshButton().disabled).toBe(true);
       refreshButton().click();
       expect(executions.list.calls.count()).toBe(n + 1);
@@ -872,7 +919,7 @@ describe('ExecutionsListComponent', () => {
 
     it('the default sort sends no sort/dir (the request is as before)', () => {
       setup({ page });
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.sort).toBeUndefined();
       expect(p.dir).toBeUndefined();
     });
@@ -897,7 +944,7 @@ describe('ExecutionsListComponent', () => {
 
     it('sort and dir from the URL go to the list call, the header shows them; invalid values fall back to Started newest first', () => {
       setup({ page, query: { sort: 'steps_count', dir: 'asc' } });
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.sort).toBe('steps_count');
       expect(p.dir).toBe('asc');
       expect(th('steps_count').getAttribute('aria-sort')).toBe('ascending');
@@ -906,7 +953,7 @@ describe('ExecutionsListComponent', () => {
       query$.next(convertToParamMap({ sort: 'bogus', dir: 'sideways' }));
       fixture.detectChanges();
       expect(component.sort).toEqual({ field: 'started_at', dir: 'desc' });
-      expect(executions.list.calls.mostRecent().args[1].sort).toBeUndefined();
+      expect(rowsParams().sort).toBeUndefined();
       // a valid field without dir: that field's first direction
       query$.next(convertToParamMap({ sort: 'status' }));
       expect(component.sort).toEqual({ field: 'status', dir: 'asc' });
@@ -917,7 +964,7 @@ describe('ExecutionsListComponent', () => {
       const n = executions.list.calls.count();
       query$.next(convertToParamMap({ sort: 'trigger', dir: 'desc' }));
       expect(executions.list.calls.count()).toBe(n + 1);
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.cursor).toBeUndefined();
       expect(p.sort).toBe('trigger');
     });
@@ -926,7 +973,7 @@ describe('ExecutionsListComponent', () => {
       setup({ page, query: { sort: 'vars_changed', dir: 'asc' } });
       executions.list.and.returnValue(of({ items: [row('e3')], next_cursor: null }));
       component.loadMore();
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.cursor).toBe('c1');
       expect(p.sort).toBe('vars_changed');
       expect(p.dir).toBe('asc');
@@ -937,7 +984,7 @@ describe('ExecutionsListComponent', () => {
         query: { sort: 'duration_ms', dir: 'desc' } });
       executions.list.and.returnValue(of({ items: [row('e2', 'running', { duration_ms: 90 }), row('e3', 'running', { duration_ms: 70 }), row('e1', 'running', { duration_ms: 60 })], next_cursor: null }));
       tick(10000);
-      const p = executions.list.calls.mostRecent().args[1];
+      const p = rowsParams();
       expect(p.sort).toBe('duration_ms');
       expect(p.dir).toBe('desc');
       expect(p.with_stats).toBe(true);
