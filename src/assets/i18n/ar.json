@@ -202,7 +202,7 @@
     "ClosedConvsCount": "{{conv_num}} من المحادثات المغلقة",
     "TotalConversationsUsage": "إجمالي استخدام المحادثات",
     "TotalAITokensUsage": "إجمالي استخدام رموز {{COMPANY_NAME}}",
-    "TotalAIAgentTokensUsage": "إجمالي استخدام رموز وكيل الذكاء الاصطناعي (Design Studio)",
+    "TotalAIAgentTokensUsage": "إجمالي استخدام رموز وكيل الذكاء الاصطناعي",
     "TotalEmailUsage": "إجمالي استخدام البريد الإلكتروني",
     "TotalVoiceUsage": "إجمالي استخدام الصوت",
     "Email": "بريد إلكتروني",

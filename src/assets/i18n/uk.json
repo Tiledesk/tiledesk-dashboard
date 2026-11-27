@@ -202,7 +202,7 @@
     "ClosedConvsCount": "{{conv_num}} закритих бесід",
     "TotalConversationsUsage": "Загальне використання розмов",
     "TotalAITokensUsage": "Загальне використання токенів {{COMPANY_NAME}}",
-    "TotalAIAgentTokensUsage": "Загальне використання токенів ШІ-агента (Design Studio)",
+    "TotalAIAgentTokensUsage": "Загальне використання токенів ШІ-агента",
     "TotalEmailUsage": "Загальна кількість використання електронної пошти",
     "TotalVoiceUsage": "Загальне використання голосу",
     "Email": "Електронна пошта",

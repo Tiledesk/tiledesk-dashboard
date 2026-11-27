@@ -203,7 +203,7 @@
     "ClosedConvsCount": "{{conv_num}} kapalı görüşme",
     "TotalConversationsUsage": "Toplam konuşma kullanımı",
     "TotalAITokensUsage": "Toplam {{COMPANY_NAME}} token kullanımı",
-    "TotalAIAgentTokensUsage": "Toplam yapay zeka ajanı token kullanımı (Design Studio)",
+    "TotalAIAgentTokensUsage": "Toplam yapay zeka ajanı token kullanımı",
     "TotalEmailUsage": "Toplam e-posta kullanımı",
     "TotalVoiceUsage": "Toplam ses kullanımı",
     "Email": "E-posta",

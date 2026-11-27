@@ -202,7 +202,7 @@
     "ClosedConvsCount": "{{conv_num}} затворених конверзација",
     "TotalConversationsUsage": "Укупна употреба разговора",
     "TotalAITokensUsage": "Укупна употреба токена {{COMPANY_NAME}}",
-    "TotalAIAgentTokensUsage": "Укупна употреба токена AI агента (Design Studio)",
+    "TotalAIAgentTokensUsage": "Укупна употреба токена AI агента",
     "TotalEmailUsage": "Укупна употреба е-поште",
     "TotalVoiceUsage": "Укупна употреба гласа",
     "Email": "Емаил",

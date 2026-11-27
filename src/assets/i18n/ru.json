@@ -202,7 +202,7 @@
     "ClosedConvsCount": "{{conv_num}} закрытых разговоров",
     "TotalConversationsUsage": "Общее использование разговоров",
     "TotalAITokensUsage": "Общее использование токенов {{COMPANY_NAME}}",
-    "TotalAIAgentTokensUsage": "Общее использование токенов ИИ-агента (Design Studio)",
+    "TotalAIAgentTokensUsage": "Общее использование токенов ИИ-агента",
     "TotalEmailUsage": "Общее использование электронной почты",
     "TotalVoiceUsage": "Общее использование голоса",
     "Email": "Электронная почта",
