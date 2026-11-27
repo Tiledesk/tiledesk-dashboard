@@ -1104,6 +1104,40 @@ li:before {
   font-family: var(--header-font-family);
 }
 
+// Credits projects: 45x45 icon on the left, plan name (and subtitle) on its right
+.pricing-card-plan-icon {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex: 0 0 45px;
+  width: 45px;
+  height: 45px;
+  margin-right: 12px;
+  color: #f0806f;
+}
+
+.pricing-card-plan-icon--custom {
+  color: #f0806f;
+}
+
+.pricing-card-plan-heading--left,
+.pricing-card-plan-heading--left .pricing-card-plan-name-wpr {
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.pricing-card-plan-icon + .pricing-card-plan-heading-text {
+  text-align: left;
+}
+
+.pricing-card-plan-subtitle {
+  margin: 2px 0 0;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 400;
+  color: #4b5563;
+}
+
 // css-e7fjbw
 .pricing-card-plan-description-wpr {
   padding: 16px 0px 21px 0px;
@@ -1128,6 +1162,19 @@ li:before {
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
+}
+
+// Custom card on credits projects: the one-line description sits in a highlighted box
+.pricing-card-plan-highlight {
+  align-self: stretch;
+  padding: 14px 16px;
+  background-color: #fcf8f6;
+  border: 1px solid #ebe5e1;
+  border-radius: 10px;
+  font-size: 15px;
+  line-height: 20px;
+  text-align: left;
+  color: #1a1a1a;
 }
 
 .pricing-card-spacer {
