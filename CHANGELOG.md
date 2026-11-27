@@ -1,6 +1,9 @@
 # tiledesk-dashboard
 
-### Unreleased
+### 2.7.282-stage
+- Fixes the bug: on projects metered in credits, inviting a teammate when there are not enough credits no longer shows the "Invitation sent" dialog together with the insufficient credits alert
+- Fixes the bug: on projects metered in credits, creating a chatbot no longer opens the creation dialog before the server answers
+- Fixes the bug: on projects metered in credits, the synchronized sitemap no longer requires the Business plan; "Contact us" is shown only when the feature is not enabled for the project
 - Executions: the status boxes and the With errors box still filter the rows, but their numbers no longer follow their own filter: with a box selected they count the same view without the status and With errors filters (the other filters still apply), so every box keeps its number
 
 ### 2.7.281-stage
