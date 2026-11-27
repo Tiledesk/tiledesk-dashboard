@@ -950,6 +950,11 @@ export class KnowledgeBasesComponent extends PricingBaseComponent implements OnI
     this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - isActiveSubscription: ', trialExpired);
     this.logger.log('[KNOWLEDGE-BASES-COMP] - managePlanRefreshRateAvailability - isActiveSubscription: ', projectProfileType);
     this.t_params = { 'plan_name': PLAN_NAME.EE }
+    // Credits metering: the synchronized sitemap / refresh rate is free, no plan gating
+    if (this.isCreditsMetering) {
+      this.isAvailableRefreshRateFeature = true;
+      return;
+    }
     if (projectProfileType === 'free') {
       if (trialExpired === false) {
         // Trial active
