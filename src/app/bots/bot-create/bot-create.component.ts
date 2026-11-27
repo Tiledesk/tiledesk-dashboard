@@ -94,6 +94,8 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
   hideProgressBar = true;
 
   btn_create_bot_is_disabled = true;
+  /** Credits projects: create request in progress (the creation modal opens only with the response) */
+  isCreatingBot = false;
   botNameLength: number;
 
   CREATE_BOT_ERROR: boolean;
@@ -928,9 +930,15 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
       return
     }
 
-    this.displayInfoModal = 'block'  //commented to avoid thr automatic redirect to faq component in wic the user can edit the external bot
+    if (this.isCreditsMetering) {
+      // Credits projects: the server can refuse the creation (credits not enough) and the interceptor shows its alert.
+      // The creation modal and its spinner open only with the response, so no modal appears and then disappears
+      this.isCreatingBot = true;
+    } else {
+      this.displayInfoModal = 'block'  //commented to avoid thr automatic redirect to faq component in wic the user can edit the external bot
 
-    this.SHOW_CIRCULAR_SPINNER = true;
+      this.SHOW_CIRCULAR_SPINNER = true;
+    }
 
     this.logger.log('[BOT-CREATE] HAS CLICKED CREATE NEW FAQ-KB');
     this.logger.log('[BOT-CREATE] Create Bot - NAME ', this.faqKbName);
@@ -967,6 +975,13 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
       .subscribe((faqKb) => {
         // this.logger.log('[BOT-CREATE] CREATE FAQKB - RES ', faqKb);
 
+        if (this.isCreditsMetering) {
+          // the creation was accepted: open the creation modal now (it stays with the spinner for the dialogflow upload)
+          this.isCreatingBot = false;
+          this.displayInfoModal = 'block';
+          this.SHOW_CIRCULAR_SPINNER = true;
+        }
+
         if (faqKb) {
           this.newBot = faqKb
           this.newBot_name = faqKb['name'];
@@ -985,15 +1000,21 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
         }
 
       }, (error) => {
+        this.isCreatingBot = false;
 
-        // Credits refusal (403 13010-13013): the interceptor already shows the alert, so no second
-        // toast; the error state below is kept because it is what closes the creation modal
-        if (!isCreditsRefusal(error)) {
-          this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorHasOccurred'), 4, 'report_problem');
+        // Credits refusal (403 13010-13013): the interceptor already shows the alert, so no second toast and
+        // no creation modal: the request did not happen
+        if (isCreditsRefusal(error)) {
+          this.logger.error('[BOT-CREATE] CREATE FAQKB - CREDITS REFUSED ', error);
+          return;
         }
-        
+
+        this.notify.showWidgetStyleUpdateNotification(this.translate.instant('AnErrorHasOccurred'), 4, 'report_problem');
+
         this.logger.error('[BOT-CREATE] CREATE FAQKB - POST REQUEST ERROR ', error);
 
+        // the error state below is shown in the creation modal, which on credits projects opens only now
+        this.displayInfoModal = 'block';
         this.SHOW_CIRCULAR_SPINNER = false;
         this.CREATE_DIALOGFLOW_BOT_ERROR = true;
 
@@ -1002,6 +1023,7 @@ export class BotCreateComponent extends PricingBaseComponent implements OnInit, 
         }
       }, () => {
         this.logger.log('[BOT-CREATE] CREATE FAQKB - POST REQUEST * COMPLETE *');
+        this.isCreatingBot = false;
 
         this.notify.showWidgetStyleUpdateNotification(this.translate.instant('ChatbotSuccessfullyCreated'), 2, 'done');
         if (this.botType !== 'dialogflow') {
