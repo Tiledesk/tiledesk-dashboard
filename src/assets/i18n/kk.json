@@ -202,7 +202,7 @@
     "ClosedConvsCount": "{{conv_num}} жабық әңгіме",
     "TotalConversationsUsage": "Сөйлесулердің жалпы пайдаланылуы",
     "TotalAITokensUsage": "{{COMPANY_NAME}} токендерін толық пайдалануы",
-    "TotalAIAgentTokensUsage": "ЖИ агенті токендерінің жалпы пайдаланылуы (Design Studio)",
+    "TotalAIAgentTokensUsage": "ЖИ агенті токендерінің жалпы пайдаланылуы",
     "TotalEmailUsage": "Электрондық поштаның жалпы пайдаланылуы",
     "TotalVoiceUsage": "Дауысты жалпы пайдалану",
     "Email": "Электронды пошта",

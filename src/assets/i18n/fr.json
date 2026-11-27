@@ -202,7 +202,7 @@
     "ClosedConvsCount": "{{conv_num}} conversations fermées",
     "TotalConversationsUsage": "Utilisation totale des conversations",
     "TotalAITokensUsage": "Utilisation totale des jetons {{COMPANY_NAME}}",
-    "TotalAIAgentTokensUsage": "Utilisation totale des jetons de l'agent IA (Design Studio)",
+    "TotalAIAgentTokensUsage": "Utilisation totale des jetons de l'agent IA",
     "TotalEmailUsage": "Utilisation totale des e-mails",
     "TotalVoiceUsage": "Utilisation totale de la voix",
     "Email": "E-mail",

@@ -202,7 +202,7 @@
     "ClosedConvsCount": "{{conv_num}} geschlossene Unterhaltungen",
     "TotalConversationsUsage": "Gesamte Konversationsnutzung",
     "TotalAITokensUsage": "Gesamtnutzung von {{COMPANY_NAME}}-Tokens",
-    "TotalAIAgentTokensUsage": "Gesamtnutzung der KI-Agent-Tokens (Design Studio)",
+    "TotalAIAgentTokensUsage": "Gesamtnutzung der KI-Agent-Tokens",
     "TotalEmailUsage": "Gesamte E-Mail-Nutzung",
     "TotalVoiceUsage": "Gesamte Sprachauslastung",
     "Email": "E-Mail",

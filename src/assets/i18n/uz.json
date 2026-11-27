@@ -201,7 +201,7 @@
     "ClosedConvsCount": "{{conv_num}} ta yopiq suhbat",
     "TotalConversationsUsage": "Umumiy suhbatlardan foydalanish",
     "TotalAITokensUsage": "Jami {{COMPANY_NAME}} tokenlari foydalanish",
-    "TotalAIAgentTokensUsage": "Jami AI agent tokenlari foydalanish (Design Studio)",
+    "TotalAIAgentTokensUsage": "Jami AI agent tokenlari foydalanish",
     "TotalEmailUsage": "Jami elektron pochtadan foydalanish",
     "TotalVoiceUsage": "Ovozdan umumiy foydalanish",
     "Email": "Email",

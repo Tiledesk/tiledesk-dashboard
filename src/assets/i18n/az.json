@@ -204,7 +204,7 @@
     "ClosedConvsCount": "{{conv_num}} qapalı söhbət",
     "TotalConversationsUsage": "Ümumi söhbət istifadəsi",
     "TotalAITokensUsage": "{{COMPANY_NAME}} tokenlarının ümumi istifadəsi",
-    "TotalAIAgentTokensUsage": "Sİ agent tokenlərinin ümumi istifadəsi (Design Studio)",
+    "TotalAIAgentTokensUsage": "Sİ agent tokenlərinin ümumi istifadəsi",
     "TotalEmailUsage": "Ümumi e-poçt istifadəsi",
     "TotalVoiceUsage": "Ümumi səs istifadəsi",
     "Email": "E-poçt",
